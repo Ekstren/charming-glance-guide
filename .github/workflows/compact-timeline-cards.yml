@@ -1,0 +1,50 @@
+name: Compact timeline cards
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/compact-timeline-cards.yml'
+      - '.github/scripts/compact_timeline_cards.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch compact renderer
+        run: python .github/scripts/compact_timeline_cards.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+            raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify compaction helper
+        run: |
+          grep -q 'TIMELINE_COMPACT_RENDERER_V1' index.html
+          grep -q '4P7Y2R9M' index.html
+          grep -q 'timelineCardDetails' index.html
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Compact timeline cards and add Aug 25 gift code alert'
+          git push origin main
