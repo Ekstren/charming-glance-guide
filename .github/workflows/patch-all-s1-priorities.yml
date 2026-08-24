@@ -1,6 +1,11 @@
 name: Patch all S1 priority panels
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-all-s1-priorities.yml'
+      - '.github/scripts/patch_all_s1_priority_copies.py'
   issues:
     types: [opened]
   workflow_dispatch:
