@@ -693,6 +693,17 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
   .projectionCallout.projectionInline strong{font-size:16px}
 }
 
+
+
+/* RESULTS_SPACING_CLEANUP_V1 */
+/* Prevent the resource cards from crowding/overlapping the recommended gear row. */
+.suggestedGear{margin-bottom:18px!important}
+.planCosts,.planCostsFour{margin:0 0 20px!important}
+.secondaryCostNote{display:none!important}
+@media(max-width:700px){
+  .suggestedGear{margin-bottom:14px!important}
+}
+
 </style>
 
 <style id="v54-mobile-polish">
@@ -1118,7 +1129,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
         <span>Chrono Sand<b id="sandCost">0</b><small id="sandBalance">—</small><small id="sandToolBalance" class="toolBalance">—</small></span>
         <span>Fantomon Treats <i class="unitHint">basic-eq.</i><b id="treatCost">0</b><small id="treatBalance">—</small></span>
       </div>
-      <div class="secondaryCostNote" id="secondaryCostNote" hidden></div>
+      <div class="secondaryCostNote" id="secondaryCostNote" hidden style="display:none!important"></div>
       <details class="resultDetails"><summary>Bonuses and score breakdown</summary><div><div id="astralBonusReference"><h3>Projected Astral Pact bonuses</h3><div class="rewardTotals" id="astralRewardTotals"></div><p class="rewardCount" id="astralRewardCount">Calculated from projected total Primostars.</p></div><h3>Current score now</h3><p class="breakdownExplain" id="currentBreakdownExplain">Exactly what you have entered right now, including your current EXP progress inside the Character level.</p><dl class="scoreBreakdown"><div><dt id="currentCharacterLabel">Character</dt><dd id="currentBreakCharacter">—</dd></div><div><dt id="currentGearLabel">Gear</dt><dd id="currentBreakGear">—</dd></div><div><dt id="currentSkillsLabel">Skills</dt><dd id="currentBreakSkills">—</dd></div><div><dt id="currentRelicsLabel">Relics</dt><dd id="currentBreakRelics">—</dd></div><div><dt id="currentFantomonsLabel">Fantomons</dt><dd id="currentBreakFantomons">—</dd></div></dl><div id="recommendedBreakdownSection"><h3>After recommended upgrades <span class="mutedInline">· season end</span></h3><p class="breakdownExplain" id="recommendedBreakdownExplain">Your projected season-end Character score plus every upgrade recommended above.</p><dl class="scoreBreakdown"><div><dt id="recommendedCharacterLabel">Character</dt><dd id="recommendedBreakCharacter">—</dd></div><div><dt id="recommendedGearLabel">Gear</dt><dd id="recommendedBreakGear">—</dd></div><div><dt id="recommendedSkillsLabel">Skills</dt><dd id="recommendedBreakSkills">—</dd></div><div><dt id="recommendedRelicsLabel">Relics</dt><dd id="recommendedBreakRelics">—</dd></div><div><dt id="recommendedFantomonsLabel">Fantomons</dt><dd id="recommendedBreakFantomons">—</dd></div></dl></div></div></details>
       <p class="milestoneNote" id="milestoneNote" hidden></p>
     </aside>
