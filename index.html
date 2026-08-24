@@ -593,7 +593,7 @@
   <div class="summary" id="timelineSummary"></div>
   <div class="timelineNow" id="timelineNow"></div>
   <div class="timelineIntelWrap">
-    <details class="timelineIntel" open>
+    <details class="timelineIntel" id="timelineCoverageDetails">
       <summary><span>Timeline coverage & source confidence</span><small>Full refresh Aug 23 · QY Maple + current Global/community data</small></summary>
       <div class="timelineIntelBody">
         <p><b>Charming Glance calendar:</b> Day 1 = Jul 15. The server reset is converted automatically to <b id="timelineResetLocal">this device's local time</b>. Season 2 is pinned to <b>Server Day 47 / Aug 30</b>, matching current Global community reports that S2 starts on Day 47 and Hellhold opens 14 days beforehand. <b>QY Maple is now the primary season-day table</b> for later unlock timing; legacy Qenu/Limitless rows are retained only when they add a useful conflict note rather than creating duplicate milestones.</p>
@@ -602,7 +602,7 @@
         <div class="sourcePills"><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple research ↗</a><a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRm-49ccED61NjRSorhEIHc_IkdexkPemXy_tPG5djelXPsoNxCgf5DHSOSl6YJg2K3yNmq1Hh2oCgM/pubhtml?chrome=false&amp;gid=0&amp;single=true&amp;widget=false" target="_blank" rel="noreferrer">QY season table ↗</a><a href="https://lootandwaifus.com/sword-x-staff-fantomon-database/" target="_blank" rel="noreferrer">Global Fantomon DB ↗</a><a href="https://lootandwaifus.com/sword-x-staff-item-database/" target="_blank" rel="noreferrer">Global item DB ↗</a><a href="https://limitlessgaming.gg/timeline" target="_blank" rel="noreferrer">Legacy server-age cross-check ↗</a><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Original Qenu anchor ↗</a></div>
       </div>
     </details>
-    <details class="timelineIntel" open>
+    <details class="timelineIntel" id="recurringEventsDetails">
       <summary><span>Recurring event rotation</span><small>Server-age schedule · active events stay visible until their weekly reset</small></summary>
       <div class="timelineIntelBody eventCycleGrid">
         <div class="eventCycleCard"><b>Grand Treasure Hunt</b><span>Weekly · first appears Server Day 8</span><p>Exact Phase 1–57 dates and the important Lv.5 rotating reward are now in the timeline. <strong>Auroradrasil Energy carries over</strong>, so low spenders should save for the phases with the relic/reward they actually want.</p></div>
@@ -616,7 +616,7 @@
       </div>
       <div class="eventSourceNote" style="padding:0 16px 14px">Schedule cross-check: Limitless Gaming server-age timeline. Treasure Hunt Phase 1–15 rewards: QY Maple. Event strategy: current Oceanic Festival guides, Loot & Waifus, Prydwen and Global community reports.</div>
     </details>
-    <details class="timelineIntel">
+    <details class="timelineIntel" id="ignisReferenceDetails">
       <summary><span>Season 5 · Ignis long-range reference</span><small>Pre-release English/data names · absolute Charming Glance start is not pinned yet</small></summary>
       <div class="timelineIntelBody"><p>QY Maple currently lists Hapadi and Ignis-era cadence at roughly <b>109 days</b>. Using the current projected Hapadi anchor would put Ignis around <b>Jun 14, 2027 / Server Day 335</b>, but Global has not reached this content and merger cadence can shift kingdom entry, so that absolute date remains a planning reference rather than a pinned unlock.</p></div>
       <div class="futureSeasonGrid">
@@ -2911,6 +2911,19 @@
   }
   function setupTimeline(){
     renderLocalTimeLabels();
+    const timelinePanelState=[
+      ['timelineCoverageDetails','sxs-timeline-panel-coverage'],
+      ['recurringEventsDetails','sxs-timeline-panel-events'],
+      ['ignisReferenceDetails','sxs-timeline-panel-ignis']
+    ];
+    timelinePanelState.forEach(([id,key])=>{
+      const panel=$(id);
+      if(!panel) return;
+      let saved=null;
+      try{ saved=localStorage.getItem(key); }catch(_){}
+      panel.open=saved==='1';
+      panel.addEventListener('toggle',()=>{try{localStorage.setItem(key,panel.open?'1':'0');}catch(_){}});
+    });
     const filters=[['all','All'],['dungeon','Dungeons'],['class-advancement','Class'],['maps','Maps / Regions'],['fantomon','Fantomons'],['ancient-relic','Relics'],['feature','Features'],['event','Events']];
     $('timelineFilters').innerHTML=filters.map(([k,l])=>`<button data-filter="${k}" class="${k==='all'?'active':''}">${l}</button>`).join('');
     $('timelineFilters').addEventListener('click',e=>{const b=e.target.closest('button[data-filter]');if(!b)return;timelineFilter=b.dataset.filter;[...$('timelineFilters').children].forEach(x=>x.classList.toggle('active',x===b));renderTimeline();});
