@@ -1,8 +1,8 @@
 name: Compact timeline notes
 
 on:
-  issues:
-    types: [opened]
+  schedule:
+    - cron: '40 19 24 8 *'
   workflow_dispatch:
 
 permissions:
@@ -10,12 +10,12 @@ permissions:
 
 jobs:
   patch:
-    if: github.event_name == 'workflow_dispatch' || github.event.issue.title == 'Run compact timeline notes patch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Make timeline cards concise by default
         shell: python
@@ -81,9 +81,11 @@ jobs:
 
           path.write_text(text, encoding='utf-8')
 
-      - name: Validate inline JavaScript
+      - name: Restore workflow files and validate
         shell: bash
         run: |
+          git checkout 5ac964cd0f97196a34e50c6b0ce391ded9e2fd22 -- .github/workflows/generic-first-run-defaults.yml
+          git rm .github/workflows/compact-timeline-notes.yml
           python - <<'PY'
           from pathlib import Path
           import re
@@ -98,12 +100,8 @@ jobs:
       - name: Commit change
         shell: bash
         run: |
-          if git diff --quiet -- index.html; then
-            echo 'No change needed.'
-            exit 0
-          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
+          git add index.html .github/workflows/generic-first-run-defaults.yml
           git commit -m 'Summarize long timeline entries by default'
           git push origin main
