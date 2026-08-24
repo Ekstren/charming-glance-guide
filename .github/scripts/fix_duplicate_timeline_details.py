@@ -19,15 +19,12 @@ if 'dedupeTimelineDetails();\n\n    const serverDay=' not in s:
         raise SystemExit('timeline render insertion point not found')
     s=s.replace(needle,replacement,1)
 
-# CSS fallback in case a stale/legacy renderer ever produces duplicate detail siblings.
 css='.entry .entryMore + .entryMore{display:none!important}\n'
 if css.strip() not in s:
     pos=s.find('.entryMore{margin-top:6px')
     if pos<0: raise SystemExit('entryMore css marker not found')
     s=s[:pos]+css+s[pos:]
 
-# Recheck the requested build-layout patch is still present and structurally able
-# to apply to both seasons.
 checks={
     'build layout marker':'/* BUILD_LAYOUT_V2 */',
     'quick stats renderer':'function polishBuildLayout()',
@@ -43,3 +40,4 @@ for label,text in checks.items():
 
 p.write_text(s,encoding='utf-8')
 print('Fixed duplicate timeline Details controls and verified build layout v2 markers.')
+# trigger workflow
