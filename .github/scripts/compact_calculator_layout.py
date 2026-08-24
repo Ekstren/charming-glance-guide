@@ -57,3 +57,4 @@ if '</head>' not in s:
 s=s.replace('</head>',css+'\n</head>',1)
 p.write_text(s,encoding='utf-8')
 print('Removed visible Refined Ore tracking and compacted calculator spacing.')
+# trigger
