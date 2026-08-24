@@ -1,0 +1,44 @@
+name: Move build role toggle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/move_role_toggle.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Move DPS Heals toggle
+        run: python .github/scripts/move_role_toggle.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify
+        run: |
+          grep -q "const identity=guide.children\[0\]" index.html
+          grep -q 'width:min(240px,100%)' index.html
+      - name: Commit
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Move healer DPS toggle into build summary'
+          git push origin main
