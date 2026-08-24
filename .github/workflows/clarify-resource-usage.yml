@@ -18,84 +18,11 @@ jobs:
         with:
           ref: main
       - name: Clarify resource usage cards
+        env:
+          PATCH_B64: ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCByZQoKcD1QYXRoKCdpbmRleC5odG1sJykKcz1wLnJlYWRfdGV4dChlbmNvZGluZz0ndXRmLTgnKQoKb2xkX3N0eWxlID0gIiIiPHN0eWxlIGlkPSJnb2FsLWFjaGlldmFiaWxpdHktY2xlYW51cCI+Ci8qIEdPQUxfQUNISUVWQUJJTElUWV9DTEVBTlVQX1YxCiAgIE9uZSBnb2FsLXN0YXR1cyB3YXJuaW5nOyByZXNvdXJjZSBjYXJkcyBrZWVwIG9ubHkgdGhlIHVzZWZ1bCBiYWxhbmNlL3Nob3J0ZmFsbCBsaW5lLiAqLwoubWF0ZXJpYWxSZWFsbVJlY29tbWVuZGF0aW9ue2Rpc3BsYXk6bm9uZSFpbXBvcnRhbnR9Ci5wbGFuQ29zdHMgc21hbGwudG9vbEJhbGFuY2V7ZGlzcGxheTpub25lIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzbWFsbC5zaG9ydGZhbGxCcmVha2Rvd257ZGlzcGxheTpub25lIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzcGFue2dhcDo2cHghaW1wb3J0YW50fQoudGFyZ2V0TWVzc2FnZTpub3QoW2hpZGRlbl0pe21hcmdpbjoxMHB4IDAgMTRweCFpbXBvcnRhbnQ7bWluLWhlaWdodDowIWltcG9ydGFudH0KPC9zdHlsZT4iIiIKbmV3X3N0eWxlID0gIiIiPHN0eWxlIGlkPSJnb2FsLWFjaGlldmFiaWxpdHktY2xlYW51cCI+Ci8qIEdPQUxfQUNISUVWQUJJTElUWV9DTEVBTlVQX1YyCiAgIEtlZXAgb25lIGdvYWwtc3RhdHVzIHdhcm5pbmcsIGJ1dCByZXRhaW4gY29uY2lzZSB0b29sIHVzYWdlIGFuZCByZW1haW5pbmctbWF0ZXJpYWwgY29udGV4dC4gKi8KLm1hdGVyaWFsUmVhbG1SZWNvbW1lbmRhdGlvbntkaXNwbGF5Om5vbmUhaW1wb3J0YW50fQoucGxhbkNvc3RzIHNtYWxsLnNob3J0ZmFsbEJyZWFrZG93bntkaXNwbGF5Om5vbmUhaW1wb3J0YW50fQoucGxhbkNvc3RzIHNwYW57Z2FwOjZweCFpbXBvcnRhbnR9Ci5wbGFuQ29zdHM+c3Bhbj5iOjphZnRlcntjb250ZW50OiIgdXNlZCI7Zm9udC1zaXplOi40OGVtO2ZvbnQtd2VpZ2h0OjgwMDtjb2xvcjp2YXIoLS1tdXRlZCk7bGV0dGVyLXNwYWNpbmc6MDt0ZXh0LXRyYW5zZm9ybTpub25lO21hcmdpbi1sZWZ0OjRweDt2ZXJ0aWNhbC1hbGlnbjoycHh9Ci5wbGFuQ29zdHMgc21hbGwudG9vbEJhbGFuY2V7ZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7Ym9yZGVyLXRvcDoxcHggc29saWQgdmFyKC0tbGluZSk7bWFyZ2luLXRvcDoycHg7cGFkZGluZy10b3A6NnB4O2ZvbnQtc2l6ZTo4LjVweCFpbXBvcnRhbnQ7bGluZS1oZWlnaHQ6MS40NSFpbXBvcnRhbnQ7dGV4dC10cmFuc2Zvcm06bm9uZSFpbXBvcnRhbnR9Ci5wbGFuQ29zdHMgc21hbGwudG9vbEJhbGFuY2UgLnRvb2xVc2VkTGluZSwucGxhbkNvc3RzIHNtYWxsLnRvb2xCYWxhbmNlIC50b29sUmVtYWluaW5nTGluZSwucGxhbkNvc3RzIHNtYWxsLnRvb2xCYWxhbmNlIC50b29sU2VwYXJhdG9ye2Rpc3BsYXk6aW5saW5lIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzbWFsbC50b29sQmFsYW5jZSAudG9vbFVzZWRMaW5le2NvbG9yOnZhcigtLXNlY29uZGFyeS10ZXh0KSFpbXBvcnRhbnQ7Zm9udC13ZWlnaHQ6NzUwIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzbWFsbC50b29sQmFsYW5jZSAudG9vbFJlbWFpbmluZ0xpbmV7Y29sb3I6dmFyKC0tc3RhdHVzLXBvc2l0aXZlKSFpbXBvcnRhbnQ7Zm9udC13ZWlnaHQ6ODAwIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzbWFsbC50b29sQmFsYW5jZSAudG9vbFNlcGFyYXRvcntjb2xvcjp2YXIoLS1tdXRlZCkhaW1wb3J0YW50fQoudGFyZ2V0TWVzc2FnZTpub3QoW2hpZGRlbl0pe21hcmdpbjoxMHB4IDAgMTRweCFpbXBvcnRhbnQ7bWluLWhlaWdodDowIWltcG9ydGFudH0KLnRhcmdldE1lc3NhZ2Uud2FybmluZy5kYW5nZXJ7Ym9yZGVyOjFweCBzb2xpZCBjb2xvci1taXgoaW4gc3JnYix2YXIoLS1zdGF0dXMtbmVnYXRpdmUpIDYyJSx2YXIoLS1saW5lKSk7YmFja2dyb3VuZDpjb2xvci1taXgoaW4gc3JnYix2YXIoLS1zdGF0dXMtbmVnYXRpdmUpIDExJSx2YXIoLS1zdXJmYWNlKSk7Y29sb3I6dmFyKC0tc3RhdHVzLW5lZ2F0aXZlKSFpbXBvcnRhbnQ7Ym9yZGVyLXJhZGl1czoxMXB4O3BhZGRpbmc6MTBweCAxMnB4IWltcG9ydGFudH0KPC9zdHlsZT4iIiIKICAgaWYgb2xkX3N0eWxlIG5vdCBpbiBzOgogICAgcmFpc2UgU3lzdGVtRXhpdCgnZ29hbCBjbGVhbnVwIHN0eWxlIGJsb2NrIG5vdCBmb3VuZCcpCnM9cy5yZXBsYWNlKG9sZF9zdHlsZSxuZXdfc3R5bGUsMSkKCnBhdHRlcm49ciIgIGZ1bmN0aW9uIHNldFRvb2xCYWxhbmNlXChpZCx0b3AsaGFyZFNob3J0LHlpZWxkVmFsLGxhYmVsLHByb3RlY3RlZFJ1bnM9MFwpXHsuKj9cbiAgXH1cbiAgZnVuY3Rpb24gc2V0UmVhbG1TaG9ydGZhbGxCcmVha2Rvd24iCnJlcGxhY2VtZW50PSIiIiAgZnVuY3Rpb24gc2V0VG9vbEJhbGFuY2UoaWQsdG9wLGhhcmRTaG9ydCx5aWVsZFZhbCxsYWJlbCxwcm90ZWN0ZWRSdW5zPTApewogICAgY29uc3QgZWw9JChpZCk7IGlmKCFlbCkgcmV0dXJuOwogICAgZWwuY2xhc3NMaXN0LnJlbW92ZSgndG9vbE5lZWQnLCd0b29sTGVmdCcpOwogICAgY29uc3QgcGVyPU1hdGgubWF4KDAsTnVtYmVyKHlpZWxkVmFsKXx8MCk7CiAgICBjb25zdCBwcm90ZWN0ZWRDb3VudD1NYXRoLm1heCgwLE1hdGguZmxvb3IoTnVtYmVyKHByb3RlY3RlZFJ1bnMpfHwwKSk7CiAgICBjb25zdCBtYXRlcmlhbE5hbWU9bGFiZWw9PT0nSGFtbWVycyc/J09yZSc6bGFiZWw9PT0nS251Y2tsZXMnPydFc3NlbmNlJzpsYWJlbD09PSdTaG92ZWxzJz8nU2FuZCc6J21hdGVyaWFscyc7CiAgICBjb25zdCBmaW5pdGVSdW5zPU51bWJlcih0b3A/LnJ1bnNVc2VkKTsKICAgIGNvbnN0IHVzZWQ9TWF0aC5tYXgoMCxNYXRoLmZsb29yKE51bWJlci5pc0Zpbml0ZShmaW5pdGVSdW5zKT9maW5pdGVSdW5zOjApKTsKICAgIGNvbnN0IGdhaW5lZD1NYXRoLm1heCgwLE51bWJlci5pc0Zpbml0ZShOdW1iZXIodG9wPy5wcm92aWRlZCkpP051bWJlcih0b3AucHJvdmlkZWQpOnVzZWQqcGVyKTsKICAgIGNvbnN0IGJhbmtlZFJlbWFpbmluZz1NYXRoLm1heCgwLE1hdGguZmxvb3IoTnVtYmVyKHRvcD8uYmFua2VkUmVtYWluaW5nKXx8MCkpOwogICAgY29uc3Qgc3BhcmVQdXJjaGFzZWQ9TWF0aC5tYXgoMCxNYXRoLmZsb29yKE51bWJlcih0b3A/LnNwYXJlUHVyY2hhc2VkUnVucyl8fDApKTsKICAgIGNvbnN0IHJlbWFpbmluZz1iYW5rZWRSZW1haW5pbmc+c3BhcmVQdXJjaGFzZWQrcHJvdGVjdGVkQ291bnQ7CiAgICBjb25zdCByZW1haW5pbmdNYXRlcmlhbD1yZW1haW5pbmcqcGVyOwogICAgY29uc3QgcHJvdGVjdGVkVGV4dD1wcm90ZWN0ZWRDb3VudD9gIMK3ICR7Zm10KHByb3RlY3RlZENvdW50KX0gUzItcHJvdGVjdGVkYDonJzsKICAgIGNvbnN0IHVzZWRMaW5lPWA8c3BhbiBjbGFzcz0idG9vbFVzZWRMaW5lIj4ke2xhYmVsfTogJHtmbXQodXNlZCl9IHVzZWQke3Blcj4wP2AgKOKJiCR7Zm10Q29tcGFjdChnYWluZWQpfSAke21hdGVyaWFsTmFtZX0pYDonJ308L3NwYW4+YDsKICAgIGNvbnN0IHJlbWFpbmluZ0xpbmU9YDxzcGFuIGNsYXNzPSJ0b29sUmVtYWluaW5nTGluZSI+JHtmbXQocmVtYWluaW5nKX0gbGVmdCR7cGVyPjA/YCAo4omIJHtmbXRDb21wYWN0KHJlbWFpbmluZ01hdGVyaWFsKX0gJHttYXRlcmlhbE5hbWV9KWA6Jyd9JHtwcm90ZWN0ZWRUZXh0fTwvc3Bhbj5gOwogICAgZWwuaW5uZXJIVE1MPWAke3VzZWRMaW5lfTxzcGFuIGNsYXNzPSJ0b29sU2VwYXJhdG9yIj4gwrcgPC9zcGFuPiR7cmVtYWluaW5nTGluZX1gOwogICAgZWwuY2xhc3NMaXN0LmFkZCgndG9vbExlZnQnKTsKICB9CiAgZnVuY3Rpb24gc2V0UmVhbG1TaG9ydGZhbGxCcmVha2Rvd24iIiIKczIsbj1yZS5zdWJuKHBhdHRlcm4scmVwbGFjZW1lbnQscyxjb3VudD0xLGZsYWdzPXJlLlMpCmlmIG4hPTE6CiAgICByYWlzZSBTeXN0ZW1FeGl0KGYnc2V0VG9vbEJhbGFuY2UgcmVwbGFjZW1lbnQgY291bnQ9e259JykKcz1zMgoKb2xkID0gIiQoJ3RhcmdldE1lc3NhZ2UnKS5oaWRkZW49ZmFsc2U7JCgndGFyZ2V0TWVzc2FnZScpLmNsYXNzTGlzdC5hZGQoJ3dhcm5pbmcnKTtcbiAgICAgICQoJ3RhcmdldE1lc3NhZ2UnKS50ZXh0Q29udGVudD1g4pqgIEdvYWwgbm90IGFjaGlldmFibGUgd2l0aCByZW1haW5pbmcgUmVhbG0gY2FwYWNpdHkuIFNob3J0IGF0IG1heCAyMCByZWZyZXNoZXMvZGF5OiAke3Nob3J0YWdlQml0cy5qb2luKCcgwrAnKXx8J3Jlc291cmNlcyd9LmA7IgpuZXcgPSAiJCgndGFyZ2V0TWVzc2FnZScpLmhpZGRlbj1mYWxzZTskKCd0YXJnZXRNZXNzYWdlJykuY2xhc3NMaXN0LmFkKCd3YXJuaW5nJywnZGFuZ2VyJyk7XG4gICAgICAkKCd0YXJnZXRNZXNzYWdlJykudGV4dENvbnRlbnQ9YOKaoCBHb2FsIG5vdCBhY2hpZXZhYmxlIHdpdGggcmVtYWluaW5nIFJlYWxtIGNhcGFjaXR5LiBTaG9ydCBhdCBtYXggMjAgcmVmcmVzaGVzL2RheTogJHtzaG9ydGFnZUJpdHMuam9pbignIMK3ICcpfHwncmVzb3VyY2VzJ30uYDsiCmlmIG9sZCBub3QgaW4gczoKICAgIHJhaXNlIFN5c3RlbUV4aXQoJ2ltcG9zc2libGUgd2FybmluZyBibG9jayBub3QgZm91bmQnKQpzPXMucmVwbGFjZShvbGQsbmV3LDEpCgpvbGQgPSAiICBmdW5jdGlvbiB1cGRhdGVDYWxjdWxhdG9yKCl7XG4gICAgY29uc3QgY2ZnPWFjdGl2ZUNhbGNDb25maWcoKTsiCm5ldyA9ICIgIGZ1bmN0aW9uIHVwZGF0ZUNhbGN1bGF0b3IoKXtcbiAgICAkKCd0YXJnZXRNZXNzYWdlJyk/LmNsYXNzTGlzdC5yZW1vdmUoJ2RhbmdlcicpO1xuICAgIGNvbnN0IGNmZz1hY3RpdmVDYWxjQ29uZmlnKCk7IgppZiBvbGQgbm90IGluIHM6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCd1cGRhdGVDYWxjdWxhdG9yIHN0YXJ0IG5vdCBmb3VuZCcpCnM9cy5yZXBsYWNlKG9sZCxuZXcsMSkKCnAud3JpdGVfdGV4dChzLGVuY29kaW5nPSd1dGYtOCcpCg==
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-
-          old_style='''<style id="goal-achievability-cleanup">
-/* GOAL_ACHIEVABILITY_CLEANUP_V1
-   One goal-status warning; resource cards keep only the useful balance/shortfall line. */
-.materialRealmRecommendation{display:none!important}
-.planCosts small.toolBalance{display:none!important}
-.planCosts small.shortfallBreakdown{display:none!important}
-.planCosts span{gap:6px!important}
-.targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
-</style>'''
-          new_style='''<style id="goal-achievability-cleanup">
-/* GOAL_ACHIEVABILITY_CLEANUP_V2
-   Keep one goal-status warning, but retain concise tool usage and remaining-material context. */
-.materialRealmRecommendation{display:none!important}
-.planCosts small.shortfallBreakdown{display:none!important}
-.planCosts span{gap:6px!important}
-.planCosts>span>b::after{content:" used";font-size:.48em;font-weight:800;color:var(--muted);letter-spacing:0;text-transform:none;margin-left:4px;vertical-align:2px}
-.planCosts small.toolBalance{display:block!important;border-top:1px solid var(--line);margin-top:2px;padding-top:6px;font-size:8.5px!important;line-height:1.45!important;text-transform:none!important}
-.planCosts small.toolBalance .toolUsedLine,.planCosts small.toolBalance .toolRemainingLine,.planCosts small.toolBalance .toolSeparator{display:inline!important}
-.planCosts small.toolBalance .toolUsedLine{color:var(--secondary-text)!important;font-weight:750!important}
-.planCosts small.toolBalance .toolRemainingLine{color:var(--status-positive)!important;font-weight:800!important}
-.planCosts small.toolBalance .toolSeparator{color:var(--muted)!important}
-.targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
-.targetMessage.warning.danger{border:1px solid color-mix(in srgb,var(--status-negative) 62%,var(--line));background:color-mix(in srgb,var(--status-negative) 11%,var(--surface));color:var(--status-negative)!important;border-radius:11px;padding:10px 12px!important}
-</style>'''
-          if old_style not in s:
-              raise SystemExit('goal cleanup style block not found')
-          s=s.replace(old_style,new_style,1)
-
-          pattern=r"  function setToolBalance\(id,top,hardShort,yieldVal,label,protectedRuns=0\)\{.*?\n  \}\n  function setRealmShortfallBreakdown"
-          replacement='''  function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0){
-    const el=$(id); if(!el) return;
-    el.classList.remove('toolNeed','toolLeft');
-    const per=Math.max(0,Number(yieldVal)||0);
-    const protectedCount=Math.max(0,Math.floor(Number(protectedRuns)||0));
-    const materialName=label==='Hammers'?'Ore':label==='Knuckles'?'Essence':label==='Shovels'?'Sand':'materials';
-    const finiteRuns=Number(top?.runsUsed);
-    const used=Math.max(0,Math.floor(Number.isFinite(finiteRuns)?finiteRuns:0));
-    const gained=Math.max(0,Number.isFinite(Number(top?.provided))?Number(top.provided):used*per);
-    const bankedRemaining=Math.max(0,Math.floor(Number(top?.bankedRemaining)||0));
-    const sparePurchased=Math.max(0,Math.floor(Number(top?.sparePurchasedRuns)||0));
-    const remaining=bankedRemaining+sparePurchased+protectedCount;
-    const remainingMaterial=remaining*per;
-    const protectedText=protectedCount?` · ${fmt(protectedCount)} S2-protected`:'';
-    const usedLine=`<span class="toolUsedLine">${label}: ${fmt(used)} used${per>0?` (≈${fmtCompact(gained)} ${materialName})`:''}</span>`;
-    const remainingLine=`<span class="toolRemainingLine">${fmt(remaining)} left${per>0?` (≈${fmtCompact(remainingMaterial)} ${materialName})`:''}${protectedText}</span>`;
-    el.innerHTML=`${usedLine}<span class="toolSeparator"> · </span>${remainingLine}`;
-    el.classList.add('toolLeft');
-  }
-  function setRealmShortfallBreakdown'''
-          s2,n=re.subn(pattern,replacement,s,count=1,flags=re.S)
-          if n!=1:
-              raise SystemExit(f'setToolBalance replacement count={n}')
-          s=s2
-
-          # Make only a truly impossible goal a red danger block; ordinary plan-short warnings remain gold.
-          old="$('targetMessage').hidden=false;$('targetMessage').classList.add('warning');\n      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;"
-          new="$('targetMessage').hidden=false;$('targetMessage').classList.add('warning','danger');\n      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;"
-          if old not in s:
-              raise SystemExit('impossible warning block not found')
-          s=s.replace(old,new,1)
-
-          # Clear danger state at the start of every recalculation so achievable warnings stay gold.
-          old="  function updateCalculator(){\n    const cfg=activeCalcConfig();"
-          new="  function updateCalculator(){\n    $('targetMessage')?.classList.remove('danger');\n    const cfg=activeCalcConfig();"
-          if old not in s:
-              raise SystemExit('updateCalculator start not found')
-          s=s.replace(old,new,1)
-
-          p.write_text(s,encoding='utf-8')
-          PY
+          echo "$PATCH_B64" | base64 -d > /tmp/patch.py
+          python /tmp/patch.py
       - name: Validate inline JavaScript
         run: |
           python - <<'PY'
