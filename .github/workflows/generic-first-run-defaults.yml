@@ -1,0 +1,93 @@
+name: Generic calculator first-run defaults
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/generic-first-run-defaults.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Remove account-specific calculator defaults
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          # Generic S1 first-run values. Structural season floors stay valid instead of using literal zero.
+          values = {
+              'targetStars':'200', 'historicalStars':'0',
+              'charLevel':'100', 'charExp':'0', 'bedExp':'0', 'freeSpeed':'0',
+              'skillLevel':'100', 'relicLevel':'10', 'fantomonLevel':'100',
+              'gearWeapon':'100', 'gearOffhand':'100', 'gearHelmet':'100', 'gearArmor':'100', 'gearBoots':'100',
+              'oreCurrent':'0', 'oreRate':'0', 'essenceCurrent':'0', 'essenceRate':'0',
+              'sandCurrent':'0', 'sandRate':'0', 'treatCurrent':'0', 'treatPremiumCurrent':'0', 'treatDeluxeCurrent':'0', 'treatRate':'0',
+              'hammerCurrent':'0', 'knucklesCurrent':'0', 'shovelCurrent':'0',
+              'realmDailyOre':'0', 'realmDailyEssence':'0', 'realmDailySand':'0'
+          }
+
+          for ident, value in values.items():
+              pattern = rf'(<input\b[^>]*\bid="{re.escape(ident)}"[^>]*\bvalue=")[^"]*(")'
+              text, count = re.subn(pattern, rf'\g<1>{value}\2', text, count=1)
+              if count != 1:
+                  raise SystemExit(f'Could not patch input default for {ident}')
+
+          # Fresh installs are not legacy states; don't run old-state migrations on an empty state.
+          text = text.replace(
+              "if((Number(state.snapshotSchema)||0)<6){",
+              "if(hadState && (Number(state.snapshotSchema)||0)<6){",
+              1
+          )
+          text = text.replace(
+              "if(state.reserveS2Treats===undefined) state.reserveS2Treats=true;",
+              "if(hadState && state.reserveS2Treats===undefined) state.reserveS2Treats=true;",
+              1
+          )
+          text = text.replace(
+              "if((Number(state.snapshotSchema)||0)<5){",
+              "if(hadState && (Number(state.snapshotSchema)||0)<5){",
+              1
+          )
+
+          # On a truly fresh browser in S2, use the S2 target baseline instead of the S1 target.
+          marker = "CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });"
+          insertion = marker + "\n      if(!hadState && activeCalcConfig().key==='s2' && $('targetStars')) $('targetStars').value='680';"
+          if insertion not in text:
+              if marker not in text:
+                  raise SystemExit('Could not find loadState input restore marker')
+              text = text.replace(marker, insertion, 1)
+
+          # Reset should also be generic in S2 rather than assuming a 4/4/4 routine or free speed-up.
+          old = "freeSpeed:2,reserveHours:36"
+          if old in text:
+              text = text.replace(old, "freeSpeed:0,reserveHours:36", 1)
+          old = "realmDailyOre:4,realmDailyEssence:4,realmDailySand:4"
+          if old in text:
+              text = text.replace(old, "realmDailyOre:0,realmDailyEssence:0,realmDailySand:0", 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Commit change
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Use generic first-run calculator defaults'
+          git push origin main
