@@ -1,0 +1,80 @@
+name: Persist active section
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/persist-active-section.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Remember selected site section across refreshes
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          if "const SECTION_STORAGE_KEY='sxs-active-section';" in text:
+              print('Active-section persistence is already installed.')
+              raise SystemExit(0)
+
+          old = """  function setSection(name){
+              document.querySelectorAll('.siteSection').forEach(s=>s.hidden=true);
+              const map={timeline:'timelineSection',builds:'buildsSection',calculator:'calculatorSection'};
+              $(map[name]).hidden=false;
+              document.querySelectorAll('.sectionSwitch button').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
+              window.scrollTo({top:0,behavior:'smooth'});
+              if(name==='builds') initializeBuildsIfNeeded();
+              if(name==='calculator') initializeCalculatorIfNeeded();
+            }"""
+
+          new = """  const SECTION_STORAGE_KEY='sxs-active-section';
+            function setSection(name){
+              const map={timeline:'timelineSection',builds:'buildsSection',calculator:'calculatorSection'};
+              if(!map[name]) name='timeline';
+              document.querySelectorAll('.siteSection').forEach(s=>s.hidden=true);
+              $(map[name]).hidden=false;
+              document.querySelectorAll('.sectionSwitch button').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
+              try{ localStorage.setItem(SECTION_STORAGE_KEY,name); }catch(_){}
+              window.scrollTo({top:0,behavior:'smooth'});
+              if(name==='builds') initializeBuildsIfNeeded();
+              if(name==='calculator') initializeCalculatorIfNeeded();
+            }"""
+
+          if old not in text:
+              raise SystemExit('Expected setSection block was not found; refusing to modify index.html.')
+          text = text.replace(old, new, 1)
+
+          old_start = "  setSection('timeline');"
+          new_start = """  let initialSection='timeline';
+            try{ const savedSection=localStorage.getItem(SECTION_STORAGE_KEY); if(['timeline','builds','calculator'].includes(savedSection)) initialSection=savedSection; }catch(_){}
+            setSection(initialSection);"""
+          if old_start not in text:
+              raise SystemExit('Expected startup setSection call was not found; refusing to modify index.html.')
+          text = text.replace(old_start, new_start, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Commit change
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remember selected section across refreshes'
+          git push origin main
