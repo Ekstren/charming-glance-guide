@@ -1,0 +1,46 @@
+name: Simplify calculator goal achievability
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/simplify_goal_achievability.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply goal achievability cleanup
+        run: python .github/scripts/simplify_goal_achievability.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify cleanup
+        run: |
+          grep -q 'GOAL_ACHIEVABILITY_CLEANUP_V1' index.html
+          grep -q 'Goal not achievable with remaining Realm capacity' index.html
+          grep -q 'Ore Realm refreshes / day' index.html
+          grep -q 'materialRealmRecommendation{display:none!important}' index.html
+      - name: Commit
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Simplify goal achievability and Realm guidance'
+          git push origin main
