@@ -1,0 +1,74 @@
+name: Add unconfirmed Vegetable Fairy timeline entry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-unconfirmed-vegetable-fairy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Add unconfirmed collaboration entry and badge
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          css = ".entry .unconfirmedPill{display:inline-flex;margin-left:6px;padding:2px 6px;border-radius:999px;background:color-mix(in srgb,var(--gold) 12%,transparent);border:1px solid color-mix(in srgb,var(--gold) 42%,transparent);color:var(--gold);font-size:8px;font-weight:900;letter-spacing:.06em;vertical-align:1px}"
+          if css not in text:
+              text = text.replace('</style>', css + '\n</style>', 1)
+
+          old_render = "<p><b>${e[3]}</b>${active?'<span class=\"activePill\">ACTIVE</span>':''}</p>"
+          new_render = "<p><b>${e[3]}</b>${active?'<span class=\"activePill\">ACTIVE</span>':''}${e[7]==='unconfirmed'?'<span class=\"unconfirmedPill\">UNCONFIRMED</span>':''}</p>"
+          if new_render not in text:
+              if old_render not in text:
+                  raise SystemExit('Could not find timeline entry renderer')
+              text = text.replace(old_render, new_render, 1)
+
+          anchor = "    ['2026-08-30',47,'Region','Loong Haven opens','Season 2 Day 1. Level-gated milestones happen when you actually reach them, not automatically on Day 1: Lv.106 = T4 class advancement + Loong Haven Five / area stockpile (Gateway Key ×5 · Withering Potion ×1 · Magic Drill ×1 · Water Mine ×2 · cloud key ×7); Lv.108 = Fantomon Adult / Materialization; Lv.116 = Demonbind Tower. QY merge reference: 01–04 · 05–08 · 09–12 · 13–16.','region'],"
+          entry = "    ['2026-09-07',55,'Collab','Vegetable Fairy Part Two','Expected Sep 7 according to LDShop’s Aug 18 Oceanic Festival guide, which says the next collaboration is expected on that date. No official Global announcement or Charming Glance-specific confirmation has been found yet, so timing and applicability may change.','event',null,'unconfirmed'],\n"
+          if "Vegetable Fairy Part Two" not in text:
+              if anchor not in text:
+                  raise SystemExit('Could not find Season 2 anchor')
+              text = text.replace(anchor, anchor + '\n' + entry, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline script found')
+          Path('/tmp/charming-inline.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
+
+      - name: Commit change
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Add unconfirmed Vegetable Fairy Part Two timeline entry'
+          git push origin main
