@@ -20,7 +20,6 @@ while True:
 if not positions:
     raise SystemExit('No buildHtmlS1 functions found')
 
-# Work backward so insertions do not invalidate earlier positions.
 for fi in range(len(positions)-1,-1,-1):
     start=positions[fi]
     end=positions[fi+1] if fi+1<len(positions) else s.find('// SEASONAL_BUILD_OVERRIDE_V1',start)
@@ -38,10 +37,8 @@ for fi in range(len(positions)-1,-1,-1):
         if key in before:
             continue
         s=s[:grid]+html+s[grid:]
-        added=len(html)
-        end+=added
+        end+=len(html)
 
-# Verify every copy now carries all three panels.
 expected=len(positions)
 for key in ('Star Shattering Slash first','Rapid Cast is mandatory','Stack Erosion faster'):
     count=s.count(key)
@@ -50,3 +47,4 @@ for key in ('Star Shattering Slash first','Rapid Cast is mandatory','Stack Erosi
 
 p.write_text(s,encoding='utf-8')
 print(f'Patched {len(positions)} buildHtmlS1 copies')
+# trigger push
