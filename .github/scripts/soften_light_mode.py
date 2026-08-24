@@ -31,3 +31,4 @@ for old,new in repls.items():
 s=s[:m.start(1)] + block + s[m.end(1):]
 p.write_text(s,encoding='utf-8')
 print('Softened light mode brightness without changing dark mode.')
+# trigger
