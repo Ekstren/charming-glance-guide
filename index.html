@@ -674,6 +674,25 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
   box-shadow:none!important;
 }
 
+
+
+/* CALC_HEADER_CLEANUP_V1 */
+.projectionCallout.projectionInline{
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+  padding:9px 12px;
+  background:var(--ui-accent-soft)!important;
+  border-color:var(--ui-accent-border)!important;
+}
+.projectionCallout.projectionInline span{font-size:8px}
+.projectionCallout.projectionInline strong{grid-area:auto;font-size:15px}
+@media (max-width:520px){
+  .projectionCallout.projectionInline{grid-template-columns:1fr}
+  .projectionCallout.projectionInline strong{font-size:16px}
+}
+
 </style>
 
 <style id="v54-mobile-polish">
@@ -988,20 +1007,21 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
           <label class="freeSpeedToggle">Daily free speed-up<span class="freeSpeedCheck"><input id="freeSpeed" type="checkbox" checked> Use free 2-hour boost every reset</span></label>
         </div>
-        <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint">Season 2 data is preloaded: <b>Material Realm reaches its S2 max at Lv.120</b>; Season Power scoring starts at Lv.130.</div>
+        <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
+        <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="rolloverHold seasonPlanningControls">
           <label><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span></label>
           <label><input id="grace12" checked type="checkbox"> Keep a 12-hour finishing window</label>
           <label><input id="reserveS2Essence" checked type="checkbox"> Reserve S2 Essence</label>
           <label><input id="reserveS2Sand" checked type="checkbox"> Reserve S2 Sand</label>
           <label><input id="reserveS2Treats" checked type="checkbox"> Reserve S2 Treats</label>
-          <label class="reserveHoursControl"><input id="reserveHours" min="0" max="36" type="number" value="36"> hours Bed EXP reserved</label>
+          <input id="reserveHours" min="0" max="36" type="number" value="36" hidden>
         </div>
         <small class="seasonPlanningNote" id="graceText">Cart income and projected Stamina generation stop 12 hours before season end.</small>
         <div class="seasonRulesHint" id="s2SkillReserveHint">S2 Skill Essence reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2RelicReserveHint">S2 Relic Sand reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2TreatReserveHint">S2 Fantomon Treat reserve: calculating…</div>
-        <div class="projectionCallout"><span>Projected final character</span><strong id="projectedCharacter">—</strong><small id="projectionNote">Uses exact server resets, displayed in this device's local timezone; the free 2-hour speed-up is discrete, not prorated.</small></div>
+        
       </div>
 
       <details id="currentLevelsDetails" class="calcPanel currentLevelsPanel">
@@ -1079,7 +1099,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
       <span class="calcEyebrow" id="resultEyebrow">Recommended season-end result</span>
       <div class="resultHeadline">
         <strong class="starTotal"><span id="currentStars">—</span><small> Primostars</small></strong>
-        <p class="finalLevelLine">Projected <b id="resultProjectedCharacter">—</b></p>
+        <p class="finalLevelLine" hidden>Projected <b id="resultProjectedCharacter">—</b></p>
       </div>
       <div class="resultScoreLine">
         <span><small>Score</small><b id="currentScoreNow">—</b><i>→</i><b id="summaryOptimizedScore">—</b></span>
@@ -1090,7 +1110,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
       <h3>Recommended final upgrades</h3>
       <div class="optimizerTargets"><span>Skills<b id="targetSkills">—</b></span><span>Relics<b id="targetRelics">—</b></span><span>Fantomons<b id="targetFantomons">—</b></span></div>
       <div class="suggestedGear"><span>Weapon<b id="targetGearWeapon">—</b></span><span>Off-hand<b id="targetGearOffhand">—</b></span><span>Helmet<b id="targetGearHelmet">—</b></span><span>Armor<b id="targetGearArmor">—</b></span><span>Boots<b id="targetGearBoots">—</b></span></div>
-      <p class="optimizerSummary" id="optimizerSummary">—</p>
+      <p class="optimizerSummary" id="optimizerSummary" hidden></p>
       <div class="optimizedResult" hidden><span>After recommended growth</span><b id="optimizedScore">—</b></div>
       <div class="planCosts planCostsFour">
         <span>Raw Ore<b id="oreCost">0</b><small id="oreBalance">—</small><small id="oreToolBalance" class="toolBalance">—</small></span>
