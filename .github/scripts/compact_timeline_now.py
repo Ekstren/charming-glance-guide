@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Triggered 2026-08-24 to compact default-visible timeline copy.
 path = Path('index.html')
 text = path.read_text(encoding='utf-8')
 
