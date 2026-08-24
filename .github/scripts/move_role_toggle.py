@@ -13,7 +13,7 @@ if old in s:
     s=s.replace(old,new,1)
 else:
     raise SystemExit('role tab insertion marker not found')
-# Mobile rule no longer needs auto full-width/right-margin behavior.
 s=s.replace('@media(max-width:760px){.buildRoleTabs{width:100%;margin-left:0}}','@media(max-width:760px){.buildRoleTabs{width:100%}}',1)
 p.write_text(s,encoding='utf-8')
 print('Moved DPS/Heals toggle into class summary card.')
+# trigger
