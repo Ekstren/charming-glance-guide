@@ -2938,7 +2938,12 @@
   // Tier IV build library researched Aug 21, 2026 from current Prydwen guides,
   // cross-checked with Loot & Waifus and community references where useful.
   const classes=['Conqueror','Guardian','Destroyer','Dominator'];
+  const BUILD_CLASS_STORAGE_KEY='sxs-build-class';
   let currentClass='Conqueror';
+  try{
+    const savedClass=localStorage.getItem(BUILD_CLASS_STORAGE_KEY);
+    if(classes.includes(savedClass)) currentClass=savedClass;
+  }catch(_){}
   function buildHtml(cls){
     if(cls==='Conqueror') return `
       <div class="guideSummary"><div><span>Elemental melee DPS</span><strong>Conqueror</strong><p>T4 pivots from the old Physical-first Berserker plan into Elemental damage, DEF ignore and repeatable attacks. Excellent in both bosses and dungeons.</p></div><p><b>Quick stat rule</b>ATK ≥ Elemental Mastery &gt; SPD on offensive main lines. Crit Rate → Crit DMG are the premium substats. Aim past 100% Crit because S2 PvE enemies carry Crit RES.</p></div>
@@ -2996,7 +3001,13 @@
   }
   let buildsInitialized=false;
   function setupBuilds(){
-    $('classTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-class]');if(!b)return;currentClass=b.dataset.class;renderBuilds();});
+    $('classTabs').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-class]');
+      if(!b)return;
+      currentClass=b.dataset.class;
+      try{localStorage.setItem(BUILD_CLASS_STORAGE_KEY,currentClass);}catch(_){}
+      renderBuilds();
+    });
   }
 
   // ---------- Navigation/theme ----------
