@@ -656,10 +656,10 @@
         <div class="calcGrid">
           <label>Target Primostars<input id="targetStars" type="number" value="200"></label>
           <label><span id="historicalStarsLabel">Historical stars</span><input id="historicalStars" type="number" value="0"></label>
-          <label>Current character level<input id="charLevel" type="number" value="122"></label>
-          <label>Current EXP into level<input id="charExp" type="number" value="716000"></label>
-          <label>Bed EXP per hour<input id="bedExp" type="number" value="78581"></label>
-          <label>Free speed-up hours / reset<input id="freeSpeed" type="number" value="2"></label>
+          <label>Current character level<input id="charLevel" type="number" value="100"></label>
+          <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
+          <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
+          <label>Free speed-up hours / reset<input id="freeSpeed" type="number" value="0"></label>
         </div>
         <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint">Season 2 data is preloaded: <b>Material Realm reaches its S2 max at Lv.120</b>; Season Power scoring starts at Lv.130.</div>
         <div class="rolloverHold seasonPlanningControls">
@@ -683,16 +683,16 @@
           <div class="panelTitleRow"><h3>Progression used by the optimizer</h3><button id="gearLockButton" class="gearLockButton" type="button" aria-pressed="false">🔓 Lock Gear</button></div>
           <p id="gearLockNote" class="optimizerNote">Gear is unlocked. The optimizer can raise Gear when it is the most resource-efficient path.</p>
           <div class="calcGrid currentProgressGrid">
-            <label>Average Skill level<input id="skillLevel" type="number" step="0.125" value="122"></label>
-            <label>Average Relic level<input id="relicLevel" min="10" type="number" step="0.05" value="13"></label>
-            <label>Average Fantomon level<input id="fantomonLevel" min="100" type="number" step="0.25" value="130"></label>
+            <label>Average Skill level<input id="skillLevel" type="number" step="0.125" value="100"></label>
+            <label>Average Relic level<input id="relicLevel" min="10" type="number" step="0.05" value="10"></label>
+            <label>Average Fantomon level<input id="fantomonLevel" min="100" type="number" step="0.25" value="100"></label>
           </div>
           <div class="calcGrid gearFields">
-            <label>Weapon<input id="gearWeapon" type="number" value="143"></label>
-            <label>Off-hand<input id="gearOffhand" type="number" value="143"></label>
-            <label>Helmet<input id="gearHelmet" type="number" value="143"></label>
-            <label>Armor<input id="gearArmor" type="number" value="143"></label>
-            <label>Boots<input id="gearBoots" type="number" value="143"></label>
+            <label>Weapon<input id="gearWeapon" type="number" value="100"></label>
+            <label>Off-hand<input id="gearOffhand" type="number" value="100"></label>
+            <label>Helmet<input id="gearHelmet" type="number" value="100"></label>
+            <label>Armor<input id="gearArmor" type="number" value="100"></label>
+            <label>Boots<input id="gearBoots" type="number" value="100"></label>
           </div>
           <details class="exactInputs progressionExactInputs">
             <summary><span>Exact slot levels</span><small>Optional · overrides the averages above</small></summary>
@@ -711,10 +711,10 @@
         <div class="currentLevelsBody">
           <label class="staminaSimple"><span>Use projected Stamina on</span><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="ore" selected>Raw Ore</option><option value="auto">Auto</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></label>
           <div class="resourceInputs resourceInputsFour resourceCards">
-            <div class="resourceCard"><div class="resourceCardHead"><strong>Raw Ore</strong><small id="oreProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="oreCurrent" type="number" value="1650"></label><label><span>Cart / hr</span><input id="oreRate" type="number" value="1036"></label></div></div>
-            <div class="resourceCard"><div class="resourceCardHead"><strong>Skill Essence</strong><small id="essenceProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="essenceCurrent" type="number" value="168000"></label><label><span>Cart / hr</span><input id="essenceRate" type="number" value="1276"></label></div></div>
-            <div class="resourceCard"><div class="resourceCardHead"><strong>Chrono Sand</strong><small id="sandProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="sandCurrent" type="number" value="234000"></label><label><span>Cart / hr</span><input id="sandRate" type="number" value="734"></label></div></div>
-            <div class="resourceCard treatResourceCard"><div class="resourceCardHead"><strong>Fantomon Treats</strong><small id="treatProjected">Projected: —</small></div><div class="resourceCardFields treatResourceFields"><label><span>Basic · +50 EXP</span><input id="treatCurrent" type="number" min="0" step="1" value="7000"></label><label><span>Premium · +400 EXP</span><input id="treatPremiumCurrent" type="number" min="0" step="1" value="0"></label><label><span>Deluxe · +2,000 EXP</span><input id="treatDeluxeCurrent" type="number" min="0" step="1" value="0"></label><label><span>Cart / hr · Basic</span><input id="treatRate" type="number" min="0" value="87"></label></div><small class="treatEquivalent" id="treatEquivalentNow">Saved total: —</small></div>
+            <div class="resourceCard"><div class="resourceCardHead"><strong>Raw Ore</strong><small id="oreProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="oreCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="oreRate" type="number" value="0"></label></div></div>
+            <div class="resourceCard"><div class="resourceCardHead"><strong>Skill Essence</strong><small id="essenceProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="essenceCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="essenceRate" type="number" value="0"></label></div></div>
+            <div class="resourceCard"><div class="resourceCardHead"><strong>Chrono Sand</strong><small id="sandProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="sandCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="sandRate" type="number" value="0"></label></div></div>
+            <div class="resourceCard treatResourceCard"><div class="resourceCardHead"><strong>Fantomon Treats</strong><small id="treatProjected">Projected: —</small></div><div class="resourceCardFields treatResourceFields"><label><span>Basic · +50 EXP</span><input id="treatCurrent" type="number" min="0" step="1" value="0"></label><label><span>Premium · +400 EXP</span><input id="treatPremiumCurrent" type="number" min="0" step="1" value="0"></label><label><span>Deluxe · +2,000 EXP</span><input id="treatDeluxeCurrent" type="number" min="0" step="1" value="0"></label><label><span>Cart / hr · Basic</span><input id="treatRate" type="number" min="0" value="0"></label></div><small class="treatEquivalent" id="treatEquivalentNow">Saved total: —</small></div>
           </div>
           <div class="realmInventory">
             <div class="realmInventoryTop"><strong>Material Realm plan</strong><small>Existing tools + your normal daily purchases</small></div>
@@ -727,9 +727,9 @@
               <div class="realmDailyCustom">
                 <span class="realmDailyTitle">Daily purchase plan <small>0–20 refreshes per Realm</small></span>
                 <div class="realmDailyInputs">
-                  <label>Hammers / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="4"><small id="realmDailyOreRec">Recommended: —</small></label>
-                  <label>Knuckles / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="4"><small id="realmDailyEssenceRec">Recommended: —</small></label>
-                  <label>Shovels / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="4"><small id="realmDailySandRec">Recommended: —</small></label>
+                  <label>Hammers / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
+                  <label>Knuckles / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
+                  <label>Shovels / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
                 </div>
               </div>
               <div class="realmPlanSummary"><span>Projected daily gain</span><b id="realmDailyGain">+20 H · +20 K · +20 S / reset</b><small id="realmDaysRemaining">—</small></div>
@@ -1118,15 +1118,15 @@
       const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
       hadState = Object.keys(state).length>0;
       // v59 keeps the separate S2 reserve toggles, adds Premium/Deluxe Treat inventory, and preserves older Basic Treat counts.
-      if((Number(state.snapshotSchema)||0)<6){
+      if(hadState && (Number(state.snapshotSchema)||0)<6){
         const oldReserve = state.reserveS2Resources===undefined ? true : !!state.reserveS2Resources;
         if(state.reserveS2Essence===undefined) state.reserveS2Essence=oldReserve;
         if(state.reserveS2Sand===undefined) state.reserveS2Sand=oldReserve;
       }
-      if(state.reserveS2Treats===undefined) state.reserveS2Treats=true;
+      if(hadState && state.reserveS2Treats===undefined) state.reserveS2Treats=true;
       // v39 replaces the old single Realm preset with independent per-resource daily inputs.
       // Preserve the user's prior shared preset when migrating; otherwise default each Realm to 4/day.
-      if((Number(state.snapshotSchema)||0)<5){
+      if(hadState && (Number(state.snapshotSchema)||0)<5){
         const oldDaily = /^\d+$/.test(String(state.realmDailyPreset??'')) ? clamp(parseInt(state.realmDailyPreset,10),0,20) : 4;
         if(state.realmDailyOre===undefined) state.realmDailyOre=String(oldDaily);
         if(state.realmDailyEssence===undefined) state.realmDailyEssence=String(oldDaily);
@@ -1134,6 +1134,7 @@
       }
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });
+      if(!hadState && activeCalcConfig().key==='s2' && $('targetStars')) $('targetStars').value='680';
       gearLocked = !!state.gearLocked;
       if (state.theme === 'light' || state.theme === 'dark') document.documentElement.dataset.theme = state.theme;
       // Main calculator editors default closed, then remember the user's last open/collapsed state.
@@ -2701,7 +2702,7 @@
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=defaults[id];});
       CHECK_IDS.forEach(id=>{if($(id)) $(id).checked=defaults[id];});
     } else {
-      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,freeSpeed:2,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',realmDailyOre:4,realmDailyEssence:4,realmDailySand:4,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
+      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,freeSpeed:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
       $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
     }
