@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/add-seasonal-builds.yml'
       - '.github/scripts/add_seasonal_builds.py'
-      - '.github/scripts/run_seasonal_build_patch.py'
+      - '.github/scripts/apply_seasonal_build_override.py'
   issues:
     types: [opened]
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
         with:
           ref: main
       - name: Add season-aware build library
-        run: python .github/scripts/run_seasonal_build_patch.py
+        run: python .github/scripts/apply_seasonal_build_override.py
       - name: Validate inline JavaScript
         run: |
           python - <<'PY'
@@ -38,10 +38,10 @@ jobs:
           node --check /tmp/charming-builds.js
       - name: Verify seasonal build anchors
         run: |
-          grep -q "Season 1 · Tier III build guide" index.html
+          grep -q "SEASONAL_BUILD_OVERRIDE_V1" index.html
           grep -q "function buildHtmlS1" index.html
-          grep -q "S1_BUILD_CLASSES=\['Berserker','Paladin','Archmage','Arcanist'\]" index.html
-          grep -q "S2_BUILD_CLASSES=\['Conqueror','Guardian','Destroyer','Dominator'\]" index.html
+          grep -q "S1_BUILD_CLASSES_LIVE=\['Berserker','Paladin','Archmage','Arcanist'\]" index.html
+          grep -q "S2_BUILD_CLASSES_LIVE=\['Conqueror','Guardian','Destroyer','Dominator'\]" index.html
       - name: Commit change
         run: |
           if git diff --quiet -- index.html; then
