@@ -25,3 +25,4 @@ s=s.replace(old_js,'',1)
 
 p.write_text(s,encoding='utf-8')
 print('Removed redundant Builds and Primostar Calculator section headings.')
+# trigger
