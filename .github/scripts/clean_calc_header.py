@@ -51,3 +51,4 @@ s=s.replace('</style>',css+'\n</style>',1)
 
 p.write_text(s,encoding='utf-8')
 print('Cleaned calculator planning chrome and moved projected level under XP inputs.')
+# trigger
