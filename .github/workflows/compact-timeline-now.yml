@@ -1,0 +1,44 @@
+name: Compact timeline now
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/compact_timeline_now.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Compact timeline cards
+        run: python .github/scripts/compact_timeline_now.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline script found')
+          Path('/tmp/charming-inline.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Summarize timeline cards by default'
+          git push origin main
