@@ -3354,6 +3354,7 @@
 
 <style>
 /* TIMELINE_COMPACT_RENDERER_V1 */
+.entry .timelineCardDetails{display:none!important}
 .timelineCardDetails{margin-top:6px;border-top:1px solid var(--line)}
 .timelineCardDetails>summary{cursor:pointer;list-style:none;color:var(--muted);font-size:9px;font-weight:850;padding:6px 0 2px;width:max-content}
 .timelineCardDetails>summary::-webkit-details-marker{display:none}
@@ -3408,6 +3409,7 @@
   }
   function compactEntry(card){
     if(card.dataset[COMPACT_MARK]) return;
+    if(card.querySelector('details.entryMore')){ card.dataset[COMPACT_MARK]='1'; return; }
     const ps=[...card.querySelectorAll('p')];
     if(ps.length<2){ card.dataset[COMPACT_MARK]='1'; return; }
     const desc=ps[ps.length-1];
@@ -3473,7 +3475,8 @@ function buildPriorityPanelHtml(kind,title,desc,items){
   return `<div class="priorityPanel"><div class="priorityIntro"><span>${kind}</span><strong>${title}</strong><p>${desc}</p></div><ol class="priorityList">${items.map((x,i)=>`<li><b>${i+1}</b><div><strong>${x[0]}</strong><p>${x[1]}</p></div></li>`).join('')}</ol></div>`;
 }
 function splitBerserkerPriorities(root){
-  if(currentBuildSeason!=='s1' || currentClass!=='Berserker') return;
+  const buildName=root.querySelector(':scope > .guideSummary strong')?.textContent.trim()||'';
+  if(buildName!=='Berserker') return;
   const panel=[...root.children].find(el=>el.classList&&el.classList.contains('priorityPanel'));
   if(!panel || !/Core investment/i.test(panel.querySelector('.priorityIntro span')?.textContent||'')) return;
   const technique=buildPriorityPanelHtml('Core technique investment','Eclipse Slash first','Rank the techniques that actually stay equipped across the standard Season 1 Berserker builds.',[
