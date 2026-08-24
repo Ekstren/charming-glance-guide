@@ -3579,8 +3579,10 @@ function renderBuildQuickStats(root,name,mode){
 }
 function applyBuildRole(root,name,mode){
   if(!BUILD_ROLE_KEYS[name]) return;
-  let tabs=root.querySelector(':scope > .buildRoleTabs');
   const guide=root.querySelector(':scope > .guideSummary');
+  let tabs=guide?.querySelector('.buildRoleTabs') || root.querySelector('.buildRoleTabs');
+  const extras=[...root.querySelectorAll('.buildRoleTabs')].filter(x=>x!==tabs);
+  extras.forEach(x=>x.remove());
   if(!tabs && guide){tabs=document.createElement('div');tabs.className='buildRoleTabs';tabs.innerHTML='<button type="button" data-role="dps">DPS</button><button type="button" data-role="heals">Heals</button>';const identity=guide.children[0];(identity||guide).append(tabs);}
   tabs?.querySelectorAll('button').forEach(btn=>{btn.classList.toggle('active',btn.dataset.role===mode);btn.setAttribute('aria-pressed',btn.dataset.role===mode?'true':'false');btn.onclick=()=>{const next=btn.dataset.role;try{localStorage.setItem(BUILD_ROLE_KEYS[name],next);}catch(_){}applyBuildRole(root,name,next);renderBuildQuickStats(root,name,next);};});
   const panels=[...root.querySelectorAll(':scope > .priorityPanel, :scope > .priorityPair > .priorityPanel')];
