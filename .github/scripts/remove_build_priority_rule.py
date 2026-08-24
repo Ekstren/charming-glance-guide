@@ -8,3 +8,4 @@ if old not in s:
 s=s.replace(old,'',1)
 p.write_text(s,encoding='utf-8')
 print('Removed build priority rule note.')
+# trigger
