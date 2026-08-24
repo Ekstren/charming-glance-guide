@@ -1,0 +1,46 @@
+name: Expand semantic status colors
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/expand_status_semantics.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply global status semantics
+        run: python .github/scripts/expand_status_semantics.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify semantic styling and dark fallback
+        run: |
+          grep -q 'GLOBAL_STATUS_SEMANTICS_V1' index.html
+          grep -q "? state.theme : 'dark'" index.html
+          grep -q '.entry .activePill' index.html
+          grep -q '.calcResults.success' index.html
+      - name: Commit
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Apply semantic status colors site-wide and default dark'
+          git push origin main
