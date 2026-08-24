@@ -1,0 +1,46 @@
+name: Remove redundant section headings
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/remove_redundant_section_headings.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Remove redundant headings
+        run: python .github/scripts/remove_redundant_section_headings.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify removal
+        run: |
+          ! grep -q 'id="buildSeasonLabel"' index.html
+          ! grep -q 'id="calcSeasonEyebrow"' index.html
+          ! grep -q 'id="calculator-title"' index.html
+          grep -q 'aria-label="Primostar Calculator"' index.html
+      - name: Commit
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove redundant Builds and calculator headings'
+          git push origin main
