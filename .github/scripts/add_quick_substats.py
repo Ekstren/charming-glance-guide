@@ -32,3 +32,4 @@ elif 'const substats=subs?.querySelector' not in s:
 
 p.write_text(s,encoding='utf-8')
 print('Added Best substats to Quick Stats for S1 and S2 builds.')
+# trigger
