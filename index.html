@@ -364,6 +364,9 @@
 .quickGearRow{display:grid;grid-template-columns:max-content 1fr;gap:8px;align-items:baseline;border-top:1px solid color-mix(in srgb,var(--line) 72%,transparent);padding-top:6px;min-width:0}
 .quickGearRow b{color:var(--green);font-size:9px;white-space:nowrap}
 .quickGearRow span{color:var(--body-text);font-size:9px;line-height:1.35;text-transform:none;letter-spacing:0;font-weight:650;min-width:0}
+.quickSubstats{border-top:1px solid color-mix(in srgb,var(--line) 72%,transparent);padding-top:7px;display:grid;grid-template-columns:max-content 1fr;gap:8px;align-items:baseline}
+.quickSubstats b{color:var(--gold);font-size:9px;white-space:nowrap}
+.quickSubstats span{color:var(--body-text);font-size:9px;line-height:1.4}
 .priorityPair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px;align-items:stretch}
 .priorityPair>.priorityPanel{margin-top:0;grid-template-columns:1fr;height:100%}
 .priorityPair .priorityIntro{padding:17px 18px;border-bottom:1px solid var(--line)}
@@ -3518,10 +3521,12 @@ function polishBuildLayout(){
     const rule=existing?.textContent?.replace(/^Quick stat rule\s*/i,'').trim()||'';
     const items=[...gear.querySelectorAll('.gearItem')];
     const main=items.find(x=>/^Main lines$/i.test(x.querySelector('span')?.textContent.trim()||''));
+    const subs=items.find(x=>/^Best substats$/i.test(x.querySelector('span')?.textContent.trim()||''));
     const rows=parseGearRows(main?.querySelector('p')?.textContent.trim()||'');
+    const substats=subs?.querySelector('p')?.textContent.trim()||'';
     const quick=document.createElement('div');
     quick.className='buildQuickStats';
-    quick.innerHTML=`<div class="quickTitle">Quick stats</div>${rule?`<p class="quickRule">${rule}</p>`:''}<div class="quickGearGrid">${rows.map(r=>`<div class="quickGearRow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}</div>`;
+    quick.innerHTML=`<div class="quickTitle">Quick stats</div>${rule?`<p class="quickRule">${rule}</p>`:''}<div class="quickGearGrid">${rows.map(r=>`<div class="quickGearRow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}</div>${substats?`<div class="quickSubstats"><b>Substats</b><span>${substats}</span></div>`:''}`;
     existing?.replaceWith(quick);
     guide.classList.add('buildSummaryCompact');
     gear.hidden=true;
