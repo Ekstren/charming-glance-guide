@@ -3921,7 +3921,14 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
         }
       });
     });
-    CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{markManualSnapshot(id);scheduleCalculatorUpdate(0);}));
+    CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{
+      markManualSnapshot(id);
+      // Checkbox state must be persisted before recalculation so S2 reserve toggles
+      // immediately add/remove their protected resource pools.
+      saveState();
+      if(calculatorInitialized) updateCalculator();
+      else initializeCalculatorIfNeeded();
+    }));
     PANEL_OPEN_IDS.forEach(id=>$(id)?.addEventListener('toggle',saveState));
     $('gearLockButton').addEventListener('click',()=>{gearLocked=!gearLocked;markManualSnapshot('gearLocked');updateGearLockUI();scheduleCalculatorUpdate(0);});
     $('confirmSeasonSnapshot')?.addEventListener('click',confirmCurrentSeasonSnapshot);
