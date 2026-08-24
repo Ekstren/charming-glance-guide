@@ -16,3 +16,4 @@ s=s.replace('</style>',css+'\n</style>',1)
 
 p.write_text(s,encoding='utf-8')
 print('Fixed result spacing and hid secondary cost strip.')
+# trigger
