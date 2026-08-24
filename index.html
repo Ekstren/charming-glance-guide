@@ -1220,6 +1220,22 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 .planCosts small.toolBalance .toolRemainingLine{color:var(--status-positive)!important;font-weight:800!important}
 .targetMessage.warning.danger{border:1px solid color-mix(in srgb,var(--status-negative) 62%,var(--line));background:color-mix(in srgb,var(--status-negative) 11%,var(--surface));color:var(--status-negative)!important;border-radius:11px;padding:10px 12px!important}
 </style>
+
+<style id="tool-usage-alignment-v2">
+.realmDailyInputs{align-items:start!important}
+.realmDailyInputs label{display:grid!important;grid-template-rows:30px 46px auto!important;gap:5px!important;align-content:start!important}
+.realmDailyInputs input{margin-top:0!important;height:46px!important}
+.realmDailyInputs small{margin-top:0!important}
+.planCosts small.toolBalance{display:grid!important;gap:4px!important;border-top:1px solid var(--line)!important;margin-top:3px!important;padding-top:7px!important}
+.planCosts small.toolBalance>.toolUsageRow{display:grid!important;grid-template-columns:minmax(105px,1fr) minmax(38px,auto) minmax(100px,1.15fr)!important;align-items:baseline!important;gap:8px!important;border:0!important;background:transparent!important;border-radius:0!important;padding:0!important;min-height:0!important;text-transform:none!important}
+.planCosts small.toolBalance>.toolUsageRow i,.planCosts small.toolBalance>.toolUsageRow em{font-style:normal!important}
+.planCosts small.toolBalance>.toolUsageRow i{color:var(--secondary-text)!important;font-weight:750!important}
+.planCosts small.toolBalance>.toolUsageRow b{font-size:9px!important;line-height:1.35!important;color:inherit!important;text-align:right!important}
+.planCosts small.toolBalance>.toolUsageRow em{color:inherit!important;font-size:8.5px!important;font-weight:750!important;text-align:left!important}
+.planCosts small.toolBalance>.toolRemainingLine{color:var(--status-positive)!important}
+.planCosts small.toolBalance>.toolNeedLine{color:var(--status-negative)!important;font-weight:850!important;margin-top:2px!important}
+@media(max-width:700px){.planCosts small.toolBalance>.toolUsageRow{grid-template-columns:minmax(110px,1fr) auto minmax(110px,1.2fr)!important}.realmDailyInputs label{grid-template-rows:32px 46px auto!important}}
+</style>
 </head>
 <body>
 <main>
@@ -2847,24 +2863,23 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
     const hard=Math.max(0,Number(hardShort)||0);
     const protectedCount=Math.max(0,Math.floor(Number(protectedRuns)||0));
     const materialName=label==='Hammers'?'Ore':label==='Knuckles'?'Essence':label==='Shovels'?'Sand':'materials';
-    const finiteRuns=Number(top?.runsUsed);
-    const used=Math.max(0,Math.floor(Number.isFinite(finiteRuns)?finiteRuns:(hard>0.5?Number(top?.maxRuns)||0:0)));
-    const gained=Math.max(0,Number.isFinite(Number(top?.provided))?Number(top.provided):used*per);
+    const requestedRuns=Number(top?.runsUsed);
+    const maxRuns=Math.max(0,Math.floor(Number(top?.maxRuns)||0));
+    let used=Math.max(0,Math.floor(Number.isFinite(requestedRuns)?requestedRuns:(hard>0.5?maxRuns:0)));
+    if(maxRuns>0) used=Math.min(used,maxRuns);
+    const gained=used*per;
     const bankedRemaining=Math.max(0,Math.floor(Number(top?.bankedRemaining)||0));
     const sparePurchased=Math.max(0,Math.floor(Number(top?.sparePurchasedRuns)||0));
     const remaining=bankedRemaining+sparePurchased+protectedCount;
     const remainingMaterial=remaining*per;
-    const usedLine=`<span class="toolUsedLine">${label} used: ${fmt(used)}${per>0?` · ≈${fmtCompact(gained)} ${materialName} gained`:''}</span>`;
-    const remainingLine=`<span class="toolRemainingLine">${label} left: ${fmt(remaining)}${per>0?` · ≈${fmtCompact(remainingMaterial)} ${materialName}`:''}${protectedCount?` · ${fmt(protectedCount)} protected for S2`:''}</span>`;
-    if(hard>0.5 && per>0){
-      const needed=Math.ceil(hard/per);
-      const material=needed*per;
-      el.innerHTML=`${usedLine}${remainingLine}<span class="toolNeedLine">Need ${fmt(needed)} more · ≈${fmtCompact(material)} ${materialName}</span>`;
-      el.classList.add('toolNeed');
-      return;
-    }
-    el.innerHTML=`${usedLine}${remainingLine}`;
-    el.classList.add('toolLeft');
+    const needed=hard>0.5&&per>0?Math.ceil(hard/per):0;
+    const neededMaterial=needed*per;
+    const protectedText=protectedCount?` · ${fmt(protectedCount)} S2-protected`:'';
+    const usedLine=`<span class="toolUsageRow toolUsedLine"><i>${label} used</i><b>${fmt(used)}</b><em>${per>0?`≈${fmtCompact(gained)} ${materialName} gained`:''}</em></span>`;
+    const remainingLine=`<span class="toolUsageRow toolRemainingLine"><i>${label} remaining</i><b>${fmt(remaining)}</b><em>${per>0?`≈${fmtCompact(remainingMaterial)} ${materialName}`:''}${protectedText}</em></span>`;
+    const needLine=needed?`<span class="toolUsageRow toolNeedLine"><i>Need more</i><b>${fmt(needed)}</b><em>≈${fmtCompact(neededMaterial)} ${materialName}</em></span>`:'';
+    el.innerHTML=usedLine+remainingLine+needLine;
+    el.classList.add(needed?'toolNeed':'toolLeft');
   }
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
     const el=$(id);
