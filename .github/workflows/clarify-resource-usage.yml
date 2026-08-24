@@ -1,0 +1,123 @@
+name: Clarify calculator resource usage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/clarify-resource-usage.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Clarify resource usage cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+
+          old_style='''<style id="goal-achievability-cleanup">
+/* GOAL_ACHIEVABILITY_CLEANUP_V1
+   One goal-status warning; resource cards keep only the useful balance/shortfall line. */
+.materialRealmRecommendation{display:none!important}
+.planCosts small.toolBalance{display:none!important}
+.planCosts small.shortfallBreakdown{display:none!important}
+.planCosts span{gap:6px!important}
+.targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
+</style>'''
+          new_style='''<style id="goal-achievability-cleanup">
+/* GOAL_ACHIEVABILITY_CLEANUP_V2
+   Keep one goal-status warning, but retain concise tool usage and remaining-material context. */
+.materialRealmRecommendation{display:none!important}
+.planCosts small.shortfallBreakdown{display:none!important}
+.planCosts span{gap:6px!important}
+.planCosts>span>b::after{content:" used";font-size:.48em;font-weight:800;color:var(--muted);letter-spacing:0;text-transform:none;margin-left:4px;vertical-align:2px}
+.planCosts small.toolBalance{display:block!important;border-top:1px solid var(--line);margin-top:2px;padding-top:6px;font-size:8.5px!important;line-height:1.45!important;text-transform:none!important}
+.planCosts small.toolBalance .toolUsedLine,.planCosts small.toolBalance .toolRemainingLine,.planCosts small.toolBalance .toolSeparator{display:inline!important}
+.planCosts small.toolBalance .toolUsedLine{color:var(--secondary-text)!important;font-weight:750!important}
+.planCosts small.toolBalance .toolRemainingLine{color:var(--status-positive)!important;font-weight:800!important}
+.planCosts small.toolBalance .toolSeparator{color:var(--muted)!important}
+.targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
+.targetMessage.warning.danger{border:1px solid color-mix(in srgb,var(--status-negative) 62%,var(--line));background:color-mix(in srgb,var(--status-negative) 11%,var(--surface));color:var(--status-negative)!important;border-radius:11px;padding:10px 12px!important}
+</style>'''
+          if old_style not in s:
+              raise SystemExit('goal cleanup style block not found')
+          s=s.replace(old_style,new_style,1)
+
+          pattern=r"  function setToolBalance\(id,top,hardShort,yieldVal,label,protectedRuns=0\)\{.*?\n  \}\n  function setRealmShortfallBreakdown"
+          replacement='''  function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0){
+    const el=$(id); if(!el) return;
+    el.classList.remove('toolNeed','toolLeft');
+    const per=Math.max(0,Number(yieldVal)||0);
+    const protectedCount=Math.max(0,Math.floor(Number(protectedRuns)||0));
+    const materialName=label==='Hammers'?'Ore':label==='Knuckles'?'Essence':label==='Shovels'?'Sand':'materials';
+    const finiteRuns=Number(top?.runsUsed);
+    const used=Math.max(0,Math.floor(Number.isFinite(finiteRuns)?finiteRuns:0));
+    const gained=Math.max(0,Number.isFinite(Number(top?.provided))?Number(top.provided):used*per);
+    const bankedRemaining=Math.max(0,Math.floor(Number(top?.bankedRemaining)||0));
+    const sparePurchased=Math.max(0,Math.floor(Number(top?.sparePurchasedRuns)||0));
+    const remaining=bankedRemaining+sparePurchased+protectedCount;
+    const remainingMaterial=remaining*per;
+    const protectedText=protectedCount?` · ${fmt(protectedCount)} S2-protected`:'';
+    const usedLine=`<span class="toolUsedLine">${label}: ${fmt(used)} used${per>0?` (≈${fmtCompact(gained)} ${materialName})`:''}</span>`;
+    const remainingLine=`<span class="toolRemainingLine">${fmt(remaining)} left${per>0?` (≈${fmtCompact(remainingMaterial)} ${materialName})`:''}${protectedText}</span>`;
+    el.innerHTML=`${usedLine}<span class="toolSeparator"> · </span>${remainingLine}`;
+    el.classList.add('toolLeft');
+  }
+  function setRealmShortfallBreakdown'''
+          s2,n=re.subn(pattern,replacement,s,count=1,flags=re.S)
+          if n!=1:
+              raise SystemExit(f'setToolBalance replacement count={n}')
+          s=s2
+
+          # Make only a truly impossible goal a red danger block; ordinary plan-short warnings remain gold.
+          old="$('targetMessage').hidden=false;$('targetMessage').classList.add('warning');\n      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;"
+          new="$('targetMessage').hidden=false;$('targetMessage').classList.add('warning','danger');\n      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;"
+          if old not in s:
+              raise SystemExit('impossible warning block not found')
+          s=s.replace(old,new,1)
+
+          # Clear danger state at the start of every recalculation so achievable warnings stay gold.
+          old="  function updateCalculator(){\n    const cfg=activeCalcConfig();"
+          new="  function updateCalculator(){\n    $('targetMessage')?.classList.remove('danger');\n    const cfg=activeCalcConfig();"
+          if old not in s:
+              raise SystemExit('updateCalculator start not found')
+          s=s.replace(old,new,1)
+
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify changes
+        run: |
+          grep -q 'GOAL_ACHIEVABILITY_CLEANUP_V2' index.html
+          grep -q 'planCosts>span>b::after' index.html
+          grep -q 'toolSeparator' index.html
+          grep -q "classList.add('warning','danger')" index.html
+      - name: Commit and self-clean
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/clarify-resource-usage.yml
+          git add index.html
+          git commit -m 'Clarify resource usage and tool balances'
+          git push origin main
