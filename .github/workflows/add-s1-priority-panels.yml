@@ -1,0 +1,48 @@
+name: Add S1 priority panels
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event_name != 'issues' || github.event.issue.title == 'Run S1 priority panels'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add S1 class technique/charm priorities
+        run: python .github/scripts/add_s1_priority_panels.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+            raise SystemExit('No inline scripts found')
+          Path('/tmp/site.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+      - name: Verify new panels
+        run: |
+          grep -q "Star Shattering Slash first" index.html
+          grep -q "Rapid Cast is mandatory" index.html
+          grep -q "Stack Erosion faster" index.html
+      - name: Commit change
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No change needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add S1 technique and charm priorities"
+          git push origin main
