@@ -3443,23 +3443,9 @@
     }
     card.dataset[COMPACT_MARK]='1';
   }
-  function injectCodeAlert(){
-    const grid=document.querySelector('#timelineNow .timelineNowGrid');
-    if(!grid || grid.querySelector('[data-code-alert="4P7Y2R9M"]')) return;
-    // Community sources agree on an Aug 25 expiry, but do not consistently publish the cutoff hour.
-    const now=Date.now();
-    const stop=new Date('2026-08-26T06:00:00-07:00').getTime();
-    if(now>=stop) return;
-    const card=document.createElement('div');
-    card.className='timelineNowCard';
-    card.dataset.codeAlert='4P7Y2R9M';
-    card.innerHTML='<strong>Gift code: 4P7Y2R9M <span class="timelineNowBadge">UNCONFIRMED CUTOFF</span></strong><small>Redeem by Aug 25 for 2,000 Rolla + 120 Dawnium. Multiple current code trackers agree on the date; exact cutoff time is not official, so claim it early.</small>';
-    grid.prepend(card);
-  }
   function run(){
     document.querySelectorAll('.timeline .entry').forEach(compactEntry);
     document.querySelectorAll('#timelineNow .timelineNowCard').forEach(compactNow);
-    injectCodeAlert();
     document.querySelectorAll('#timelineNow .timelineNowCard').forEach(compactNow);
   }
   let queued=false;
