@@ -369,12 +369,12 @@
 .quickSubstats span{color:var(--body-text);font-size:9px;line-height:1.4}
 
 /* BUILD_STATS_ROLES_V3 */
-.buildRoleTabs{border:1px solid var(--line);background:var(--surface);border-radius:12px;display:grid;grid-template-columns:1fr 1fr;gap:5px;width:min(320px,100%);padding:4px;margin:0 0 10px auto}
+.buildRoleTabs{border:1px solid var(--line);background:var(--surface);border-radius:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px;width:min(240px,100%);padding:3px;margin:12px 0 0}
 .buildRoleTabs button{border:0;background:transparent;color:var(--muted);cursor:pointer;border-radius:8px;padding:8px 12px;font-size:10px;font-weight:850}
 .buildRoleTabs button.active{background:#345e51;color:#fff}
 .buildRoleTabs button:hover{color:var(--green)}
 .buildRoleTabs button.active:hover{color:#fff}
-@media(max-width:760px){.buildRoleTabs{width:100%;margin-left:0}}
+@media(max-width:760px){.buildRoleTabs{width:100%}}
 .priorityPair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px;align-items:stretch}
 .priorityPair>.priorityPanel{margin-top:0;grid-template-columns:1fr;height:100%}
 .priorityPair .priorityIntro{padding:17px 18px;border-bottom:1px solid var(--line)}
@@ -3581,7 +3581,7 @@ function applyBuildRole(root,name,mode){
   if(!BUILD_ROLE_KEYS[name]) return;
   let tabs=root.querySelector(':scope > .buildRoleTabs');
   const guide=root.querySelector(':scope > .guideSummary');
-  if(!tabs && guide){tabs=document.createElement('div');tabs.className='buildRoleTabs';tabs.innerHTML='<button type="button" data-role="dps">DPS</button><button type="button" data-role="heals">Heals</button>';guide.before(tabs);}
+  if(!tabs && guide){tabs=document.createElement('div');tabs.className='buildRoleTabs';tabs.innerHTML='<button type="button" data-role="dps">DPS</button><button type="button" data-role="heals">Heals</button>';const identity=guide.children[0];(identity||guide).append(tabs);}
   tabs?.querySelectorAll('button').forEach(btn=>{btn.classList.toggle('active',btn.dataset.role===mode);btn.setAttribute('aria-pressed',btn.dataset.role===mode?'true':'false');btn.onclick=()=>{const next=btn.dataset.role;try{localStorage.setItem(BUILD_ROLE_KEYS[name],next);}catch(_){}applyBuildRole(root,name,next);renderBuildQuickStats(root,name,next);};});
   const panels=[...root.querySelectorAll(':scope > .priorityPanel, :scope > .priorityPair > .priorityPanel')];
   const pdata=BUILD_ROLE_PRIORITY[name]?.[mode];
