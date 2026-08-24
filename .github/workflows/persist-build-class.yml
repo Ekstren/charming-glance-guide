@@ -1,0 +1,70 @@
+name: Persist selected build class
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/persist-build-class.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Remember selected class across refreshes
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_state = "  const classes=['Conqueror','Guardian','Destroyer','Dominator'];\n  let currentClass='Conqueror';"
+          new_state = "  const classes=['Conqueror','Guardian','Destroyer','Dominator'];\n  const BUILD_CLASS_STORAGE_KEY='sxs-build-class';\n  let currentClass='Conqueror';\n  try{\n    const savedClass=localStorage.getItem(BUILD_CLASS_STORAGE_KEY);\n    if(classes.includes(savedClass)) currentClass=savedClass;\n  }catch(_){}"
+          if new_state not in text:
+              if old_state not in text:
+                  raise SystemExit('Could not find build class state block')
+              text = text.replace(old_state, new_state, 1)
+
+          old_setup = "  function setupBuilds(){\n    $('classTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-class]');if(!b)return;currentClass=b.dataset.class;renderBuilds();});\n  }"
+          new_setup = "  function setupBuilds(){\n    $('classTabs').addEventListener('click',e=>{\n      const b=e.target.closest('button[data-class]');\n      if(!b)return;\n      currentClass=b.dataset.class;\n      try{localStorage.setItem(BUILD_CLASS_STORAGE_KEY,currentClass);}catch(_){}\n      renderBuilds();\n    });\n  }"
+          if new_setup not in text:
+              if old_setup not in text:
+                  raise SystemExit('Could not find build class click handler')
+              text = text.replace(old_setup, new_setup, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline script found')
+          Path('/tmp/charming-inline.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
+
+      - name: Commit change
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remember selected build class across refreshes'
+          git push origin main
