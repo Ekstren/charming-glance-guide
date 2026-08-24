@@ -1,0 +1,72 @@
+name: Direct timeline panel patch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/direct-timeline-panel-patch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch timeline panels
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          pairs=[
+            ('<details class="timelineIntel" open>\n      <summary><span>Timeline coverage & source confidence</span>', '<details class="timelineIntel" id="timelineCoverageDetails">\n      <summary><span>Timeline coverage & source confidence</span>'),
+            ('<details class="timelineIntel" open>\n      <summary><span>Recurring event rotation</span>', '<details class="timelineIntel" id="recurringEventsDetails">\n      <summary><span>Recurring event rotation</span>'),
+            ('<details class="timelineIntel">\n      <summary><span>Season 5 · Ignis long-range reference</span>', '<details class="timelineIntel" id="ignisReferenceDetails">\n      <summary><span>Season 5 · Ignis long-range reference</span>'),
+          ]
+          for old,new in pairs:
+              if new not in s:
+                  if old not in s: raise SystemExit('timeline markup changed unexpectedly')
+                  s=s.replace(old,new,1)
+          state="""    const timelinePanelState=[
+      ['timelineCoverageDetails','sxs-timeline-panel-coverage'],
+      ['recurringEventsDetails','sxs-timeline-panel-events'],
+      ['ignisReferenceDetails','sxs-timeline-panel-ignis']
+    ];
+    timelinePanelState.forEach(([id,key])=>{
+      const panel=$(id);
+      if(!panel) return;
+      let saved=null;
+      try{ saved=localStorage.getItem(key); }catch(_){}
+      panel.open=saved==='1';
+      panel.addEventListener('toggle',()=>{try{localStorage.setItem(key,panel.open?'1':'0');}catch(_){}});
+    });
+"""
+          if 'sxs-timeline-panel-coverage' not in s:
+              marker="  function setupTimeline(){\n    renderLocalTimeLabels();\n"
+              if marker not in s: raise SystemExit('setupTimeline marker changed unexpectedly')
+              s=s.replace(marker,marker+state,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          Path('/tmp/site.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+      - name: Push temporary patch branch
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B chatgpt/timeline-panel-state
+          git add index.html
+          git commit -m 'Collapse and remember timeline info panels'
+          git push -f origin HEAD:refs/heads/chatgpt/timeline-panel-state
