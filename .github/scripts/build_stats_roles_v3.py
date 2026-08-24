@@ -124,7 +124,6 @@ new_func=r'''function polishBuildLayout(){
 '''
 s=s[:start]+new_func+s[end:]
 
-# Verify every displayed class has a complete five-slot profile and substats.
 classes=['Berserker','Paladin','Archmage','Arcanist','Conqueror','Guardian','Destroyer','Dominator']
 for cls in classes:
     if f'  {cls}:' not in s:
@@ -134,3 +133,4 @@ for required in ['buildRoleTabs','BUILD_ROLE_PRIORITY','Healing technique invest
 
 p.write_text(s,encoding='utf-8')
 print('Added complete slot/substat profiles and DPS/Heals toggles for Arcanist and Dominator.')
+# trigger
