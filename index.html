@@ -1201,6 +1201,17 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 }
 </style>
 
+
+<style id="goal-achievability-cleanup">
+/* GOAL_ACHIEVABILITY_CLEANUP_V1
+   One goal-status warning; resource cards keep only the useful balance/shortfall line. */
+.materialRealmRecommendation{display:none!important}
+.planCosts small.toolBalance{display:none!important}
+.planCosts small.shortfallBreakdown .planShort{display:none!important}
+.planCosts span{gap:6px!important}
+.targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
+</style>
+
 </head>
 <body>
 <main>
@@ -1349,11 +1360,11 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
             </div>
             <div class="realmDailyPlanRow">
               <div class="realmDailyCustom">
-                <span class="realmDailyTitle">Daily purchase plan <small>0–20 refreshes per Realm</small></span>
+                <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 20/day per Realm</small></span>
                 <div class="realmDailyInputs">
-                  <label>Hammers / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
-                  <label>Knuckles / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
-                  <label>Shovels / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
+                  <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
+                  <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
+                  <label>Sand Realm refreshes / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
                 </div>
               </div>
               <div class="realmPlanSummary"><span>Projected daily gain</span><b id="realmDailyGain">+20 H · +20 K · +20 S / reset</b><small id="realmDaysRemaining">—</small></div>
@@ -3206,7 +3217,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
       const shortageBits=[];if(oreHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(oreHardShort))} Ore`);if(essHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(essHardShort))} Essence`);if(sandHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(sandHardShort))} Sand`);if(treatShort>0.5)shortageBits.push(`${fmt(Math.ceil(treatShort))} Treats`);if(refinedShort>0.5)shortageBits.push(`${fmt(Math.ceil(refinedShort))} Refined Ore`);
       const dailyShortBits=[];if(orePlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(orePlanShort))} Ore`);if(essPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(essPlanShort))} Essence`);if(sandPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(sandPlanShort))} Sand`);
       $('targetMessage').hidden=false;$('targetMessage').classList.add('warning');
-      $('targetMessage').textContent=`⚠ Daily plan is short ${dailyShortBits.join(' · ')||'resources'}. After using every remaining extra Realm slot, hard short = ${shortageBits.join(' · ')||'resources'}. No fallback target.`;
+      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;
       const brief=[];
       if(cfg.key==='s1') brief.push(optimizerReserveSummary(resources,cfg));
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
@@ -3277,6 +3288,14 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
           ? `<div class="realmBuyRoute"><b>Best available daily plan:</b> ${dailySuggested.ore} H / ${dailySuggested.essence} K / ${dailySuggested.sand} S · target still has a hard shortfall</div>`
           : '');
       realmRec.innerHTML=`<b>Material Realm:</b> ${extraText} · daily ${dailyPreset.ore}/${dailyPreset.essence}/${dailyPreset.sand} already included${priceNote}${hardNotes.length?` · ${hardNotes.join(' · ')}`:''}${suggestionLine}`;
+      if(!resourceBlocked && hasRealmNeed){
+        $('targetMessage').hidden=false;
+        $('targetMessage').classList.add('warning');
+        const route=dailySuggested.changed
+          ? ` Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.`
+          : '';
+        $('targetMessage').textContent=`⚠ Goal is achievable, but your current Material Realm refresh plan is too low.${route}`;
+      }
       realmRec.title=realmDetailParts.join(' · ');
     }else{realmRec.hidden=true;realmRec.textContent='';realmRec.classList.remove('realmFeasible','realmImpossible');realmRec.removeAttribute('title');}
     $('milestoneNote').hidden=true;$('milestoneNote').textContent='';
