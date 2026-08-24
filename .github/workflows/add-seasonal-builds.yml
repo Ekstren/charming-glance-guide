@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/add-seasonal-builds.yml'
       - '.github/scripts/add_seasonal_builds.py'
+      - '.github/scripts/run_seasonal_build_patch.py'
   issues:
     types: [opened]
   workflow_dispatch:
@@ -22,7 +23,7 @@ jobs:
         with:
           ref: main
       - name: Add season-aware build library
-        run: python .github/scripts/add_seasonal_builds.py
+        run: python .github/scripts/run_seasonal_build_patch.py
       - name: Validate inline JavaScript
         run: |
           python - <<'PY'
