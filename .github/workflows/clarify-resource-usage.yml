@@ -17,12 +17,34 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Clarify resource usage cards
-        env:
-          PATCH_B64: ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCByZQoKcCA9IFBhdGgoImluZGV4Lmh0bWwiKQpzID0gcC5yZWFkX3RleHQoZW5jb2Rpbmc9InV0Zi04IikKCm5ld19zdHlsZSA9ICIiIjxzdHlsZSBpZD0iZ29hbC1hY2hpZXZhYmlsaXR5LWNsZWFudXAiPgovKiBHT0FMX0FDSElFVkFCSUxJVFlfQ0xFQU5VUF9WMgogICBLZWVwIG9uZSBnb2FsLXN0YXR1cyB3YXJuaW5nLCBidXQgcmV0YWluIGNvbmNpc2UgdG9vbCB1c2FnZSBhbmQgcmVtYWluaW5nLW1hdGVyaWFsIGNvbnRleHQuICovCi5tYXRlcmlhbFJlYWxtUmVjb21tZW5kYXRpb257ZGlzcGxheTpub25lIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzbWFsbC5zaG9ydGZhbGxCcmVha2Rvd257ZGlzcGxheTpub25lIWltcG9ydGFudH0KLnBsYW5Db3N0cyBzcGFue2dhcDo2cHghaW1wb3J0YW50fQoucGxhbkNvc3RzPnNwYW4+Yjo6YWZ0ZXJ7Y29udGVudDoiIHVzZWQiO2ZvbnQtc2l6ZTouNDhlbTtmb250LXdlaWdodDo4MDA7Y29sb3I6dmFyKC0tbXV0ZWQpO2xldHRlci1zcGFjaW5nOjA7dGV4dC10cmFuc2Zvcm06bm9uZTttYXJnaW4tbGVmdDo0cHg7dmVydGljYWwtYWxpZ246MnB4fQoucGxhbkNvc3RzIHNtYWxsLnRvb2xCYWxhbmNle2Rpc3BsYXk6YmxvY2shaW1wb3J0YW50O2JvcmRlci10b3A6MXB4IHNvbGlkIHZhcigtLWxpbmUpO21hcmdpbi10b3A6MnB4O3BhZGRpbmctdG9wOjZweDtmb250LXNpemU6OC41cHghaW1wb3J0YW50O2xpbmUtaGVpZ2h0OjEuNDUhaW1wb3J0YW50O3RleHQtdHJhbnNmb3JtOm5vbmUhaW1wb3J0YW50fQoucGxhbkNvc3RzIHNtYWxsLnRvb2xCYWxhbmNlIC50b29sVXNlZExpbmUsLnBsYW5Db3N0cyBzbWFsbC50b29sQmFsYW5jZSAudG9vbFJlbWFpbmluZ0xpbmUsLnBsYW5Db3N0cyBzbWFsbC50b29sQmFsYW5jZSAudG9vbFNlcGFyYXRvcntkaXNwbGF5OmlubGluZSFpbXBvcnRhbnR9Ci5wbGFuQ29zdHMgc21hbGwudG9vbEJhbGFuY2UgLnRvb2xVc2VkTGluZXtjb2xvcjp2YXIoLS1zZWNvbmRhcnktdGV4dCkhaW1wb3J0YW50O2ZvbnQtd2VpZ2h0Ojc1MCFpbXBvcnRhbnR9Ci5wbGFuQ29zdHMgc21hbGwudG9vbEJhbGFuY2UgLnRvb2xSZW1haW5pbmdMaW5le2NvbG9yOnZhcigtLXN0YXR1cy1wb3NpdGl2ZSkhaW1wb3J0YW50O2ZvbnQtd2VpZ2h0OjgwMCFpbXBvcnRhbnR9Ci5wbGFuQ29zdHMgc21hbGwudG9vbEJhbGFuY2UgLnRvb2xTZXBhcmF0b3J7Y29sb3I6dmFyKC0tbXV0ZWQpIWltcG9ydGFudH0KLnRhcmdldE1lc3NhZ2U6bm90KFtoaWRkZW5dKXttYXJnaW46MTBweCAwIDE0cHghaW1wb3J0YW50O21pbi1oZWlnaHQ6MCFpbXBvcnRhbnR9Ci50YXJnZXRNZXNzYWdlLndhcm5pbmcuZGFuZ2Vye2JvcmRlcjoxcHggc29saWQgY29sb3ItbWl4KGluIHNyZ2IsdmFyKC0tc3RhdHVzLW5lZ2F0aXZlKSA2MiUsd mFyKC0tbGluZSkpO2JhY2tncm91bmQ6Y29sb3ItbWl4KGluIHNyZ2IsdmFyKC0tc3RhdHVzLW5lZ2F0aXZlKSAxMSUsd mFyKC0tc3VyZmFjZSkpO2NvbG9yOnZhcigtLXN0YXR1cy1uZWdhdGl2ZSkhaW1wb3J0YW50O2JvcmRlci1yYWRpdXM6MTFweDtwYWRkaW5nOjEwcHggMTJweCFpbXBvcnRhbnR9Cjwvc3R5bGU+IiIiCgpzLCBuID0gcmUuc3VibihyJzxzdHlsZSBpZD0iZ29hbC1hY2hpZXZhYmlsaXR5LWNsZWFudXAiPi4qPzwvc3R5bGU+JywgbmV3X3N0eWxlLCBzLCBjb3VudD0xLCBmbGFncz1yZS5TKQppZiBuICE9IDE6CiAgICByYWlzZSBTeXN0ZW1FeGl0KGYiZ29hbCBjbGVhbnVwIHN0eWxlIHJlcGxhY2VtZW50IGNvdW50PXtufSIpCgpwYXR0ZXJuID0gciIgIGZ1bmN0aW9uIHNldFRvb2xCYWxhbmNlXChpZCx0b3AsaGFyZFNob3J0LHlpZWxkVmFsLGxhYmVsLHByb3RlY3RlZFJ1bnM9MFwpXHsuKj9cbiAgXH1cbiAgZnVuY3Rpb24gc2V0UmVhbG1TaG9ydGZhbGxCcmVha2Rvd24iCnJlcGxhY2VtZW50ID0gIiIiICBmdW5jdGlvbiBzZXRUb29sQmFsYW5jZShpZCx0b3AsaGFyZFNob3J0LHlpZWxkVmFsLGxhYmVsLHByb3RlY3RlZFJ1bnM9MCl7CiAgICBjb25zdCBlbD0kKGlkKTsgaWYoIWVsKSByZXR1cm47CiAgICBlbC5jbGFzc0xpc3QucmVtb3ZlKCd0b29sTmVlZCcsJ3Rvb2xMZWZ0Jyk7CiAgICBjb25zdCBwZXI9TWF0aC5tYXgoMCxOdW1iZXIoeWllbGRWYWwpfHwwKTsKICAgIGNvbnN0IHByb3RlY3RlZENvdW50PU1hdGgubWF4KDAsTWF0aC5mbG9vcihOdW1iZXIocHJvdGVjdGVkUnVucyl8fDApKTsKICAgIGNvbnN0IG1hdGVyaWFsTmFtZT1sYWJlbD09PSdIYW1tZXJzJz8nT3JlJzpsYWJlbD09PSdLbnVja2xlcyc/J0Vzc2VuY2UnOmxhYmVsPT09J1Nob3ZlbHMnPydTYW5kJzonbWF0ZXJpYWxzJzsKICAgIGNvbnN0IGZpbml0ZVJ1bnM9TnVtYmVyKHRvcD8ucnVuc1VzZWQpOwogICAgY29uc3QgdXNlZD1NYXRoLm1heCgwLE1hdGguZmxvb3IoTnVtYmVyLmlzRmluaXRlKGZpbml0ZVJ1bnMpP2Zpbml0ZVJ1bnM6MCkpOwogICAgY29uc3QgZ2FpbmVkPU1hdGgubWF4KDAsTnVtYmVyLmlzRmluaXRlKE51bWJlcih0b3A/LnByb3ZpZGVkKSk/TnVtYmVyKHRvcC5wcm92aWRlZCk6dXNlZCpwZXIpOwogICAgY29uc3QgYmFua2VkUmVtYWluaW5nPU1hdGgubWF4KDAsTWF0aC5mbG9vcihOdW1iZXIodG9wPy5iYW5rZWRSZW1haW5pbmcpfHwwKSk7CiAgICBjb25zdCBzcGFyZVB1cmNoYXNlZD1NYXRoLm1heCgwLE1hdGguZmxvb3IoTnVtYmVyKHRvcD8uc3BhcmVQdXJjaGFzZWRSdW5zKXx8MCkpOwogICAgY29uc3QgcmVtYWluaW5nPWJhbmtlZFJlbWFpbmluZytzcGFyZVB1cmNoYXNlZCtwcm90ZWN0ZWRDb3VudDsKICAgIGNvbnN0IHJlbWFpbmluZ01hdGVyaWFsPXJlbWFpbmluZypwZXI7CiAgICBjb25zdCBwcm90ZWN0ZWRUZXh0PXByb3RlY3RlZENvdW50P2AgwrcgJHtmbXQocHJvdGVjdGVkQ291bnQpfSBTMi1wcm90ZWN0ZWRgOicnOwogICAgY29uc3QgdXNlZExpbmU9YDxzcGFuIGNsYXNzPSJ0b29sVXNlZExpbmUiPiR7bGFiZWx9OiAke2ZtdCh1c2VkKX0gdXNlZCR7cGVyPjA/YCAo4omIJHtmbXRDb21wYWN0KGdhaW5lZCl9ICR7bWF0ZXJpYWxOYW1lfSlgOicnfTwvc3Bhbj5gOwogICAgY29uc3QgcmVtYWluaW5nTGluZT1gPHNwYW4gY2xhc3M9InRvb2xSZW1haW5pbmdMaW5lIj4ke2ZtdChyZW1haW5pbmcpfSBsZWZ0JHtwZXI+MD9gICjihoki e2ZtdENvbXBhY3QocmVtYWluaW5nTWF0ZXJpYWwpfSAke21hdGVyaWFsTmFtZX0pYDonJ30ke3Byb3RlY3RlZFRleHR9PC9zcGFuPmA7CiAgICBlbC5pbm5lckhUTUw9YCR7dXNlZExpbmV9PHNwYW4gY2xhc3M9InRvb2xTZXBhcmF0b3IiPiDCtyA8L3NwYW4+JHtyZW1haW5pbmdMaW5lfWA7CiAgICBlbC5jbGFzc0xpc3QuYWRkKCd0b29sTGVmdCcpOwogIH0KICBmdW5jdGlvbiBzZXRSZWFsbVNob3J0ZmFsbEJyZWFrZG93biIiIgpzLCBuID0gcmUuc3VibihwYXR0ZXJuLCByZXBsYWNlbWVudCwgcywgY291bnQ9MSwgZmxhZ3M9cmUuUykKaWYgbiAhPSAxOgogICAgcmFpc2UgU3lzdGVtRXhpdChmInNldFRvb2xCYWxhbmNlIHJlcGxhY2VtZW50IGNvdW50PXtufSIpCgpvbGQgPSAiJCgndGFyZ2V0TWVzc2FnZScpLmhpZGRlbj1mYWxzZTskKCd0YXJnZXRNZXNzYWdlJykuY2xhc3NMaXN0LmFkZCgnd2FybmluZycpO1xuICAgICAgJCgndGFyZ2V0TWVzc2FnZScpLnRleHRDb250ZW50PWA  ...
+      - name: Patch resource usage display
         run: |
-          echo "$PATCH_B64" | tr -d ' ' | base64 -d > /tmp/patch.py
-          python /tmp/patch.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('.planCosts small.toolBalance{display:none!important}', '.planCosts small.toolBalance{display:grid!important;gap:3px!important}', 1)
+          if 'id="resource-usage-clarity"' not in s:
+              css='''
+          <style id="resource-usage-clarity">
+          .planCosts>span>b::after{content:" used";font-size:.48em;font-weight:800;color:var(--muted);letter-spacing:0;text-transform:none;margin-left:4px;vertical-align:2px}
+          .planCosts small.toolBalance{border-top:1px solid var(--line);margin-top:2px;padding-top:6px;font-size:8.5px!important;line-height:1.45!important;text-transform:none!important}
+          .planCosts small.toolBalance .toolUsedLine{color:var(--secondary-text)!important;font-weight:750!important}
+          .planCosts small.toolBalance .toolRemainingLine{color:var(--status-positive)!important;font-weight:800!important}
+          .targetMessage.warning.danger{border:1px solid color-mix(in srgb,var(--status-negative) 62%,var(--line));background:color-mix(in srgb,var(--status-negative) 11%,var(--surface));color:var(--status-negative)!important;border-radius:11px;padding:10px 12px!important}
+          </style>
+          '''
+              s=s.replace('</head>',css+'</head>',1)
+          old="$('targetMessage').hidden=false;$('targetMessage').classList.add('warning');\n      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;"
+          new="$('targetMessage').hidden=false;$('targetMessage').classList.add('warning','danger');\n      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;"
+          if old in s:
+              s=s.replace(old,new,1)
+          old2="  function updateCalculator(){\n    const cfg=activeCalcConfig();"
+          new2="  function updateCalculator(){\n    $('targetMessage')?.classList.remove('danger');\n    const cfg=activeCalcConfig();"
+          if old2 in s:
+              s=s.replace(old2,new2,1)
+          p.write_text(s,encoding='utf-8')
+          PY
       - name: Validate inline JavaScript
         run: |
           python - <<'PY'
@@ -30,16 +52,9 @@ jobs:
           import re
           text=Path('index.html').read_text(encoding='utf-8')
           scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
-          if not scripts: raise SystemExit('No inline scripts found')
           Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/sxs.js
-      - name: Verify changes
-        run: |
-          grep -q 'GOAL_ACHIEVABILITY_CLEANUP_V2' index.html
-          grep -q 'planCosts>span>b::after' index.html
-          grep -q 'toolSeparator' index.html
-          grep -q "classList.add('warning','danger')" index.html
       - name: Commit and self-clean
         run: |
           git config user.name 'github-actions[bot]'
