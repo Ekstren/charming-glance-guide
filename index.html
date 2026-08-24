@@ -1206,12 +1206,20 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 /* GOAL_ACHIEVABILITY_CLEANUP_V1
    One goal-status warning; resource cards keep only the useful balance/shortfall line. */
 .materialRealmRecommendation{display:none!important}
-.planCosts small.toolBalance{display:none!important}
+.planCosts small.toolBalance{display:grid!important;gap:3px!important}
 .planCosts small.shortfallBreakdown{display:none!important}
 .planCosts span{gap:6px!important}
 .targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
 </style>
 
+
+<style id="resource-usage-clarity">
+.planCosts>span>b::after{content:" used";font-size:.48em;font-weight:800;color:var(--muted);letter-spacing:0;text-transform:none;margin-left:4px;vertical-align:2px}
+.planCosts small.toolBalance{border-top:1px solid var(--line);margin-top:2px;padding-top:6px;font-size:8.5px!important;line-height:1.45!important;text-transform:none!important}
+.planCosts small.toolBalance .toolUsedLine{color:var(--secondary-text)!important;font-weight:750!important}
+.planCosts small.toolBalance .toolRemainingLine{color:var(--status-positive)!important;font-weight:800!important}
+.targetMessage.warning.danger{border:1px solid color-mix(in srgb,var(--status-negative) 62%,var(--line));background:color-mix(in srgb,var(--status-negative) 11%,var(--surface));color:var(--status-negative)!important;border-radius:11px;padding:10px 12px!important}
+</style>
 </head>
 <body>
 <main>
@@ -2982,6 +2990,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
   let lastEffectiveTargetStars=null;
 
   function updateCalculator(){
+    $('targetMessage')?.classList.remove('danger');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
     const p=projectCharacter(cfg);
@@ -3216,7 +3225,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
       setTreatBalance('treatBalance',plan.treatCost,resources);
       const shortageBits=[];if(oreHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(oreHardShort))} Ore`);if(essHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(essHardShort))} Essence`);if(sandHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(sandHardShort))} Sand`);if(treatShort>0.5)shortageBits.push(`${fmt(Math.ceil(treatShort))} Treats`);if(refinedShort>0.5)shortageBits.push(`${fmt(Math.ceil(refinedShort))} Refined Ore`);
       const dailyShortBits=[];if(orePlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(orePlanShort))} Ore`);if(essPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(essPlanShort))} Essence`);if(sandPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(sandPlanShort))} Sand`);
-      $('targetMessage').hidden=false;$('targetMessage').classList.add('warning');
+      $('targetMessage').hidden=false;$('targetMessage').classList.add('warning','danger');
       $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;
       const brief=[];
       if(cfg.key==='s1') brief.push(optimizerReserveSummary(resources,cfg));
