@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/add-seasonal-builds.yml'
       - '.github/scripts/add_seasonal_builds.py'
+  issues:
+    types: [opened]
   workflow_dispatch:
 
 permissions:
@@ -13,6 +15,7 @@ permissions:
 
 jobs:
   patch:
+    if: github.event_name != 'issues' || github.event.issue.title == 'Run seasonal build switch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -49,4 +52,3 @@ jobs:
           git add index.html
           git commit -m "Show Season 1 builds until Season 2 reset"
           git push origin main
-# trigger
