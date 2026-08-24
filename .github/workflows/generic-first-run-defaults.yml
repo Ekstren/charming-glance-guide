@@ -1,4 +1,4 @@
-name: Generic calculator first-run defaults
+name: Compact timeline notes one-shot
 
 on:
   push:
@@ -17,67 +17,84 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Remove account-specific calculator defaults
+
+      - name: Make timeline cards concise by default
         shell: python
         run: |
           from pathlib import Path
-          import re
 
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
 
-          # Generic S1 first-run values. Structural season floors stay valid instead of using literal zero.
-          values = {
-              'targetStars':'200', 'historicalStars':'0',
-              'charLevel':'100', 'charExp':'0', 'bedExp':'0', 'freeSpeed':'0',
-              'skillLevel':'100', 'relicLevel':'10', 'fantomonLevel':'100',
-              'gearWeapon':'100', 'gearOffhand':'100', 'gearHelmet':'100', 'gearArmor':'100', 'gearBoots':'100',
-              'oreCurrent':'0', 'oreRate':'0', 'essenceCurrent':'0', 'essenceRate':'0',
-              'sandCurrent':'0', 'sandRate':'0', 'treatCurrent':'0', 'treatPremiumCurrent':'0', 'treatDeluxeCurrent':'0', 'treatRate':'0',
-              'hammerCurrent':'0', 'knucklesCurrent':'0', 'shovelCurrent':'0',
-              'realmDailyOre':'0', 'realmDailyEssence':'0', 'realmDailySand':'0'
-          }
+          css = '''
+.entryMore{margin-top:6px;color:var(--muted);font-size:10px}
+.entryMore summary{cursor:pointer;color:var(--green);font-weight:800;list-style:none;display:inline-flex;align-items:center;gap:4px}
+.entryMore summary::-webkit-details-marker{display:none}
+.entryMore summary:after{content:'+';font-size:11px}
+.entryMore[open] summary:after{content:'−'}
+.entryMore div{margin-top:6px;color:var(--secondary-text);font-size:11px;line-height:1.5}
+'''.strip()
+          if '.entryMore{' not in text:
+              text = text.replace('</style>', css + '\n</style>', 1)
 
-          for ident, value in values.items():
-              pattern = rf'(<input\b[^>]*\bid="{re.escape(ident)}"[^>]*\bvalue=")[^"]*(")'
-              text, count = re.subn(pattern, rf'\g<1>{value}\2', text, count=1)
-              if count != 1:
-                  raise SystemExit(f'Could not patch input default for {ident}')
+          helper = r'''
+  function timelineSummaryText(e){
+    const text=String((e&&e[4])||'').trim();
+    const title=String((e&&e[3])||'');
+    if(title.startsWith('Oceanic Festival')) return 'Global Aug 18–31 · Summer event with sign-in, Ice Cream Shop, Ocean Chase and a 200-Destiny-Fruit mission. Bingo Draw 2 overlaps on Charming Glance.';
+    if(title.startsWith('Bingo Draw')) return 'Destiny Fruits · Do dailies first; about 60–80 Fruits usually clears the normal board. This run overlaps Oceanic, so Fruit spending progresses both.';
+    if(title.startsWith('Lucky Scratch')) return 'Use saved Material Realm tools to earn scratch cards. This run overlaps Oceanic Aug 26–31, so Realm activity can also progress Beach Shovel objectives.';
+    if(title==='Season 2 final-day prep') return 'Save dungeon attempts for S2: buy 2 and use none, then buy 2 more after reset for up to 6 day-one runs. Treat 36h Bed EXP banking as uncertain until the transition notice confirms it.';
+    if(title==='Loong Haven opens') return 'Season 2 begins. Key unlocks are level-gated: Lv.106 T4 class + Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';
+    if(text.length<=220) return text;
+    const parts=text.split(/\.\s+/);
+    let summary=parts[0]||text;
+    if(summary.length<125 && parts.length>1) summary += '. ' + parts[1];
+    if(summary.length>220) summary=summary.slice(0,217).replace(/\s+\S*$/,'')+'…';
+    return summary;
+  }
+  function timelineDetailHtml(e){
+    const full=String((e&&e[4])||'').trim();
+    const summary=timelineSummaryText(e);
+    if(!full || summary===full) return `<p>${full}</p>`;
+    return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
+  }
+'''.rstrip()
+          anchor = '  function renderTimeline(){'
+          if 'function timelineSummaryText(e)' not in text:
+              if anchor not in text:
+                  raise SystemExit('Could not find renderTimeline anchor')
+              text = text.replace(anchor, helper + '\n' + anchor, 1)
 
-          # Fresh installs are not legacy states; don't run old-state migrations on an empty state.
-          text = text.replace(
-              "if((Number(state.snapshotSchema)||0)<6){",
-              "if(hadState && (Number(state.snapshotSchema)||0)<6){",
-              1
-          )
-          text = text.replace(
-              "if(state.reserveS2Treats===undefined) state.reserveS2Treats=true;",
-              "if(hadState && state.reserveS2Treats===undefined) state.reserveS2Treats=true;",
-              1
-          )
-          text = text.replace(
-              "if((Number(state.snapshotSchema)||0)<5){",
-              "if(hadState && (Number(state.snapshotSchema)||0)<5){",
-              1
-          )
+          old_now = 'const cards=activeEvents.map(e=>`<div class="timelineNowCard"><strong>${e[3]}</strong><small>${e[4]}</small></div>`).join(\'\');'
+          new_now = 'const cards=activeEvents.map(e=>`<div class="timelineNowCard"><strong>${e[3]}</strong><small>${timelineSummaryText(e)}</small></div>`).join(\'\');'
+          if old_now in text:
+              text = text.replace(old_now, new_now, 1)
+          elif new_now not in text:
+              raise SystemExit('Could not find Active now card renderer')
 
-          # On a truly fresh browser in S2, use the S2 target baseline instead of the S1 target.
-          marker = "CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });"
-          insertion = marker + "\n      if(!hadState && activeCalcConfig().key==='s2' && $('targetStars')) $('targetStars').value='680';"
-          if insertion not in text:
-              if marker not in text:
-                  raise SystemExit('Could not find loadState input restore marker')
-              text = text.replace(marker, insertion, 1)
-
-          # Reset should also be generic in S2 rather than assuming a 4/4/4 routine or free speed-up.
-          old = "freeSpeed:2,reserveHours:36"
-          if old in text:
-              text = text.replace(old, "freeSpeed:0,reserveHours:36", 1)
-          old = "realmDailyOre:4,realmDailyEssence:4,realmDailySand:4"
-          if old in text:
-              text = text.replace(old, "realmDailyOre:0,realmDailyEssence:0,realmDailySand:0", 1)
+          old_entry = '<div><p><b>${e[3]}</b>${active?\'<span class="activePill">ACTIVE</span>\':\'\'}${e[7]===\'unconfirmed\'?\'<span class="unconfirmedPill">UNCONFIRMED</span>\':\'\'}</p><p>${e[4]}</p></div>'
+          new_entry = '<div><p><b>${e[3]}</b>${active?\'<span class="activePill">ACTIVE</span>\':\'\'}${e[7]===\'unconfirmed\'?\'<span class="unconfirmedPill">UNCONFIRMED</span>\':\'\'}</p>${timelineDetailHtml(e)}</div>'
+          if old_entry in text:
+              text = text.replace(old_entry, new_entry, 1)
+          elif new_entry not in text:
+              raise SystemExit('Could not find timeline entry renderer')
 
           path.write_text(text, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline script found')
+          Path('/tmp/charming-inline.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
 
       - name: Commit change
         shell: bash
@@ -89,5 +106,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Use generic first-run calculator defaults'
+          git commit -m 'Summarize long timeline entries by default'
           git push origin main
