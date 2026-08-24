@@ -17,10 +17,9 @@ for label,old,new in [('light',light_old,light_new),('dark',dark_old,dark_new)]:
 s=s.replace('background:#253f37','background:var(--accent-deep)')
 s=s.replace('background:#345e51','background:var(--accent-strong)')
 s=s.replace('box-shadow:0 7px 18px #264a3f2e','box-shadow:0 7px 18px color-mix(in srgb,var(--accent-deep) 28%,transparent)')
-
-# Catch any remaining exact legacy accent backgrounds used by later appended CSS.
 s=s.replace('background:#345e51;', 'background:var(--accent-strong);')
 s=s.replace('background:#253f37;', 'background:var(--accent-deep);')
 
 p.write_text(s,encoding='utf-8')
 print('Applied warmer earthy palettes to light and dark themes.')
+# trigger
