@@ -3007,11 +3007,14 @@
     clearTimeout(calculatorUpdateTimer);
     calculatorUpdateTimer=setTimeout(()=>{calculatorUpdateTimer=null;updateCalculator();},delay);
   }
+  const SECTION_STORAGE_KEY='sxs-active-section';
   function setSection(name){
-    document.querySelectorAll('.siteSection').forEach(s=>s.hidden=true);
     const map={timeline:'timelineSection',builds:'buildsSection',calculator:'calculatorSection'};
+    if(!map[name]) name='timeline';
+    document.querySelectorAll('.siteSection').forEach(s=>s.hidden=true);
     $(map[name]).hidden=false;
     document.querySelectorAll('.sectionSwitch button').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
+    try{ localStorage.setItem(SECTION_STORAGE_KEY,name); }catch(_){}
     window.scrollTo({top:0,behavior:'smooth'});
     if(name==='builds') initializeBuildsIfNeeded();
     if(name==='calculator') initializeCalculatorIfNeeded();
@@ -3064,7 +3067,9 @@
 
   loadState();
   setupNavigation();
-  setSection('timeline');
+  let initialSection='timeline';
+  try{ const savedSection=localStorage.getItem(SECTION_STORAGE_KEY); if(['timeline','builds','calculator'].includes(savedSection)) initialSection=savedSection; }catch(_){}
+  setSection(initialSection);
   setupTimeline();
   setupBuilds();
   setupCalculator();
