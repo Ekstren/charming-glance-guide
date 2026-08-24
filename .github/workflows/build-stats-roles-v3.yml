@@ -1,0 +1,54 @@
+name: Build stats and role toggles v3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/build_stats_roles_v3.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch build stats and role toggles
+        run: python .github/scripts/build_stats_roles_v3.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Verify requested layout
+        run: |
+          grep -q 'BUILD_STATS_ROLES_V3' index.html
+          grep -q 'BUILD_STAT_PROFILES' index.html
+          grep -q 'BUILD_ROLE_PRIORITY' index.html
+          grep -q 'buildRoleTabs' index.html
+          grep -q "Arcanist:{" index.html
+          grep -q "Dominator:{" index.html
+          grep -q "\['Helmet'" index.html
+          grep -q "\['Chest'" index.html
+          grep -q 'quickSubstats' index.html
+      - name: Commit
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Complete build stats and add healer DPS toggles'
+          git push origin main
