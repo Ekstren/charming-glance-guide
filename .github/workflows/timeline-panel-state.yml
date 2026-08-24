@@ -1,0 +1,86 @@
+name: Persist timeline info panels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/timeline-panel-state.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Collapse and remember timeline info panels
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = [
+            ('<details class="timelineIntel" open>\n      <summary><span>Timeline coverage & source confidence</span>', '<details class="timelineIntel" id="timelineCoverageDetails">\n      <summary><span>Timeline coverage & source confidence</span>'),
+            ('<details class="timelineIntel" open>\n      <summary><span>Recurring event rotation</span>', '<details class="timelineIntel" id="recurringEventsDetails">\n      <summary><span>Recurring event rotation</span>'),
+            ('<details class="timelineIntel">\n      <summary><span>Season 5 · Ignis long-range reference</span>', '<details class="timelineIntel" id="ignisReferenceDetails">\n      <summary><span>Season 5 · Ignis long-range reference</span>'),
+          ]
+          for old, new in replacements:
+              if new in text:
+                  continue
+              if old not in text:
+                  raise SystemExit(f'Expected timeline panel markup not found: {old[:70]}')
+              text = text.replace(old, new, 1)
+
+          marker = "  function setupTimeline(){\n    renderLocalTimeLabels();"
+          replacement = """  function setupTimeline(){
+    renderLocalTimeLabels();
+    const timelinePanelState=[
+      ['timelineCoverageDetails','sxs-timeline-panel-coverage'],
+      ['recurringEventsDetails','sxs-timeline-panel-events'],
+      ['ignisReferenceDetails','sxs-timeline-panel-ignis']
+    ];
+    timelinePanelState.forEach(([id,key])=>{
+      const panel=$(id);
+      if(!panel) return;
+      let saved=null;
+      try{ saved=localStorage.getItem(key); }catch(_){}
+      panel.open=saved==='1';
+      panel.addEventListener('toggle',()=>{try{localStorage.setItem(key,panel.open?'1':'0');}catch(_){}});
+    });"""
+          if replacement not in text:
+              if marker not in text:
+                  raise SystemExit('Could not find setupTimeline marker')
+              text = text.replace(marker, replacement, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S)
+          Path('/tmp/site.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+
+      - name: Commit change
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Collapse and remember timeline info panels'
+          git push origin main
