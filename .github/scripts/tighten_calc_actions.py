@@ -55,3 +55,4 @@ if '</head>' not in s:
 s=s.replace('</head>',css+'\n</head>',1)
 p.write_text(s,encoding='utf-8')
 print('Tightened calculator action row and increased helper text size.')
+# trigger
