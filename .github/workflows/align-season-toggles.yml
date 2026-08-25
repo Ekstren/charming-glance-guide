@@ -1,0 +1,55 @@
+name: Align season planning toggles
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/align-season-toggles.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Align Bed EXP toggle with reserve toggles
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css='''
+<style id="season-toggle-top-align-v1">
+.seasonPlanningControls{align-items:flex-start!important}
+.seasonPlanningControls>label{align-self:flex-start!important}
+.holdExpOption{align-self:flex-start!important}
+</style>
+'''
+          if 'id="season-toggle-top-align-v1"' not in s:
+              s=s.replace('</head>', css+'</head>', 1)
+          s=s.replace('#sandCost::after{content:" S1 relic cost"!important}', '#sandCost::after{content:" needed"!important}')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Commit and self-clean
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/align-season-toggles.yml
+          git add index.html
+          git commit -m 'Align season planning toggles at top'
+          git push origin main
