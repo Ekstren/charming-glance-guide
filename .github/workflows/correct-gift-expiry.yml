@@ -18,8 +18,9 @@ jobs:
           ref: main
 
       - name: Correct exact gift expiry
-        shell: python
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
@@ -32,14 +33,14 @@ jobs:
 
           old_active = "  function eventIsActive(e,boundaryIso){\n    return e[5]==='event' && !!e[6] && e[0]<=boundaryIso && boundaryIso<e[6];\n  }"
           new_active = """  function eventIsActive(e,boundaryIso){
-    if(e[5]!=='event' || !e[6] || e[0]>boundaryIso) return false;
-    const exactExpiry=e[8];
-    if(exactExpiry){
-      const ms=Date.parse(exactExpiry);
-      if(Number.isFinite(ms)) return Date.now()<ms;
-    }
-    return boundaryIso<e[6];
-  }"""
+            if(e[5]!=='event' || !e[6] || e[0]>boundaryIso) return false;
+            const exactExpiry=e[8];
+            if(exactExpiry){
+              const ms=Date.parse(exactExpiry);
+              if(Number.isFinite(ms)) return Date.now()<ms;
+            }
+            return boundaryIso<e[6];
+          }""".replace('          ', '')
           if old_active not in s:
               raise SystemExit('eventIsActive anchor not found')
           s = s.replace(old_active, new_active, 1)
@@ -60,6 +61,7 @@ jobs:
               s = s.replace('Timeline refreshed Aug 24, 2026 /', 'Timeline refreshed Aug 25, 2026 /', 1)
 
           p.write_text(s, encoding='utf-8')
+          PY
 
       - name: Validate inline JavaScript
         shell: bash
