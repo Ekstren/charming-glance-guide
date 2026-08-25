@@ -23,38 +23,27 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-
-          # Keep the Bed EXP note inside only the Hold EXP label, but force it onto its own line under the toggle text.
           s, n = re.subn(
               r'<label(?![^>]*class="holdExpOption")><input id="holdExp" checked type="checkbox">\s*<span id="holdExpLabel">Hold Bed EXP for Season 2</span>(<small class="bedReserveStartNote">.*?</small>)</label>',
               r'<label class="holdExpOption"><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span>\1</label>',
               s, count=1, flags=re.S)
           if n == 0 and 'class="holdExpOption"' not in s:
               raise SystemExit('Hold EXP label not found')
-
-          # Keep the compact note wording.
-          s, n2 = re.subn(
-              r'<small class="bedReserveStartNote">.*?</small>',
-              '<small class="bedReserveStartNote">Start <b>Aug 28, 6:00 PM PDT</b></small>',
-              s, count=1, flags=re.S)
+          s, n2 = re.subn(r'<small class="bedReserveStartNote">.*?</small>', '<small class="bedReserveStartNote">Start <b>Aug 28, 6:00 PM PDT</b></small>', s, count=1, flags=re.S)
           if n2 == 0:
               raise SystemExit('Bed EXP note not found')
-
-          # The Sand card is a requirement just like Ore/Essence, not an already-spent S1 value.
-          s = s.replace('#sandCost::after{content:" S1 relic cost"!important}', '#sandCost::after{content:" needed"!important}')
-
-          css='''
-<style id="bed-exp-note-under-toggle-v3">
-.holdExpOption{display:grid!important;grid-template-columns:auto max-content;grid-template-rows:auto auto;column-gap:7px;row-gap:2px;align-items:center;justify-content:start}
-.holdExpOption>input{grid-column:1;grid-row:1;margin:0}
-.holdExpOption>#holdExpLabel{grid-column:2;grid-row:1}
-.holdExpOption>.bedReserveStartNote{grid-column:2;grid-row:2;margin:0!important;padding:0!important;display:block;line-height:1.25}
-.holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
-</style>
-'''
+          s=s.replace('#sandCost::after{content:" S1 relic cost"!important}', '#sandCost::after{content:" needed"!important}')
+          css=(
+              '<style id="bed-exp-note-under-toggle-v3">\n'
+              '.holdExpOption{display:grid!important;grid-template-columns:auto max-content;grid-template-rows:auto auto;column-gap:7px;row-gap:2px;align-items:center;justify-content:start}\n'
+              '.holdExpOption>input{grid-column:1;grid-row:1;margin:0}\n'
+              '.holdExpOption>#holdExpLabel{grid-column:2;grid-row:1}\n'
+              '.holdExpOption>.bedReserveStartNote{grid-column:2;grid-row:2;margin:0!important;padding:0!important;display:block;line-height:1.25}\n'
+              '.holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}\n'
+              '</style>\n'
+          )
           if 'id="bed-exp-note-under-toggle-v3"' not in s:
               s=s.replace('</head>', css+'</head>', 1)
-
           p.write_text(s,encoding='utf-8')
           PY
       - name: Validate inline JavaScript
