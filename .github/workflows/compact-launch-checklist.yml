@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/compact-launch-checklist.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -18,41 +19,28 @@ jobs:
           ref: main
 
       - name: Compact rich checklist rendering
-        shell: bash
+        shell: python
         run: |
-          python - <<'PY'
           from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
 
-          old="""    if(title==='Loong Haven opens') return 'Season 2 begins. Key level gates: Lv.106 T4/Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';
-    if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';
-"""
-          new="""    if(title==='Loong Haven opens') return 'Season 2 begins. Key level gates: Lv.106 T4/Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';
-    if(title==='Season 2 launch checklist') return 'At S2 reset: claim rollover rewards, rank up first, push reachable statues, then spend saved Bed boosts, Stamina and Material Realm resources.';
-    if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';
-"""
-          if old not in s:
-              raise SystemExit('summary helper anchor not found')
-          s=s.replace(old,new,1)
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
 
-          old2="""    // Rich entries contain complete markup; do not truncate their raw HTML.
-    if(full.includes('launchChecklist')) return '<div class=\"timelineRichBody\">'+full+'</div>';
-    const summary=timelineSummaryText(e);
-"""
-          new2="""    // Rich entries contain complete markup. Keep them intact behind Details instead of
-    // passing raw HTML through the text truncator or leaving a long card visible by default.
-    if(full.includes('launchChecklist')){
-      const summary=timelineSummaryText(e);
-      return `<p>${summary}</p><details class=\"entryMore\"><summary>Checklist</summary><div class=\"timelineRichBody\">${full}</div></details>`;
-    }
-    const summary=timelineSummaryText(e);
-"""
-          if old2 not in s:
-              raise SystemExit('rich checklist renderer anchor not found')
-          s=s.replace(old2,new2,1)
-          p.write_text(s,encoding='utf-8')
-          PY
+          summary_anchor = "    if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';"
+          checklist_summary = "    if(title==='Season 2 launch checklist') return 'At S2 reset: claim rollover rewards, rank up first, push reachable statues, then spend saved Bed boosts, Stamina and Material Realm resources.';\n"
+          if checklist_summary.strip() not in text:
+              if summary_anchor not in text:
+                  raise SystemExit('summary helper anchor not found')
+              text = text.replace(summary_anchor, checklist_summary + summary_anchor, 1)
+
+          old = "    // Rich entries contain complete markup; do not truncate their raw HTML.\n    if(full.includes('launchChecklist')) return '<div class=\\\"timelineRichBody\\\">'+full+'</div>';"
+          new = "    // Rich entries contain complete markup. Keep them intact behind Details instead of\n    // passing raw HTML through the text truncator or leaving a long card visible by default.\n    if(full.includes('launchChecklist')){\n      const summary=timelineSummaryText(e);\n      return `<p>${summary}</p><details class=\\\"entryMore\\\"><summary>Checklist</summary><div class=\\\"timelineRichBody\\\">${full}</div></details>`;\n    }"
+          if '<summary>Checklist</summary>' not in text:
+              if old not in text:
+                  raise SystemExit('rich checklist renderer anchor not found')
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
 
       - name: Validate inline JavaScript
         shell: bash
@@ -61,15 +49,11 @@ jobs:
           from pathlib import Path
           import re
           text=Path('index.html').read_text(encoding='utf-8')
-          required=[
-            "if(title==='Season 2 launch checklist')",
-            '<summary>Checklist</summary>',
-            'timelineRichBody'
-          ]
-          for item in required:
-              if item not in text:
-                  raise SystemExit(f'missing expected compact checklist marker: {item}')
-          scripts=re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if "if(title==='Season 2 launch checklist')" not in text:
+              raise SystemExit('checklist summary missing')
+          if '<summary>Checklist</summary>' not in text:
+              raise SystemExit('checklist details wrapper missing')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
           if not scripts:
               raise SystemExit('No inline scripts found')
           Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
