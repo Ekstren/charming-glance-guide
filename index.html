@@ -3658,7 +3658,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const activeEvents=timelineData.filter(e=>eventIsActive(e,boundaryIso));
     const live=$('timelineNow');
     if(live){
-      const cards=activeEvents.map(e=>`<div class="timelineNowCard"><strong>${e[3]}</strong><small>${timelineSummaryText(e)}</small></div>`).join('');
+      const cards=activeEvents.map(e=>`<div class="timelineNowCard"><strong>${e[3]}<span class="activePill">ACTIVE</span>${e[7]==='unconfirmed'?'<span class="unconfirmedPill">UNCONFIRMED</span>':''}</strong><small>${timelineSummaryText(e)}</small></div>`).join('');
       live.innerHTML=`<div class="timelineNowInner"><div class="timelineNowHead"><b>Active now</b><span>Auto-updates at the ${nextResetLocalLabel()} local reset</span></div>${cards?`<div class="timelineNowGrid">${cards}</div>`:'<div class="timelineNowEmpty">No tracked multi-day events are active right now.</div>'}</div>`;
     }
   }
