@@ -1269,9 +1269,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 @media(max-width:700px){.launchChecklist>span{grid-template-columns:24px minmax(0,1fr);padding:8px 9px}}
 </style>
 <style id="s2-launch-checklist-layout-fix">
+.entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
 .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-.entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
-.entry .launchChecklist{width:100%;max-width:none}
+.timelineRichBody{display:block;min-width:0;width:100%}
+.entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
+@media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -3601,6 +3603,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   }
   function timelineDetailHtml(e){
     const full=String((e&&e[4])||'').trim();
+    // Rich entries contain complete markup; do not truncate their raw HTML.
+    if(full.includes('launchChecklist')) return '<div class="timelineRichBody">'+full+'</div>';
     const summary=timelineSummaryText(e);
     if(!full || summary===full) return `<p>${full}</p>`;
     return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
