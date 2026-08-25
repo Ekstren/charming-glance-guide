@@ -1589,7 +1589,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
         el.textContent=`20/day max · still ${fmt(Math.ceil(Number(top.remainingAfterMax)||0))} short`;
         el.classList.add('realmRecommendMax');
       }else if(suggested[d.key]>selected){
-        el.textContent=`Suggested: ${suggested[d.key]}/day`;
+        el.textContent=`Suggested: up to ${suggested[d.key]}/day`;
         el.classList.add('realmRecommendUp');
       }else if(Number(top?.packs)>0){
         el.textContent='Extra Realm entries required';
@@ -3291,11 +3291,11 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
     const protectedShovels=Math.max(0,Math.floor(Number(resources.s2RelicSandReserve?.shovelsReserved)||0));
     const afterPlanTools={
       ore:Math.max(0,(plan.realm?.ore?.bankedRemaining||0)+(plan.realm?.ore?.sparePurchasedRuns||0)),
-      essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)+protectedKnuckles),
-      sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0)+protectedShovels)
+      essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)),
+      sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0))
     };
     const toolLeftEls=[['hammerAfterPlan',afterPlanTools.ore,0],['knucklesAfterPlan',afterPlanTools.essence,protectedKnuckles],['shovelAfterPlan',afterPlanTools.sand,protectedShovels]];
-    toolLeftEls.forEach(([id,value,protectedCount])=>{const el=$(id);if(el){el.textContent=`After plan: ${fmt(value)} left${protectedCount?` · ${fmt(protectedCount)} S2 reserve`:''}`;el.classList.toggle('toolLow',value<=10);}});
+    toolLeftEls.forEach(([id,value,protectedCount])=>{const el=$(id);if(el){el.textContent=`After recommended plan: ${fmt(value)} spendable left${protectedCount?` · ${fmt(protectedCount)} S2 reserve`:''}`;el.classList.toggle('toolLow',value<=10);}});
     if(hasRealmNeed||resourceBlocked){
       realmRec.hidden=false;
       const hardNotes=[];
