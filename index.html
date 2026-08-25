@@ -1219,6 +1219,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 .planCosts small.toolBalance .toolUsedLine{color:var(--secondary-text)!important;font-weight:750!important}
 .planCosts small.toolBalance .toolRemainingLine{color:var(--status-positive)!important;font-weight:800!important}
 .targetMessage.warning.danger{border:1px solid color-mix(in srgb,var(--status-negative) 62%,var(--line));background:color-mix(in srgb,var(--status-negative) 11%,var(--surface));color:var(--status-negative)!important;border-radius:11px;padding:10px 12px!important}
+.targetMessage.warning.caution{border:1px solid color-mix(in srgb,var(--status-warning) 62%,var(--line));background:color-mix(in srgb,var(--status-warning) 11%,var(--surface));color:var(--status-warning)!important;border-radius:11px;padding:10px 12px!important}
 </style>
 
 <style id="tool-usage-alignment-v2">
@@ -3009,7 +3010,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
   let lastEffectiveTargetStars=null;
 
   function updateCalculator(){
-    $('targetMessage')?.classList.remove('danger');
+    $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
     const p=projectCharacter(cfg);
@@ -3318,7 +3319,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
       realmRec.innerHTML=`<b>Material Realm:</b> ${extraText} · daily ${dailyPreset.ore}/${dailyPreset.essence}/${dailyPreset.sand} already included${priceNote}${hardNotes.length?` · ${hardNotes.join(' · ')}`:''}${suggestionLine}`;
       if(!resourceBlocked && hasRealmNeed){
         $('targetMessage').hidden=false;
-        $('targetMessage').classList.add('warning');
+        $('targetMessage').classList.add('warning','caution');
         const route=dailySuggested.changed
           ? ` Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.`
           : '';
