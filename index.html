@@ -1482,7 +1482,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
 <p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. Carried Knuckles satisfy this reserve first, with raw Essence protected only for any remainder. That protected amount is not spendable by the S1 optimizer. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, surplus Essence is cheapest to spend, then Treats, then surplus Sand, while Ore/Hammers are preserved most aggressively. Reserved Shovels are removed from the S1 spendable Realm pool. Current-season score shortages are covered first; surplus verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
-<footer><p>Timeline refreshed Aug 24, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
+<footer><p>Timeline refreshed Aug 25, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </main>
 <script>
   // v62 audit: preserve rollover resources, exact uneven slot levels, seasonal Fantomon +10 ceilings, device-local reset display, and Material Realm tools on equal-cost routes.
@@ -3428,7 +3428,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     ['2026-08-09',26,'Seasonal Map','Whaleback Island','Season map · two additional exploration sections unlock daily after opening','seasonal-map'],
     ['2026-08-16',33,'Dungeon','Hellhold','Normal 2.25M · Hard 2.75M · Nightmare 3.9M · Purgatory 6.2M · QY: final S1 dungeon lasts about two weeks','dungeon'],
     ['2026-08-18',35,'Event','Oceanic Festival · Summer Reverie','Global Aug 18–31 · 7-day sign-in includes Solar Halo (permanent-stat food) plus summer rewards · Ice Cream Shop earns Iridescent Seashells · Ocean Chase uses Beach Shovels. Grand prizes: R1 Lucky Ticket · R2 Magic Drill · R3 Glittering Diamond · R4 Skill Shard Voucher · R5+ 2 Mythic Auroral Badges. Festival Shop priority: Beach Shovels first, then discounted Legendary Auroral Badges/Stellati. Current community confirmation: the recurring Destiny Fruit mission chain reaches 200 Fruits; on Charming Glance, Bingo Draw 2 overlaps Aug 19–26, so Fruit spending can progress both.','event','2026-09-01'],
-    ['2026-08-19',36,'Global Gift','Weekly gift code · 4P7Y2R9M','2,000 Rolla + 120 Dawnium · current code lists report expiry Aug 25; redeem ASAP.','event','2026-08-26'],
+    ['2026-08-19',36,'Global Gift','Weekly gift code · 4P7Y2R9M','2,000 Rolla + 120 Dawnium · MEmu reports expiry Aug 25 at 00:00 UTC-5, which is Aug 24 at 10:00 PM PDT.','event','2026-08-25',null,'2026-08-24T22:00:00-07:00'],
 
     // ---- Season 2 · Loong Haven ----
     ['2026-08-29',46,'Feature','Season 2 final-day prep','Dungeon runs: buy 2 extra attempts and use none so you enter S2 at 4/2, then buy 2 more after reset for up to 6 day-one runs. Bed EXP historically banks up to 36h, but Aug 21 community reports say recent maintenance behavior may auto-claim stored EXP; verify the in-game transition notice before relying on the full bank.','feature'],
@@ -3571,8 +3571,14 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return p.hour>=6 ? iso : isoAddDays(iso,-1);
   }
   function eventIsActive(e,boundaryIso){
-    return e[5]==='event' && !!e[6] && e[0]<=boundaryIso && boundaryIso<e[6];
+  if(e[5]!=='event' || !e[6] || e[0]>boundaryIso) return false;
+  const exactExpiry=e[8];
+  if(exactExpiry){
+    const ms=Date.parse(exactExpiry);
+    if(Number.isFinite(ms)) return Date.now()<ms;
   }
+  return boundaryIso<e[6];
+}
   function timelineFilterMatches(e){
     if(timelineFilter==='all') return true;
     if(timelineFilter==='maps') return e[5]==='region' || e[5]==='seasonal-map';
@@ -3585,7 +3591,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(title.startsWith('Oceanic Festival')) return 'Global Aug 18–31. Prioritize Beach Shovels; Bingo Draw 2 overlaps on Charming Glance, so Destiny Fruit spending can progress both events.';
     if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. This run overlaps Oceanic, so Fruit spending progresses both.';
     if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools to generate scratch cards. Aug 26–31 overlaps Oceanic, so Realm activity can also progress Beach Shovel objectives.';
-    if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Redeem by Aug 25.';
+    if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';
     if(title.startsWith('Grand Treasure Hunt')){
       const reward=(text.match(/Lv\.5:\s*([^·.]+)/)||[])[1];
       return reward ? `Lv.5 reward: ${reward.trim()}. Auroradrasil Energy carries over.` : 'Check the Lv.5 reward before spending saved Auroradrasil Energy; unused Energy carries over.';
@@ -4047,7 +4053,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     [/bingo draw/i, 'Aug 19–26 on Charming Glance. Clear daily missions first; use Destiny Fruits only if you are pushing Bingo or overlapping Oceanic objectives.'],
     [/lucky scratch/i, 'Starts Aug 26. Save Material Realm tools now, then spend them while Lucky Scratch is active to feed its ticket missions.'],
     [/grand treasure hunt|treasure hunt/i, 'Weekly phase. Auroradrasil Energy carries over, so save it unless this phase has the Lv.5 reward or relic you want.'],
-    [/gift code|4p7y2r9m/i, 'Redeem 4P7Y2R9M by Aug 25 for 2,000 Rolla + 120 Dawnium. Exact cutoff time is community-reported, so claim it early.'],
+    [/gift code|4p7y2r9m/i, 'Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT). Reward was 2,000 Rolla + 120 Dawnium.'],
     [/season 1.*(end|final|prep)|season prep/i, 'Finish Season 1 scoring and any last upgrades before the Aug 30, 6:00 AM PT reset. Preserve the S2 materials your planner marks as reserved.'],
     [/season 2.*(start|open)|loong haven/i, 'Season 2 opens Aug 30 at the 6:00 AM PT reset. Expect Tier IV progression and a fresh seasonal-growth loop; update the planner after rollover.']
   ];
