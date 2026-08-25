@@ -1,0 +1,90 @@
+name: Correct gift expiry timing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/correct-gift-expiry.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Correct exact gift expiry
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old = "['2026-08-19',36,'Global Gift','Weekly gift code · 4P7Y2R9M','2,000 Rolla + 120 Dawnium · current code lists report expiry Aug 25; redeem ASAP.','event','2026-08-26'],"
+          new = "['2026-08-19',36,'Global Gift','Weekly gift code · 4P7Y2R9M','2,000 Rolla + 120 Dawnium · MEmu reports expiry Aug 25 at 00:00 UTC-5, which is Aug 24 at 10:00 PM PDT.','event','2026-08-25',null,'2026-08-24T22:00:00-07:00'],"
+          if old not in s:
+              raise SystemExit('gift-code row anchor not found')
+          s = s.replace(old, new, 1)
+
+          old_active = "  function eventIsActive(e,boundaryIso){\n    return e[5]==='event' && !!e[6] && e[0]<=boundaryIso && boundaryIso<e[6];\n  }"
+          new_active = """  function eventIsActive(e,boundaryIso){
+    if(e[5]!=='event' || !e[6] || e[0]>boundaryIso) return false;
+    const exactExpiry=e[8];
+    if(exactExpiry){
+      const ms=Date.parse(exactExpiry);
+      if(Number.isFinite(ms)) return Date.now()<ms;
+    }
+    return boundaryIso<e[6];
+  }"""
+          if old_active not in s:
+              raise SystemExit('eventIsActive anchor not found')
+          s = s.replace(old_active, new_active, 1)
+
+          old_summary = "if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Redeem by Aug 25.';"
+          new_summary = "if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';"
+          if old_summary not in s:
+              raise SystemExit('gift summary anchor not found')
+          s = s.replace(old_summary, new_summary, 1)
+
+          old_compact = "[/gift code|4p7y2r9m/i, 'Redeem 4P7Y2R9M by Aug 25 for 2,000 Rolla + 120 Dawnium. Exact cutoff time is community-reported, so claim it early.'],"
+          new_compact = "[/gift code|4p7y2r9m/i, 'Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT). Reward was 2,000 Rolla + 120 Dawnium.'],"
+          if old_compact not in s:
+              raise SystemExit('compact gift summary anchor not found')
+          s = s.replace(old_compact, new_compact, 1)
+
+          if 'Timeline refreshed Aug 24, 2026 /' in s:
+              s = s.replace('Timeline refreshed Aug 24, 2026 /', 'Timeline refreshed Aug 25, 2026 /', 1)
+
+          p.write_text(s, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path('index.html').read_text(encoding='utf-8')
+          if "const exactExpiry=e[8];" not in text:
+              raise SystemExit('exact-expiry handling missing')
+          if "2026-08-24T22:00:00-07:00" not in text:
+              raise SystemExit('exact cutoff missing')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, re.S | re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/correct-gift-expiry.yml
+          git add index.html
+          git commit -m 'Correct weekly gift code expiry timing'
+          git push origin main
