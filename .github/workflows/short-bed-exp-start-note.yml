@@ -1,0 +1,59 @@
+name: Compact Bed EXP start note
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/short-bed-exp-start-note.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Shorten and align Bed EXP start note
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+
+          old='.bedReserveStartNote{display:block;margin:5px 0 0 24px;color:var(--status-info,var(--secondary-text));font-size:9.5px;line-height:1.4;font-weight:650;letter-spacing:0;text-transform:none}'
+          new='.bedReserveStartNote{display:block;margin:5px 0 0 25px;color:var(--status-info,var(--secondary-text));font-size:10px;line-height:1.3;font-weight:750;letter-spacing:0;text-transform:none}'
+          if old not in s:
+              raise SystemExit('Bed EXP note style not found')
+          s=s.replace(old,new,1)
+
+          old2='<small class="bedReserveStartNote">Start holding by <b>Aug 28, 6:00 PM PDT</b> to bank the full <b>36 hours</b> of Bed EXP for Season 2.</small>'
+          new2='<small class="bedReserveStartNote">Start <b>Aug 28, 6:00 PM PDT</b></small>'
+          if old2 not in s:
+              raise SystemExit('Bed EXP note markup not found')
+          s=s.replace(old2,new2,1)
+
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Commit and self-clean
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/short-bed-exp-start-note.yml
+          git add index.html
+          git commit -m 'Shorten Bed EXP reserve start note'
+          git push origin main
