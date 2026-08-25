@@ -1251,7 +1251,15 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 .holdExpOption>.bedReserveStartNote{grid-column:2;grid-row:2;margin:0!important;padding:0!important;display:block;line-height:1.25}
 .holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
 </style>
-<style id="season-toggle-top-align-v1">.seasonPlanningControls{align-items:flex-start!important}.seasonPlanningControls>label{align-self:flex-start!important}.holdExpOption{align-self:flex-start!important}</style></head>
+<style id="season-toggle-top-align-v1">.seasonPlanningControls{align-items:flex-start!important}.seasonPlanningControls>label{align-self:flex-start!important}.holdExpOption{align-self:flex-start!important}</style><style id="bed-exp-absolute-note-align-v1">
+.seasonPlanningControls{align-items:center!important}
+.holdExpOption{position:relative!important;display:flex!important;align-items:center!important;align-self:auto!important;justify-content:flex-start!important;gap:7px!important;grid-template-columns:none!important;grid-template-rows:none!important}
+.holdExpOption>input,.holdExpOption>#holdExpLabel{margin:0!important;grid-column:auto!important;grid-row:auto!important}
+.holdExpOption>.bedReserveStartNote{position:absolute!important;left:25px!important;top:calc(100% + 3px)!important;margin:0!important;padding:0!important;white-space:nowrap!important;line-height:1.25!important}
+.seasonPlanningControls:has(#holdExp:checked){padding-bottom:24px!important}
+.holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
+</style>
+</head>
 <body>
 <main>
 <header class="topbar" id="top">
