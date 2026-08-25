@@ -1,0 +1,71 @@
+name: Fix S2 checklist layout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-s2-checklist-layout.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Keep launch checklist out of compact renderer
+        shell: python
+        run: |
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old = """  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    const ps=[...card.querySelectorAll('p')];"""
+          new = """  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    // Rich checklist cards are already intentionally expanded. Compacting them\n    // duplicates the first step and can leave the following timeline DOM nested\n    // inside the checklist markup.\n    if(card.querySelector('.launchChecklist')){\n      card.dataset[COMPACT_MARK]='1';\n      return;\n    }\n    const ps=[...card.querySelectorAll('p')];"""
+          if old not in s:
+              if "if(card.querySelector('.launchChecklist'))" not in s:
+                  raise SystemExit('compactEntry anchor not found')
+          else:
+              s = s.replace(old, new, 1)
+
+          # Make sure the checklist itself fills the description column cleanly.
+          css = """
+<style id="s2-launch-checklist-layout-fix">
+.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+.entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
+.entry .launchChecklist{width:100%;max-width:none}
+</style>
+"""
+          if 'id="s2-launch-checklist-layout-fix"' not in s:
+              s = s.replace('</head>', css + '</head>', 1)
+
+          p.write_text(s, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-s2-checklist-layout.yml
+          git add index.html
+          git commit -m 'Fix Season 2 checklist timeline layout'
+          git push origin main
