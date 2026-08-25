@@ -1,0 +1,94 @@
+name: Fix rich timeline render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-rich-timeline-render.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Patch rich timeline rendering
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old = '''  function timelineDetailHtml(e){
+            const full=String((e&&e[4])||'').trim();
+            const summary=timelineSummaryText(e);
+          '''.replace('          ', '')
+          new = '''  function timelineDetailHtml(e){
+            const full=String((e&&e[4])||'').trim();
+            // Rich timeline entries already contain complete layout markup. Never
+            // truncate their raw HTML through timelineSummaryText().
+            if(/class=["']launchChecklist["']/.test(full)) return `<div class="timelineRichBody">${full}</div>`;
+            const summary=timelineSummaryText(e);
+          '''.replace('          ', '')
+
+          if 'return `<div class="timelineRichBody">${full}</div>`' not in s:
+              if old not in s:
+                  raise SystemExit('timelineDetailHtml anchor not found')
+              s = s.replace(old, new, 1)
+
+          old_css = '''<style id="s2-launch-checklist-layout-fix">
+          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+          .entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
+          .entry .launchChecklist{width:100%;max-width:none}
+          </style>'''.replace('          ', '')
+          new_css = '''<style id="s2-launch-checklist-layout-fix">
+          .entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
+          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+          .timelineRichBody{display:block;min-width:0;width:100%}
+          .entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
+          @media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
+          </style>'''.replace('          ', '')
+
+          if old_css in s:
+              s = s.replace(old_css, new_css, 1)
+          elif '.timelineRichBody{display:block;min-width:0;width:100%}' not in s:
+              raise SystemExit('checklist layout CSS anchor not found')
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path('index.html').read_text(encoding='utf-8')
+          if 'return `<div class="timelineRichBody">${full}</div>`' not in text:
+              raise SystemExit('rich checklist bypass missing')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, re.S | re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-rich-timeline-render.yml
+          if [ -f .github/workflows/fix-rich-timeline-entry.yml ]; then
+            git rm .github/workflows/fix-rich-timeline-entry.yml
+          fi
+          git add index.html
+          git commit -m 'Fix rich Season 2 checklist rendering'
+          git push origin main
