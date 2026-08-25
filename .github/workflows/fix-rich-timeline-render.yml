@@ -26,40 +26,32 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          old = '''  function timelineDetailHtml(e){
-            const full=String((e&&e[4])||'').trim();
-            const summary=timelineSummaryText(e);
-          '''.replace('          ', '')
-          new = '''  function timelineDetailHtml(e){
-            const full=String((e&&e[4])||'').trim();
-            // Rich timeline entries already contain complete layout markup. Never
-            // truncate their raw HTML through timelineSummaryText().
-            if(/class=["']launchChecklist["']/.test(full)) return `<div class="timelineRichBody">${full}</div>`;
-            const summary=timelineSummaryText(e);
-          '''.replace('          ', '')
-
+          bypass = '    if(/class=["\']launchChecklist["\']/.test(full)) return `<div class="timelineRichBody">${full}</div>`;\n'
           if 'return `<div class="timelineRichBody">${full}</div>`' not in s:
-              if old not in s:
-                  raise SystemExit('timelineDetailHtml anchor not found')
-              s = s.replace(old, new, 1)
+              fn = s.find('  function timelineDetailHtml(e){')
+              if fn < 0:
+                  raise SystemExit('timelineDetailHtml function not found')
+              anchor = s.find('    const summary=timelineSummaryText(e);', fn)
+              if anchor < 0:
+                  raise SystemExit('timelineDetailHtml summary line not found')
+              comment = '    // Rich entries contain complete markup; do not truncate their raw HTML.\n'
+              s = s[:anchor] + comment + bypass + s[anchor:]
 
-          old_css = '''<style id="s2-launch-checklist-layout-fix">
-          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-          .entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
-          .entry .launchChecklist{width:100%;max-width:none}
-          </style>'''.replace('          ', '')
+          start = s.find('<style id="s2-launch-checklist-layout-fix">')
+          if start < 0:
+              raise SystemExit('checklist layout style not found')
+          end = s.find('</style>', start)
+          if end < 0:
+              raise SystemExit('checklist layout style end not found')
+          end += len('</style>')
           new_css = '''<style id="s2-launch-checklist-layout-fix">
-          .entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
-          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-          .timelineRichBody{display:block;min-width:0;width:100%}
-          .entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
-          @media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
-          </style>'''.replace('          ', '')
-
-          if old_css in s:
-              s = s.replace(old_css, new_css, 1)
-          elif '.timelineRichBody{display:block;min-width:0;width:100%}' not in s:
-              raise SystemExit('checklist layout CSS anchor not found')
+.entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
+.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+.timelineRichBody{display:block;min-width:0;width:100%}
+.entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
+@media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
+</style>'''
+          s = s[:start] + new_css + s[end:]
 
           p.write_text(s, encoding='utf-8')
           PY
