@@ -24,8 +24,8 @@ jobs:
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          old="  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    const ps=[...card.querySelectorAll('p')];"
-          new="  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    if(card.querySelector('.launchChecklist')){\n      card.dataset[COMPACT_MARK]='1';\n      return;\n    }\n    const ps=[...card.querySelectorAll('p')];"
+          old="  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    if(card.querySelector('details.entryMore')){ card.dataset[COMPACT_MARK]='1'; return; }\n    const ps=[...card.querySelectorAll('p')];"
+          new="  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    if(card.querySelector('details.entryMore')){ card.dataset[COMPACT_MARK]='1'; return; }\n    if(card.querySelector('.launchChecklist')){ card.dataset[COMPACT_MARK]='1'; return; }\n    const ps=[...card.querySelectorAll('p')];"
           if old in s:
               s=s.replace(old,new,1)
           elif "if(card.querySelector('.launchChecklist'))" not in s:
