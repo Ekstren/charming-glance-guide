@@ -1,0 +1,80 @@
+name: Fix score safety margin
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-score-safety-margin.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Fix score safety margin basis
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+
+          old='''    const thresholdScore=Math.max(0,(targetStars-historical-cfg.starBase)*cfg.scorePerStar);
+    // Plan 5% above the exact score threshold so rounding/data drift does not leave the target barely missed.
+    const scoreSafetyMargin=0.05;
+    const desired=Math.ceil(thresholdScore*(1+scoreSafetyMargin));'''
+          new='''    const thresholdScore=Math.max(0,(targetStars-historical-cfg.starBase)*cfg.scorePerStar);
+    // Safety margin is 5% of ONE score threshold step, not 5% of the whole Primostar goal.
+    // S1: +5 score over the exact cutoff (5% of 100). S2: +2 score (ceil(5% of 27)).
+    const scoreSafetyMargin=0.05;
+    const scoreSafetyPoints=Math.ceil(cfg.scorePerStar*scoreSafetyMargin);
+    const desired=thresholdScore+scoreSafetyPoints;'''
+          if old not in s:
+              raise SystemExit('old score safety formula not found')
+          s=s.replace(old,new,1)
+
+          old_label='<label>Target Primostars <small style="color:var(--status-positive);font-weight:800">+5% score safety</small><input id="targetStars" type="number" value="200"></label>'
+          new_label='<label>Target Primostars<input id="targetStars" type="number" value="200"></label>'
+          s=s.replace(old_label,new_label,1)
+
+          s=s.replace('The optimizer deliberately targets 5% above the exact score threshold for the requested Primostar goal as a safety margin. ','The optimizer adds a safety buffer equal to 5% of one score-threshold step above the exact cutoff (S1: +5 score; S2: +2 score). ',1)
+
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Validate calculator JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          required=[
+            'const scoreSafetyPoints=Math.ceil(cfg.scorePerStar*scoreSafetyMargin);',
+            'const desired=thresholdScore+scoreSafetyPoints;'
+          ]
+          for item in required:
+              if item not in text: raise SystemExit(f'missing {item}')
+          if '+5% score safety' in text:
+              raise SystemExit('old Primostar-input badge still present')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S|re.I)
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-score-safety-margin.yml
+          git add index.html
+          git commit -m 'Fix score safety margin basis'
+          git push origin main
