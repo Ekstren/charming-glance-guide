@@ -18,24 +18,24 @@ jobs:
           ref: main
 
       - name: Patch rich timeline rendering
-        shell: bash
+        shell: python
         run: |
-          python - <<'PY'
           from pathlib import Path
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          bypass = '    if(/class=["\']launchChecklist["\']/.test(full)) return `<div class="timelineRichBody">${full}</div>`;\n'
-          if 'return `<div class="timelineRichBody">${full}</div>`' not in s:
+          rich_line = "    if(full.includes('launchChecklist')) return '<div class=\"timelineRichBody\">'+full+'</div>';"
+          if rich_line not in s:
               fn = s.find('  function timelineDetailHtml(e){')
               if fn < 0:
                   raise SystemExit('timelineDetailHtml function not found')
-              anchor = s.find('    const summary=timelineSummaryText(e);', fn)
+              needle = '    const summary=timelineSummaryText(e);'
+              anchor = s.find(needle, fn)
               if anchor < 0:
                   raise SystemExit('timelineDetailHtml summary line not found')
-              comment = '    // Rich entries contain complete markup; do not truncate their raw HTML.\n'
-              s = s[:anchor] + comment + bypass + s[anchor:]
+              addition = "    // Rich entries contain complete markup; do not truncate their raw HTML.\n" + rich_line + "\n"
+              s = s[:anchor] + addition + s[anchor:]
 
           start = s.find('<style id="s2-launch-checklist-layout-fix">')
           if start < 0:
@@ -45,16 +45,15 @@ jobs:
               raise SystemExit('checklist layout style end not found')
           end += len('</style>')
           new_css = '''<style id="s2-launch-checklist-layout-fix">
-.entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
-.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-.timelineRichBody{display:block;min-width:0;width:100%}
-.entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
-@media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
-</style>'''
+          .entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
+          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+          .timelineRichBody{display:block;min-width:0;width:100%}
+          .entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
+          @media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
+          </style>'''.replace('          ', '')
           s = s[:start] + new_css + s[end:]
 
           p.write_text(s, encoding='utf-8')
-          PY
 
       - name: Validate inline JavaScript
         shell: bash
@@ -63,7 +62,7 @@ jobs:
           from pathlib import Path
           import re
           text = Path('index.html').read_text(encoding='utf-8')
-          if 'return `<div class="timelineRichBody">${full}</div>`' not in text:
+          if "if(full.includes('launchChecklist'))" not in text:
               raise SystemExit('rich checklist bypass missing')
           scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, re.S | re.I)
           if not scripts:
