@@ -22,30 +22,15 @@ jobs:
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          old="""    const afterPlanTools={
-      ore:Math.max(0,(plan.realm?.ore?.bankedRemaining||0)+(plan.realm?.ore?.sparePurchasedRuns||0)),
-      essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)+protectedKnuckles),
-      sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0)+protectedShovels)
-    };
-"""
-          new="""    const afterPlanTools={
-      ore:Math.max(0,(plan.realm?.ore?.bankedRemaining||0)+(plan.realm?.ore?.sparePurchasedRuns||0)),
-      essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)),
-      sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0))
-    };
-"""
-          if old not in s:
-              raise SystemExit('afterPlanTools block not found')
+          old="    const afterPlanTools={\n      ore:Math.max(0,(plan.realm?.ore?.bankedRemaining||0)+(plan.realm?.ore?.sparePurchasedRuns||0)),\n      essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)+protectedKnuckles),\n      sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0)+protectedShovels)\n    };\n"
+          new="    const afterPlanTools={\n      ore:Math.max(0,(plan.realm?.ore?.bankedRemaining||0)+(plan.realm?.ore?.sparePurchasedRuns||0)),\n      essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)),\n      sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0))\n    };\n"
+          if old not in s: raise SystemExit('afterPlanTools block not found')
           s=s.replace(old,new,1)
           old2="el.textContent=`After plan: ${fmt(value)} left${protectedCount?` · ${fmt(protectedCount)} S2 reserve`:''}`;"
           new2="el.textContent=`After recommended plan: ${fmt(value)} spendable left${protectedCount?` · ${fmt(protectedCount)} S2 reserve`:''}`;"
-          if old2 not in s:
-              raise SystemExit('after plan label not found')
+          if old2 not in s: raise SystemExit('after plan label not found')
           s=s.replace(old2,new2,1)
-          old3="el.textContent=`Suggested: ${suggested[d.key]}/day`;"
-          new3="el.textContent=`Suggested: up to ${suggested[d.key]}/day`;"
-          if old3 in s:
-              s=s.replace(old3,new3,1)
+          s=s.replace("el.textContent=`Suggested: ${suggested[d.key]}/day`;","el.textContent=`Suggested: up to ${suggested[d.key]}/day`;",1)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Validate inline JavaScript
