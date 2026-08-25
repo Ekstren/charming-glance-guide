@@ -22,6 +22,7 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
@@ -33,12 +34,12 @@ jobs:
                   raise SystemExit('summary helper anchor not found')
               text = text.replace(summary_anchor, checklist_summary + summary_anchor, 1)
 
-          old = "    // Rich entries contain complete markup; do not truncate their raw HTML.\n    if(full.includes('launchChecklist')) return '<div class=\\\"timelineRichBody\\\">'+full+'</div>';"
-          new = "    // Rich entries contain complete markup. Keep them intact behind Details instead of\n    // passing raw HTML through the text truncator or leaving a long card visible by default.\n    if(full.includes('launchChecklist')){\n      const summary=timelineSummaryText(e);\n      return `<p>${summary}</p><details class=\\\"entryMore\\\"><summary>Checklist</summary><div class=\\\"timelineRichBody\\\">${full}</div></details>`;\n    }"
           if '<summary>Checklist</summary>' not in text:
-              if old not in text:
+              pattern = r"    // Rich entries contain complete markup; do not truncate their raw HTML\.\n    if\(full\.includes\('launchChecklist'\)\) return .*?;\n"
+              replacement = "    // Rich entries contain complete markup. Keep them intact behind Details instead of\n    // passing raw HTML through the text truncator or leaving a long card visible by default.\n    if(full.includes('launchChecklist')){\n      const summary=timelineSummaryText(e);\n      return `<p>${summary}</p><details class=\"entryMore\"><summary>Checklist</summary><div class=\"timelineRichBody\">${full}</div></details>`;\n    }\n"
+              text, count = re.subn(pattern, replacement, text, count=1)
+              if count != 1:
                   raise SystemExit('rich checklist renderer anchor not found')
-              text = text.replace(old, new, 1)
 
           path.write_text(text, encoding='utf-8')
 
