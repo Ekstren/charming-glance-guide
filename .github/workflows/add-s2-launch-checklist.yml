@@ -18,8 +18,9 @@ jobs:
           ref: main
 
       - name: Add readable Season 2 launch checklist
-        shell: python
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
           import re
 
@@ -27,15 +28,15 @@ jobs:
           text = path.read_text(encoding='utf-8')
 
           if 'Season 2 launch checklist' not in text:
-              entry = '''  ['2026-08-30',47,'S2 Launch','Season 2 launch checklist','<span class="launchChecklist"><span><b>1.</b><strong>Log in after Season 2 is live.</strong><em>Make sure the rollover/reset has fully happened before claiming anything.</em></span><span><b>2.</b><strong>Claim Astral / season rewards.</strong><em>Grab the rollover, Astral Pact, and other immediately available season rewards.</em></span><span><b>3.</b><strong>Rank up as far as possible.</strong><em>Do this before spending Stamina or Material Realm resources so later rewards use your higher rank where applicable.</em></span><span><b>4.</b><strong>Claim your saved Bed EXP.</strong><em>Collect the banked 36 hours now. Current community testing says waiting for statues does not increase EXP already stored.</em></span><span><b>5.</b><strong>Push the new map and activate reachable statues.</strong><em>Explore as far as your level allows and activate every Goddess / Lost Goddess Statue you can reach.</em></span><span><b>6.</b><strong>Use Bed boosts after statue progress.</strong><em>Use the free 2-hour Bed boost and other Bed speed-ups after pushing statues so the new rate applies to the boosted time.</em></span><span><b>7.</b><strong>Spend Stamina and Material Realm resources.</strong><em>Once rank and early map progress are set, start using saved Realm tools, refreshes, and Stamina.</em></span><span><b>8.</b><strong>Finish progression cleanup.</strong><em>Do class advancement, relics, gear, Fantomons, and other upgrades as the new level gates open.</em></span></span>','feature'],
-'''
+              entry = """  ['2026-08-30',47,'S2 Launch','Season 2 launch checklist','<span class=\"launchChecklist\"><span><b>1.</b><strong>Log in after Season 2 is live.</strong><em>Make sure the rollover/reset has fully happened before claiming anything.</em></span><span><b>2.</b><strong>Claim Astral / season rewards.</strong><em>Grab the rollover, Astral Pact, and other immediately available season rewards.</em></span><span><b>3.</b><strong>Rank up as far as possible.</strong><em>Do this before spending Stamina or Material Realm resources so later rewards use your higher rank where applicable.</em></span><span><b>4.</b><strong>Claim your saved Bed EXP.</strong><em>Collect the banked 36 hours now. Current community testing says waiting for statues does not increase EXP already stored.</em></span><span><b>5.</b><strong>Push the new map and activate reachable statues.</strong><em>Explore as far as your level allows and activate every Goddess / Lost Goddess Statue you can reach.</em></span><span><b>6.</b><strong>Use Bed boosts after statue progress.</strong><em>Use the free 2-hour Bed boost and other Bed speed-ups after pushing statues so the new rate applies to the boosted time.</em></span><span><b>7.</b><strong>Spend Stamina and Material Realm resources.</strong><em>Once rank and early map progress are set, start using saved Realm tools, refreshes, and Stamina.</em></span><span><b>8.</b><strong>Finish progression cleanup.</strong><em>Do class advancement, relics, gear, Fantomons, and other upgrades as the new level gates open.</em></span></span>','feature'],
+"""
               matches = list(re.finditer(r"(?m)^[ \t]*\['2026-08-30'[^\n]*\n?", text))
               if not matches:
                   raise SystemExit('Could not find any Aug 30 timeline entry')
               pos = matches[-1].end()
               text = text[:pos] + entry + text[pos:]
 
-          css = '''
+          css = """
 <style id="s2-launch-checklist-v1">
 .launchChecklist{display:grid;gap:8px;margin-top:8px}
 .launchChecklist>span{display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:9px;row-gap:2px;border:1px solid var(--line);background:var(--filter-bg);border-radius:10px;padding:9px 11px}
@@ -44,11 +45,12 @@ jobs:
 .launchChecklist>span>em{grid-column:2;color:var(--secondary-text);font-size:10px;line-height:1.45;font-style:normal}
 @media(max-width:700px){.launchChecklist>span{grid-template-columns:24px minmax(0,1fr);padding:8px 9px}}
 </style>
-'''
+"""
           if 'id="s2-launch-checklist-v1"' not in text:
               text = text.replace('</head>', css + '</head>', 1)
 
           path.write_text(text, encoding='utf-8')
+          PY
 
       - name: Validate inline JavaScript
         shell: bash
