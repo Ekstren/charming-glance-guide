@@ -1,0 +1,57 @@
+name: Fix Bed EXP toggle alignment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-bed-exp-toggle-alignment.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Fix Bed EXP toggle alignment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css='''
+<style id="bed-exp-absolute-note-align-v1">
+.seasonPlanningControls{align-items:center!important}
+.holdExpOption{position:relative!important;display:flex!important;align-items:center!important;align-self:auto!important;justify-content:flex-start!important;gap:7px!important;grid-template-columns:none!important;grid-template-rows:none!important}
+.holdExpOption>input,.holdExpOption>#holdExpLabel{margin:0!important;grid-column:auto!important;grid-row:auto!important}
+.holdExpOption>.bedReserveStartNote{position:absolute!important;left:25px!important;top:calc(100% + 3px)!important;margin:0!important;padding:0!important;white-space:nowrap!important;line-height:1.25!important}
+.seasonPlanningControls:has(#holdExp:checked){padding-bottom:24px!important}
+.holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
+</style>
+'''
+          if 'id="bed-exp-absolute-note-align-v1"' not in s:
+              s=s.replace('</head>', css+'</head>', 1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Commit and self-clean
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-bed-exp-toggle-alignment.yml
+          git add index.html
+          git commit -m 'Keep Bed EXP toggle aligned with reserve toggles'
+          git push origin main
