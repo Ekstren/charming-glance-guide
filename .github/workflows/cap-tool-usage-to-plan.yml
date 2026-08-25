@@ -1,0 +1,83 @@
+name: Cap tool usage to projected plan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cap-tool-usage-to-plan.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Cap displayed tool usage to projected season-end inventory
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          start=s.index('  function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0){')
+          end=s.index('  function setRealmShortfallBreakdown',start)
+          replacement='''  function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0){
+    const el=$(id); if(!el) return;
+    el.classList.remove('toolNeed','toolLeft');
+    const per=Math.max(0,Number(yieldVal)||0);
+    const hard=Math.max(0,Number(hardShort)||0);
+    const key=label==='Hammers'?'ore':label==='Knuckles'?'essence':label==='Shovels'?'sand':null;
+    const inv=key?realmInventoryFor(key,activeCalcConfig()):null;
+    const protectedCount=Math.max(0,Math.floor(Number(inv?.protectedRuns??protectedRuns)||0));
+    const materialName=label==='Hammers'?'Ore':label==='Knuckles'?'Essence':label==='Shovels'?'Sand':'materials';
+    const finiteRuns=Number(top?.runsUsed);
+    const maxRuns=Math.max(0,Math.floor(Number(top?.maxRuns)||0));
+    const hardNeedRuns=hard>0.5&&per>0?Math.ceil(hard/per):0;
+    // Desired tool usage is the amount the target actually requires. For an impossible
+    // target, maxRuns was only the theoretical Realm-capacity portion, so add the
+    // remaining hard shortfall rather than pretending those theoretical tools exist.
+    const desiredRuns=Math.max(0,Math.floor(Number.isFinite(finiteRuns)?finiteRuns:(hard>0.5?maxRuns+hardNeedRuns:0)));
+    // The Material Realm panel's Season end estimate is manual inventory + the user's
+    // selected daily refresh plan. Reserve-protected tools are excluded from spendable.
+    const projectedSpendable=Math.max(0,Math.floor(Number(inv?.banked)||0));
+    const used=Math.min(desiredRuns,projectedSpendable);
+    const gained=used*per;
+    const spendableRemaining=Math.max(0,projectedSpendable-used);
+    const remaining=spendableRemaining+protectedCount;
+    const remainingMaterial=remaining*per;
+    const needed=Math.max(0,desiredRuns-used);
+    const neededMaterial=needed*per;
+    const protectedText=protectedCount?` · ${fmt(protectedCount)} S2-protected`:'';
+    const usedLine=`<span class="toolUsageRow toolUsedLine"><i>${label} used</i><b>${fmt(used)}</b><em>${per>0?`≈${fmtCompact(gained)} ${materialName} gained`:''}</em></span>`;
+    const remainingLine=`<span class="toolUsageRow toolRemainingLine"><i>${label} remaining</i><b>${fmt(remaining)}</b><em>${per>0?`≈${fmtCompact(remainingMaterial)} ${materialName}`:''}${protectedText}</em></span>`;
+    const needLine=needed?`<span class="toolUsageRow toolNeedLine"><i>Need more</i><b>${fmt(needed)}</b><em>≈${fmtCompact(neededMaterial)} ${materialName}</em></span>`:'';
+    el.innerHTML=usedLine+remainingLine+needLine;
+    el.classList.add(needed?'toolNeed':'toolLeft');
+  }
+'''
+          s=s[:start]+replacement+s[end:]
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+      - name: Commit and self-clean
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/cap-tool-usage-to-plan.yml
+          git add index.html
+          git commit -m 'Cap tool usage at projected season inventory'
+          git push origin main
