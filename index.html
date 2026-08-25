@@ -1268,6 +1268,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 .launchChecklist>span>em{grid-column:2;color:var(--secondary-text);font-size:10px;line-height:1.45;font-style:normal}
 @media(max-width:700px){.launchChecklist>span{grid-template-columns:24px minmax(0,1fr);padding:8px 9px}}
 </style>
+<style id="s2-launch-checklist-layout-fix">
+.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+.entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
+.entry .launchChecklist{width:100%;max-width:none}
+</style>
 </head>
 <body>
 <main>
@@ -4072,6 +4077,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   function compactEntry(card){
     if(card.dataset[COMPACT_MARK]) return;
     if(card.querySelector('details.entryMore')){ card.dataset[COMPACT_MARK]='1'; return; }
+    if(card.querySelector('.launchChecklist')){ card.dataset[COMPACT_MARK]='1'; return; }
     const ps=[...card.querySelectorAll('p')];
     if(ps.length<2){ card.dataset[COMPACT_MARK]='1'; return; }
     const desc=ps[ps.length-1];
