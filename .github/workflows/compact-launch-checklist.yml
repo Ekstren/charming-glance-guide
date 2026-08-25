@@ -1,0 +1,87 @@
+name: Compact Season 2 checklist
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/compact-launch-checklist.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Compact rich checklist rendering
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+
+          old="""    if(title==='Loong Haven opens') return 'Season 2 begins. Key level gates: Lv.106 T4/Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';
+    if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';
+"""
+          new="""    if(title==='Loong Haven opens') return 'Season 2 begins. Key level gates: Lv.106 T4/Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';
+    if(title==='Season 2 launch checklist') return 'At S2 reset: claim rollover rewards, rank up first, push reachable statues, then spend saved Bed boosts, Stamina and Material Realm resources.';
+    if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';
+"""
+          if old not in s:
+              raise SystemExit('summary helper anchor not found')
+          s=s.replace(old,new,1)
+
+          old2="""    // Rich entries contain complete markup; do not truncate their raw HTML.
+    if(full.includes('launchChecklist')) return '<div class=\"timelineRichBody\">'+full+'</div>';
+    const summary=timelineSummaryText(e);
+"""
+          new2="""    // Rich entries contain complete markup. Keep them intact behind Details instead of
+    // passing raw HTML through the text truncator or leaving a long card visible by default.
+    if(full.includes('launchChecklist')){
+      const summary=timelineSummaryText(e);
+      return `<p>${summary}</p><details class=\"entryMore\"><summary>Checklist</summary><div class=\"timelineRichBody\">${full}</div></details>`;
+    }
+    const summary=timelineSummaryText(e);
+"""
+          if old2 not in s:
+              raise SystemExit('rich checklist renderer anchor not found')
+          s=s.replace(old2,new2,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          required=[
+            "if(title==='Season 2 launch checklist')",
+            '<summary>Checklist</summary>',
+            'timelineRichBody'
+          ]
+          for item in required:
+              if item not in text:
+                  raise SystemExit(f'missing expected compact checklist marker: {item}')
+          scripts=re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/compact-launch-checklist.yml
+          git add index.html
+          git commit -m 'Compact Season 2 launch checklist card'
+          git push origin main
