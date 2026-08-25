@@ -1238,6 +1238,12 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 @media(max-width:700px){.planCosts small.toolBalance>.toolUsageRow{grid-template-columns:minmax(110px,1fr) auto minmax(110px,1.2fr)!important}.realmDailyInputs label{grid-template-rows:32px 46px auto!important}}
 </style>
 <style id="sand-cost-clarity-v1">#sandCost::after{content:" S1 relic cost"!important}</style>
+
+<style id="bed-exp-start-note">
+.bedReserveStartNote{display:block;margin:5px 0 0 24px;color:var(--status-info,var(--secondary-text));font-size:9.5px;line-height:1.4;font-weight:650;letter-spacing:0;text-transform:none}
+.bedReserveStartNote b{color:var(--status-info,var(--blue));font-weight:850}
+input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
+</style>
 </head>
 <body>
 <main>
@@ -1324,7 +1330,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
         <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="rolloverHold seasonPlanningControls">
-          <label><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span></label>
+          <label><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span><small class="bedReserveStartNote">Start holding by <b>Aug 28, 6:00 PM PDT</b> to bank the full <b>36 hours</b> of Bed EXP for Season 2.</small></label>
           <label><input id="grace12" checked type="checkbox"> Keep a 12-hour finishing window</label>
           <label><input id="reserveS2Essence" checked type="checkbox"> Reserve S2 Essence</label>
           <label><input id="reserveS2Sand" checked type="checkbox"> Reserve S2 Sand</label>
