@@ -3429,6 +3429,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     ['2026-08-16',33,'Dungeon','Hellhold','Normal 2.25M · Hard 2.75M · Nightmare 3.9M · Purgatory 6.2M · QY: final S1 dungeon lasts about two weeks','dungeon'],
     ['2026-08-18',35,'Event','Oceanic Festival · Summer Reverie','Global Aug 18–31 · 7-day sign-in includes Solar Halo (permanent-stat food) plus summer rewards · Ice Cream Shop earns Iridescent Seashells · Ocean Chase uses Beach Shovels. Grand prizes: R1 Lucky Ticket · R2 Magic Drill · R3 Glittering Diamond · R4 Skill Shard Voucher · R5+ 2 Mythic Auroral Badges. Festival Shop priority: Beach Shovels first, then discounted Legendary Auroral Badges/Stellati. Current community confirmation: the recurring Destiny Fruit mission chain reaches 200 Fruits; on Charming Glance, Bingo Draw 2 overlaps Aug 19–26, so Fruit spending can progress both.','event','2026-09-01'],
     ['2026-08-19',36,'Global Gift','Weekly gift code · 4P7Y2R9M','2,000 Rolla + 120 Dawnium · MEmu reports expiry Aug 25 at 00:00 UTC-5, which is Aug 24 at 10:00 PM PDT.','event','2026-08-25',null,'2026-08-24T22:00:00-07:00'],
+    ['2026-08-25',42,'Global Gift','Gift code · Summer','UNCONFIRMED community lead: a current Sword × Staff code tracker updated Aug 25 lists Summer as a new working code. Reward and expiry have not been independently confirmed; try it promptly and treat availability as provisional.','event',null,'unconfirmed'],
 
     // ---- Season 2 · Loong Haven ----
     ['2026-08-29',46,'Feature','Season 2 final-day prep','Dungeon runs: buy 2 extra attempts and use none so you enter S2 at 4/2, then buy 2 more after reset for up to 6 day-one runs. Bed EXP historically banks up to 36h, but Aug 21 community reports say recent maintenance behavior may auto-claim stored EXP; verify the in-game transition notice before relying on the full bank.','feature'],
@@ -3592,6 +3593,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. This run overlaps Oceanic, so Fruit spending progresses both.';
     if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools to generate scratch cards. Aug 26–31 overlaps Oceanic, so Realm activity can also progress Beach Shovel objectives.';
     if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';
+    if(title==='Gift code · Summer') return 'UNCONFIRMED Aug 25 community lead: code Summer is reported working; reward and expiry are not yet independently confirmed, so try it promptly.';
     if(title.startsWith('Grand Treasure Hunt')){
       const reward=(text.match(/Lv\.5:\s*([^·.]+)/)||[])[1];
       return reward ? `Lv.5 reward: ${reward.trim()}. Auroradrasil Energy carries over.` : 'Check the Lv.5 reward before spending saved Auroradrasil Energy; unused Energy carries over.';
