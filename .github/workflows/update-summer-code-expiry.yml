@@ -1,0 +1,61 @@
+name: Update Summer code expiry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-summer-code-expiry.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Patch timeline code window
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old="['2026-08-25',42,'Global Gift','Gift code · Summer','UNCONFIRMED community lead: a current Sword × Staff code tracker updated Aug 25 lists Summer as a new working code. Reward and expiry have not been independently confirmed; try it promptly and treat availability as provisional.','event',null,'unconfirmed'],"
+          new="['2026-08-25',42,'Global Gift','Gift code · Summer','UNCONFIRMED community lead: current Aug 25 code trackers report Summer working and one tracker reports validity through Sep 1. Reward and exact cutoff have not been independently confirmed; try it promptly and treat the window as provisional.','event','2026-09-02','unconfirmed'],"
+          if old not in s:
+              raise SystemExit('Summer timeline row not found')
+          s=s.replace(old,new,1)
+          old_summary="if(title==='Gift code · Summer') return 'UNCONFIRMED Aug 25 community lead: code Summer is reported working; reward and expiry are not yet independently confirmed, so try it promptly.';"
+          new_summary="if(title==='Gift code · Summer') return 'UNCONFIRMED: code Summer is reported working through Sep 1; reward and exact cutoff are not independently confirmed, so redeem promptly.';"
+          if old_summary not in s:
+              raise SystemExit('Summer summary helper not found')
+          s=s.replace(old_summary,new_summary,1)
+          p.write_text(s,encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          assert "Gift code · Summer" in text
+          assert "through Sep 1" in text
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/update-summer-code-expiry.yml
+          git add index.html
+          git commit -m 'Refine Summer gift code window'
+          git push origin main
