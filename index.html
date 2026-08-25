@@ -3598,6 +3598,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     }
     if(title==='Season 2 final-day prep') return 'Save dungeon attempts for S2: buy 2 and use none, then buy 2 more after reset for up to 6 day-one runs. Treat 36h Bed EXP banking as unconfirmed until the transition notice verifies it.';
     if(title==='Loong Haven opens') return 'Season 2 begins. Key level gates: Lv.106 T4/Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';
+    if(title==='Season 2 launch checklist') return 'At S2 reset: claim rollover rewards, rank up first, push reachable statues, then spend saved Bed boosts, Stamina and Material Realm resources.';
     if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';
     if(text.length<=170) return text;
     const sentences=text.split(/\.\s+/).filter(Boolean);
@@ -3609,8 +3610,12 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   }
   function timelineDetailHtml(e){
     const full=String((e&&e[4])||'').trim();
-    // Rich entries contain complete markup; do not truncate their raw HTML.
-    if(full.includes('launchChecklist')) return '<div class="timelineRichBody">'+full+'</div>';
+    // Rich entries contain complete markup. Keep them intact behind Details instead of
+    // passing raw HTML through the text truncator or leaving a long card visible by default.
+    if(full.includes('launchChecklist')){
+      const summary=timelineSummaryText(e);
+      return `<p>${summary}</p><details class="entryMore"><summary>Checklist</summary><div class="timelineRichBody">${full}</div></details>`;
+    }
     const summary=timelineSummaryText(e);
     if(!full || summary===full) return `<p>${full}</p>`;
     return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
