@@ -23,52 +23,33 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
 
-          old = '''  function timelineDetailHtml(e){
-            const full=String((e&&e[4])||'').trim();
-            const summary=timelineSummaryText(e);
-            if(!full || summary===full) return `<p>${full}</p>`;
-            return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
-          }'''
-          # Normalize indentation from the source before matching.
-          old = old.replace('          const','    const').replace('          if','    if').replace('          return','    return').replace('          }','  }')
-          new = '''  function timelineDetailHtml(e){
-            const full=String((e&&e[4])||'').trim();
-            // Rich timeline bodies contain their own layout markup. Never run them through
-            // the plain-text summarizer: slicing HTML can leave an open tag and corrupt
-            // every timeline card that follows it in the DOM.
-            if(/class=["']launchChecklist["']/.test(full)) return `<div class="timelineRichBody">${full}</div>`;
-            const summary=timelineSummaryText(e);
-            if(!full || summary===full) return `<p>${full}</p>`;
-            return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
-          }'''
-          new = new.replace('          const','    const').replace('          //','    //').replace('          //','    //').replace('          if','    if').replace('          return','    return').replace('          }','  }')
+          marker='''    const summary=timelineSummaryText(e);\n'''
+          insert='''    // Rich timeline bodies already contain complete layout markup. Do not send\n    // them through the plain-text summarizer because truncating HTML can corrupt\n    // this card and the timeline DOM that follows it.\n    if(/class=["']launchChecklist["']/.test(full)) return `<div class="timelineRichBody">${full}</div>`;\n'''
+          if 'return `<div class="timelineRichBody">${full}</div>`' not in s:
+              pos=s.find('  function timelineDetailHtml(e){')
+              if pos<0: raise SystemExit('timelineDetailHtml not found')
+              anchor=s.find(marker,pos)
+              if anchor<0: raise SystemExit('timelineDetailHtml summary anchor not found')
+              s=s[:anchor]+insert+s[anchor:]
 
-          if 'if(/class=["\']launchChecklist["\']/.test(full))' not in s:
-              if old not in s:
-                  raise SystemExit('timelineDetailHtml anchor not found')
-              s = s.replace(old, new, 1)
+          start=s.find('<style id="s2-launch-checklist-layout-fix">')
+          if start<0: raise SystemExit('checklist layout style not found')
+          end=s.find('</style>',start)
+          if end<0: raise SystemExit('checklist layout style end not found')
+          end+=len('</style>')
+          new_css='''<style id="s2-launch-checklist-layout-fix">
+.entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
+.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
+.timelineRichBody{display:block;min-width:0;width:100%}
+.entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
+@media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
+</style>'''
+          s=s[:start]+new_css+s[end:]
 
-          old_css = '''<style id="s2-launch-checklist-layout-fix">
-          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-          .entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
-          .entry .launchChecklist{width:100%;max-width:none}
-          </style>'''.replace('          ','')
-          new_css = '''<style id="s2-launch-checklist-layout-fix">
-          .entry:has(.launchChecklist){grid-template-columns:160px minmax(0,1fr)}
-          .entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-          .timelineRichBody{display:block;min-width:0;width:100%}
-          .entry .launchChecklist{display:grid;width:100%;max-width:none;min-width:0}
-          @media(width<=720px){.entry:has(.launchChecklist){grid-template-columns:1fr}}
-          </style>'''.replace('          ','')
-          if old_css in s:
-              s = s.replace(old_css, new_css, 1)
-          elif '.timelineRichBody{display:block;min-width:0;width:100%}' not in s:
-              s = s.replace('</head>', new_css + '\n</head>', 1)
-
-          p.write_text(s, encoding='utf-8')
+          p.write_text(s,encoding='utf-8')
           PY
 
       - name: Validate fix and inline JavaScript
@@ -82,10 +63,9 @@ jobs:
               raise SystemExit('Rich timeline bypass missing')
           if '.timelineRichBody{display:block;min-width:0;width:100%}' not in text:
               raise SystemExit('Rich timeline layout CSS missing')
-          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
-          if not scripts:
-              raise SystemExit('No inline scripts found')
-          Path('/tmp/sxs.js').write_text('\n'.join(scripts), encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S|re.I)
+          if not scripts: raise SystemExit('No inline scripts found')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/sxs.js
 
