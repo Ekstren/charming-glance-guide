@@ -18,33 +18,23 @@ jobs:
           ref: main
 
       - name: Keep launch checklist out of compact renderer
-        shell: python
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
-
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-
-          old = """  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    const ps=[...card.querySelectorAll('p')];"""
-          new = """  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    // Rich checklist cards are already intentionally expanded. Compacting them\n    // duplicates the first step and can leave the following timeline DOM nested\n    // inside the checklist markup.\n    if(card.querySelector('.launchChecklist')){\n      card.dataset[COMPACT_MARK]='1';\n      return;\n    }\n    const ps=[...card.querySelectorAll('p')];"""
-          if old not in s:
-              if "if(card.querySelector('.launchChecklist'))" not in s:
-                  raise SystemExit('compactEntry anchor not found')
-          else:
-              s = s.replace(old, new, 1)
-
-          # Make sure the checklist itself fills the description column cleanly.
-          css = """
-<style id="s2-launch-checklist-layout-fix">
-.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}
-.entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}
-.entry .launchChecklist{width:100%;max-width:none}
-</style>
-"""
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old="  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    const ps=[...card.querySelectorAll('p')];"
+          new="  function compactEntry(card){\n    if(card.dataset[COMPACT_MARK]) return;\n    if(card.querySelector('.launchChecklist')){\n      card.dataset[COMPACT_MARK]='1';\n      return;\n    }\n    const ps=[...card.querySelectorAll('p')];"
+          if old in s:
+              s=s.replace(old,new,1)
+          elif "if(card.querySelector('.launchChecklist'))" not in s:
+              raise SystemExit('compactEntry anchor not found')
+          css='<style id="s2-launch-checklist-layout-fix">\n.entry:has(.launchChecklist)>div:last-child{min-width:0;width:100%}\n.entry:has(.launchChecklist) p:has(.launchChecklist){width:100%;max-width:none}\n.entry .launchChecklist{width:100%;max-width:none}\n</style>\n'
           if 'id="s2-launch-checklist-layout-fix"' not in s:
-              s = s.replace('</head>', css + '</head>', 1)
-
-          p.write_text(s, encoding='utf-8')
+              s=s.replace('</head>',css+'</head>',1)
+          p.write_text(s,encoding='utf-8')
+          PY
 
       - name: Validate inline JavaScript
         shell: bash
@@ -53,10 +43,10 @@ jobs:
           from pathlib import Path
           import re
           text=Path('index.html').read_text(encoding='utf-8')
-          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S|re.I)
           if not scripts:
               raise SystemExit('No inline scripts found')
-          Path('/tmp/sxs.js').write_text('\n'.join(scripts), encoding='utf-8')
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/sxs.js
 
