@@ -1,1 +1,1 @@
-apply-2026-08-26-guide-loadouts
+apply-2026-08-26-blue-sand
