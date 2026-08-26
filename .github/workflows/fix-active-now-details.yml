@@ -1,4 +1,5 @@
 name: Confirm Charming Glance S2
+# low-level trigger refresh
 on:
   push:
     paths:
