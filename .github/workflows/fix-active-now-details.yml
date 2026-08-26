@@ -1,4 +1,4 @@
-name: Fix Active Now Details
+name: Confirm Charming Glance S2
 on:
   push:
     paths:
@@ -12,66 +12,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Patch Active now details styling
+      - name: Confirm Charming Glance S2 timing
+        env:
+          PATCH_B64: CmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aApwPVBhdGgoImluZGV4Lmh0bWwiKQpzPXAucmVhZF90ZXh0KCkKcmVwbHMgPSB7CiIiIlNlYXNvbiAyIC8gPGI+Q3Jvc3NlZCBQYXRoczwvYj4gaXMgY3VycmVudGx5IGV4cGVjdGVkIGFyb3VuZCA8Yj5TZXJ2ZXIgRGF5IDQ3IC8gQXVnIDMwPC9iPi4gUHJ5ZHdlbiBzdXBwb3J0cyB0aGUgRGF5LTQ3IG1vZGVsLCB3aGlsZSBRWSB3YXJucyBtZXJnZXJzIGNhbiBzaGlmdCBMb29uZyBIYXZlbiBlbnRyeSB0aW1pbmcsIHNvIHRoZSBpbi1nYW1lIFRlbGVzY29wZS9jb3VudGRvd24gcmVtYWlucyB0aGUgZmluYWwgYXV0aG9yaXR5LiIiIjoKIiIiU2Vhc29uIDIgLyA8Yj5Dcm9zc2VkIFBhdGhzPC9iPiBpcyA8Yj5jb25maXJtZWQgZm9yIFNlcnZlciBEYXkgNDcgLyBBdWcgMzAgYXQgdGhlIDY6MDAgQU0gUERUIHJlc2V0PC9iPiBvbiBDaGFybWluZyBHbGFuY2UuIE9uIEF1ZyAyNiBhdCBhYm91dCA4OjE1IEFNIFBEVCwgdGhlIGluLWdhbWUgc2Vhc29uIGNvdW50ZG93biBzaG93ZWQgM2QgMjFoIHJlbWFpbmluZywgYWxpZ25pbmcgd2l0aCB0aGUgQXVnIDMwIHJlc2V0OyBQcnlkd2VuJ3MgRGF5LTQ3IG1vZGVsIGluZGVwZW5kZW50bHkgbWF0Y2hlcyB0aGF0IHRpbWluZy4iIiIsCiIiIlsnMjAyNi0wOC0yOScsNDYsJ0ZlYXR1cmUnLCdTZWFzb24gMiBmaW5hbC1kYXkgcHJlcCcsJ0V4cGVjdGVkIGZpbmFsIHByZXAgZGF5IGlmIENoYXJtaW5nIEdsYW5jZSBmb2xsb3dzIHRoZSBEYXktNDcgUzIgbW9kZWwuIFFZIE1hcGxlIGN1cnJlbnRseSBzYXlzIFMxIGNhbiBsYXN0IH40NC00NiBkYXlzIGFuZCB0aGF0IHNlcnZlciBtZXJnZXJzIGNhbiBhbHRlciBMb29uZyBIYXZlbiBlbnRyeSB0aW1pbmcsIHNvIHZlcmlmeSB0aGUgaW4tZ2FtZSBUZWxlc2NvcGUvY291bnRkb3duIGJlZm9yZSB3YWl0aW5nIHVudGlsIHRoaXMgZGF0ZS4gRHVuZ2VvbiBydW5zOiBidXkgMiBleHRyYSBhdHRlbXB0cyBhbmQgdXNlIG5vbmUgc28geW91IGVudGVyIFMyIGF0IDQvMiwgdGhlbiBidXkgMiBtb3JlIGFmdGVyIHJlc2V0IGZvciB1cCB0byA2IGRheS1vbmUgcnVucy4gQmVkIEVYUCBoaXN0b3JpY2FsbHkgYmFua3MgdXAgdG8gMzZoLCBidXQgQXVnIDIxIGNvbW11bml0eSByZXBvcnRzIHNheSByZWNlbnQgbWFpbnRlbmFuY2UgYmVoYXZpb3IgbWF5IGF1dG8tY2xhaW0gc3RvcmVkIEVYUDsgdmVyaWZ5IHRoZSB0cmFuc2l0aW9uIG5vdGljZSBiZWZvcmUgcmVseWluZyBvbiB0aGUgZnVsbCBiYW5rLicsJ2ZlYXR1cmUnLG51bGwsJ3VuY29uZmlybWVkJ10sIiIiOgoiIiJbJzIwMjYtMDgtMjknLDQ2LCdGZWF0dXJlJywnU2Vhc29uIDIgZmluYWwtZGF5IHByZXAnLCdDb25maXJtZWQgZmluYWwgcHJlcCBkYXkgZm9yIENoYXJtaW5nIEdsYW5jZTogdGhlIEF1ZyAyNiBpbi1nYW1lIHNlYXNvbiBjb3VudGRvd24gYWxpZ25zIFNlYXNvbiAyIHdpdGggdGhlIEF1ZyAzMCA2OjAwIEFNIFBEVCByZXNldC4gRHVuZ2VvbiBydW5zOiBidXkgMiBleHRyYSBhdHRlbXB0cyBhbmQgdXNlIG5vbmUgc28geW91IGVudGVyIFMyIGF0IDQvMiwgdGhlbiBidXkgMiBtb3JlIGFmdGVyIHJlc2V0IGZvciB1cCB0byA2IGRheS1vbmUgcnVucy4gQmVkIEVYUCBoaXN0b3JpY2FsbHkgYmFua3MgdXAgdG8gMzZoLCBidXQgQXVnIDIxIGNvbW11bml0eSByZXBvcnRzIHNheSByZWNlbnQgbWFpbnRlbmFuY2UgYmVoYXZpb3IgbWF5IGF1dG8tY2xhaW0gc3RvcmVkIEVYUDsgdmVyaWZ5IHRoZSB0cmFuc2l0aW9uIG5vdGljZSBiZWZvcmUgcmVseWluZyBvbiB0aGUgZnVsbCBiYW5rLicsJ2ZlYXR1cmUnXSwiIiIsCiIiIlsnMjAyNi0wOC0zMCcsNDcsJ1JlZ2lvbicsJ0xvb25nIEhhdmVuIG9wZW5zJywnRVhQRUNURUQgZnJvbSB0aGUgY29tbW9uIFNlcnZlciBEYXktNDcgbW9kZWw6IFNlYXNvbiAyIERheSAxIG9uIEF1ZyAzMCBhdCB0aGUgNjowMCBBTSBQVCByZXNldC4gUHJ5ZHdlbiBzYXlzIFQ0IGJlZ2lucyBhcm91bmQgRGF5IDQ3LCBidXQgUVkgTWFwbGUgY3VycmVudGx5IHNheXMgUzEgbGFzdHMgfjQ0LTQ2IGRheXMgYW5kIGV4cGxpY2l0bHkgd2FybnMgdGhhdCBzZXJ2ZXIgbWVyZ2VycyBjYW4gYWx0ZXIgdGhlIGRheSBMb29uZyBIYXZlbiBiZWNvbWVzIGF2YWlsYWJsZS4gTm8gQ2hhcm1pbmcgR2xhbmNlLXNwZWNpZmljIFRlbGVzY29wZS9jb3VudGRvd24gY29uZmlybWF0aW9uIGhhcyBiZWVuIGZvdW5kIHlldCwgc28gdmVyaWZ5IGluIGdhbWUuIE9uY2UgUzIgaXMgbGl2ZTogTHYuMTA2ID0gVDQgY2xhc3MgYWR2YW5jZW1lbnQgKyBMb29uZyBIYXZlbiBGaXZlOyBMdi4xMDggPSBGYW50b21vbiBBZHVsdCAvIE1hdGVyaWFsaXphdGlvbjsgTHYuMTE2ID0gRGVtb25iaW5kIFRvd2VyLicsJ3JlZ2lvbicsbnVsbCwndW5jb25maXJtZWQnXSwiIiI6CiIiIlsnMjAyNi0wOC0zMCcsNDcsJ1JlZ2lvbicsJ0xvb25nIEhhdmVuIG9wZW5zJywnQ09ORklSTUVEIGZvciBDaGFybWluZyBHbGFuY2U6IFNlYXNvbiAyIERheSAxIGJlZ2lucyBBdWcgMzAgYXQgdGhlIDY6MDAgQU0gUERUIHJlc2V0LiBPbiBBdWcgMjYgYXQgYWJvdXQgODoxNSBBTSBQRFQsIHRoZSBpbi1nYW1lIHNlYXNvbiBjb3VudGRvd24gc2hvd2VkIDNkIDIxaCByZW1haW5pbmcsIGFsaWduaW5nIHdpdGggdGhpcyByZXNldDsgUHJ5ZHdlbiBpbmRlcGVuZGVudGx5IHBsYWNlcyBUNCBhdCBTZXJ2ZXIgRGF5IDQ3LiBPbmNlIFMyIGlzIGxpdmU6IEx2LjEwNiA9IFQ0IGNsYXNzIGFkdmFuY2VtZW50ICsgTG9vbmcgSGF2ZW4gRml2ZTsgTHYuMTA4ID0gRmFudG9tb24gQWR1bHQgLyBNYXRlcmlhbGl6YXRpb247IEx2LjExNiA9IERlbW9uYmluZCBUb3dlci4nLCdyZWdpb24nXSwiIiIsCiIiIlsnMjAyNi0wOC0zMCcsNDcsJ0ZlYXR1cmUnLCdHZWFyIFJlZmluZW1lbnQgJiBBZmZpeCBUcmFuc2ZlcicsJ1NlYXNvbiAyIGZlYXR1cmUgY29uZmlybWVkIGJ5IFByeWR3ZW46IE15dGhpYy1vci1iZXR0ZXIgZ2VhciBjYW4gcmVyb2xsIGFmZml4ZXMsIGFuZCBhZmZpeGVzIGNhbiB0cmFuc2ZlciB0byBzYW1lLXR5cGUgTXl0aGljLW9yLWJldHRlciBnZWFyLiBTYW1lLXNlYXNvbiBBZmZpeCBUcmFuc2ZlciBpcyBmcmVlOyBjYXJyeWluZyBjaG9zZW4gYWZmaXhlcyBhY3Jvc3Mgc2Vhc29ucyB1c2VzIERpdmluZWNyYWZ0IFN0b25lcy4gVGhlIEF1ZyAzMCBkYXRlIGZvbGxvd3MgdGhlIGV4cGVjdGVkIENoYXJtaW5nIEdsYW5jZSBTMiBhbmNob3IsIHNvIHZlcmlmeSB0aGUgaW4tZ2FtZSBUZWxlc2NvcGUvY291bnRkb3duLicsJ2ZlYXR1cmUnLG51bGwsJ3VuY29uZmlybWVkJ10sIiIiOgoiIiJbJzIwMjYtMDgtMzAnLDQ3LCdGZWF0dXJlJywnR2VhciBSZWZpbmVtZW50ICYgQWZmaXggVHJhbnNmZXInLCdTZWFzb24gMiBmZWF0dXJlIGNvbmZpcm1lZCBieSBQcnlkd2VuOiBNeXRoaWMtb3ItYmV0dGVyIGdlYXIgY2FuIHJlcm9sbCBhZmZpeGVzLCBhbmQgYWZmaXhlcyBjYW4gdHJhbnNmZXIgdG8gc2FtZS10eXBlIE15dGhpYy1vci1iZXR0ZXIgZ2Vhci4gU2FtZS1zZWFzb24gQWZmaXggVHJhbnNmZXIgaXMgZnJlZTsgY2FycnlpbmcgY2hvc2VuIGFmZml4ZXMgYWNyb3NzIHNlYXNvbnMgdXNlcyBEaXZpbmVjcmFmdCBTdG9uZXMuIENoYXJtaW5nIEdsYW5jZSBTMiBpcyBjb25maXJtZWQgZm9yIHRoZSBBdWcgMzAgNjowMCBBTSBQRFQgcmVzZXQgYnkgdGhlIGluLWdhbWUgc2Vhc29uIGNvdW50ZG93bi4nLCdmZWF0dXJlJ10sIiIiLAoiImlmKHRpdGxlPT09J1NlYXNvbiAyIGZpbmFsLWRheSBwcmVwJykgcmV0dXJuICdFeHBlY3RlZCBBdWcgMjkgcHJlcCBpZiBTMiBsYW5kcyBBdWcgMzA7IHZlcmlmeSB0aGUgaW4tZ2FtZSBUZWxlc2NvcGUvY291bnRkb3duIGJlY2F1c2UgUVkgd2FybnMgbWVyZ2VycyBjYW4gc2hpZnQgTG9vbmcgSGF2ZW4gdGltaW5nLiBTYXZlIGR1bmdlb24gYXR0ZW1wdHMgYW5kIHRyZWF0IDM2aCBCZWQgRVhQIGJhbmtpbmcgYXMgdW5jb25maXJtZWQuJzsiIiI6CiIiaWYodGl0bGU9PT0nU2Vhc29uIDIgZmluYWwtZGF5IHByZXAnKSByZXR1cm4gJ0F1ZyAyOSBpcyB0aGUgY29uZmlybWVkIGZpbmFsIHByZXAgZGF5IGJlZm9yZSB0aGUgQXVnIDMwIDY6MDAgQU0gUERUIFMyIHJlc2V0LiBTYXZlIGR1bmdlb24gYXR0ZW1wdHM7IHRyZWF0IDM2aCBCZWQgRVhQIGJhbmtpbmcgYXMgdW5jb25maXJtZWQuJzsiIiwKIiIiaWYodGl0bGU9PT0nTG9vbmcgSGF2ZW4gb3BlbnMnKSByZXR1cm4gJ0V4cGVjdGVkIEF1ZyAzMCBmcm9tIHRoZSBEYXktNDcgbW9kZWw7IFFZIHdhcm5zIG1lcmdlcnMgY2FuIHNoaWZ0IExvb25nIEhhdmVuIHRpbWluZywgc28gdmVyaWZ5IFRlbGVzY29wZS9jb3VudGRvd24uIEdhdGVzOiBMdi4xMDYgVDQsIEx2LjEwOCBGYW50b21vbiBBZHVsdCwgTHYuMTE2IERlbW9uYmluZCBUb3dlci4nOyIiIjoKIiIiaWYodGl0bGU9PT0nTG9vbmcgSGF2ZW4gb3BlbnMnKSByZXR1cm4gJ0NvbmZpcm1lZCBBdWcgMzAgYXQgNjowMCBBTSBQRFQgZnJvbSBDaGFybWluZyBHbGFuY2XigJlzIGluLWdhbWUgc2Vhc29uIGNvdW50ZG93bi4gR2F0ZXM6IEx2LjEwNiBUNCwgTHYuMTA4IEZhbnRvbW9uIEFkdWx0LCBMdi4xMTYgRGVtb25iaW5kIFRvd2VyLic7IiIiLAoiImlmKHRpdGxlPT09J0dlYXIgUmVmaW5lbWVudCAmIEFmZml4IFRyYW5zZmVyJykgcmV0dXJuICdTMiBmZWF0dXJlOiBNeXRoaWMrIGdlYXIgY2FuIHJlcm9sbCBvciB0cmFuc2ZlciBhZmZpeGVzOyBzYW1lLXNlYXNvbiB0cmFuc2ZlciBpcyBmcmVlLiBBdWcgMzAgZm9sbG93cyB0aGUgZXhwZWN0ZWQgUzIgYW5jaG9yLCBzbyB2ZXJpZnkgVGVsZXNjb3BlL2NvdW50ZG93bi4nOyIiIjoKIiIiaWYodGl0bGU9PT0nR2VhciBSZWZpbmVtZW50ICYgQWZmaXggVHJhbnNmZXInKSByZXR1cm4gJ1MyIGZlYXR1cmU6IE15dGhpYysgZ2VhciBjYW4gcmVyb2xsIG9yIHRyYW5zZmVyIGFmZml4ZXM7IHNhbWUtc2Vhc29uIHRyYW5zZmVyIGlzIGZyZWUuIENoYXJtaW5nIEdsYW5jZSBTMiBpcyBjb25maXJtZWQgZm9yIEF1ZyAzMCBhdCA2OjAwIEFNIFBEVC4nOyIiIgp9CmZvciBvbGQsbmV3IGluIHJlcGxzLml0ZW1zKCk6CiAgICBpZiBvbGQgbm90IGluIHM6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgibWlzc2luZyBleHBlY3RlZCB0ZXh0OiAiK29sZFs6MTIwXSkKICAgIHM9cy5yZXBsYWNlKG9sZCxuZXcsMSkKcC53cml0ZV90ZXh0KHMpCg==
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text()
-          marker='/* ACTIVE_NOW_DETAILS_CONSISTENCY_V1 */'
-          if marker in s:
-              raise SystemExit('already patched')
-          css=r'''<style>
-/* ACTIVE_NOW_DETAILS_CONSISTENCY_V1 */
-/* Keep Active now expanders consistent with normal timeline Details/Checklist controls. */
-#timelineNow .timelineCardDetails > summary,
-#timelineNow details.timelineCardDetails > summary{
-  color:color-mix(in srgb,var(--accent-strong) 72%,var(--ink) 28%)!important;
-  font-size:10px!important;
-  font-weight:850!important;
-  line-height:1.45!important;
-}
-#timelineNow .timelineCardDetails > summary::after,
-#timelineNow details.timelineCardDetails > summary::after{
-  color:currentColor!important;
-}
-/* Expanded copy matches the visible Active now summary text instead of shrinking to 8px. */
-#timelineNow .timelineCardDetailsBody,
-#timelineNow .timelineCardDetailsBody p,
-#timelineNow .timelineCardDetailsBody li{
-  font-size:10px!important;
-  line-height:1.5!important;
-  color:var(--secondary-text)!important;
-}
-@media(max-width:700px){
-  #timelineNow .timelineCardDetails > summary,
-  #timelineNow details.timelineCardDetails > summary,
-  #timelineNow .timelineCardDetailsBody,
-  #timelineNow .timelineCardDetailsBody p,
-  #timelineNow .timelineCardDetailsBody li{
-    font-size:9px!important;
-  }
-}
-</style>
-'''
-          assert '</body>' in s
-          s=s.replace('</body>',css+'</body>',1)
-          p.write_text(s)
-          PY
+          echo "$PATCH_B64" | base64 -d >/tmp/patch.py
+          python3 /tmp/patch.py
       - name: Validate inline JavaScript
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          s=Path('index.html').read_text()
-          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
-          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
-          PY
+          python3 -c "from pathlib import Path; import re; s=Path('index.html').read_text(); Path('/tmp/inline.js').write_text('\n;\n'.join(re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',s,re.S|re.I)))"
           node --check /tmp/inline.js
-      - name: Commit patch
+      - name: Commit update and remove temporary workflows
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm -f .github/workflows/fix-active-now-details.yml .github/workflows/confirm-charming-glance-s2.yml
           git add index.html
-          git commit -m "Match Active now detail styling to timeline"
+          git commit -m "Confirm Charming Glance Season 2 reset"
           git push
