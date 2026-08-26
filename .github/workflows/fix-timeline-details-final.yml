@@ -1,0 +1,87 @@
+name: Fix timeline details final
+on:
+  push:
+    paths:
+      - .github/workflows/fix-timeline-details-final.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch timeline details styles
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker='/* TIMELINE_DETAILS_FINAL_V2 */'
+          if marker in s:
+              raise SystemExit('already patched')
+          css=r'''<style>
+/* TIMELINE_DETAILS_FINAL_V2 */
+/* One visual treatment for every timeline expander. */
+#timeline .entry details.entryMore > summary,
+#timeline .entry details.timelineCardDetails > summary,
+#timeline .entry .entryMore > summary,
+#timeline .entry .timelineCardDetails > summary {
+  color: color-mix(in srgb, var(--accent-strong) 72%, var(--ink) 28%) !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.45 !important;
+}
+#timeline .entry details.entryMore > summary::after,
+#timeline .entry details.timelineCardDetails > summary::after,
+#timeline .entry .entryMore > summary::after,
+#timeline .entry .timelineCardDetails > summary::after {
+  color: currentColor !important;
+}
+/* Match expanded copy to the normal timeline summary copy. */
+#timeline .entry > div > p + p,
+#timeline .entry details.entryMore > div,
+#timeline .entry details.entryMore > div p,
+#timeline .entry details.entryMore > div li,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody p,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody li,
+#timeline .entry .timelineRichBody,
+#timeline .entry .timelineRichBody p,
+#timeline .entry .timelineRichBody li,
+#timeline .entry .timelineRichBody .launchChecklist strong,
+#timeline .entry .timelineRichBody .launchChecklist em {
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+#timeline .entry details.entryMore > div,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
+#timeline .entry .timelineRichBody {
+  color: var(--secondary-text) !important;
+  margin-top: 5px !important;
+}
+</style>
+'''
+          # Put this at the very end so it wins over every earlier timeline style block.
+          assert '</body>' in s
+          s=s.replace('</body>',css+'</body>',1)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit patch
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git commit -m "Fix timeline detail colors and expanded text size"
+          git push
