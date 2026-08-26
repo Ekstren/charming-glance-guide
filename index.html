@@ -1566,6 +1566,15 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 }
 </style>
 <!-- SITE_LAYOUT_MOBILE_END -->
+<style id="optimizer-priority-toggle-v1">
+/* OPTIMIZER_PRIORITY_TOGGLE_V1 */
+.optimizerModeRow{display:flex;align-items:center;justify-content:space-between;gap:16px;border:1px solid var(--line);background:var(--ui-subpanel,var(--bg));border-radius:11px;margin:10px 0;padding:10px 12px}
+.optimizerModeCopy{display:grid;gap:3px;min-width:0}.optimizerModeCopy b{color:var(--ink);font-size:10px}.optimizerModeCopy small{color:var(--muted);font-size:9px;line-height:1.4}
+.optimizerModeToggle{display:grid;grid-template-columns:1fr 1fr;gap:3px;flex:0 0 auto;padding:3px;border:1px solid var(--line);background:var(--input-bg,var(--surface));border-radius:10px}
+.optimizerModeToggle button{min-height:34px;border:0;border-radius:7px;padding:7px 11px;color:var(--muted);background:transparent;cursor:pointer;font-size:9px;font-weight:850;white-space:nowrap}
+.optimizerModeToggle button:hover{color:var(--ink)}.optimizerModeToggle button.active,.optimizerModeToggle button[aria-pressed="true"]{background:var(--calc-accent-strong,var(--accent-strong));color:#fff}
+@media(max-width:700px){.optimizerModeRow{align-items:stretch;flex-direction:column}.optimizerModeToggle{width:100%}.optimizerModeToggle button{white-space:normal;min-height:42px}}
+</style>
 </head>
 <body>
 <main>
@@ -1673,6 +1682,14 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <input id="reserveHours" min="0" max="36" type="number" value="36" hidden>
         </div>
         <small class="seasonPlanningNote" id="graceText">Cart income and projected Stamina generation stop 12 hours before season end.</small>
+        <div class="optimizerModeRow" id="optimizerModeRow">
+          <div class="optimizerModeCopy"><b>Optimization priority</b><small id="optimizerModeNote">Protect Ore/Hammers after the target and hard S2 reserves are safe.</small></div>
+          <div class="optimizerModeToggle" role="group" aria-label="Optimization priority">
+            <button type="button" data-optimizer-mode="preserve" aria-pressed="true">Preserve Ore</button>
+            <button type="button" data-optimizer-mode="balanced" aria-pressed="false">Balanced resources</button>
+          </div>
+          <input id="optimizerMode" type="hidden" value="preserve">
+        </div>
         <div class="seasonRulesHint" id="s2SkillReserveHint">S2 Skill Essence reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2RelicReserveHint">S2 Relic Sand reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2TreatReserveHint">S2 Fantomon Treat reserve: calculating…</div>
@@ -1829,7 +1846,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   const INPUT_IDS = [
     'targetStars','historicalStars','charLevel','charExp','bedExp','reserveHours','skillLevel','relicLevel','fantomonLevel',
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
-    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
+    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','optimizerMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
   const CHECK_IDS = ['freeSpeed','holdExp','grace12','reserveS2Essence','reserveS2Sand','reserveS2Treats'];
   const defaults = Object.create(null);
@@ -1849,6 +1866,29 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return ['ore','auto','essence','sand'].includes(raw) ? raw : 'ore';
   };
   const staminaModeLabel = (mode = staminaMode()) => ({ore:'Ore',auto:'Auto',essence:'Skill Essence',sand:'Chrono Sand'})[mode] || 'Ore';
+  const optimizerMode = () => $('optimizerMode')?.value === 'balanced' ? 'balanced' : 'preserve';
+  function updateOptimizerModeUI(){
+    const mode=optimizerMode();
+    const row=$('optimizerModeRow');
+    if(row) row.hidden=activeCalcConfig().key!=='s1';
+    document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>{
+      const active=btn.dataset.optimizerMode===mode;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-pressed',active?'true':'false');
+    });
+    const note=$('optimizerModeNote');
+    if(note) note.textContent=mode==='preserve'
+      ? 'Protect Ore/Hammers after the target and hard S2 reserves are safe.'
+      : 'Treat Ore like the other spendable resources and use the generic balanced-resource tie breaker.';
+  }
+  document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
+    const input=$('optimizerMode');
+    if(!input) return;
+    input.value=btn.dataset.optimizerMode==='balanced'?'balanced':'preserve';
+    updateOptimizerModeUI();
+    saveState();
+    scheduleCalculatorUpdate(0);
+  }));
   const SAND_BLUE_EQ=5;
   function savedSandEquivalent(){
     return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ;
@@ -3026,7 +3066,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     // Late-S1 policy. S2 Essence and one full S2 Relic Sand round are already protected,
     // so compare only the remaining spendable surplus. Lower is better:
     // Essence -> Treats -> surplus Sand -> Ore (most protected).
-    if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
+    if(optimizerMode()==='preserve' && (candidate.seasonKey==='s1' || best.seasonKey==='s1')){
       // After hard S2 reserves are protected, Ore is the resource with the longest useful runway.
       // At equal paid-Realm cost, minimize actual Ore required before balancing the other surpluses.
       if(candidate.oreCost<best.oreCost-0.5) return true;
@@ -3071,7 +3111,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(candidate.remainingAfterMax<best.remainingAfterMax-0.5) return true;
     if(Math.abs(candidate.remainingAfterMax-best.remainingAfterMax)>0.5) return false;
 
-    if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
+    if(optimizerMode()==='preserve' && (candidate.seasonKey==='s1' || best.seasonKey==='s1')){
       if(candidate.oreCost<best.oreCost-0.5) return true;
       if(candidate.oreCost>best.oreCost+0.5) return false;
       const cp=Number(candidate.s1ResourcePolicyScore)||0;
@@ -3284,9 +3324,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if((resources?.s2SkillReserve?.target||0)>0) reserveKinds.push('Skill');
     if((resources?.s2RelicSandReserve?.target||0)>0) reserveKinds.push('Relic');
     if((resources?.s2FantomonTreatReserve?.target||0)>0) reserveKinds.push('Fantomon');
+    const policy=optimizerMode()==='preserve'?'minimize Ore':'balance spendable resources';
     return reserveKinds.length
-      ? `Spend surplus first · minimize Ore · S2 ${reserveKinds.join(' + ')} reserve${reserveKinds.length>1?'s':''} protected`
-      : 'Spend surplus first · minimize Ore · no S2 resource reserve';
+      ? `Spend surplus first · ${policy} · S2 ${reserveKinds.join(' + ')} reserve${reserveKinds.length>1?'s':''} protected`
+      : `Spend surplus first · ${policy} · no S2 resource reserve`;
   }
 
   function renderCalculatorSeasonChrome(cfg){
@@ -3354,6 +3395,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   let lastEffectiveTargetStars=null;
 
   function updateCalculator(){
+    updateOptimizerModeUI();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
@@ -3710,7 +3752,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=defaults[id];});
       CHECK_IDS.forEach(id=>{if($(id)) $(id).checked=defaults[id];});
     } else {
-      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
+      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',optimizerMode:'preserve',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
       $('freeSpeed').checked=true; $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
     }
