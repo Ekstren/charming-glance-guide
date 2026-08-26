@@ -1884,8 +1884,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     });
     const note=$('optimizerModeNote');
     if(note) note.textContent=mode==='preserve'
-      ? 'Joint Cart + shared-Stamina efficiency with dynamic safe-cap headroom, plus a +50% Ore premium for Gear runway.'
-      : 'Joint Cart + shared-Stamina efficiency with dynamic safe-cap headroom for Essence, Sand and Treats.';
+      ? 'Joint Cart + shared-Stamina efficiency with funded-cap coverage, plus a +50% Ore premium for Gear runway.'
+      : 'Joint Cart + shared-Stamina efficiency; capped resources get cheaper as their reachable cap becomes funded.';
   }
   document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     const input=$('optimizerMode');
@@ -3150,7 +3150,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,headroomCosts,charScore:characterScore(p,cfg)};
   }
 
-  /* SURPLUS_AWARE_OPTIMIZER_V2 · JOINT_REACQUISITION_V1 · DYNAMIC_HEADROOM_WEIGHTS_V1
+  /* SURPLUS_AWARE_OPTIMIZER_V2 · JOINT_REACQUISITION_V1 · DYNAMIC_HEADROOM_WEIGHTS_V1 · DYNAMIC_HEADROOM_WEIGHTS_V2
      Enabled S2 hard reserves are removed before this S1 tie-breaker runs. Reacquisition is
      solved jointly: Ore / Essence / Sand carts accrue simultaneously while one natural
      Stamina stream is optimally shared between map nodes. Capped-resource future value is
@@ -3170,10 +3170,13 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       const floor=Math.max(0,Math.min(1,Number(SURPLUS_ACQUISITION_FLOORS[key])||0));
       const usefulNeed=Math.max(0,Number(headroom[key])||0);
       const available=Math.max(0,Number(supply[key])||0);
-      // usefulShare=1 means all current supply can still be productively spent before the
-      // safe cap. If supply already exceeds that headroom, only the excess is discounted.
-      const usefulShare=usefulNeed<=0?0:(available>0?Math.min(1,usefulNeed/available):1);
-      result[key]=floor+(1-floor)*usefulShare;
+      // Value the NEXT unit by how much of the reachable cap is still UNFUNDED, rather
+      // than pinning the material at full value until the entire cap can be paid at once.
+      // Example: if 90% of the reachable Relic cap is already funded, Sand sits only 10%
+      // above its deferred-use floor instead of being treated as maximally scarce.
+      const fundedCoverage=usefulNeed<=0?1:(available>0?Math.min(1,available/usefulNeed):0);
+      const unfundedShare=1-fundedCoverage;
+      result[key]=floor+(1-floor)*unfundedShare;
     }
     return result;
   }
