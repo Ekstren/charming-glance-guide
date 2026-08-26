@@ -8,17 +8,30 @@
 
 ## Build format
 
-- Organize each class around four practical presets whenever the class supports them: **Solo, Dungeon, Boss, and PvP**.
-- Each preset should show the 4 Techniques and 4 Charms to equip, plus one concise offensive swap and one concise defensive swap when useful.
-- Arcanist and Dominator may keep their **DPS / Heals** selector for stat and investment guidance. Switching that selector must not hide the Solo / Dungeon / Boss / PvP cards or remove their Fantomon recommendations.
-- Prefer exact reputable build-guide presets when they exist. When a role-specific preset must be derived from a generic build, keep the changes conservative and grounded in documented skill mechanics or repeated community testing.
-- Keep recommendations limited to Techniques and Charms that actually belong in that preset; do not recommend unrelated investment pieces as though they are equipped.
+- **Do not force every class into Solo / Dungeon / Boss / PvP cards.** Show only materially distinct loadouts that actually make sense for that class and are supported by current guides, skill mechanics, or repeated community testing.
+- A class may have 2, 3, or more loadouts depending on its real meta. If one general build is best for multiple activities, keep one card and explain the relevant swap instead of duplicating it under artificial mode names.
+- Each loadout should show the 4 Techniques and 4 Charms actually equipped, plus concise swaps/conditions where useful.
+- Arcanist and Dominator keep their **DPS / Heals** selector. DPS shows their DPS loadouts; Heals shows the dedicated Healing loadout. Switching roles must not destroy or recreate the build data or remove Fantomon recommendations.
+- Prefer exact reputable build-guide presets when they exist. Cross-check major recommendations against at least one other credible guide/community source when possible.
+- Keep recommendations limited to Techniques and Charms that actually belong in that loadout; do not recommend unrelated investment pieces as though they are equipped.
+- Avoid weak novelty builds when the guide itself labels them underperforming; for example, do not add Destroyer's Water/Frozen build merely to increase the number of cards.
+
+## Current intended loadout structure
+
+- **Berserker (S1/T3):** Generic PvE, Dragon, PvP.
+- **Paladin (S1/T3):** Dungeon Tank, Water Offensive, Boss DPS / Off-Tank.
+- **Archmage (S1/T3):** AoE, Single Target (with the PvP Tempest Sphere variation noted inside Single Target).
+- **Arcanist (S1/T3):** AoE DPS, Single Target DPS, Healing.
+- **Conqueror (S2/T4):** All-Content, Dragon (PvP/mobile swaps noted inside All-Content).
+- **Guardian (S2/T4):** Dungeon Tank, Water Offensive, Support / Boss.
+- **Destroyer (S2/T4):** AoE, Single Target, Fire AoE.
+- **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing.
 
 ## Combat Fantomon format
 
-- Show exactly **Main + Alt** Combat Fantomon recommendations for each Solo / Dungeon / Boss / PvP preset when two credible choices are available.
-- **Main** is the strongest role-appropriate consensus choice. **Alt** is the best practical alternative for a different constraint such as survivability, utility, availability, or account stats.
-- Add a short reason under both Fantomons explaining why each fits that specific preset.
+- Show exactly **Main + Alt** Combat Fantomon recommendations for each displayed loadout when two credible choices are available.
+- **Main** is the strongest loadout-appropriate consensus choice. **Alt** is the best practical alternative for a different constraint such as survivability, utility, availability, or account stats.
+- Add a short reason under both Fantomons explaining why each fits that specific loadout.
 - Do not show ranked #3/#4 choices in the default build UI.
 - In **Season 1 / Tier 3**, evaluate Fantomons using only their currently active Assist kit. Do not give any S1 recommendation credit for Materialization/Battle skills that unlock later. Base-kit effects that already exist before Materialization remain valid.
 - In **Season 2 / Tier 4**, Materialization effects may be considered once they are actually available for Charming Glance progression.
