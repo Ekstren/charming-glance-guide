@@ -13,8 +13,16 @@ if 'id="sandBlueCurrent"' not in s:
         raise SystemExit('Could not locate Chrono Sand resource card')
     s = s.replace(old, new, 1)
 
-# Persist/reset the new input with the rest of the calculator state.
-s = s.replace("'sandCurrent','sandRate'", "'sandCurrent','sandBlueCurrent','sandRate'")
+# Persist/reset the new input with the rest of the calculator state. Target the input
+# list specifically so the Cart snapshot-aging tuple remains Basic Sand + sandRate.
+old_inputs = "...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandRate','treatCurrent'"
+new_inputs = "...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent'"
+if old_inputs in s:
+    s = s.replace(old_inputs, new_inputs, 1)
+
+# Repair the malformed tuple from the initial Blue Sand patch if it is present.
+s = s.replace("['sandCurrent','sandBlueCurrent','sandRate','sand'],", "['sandCurrent','sandRate','sand'],")
+
 s = s.replace("sandCurrent:0,sandRate:0", "sandCurrent:0,sandBlueCurrent:0,sandRate:0")
 s = s.replace("if(id==='sandCurrent') snapshotCarry.sand=0;", "if(id==='sandCurrent' || id==='sandBlueCurrent') snapshotCarry.sand=0;")
 
