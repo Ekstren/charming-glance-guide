@@ -24,18 +24,25 @@
     const t=(title||'').toLowerCase();
     const pvp=/pvp|arena|mobility/.test(t);
     const boss=/boss|dragon|chaos|guild|raid|crucible|single/.test(t);
-    const water=/water/.test(t);
     const support=/support|team|tank/.test(t);
 
     if(cls==='Berserker') return pvp ? pair('Aegiswing','Nyxarchon') : pair('Nyxarchon','Sylvaerie');
-    if(cls==='Paladin') return (water||boss||support) ? pair('Kels','Aegiswing') : pair('Aegiswing','Armopi');
+    if(cls==='Paladin'){
+      if(pvp) return pair('Aegiswing','Armopi');
+      if(boss||support) return pair('Kels','Aegiswing');
+      return pair('Aegiswing','Armopi');
+    }
     if(cls==='Archmage') return pvp ? pair('Aegiswing','Nyxarchon') : pair('Nyxarchon','Sylvaerie');
     if(cls==='Arcanist'){
       if(isHeals) return pvp ? pair('Aegiswing','Mandragora') : pair('Mandragora','Sylvaerie');
       return pvp ? pair('Aegiswing','Nyxarchon') : pair('Nyxarchon','Zeioletus');
     }
     if(cls==='Conqueror') return pvp ? pair('Aegiswing','Nyxarchon') : pair('Nyxarchon','Pandarial (later S2)');
-    if(cls==='Guardian') return (boss||support||water) ? pair('Kels','Nyxarchon') : pair('Aegiswing','Kels');
+    if(cls==='Guardian'){
+      if(pvp) return pair('Aegiswing','Kels');
+      if(boss||support) return pair('Kels','Nyxarchon');
+      return pair('Aegiswing','Kels');
+    }
     if(cls==='Destroyer') return pvp ? pair('Aegiswing','Nyxarchon') : pair('Nyxarchon','Sylvaerie');
     if(cls==='Dominator'){
       if(isHeals) return pvp ? pair('Aegiswing','Mandragora') : pair('Mandragora','Pandarial (later S2)');
