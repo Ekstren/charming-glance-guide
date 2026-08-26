@@ -3181,6 +3181,60 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return result;
   }
 
+  /* MARGINAL_HEADROOM_COST_V2
+     Candidate resource cost is priced along the funded-cap curve, not at one static
+     pre-spend weight. When a capped category is already overfunded, the first units are
+     cheap to spend; as spending consumes that cushion and approaches an unfunded safe cap,
+     each additional unit becomes progressively more valuable. */
+  const UNIT_ACQUISITION_WEIGHTS={ore:1,essence:1,sand:1,treat:1};
+
+  function marginalWeightedSpend(amount,key,resources){
+    let remaining=Math.max(0,Number(amount)||0);
+    if(remaining<=0) return 0;
+    if(key==='ore') return remaining;
+
+    const floor=Math.max(0,Math.min(1,Number(SURPLUS_ACQUISITION_FLOORS[key])||0));
+    const usefulNeed=Math.max(0,Number(resources?.acquisitionHeadroomCosts?.[key])||0);
+    let available=Math.max(0,Number(resources?.acquisitionSupplyEquiv?.[key])||0);
+    if(usefulNeed<=0) return remaining*floor;
+
+    let effective=0;
+
+    // Supply above the full reachable-cap requirement is pure cushion and carries only
+    // the deferred-use floor value.
+    const excess=Math.max(0,available-usefulNeed);
+    if(excess>0){
+      const cheap=Math.min(remaining,excess);
+      effective+=cheap*floor;
+      remaining-=cheap;
+      available-=cheap;
+    }
+
+    // Within the funded-cap band, marginal value rises linearly from the floor at 100%
+    // funded to 1.00 at 0% funded. Integrate that curve exactly over this candidate spend.
+    if(remaining>0 && available>0){
+      const band=Math.min(remaining,available);
+      const start=Math.min(usefulNeed,available);
+      const end=Math.max(0,start-band);
+      effective+=band-((1-floor)/(2*usefulNeed))*((start*start)-(end*end));
+      remaining-=band;
+      available-=band;
+    }
+
+    // Any spend beyond current usable supply represents fully scarce replacement demand.
+    if(remaining>0) effective+=remaining;
+    return effective;
+  }
+
+  function marginalWeightedCosts(costs,resources,preserveOre=false){
+    return {
+      ore:Math.max(0,Number(costs?.ore)||0)*(preserveOre?1+ORE_PRESERVE_PREMIUM:1),
+      essence:marginalWeightedSpend(costs?.essence,'essence',resources),
+      sand:marginalWeightedSpend(costs?.sand,'sand',resources),
+      treat:marginalWeightedSpend(costs?.treat,'treat',resources)
+    };
+  }
+
   function jointReacquisitionHours(costs,resources,cfg=activeCalcConfig(),weights=null){
     weights=weights||dynamicAcquisitionWeights(resources);
     const map=resources?.yields?.map||cfg.map||{};
@@ -3261,22 +3315,23 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   }
 
   function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){
-    const weights=dynamicAcquisitionWeights(resources);
-    const preserveWeights={...weights,ore:weights.ore*(1+ORE_PRESERVE_PREMIUM)};
-    const hours=jointReacquisitionHours(costs,resources,cfg,weights);
-    const preserveHours=jointReacquisitionHours(costs,resources,cfg,preserveWeights);
+    const weights=dynamicAcquisitionWeights(resources); // diagnostic snapshot at zero spend
+    const marginalCosts=marginalWeightedCosts(costs,resources,false);
+    const preserveCosts=marginalWeightedCosts(costs,resources,true);
+    const hours=jointReacquisitionHours(marginalCosts,resources,cfg,UNIT_ACQUISITION_WEIGHTS);
+    const preserveHours=jointReacquisitionHours(preserveCosts,resources,cfg,UNIT_ACQUISITION_WEIGHTS);
     const map=resources?.yields?.map||cfg.map||{};
-    const single=(amount,key,weight)=>{
-      const target=Math.max(0,Number(amount)||0)*Math.max(0,Number(weight)||0);
+    const single=(effective,key)=>{
+      const target=Math.max(0,Number(effective)||0);
       if(target<=0) return 0;
       const rate=Math.max(0,n(key==='ore'?'oreRate':key==='essence'?'essenceRate':'sandRate'))+Math.max(0,Number(map[key])||0);
       return rate>0?target/rate:1e9;
     };
     return {
-      hours,preserveHours,weights,
-      oreHours:single(costs?.ore,'ore',weights.ore),
-      essenceHours:single(costs?.essence,'essence',weights.essence),
-      sandHours:single(costs?.sand,'sand',weights.sand),
+      hours,preserveHours,weights,marginalCosts,
+      oreHours:single(marginalCosts.ore,'ore'),
+      essenceHours:single(marginalCosts.essence,'essence'),
+      sandHours:single(marginalCosts.sand,'sand'),
       treatHours:0,
       treatFallback:Math.max(0,n('treatRate'))<=0
     };
