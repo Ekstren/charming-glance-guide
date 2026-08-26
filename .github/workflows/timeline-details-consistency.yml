@@ -1,0 +1,83 @@
+name: Timeline details consistency
+on:
+  push:
+    paths:
+      - '.github/workflows/timeline-details-consistency.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch timeline detail styles
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker='/* TIMELINE_DETAILS_CONSISTENCY_V1 */'
+          if marker in s:
+              raise SystemExit('already patched')
+          css=r'''<style>
+/* TIMELINE_DETAILS_CONSISTENCY_V1 */
+/* Keep every timeline expander visually consistent. */
+.entryMore>summary,
+.timelineCardDetails>summary{
+  color:var(--green)!important;
+  font-weight:850!important;
+}
+.entryMore>summary::after,
+.timelineCardDetails>summary::after{
+  color:var(--green)!important;
+}
+/* Expanded copy should be as readable as the card summary copy. */
+.entryMore>div,
+.entryMore>div p,
+.entryMore>div li,
+.timelineCardDetailsBody,
+.timelineCardDetailsBody p,
+.timelineCardDetailsBody li,
+.timelineRichBody,
+.timelineRichBody p,
+.timelineRichBody li{
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+.entryMore>div,
+.timelineCardDetailsBody,
+.timelineRichBody{
+  color:var(--secondary-text)!important;
+}
+/* Rich checklist descriptions should not shrink below normal timeline body copy. */
+.timelineRichBody .launchChecklist strong,
+.timelineRichBody .launchChecklist em{
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+</style>
+'''
+          if '</head>' not in s:
+              raise SystemExit('missing </head>')
+          s=s.replace('</head>',css+'</head>',1)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Unify timeline detail styling and readability'
+          git push
