@@ -1,14 +1,11 @@
 name: Compact stamina control into materials header
-
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/compact-stamina-header.yml'
-
 permissions:
   contents: write
-
 jobs:
   patch:
     runs-on: ubuntu-latest
@@ -16,74 +13,37 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-
       - name: Move stamina control into materials header
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-
-          old = '''        <summary><span>Edit saved materials and Cart rates</span><small>Optional · makes the final plan account-specific</small></summary>
-        <div class="currentLevelsBody">
-          <label class="staminaSimple"><span>Use projected Stamina on</span><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="ore" selected>Raw Ore</option><option value="auto">Auto</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></label>'''
-          new = '''        <summary class="materialsSummary"><span class="materialsSummaryTitle">Edit saved materials and Cart rates</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="ore" selected>Raw Ore</option><option value="auto">Auto</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
-        <div class="currentLevelsBody">'''
-
-          if old not in s:
-              raise SystemExit('materials/stamina block not found')
-          s = s.replace(old, new, 1)
-
-          css = '''
-/* Compact Stamina selector into the materials section header. */
-.materialPlanner>summary.materialsSummary{align-items:center;gap:18px;min-height:66px}
-.materialsSummaryTitle{flex:1 1 auto;min-width:220px}
-.materialsSummaryRight{display:flex;align-items:center;justify-content:flex-end;gap:20px;flex:0 1 auto;min-width:0}
-.materialsSummaryRight>small{white-space:nowrap}
-.staminaHeaderControl{display:grid;grid-template-columns:auto minmax(155px,190px);align-items:center;gap:9px;border-left:1px solid var(--line);padding-left:18px;min-width:250px;cursor:default}
-.staminaHeaderControl>b{color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
-.staminaHeaderControl .staminaControl{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;min-width:0}
-.staminaHeaderControl .staminaControl select{min-height:36px;padding:7px 30px 7px 11px;cursor:pointer}
-.staminaHeaderControl .staminaCurrentPlan{text-align:right;line-height:1.2;max-width:190px}
-.materialPlanner .currentLevelsBody{padding-top:12px}
-@media(max-width:760px){.materialPlanner>summary.materialsSummary{align-items:flex-start;flex-wrap:wrap}.materialsSummaryRight{width:100%;justify-content:space-between;gap:10px;flex-wrap:wrap}.materialsSummaryRight>small{white-space:normal}.staminaHeaderControl{border-left:0;padding-left:0;min-width:min(100%,260px);margin-left:auto}}
-'''
-          if '/* Compact Stamina selector into the materials section header. */' not in s:
-              s = s.replace('</style>', css + '\n</style>', 1)
-
-          p.write_text(s, encoding='utf-8')
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          pat=r'<summary><span>Edit saved materials and Cart rates</span><small>Optional · makes the final plan account-specific</small></summary>\s*<div class="currentLevelsBody">\s*<label class="staminaSimple"><span>Use projected Stamina on</span><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling\."><option value="ore" selected>Raw Ore</option><option value="auto">Auto</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></label>'
+          rep='<summary class="materialsSummary"><span class="materialsSummaryTitle">Edit saved materials and Cart rates</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="ore" selected>Raw Ore</option><option value="auto">Auto</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>\n        <div class="currentLevelsBody">'
+          s,n=re.subn(pat,rep,s,count=1)
+          if n!=1: raise SystemExit(f'materials/stamina block replacements: {n}')
+          css='\n/* Compact Stamina selector into the materials section header. */\n.materialPlanner>summary.materialsSummary{align-items:center;gap:18px;min-height:66px}\n.materialsSummaryTitle{flex:1 1 auto;min-width:220px}\n.materialsSummaryRight{display:flex;align-items:center;justify-content:flex-end;gap:20px;flex:0 1 auto;min-width:0}\n.materialsSummaryRight>small{white-space:nowrap}\n.staminaHeaderControl{display:grid;grid-template-columns:auto minmax(155px,190px);align-items:center;gap:9px;border-left:1px solid var(--line);padding-left:18px;min-width:250px;cursor:default}\n.staminaHeaderControl>b{color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}\n.staminaHeaderControl .staminaControl{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;min-width:0}\n.staminaHeaderControl .staminaControl select{min-height:36px;padding:7px 30px 7px 11px;cursor:pointer}\n.staminaHeaderControl .staminaCurrentPlan{text-align:right;line-height:1.2;max-width:190px}\n.materialPlanner .currentLevelsBody{padding-top:12px}\n@media(max-width:760px){.materialPlanner>summary.materialsSummary{align-items:flex-start;flex-wrap:wrap}.materialsSummaryRight{width:100%;justify-content:space-between;gap:10px;flex-wrap:wrap}.materialsSummaryRight>small{white-space:normal}.staminaHeaderControl{border-left:0;padding-left:0;min-width:min(100%,260px);margin-left:auto}}\n'
+          if '/* Compact Stamina selector into the materials section header. */' not in s: s=s.replace('</style>',css+'\n</style>',1)
+          p.write_text(s,encoding='utf-8')
           PY
-
       - name: Validate inline JavaScript and layout markers
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          text = Path('index.html').read_text(encoding='utf-8')
-          required = [
-            'class="materialsSummary"',
-            'class="staminaHeaderControl"',
-            'id="staminaMode"',
-            'id="staminaCurrentPlan"',
-            'Compact Stamina selector into the materials section header.'
-          ]
-          for marker in required:
-              if marker not in text:
-                  raise SystemExit(f'missing marker: {marker}')
-          if 'class="staminaSimple"' in text:
-              raise SystemExit('old full-width stamina card still present')
-          if text.count('id="staminaMode"') != 1:
-              raise SystemExit('staminaMode must appear exactly once')
-          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
-          if not scripts:
-              raise SystemExit('No inline scripts found')
-          Path('/tmp/sxs.js').write_text('\n'.join(scripts), encoding='utf-8')
+          text=Path('index.html').read_text(encoding='utf-8')
+          for marker in ['class="materialsSummary"','class="staminaHeaderControl"','id="staminaMode"','id="staminaCurrentPlan"','Compact Stamina selector into the materials section header.']:
+              if marker not in text: raise SystemExit(f'missing marker: {marker}')
+          if 'class="staminaSimple"' in text: raise SystemExit('old full-width stamina card still present')
+          if text.count('id="staminaMode"')!=1: raise SystemExit('staminaMode must appear exactly once')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S|re.I)
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/sxs.js
-
       - name: Commit and self-clean
         shell: bash
         run: |
