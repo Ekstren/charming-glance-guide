@@ -1,8 +1,8 @@
-name: Timeline details consistency
+name: Timeline Details Consistency
 on:
   push:
     paths:
-      - '.github/workflows/timeline-details-consistency.yml'
+      - .github/workflows/timeline-details-consistency.yml
 permissions:
   contents: write
 jobs:
@@ -12,72 +12,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Patch timeline detail styles
+      - name: Patch index
+        env:
+          CSS_B64: PHN0eWxlPgovKiBUSU1FTElORV9ERVRBSUxTX0NPTlNJU1RFTkNZX1YxICovCi5lbnRyeU1vcmU+c3VtbWFyeSwKLnRpbWVsaW5lQ2FyZERldGFpbHM+c3VtbWFyeXsKICBjb2xvcjp2YXIoLS1ncmVlbikhLWltcG9ydGFudDsKICBmb250LXdlaWdodDo4NTAhLWltcG9ydGFudDsKfQouZW50cnlNb3JlPnN1bW1hcnk6OmFmdGVyLAoudGltZWxpbmVDYXJkRGV0YWlscz5zdW1tYXJ5OjphZnRlcnsKICBjb2xvcjp2YXIoLS1ncmVlbikhLWltcG9ydGFudDsKfQouZW50cnlNb3JlPmRpdiwKLmVudHJ5TW9yZT5kaXYgcCwKLmVudHJ5TW9yZT5kaXYgbGksCi50aW1lbGluZUNhcmREZXRhaWxzQm9keSwKLnRpbWVsaW5lQ2FyZERldGFpbHNCb2R5IHAsCi50aW1lbGluZUNhcmREZXRhaWxzQm9keSBsaSwKLnRpbWVsaW5lUmljaEJvZHksCi50aW1lbGluZVJpY2hCb2R5IHAsCi50aW1lbGluZVJpY2hCb2R5IGxpewogIGZvbnQtc2l6ZToxMXB4IWltcG9ydGFudDsKICBsaW5lLWhlaWdodDoxLjU1IWltcG9ydGFudDsKfQouZW50cnlNb3JlPmRpdiwKLnRpbWVsaW5lQ2FyZERldGFpbHNCb2R5LAoudGltZWxpbmVSaWNoQm9keXsKICBjb2xvcjp2YXIoLS1zZWNvbmRhcnktdGV4dCkhLWltcG9ydGFudDsKfQoudGltZWxpbmVSaWNoQm9keSAubGF1bmNoQ2hlY2tsaXN0IHN0cm9uZywKLnRpbWVsaW5lUmljaEJvZHkgLmxhdW5jaENoZWNrbGlzdCBlbXsKICBmb250LXNpemU6MTFweCFpbXBvcnRhbnQ7CiAgbGluZS1oZWlnaHQ6MS41NSFpbXBvcnRhbnQ7Cn0KPC9zdHlsZT4K
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text()
-          marker='/* TIMELINE_DETAILS_CONSISTENCY_V1 */'
-          if marker in s:
-              raise SystemExit('already patched')
-          css=r'''<style>
-/* TIMELINE_DETAILS_CONSISTENCY_V1 */
-/* Keep every timeline expander visually consistent. */
-.entryMore>summary,
-.timelineCardDetails>summary{
-  color:var(--green)!important;
-  font-weight:850!important;
-}
-.entryMore>summary::after,
-.timelineCardDetails>summary::after{
-  color:var(--green)!important;
-}
-/* Expanded copy should be as readable as the card summary copy. */
-.entryMore>div,
-.entryMore>div p,
-.entryMore>div li,
-.timelineCardDetailsBody,
-.timelineCardDetailsBody p,
-.timelineCardDetailsBody li,
-.timelineRichBody,
-.timelineRichBody p,
-.timelineRichBody li{
-  font-size:11px!important;
-  line-height:1.55!important;
-}
-.entryMore>div,
-.timelineCardDetailsBody,
-.timelineRichBody{
-  color:var(--secondary-text)!important;
-}
-/* Rich checklist descriptions should not shrink below normal timeline body copy. */
-.timelineRichBody .launchChecklist strong,
-.timelineRichBody .launchChecklist em{
-  font-size:11px!important;
-  line-height:1.55!important;
-}
-</style>
-'''
-          if '</head>' not in s:
-              raise SystemExit('missing </head>')
-          s=s.replace('</head>',css+'</head>',1)
-          p.write_text(s)
-          PY
-      - name: Validate inline JavaScript
+          python3 -c "from pathlib import Path; import os,base64; p=Path('index.html'); s=p.read_text(); marker='/* TIMELINE_DETAILS_CONSISTENCY_V1 */'; css=base64.b64decode(os.environ['CSS_B64']).decode(); assert marker not in s; assert '</head>' in s; p.write_text(s.replace('</head>',css+'</head>',1))"
+      - name: Validate JavaScript
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          s=Path('index.html').read_text()
-          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
-          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
-          PY
+          python3 -c "from pathlib import Path; import re; s=Path('index.html').read_text(); Path('/tmp/inline.js').write_text('\n;\n'.join(re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',s,re.S|re.I)))"
           node --check /tmp/inline.js
-      - name: Commit patch
+      - name: Commit
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html
-          git commit -m 'Unify timeline detail styling and readability'
+          git commit -m "Unify timeline detail styling and readability"
           git push
