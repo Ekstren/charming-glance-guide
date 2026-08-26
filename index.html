@@ -1407,6 +1407,112 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 </style>
 <!-- COMPANION_BUILD_WIDTH_END -->
 <!-- COMPANION_GUIDE_CSS_END -->
+<!-- SITE_LAYOUT_MOBILE_START -->
+<style id="site-layout-mobile-v1">
+/* Keep Builds, Companions and Calculator on the same content rails. */
+.calculator{max-width:980px;margin:32px auto 80px;padding:0 20px}
+
+@media (min-width:1400px){
+  .calculator{max-width:1560px;margin-top:38px;padding:0 28px}
+  .calculator .methodPanel,
+  .calculator .calcSeasonNotice{max-width:none}
+}
+
+/* Tablet: stop desktop grids from becoming narrow mini-columns. */
+@media (max-width:900px){
+  .calculatorLayout{grid-template-columns:1fr}
+  .calcResults{position:static;top:auto}
+  .buildGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .priorityPair{grid-template-columns:1fr}
+  .companionHero,.companionGrid{grid-template-columns:1fr}
+  .companionFocus{border-left:0;border-top:1px solid var(--line)}
+}
+
+/* Phone layout shared across the main sections. */
+@media (max-width:720px){
+  html{scroll-padding-top:68px}
+  body{overflow-x:hidden}
+
+  .topbar{min-height:64px;padding:9px 12px;align-items:center;gap:10px}
+  .logoButton{gap:9px;min-width:0}
+  .logo{width:38px;height:38px;border-radius:11px;font-size:13px;flex:0 0 38px}
+  .logoButton strong{font-size:14px;line-height:1.2}
+  .logoButton small{display:block;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9px}
+  .headerTools{margin-left:auto;flex:0 0 auto}
+  .headerMeta{display:none}
+  .themeToggle{width:36px;height:36px;flex:0 0 36px}
+
+  .sectionSwitch{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:12px 10px 0;padding:4px;border-radius:13px}
+  .sectionSwitch>button,.sectionSwitch>.buildsNavCell{min-width:0}
+  .sectionSwitch>button{min-height:42px;padding:7px 6px;font-size:10px}
+  .buildsNavCell{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px;align-items:center}
+  .buildsNavCell>button[data-section]{min-height:42px;padding:7px 5px;font-size:10px}
+  .buildSeasonToggle{align-self:stretch;padding:2px;gap:1px}
+  .buildSeasonToggle button{min-width:27px!important;min-height:34px!important;padding:4px!important;font-size:8px!important}
+
+  .builds,.companions,.calculator{width:100%;max-width:none;margin:16px auto 60px;padding:0 10px}
+  .classTabs,.companionClassTabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:8px}
+  .classTabs button{min-height:42px;padding:9px 6px;font-size:10px}
+
+  .guideSummary{padding:14px;gap:12px}
+  .guideSummary.buildSummaryCompact{grid-template-columns:1fr}
+  .buildQuickStats{border-left:0;border-top:1px solid var(--line);padding:12px 0 0}
+  .quickGearGrid{grid-template-columns:1fr}
+  .buildGrid{grid-template-columns:1fr;gap:8px}
+  .buildCard{padding:14px}
+  .priorityPair{gap:8px}
+
+  .companionHeroMain,.companionFocus{padding:15px}
+  .companionHeroMain h2{font-size:20px}
+  .companionHeroMain p{font-size:10px}
+  .companionFocus strong{font-size:16px}
+  .companionGrid{gap:8px}
+  .companionPanel{padding:14px}
+  .companionLadder{grid-template-columns:1fr 1fr;gap:6px}
+  .companionTitleRow{align-items:flex-start;flex-wrap:wrap;gap:8px}
+  .companionTitleRow .companionRoleToggle{width:100%;display:grid;grid-template-columns:1fr 1fr;margin-top:2px}
+  .companionRoleToggle button{min-height:38px}
+  .companionSources{text-align:left}
+
+  .calculatorLayout{display:grid;grid-template-columns:1fr;gap:10px}
+  .calcInputs,.calcResults{min-width:0;width:100%}
+  .calcPanel{padding:15px}
+  .calcResults{position:static;top:auto;padding:16px}
+  .currentLevelsBody{padding:14px 15px 16px}
+  .currentLevelsPanel>summary{padding:14px 15px}
+  .calcGrid,.gearFields,.currentProgressGrid{grid-template-columns:1fr 1fr;gap:8px}
+  .calcGrid input,.calcGrid select,.resourceInputs input,.realmInventoryGrid input,.realmDailyInputs input,.accuracyGrid input,.exactInputsBody input{font-size:16px}
+  .resourceInputs,.resourceInputsTwo,.resourceInputsFour,.resourceUse,.planCosts,.planCostsFour{grid-template-columns:1fr 1fr;gap:7px}
+  .accuracyGrid,.exactProgressGrid{grid-template-columns:1fr 1fr}
+  .realmInventoryGrid,.realmDailyInputs{grid-template-columns:1fr 1fr}
+  .realmDailyPlanRow{grid-template-columns:1fr}
+  .staminaSimple{flex-direction:column;align-items:stretch}
+  .staminaControl{width:100%;min-width:0;align-items:stretch}
+  .staminaSimple select{width:100%;min-width:0;font-size:16px}
+  .staminaCurrentPlan{max-width:none;text-align:left}
+  .seasonDeadline,.rolloverHold{flex-wrap:wrap;align-items:flex-start}
+  .seasonDeadline small{width:100%;margin-left:0}
+  .calcActions{flex-direction:column;align-items:stretch}
+  .calcActions button{width:100%;min-height:44px}
+  .methodPanel{max-width:none}
+  .resultScoreLine>span{flex-wrap:wrap}
+  .starTotal{font-size:42px}
+  .suggestedGear{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media (max-width:480px){
+  .logoButton small{max-width:145px}
+  .calcGrid,.gearFields,.currentProgressGrid,.accuracyGrid,.exactProgressGrid{grid-template-columns:1fr}
+  .resourceInputs,.resourceInputsTwo,.resourceInputsFour,.resourceUse,.planCosts,.planCostsFour{grid-template-columns:1fr}
+  .realmInventoryGrid,.realmDailyInputs{grid-template-columns:1fr}
+  .scoreSummary,.optimizerTargets{grid-template-columns:1fr 1fr}
+  .companionLadder{grid-template-columns:1fr}
+  .suggestedGear{grid-template-columns:1fr 1fr}
+  .resultHeadline{gap:2px}
+  .starTotal{font-size:38px}
+}
+</style>
+<!-- SITE_LAYOUT_MOBILE_END -->
 </head>
 <body>
 <main>
