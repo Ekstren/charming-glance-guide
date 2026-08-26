@@ -1,0 +1,57 @@
+name: Fix S2 build preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-s2-build-preview.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Patch S2 build preview renderer
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old='const buildHtmlT4Live=buildHtml;'
+          new='const buildHtmlT4Live=buildHtmlS2;'
+          if old not in s:
+              raise SystemExit('S2 renderer anchor not found')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          if 'const buildHtmlT4Live=buildHtmlS2;' not in text:
+              raise SystemExit('S2 renderer fix missing')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S|re.I)
+          Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/sxs.js
+
+      - name: Commit and self-clean
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-s2-build-preview.yml
+          git add index.html
+          git commit -m 'Fix S2 build preview rendering'
+          git push origin main
