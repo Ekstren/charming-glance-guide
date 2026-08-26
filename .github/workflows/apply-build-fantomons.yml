@@ -6,6 +6,7 @@ on:
     paths:
       - build-fantomons.trigger
       - .github/build-fantomons-inject.html
+      - .github/build-role-toggle-inject.html
       - .github/patch-build-presets.py
 permissions:
   contents: write
@@ -49,6 +50,25 @@ jobs:
 
           p.write_text(s)
           PY
+      - name: Sync Arcanist and Dominator role toggle
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          inject=Path('.github/build-role-toggle-inject.html').read_text().strip()+"\n"
+          start='<!-- BUILD_ROLE_TOGGLE_START -->'
+          end='<!-- BUILD_ROLE_TOGGLE_END -->'
+          if start in s and end in s:
+              a=s.index(start)
+              b=s.index(end,a)+len(end)
+              s=s[:a]+inject.rstrip()+s[b:]
+          else:
+              if '</body>' not in s:
+                  raise SystemExit('missing </body>')
+              s=s.replace('</body>',inject+'</body>',1)
+          p.write_text(s)
+          PY
       - name: Validate inline JavaScript
         run: |
           python3 - <<'PY'
@@ -62,11 +82,11 @@ jobs:
       - name: Commit patch
         run: |
           if git diff --quiet -- index.html .github/build-fantomons-inject.html; then
-            echo 'No build/Fantomon change needed.'
+            echo 'No build UI change needed.'
             exit 0
           fi
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html .github/build-fantomons-inject.html
-          git commit -m 'Rework S1 and S2 class build presets'
+          git commit -m 'Restore Arcanist and Dominator role toggle'
           git push origin main
