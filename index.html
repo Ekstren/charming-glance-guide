@@ -1300,6 +1300,40 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 @media(max-width:720px){.buildsNavCell{gap:3px}.buildSeasonToggle button{min-width:28px!important;padding-inline:5px!important;font-size:8px!important}.buildsNavCell>button[data-section]{padding-inline:5px!important}}
 @media(max-width:520px){.buildSeasonToggle button{min-width:25px!important;padding-inline:4px!important}}
 </style>
+<style>
+/* TIMELINE_DETAILS_CONSISTENCY_V1 */
+.entryMore>summary,
+.timelineCardDetails>summary{
+  color:var(--green)!-important;
+  font-weight:850!-important;
+}
+.entryMore>summary::after,
+.timelineCardDetails>summary::after{
+  color:var(--green)!-important;
+}
+.entryMore>div,
+.entryMore>div p,
+.entryMore>div li,
+.timelineCardDetailsBody,
+.timelineCardDetailsBody p,
+.timelineCardDetailsBody li,
+.timelineRichBody,
+.timelineRichBody p,
+.timelineRichBody li{
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+.entryMore>div,
+.timelineCardDetailsBody,
+.timelineRichBody{
+  color:var(--secondary-text)!-important;
+}
+.timelineRichBody .launchChecklist strong,
+.timelineRichBody .launchChecklist em{
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+</style>
 </head>
 <body>
 <main>
