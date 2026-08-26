@@ -3926,7 +3926,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   const S1_BUILD_CLASSES_LIVE=['Berserker','Paladin','Archmage','Arcanist'];
   const S2_BUILD_CLASSES_LIVE=['Conqueror','Guardian','Destroyer','Dominator'];
   const BUILD_SEASON_STORAGE_KEYS={s1:'sxs-build-class-s1',s2:'sxs-build-class-s2'};
-  const buildHtmlT4Live=buildHtml;
+  const buildHtmlT4Live=buildHtmlS2;
   function liveBuildSeason(){ return buildSeasonKey()==='s2'?'s2':(currentBuildSeason==='s2'?'s2':'s1'); }
   function liveBuildClasses(){ return liveBuildSeason()==='s1'?S1_BUILD_CLASSES_LIVE:S2_BUILD_CLASSES_LIVE; }
   function liveBuildStorageKey(){ return BUILD_SEASON_STORAGE_KEYS[liveBuildSeason()]; }
