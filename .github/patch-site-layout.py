@@ -11,10 +11,63 @@ block = r'''<!-- SITE_LAYOUT_MOBILE_START -->
 /* Keep Builds, Companions and Calculator on the same content rails. */
 .calculator{max-width:980px;margin:32px auto 80px;padding:0 20px}
 
+/* Keep the S1/S2 selector visually inside the Builds navigation button. */
+.buildsNavCell{position:relative;flex:1;min-width:0}
+.buildsNavCell>button[data-section="builds"]{width:100%;padding-right:94px}
+.buildSeasonToggle{
+  position:absolute;
+  z-index:3;
+  top:50%;
+  right:7px;
+  transform:translateY(-50%);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+  padding:3px;
+  border:1px solid color-mix(in srgb,var(--line) 78%,transparent);
+  border-radius:9px;
+  background:color-mix(in srgb,var(--bg) 72%,transparent);
+  box-shadow:0 1px 4px #00000012;
+}
+.buildSeasonToggle button{
+  flex:0 0 auto!important;
+  min-width:31px!important;
+  min-height:30px!important;
+  padding:5px 7px!important;
+  border:0!important;
+  border-radius:7px!important;
+  background:transparent!important;
+  color:var(--muted)!important;
+  font-size:8px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  box-shadow:none!important;
+}
+.buildSeasonToggle button[aria-pressed="true"],
+.buildSeasonToggle button.active{
+  background:var(--accent-strong)!important;
+  color:#fff!important;
+}
+.buildsNavCell>button[data-section="builds"].active + .buildSeasonToggle{
+  border-color:color-mix(in srgb,#fff 22%,transparent);
+  background:color-mix(in srgb,var(--accent-deep) 54%,transparent);
+}
+.buildsNavCell>button[data-section="builds"].active + .buildSeasonToggle button{
+  color:color-mix(in srgb,#fff 70%,transparent)!important;
+}
+.buildsNavCell>button[data-section="builds"].active + .buildSeasonToggle button[aria-pressed="true"],
+.buildsNavCell>button[data-section="builds"].active + .buildSeasonToggle button.active{
+  background:color-mix(in srgb,#fff 24%,transparent)!important;
+  color:#fff!important;
+}
+
 @media (min-width:1400px){
   .calculator{max-width:1560px;margin-top:38px;padding:0 28px}
   .calculator .methodPanel,
   .calculator .calcSeasonNotice{max-width:none}
+  .buildsNavCell>button[data-section="builds"]{padding-right:104px}
+  .buildSeasonToggle{right:9px}
+  .buildSeasonToggle button{min-width:34px!important;min-height:32px!important;font-size:9px!important}
 }
 
 /* Tablet: stop desktop grids from becoming narrow mini-columns. */
@@ -44,10 +97,10 @@ block = r'''<!-- SITE_LAYOUT_MOBILE_START -->
   .sectionSwitch{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:12px 10px 0;padding:4px;border-radius:13px}
   .sectionSwitch>button,.sectionSwitch>.buildsNavCell{min-width:0}
   .sectionSwitch>button{min-height:42px;padding:7px 6px;font-size:10px}
-  .buildsNavCell{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px;align-items:center}
-  .buildsNavCell>button[data-section]{min-height:42px;padding:7px 5px;font-size:10px}
-  .buildSeasonToggle{align-self:stretch;padding:2px;gap:1px}
-  .buildSeasonToggle button{min-width:27px!important;min-height:34px!important;padding:4px!important;font-size:8px!important}
+  .buildsNavCell{display:block;position:relative}
+  .buildsNavCell>button[data-section]{width:100%;min-height:42px;padding:7px 70px 7px 8px;font-size:10px}
+  .buildSeasonToggle{right:4px;padding:2px;gap:1px;border-radius:8px}
+  .buildSeasonToggle button{min-width:27px!important;min-height:32px!important;padding:4px!important;font-size:8px!important}
 
   .builds,.companions,.calculator{width:100%;max-width:none;margin:16px auto 60px;padding:0 10px}
   .classTabs,.companionClassTabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:8px}
@@ -123,4 +176,4 @@ else:
     text = text.replace('</head>', block + '\n</head>', 1)
 
 p.write_text(text, encoding='utf-8')
-print('Applied shared section width and mobile layout polish')
+print('Applied shared section width, integrated build season control, and mobile layout polish')
