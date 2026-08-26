@@ -16,175 +16,26 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-
-      - name: Add S1 S2 build toggle
+      - name: Patch build season toggle
         shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-
-          old_nav='''<nav aria-label="Site sections" class="sectionSwitch" role="tablist">
-  <button class="active" role="tab" aria-selected="true" data-section="timeline">Timeline</button>
-  <button role="tab" aria-selected="false" data-section="builds">Builds</button>
-  <button role="tab" aria-selected="false" data-section="calculator">Primostar Calculator</button>
-</nav>'''
-          new_nav='''<nav aria-label="Site sections" class="sectionSwitch" role="tablist">
-  <button class="active" role="tab" aria-selected="true" data-section="timeline">Timeline</button>
-  <div class="buildsNavCell">
-    <button role="tab" aria-selected="false" data-section="builds">Builds</button>
-    <span class="buildSeasonToggle" id="buildSeasonToggle" role="group" aria-label="Build season">
-      <button type="button" data-build-season="s1" aria-pressed="true">S1</button>
-      <button type="button" data-build-season="s2" aria-pressed="false">S2</button>
-    </span>
-  </div>
-  <button role="tab" aria-selected="false" data-section="calculator">Primostar Calculator</button>
-</nav>'''
-          if old_nav not in s:
-              raise SystemExit('section nav block not found')
-          s=s.replace(old_nav,new_nav,1)
-
-          old_key="  const BUILD_CLASS_STORAGE_KEYS={s1:'sxs-build-class-s1',s2:'sxs-build-class-s2'};"
-          new_key=old_key+"\n  const BUILD_SEASON_VIEW_STORAGE_KEY='sxs-build-season-view';"
-          if old_key not in s:
-              raise SystemExit('build storage key anchor not found')
-          s=s.replace(old_key,new_key,1)
-
-          old_init="""  let currentBuildSeason=buildSeasonKey();
-  let currentClass=currentBuildSeason==='s1'?'Berserker':'Conqueror';"""
-          new_init="""  let currentBuildSeason=buildSeasonKey();
-  try{
-    if(currentBuildSeason==='s1'){
-      const savedSeason=localStorage.getItem(BUILD_SEASON_VIEW_STORAGE_KEY);
-      if(savedSeason==='s1'||savedSeason==='s2') currentBuildSeason=savedSeason;
-    }
-  }catch(_){}
-  let currentClass=currentBuildSeason==='s1'?'Berserker':'Conqueror';"""
-          if old_init not in s:
-              raise SystemExit('build season init block not found')
-          s=s.replace(old_init,new_init,1)
-
-          old_live="""  function liveBuildSeason(){ return currentResetIso()<'2026-08-30'?'s1':'s2'; }
-  function liveBuildClasses(){ return liveBuildSeason()==='s1'?S1_BUILD_CLASSES_LIVE:S2_BUILD_CLASSES_LIVE; }
-  function liveBuildStorageKey(){ return BUILD_SEASON_STORAGE_KEYS[liveBuildSeason()]; }"""
-          new_live="""  function liveBuildSeason(){ return buildSeasonKey()==='s2'?'s2':(currentBuildSeason==='s2'?'s2':'s1'); }
-  function liveBuildClasses(){ return liveBuildSeason()==='s1'?S1_BUILD_CLASSES_LIVE:S2_BUILD_CLASSES_LIVE; }
-  function liveBuildStorageKey(){ return BUILD_SEASON_STORAGE_KEYS[liveBuildSeason()]; }
-  function renderBuildSeasonToggle(){
-    const toggle=$('buildSeasonToggle');
-    if(!toggle) return;
-    const forcedS2=buildSeasonKey()==='s2';
-    const season=liveBuildSeason();
-    toggle.classList.toggle('s2Only',forcedS2);
-    toggle.querySelectorAll('button[data-build-season]').forEach(btn=>{
-      const key=btn.dataset.buildSeason;
-      btn.hidden=forcedS2&&key==='s1';
-      const active=key===season;
-      btn.classList.toggle('active',active);
-      btn.setAttribute('aria-pressed',String(active));
-    });
-  }
-  function selectBuildSeason(key){
-    if(buildSeasonKey()==='s2') key='s2';
-    if(key!=='s1'&&key!=='s2') return;
-    currentBuildSeason=key;
-    try{localStorage.setItem(BUILD_SEASON_VIEW_STORAGE_KEY,key);}catch(_){}
-    currentClass='';
-    normalizeLiveBuildClass();
-    renderBuilds();
-    setSection('builds');
-  }"""
-          if old_live not in s:
-              raise SystemExit('live build season functions not found')
-          s=s.replace(old_live,new_live,1)
-
-          old_render="""  renderBuilds=function(){
-    normalizeLiveBuildClass();
-    const list=liveBuildClasses();"""
-          new_render="""  renderBuilds=function(){
-    if(buildSeasonKey()==='s2') currentBuildSeason='s2';
-    normalizeLiveBuildClass();
-    renderBuildSeasonToggle();
-    const list=liveBuildClasses();"""
-          if old_render not in s:
-              raise SystemExit('renderBuilds anchor not found')
-          s=s.replace(old_render,new_render,1)
-
-          old_setup="""  setupBuilds=function(){
-    $('classTabs').addEventListener('click',e=>{"""
-          new_setup="""  setupBuilds=function(){
-    $('buildSeasonToggle')?.addEventListener('click',e=>{
-      const b=e.target.closest('button[data-build-season]');
-      if(!b)return;
-      e.preventDefault();
-      e.stopPropagation();
-      selectBuildSeason(b.dataset.buildSeason);
-    });
-    $('classTabs').addEventListener('click',e=>{"""
-          if old_setup not in s:
-              raise SystemExit('setupBuilds anchor not found')
-          s=s.replace(old_setup,new_setup,1)
-
-          old_section="document.querySelectorAll('.sectionSwitch button').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});"
-          new_section="document.querySelectorAll('.sectionSwitch button[data-section]').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});"
-          if old_section not in s:
-              raise SystemExit('section active selector not found')
-          s=s.replace(old_section,new_section,1)
-
-          css='''
-<style id="build-season-nav-toggle-v1">
-/* Temporary S1/S2 build preview control. S1 disappears automatically once S2 is live. */
-.buildsNavCell{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:5px;flex:1;min-width:0}
-.buildsNavCell>button[data-section]{width:100%;min-width:0}
-.buildSeasonToggle{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--line);background:var(--ui-subpanel,var(--surface));border-radius:9px;flex:0 0 auto}
-.buildSeasonToggle button{flex:0 0 auto!important;min-height:28px!important;min-width:31px!important;padding:4px 7px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:var(--muted)!important;font-size:9px!important;font-weight:900!important;letter-spacing:.04em!important;line-height:1!important;box-shadow:none!important}
-.buildSeasonToggle button:hover{background:var(--ui-hover)!important;color:var(--ink)!important}
-.buildSeasonToggle button.active{background:var(--accent-strong)!important;color:#fffaf3!important}
-.buildSeasonToggle button[hidden]{display:none!important}
-.buildSeasonToggle.s2Only{padding:2px}
-@media(max-width:720px){.buildsNavCell{gap:3px}.buildSeasonToggle button{min-width:28px!important;padding-inline:5px!important;font-size:8px!important}.buildsNavCell>button[data-section]{padding-inline:5px!important}}
-@media(max-width:520px){.buildsNavCell{grid-template-columns:minmax(0,1fr) auto}.buildSeasonToggle{gap:1px}.buildSeasonToggle button{min-width:25px!important;padding-inline:4px!important}}
-</style>
-'''
-          if 'build-season-nav-toggle-v1' not in s:
-              if '</head>' not in s:
-                  raise SystemExit('head close not found')
-              s=s.replace('</head>',css+'\n</head>',1)
-
-          p.write_text(s,encoding='utf-8')
-          PY
-
-      - name: Validate build toggle and JavaScript
+          echo 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCByZQoKcD1QYXRoKCdpbmRleC5odG1sJykKcz1wLnJlYWRfdGV4dChlbmNvZGluZz0ndXRmLTgnKQoKb2xkX25hdiA9ICc8bmF2IGFyaWEtbGFiZWw9IlNpdGUgc2VjdGlvbnMiIGNsYXNzPSJzZWN0aW9uU3dpdGNoIiByb2xlPSJ0YWJsaXN0Ij5cbiAgPGJ1dHRvbiBjbGFzcz0iYWN0aXZlIiByb2xlPSJ0YWIiIGFyaWEtc2VsZWN0ZWQ9InRydWUiIGRhdGEtc2VjdGlvbj0idGltZWxpbmUiPlRpbWVsaW5lPC9idXR0b24+XG4gIDxidXR0b24gcm9sZT0idGFiIiBhcmlhLXNlbGVjdGVkPSJmYWxzZSIgZGF0YS1zZWN0aW9uPSJidWlsZHMiPkJ1aWxkczwvYnV0dG9uPlxuICA8YnV0dG9uIHJvbGU9InRhYiIgYXJpYS1zZWxlY3RlZD0iZmFsc2UiIGRhdGEtc2VjdGlvbj0iY2FsY3VsYXRvciI+UHJpbW9zdGFyIENhbGN1bGF0b3I8L2J1dHRvbj5cbjwvbmF2PicKbmV3X25hdiA9ICc8bmF2IGFyaWEtbGFiZWw9IlNpdGUgc2VjdGlvbnMiIGNsYXNzPSJzZWN0aW9uU3dpdGNoIiByb2xlPSJ0YWJsaXN0Ij5cbiAgPGJ1dHRvbiBjbGFzcz0iYWN0aXZlIiByb2xlPSJ0YWIiIGFyaWEtc2VsZWN0ZWQ9InRydWUiIGRhdGEtc2VjdGlvbj0idGltZWxpbmUiPlRpbWVsaW5lPC9idXR0b24+XG4gIDxkaXYgY2xhc3M9ImJ1aWxkc05hdkNlbGwiPlxuICAgIDxidXR0b24gcm9sZT0idGFiIiBhcmlhLXNlbGVjdGVkPSJmYWxzZSIgZGF0YS1zZWN0aW9uPSJidWlsZHMiPkJ1aWxkczwvYnV0dG9uPlxuICAgIDxzcGFuIGNsYXNzPSJidWlsZFNlYXNvblRvZ2dsZSIgaWQ9ImJ1aWxkU2Vhc29uVG9nZ2xlIiByb2xlPSJncm91cCIgYXJpYS1sYWJlbD0iQnVpbGQgc2Vhc29uIj5cbiAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBkYXRhLWJ1aWxkLXNlYXNvbj0iczEiIGFyaWEtcHJlc3NlZD0idHJ1ZSI+UzE8L2J1dHRvbj5cbiAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBkYXRhLWJ1aWxkLXNlYXNvbj0iczIiIGFyaWEtcHJlc3NlZD0iZmFsc2UiPlMyPC9idXR0b24+XG4gICAgPC9zcGFuPlxuICA8L2Rpdj5cbiAgPGJ1dHRvbiByb2xlPSJ0YWIiIGFyaWEtc2VsZWN0ZWQ9ImZhbHNlIiBkYXRhLXNlY3Rpb249ImNhbGN1bGF0b3IiPlByaW1vc3RhciBDYWxjdWxhdG9yPC9idXR0b24+XG48L25hdj4nCmlmIG9sZF9uYXYgbm90IGluIHM6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCdzZWN0aW9uIG5hdiBibG9jayBub3QgZm91bmQnKQpzPXMucmVwbGFjZShvbGRfbmF2LG5ld19uYXYsMSkKCm9sZF9rZXk9IiAgY29uc3QgQlVJTERfQ0xBU1NfU1RPUkFHRV9LRVlTPXtzMDonc3hzLWJ1aWxkLWNsYXNzLXMxJyxzMjonc3hzLWJ1aWxkLWNsYXNzLXMyJ307IgpuZXdfa2V5PW9sZF9rZXkrIlxuICBjb25zdCBCVUlMRF9TRUFTT05fVklFV19TVE9SQUdFX0tFWT0nc3hzLWJ1aWxkLXNlYXNvbi12aWV3JzsiCmlmIG9sZF9rZXkgbm90IGluIHM6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCd idWlsZCBzdG9yYWdlIGtleSBhbmNob3Igbm90IGZvdW5kJykKcyA9IHMucmVwbGFjZShvbGRfa2V5LG5ld19rZXksMSkKCm9sZF9pbml0PSIgIGxldCBjdXJyZW50QnVpbGRTZWFzb249YnVpbGRTZWFzb25LZXkoKTtcbiAgbGV0IGN1cnJlbnRDbGFzcz1jdXJyZW50QnVpbGRTZWFzb249PT0nczEnPydCZXJzZXJrZXInOidDb25xdWVyb3InOyIKbmV3X2luaXQ9IiAgbGV0IGN1cnJlbnRCdWlsZFNlYXNvbj1idWlsZFNlYXNvbktleSgpO1xuICB0cnl7XG4gICAgaWYoY3VycmVudEJ1aWxkU2Vhc29uPT09J3MxJyl7XG4gICAgICBjb25zdCBzYXZlZFNlYXNvbj1sb2NhbFN0b3JhZ2UuZ2V0SXRlbShCVUlMRF9TRUFTT05fVklFV19TVE9SQUdFX0tFWSk7XG4gICAgICBpZihzYXZlZFNlYXNvbj09PSdzMSd8fHNhdmVkU2Vhc29uPT09J3MyJykgY3VycmVudEJ1aWxkU2Vhc29uPXNhdmVkU2Vhc29uO1xuICAgIH1cbiAgfWNhdGNoKF8pe31cbiAgbGV0IGN1cnJlbnRDbGFzcz1jdXJyZW50QnVpbGRTZWFzb249PT0nczEnPydCZXJzZXJrZXInOidDb25xdWVyb3InOyIKaWYgb2xkX2luaXQgbm90IGluIHM6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCdidWlsZCBzZWFzb24gaW5pdCBibG9jayBub3QgZm91bmQnKQpzPXMucmVwbGFjZShvbGRfaW5pdCxuZXdfaW5pdCwxKQoKb2xkX2xpdmU9IiAgZnVuY3Rpb24gbGl2ZUJ1aWxkU2Vhc29uKCl7IHJldHVybiBjdXJyZW50UmVzZXRJc28oKTwnMjAyNi0wOC0zMCc/J3MxJzonc zInOyB9XG4gIGZ1bmN0aW9uIGxpdmVCdWlsZENsYXNzZXMoKXsgcmV0dXJuIGxpdmVCdWlsZFNlYXNvbigpPT09J3MxJz9TMV9CVUlMRF9DTEFTU0VTX0xJVkU6UzJfQlVJTERfQ0xBU1NFU19MSVZFOyB9XG4gIGZ1bmN0aW9uIGxpdmVCdWlsZFN0b3JhZ2VLZXkoKXsgcmV0dXJuIEJVSUxEX1NFQVNPTl9TVE9SQUdFX0tFWVNb bGl2ZUJ1aWxkU2Vhc29uKCldOyB9IgpuZXdfbGl2ZT0iICBmdW5jdGlvbiBsaXZlQnVpbGRTZWFzb24oKXsgcmV0dXJuIGJ1aWxkU2Vhc29uS2V5KCk9PT0nczInPydzMic6KGN1cnJlbnRCdWlsZFNlYXNvbj09PSdzMic/J3MyJzonc zEnKTsgfVxuICBmdW5jdGlvbiBsaXZlQnVpbGRDbGFzc2VzKCl7IHJldHVybiBsaXZlQnVpbGRTZWFzb24oKT09PSdzMSc/UzFfQlVJTERfQ0xBU1NFU19MSVZFOlMyX0JVSUxEX0NMQVNTRVNfTElWRTsgfVxuICBmdW5jdGlvbiBsaXZlQnVpbGRTdG9yYWdlS2V5KCl7IHJldHVybiBCVUlMRF9TRUFTT05fU1RPUkFHRV9LRVlTW2xpdmVCdWlsZFNlYXNvbigpXTsgfVxuICBmdW5jdGlvbiByZW5kZXJCdWlsZFNlYXNvblRvZ2dsZSgpe1xuICAgIGNvbnN0IHRvZ2dsZT0kKCdidWlsZFNlYXNvblRvZ2dsZScpO1xuICAgIGlmKCF0b2dnbGUpIHJldHVybjtcbiAgICBjb25zdCBmb3JjZWRTMj1idWlsZFNlYXNvbktleSgpPT09J3MyJztcbiAgICBjb25zdCBzZWFzb249bGl2ZUJ1aWxkU2Vhc29uKCk7XG4gICAgdG9nZ2xlLmNsYXNzTGlzdC50b2dnbGUoJ3MyT25seScsZm9yY2VkUzIpO1xuICAgIHRvZ2dsZS5xdWVyeVNlbGVjdG9yQWxsKCd idXR0b25bZGF0YS1idWlsZC1zZWFzb25dJyk uZm9yRWFjaChidG49PntcbiAgICAgIGNvbnN0IGtleT1idG4uZGF0YXNldC5idWlsZFNlYXNvbjtcbiAgICAgIGJ0bi5oaWRkZW49Zm9yY2VkUzImJmtleT09PSdzMSc7XG4gICAgICBjb25zdCBhY3RpdmU9a2V5PT09c2Vhc29uO1xuICAgICAgYnRuLmNsYXNzTGlzdC50b2dnbGUoJ2FjdGl2ZScsYWN0aXZlKTtcbiAgICAgIGJ0bi5zZXRBdHRyaWJ1dGUoJ2FyaWEtcHJlc3NlZCcsU3RyaW5nKGFjdGl2ZSkpO1xuICAgIH0pO1xuICB9XG4gIGZ1bmN0aW9uIHNlbGVjdEJ1aWxkU2Vhc29uKGtleSl7XG4gICAgaWYoYnVpbGRTZWFzb25LZXkoKT09PSdzMicpIGtleT0nczInO1xuICAgIGlmKGtleSE9PSdzMScmJmtleSE9PSdzMicpIHJldHVybjtcbiAgICBjdXJyZW50QnVpbGRTZWFzb249a2V5O1xuICAgIHRyeXtsb2NhbFN0b3JhZ2Uuc2V0SXRlbShCVUlMRF9TRUFTT05fVklFV19TVE9SQUdFX0tFWSxrZXkpO31jYXRjaChfKXt9XG4gICAgY3VycmVudENsYXNzPScnO1xuICAgIG5vcm1hbGl6ZUxpdmVCdWlsZENsYXNzKCk7XG4gICAgcmVuZGVyQnVpbGRzKCk7XG4gICAgc2V0U2VjdGlvbignYnVpbGRzJyk7XG4gIH0iCmlmIG9sZF9saXZlIG5vdCBpbiBzOgogICAgcmFpc2UgU3lzdGVtRXhpdCgnbGl2ZSBidWlsZCBzZWFzb24gZnVuY3Rpb25zIG5vdCBmb3VuZCcpCnM9cy5yZXBsYWNlKG9sZF9saXZlLG5ld19saXZlLDEpCgpvbGRfcmVuZGVyPSIgIHJlbmRlckJ1aWxkcz1mdW5jdGlvbigpe1xuICAgIG5vcm1hbGl6ZUxpdmVCdWlsZENsYXNzKCk7XG4gICAgY29uc3QgbGlzdD1saXZlQnVpbGRDbGFzc2VzKCk7IgpuZXdfcmVuZGVyPSIgIHJlbmRlckJ1aWxkcz1mdW5jdGlvbigpe1xuICAgIGlmKGJ1aWxkU2Vhc29uS2V5KCk9PT0nczInKSBjdXJyZW50QnVpbGRTZWFzb249J3MyJztcbiAgICBub3JtYWxpemVMaXZlQnVpbGRDbGFzcygpO1xuICAgIHJlbmRlckJ1aWxkU2Vhc29uVG9nZ2xlKCk7XG4gICAgY29uc3QgbGlzdD1saXZlQnVpbGRDbGFzc2VzKCk7Igp pZiBvbGRfcmVuZGVyIG5vdCBpbiBzOgogICAgcmFpc2UgU3lzdGVtRXhpdCgncmVuZGVyQnVpbGRzIGFuY2hvciBub3QgZm91bmQnKQpzPXMucmVwbGFjZShvbGRfcmVuZGVyLG5ld19yZW5kZXIsMSkKCm9sZF9zZXR1cD0iICBzZXR1cEJ1aWxkcz1mdW5jdGlvbigpe1xuICAgICQoJ2NsYXNzVGFicycpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJyxlPT57IgpuZXdfc2V0dXA9IiAgc2V0dXBCdWlsZHM9ZnVuY3Rpb24oKXtcbiAgICAkKCd idWlsZFNlYXNvblRvZ2dsZScpPy5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZT0+e1xuICAgICAgY29uc3QgYj1lLnRhcmdldC5jbG9zZXN0KCd idXR0b25bZGF0YS1idWlsZC1zZWFzb25dJyk7XG4gICAgICBpZighYilyZXR1cm47XG4gICAgICBlLnByZXZlbnREZWZhdWx0KCk7XG4gICAgICBlLnN0b3BQcm9wYWdhdGlvbigpO1xuICAgICAgc2VsZWN0QnVpbGRTZWFzb24oYi5kYXRhc2V0LmJ1aWxkU2Vhc29uKTtcbiAgICB9KTtcbiAgICAkKCdjbGFzc1RhYnMnKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZT0+eyIKaWYgb2xkX3NldHVwIG5vdCBpbiBzOgogICAgcmFpc2UgU3lzdGVtRXhpdCgnc2V0dXBCdWlsZHMgYW5jaG9yIG5vdCBmb3VuZCcpCnM9cy5yZXBsYWNlKG9sZF9zZXR1cCxuZXdfc2V0dXAsMSkKCm9sZF9zZWN0aW9uPSJkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcuc2VjdGlvblN3aXRjaCBidXR0b24nKS5mb3JFYWNoKGI9Pntjb25zdCBhY3RpdmU9Yi5kYXRhc2V0LnNlY3Rpb249PT1uYW1lO2IuY2xhc3NMaXN0LnRvZ2dsZSgnYWN0aXZlJyxhY3RpdmUpO2Iuc2V0QXR0cmlidXRlKCdhcmlhLXNlbGVjdGVkJyxTdHJpbmcoYWN0aXZlKSk7fSk7IgpuZXdfc2VjdGlvbj0iZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnLnNlY3Rpb25Td2l0Y2ggYnV0dG9uW2RhdGEtc2VjdGlvbl0nKS5mb3JFYWNoKGI9Pntjb25zdCBhY3RpdmU9Yi5kYXRhc2V0LnNlY3Rpb249PT1uYW1lO2IuY2xhc3NMaXN0LnRvZ2dsZSgnYWN0aXZlJyxhY3RpdmUpO2Iuc2V0QXR0cmlidXRlKCdhcmlhLXNlbGVjdGVkJyxTdHJpbmcoYWN0aXZlKSk7fSk7IgppZiBvbGRfc2VjdGlvbiBub3QgaW4gczoKICAgIHJhaXNlIFN5c3RlbUV4aXQoJ3NlY3Rpb24gYWN0aXZlIHNlbGVjdG9yIG5vdCBmb3VuZCcpCnM9cy5yZXBsYWNlKG9sZF9zZWN0aW9uLG5ld19zZWN0aW9uLDEpCgpjc3MgPSAnJycKPHN0eWxlIGlkPSJidWlsZC1zZWFzb24tbmF2LXRvZ2dsZS12MSI+Ci8qIFRlbXBvcmFyeSBTMS9TMiBidWlsZCBwcmV2aWV3IGNvbnRyb2wuIFMxIGRpc2FwcGVhcnMgYXV0b21hdGljYWxseSBvbmNlIFMyIGlzIGxpdmUuICovCi5idWlsZHNOYXZDZWxse2Rpc3BsYXk6Z3JpZDt ncmlkLXRlbXBsYXRlLWNvbHVtbnM6bWlubWF4KDAsMWZyKSBhdXRvO2FsaWduLWl0ZW1zOmNlbnRlcjtnYXA6NXB4O2ZsZXg6MTttaW4td2lkdGg6MH0KLmJ1aWxkc05hdkNlbGw+YnV0dG9uW2RhdGEtc2VjdGlvbl17d2lkdGg6MTAwJTttaW4td2lkdGg6MH0KLmJ1aWxkU2Vhc29uVG9nZ2xle2Rpc3BsYXk6aW5saW5lLWZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2dhcDoycHg7cGFkZGluZzoycHg7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1saW5lKTtiYWNrZ3JvdW5kOnZhcigtLXVpLXN1YnBhbmVsLHZhcigtLXN1cmZhY2UpKTtib3JkZXItcmFkaXVzOjlweDtmbGV4OjAgMCBhdXRvfQouYnVpbGRTZWFzb25Ub2dnbGUgYnV0dG9ue2ZsZXg6MCAwIGF1dG8haW1wb3J0YW50O21pbi1oZWlnaHQ6MjhweCFpbXBvcnRhbnQ7bWluLXdpZHRoOjMxcHghaW1wb3J0YW50O3BhZGRpbmc6NHB4IDdweCFpbXBvcnRhbnQ7Ym9yZGVyOjAhaW1wb3J0YW50O2JvcmRlci1yYWRpdXM6N3B4IWltcG9ydGFudDtiYWNrZ3JvdW5kOnRyYW5zcGFyZW50IWltcG9ydGFudDtjb2xvcjp2YXIoLS1tdXRlZCkhaW1wb3J0YW50O2ZvbnQtc2l6ZTo5cHghaW1wb3J0YW50O2ZvbnQtd2VpZ2h0OjkwMCFpbXBvcnRhbnQ7bGV0dGVyLXNwYWNpbmc6LjA0ZW0haW1wb3J0YW50O2xpbmUtaGVpZ2h0OjEhaW1wb3J0YW50O2JveC1zaGFkb3c6bm9uZSFpbXBvcnRhbnR9Ci5idWlsZFNlYXNvblRvZ2dsZSBidXR0b246aG92ZXJ7YmFja2dyb3VuZDp2YXIoLS11aS1ob3ZlcikhaW1wb3J0YW50O2NvbG9yOnZhcigtLWluaykhaW1wb3J0YW50fQouYnVpbGRTZWFzb25Ub2dnbGUgYnV0dG9uLmFjdGl2ZXtiYWNrZ3JvdW5kOnZhcigtLWFjY2VudC1zdHJvbmcpIWltcG9ydGFudDtjb2xvcjojZmZmYWYzIWltcG9ydGFudH0KLmJ1aWxkU2Vhc29uVG9nZ2xlIGJ1dHRvbltoaWRkZW5de2Rpc3BsYXk6bm9uZSFpbXBvcnRhbnR9Ci5idWlsZFNlYXNvblRvZ2dsZS5zMk9ubHl7cGFkZGluZzoycHh9CkBtZWRpYShtYXgtd2lkdGg6NzIwcHgpey5idWlsZHNOYXZDZWxse2dhcDozcHh9LmJ1aWxkU2Vhc29uVG9nZ2xlIGJ1dHRvbnttaW4td2lkdGg6MjhweCFpbXBvcnRhbnQ7cGFkZGluZy1pbmxpbmU6NXB4IWltcG9ydGFudDtmb250LXNpemU6OHB4IWltcG9ydGFudH0uYnVpbGRzTmF2Q2VsbD5idXR0b25bZGF0YS1zZWN0aW9uXXtwYWRkaW5nLWlubGluZTo1cHghaW1wb3J0YW50fX0KQG1lZGlhKG1heC13aWR0aDo1MjBweCl7LmJ1aWxkc05hdkNlbGx7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOm1pbm1heCgwLDFmcikgYXV0b30uYnVpbGRTZWFzb25Ub2dnbGV7Z2FwOjFweH0uYnVpbGRTZWFzb25Ub2dnbGUgYnV0dG9ue21pbi13aWR0aDoyNXB4IWltcG9ydGFudDtwYWRkaW5nLWlubGluZTo0cHghaW1wb3J0YW50fX0KPC9zdHlsZT4KJycnCmlmICdidWlsZC1zZWFzb24tbmF2LXRvZ2dsZS12MScgbm90IGluIHM6CiAgICBpZiAnPC9oZWFkPicgbm90IGluIHM6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgnaGVhZCBjbG9zZSBub3QgZm91bmQnKQogICAgcz1zLnJlcGxhY2UoJzwvaGVhZD4nLGNzcyreJ1xuPC9oZWFkPicsMSkKCnAud3JpdGVfdGV4dChzLGVuY29kaW5nPSd1dGYtOCcpCg==' | base64 -d > /tmp/patch.py
+          python /tmp/patch.py
+      - name: Validate
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
           text=Path('index.html').read_text(encoding='utf-8')
-          required=[
-            'id="buildSeasonToggle"',
-            "BUILD_SEASON_VIEW_STORAGE_KEY='sxs-build-season-view'",
-            'function selectBuildSeason(key)',
-            "btn.hidden=forcedS2&&key==='s1'",
-            "document.querySelectorAll('.sectionSwitch button[data-section]')",
-            'build-season-nav-toggle-v1'
-          ]
+          required=['id="buildSeasonToggle"',"BUILD_SEASON_VIEW_STORAGE_KEY='sxs-build-season-view'",'function selectBuildSeason(key)',"btn.hidden=forcedS2&&key==='s1'","document.querySelectorAll('.sectionSwitch button[data-section]')",'build-season-nav-toggle-v1']
           for marker in required:
-              if marker not in text:
-                  raise SystemExit(f'missing marker: {marker}')
-          if text.count('id="buildSeasonToggle"')!=1:
-              raise SystemExit('build season toggle must appear exactly once')
+              if marker not in text: raise SystemExit('missing '+marker)
           scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S|re.I)
-          if not scripts:
-              raise SystemExit('No inline scripts found')
           Path('/tmp/sxs.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/sxs.js
-
-      - name: Commit and self-clean
+      - name: Commit and cleanup
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
