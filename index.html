@@ -4433,97 +4433,189 @@ function polishBuildLayout(){
 </style>
 <!-- BUILD_FANTOMON_PAIRS_START -->
 <style>
-/* BUILD_FANTOMON_PAIRS_V1 */
+/* BUILD_FANTOMON_PAIRS_V2_ROLE_PRESETS */
 .buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
 .buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;font-size:9px;font-weight:850;display:block}
-.buildCard .fantomonPairRow{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.buildCard .fantomonPairNote{color:var(--muted);font-size:8px;line-height:1.35;margin:-2px 0 7px}
+.buildCard .fantomonRankList{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .buildCard .fantomonPick{border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,var(--accent-strong) 12%);border-radius:9px;padding:8px 9px;min-width:0}
 .buildCard .fantomonPick small{color:var(--muted);display:block;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
 .buildCard .fantomonPick b{color:var(--ink);display:block;font-size:10px;line-height:1.3}
 .buildCard .fantomonPick p{color:var(--muted);font-size:9px;line-height:1.35;margin:4px 0 0}
 .buildCard .fantomonPick.main{border-color:color-mix(in srgb,var(--accent-strong) 48%,var(--line))}
-@media(max-width:620px){.buildCard .fantomonPairRow{grid-template-columns:1fr}}
+.buildCard .roleBadge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 6px;margin-left:6px;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+@media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
 </style>
 <script>
 (function(){
-  const pair=(main,alt,mainWhy,altWhy)=>({main,alt,mainWhy,altWhy});
+  const role=(name,subtitle,techniques,charms,offensive,defensive,confidence='Guide core')=>({name,subtitle,techniques,charms,offensive,defensive,confidence});
+  const pick=(name,why)=>({name,why});
+
+  const ROLE_PRESETS={
+    Berserker:[
+      role('Solo','Story, tower and map pushing',["Hunter's Judgment",'Sunset Sword','Eclipse Slash','Lion Combo'],['Insightful Eye','Blade of Judgment','Blade Siphon','Indomitable Will'],'Indomitable Will → Blazing Clash when the stage cannot threaten you.','Keep Indomitable Will; low Crit can use Blade of Lament instead of Blade Siphon.'),
+      role('Dungeon','General room clearing with enough sustain',["Hunter's Judgment",'Sunset Sword','Eclipse Slash','Lion Combo'],['Insightful Eye','Blade of Judgment','Blade Siphon','Indomitable Will'],'Indomitable Will → Blazing Clash when your party already covers survival.','Keep Indomitable Will and Blade Siphon when pushing above your power.'),
+      role('Boss','Dragon / long single-target damage',['Flame Aura','Sunset Sword','Eclipse Slash','Lion Combo'],['Insightful Eye','Blade of Judgment','Blazing Clash','Crit Mastery'],'Already the greedier damage version; keep all four damage charms.','Crit Mastery or Blazing Clash → Indomitable Will if the boss can kill you.'),
+      role('PvP','Burst, reach and survival',['Darkness Descends','Lion Combo','Eclipse Slash','Sunset Sword'],['Insightful Eye','Blade of Judgment','Frame of Battles','Indomitable Will'],'Indomitable Will → Blazing Clash only for low-risk matchups.','Keep Indomitable Will; in team PvP Lion Combo → Hunter’s Judgment for grouping.')
+    ],
+    Paladin:[
+      role('Solo','Balanced progression and counter damage',['Luminous Shield','Forceful Charge','Star Shattering Slash','Heart of Challenge'],['Rebound','Counter Blade','Block Mastery','Block Awareness'],'Luminous Shield → Valor Surge when survival is already solved.','Keep Luminous Shield or add Desperate Protection for hard pushes.'),
+      role('Dungeon','Party-first tanking',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Fortress','Block Mastery','Block Awareness','Stone Skin'],'Luminous Shield → Lunarwater Threads when the group is safe and you want utility/damage.','Use the listed setup; it is already the high-safety dungeon version.'),
+      role('Boss','Dragon / boss tank with real damage',['Star Shattering Slash','Heart of Challenge','Luminous Shield','Forceful Charge'],['Rebound','Counter Blade','Block Mastery','Block Awareness'],'Luminous Shield → Valor Surge if you can stay alive without it.','Forceful Charge → Desperate Protection if party survival matters more than your damage.','Conservative role adaptation'),
+      role('PvP','Team protection and control',['Star Shattering Slash','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Fortress','Block Mastery','Block Awareness','Stone Skin'],'Desperate Protection → Lunarwater Threads if your team does not need the extra shield.','Keep the full defensive package; Stone Skin is especially useful into multi-hit pressure.','Conservative role adaptation')
+    ],
+    Archmage:[
+      role('Solo','Fast AoE progression',['Divine Wrath','Howling Hurricane','Meteoric Flames','Lightning Chain'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → Elemental Harmony / Lightning Mystery when survival is irrelevant.','Keep Void Bubble; front-loading damage is still your main defense.'),
+      role('Dungeon','Turn-one room clearing',['Divine Wrath','Howling Hurricane','Meteoric Flames','Lightning Chain'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → an offensive charm when the party can keep you safe.','Keep Void Bubble when pushing difficult rooms.'),
+      role('Boss','Single-target / large boss damage',['Divine Wrath','Howling Hurricane','Meteoric Flames',"Wind's Delight"],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → an offensive charm if the boss cannot threaten you.','Keep Void Bubble; Divine Wrath → Tempest Sphere on smaller targets.'),
+      role('PvP','Fast burst with safer targeting',['Tempest Sphere','Howling Hurricane','Meteoric Flames',"Wind's Delight"],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → damage only when you can reliably act first and survive.','Keep Void Bubble; this uses Tempest Sphere instead of the less reliable Divine Wrath.','Conservative role adaptation')
+    ],
+    Arcanist:[
+      role('Solo','AoE Dark DoT progression',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Keep the full DoT package for maximum clear damage.','If survival is the limiter, flex the lowest-impact damage charm for safety.'),
+      role('Dungeon','Healing / party sustain',['Void Blessing','Waterling Summon','Radiant Restoration','Frenzy Totem'],['Resurrection','Healing Mastery','Overhealing','Flex'],'Use the Flex charm for party damage/utility when healing is comfortable.','Use the Flex slot for extra survival; if another healer is present, swap to the Solo/AoE build.'),
+      role('Boss','Single-target Dark DoT',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Keep the full DoT package when Effect Hit Rate is reliable.','Flex the lowest-impact damage slot only if the boss is killing you.'),
+      role('PvP','Support-first survival',['Void Blessing','Waterling Summon','Radiant Restoration','Frenzy Totem'],['Resurrection','Healing Mastery','Overhealing','Shadow Vengeance'],'Shadow Vengeance → a utility/damage charm if you are not being focused.','Keep Shadow Vengeance and Resurrection when surviving burst is the priority.','Conservative role adaptation')
+    ],
+    Conqueror:[
+      role('Solo','All-purpose S2 pushing',['Flash Fire','Flame Aura','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'At high Crit, Insightful Eye → Soul Breaker; Indomitable Will → Soul Splash if safe.','Keep Indomitable Will for difficult pushes.'),
+      role('Dungeon','Fast room clearing',['Flash Fire','Flame Aura','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Soul Splash'],'At high Crit, Insightful Eye → Soul Breaker for more damage.','Soul Splash → Indomitable Will when pushing a dungeon that can kill you.','Guide-derived aggressive variant'),
+      role('Boss','Dragon / sustained damage',['Flame Aura','Blade Storm','Flash Fire','Flickering Blade'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Blazing Clash'],'At high Crit, Insightful Eye → Crit Mastery for Dragon.','Blazing Clash → Indomitable Will if the boss can kill you.'),
+      role('PvP','Mobility, dispel and durability',['Flash Fire','Darkness Descends','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'At high Crit, Insightful Eye → Soul Breaker.','Always keep Indomitable Will; Darkness Descends supplies the mobility/dispel Prydwen calls better for PvP.','Guide-derived PvP variant')
+    ],
+    Guardian:[
+      role('Solo','Flexible tank-and-spank progression',['Desperate Protection','Luminous Shield','Forceful Charge','Star Shattering Slash'],['Rebound','Holy Aegis','Block Mastery','Block Awareness'],'Luminous Shield → Valor Surge or Block Awareness → Eye for an Eye when defense is excessive.','Keep Luminous Shield; Potential Rebirth can replace an offensive slot for hard pushes.'),
+      role('Dungeon','Primary party tank',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Valor Surge → Hamper Strike if you need more Taunt; Desperate Protection → Swirling Blade for damage.','Iron Fortress can replace a flex charm if the party is still dying.'),
+      role('Boss','Dragon / Chaos / Guild support',['Valor Surge','Leap Attack','Holy Purification','Lunarwater Threads'],['Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil'],'Holy Purification → a damage skill when the boss has nothing important to dispel.','Lunarwater Threads → Seismic Tide for more consistent Cold stacking; keep the support charms.'),
+      role('PvP','True tank / ally protection',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Iron Fortress','Oath of Vigil'],'Desperate Protection → Star Shattering Slash when your team has enough sustain.','This is the defense-first version: extra Taunt plus the two charms Prydwen highlights for group PvP.','Guide-derived PvP variant')
+    ],
+    Destroyer:[
+      role('Solo','Generic AoE progression',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Void Bubble → an offensive charm if enemies cannot threaten you.','Keep Void Bubble; it is the safest general-purpose version.'),
+      role('Dungeon','Fire AoE for dense rooms',['Formation Breaker','Fiery Star Trail','Fireball','Meteoric Flames'],['Rapid Cast','Void Bubble','Explosive Spirit','Fiery Burst'],'Void Bubble → more offense when your team keeps you safe.','Keep Void Bubble if you need one extra turn to survive the pull.'),
+      role('Boss','Single-target damage',['Formation Breaker','Divine Wrath','Wind Blade Spiral','Thunder of Judgment'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → offense when safe; Wind Blade Spiral → Tempest Sphere if it tests better for your boss.','Mana Surge → Overload Protection for extra safety; Divine Wrath → Meteoric Flames on small bosses.'),
+      role('PvP','Safer burst / control',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → damage only if you can reliably survive enemy burst.','Keep Void Bubble; this intentionally favors the safer general kit because no settled T4 PvP-specific Destroyer preset is published.','Community/guide conservative')
+    ],
+    Dominator:[
+      role('Solo','AoE Dark DPS',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Keep the full Erosion package when Effect Hit Rate is reliable.','If Erosion is inconsistent, favor direct-damage pieces rather than forcing the highest ceiling.'),
+      role('Dungeon','Healing / support',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'Resurrection → Mantra of Blessings when the party does not need extra safety.','Frenzy Totem → Healing Touch if you need more raw healing.'),
+      role('Boss','Single-target Dark DPS',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'High Effect Hit Rate: Chaos Rune → Mana Blast for a higher Erosion ceiling.','Use the direct-damage hybrid as listed when Erosion landing is unreliable.'),
+      role('PvP','Healing / survival support',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Shadow Vengeance'],'Shadow Vengeance → Mantra of Blessings if you are not being focused.','Keep Shadow Vengeance; Resurrection can replace a flex slot if ally deaths are the problem.','Guide-derived PvP support variant')
+    ]
+  };
+
+  const FANTO={
+    Berserker:{
+      Solo:[pick('Nyxarchon','Main damage choice: extra damage plus DEF shred works in every S1 fight.'),pick('Aegiswing','S1 Assist survival/recovery is excellent for pushing stages above your power.'),pick('Sylvaerie','Permanent ATK + SPD improves both damage and turn tempo.'),pick('Zeioletus','Straightforward recurring burst when you want more damage instead of safety.')],
+      Dungeon:[pick('Nyxarchon','Best overall clear lead: damage plus DEF shred benefits every target you focus.'),pick('Sylvaerie','ATK + SPD is consistent across every dungeon room.'),pick('Zeioletus','Extra AoE burst helps clean packs quickly.'),pick('Terragon','Physical-friendly damage with a chance to cut enemy ATK; useful when rooms hit hard.')],
+      Boss:[pick('Nyxarchon','Best long-fight damage lead thanks to repeated damage and DEF shred.'),pick('Sylvaerie','Permanent ATK + SPD scales your whole boss rotation.'),pick('Terragon','Physical-friendly extra damage plus an ATK-down chance on the boss.'),pick('Zeioletus','Reliable extra burst if it outperforms Sylvaerie on your stats.')],
+      PvP:[pick('Aegiswing','Main PvP pick: its S1 Assist survival/recovery buys another life without relying on Materialization.'),pick('Nyxarchon','Greedy option when you can trade safety for damage and DEF shred.'),pick('Sylvaerie','Speed can help you win action tempo while still adding ATK.'),pick('Terragon','ATK reduction can blunt enemy burst while still adding damage.')]
+    },
+    Paladin:{
+      Solo:[pick('Aegiswing','Main S1 tank pick: survival/recovery adds a strong durability layer.'),pick('Armopi','Its S1 Assist already cycles DEF into a personal shield; good for DEF-heavy counter builds.'),pick('Boaro','Budget shield option that repeatedly triggers as you lose HP.'),pick('Kels','Useful when solo enemies have buffs worth dispelling.')],
+      Dungeon:[pick('Aegiswing','Best general tank lead for surviving repeated party-dungeon pressure.'),pick('Armopi','DEF stacking and its personal shield work in S1 without Materialization.'),pick('Kels','Bring it when dungeon enemies use important buffs you want to dispel.'),pick('Boaro','Cheap repeated shielding when you need raw durability.')],
+      Boss:[pick('Aegiswing','Safest default boss lead and Prydwen’s primary Paladin tank recommendation.'),pick('Kels','Excellent situational boss pick when dispel matters; its S1 value does not require Materialization.'),pick('Armopi','DEF + personal shield is strong when the boss repeatedly tests your tankiness.'),pick('Boaro','Budget defensive alternative with repeated shields.')],
+      PvP:[pick('Aegiswing','Main PvP tank pick: S1 survival/recovery is immediately useful.'),pick('Armopi','DEF stacking plus personal shield helps into sustained focus fire.'),pick('Boaro','Repeated shields can be annoying to chew through in longer fights.'),pick('Kels','Use when stripping enemy buffs matters more than maximum personal durability.')]
+    },
+    Archmage:{
+      Solo:[pick('Nyxarchon','Main damage lead: DEF shred and strong pet damage fit glass-cannon progression.'),pick('Armopi','Its pre-Materialization DEF-to-shield Assist can buy the one extra turn Archmage often needs.'),pick('Sylvaerie','Permanent ATK + SPD improves burst and action order.'),pick('Zeioletus','Extra recurring damage is strong when survival is already solved.')],
+      Dungeon:[pick('Nyxarchon','Best premium damage lead for deleting rooms quickly.'),pick('Sylvaerie','ATK + SPD is ideal for fast dungeon clears.'),pick('Zeioletus','Additional AoE burst helps finish packs.'),pick('Armopi','Take the personal DEF/shield cycle if you are dying before the room is cleared.')],
+      Boss:[pick('Nyxarchon','Best premium boss damage option with DEF shred.'),pick('Sylvaerie','Permanent ATK + SPD scales every cast.'),pick('Zeioletus','Good recurring damage when it tests better on your account.'),pick('Armopi','Safety option if the boss survives long enough to threaten you.')],
+      PvP:[pick('Aegiswing','Main survival-first PvP pick; its base Assist buys extra life before Materialization exists.'),pick('Nyxarchon','Greedy damage/DEF-shred alternative.'),pick('Armopi','Pre-Materialization DEF + personal shield can buy a critical extra turn.'),pick('Sylvaerie','SPD helps contest turn order while adding ATK.')]
+    },
+    Arcanist:{
+      Solo:[pick('Nyxarchon','Main DPS lead: Dark damage and the debuff line up naturally with Arcanist.'),pick('Zeioletus','Best simple F2P damage stopgap before Nyx.'),pick('Sylvaerie','Permanent SPD + ATK can beat Zei depending on your stats.'),pick('Aegiswing','Use its S1 survival/recovery when staying alive is more important than max DPS.')],
+      Dungeon:[pick('Mandragora','Main healer pick: every ally-targeted Technique can trigger extra healing, with no Materialization needed.'),pick('Sylvaerie','SPD means more turns to heal and support.'),pick('Aegiswing','Keeps the healer alive through dangerous rooms using only its S1 Assist effect.'),pick('Herbote','Fallback self-heal/cleanse option, but unevolved S1 Herbote is weaker for pure healing than Mandragora.')],
+      Boss:[pick('Nyxarchon','Main boss DPS choice: Dark damage plus a useful debuff.'),pick('Zeioletus','Straightforward damage alternative before Nyx.'),pick('Sylvaerie','SPD + ATK scales the whole DoT rotation.'),pick('Terragon','Can reduce boss ATK while still contributing damage.')],
+      PvP:[pick('Aegiswing','Main support PvP choice: base survival/recovery helps you keep healing through burst.'),pick('Mandragora','More raw healing whenever you target allies.'),pick('Nyxarchon','Offensive option when you can afford to pressure instead of purely sustain.'),pick('Sylvaerie','Extra SPD improves support tempo.')]
+    },
+    Conqueror:{
+      Solo:[pick('Nyxarchon','Main current S2 pick: Prydwen still rates its damage + DEF shred as BIS for generic content.'),pick('Aegiswing','Excellent high-push alternative when survival is the limiter.'),pick('Sylvaerie','Permanent ATK + SPD is the best currently available general damage alternative.'),pick('Zeioletus','Extra recurring burst if your stats make it outperform Sylvaerie.')],
+      Dungeon:[pick('Nyxarchon','Best default damage lead for fast clears and DEF-shred stacking.'),pick('Aegiswing','Use when a high dungeon is killing you before your damage comes online.'),pick('Sylvaerie','ATK + SPD improves room-clearing speed.'),pick('Zeioletus','Adds direct burst to help finish packs.')],
+      Boss:[pick('Nyxarchon','Main long-fight choice: DEF shred remains extremely valuable on hard bosses.'),pick('Sylvaerie','Permanent ATK + SPD scales the full boss rotation.'),pick('Zeioletus','Reliable extra damage if it tests better on your account.'),pick('Aegiswing','Defensive fallback for bosses where dying is the actual DPS loss.')],
+      PvP:[pick('Aegiswing','Main PvP choice: extra survival plus its S2 Materialization utility is more valuable here than pure damage.'),pick('Nyxarchon','Greedy damage/DEF-shred alternative.'),pick('Sylvaerie','SPD can help win action tempo while still boosting ATK.'),pick('Zeioletus','Pure damage alternative when survivability is already covered.')]
+    },
+    Guardian:{
+      Solo:[pick('Aegiswing','Main Guardian investment: Prydwen calls it the priority Mythic for the class, with survival and Taunt synergy.'),pick('Nyxarchon','Best offensive support alternative when you need more damage and debuffs.'),pick('Kels','Useful dispel/DEF-down utility when the stage benefits from it.'),pick('Boaro','Budget defensive option with shielding and S2 knockback utility.')],
+      Dungeon:[pick('Aegiswing','Main tank lead: survival, extra Taunt and reduced damage from taunted enemies fit the dungeon job perfectly.'),pick('Kels','Strong party utility through dispel and Materialized DEF Down.'),pick('Nyxarchon','Offensive support option when your team wants faster kills.'),pick('Terragon','ATK/DMG reduction utility when enemy damage is the bigger problem.')],
+      Boss:[pick('Kels','Main boss-support pick: Prydwen specifically highlights its dispel + Materialized DEF Down for team support.'),pick('Nyxarchon','Amplifies team damage with reliable debuffs and its own damage.'),pick('Terragon','Great when the raid needs enemy ATK/DMG reduction more than another damage debuff.'),pick('Aegiswing','Use when your personal survival or Taunt uptime is the limiting factor.')],
+      PvP:[pick('Aegiswing','Main PvP Guardian pet: extra Taunt, survival and anti-Taunt damage reduction match the class role.'),pick('Kels','Utility alternative for dispelling buffs and adding DEF Down.'),pick('Nyxarchon','Greedy pressure option when your team already has enough protection.'),pick('Boaro','Budget control/survival alternative with shielding and knockback utility.')]
+    },
+    Destroyer:{
+      Solo:[pick('Nyxarchon','Main premium choice: DEF shred plus strong damage suits a glass-cannon Destroyer.'),pick('Armopi','Prydwen’s survival alternative; its DEF/shield cycle can buy one extra turn.'),pick('Sylvaerie','Permanent ATK + SPD improves damage and action order.'),pick('Zeioletus','Simple recurring burst when you do not need extra safety.')],
+      Dungeon:[pick('Nyxarchon','Main damage lead for clearing difficult rooms quickly.'),pick('Sylvaerie','ATK + SPD is excellent for speed-clearing dungeons.'),pick('Zeioletus','Extra AoE burst complements the Fire/AoE setup.'),pick('Armopi','Take the shield/DEF option if you are dying before your turn.')],
+      Boss:[pick('Nyxarchon','Main premium boss option with damage and DEF shred.'),pick('Sylvaerie','Permanent ATK + SPD scales every cast.'),pick('Zeioletus','Additional recurring damage when it tests better on your stats.'),pick('Armopi','Safety fallback when the boss survives long enough to threaten you.')],
+      PvP:[pick('Aegiswing','Main PvP survival pick: cheat-death style utility is more valuable than another pure damage pet here.'),pick('Nyxarchon','Greedy damage/DEF-shred option.'),pick('Armopi','DEF + shield gives a fragile caster another way to survive focus.'),pick('Sylvaerie','SPD helps contest turn order and still adds ATK.')]
+    },
+    Dominator:{
+      Solo:[pick('Nyxarchon','Main DPS choice: Prydwen calls Nyx Dominator’s BIS thanks to Dark AoE damage and its supportive effect.'),pick('Zeioletus','Best straightforward F2P damage stopgap.'),pick('Sylvaerie','ATK + SPD can outperform Zei on some accounts.'),pick('Aegiswing','Use when surviving solo progression is more important than max damage.')],
+      Dungeon:[pick('Mandragora','Main pure-healing pick: directly adds healing whenever you use ally-targeted Techniques.'),pick('Herbote','Strong S2 healing alternative once Materialized because it can extend its healing to allies.'),pick('Sylvaerie','SPD gives you more actions to heal/support.'),pick('Terragon','Support alternative when reducing enemy ATK/DMG helps the whole party more than extra healing.')],
+      Boss:[pick('Nyxarchon','Main DPS lead for single-target Dark builds and team damage support.'),pick('Zeioletus','Direct damage alternative before or instead of Nyx.'),pick('Sylvaerie','Permanent SPD + ATK scales the whole boss rotation.'),pick('Terragon','Useful support option when lowering the boss’s ATK matters.')],
+      PvP:[pick('Mandragora','Main support/healing pick when your job is keeping teammates alive.'),pick('Aegiswing','Survival-first alternative when you are being focused.'),pick('Terragon','Debuffing option that can reduce enemy pressure while you support.'),pick('Sylvaerie','SPD improves support tempo when raw healing is already sufficient.')]
+    }
+  };
+
   function activeClass(){
     const b=document.querySelector('.builds .classTabs button.active');
     return b ? b.textContent.trim() : '';
   }
-  function healsMode(){
-    return Array.from(document.querySelectorAll('.builds button.active'))
-      .some(b=>b.textContent.trim().toLowerCase()==='heals');
+  function esc(s){
+    return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
-  function picksFor(cls,title,isHeals){
+  function roleKey(title){
     const t=(title||'').toLowerCase();
-    const pvp=/pvp|arena|mobility/.test(t);
-    const boss=/boss|dragon|chaos|guild|raid|crucible|single/.test(t);
-    const support=/support|team|tank/.test(t);
-
-    // S1/T3 recommendations intentionally use Assist skills only. Do not give
-    // Berserker, Paladin, Archmage or Arcanist credit for Materialization/Battle skills.
-    if(cls==='Berserker') return pvp
-      ? pair('Aegiswing','Nyxarchon','Safer S1 PvP lead: its opening survival/recovery effect helps you live through burst.','Aggressive swap: extra damage plus DEF shred when you can afford less safety.')
-      : pair('Nyxarchon','Sylvaerie','Best damage lead: adds strong damage and stacks DEF shred for the whole fight.','Stable damage alt: permanent ATK + SPD buffs improve every turn.');
-    if(cls==='Paladin'){
-      if(pvp) return pair('Aegiswing','Armopi','Best S1 tank lead: its survival/recovery effect gives you another durability layer.','DEF stacking can outperform Aegis recovery on DEF-heavy or still-developing tank builds.');
-      if(boss||support) return pair('Kels','Aegiswing','S1 Crucible support pick: dispels enemy buffs and contributes utility without relying on Materialization.','Use when personal survival/recovery matters more than dispel utility.');
-      return pair('Aegiswing','Armopi','Most reliable general S1 tank pet thanks to its built-in survival and recovery effect.','Strong S1 fallback when repeated DEF stacking fits your build better than Aegis recovery.');
-    }
-    if(cls==='Archmage') return pvp
-      ? pair('Aegiswing','Nyxarchon','Survival-first S1 PvP pick: its base survival/recovery effect buys extra turns for a fragile damage dealer.','Greedy alternative: DEF shred and extra damage if you can stay alive without Aegis.')
-      : pair('Nyxarchon','Sylvaerie','Top offensive choice: strong pet damage plus DEF shred improves burst.','Permanent ATK + SPD is a simple, consistent damage boost.');
-    if(cls==='Arcanist'){
-      if(isHeals) return pvp
-        ? pair('Aegiswing','Mandragora','Keeps the healer alive longer in S1 through its base survival/recovery effect.','More raw healing whenever your ally-targeted techniques trigger its heal.')
-        : pair('Mandragora','Sylvaerie','Pure healing choice: repeatedly adds healing when you use techniques on allies.','Speed-focused alt: more actions means more chances to heal and support.');
-      return pvp
-        ? pair('Aegiswing','Nyxarchon','Safer S1 PvP option when surviving long enough to stack Erosion matters most.','Aggressive Dark option with AoE damage and a strong supportive debuff.')
-        : pair('Nyxarchon','Zeioletus','Best DPS fit: Dark damage lines up with the class and adds a valuable debuff.','F2P damage alt: reliable extra AoE bursts when Nyx is unavailable.');
-    }
-    if(cls==='Conqueror') return pvp
-      ? pair('Aegiswing','Nyxarchon','PvP safety: cheat-death, recovery and later Taunt help a melee DPS survive focus fire.','Higher-damage swap: DEF shred is excellent when your team already keeps you alive.')
-      : pair('Nyxarchon','Sylvaerie','Current PvE best: extra damage plus DEF shred fits T4 DEF-shred stacking.','Best currently available general alt: permanent ATK + SPD until Pandarial releases.');
-    if(cls==='Guardian'){
-      if(pvp) return pair('Aegiswing','Kels','Priority Guardian pet: extra Taunt, survival and less damage from Taunted enemies after Materialization.','Utility swap: dispel enemy buffs and add a chance of DEF Down.');
-      if(boss||support) return pair('Kels','Nyxarchon','Excellent team support: dispel plus Materialized DEF Down; Water damage also helps Cold setups.','More offensive support: reliable debuffs and extra damage for the group.');
-      return pair('Aegiswing','Kels','Best general tank lead: survival plus additional Taunt/control.','Support alternative when dispel and DEF Down matter more than personal durability.');
-    }
-    if(cls==='Destroyer') return pvp
-      ? pair('Aegiswing','Nyxarchon','Fragile caster safety: cheat-death and recovery buy the turns needed to cast.','Greedy damage option: DEF shred plus extra pet damage when survivability is covered.')
-      : pair('Nyxarchon','Sylvaerie','Best offensive lead: adds damage and up to strong DEF shred for harder targets.','Consistent alt: permanent ATK + SPD improves both damage and action tempo.');
-    if(cls==='Dominator'){
-      if(isHeals) return pvp
-        ? pair('Aegiswing','Mandragora','Survival-first healer choice so you can keep supporting through enemy burst.','Raw-healing swap that adds extra healing from ally-targeted techniques.')
-        : pair('Mandragora','Sylvaerie','Best current pure-healing pick: directly adds more healing throughput.','Speed utility alt: more actions for heals/support when raw healing is already sufficient.');
-      return pvp
-        ? pair('Aegiswing','Nyxarchon','Use when survivability is the limiting factor in PvP.','Aggressive Dark swap with AoE damage and a useful debuff.')
-        : pair('Nyxarchon','Zeioletus','Best DPS fit: strong AoE Dark damage plus a supportive debuff.','F2P damage alternative with reliable extra AoE bursts.');
-    }
-    return pair('Nyxarchon','Sylvaerie','Strong universal offensive option with damage and DEF shred.','Simple permanent ATK + SPD alternative.');
+    if(t.startsWith('solo')) return 'Solo';
+    if(t.startsWith('dungeon')) return 'Dungeon';
+    if(t.startsWith('boss')) return 'Boss';
+    if(t.startsWith('pvp')) return 'PvP';
+    return '';
   }
-  function apply(){
-    const cls=activeClass();
-    if(!cls) return;
-    const isHeals=healsMode();
+  function buildCardHtml(r){
+    return '<article class="buildCard" data-role="'+esc(r.name)+'">'
+      +'<header><div><h3>'+esc(r.name)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
+      +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
+      +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
+      +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'
+      +'</article>';
+  }
+  function applyRoleLoadouts(cls){
+    const presets=ROLE_PRESETS[cls];
+    const grid=document.querySelector('.builds .buildGrid');
+    if(!presets||!grid) return;
+    const sig=cls+'|'+presets.map(r=>[r.name,...r.techniques,...r.charms,r.offensive,r.defensive].join('~')).join('|');
+    if(grid.dataset.rolePresetSig===sig) return;
+    grid.dataset.rolePresetSig=sig;
+    grid.innerHTML=presets.map(buildCardHtml).join('');
+  }
+  function picksFor(cls,title){
+    const role=roleKey(title);
+    return (FANTO[cls]&&FANTO[cls][role])||[];
+  }
+  function applyFantos(cls){
     document.querySelectorAll('.builds .buildCard').forEach(card=>{
-      const title=card.querySelector('h3')?.textContent.trim()||'';
-      const pick=picksFor(cls,title,isHeals);
+      const h3=card.querySelector('h3');
+      const title=h3?.childNodes?.[0]?.textContent?.trim() || h3?.textContent.trim() || '';
+      const picks=picksFor(cls,title);
+      if(!picks.length) return;
       let box=card.querySelector('.fantomonPair');
       if(!box){
         box=document.createElement('div');
         box.className='fantomonPair';
         card.appendChild(box);
       }
-      const sig=[cls,title,isHeals,pick.main,pick.alt,pick.mainWhy,pick.altWhy].join('|');
+      const sig=[cls,roleKey(title),...picks.flatMap(p=>[p.name,p.why])].join('|');
       if(box.dataset.sig===sig) return;
       box.dataset.sig=sig;
-      box.innerHTML='<span>Combat Fantomon</span><div class="fantomonPairRow">'
-        +'<div class="fantomonPick main"><small>Main</small><b>'+pick.main+'</b><p>'+pick.mainWhy+'</p></div>'
-        +'<div class="fantomonPick"><small>Alt</small><b>'+pick.alt+'</b><p>'+pick.altWhy+'</p></div>'
+      box.innerHTML='<span>Combat Fantomons · ranked</span>'
+        +'<p class="fantomonPairNote">#1 is the recommended combat lead for this preset; #2–#4 are situational alternatives, not required sub-slots.</p>'
+        +'<div class="fantomonRankList">'
+        +picks.slice(0,4).map((p,i)=>'<div class="fantomonPick'+(i===0?' main':'')+'"><small>'+(i===0?'Main · #1':'Alt · #'+(i+1))+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
         +'</div>';
     });
+  }
+  function apply(){
+    const cls=activeClass();
+    if(!cls) return;
+    applyRoleLoadouts(cls);
+    applyFantos(cls);
   }
   let queued=false;
   function queueApply(){
