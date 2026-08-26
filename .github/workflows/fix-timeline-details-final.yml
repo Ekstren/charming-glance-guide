@@ -1,4 +1,4 @@
-name: Fix timeline details final
+name: Fix Timeline Details Final
 on:
   push:
     paths:
@@ -12,73 +12,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Patch timeline details styles
+      - name: Patch index
+        env:
+          CSS_B64: PHN0eWxlPgovKiBUSU1FTElORV9ERVRBSUxTX0ZJTkFMX1YyICovCiN0aW1lbGluZSAuZW50cnkgZGV0YWlscy5lbnRyeU1vcmUgPiBzdW1tYXJ5LAojdGltZWxpbmUgLmVudHJ5IGRldGFpbHMudGltZWxpbmVDYXJkRGV0YWlscyA+IHN1bW1hcnksCiN0aW1lbGluZSAuZW50cnkgLmVudHJ5TW9yZSA+IHN1bW1hcnksCiN0aW1lbGluZSAuZW50cnkgLnRpbWVsaW5lQ2FyZERldGFpbHMgPiBzdW1tYXJ5ewogIGNvbG9yOmNvbG9yLW1peChpbiBzcmdiLHZhcigtLWFjY2VudC1zdHJvbmcpIDcyJSx2YXIoLS1pbmspIDI4JSkhaW1wb3J0YW50OwogIGZvbnQtc2l6ZToxMnB4IWltcG9ydGFudDsKICBmb250LXdlaWdodDo4NTAhaW1wb3J0YW50OwogIGxpbmUtaGVpZ2h0OjEuNDUhaW1wb3J0YW50Owp9CiN0aW1lbGluZSAuZW50cnkgZGV0YWlscy5lbnRyeU1vcmUgPiBzdW1tYXJ5OjphZnRlciwKI3RpbWVsaW5lIC5lbnRyeSBkZXRhaWxzLnRpbWVsaW5lQ2FyZERldGFpbHMgPiBzdW1tYXJ5OjphZnRlciwKI3RpbWVsaW5lIC5lbnRyeSAuZW50cnlNb3JlID4gc3VtbWFyeTo6YWZ0ZXIsCiN0aW1lbGluZSAuZW50cnkgLnRpbWVsaW5lQ2FyZERldGFpbHMgPiBzdW1tYXJ5OjphZnRlcntjb2xvcjpjdXJyZW50Q29sb3IhaW1wb3J0YW50fQojdGltZWxpbmUgLmVudHJ5ID4gZGl2ID4gcCArIHAsCiN0aW1lbGluZSAuZW50cnkgZGV0YWlscy5lbnRyeU1vcmUgPiBkaXYsCiN0aW1lbGluZSAuZW50cnkgZGV0YWlscy5lbnRyeU1vcmUgPiBkaXYgcCwKI3RpbWVsaW5lIC5lbnRyeSBkZXRhaWxzLmVudHJ5TW9yZSA+IGRpdiBsaSwKI3RpbWVsaW5lIC5lbnRyeSBkZXRhaWxzLnRpbWVsaW5lQ2FyZERldGFpbHMgLnRpbWVsaW5lQ2FyZERldGFpbHNCb2R5LAojdGltZWxpbmUgLmVudHJ5IGRldGFpbHMudGltZWxpbmVDYXJkRGV0YWlscyAudGltZWxpbmVDYXJkRGV0YWlsc0JvZHkgcCwKI3RpbWVsaW5lIC5lbnRyeSBkZXRhaWxzLnRpbWVsaW5lQ2FyZERldGFpbHMgLnRpbWVsaW5lQ2FyZERldGFpbHNCb2R5IGxpLAojdGltZWxpbmUgLmVudHJ5IC50aW1lbGluZVJpY2hCb2R5LAojdGltZWxpbmUgLmVudHJ5IC50aW1lbGluZVJpY2hCb2R5IHAsCiN0aW1lbGluZSAuZW50cnkgLnRpbWVsaW5lUmljaEJvZHkgbGksCiN0aW1lbGluZSAuZW50cnkgLnRpbWVsaW5lUmljaEJvZHkgLmxhdW5jaENoZWNrbGlzdCBzdHJvbmcsCiN0aW1lbGluZSAuZW50cnkgLnRpbWVsaW5lUmljaEJvZHkgLmxhdW5jaENoZWNrbGlzdCBlbXsKICBmb250LXNpemU6MTJweCFpbXBvcnRhbnQ7CiAgbGluZS1oZWlnaHQ6MS41NSFpbXBvcnRhbnQ7Cn0KI3RpbWVsaW5lIC5lbnRyeSBkZXRhaWxzLmVudHJ5TW9yZSA+IGRpdiwKI3RpbWVsaW5lIC5lbnRyeSBkZXRhaWxzLnRpbWVsaW5lQ2FyZERldGFpbHMgLnRpbWVsaW5lQ2FyZERldGFpbHNCb2R5LAojdGltZWxpbmUgLmVudHJ5IC50aW1lbGluZVJpY2hCb2R5ewogIGNvbG9yOnZhcigtLXNlY29uZGFyeS10ZXh0KSFpbXBvcnRhbnQ7CiAgbWFyZ2luLXRvcDo1cHghaW1wb3J0YW50Owp9Cjwvc3R5bGU+Cg==
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text()
-          marker='/* TIMELINE_DETAILS_FINAL_V2 */'
-          if marker in s:
-              raise SystemExit('already patched')
-          css=r'''<style>
-/* TIMELINE_DETAILS_FINAL_V2 */
-/* One visual treatment for every timeline expander. */
-#timeline .entry details.entryMore > summary,
-#timeline .entry details.timelineCardDetails > summary,
-#timeline .entry .entryMore > summary,
-#timeline .entry .timelineCardDetails > summary {
-  color: color-mix(in srgb, var(--accent-strong) 72%, var(--ink) 28%) !important;
-  font-size: 12px !important;
-  font-weight: 850 !important;
-  line-height: 1.45 !important;
-}
-#timeline .entry details.entryMore > summary::after,
-#timeline .entry details.timelineCardDetails > summary::after,
-#timeline .entry .entryMore > summary::after,
-#timeline .entry .timelineCardDetails > summary::after {
-  color: currentColor !important;
-}
-/* Match expanded copy to the normal timeline summary copy. */
-#timeline .entry > div > p + p,
-#timeline .entry details.entryMore > div,
-#timeline .entry details.entryMore > div p,
-#timeline .entry details.entryMore > div li,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody p,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody li,
-#timeline .entry .timelineRichBody,
-#timeline .entry .timelineRichBody p,
-#timeline .entry .timelineRichBody li,
-#timeline .entry .timelineRichBody .launchChecklist strong,
-#timeline .entry .timelineRichBody .launchChecklist em {
-  font-size: 12px !important;
-  line-height: 1.55 !important;
-}
-#timeline .entry details.entryMore > div,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
-#timeline .entry .timelineRichBody {
-  color: var(--secondary-text) !important;
-  margin-top: 5px !important;
-}
-</style>
-'''
-          # Put this at the very end so it wins over every earlier timeline style block.
-          assert '</body>' in s
-          s=s.replace('</body>',css+'</body>',1)
-          p.write_text(s)
-          PY
-      - name: Validate inline JavaScript
+          python3 -c "from pathlib import Path; import os,base64; p=Path('index.html'); s=p.read_text(); marker='/* TIMELINE_DETAILS_FINAL_V2 */'; css=base64.b64decode(os.environ['CSS_B64']).decode(); assert marker not in s; assert '</body>' in s; p.write_text(s.replace('</body>',css+'</body>',1))"
+      - name: Validate JavaScript
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          s=Path('index.html').read_text()
-          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
-          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
-          PY
+          python3 -c "from pathlib import Path; import re; s=Path('index.html').read_text(); Path('/tmp/inline.js').write_text('\n;\n'.join(re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',s,re.S|re.I)))"
           node --check /tmp/inline.js
-      - name: Commit patch
+      - name: Commit
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
