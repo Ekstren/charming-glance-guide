@@ -1,0 +1,57 @@
+name: Timeline Crossed Paths Refinement
+on:
+  push:
+    paths:
+      - .github/workflows/timeline-crossed-paths-refinement.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch timeline
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old="Season 2 is pinned to <b>Server Day 47 / Aug 30</b>, matching current Global community reports that S2 starts on Day 47 and Hellhold opens 14 days beforehand."
+          new="Season 2 / <b>Crossed Paths</b> is currently expected around <b>Server Day 47 / Aug 30</b>. Prydwen supports the Day-47 model, while QY warns mergers can shift Loong Haven entry timing, so the in-game Telescope/countdown remains the final authority."
+          assert old in s
+          s=s.replace(old,new,1)
+
+          anchor="    ['2026-08-30',47,'Region','Loong Haven opens','EXPECTED from the common Server Day-47 model: Season 2 Day 1 on Aug 30 at the 6:00 AM PT reset. Prydwen says T4 begins around Day 47, but QY Maple currently says S1 lasts ~44–46 days and explicitly warns that server mergers can alter the day Loong Haven becomes available. No Charming Glance-specific Telescope/countdown confirmation has been found yet, so verify in game. Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Lv.108 = Fantomon Adult / Materialization; Lv.116 = Demonbind Tower.','region',null,'unconfirmed'],\n"
+          assert anchor in s
+          addition=anchor+"    ['2026-08-30',47,'Feature','Gear Refinement & Affix Transfer','Season 2 feature confirmed by Prydwen: Mythic-or-better gear can reroll affixes, and affixes can transfer to same-type Mythic-or-better gear. Same-season Affix Transfer is free; carrying chosen affixes across seasons uses Divinecraft Stones. The Aug 30 date follows the expected Charming Glance S2 anchor, so verify the in-game Telescope/countdown.','feature',null,'unconfirmed'],\n"
+          s=s.replace(anchor,addition,1)
+
+          marker="    if(title==='Loong Haven opens') return 'Expected Aug 30 from the Day-47 model; QY warns mergers can shift Loong Haven timing, so verify Telescope/countdown. Gates: Lv.106 T4, Lv.108 Fantomon Adult, Lv.116 Demonbind Tower.';\n"
+          assert marker in s
+          s=s.replace(marker,marker+"    if(title==='Gear Refinement & Affix Transfer') return 'S2 feature: Mythic+ gear can reroll or transfer affixes; same-season transfer is free. Aug 30 follows the expected S2 anchor, so verify Telescope/countdown.';\n",1)
+
+          oldseason="const season=serverDay<47?'Season 1':serverDay<114?'Season 2 · Loong Haven':serverDay<226?'Season 3 · Aethyris':serverDay<335?'Season 4 · Hapadi':'Season 5 · Ignis';"
+          newseason="const season=serverDay<47?'Season 1':serverDay<114?'Season 2 · Crossed Paths':serverDay<226?'Season 3 · Aethyris':serverDay<335?'Season 4 · Hapadi':'Season 5 · Ignis';"
+          assert oldseason in s
+          s=s.replace(oldseason,newseason,1)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git commit -m "Add Crossed Paths gear refinement milestone"
+          git push
