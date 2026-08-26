@@ -34,8 +34,10 @@ jobs:
           node --check /tmp/site-inline.js
       - name: Verify tool value display
         run: |
-          grep -q 'TOOL_VALUE_DISPLAY_V5' index.html
-          grep -q 'leftPer=reserveRuns>0&&reservePer>0' index.html
+          grep -q 'TOOL_VALUE_DISPLAY_V6' index.html
+          grep -q 'const displayPer=reserveRuns>0&&reservePer>0' index.html
+          grep -q 'const gained=totalRuns\*displayPer' index.html
+          grep -q 'const leftValue=left\*displayPer' index.html
       - name: Commit update
         run: |
           if git diff --quiet -- index.html; then
@@ -45,5 +47,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Align tool values and compact rows'
+          git commit -m 'Use one value basis for all Realm tools'
           git push origin main
