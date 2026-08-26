@@ -16,45 +16,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-
-      - name: Normalize build Fantomon helper
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('.github/build-fantomons-inject.html')
-          s=p.read_text()
-
-          s=s.replace('/* BUILD_FANTOMON_PAIRS_V2_ROLE_PRESETS */','/* BUILD_FANTOMON_PAIRS_V3_MAIN_ALT */')
-          s=s.replace('.builds .buildRoleTabs{display:none!important}\n','')
-
-          old="""      box.innerHTML='<span>Combat Fantomons · ranked</span>'
-        +'<p class=\"fantomonPairNote\">#1 is the recommended combat lead for this preset; #2–#4 are situational alternatives, not required sub-slots.</p>'
-        +'<div class=\"fantomonRankList\">'
-        +picks.slice(0,4).map((p,i)=>'<div class=\"fantomonPick'+(i===0?' main':'')+'\"><small>'+(i===0?'Main · #1':'Alt · #'+(i+1))+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
-        +'</div>';"""
-          new="""      const pair=picks.slice(0,2);
-      box.innerHTML='<span>Combat Fantomons</span>'
-        +'<div class=\"fantomonRankList\">'
-        +pair.map((p,i)=>'<div class=\"fantomonPick'+(i===0?' main':'')+'\"><small>'+(i===0?'Main':'Alt')+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
-        +'</div>';"""
-          if old in s:
-              s=s.replace(old,new)
-
-          old_apply="""    document.querySelectorAll('.builds .buildRoleTabs').forEach(x=>x.remove());
-    applyRoleLoadouts(cls);
-    applyFantos(cls);"""
-          new_apply="""    applyRoleLoadouts(cls);
-    // Arcanist/Dominator DPS-Heals switches update stats/investment panels using
-    // the legacy role code. That code only recognizes the old card names and can
-    // temporarily hide the new Solo/Dungeon/Boss/PvP cards, so restore them here.
-    document.querySelectorAll('.builds .buildGrid .buildCard').forEach(card=>{card.hidden=false;});
-    applyFantos(cls);"""
-          if old_apply in s:
-              s=s.replace(old_apply,new_apply)
-
-          p.write_text(s)
-          PY
-
       - name: Sync build Fantomon block
         run: |
           python3 - <<'PY'
@@ -85,7 +46,6 @@ jobs:
 
           p.write_text(s)
           PY
-
       - name: Validate inline JavaScript
         run: |
           python3 - <<'PY'
@@ -96,15 +56,14 @@ jobs:
           Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
           PY
           node --check /tmp/inline.js
-
       - name: Commit patch
         run: |
-          if git diff --quiet -- index.html .github/build-fantomons-inject.html; then
-            echo 'No build/Fantomon change needed.'
+          if git diff --quiet -- index.html; then
+            echo 'No index change needed.'
             exit 0
           fi
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add index.html .github/build-fantomons-inject.html
-          git commit -m 'Restore Main and Alt Fantomons across role swaps'
+          git add index.html
+          git commit -m 'Refresh build Fantomon recommendations'
           git push origin main
