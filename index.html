@@ -3503,30 +3503,27 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   }
 
 
+  /* CLEAR_RESERVE_BALANCE_LABELS_V1
+     Result cards distinguish S1-spendable raw material from actual raw S2 reserve.
+     Tool-covered reserve is shown on the tool rows instead of being repeated as if raw
+     Essence/Sand were locked. */
+  function appendActualRawReserve(id,amount,label){
+    const value=Math.max(0,Number(amount)||0);
+    if(value<=0) return;
+    const el=$(id); if(!el) return;
+    el.textContent += ` · S2 raw reserve: ${fmt(value)} ${label}`;
+  }
   function setEssenceBalance(id,cost,resources){
     setBalance(id,cost,resources.essence,resources.yields.essencePerKnuckles,'Knuckles');
-    const rr=resources.s2SkillReserve;
-    if((rr?.target||0)>0){
-      const el=$(id);
-      el.textContent += ` · ${fmt(rr.target)} S2 skill reserve protected`;
-    }
+    appendActualRawReserve(id,resources.s2SkillReserve?.rawEssence,'Essence');
   }
   function setSandBalance(id,cost,resources){
     setBalance(id,cost,resources.sand,resources.yields.sandPerShovel,'Shovels');
-    const rr=resources.s2RelicSandReserve;
-    if(rr?.target>0){
-      const el=$(id);
-      el.textContent += ` · ${fmt(rr.target)} S2 relic reserve protected`;
-    }
+    appendActualRawReserve(id,resources.s2RelicSandReserve?.rawSand,'Sand');
   }
   function setTreatBalance(id,cost,resources){
     setBalance(id,cost,resources.treat,1,'basic-eq.');
-    const rr=resources.s2FantomonTreatReserve;
-    if((rr?.target||0)>0){
-      const el=$(id);
-      el.textContent += ` · ${fmt(rr.rawTreats||0)} S2 treat reserve protected`;
-      if((rr.shortfall||0)>0) el.textContent += ` · ${fmt(rr.shortfall)} reserve short`;
-    }
+    appendActualRawReserve(id,resources.s2FantomonTreatReserve?.rawTreats,'basic-eq.');
   }
 
   function setBalance(id, cost, budget, yieldVal, itemName){
@@ -3534,7 +3531,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const diff=budget-cost;
     el.classList.remove('shortfallCount','shortfallBreakdown');
     if(diff>=-0.5){
-      el.textContent=`${fmt(Math.max(0,diff))} left`;
+      el.textContent=`${fmt(Math.max(0,diff))} spendable after plan`;
     } else {
       const short=Math.ceil(-diff);
       const count = yieldVal>0 ? Math.ceil(short/yieldVal) : 0;
@@ -3559,15 +3556,16 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const used=Math.min(desiredRuns,projectedSpendable);
     const gained=used*per;
     const spendableRemaining=Math.max(0,projectedSpendable-used);
-    const remaining=spendableRemaining+protectedCount;
-    const remainingMaterial=remaining*per;
+    const spendableMaterial=spendableRemaining*per;
+    const protectedMaterial=protectedCount*per;
     const needed=Math.max(0,desiredRuns-used);
     const neededMaterial=needed*per;
-    const protectedText=protectedCount?` · ${fmt(protectedCount)} S2-protected`:'';
     const usedLine=`<span class="toolUsageRow toolUsedLine"><i>${label} used</i><b>${fmt(used)}</b><em>${per>0?`≈${fmtCompact(gained)} ${materialName} gained`:''}</em></span>`;
-    const remainingLine=`<span class="toolUsageRow toolRemainingLine"><i>${label} remaining</i><b>${fmt(remaining)}</b><em>${per>0?`≈${fmtCompact(remainingMaterial)} ${materialName}`:''}${protectedText}</em></span>`;
+    const remainingLabel=protectedCount?'S1 available':`${label} remaining`;
+    const remainingLine=`<span class="toolUsageRow toolRemainingLine"><i>${remainingLabel}</i><b>${fmt(spendableRemaining)}</b><em>${per>0?`≈${fmtCompact(spendableMaterial)} ${materialName}`:''}</em></span>`;
+    const reserveLine=protectedCount?`<span class="toolUsageRow toolReserveLine"><i>S2 reserved</i><b>${fmt(protectedCount)}</b><em>${per>0?`≈${fmtCompact(protectedMaterial)} ${materialName}`:''}</em></span>`:'';
     const needLine=needed?`<span class="toolUsageRow toolNeedLine"><i>Need more</i><b>${fmt(needed)}</b><em>≈${fmtCompact(neededMaterial)} ${materialName}</em></span>`:'';
-    el.innerHTML=usedLine+remainingLine+needLine;
+    el.innerHTML=usedLine+remainingLine+reserveLine+needLine;
     el.classList.add(needed?'toolNeed':'toolLeft');
   }
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
@@ -3928,8 +3926,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const sandHardShort=Math.max(0,plan.sandCost-(resources.sand+sandMaxRealm));
     if(resourceBlocked){
       setRealmShortfallBreakdown('oreBalance',orePlanShort,oreYield,'Hammers',plan.realm?.ore?.maxPurchasedRuns,oreHardShort,'Ore');
-      setRealmShortfallBreakdown('essenceBalance',essPlanShort,essenceYield,'Knuckles',plan.realm?.essence?.maxPurchasedRuns,essHardShort,'Essence',(resources.s2SkillReserve?.target||0)>0?`${fmt(resources.s2SkillReserve.target)} S2 skill reserve protected`:'');
-      setRealmShortfallBreakdown('sandBalance',sandPlanShort,sandYield,'Shovels',plan.realm?.sand?.maxPurchasedRuns,sandHardShort,'Sand',resources.s2RelicSandReserve?.target?` · ${fmt(resources.s2RelicSandReserve.target)} S2 relic reserve protected`:'');
+      setRealmShortfallBreakdown('essenceBalance',essPlanShort,essenceYield,'Knuckles',plan.realm?.essence?.maxPurchasedRuns,essHardShort,'Essence',(resources.s2SkillReserve?.rawEssence||0)>0?` · S2 raw reserve: ${fmt(resources.s2SkillReserve.rawEssence)} Essence`:'');
+      setRealmShortfallBreakdown('sandBalance',sandPlanShort,sandYield,'Shovels',plan.realm?.sand?.maxPurchasedRuns,sandHardShort,'Sand',(resources.s2RelicSandReserve?.rawSand||0)>0?` · S2 raw reserve: ${fmt(resources.s2RelicSandReserve.rawSand)} Sand`:'');
       setTreatBalance('treatBalance',plan.treatCost,resources);
       const shortageBits=[];if(oreHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(oreHardShort))} Ore`);if(essHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(essHardShort))} Essence`);if(sandHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(sandHardShort))} Sand`);if(treatShort>0.5)shortageBits.push(`${fmt(Math.ceil(treatShort))} Treats`);if(refinedShort>0.5)shortageBits.push(`${fmt(Math.ceil(refinedShort))} Refined Ore`);
       const dailyShortBits=[];if(orePlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(orePlanShort))} Ore`);if(essPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(essPlanShort))} Essence`);if(sandPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(sandPlanShort))} Sand`);
