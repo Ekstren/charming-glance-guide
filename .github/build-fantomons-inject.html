@@ -28,23 +28,25 @@
     const boss=/boss|dragon|chaos|guild|raid|crucible|single/.test(t);
     const support=/support|team|tank/.test(t);
 
+    // S1/T3 recommendations intentionally use Assist skills only. Do not give
+    // Berserker, Paladin, Archmage or Arcanist credit for Materialization/Battle skills.
     if(cls==='Berserker') return pvp
-      ? pair('Aegiswing','Nyxarchon','Safer PvP lead: cheat-death, recovery and later Taunt help you survive burst.','Aggressive swap: extra damage plus DEF shred when you can afford less safety.')
+      ? pair('Aegiswing','Nyxarchon','Safer S1 PvP lead: its opening survival/recovery effect helps you live through burst.','Aggressive swap: extra damage plus DEF shred when you can afford less safety.')
       : pair('Nyxarchon','Sylvaerie','Best damage lead: adds strong damage and stacks DEF shred for the whole fight.','Stable damage alt: permanent ATK + SPD buffs improve every turn.');
     if(cls==='Paladin'){
-      if(pvp) return pair('Aegiswing','Armopi','Best tank lead: cheat-death/recovery and later Taunt add another layer of control.','DEF stacking and a DEF-based shield make this a strong lower-cost tank option.');
-      if(boss||support) return pair('Kels','Aegiswing','Support pick: dispels enemy buffs and, after Materialization, can add DEF Down.','Use when survival and Taunt matter more than extra team debuffs.');
-      return pair('Aegiswing','Armopi','Most reliable general tank pet thanks to recovery, survival and later Taunt.','Good fallback for DEF-heavy builds that want a shield instead of Aegis utility.');
+      if(pvp) return pair('Aegiswing','Armopi','Best S1 tank lead: its survival/recovery effect gives you another durability layer.','DEF stacking can outperform Aegis recovery on DEF-heavy or still-developing tank builds.');
+      if(boss||support) return pair('Kels','Aegiswing','S1 Crucible support pick: dispels enemy buffs and contributes utility without relying on Materialization.','Use when personal survival/recovery matters more than dispel utility.');
+      return pair('Aegiswing','Armopi','Most reliable general S1 tank pet thanks to its built-in survival and recovery effect.','Strong S1 fallback when repeated DEF stacking fits your build better than Aegis recovery.');
     }
     if(cls==='Archmage') return pvp
-      ? pair('Aegiswing','Nyxarchon','Survival-first PvP pick: buys extra turns for a fragile damage dealer.','Greedy alternative: DEF shred and extra damage if you can stay alive without Aegis.')
+      ? pair('Aegiswing','Nyxarchon','Survival-first S1 PvP pick: its base survival/recovery effect buys extra turns for a fragile damage dealer.','Greedy alternative: DEF shred and extra damage if you can stay alive without Aegis.')
       : pair('Nyxarchon','Sylvaerie','Top offensive choice: strong pet damage plus DEF shred improves burst.','Permanent ATK + SPD is a simple, consistent damage boost.');
     if(cls==='Arcanist'){
       if(isHeals) return pvp
-        ? pair('Aegiswing','Mandragora','Keeps the healer alive longer; later Taunt can also disrupt enemy targeting.','More raw healing whenever your ally-targeted techniques trigger its heal.')
+        ? pair('Aegiswing','Mandragora','Keeps the healer alive longer in S1 through its base survival/recovery effect.','More raw healing whenever your ally-targeted techniques trigger its heal.')
         : pair('Mandragora','Sylvaerie','Pure healing choice: repeatedly adds healing when you use techniques on allies.','Speed-focused alt: more actions means more chances to heal and support.');
       return pvp
-        ? pair('Aegiswing','Nyxarchon','Safer PvP option when surviving long enough to stack Erosion matters most.','Aggressive Dark option with AoE damage and a strong supportive debuff.')
+        ? pair('Aegiswing','Nyxarchon','Safer S1 PvP option when surviving long enough to stack Erosion matters most.','Aggressive Dark option with AoE damage and a strong supportive debuff.')
         : pair('Nyxarchon','Zeioletus','Best DPS fit: Dark damage lines up with the class and adds a valuable debuff.','F2P damage alt: reliable extra AoE bursts when Nyx is unavailable.');
     }
     if(cls==='Conqueror') return pvp
