@@ -1,0 +1,77 @@
+name: Fix Active Now Details
+on:
+  push:
+    paths:
+      - .github/workflows/fix-active-now-details.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch Active now details styling
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker='/* ACTIVE_NOW_DETAILS_CONSISTENCY_V1 */'
+          if marker in s:
+              raise SystemExit('already patched')
+          css=r'''<style>
+/* ACTIVE_NOW_DETAILS_CONSISTENCY_V1 */
+/* Keep Active now expanders consistent with normal timeline Details/Checklist controls. */
+#timelineNow .timelineCardDetails > summary,
+#timelineNow details.timelineCardDetails > summary{
+  color:color-mix(in srgb,var(--accent-strong) 72%,var(--ink) 28%)!important;
+  font-size:10px!important;
+  font-weight:850!important;
+  line-height:1.45!important;
+}
+#timelineNow .timelineCardDetails > summary::after,
+#timelineNow details.timelineCardDetails > summary::after{
+  color:currentColor!important;
+}
+/* Expanded copy matches the visible Active now summary text instead of shrinking to 8px. */
+#timelineNow .timelineCardDetailsBody,
+#timelineNow .timelineCardDetailsBody p,
+#timelineNow .timelineCardDetailsBody li{
+  font-size:10px!important;
+  line-height:1.5!important;
+  color:var(--secondary-text)!important;
+}
+@media(max-width:700px){
+  #timelineNow .timelineCardDetails > summary,
+  #timelineNow details.timelineCardDetails > summary,
+  #timelineNow .timelineCardDetailsBody,
+  #timelineNow .timelineCardDetailsBody p,
+  #timelineNow .timelineCardDetailsBody li{
+    font-size:9px!important;
+  }
+}
+</style>
+'''
+          assert '</body>' in s
+          s=s.replace('</body>',css+'</body>',1)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit patch
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git commit -m "Match Active now detail styling to timeline"
+          git push
