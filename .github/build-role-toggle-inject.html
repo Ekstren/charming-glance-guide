@@ -1,0 +1,84 @@
+<!-- BUILD_ROLE_TOGGLE_START -->
+<style>
+/* BUILD_ROLE_TOGGLE_V1 */
+.buildModeTabs{display:flex;gap:4px;width:min(245px,100%);margin-top:12px;padding:3px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface) 94%,transparent)}
+.buildModeTabs button{flex:1;border:0;border-radius:7px;padding:8px 10px;background:transparent;color:var(--muted);font:inherit;font-size:9px;font-weight:900;cursor:pointer}
+.buildModeTabs button.active{background:var(--accent-strong);color:#fff}
+</style>
+<script>
+(function(){
+  const ROLE_CLASSES=new Set(['Arcanist','Dominator']);
+  const ROLE_KEYS={Arcanist:'sxs-build-role-arcanist',Dominator:'sxs-build-role-dominator'};
+
+  function activeClass(){
+    const b=document.querySelector('.builds .classTabs button.active');
+    return b ? b.textContent.trim() : '';
+  }
+  function currentMode(cls){
+    try{return localStorage.getItem(ROLE_KEYS[cls])==='heals'?'heals':'dps';}catch(_){return 'dps';}
+  }
+  function saveMode(cls,mode){
+    try{localStorage.setItem(ROLE_KEYS[cls],mode);}catch(_){}
+  }
+  function renderRoleMeta(root,cls,mode){
+    if(typeof renderBuildQuickStats==='function') renderBuildQuickStats(root,cls,mode);
+    if(typeof BUILD_ROLE_PRIORITY!=='undefined' && typeof setPriorityPanel==='function'){
+      const pdata=BUILD_ROLE_PRIORITY[cls]?.[mode];
+      const panels=[...root.querySelectorAll(':scope > .priorityPanel, :scope > .priorityPair > .priorityPanel')];
+      if(pdata && panels.length>=2){
+        setPriorityPanel(panels[0],pdata[0]);
+        setPriorityPanel(panels[1],pdata[1]);
+      }
+    }
+  }
+  function ensureTabs(cls){
+    const root=document.getElementById('buildContent');
+    if(!root) return;
+    root.querySelectorAll('.buildModeTabs').forEach(x=>{if(!ROLE_CLASSES.has(cls))x.remove();});
+    if(!ROLE_CLASSES.has(cls)) return;
+
+    const guide=root.querySelector(':scope > .guideSummary');
+    const identity=guide?.children?.[0];
+    if(!guide||!identity) return;
+    let tabs=identity.querySelector('.buildModeTabs');
+    if(!tabs){
+      tabs=document.createElement('div');
+      tabs.className='buildModeTabs';
+      tabs.setAttribute('role','group');
+      tabs.setAttribute('aria-label',cls+' build role');
+      tabs.innerHTML='<button type="button" data-mode="dps">DPS</button><button type="button" data-mode="heals">Heals</button>';
+      identity.appendChild(tabs);
+    }
+
+    const mode=currentMode(cls);
+    tabs.querySelectorAll('button').forEach(btn=>{
+      const on=btn.dataset.mode===mode;
+      btn.classList.toggle('active',on);
+      btn.setAttribute('aria-pressed',String(on));
+      btn.onclick=()=>{
+        const next=btn.dataset.mode==='heals'?'heals':'dps';
+        saveMode(cls,next);
+        tabs.querySelectorAll('button').forEach(b=>{
+          const active=b.dataset.mode===next;
+          b.classList.toggle('active',active);
+          b.setAttribute('aria-pressed',String(active));
+        });
+        renderRoleMeta(root,cls,next);
+      };
+    });
+    renderRoleMeta(root,cls,mode);
+  }
+
+  let queued=false;
+  function sync(){queued=false;ensureTabs(activeClass());}
+  function queue(){if(queued)return;queued=true;requestAnimationFrame(sync);}
+  function start(){
+    queue();
+    const root=document.querySelector('.builds');
+    if(root)new MutationObserver(queue).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  window.addEventListener('load',queue);
+})();
+</script>
+<!-- BUILD_ROLE_TOGGLE_END -->
