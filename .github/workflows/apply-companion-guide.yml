@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/patch-companion-guide.py'
       - '.github/patch-companion-current-season.py'
+      - '.github/patch-companion-layout.py'
       - '.github/workflows/apply-companion-guide.yml'
 
 permissions:
@@ -22,6 +23,7 @@ jobs:
         run: |
           python .github/patch-companion-guide.py
           python .github/patch-companion-current-season.py
+          python .github/patch-companion-layout.py
       - name: Validate inline JavaScript
         run: |
           python - <<'PY'
@@ -47,5 +49,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Simplify companion guide season handling"
+          git commit -m "Align companion section with builds"
           git push
