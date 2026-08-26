@@ -1,5 +1,7 @@
 name: Apply build Fantomon recommendations
 on:
+  issues:
+    types: [opened]
   push:
     paths:
       - build-fantomons.trigger
@@ -8,6 +10,7 @@ permissions:
   contents: write
 jobs:
   patch:
+    if: github.event_name == 'push' || github.event.issue.title == 'apply-build-fantomons'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
