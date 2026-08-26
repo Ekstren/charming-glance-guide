@@ -1884,8 +1884,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     });
     const note=$('optimizerModeNote');
     if(note) note.textContent=mode==='preserve'
-      ? 'Spend capped surplus first; replacement effort then gets a +50% Ore premium for Gear runway.'
-      : 'Spend capped surplus efficiently: reserves stay protected, then replacement effort is weighted by future usability.';
+      ? 'Minimize joint Cart + shared-Stamina reacquisition effort with a +50% Ore value premium for Gear runway.'
+      : 'Minimize joint Cart + shared-Stamina reacquisition effort, weighted by future usability.';
   }
   document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     const input=$('optimizerMode');
@@ -3139,42 +3139,118 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,charScore:characterScore(p,cfg)};
   }
 
-  /* SURPLUS_AWARE_OPTIMIZER_V2
-     The resource object presented to the S1 optimizer has already had enabled S2 hard
-     reserves removed. What remains is spendable surplus, not protected rollover stock.
-     Value that surplus by replacement effort *and* by how constrained its future use is.
-     Essence is most aggressively discounted because Skills cannot exceed Character level;
-     Sand/Treats are also progression-gated. Ore retains full opportunity value because Gear
-     has the longest useful runway. Preserve Ore adds a bounded premium rather than a veto. */
+  /* SURPLUS_AWARE_OPTIMIZER_V2 · JOINT_REACQUISITION_V1
+     Enabled S2 hard reserves are removed before this S1 tie-breaker runs. The remaining
+     costs are valued by future usability, then reacquisition is solved JOINTLY: Ore,
+     Essence and Sand carts all accrue at the same time while one natural Stamina stream
+     (5 Stamina/hour = one 5-Stamina map node/hour) is optimally shared between them.
+     Treats accrue in parallel from their entered Cart rate / fallback scarcity rate.
+     Preserve Ore uses the same joint model with a bounded Ore premium, not a separate
+     additive Ore-hours penalty. */
   const SURPLUS_ACQUISITION_WEIGHTS={ore:1.00,essence:0.10,sand:0.35,treat:0.35};
   const ORE_PRESERVE_PREMIUM=0.50;
-  function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){
+
+  function jointReacquisitionHours(costs,resources,cfg=activeCalcConfig(),weights=SURPLUS_ACQUISITION_WEIGHTS){
     const map=resources?.yields?.map||cfg.map||{};
     const horizon=Math.max(24,Number(resources?.cartHours)||24);
     const projectedTreat=Math.max(0,Number(resources?.treat)||0);
     const enteredTreatRate=Math.max(0,n('treatRate'));
     const fallbackTreatRate=projectedTreat>0?projectedTreat/horizon:0;
-    const rates={
-      ore:Math.max(0,n('oreRate'))+Math.max(0,Number(map.ore)||0),
-      essence:Math.max(0,n('essenceRate'))+Math.max(0,Number(map.essence)||0),
-      sand:Math.max(0,n('sandRate'))+Math.max(0,Number(map.sand)||0),
+    const cart={
+      ore:Math.max(0,n('oreRate')),
+      essence:Math.max(0,n('essenceRate')),
+      sand:Math.max(0,n('sandRate')),
       treat:enteredTreatRate>0?enteredTreatRate:fallbackTreatRate
     };
-    const safeHours=(amount,rate)=>{
-      const a=Math.max(0,Number(amount)||0),r=Math.max(0,Number(rate)||0);
-      if(a<=0) return 0;
-      return r>0?a/r:1e9;
+    const nodeYield={
+      ore:Math.max(0,Number(map.ore)||0),
+      essence:Math.max(0,Number(map.essence)||0),
+      sand:Math.max(0,Number(map.sand)||0)
     };
-    const oreHours=safeHours(costs.ore,rates.ore);
-    const essenceHours=safeHours(costs.essence,rates.essence);
-    const sandHours=safeHours(costs.sand,rates.sand);
-    const treatHours=safeHours(costs.treat,rates.treat);
-    const hours=
-      oreHours*SURPLUS_ACQUISITION_WEIGHTS.ore+
-      essenceHours*SURPLUS_ACQUISITION_WEIGHTS.essence+
-      sandHours*SURPLUS_ACQUISITION_WEIGHTS.sand+
-      treatHours*SURPLUS_ACQUISITION_WEIGHTS.treat;
-    return {hours,oreHours,essenceHours,sandHours,treatHours,treatFallback:enteredTreatRate<=0&&fallbackTreatRate>0};
+    const demand={
+      ore:Math.max(0,Number(costs?.ore)||0)*Math.max(0,Number(weights?.ore)||0),
+      essence:Math.max(0,Number(costs?.essence)||0)*Math.max(0,Number(weights?.essence)||0),
+      sand:Math.max(0,Number(costs?.sand)||0)*Math.max(0,Number(weights?.sand)||0),
+      treat:Math.max(0,Number(costs?.treat)||0)*Math.max(0,Number(weights?.treat)||0)
+    };
+
+    let floor=0;
+    if(demand.treat>0){
+      if(cart.treat<=0) return 1e9;
+      floor=Math.max(floor,demand.treat/cart.treat);
+    }
+    const keys=['ore','essence','sand'];
+    for(const key of keys){
+      if(demand[key]<=0) continue;
+      if(nodeYield[key]<=0){
+        if(cart[key]<=0) return 1e9;
+        floor=Math.max(floor,demand[key]/cart[key]);
+      }
+    }
+
+    const nodesNeededAt=hours=>{
+      let total=0;
+      for(const key of keys){
+        const remaining=Math.max(0,demand[key]-cart[key]*hours);
+        if(remaining<=0) continue;
+        if(nodeYield[key]<=0) return Infinity;
+        total+=remaining/nodeYield[key];
+      }
+      return total;
+    };
+    if(nodesNeededAt(floor)<=floor+1e-9) return floor;
+
+    // f(T)=required shared Stamina nodes - T is piecewise linear. Start with every
+    // resource still short at the Cart-only floor, solve that linear segment exactly,
+    // and drop any resource whose Cart alone covers it by the resulting time.
+    let active=keys.filter(key=>demand[key]>cart[key]*floor+1e-9 && nodeYield[key]>0);
+    let hours=floor;
+    for(let pass=0;pass<4;pass++){
+      let numerator=0,denominator=1;
+      for(const key of active){
+        numerator+=demand[key]/nodeYield[key];
+        denominator+=cart[key]/nodeYield[key];
+      }
+      hours=Math.max(floor,numerator/denominator);
+      const next=active.filter(key=>demand[key]>cart[key]*hours+1e-9);
+      if(next.length===active.length){
+        if(nodesNeededAt(hours)<=hours+1e-7) return hours;
+        break;
+      }
+      active=next;
+      if(!active.length) return floor;
+    }
+
+    // Numerical fallback only; normal three-resource cases resolve in <=3 active-set passes.
+    let lo=floor,hi=Math.max(1,hours,floor);
+    while(nodesNeededAt(hi)>hi+1e-9 && hi<1e9) hi*=2;
+    if(hi>=1e9 && nodesNeededAt(hi)>hi+1e-9) return 1e9;
+    for(let i=0;i<48;i++){
+      const mid=(lo+hi)/2;
+      if(nodesNeededAt(mid)<=mid) hi=mid; else lo=mid;
+    }
+    return hi;
+  }
+
+  function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){
+    const preserveWeights={...SURPLUS_ACQUISITION_WEIGHTS,ore:SURPLUS_ACQUISITION_WEIGHTS.ore*(1+ORE_PRESERVE_PREMIUM)};
+    const hours=jointReacquisitionHours(costs,resources,cfg,SURPLUS_ACQUISITION_WEIGHTS);
+    const preserveHours=jointReacquisitionHours(costs,resources,cfg,preserveWeights);
+    const map=resources?.yields?.map||cfg.map||{};
+    const single=(amount,key,weight)=>{
+      const target=Math.max(0,Number(amount)||0)*Math.max(0,Number(weight)||0);
+      if(target<=0) return 0;
+      const rate=Math.max(0,n(key==='ore'?'oreRate':key==='essence'?'essenceRate':'sandRate'))+Math.max(0,Number(map[key])||0);
+      return rate>0?target/rate:1e9;
+    };
+    return {
+      hours,preserveHours,
+      oreHours:single(costs?.ore,'ore',SURPLUS_ACQUISITION_WEIGHTS.ore),
+      essenceHours:single(costs?.essence,'essence',SURPLUS_ACQUISITION_WEIGHTS.essence),
+      sandHours:single(costs?.sand,'sand',SURPLUS_ACQUISITION_WEIGHTS.sand),
+      treatHours:0,
+      treatFallback:Math.max(0,n('treatRate'))<=0
+    };
   }
   function candidateResourceMetric(candidate){
     const base=Number(candidate?.acquisitionHours);
@@ -3195,7 +3271,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const refinedShare=resources.refinedTracked&&resources.refined>0?go.refinedCost/resources.refined:0;
     const shares=[oreShare,essenceShare,sandShare,treatShare,refinedShare];
     const acquisition=acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,activeCalcConfig());
-    const preserveAcquisitionScore=acquisition.hours+acquisition.oreHours*ORE_PRESERVE_PREMIUM;
+    const preserveAcquisitionScore=acquisition.preserveHours;
     return {
       gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,
       skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,
@@ -3306,7 +3382,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 
           const diagOreShare=resources.ore>0?go.oreCost/resources.ore:(go.oreCost>0?go.oreCost/100000:0),diagEssenceShare=resources.essence>0?so.cost/resources.essence:(so.cost>0?so.cost/100000:0),diagSandShare=resources.sand>0?ro.cost/resources.sand:(ro.cost>0?ro.cost/100000:0),diagTreatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
           const diagAcquisition=acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg);
-          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,oreAcquisitionHours:diagAcquisition.oreHours,preserveAcquisitionScore:diagAcquisition.hours+diagAcquisition.oreHours*ORE_PRESERVE_PREMIUM,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
+          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,oreAcquisitionHours:diagAcquisition.oreHours,preserveAcquisitionScore:diagAcquisition.preserveHours,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
           if(betterDiagnosticCandidate(diagnostic,bestDiagnostic)) bestDiagnostic=diagnostic;
 
           if(!allFeasible) continue;
