@@ -1584,6 +1584,35 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 .planCosts small .reserveGapLine{color:var(--status-warning)!important;font-weight:800}
 .planCosts small.toolBalance .toolReserveLine{display:block;color:var(--status-info)!important;font-weight:800}
 </style>
+
+<style id="tool-only-resource-gaps-v4">
+/* TOOL_ONLY_RESOURCE_GAPS_V4 */
+#s2SkillReserveHint,#s2RelicReserveHint,#s2TreatReserveHint{display:none!important}
+.planCosts small[id$="Balance"]:empty{display:none!important}
+.planCosts small.toolBalance{
+  display:grid!important;gap:0!important;margin-top:7px!important;padding-top:7px!important;
+  border-top:1px solid var(--line)!important;color:var(--secondary-text)!important
+}
+.planCosts small.toolBalance[hidden]{display:none!important}
+.planCosts small.toolBalance .toolUsageRow{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+  gap:2px 10px!important;align-items:center!important;padding:4px 0!important
+}
+.planCosts small.toolBalance .toolUsageRow i{
+  color:var(--secondary-text)!important;font-style:normal!important;font-weight:700!important;
+  text-transform:none!important;letter-spacing:0!important
+}
+.planCosts small.toolBalance .toolUsageRow b{font-weight:850!important;white-space:nowrap!important}
+.planCosts small.toolBalance .toolUsageRow em{
+  grid-column:2!important;color:var(--secondary-text)!important;font-style:normal!important;
+  font-size:8px!important;text-align:right!important
+}
+.planCosts small.toolBalance .toolUsedLine b{color:var(--status-info)!important}
+.planCosts small.toolBalance .toolRemainingLine b{color:var(--status-positive)!important}
+.planCosts small.toolBalance .toolNeedLine b{color:var(--status-negative)!important}
+@media(max-width:520px){.planCosts small.toolBalance .toolUsageRow{font-size:10px!important}.planCosts small.toolBalance .toolUsageRow em{font-size:9px!important}}
+</style>
+
 </head>
 <body>
 <main>
@@ -3527,69 +3556,63 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   }
 
 
-  /* POST_PLAN_RESERVE_BALANCE_LINES_V2 */
-  function setReserveAwareBalance(id,cost,rawBudget,reserveTarget,label){
+  /* TOOL_ONLY_RESOURCE_GAPS_V4
+     S2 reserve math stays internal. On a feasible plan, result cards show no leftover or
+     reserve bookkeeping. If Realm tools are actually consumed, show only total tools used,
+     their approximate material value, and the tools left afterward with approximate value. */
+  function hidePlanBalance(id){
     const el=$(id); if(!el) return;
-    const raw=Math.max(0,Number(rawBudget)||0);
-    const spend=Math.max(0,Number(cost)||0);
-    const target=Math.max(0,Number(reserveTarget)||0);
-    const rawAfterPlan=Math.max(0,raw-spend);
-    const reserveFromRaw=Math.min(target,rawAfterPlan);
-    const reserveGap=Math.max(0,target-reserveFromRaw);
-    const spendable=Math.max(0,rawAfterPlan-reserveFromRaw);
-    const lines=[`<span class="reserveBalanceLine reserveSpendable">${fmt(spendable)} spendable after plan</span>`];
-    if(target>0){
-      const reserveText=reserveGap>0
-        ? `S2 reserve · ${fmt(reserveFromRaw)} / ${fmt(target)} ${label} from raw`
-        : `S2 reserve · ${fmt(target)} ${label} covered by raw`;
-      lines.push(`<span class="reserveBalanceLine ${reserveGap>0?'reserveGapLine':'reserveCoveredLine'}">${reserveText}</span>`);
-    }
-    el.innerHTML=lines.join('');
-    el.classList.toggle('shortfallCount',false);
+    el.textContent=''; el.innerHTML=''; el.hidden=true;
+    el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
   }
-  function setEssenceBalance(id,cost,resources){
-    const planGenerated=Math.max(0,Number(resources?.planRealmProvided)||0);
-    setReserveAwareBalance(id,cost,Math.max(0,Number(resources.essence)||0)+planGenerated,resources.s2SkillReserve?.target,'Essence');
-  }
-  function setSandBalance(id,cost,resources){
-    const planGenerated=Math.max(0,Number(resources?.planRealmProvided)||0);
-    setReserveAwareBalance(id,cost,Math.max(0,Number(resources.sand)||0)+planGenerated,resources.s2RelicSandReserve?.target,'Sand');
-  }
+  function setEssenceBalance(id,cost,resources){ hidePlanBalance(id); }
+  function setSandBalance(id,cost,resources){ hidePlanBalance(id); }
   function setTreatBalance(id,cost,resources){
-    setReserveAwareBalance(id,cost,resources.treat,resources.s2FantomonTreatReserve?.target,'basic-eq.');
+    const totalNeed=Math.max(0,Number(cost)||0)+Math.max(0,Number(resources?.s2FantomonTreatReserve?.target)||0);
+    const available=Math.max(0,Number(resources?.treat)||0);
+    const el=$(id); if(!el) return;
+    if(totalNeed<=available+0.5){ hidePlanBalance(id); return; }
+    const short=Math.ceil(totalNeed-available);
+    el.hidden=false; el.textContent=`${fmt(short)} Treats short`; el.classList.add('shortfallCount');
   }
 
   function setBalance(id, cost, budget, yieldVal, itemName){
-    const el=$(id);
+    const el=$(id); if(!el) return;
     const diff=budget-cost;
     el.classList.remove('shortfallCount','shortfallBreakdown');
-    if(diff>=-0.5){
-      el.textContent=`${fmt(Math.max(0,diff))} spendable after plan`;
-    } else {
-      const short=Math.ceil(-diff);
-      const count = yieldVal>0 ? Math.ceil(short/yieldVal) : 0;
-      el.textContent=`${fmt(short)} short${count?` · ${fmt(count)} ${itemName}`:''}`;
-      el.classList.add('shortfallCount');
-    }
+    if(diff>=-0.5){ hidePlanBalance(id); return; }
+    const short=Math.ceil(-diff);
+    const count = yieldVal>0 ? Math.ceil(short/yieldVal) : 0;
+    el.hidden=false;
+    el.textContent=`${fmt(short)} short${count?` · ${fmt(count)} ${itemName}`:''}`;
+    el.classList.add('shortfallCount');
   }
+
   function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0){
     const el=$(id); if(!el) return;
     el.classList.remove('toolNeed','toolLeft');
     const materialName=label==='Hammers'?'Ore':label==='Knuckles'?'Essence':label==='Shovels'?'Sand':'materials';
     const planRuns=Math.max(0,Math.floor(Number(top?.planRuns ?? top?.runsUsed)||0));
     const reserveRuns=Math.max(0,Math.floor(Number(top?.reserveRuns)||0));
+    const totalRuns=Math.max(0,planRuns+reserveRuns);
     const planPer=Math.max(0,Number(top?.planPerRun ?? yieldVal)||0);
     const reservePer=Math.max(0,Number(top?.reservePerRun)||0);
-    const lines=[];
-    if(planRuns>0) lines.push(`<span class="toolUsageRow toolUsedLine"><i>Use ${label}</i><b>${fmt(planRuns)}</b><em>${planPer>0?`covers ≈${fmtCompact(planRuns*planPer)} ${materialName}`:''}</em></span>`);
-    if(reserveRuns>0) lines.push(`<span class="toolUsageRow toolReserveLine"><i>S2 reserve gap</i><b>${fmt(reserveRuns)} ${label}</b><em>${reservePer>0?`covers ≈${fmtCompact(reserveRuns*reservePer)} ${materialName}`:''}</em></span>`);
-    const required=Math.max(0,planRuns+reserveRuns);
+    const gained=Math.max(0,planRuns*planPer+reserveRuns*reservePer);
+    const left=Math.max(0,Math.floor(Number(top?.bankedRemaining)||0)+Math.floor(Number(top?.sparePurchasedRuns)||0));
+    const leftPer=Math.max(0,Number(yieldVal)||0);
+    const leftValue=left*leftPer;
+    const required=Math.max(0,Math.floor(Number(top?.runsNeeded)||totalRuns));
     const maxRuns=Math.max(0,Math.floor(Number(top?.maxRuns)||0));
     const missing=Math.max(0,required-maxRuns);
-    if(missing>0) lines.push(`<span class="toolUsageRow toolNeedLine"><i>Need more ${label}</i><b>${fmt(missing)}</b><em></em></span>`);
-    if(!lines.length){el.innerHTML='';el.hidden=true;return;}
-    el.hidden=false;
-    el.innerHTML=lines.join('');
+
+    if(totalRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
+    const lines=[];
+    if(totalRuns>0){
+      lines.push(`<span class="toolUsageRow toolUsedLine"><i>Use</i><b>${fmt(totalRuns)} ${label}</b><em>${gained>0?`≈${fmtCompact(gained)} ${materialName}`:''}</em></span>`);
+      lines.push(`<span class="toolUsageRow toolRemainingLine"><i>Left</i><b>${fmt(left)} ${label}</b><em>${leftValue>0?`≈${fmtCompact(leftValue)} ${materialName}`:'≈0'}</em></span>`);
+    }
+    if(missing>0) lines.push(`<span class="toolUsageRow toolNeedLine"><i>Still short</i><b>${fmt(missing)} ${label}</b><em></em></span>`);
+    el.hidden=false; el.innerHTML=lines.join('');
     el.classList.add(missing?'toolNeed':'toolLeft');
   }
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
@@ -3790,7 +3813,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     $('oreProjected').textContent=`Projected: ${fmtCompact(resources.ore)}${oreStam}`;
     const displayedEssence=Number(resources.essenceTotal??resources.essence)||0;
     const sr=resources.s2SkillReserve||season2SkillEssenceReserve(cfg);
-    const reserveSuffix=(sr?.target||0)>0?` · ${fmtCompact(sr.target)} S2 skill reserve`:'';
+    const reserveSuffix='';
     $('essenceProjected').textContent=`Projected: ${fmtCompact(displayedEssence)}${essStam}${reserveSuffix}`;
     const reserveHint=$('s2SkillReserveHint');
     if(reserveHint){
@@ -3825,7 +3848,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       }else relicReserveHint.hidden=true;
     }
     const displayedSand=Number(resources.sandTotal??resources.sand)||0;
-    const sandReserveSuffix=(resources.s2RelicSandReserve?.target||0)>0?` · ${fmtCompact(resources.s2RelicSandReserve.target)} S2 relic reserve`:'';
+    const sandReserveSuffix='';
     $('sandProjected').textContent=`Projected: ${fmtCompact(displayedSand)}${sandStam}${sandReserveSuffix}`;
     const savedSandEq=savedSandEquivalent();
     if($('sandEquivalentNow')) $('sandEquivalentNow').textContent=`Saved total: ${fmtCompact(savedSandEq)} basic-equivalent · Blue counts ×${SAND_BLUE_EQ}`;
@@ -3845,7 +3868,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       }else treatReserveHint.hidden=true;
     }
     const displayedTreats=Number(resources.treatTotal??resources.treat)||0;
-    const treatReserveSuffix=(tr?.target||0)>0?` · ${fmtCompact(tr.target)} S2 pet reserve`:'';
+    const treatReserveSuffix='';
     $('treatProjected').textContent=`Projected: ${fmtCompact(displayedTreats)} basic-eq.${treatReserveSuffix}`;
 
 
@@ -3958,7 +3981,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       $('targetMessage').hidden=false;$('targetMessage').classList.add('warning','danger');
       $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;
       const brief=[];
-      if(cfg.key==='s1') brief.push(optimizerReserveSummary(resources,cfg));
+      /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
       if($('grace12').checked) brief.push('final 12h excluded');
       if(gearLocked) brief.push('Gear locked');
@@ -3966,7 +3989,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       $('optimizerSummary').textContent=brief.join(' · ');
     }else{
       const brief=[];
-      if(cfg.key==='s1') brief.push(optimizerReserveSummary(resources,cfg));
+      /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
       if($('grace12').checked) brief.push('final 12h excluded');
       if(gearLocked) brief.push('Gear locked');
