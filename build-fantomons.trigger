@@ -1,1 +1,1 @@
-apply-2026-08-26-role-toggle-fix
+apply-2026-08-26-guide-loadouts
