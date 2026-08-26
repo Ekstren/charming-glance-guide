@@ -1390,6 +1390,15 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 @media(max-width:820px){.companionHero,.companionGrid{grid-template-columns:1fr}.companionFocus{border-left:0;border-top:1px solid var(--line)}.companionLadder{grid-template-columns:1fr 1fr}.companionTop{grid-template-columns:1fr}.companionSeasonToggle{justify-self:start}.companionSources{text-align:left}}
 @media(max-width:560px){.companions{padding:0 12px}.companionLadder{grid-template-columns:1fr}.companionClassTabs{display:grid;grid-template-columns:1fr 1fr}.companionHeroMain{padding:18px}.companionFocus{padding:16px}.companionRoleRow{justify-content:flex-start}}
 </style>
+<!-- COMPANION_CURRENT_SEASON_CSS_START -->
+<style id="companion-current-season-v1">
+.companionTop{grid-template-columns:1fr!important}
+.companionTitleRow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
+.companionTitleRow h2{margin:0!important}
+.companionTitleRow .companionRoleToggle{flex:0 0 auto}
+@media(max-width:560px){.companionTitleRow{align-items:flex-start;gap:10px}.companionTitleRow .companionRoleToggle{margin-top:-2px}}
+</style>
+<!-- COMPANION_CURRENT_SEASON_CSS_END -->
 <!-- COMPANION_GUIDE_CSS_END -->
 </head>
 <body>
@@ -1472,11 +1481,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   <div class="companionTop">
     <div class="sectionHeading">
       <div><span>Permanent account progression</span><h2>Companion Priority Guide</h2></div>
-      <p>Level the companions that give your class the right passive stats at the important Affinity breakpoints. Companion Affinity survives seasonal resets, so S1 investment carries directly into S2.</p>
-    </div>
-    <div class="companionSeasonToggle" id="companionSeasonToggle" role="group" aria-label="Companion guide season">
-      <button type="button" data-companion-season="s1">S1</button>
-      <button type="button" data-companion-season="s2">S2</button>
+      <p>Level the companions that give your class the right passive stats at the important Affinity breakpoints. Focus gifts where they create the most permanent account power.</p>
     </div>
   </div>
   <div class="classTabs companionClassTabs" id="companionClassTabs"></div>
@@ -4809,13 +4814,13 @@ function polishBuildLayout(){
   const S2_CLASSES=['Conqueror','Guardian','Destroyer','Dominator'];
   const CLASS_META={
     Berserker:{season:'s1',line:'Duelist → Berserker',path:'duelist',focus:'Crit Rate → Accuracy',summary:'Berserker wants offensive Companion breakpoints that amplify its already-strong Crit scaling. Get the high-value Crit companions online first, then fill Accuracy so burst stays reliable.'},
-    Conqueror:{season:'s2',line:'Duelist → Berserker → Conqueror',path:'duelist',focus:'Crit Rate → Accuracy',summary:'Conqueror continues the Berserker companion plan. Do not restart your roster in S2: the same Crit-first investment remains useful, with Accuracy following for consistency.',carry:'Keep your S1 Berserker Companion investment. Affinity levels are permanent and do not reset with the season.'},
+    Conqueror:{season:'s2',line:'Duelist → Berserker → Conqueror',path:'duelist',focus:'Crit Rate → Accuracy',summary:'Conqueror wants the same Crit-first offensive progression: establish the best Crit breakpoints first, then add Accuracy for consistency.',carry:'Keep your S1 Berserker Companion investment. Affinity levels are permanent and do not reset with the season.'},
     Paladin:{season:'s1',line:'Knight → Paladin',path:'knight',focus:'Block Rate >>> defensive utility',summary:'Paladin gets the most account value from Block. Block improves survival and also supports counter/Rebound play, so your defensive breakpoint companions come before generic DPS companions.'},
-    Guardian:{season:'s2',line:'Knight → Paladin → Guardian',path:'knight',focus:'Block Rate >>> defensive utility',summary:'Guardian remains a Block-first class. Continue the Paladin defensive roster, then branch into offensive companions only if you are deliberately building Water/offensive Guardian.',carry:'Your Paladin Block companions remain the correct long-term investment in S2. There is no seasonal Companion reset.'},
+    Guardian:{season:'s2',line:'Knight → Paladin → Guardian',path:'knight',focus:'Block Rate >>> defensive utility',summary:'Guardian is a Block-first class. Build the strongest Block breakpoints first, then branch into offensive companions only if you deliberately play Water/offensive Guardian.',carry:'Your Paladin Block companions remain the correct long-term investment in S2. There is no seasonal Companion reset.'},
     Archmage:{season:'s1',line:'Sorcerer → Archmage',path:'sorcerer',focus:'Crit Rate → Accuracy',summary:'Archmage is a pure DPS line. Companion Crit is the first breakpoint target; Accuracy is the second consistency layer. Elemental Mastery is handled elsewhere because it is not a normal Companion breakpoint specialty.'},
-    Destroyer:{season:'s2',line:'Sorcerer → Archmage → Destroyer',path:'sorcerer',focus:'Crit Rate → Accuracy',summary:'Destroyer keeps the Archmage Crit-first plan. The Fire branch especially likes reliable Crits, while Accuracy remains the next best Companion-side consistency stat.',carry:'Continue the Archmage roster you already raised. S2 does not invalidate those permanent Crit/Accuracy gains.'},
+    Destroyer:{season:'s2',line:'Sorcerer → Archmage → Destroyer',path:'sorcerer',focus:'Crit Rate → Accuracy',summary:'Destroyer is Crit-first. The Fire branch especially likes reliable Crits, while Accuracy remains the next best Companion-side consistency stat.',carry:'Continue the Archmage roster you already raised. S2 does not invalidate those permanent Crit/Accuracy gains.'},
     Arcanist:{season:'s1',line:'Sage → Arcanist',path:'sage',focus:'DPS: Accuracy → Crit · Heals: Healing Boost at Lv100',summary:'Arcanist has two legitimate Companion paths. DPS wants consistency first; healer investment is delayed because Healing Boost does not pay out until Affinity 100.'},
-    Dominator:{season:'s2',line:'Sage → Arcanist → Dominator',path:'sage',focus:'DPS: Accuracy → Crit · Heals: Healing Boost at Lv100',summary:'Dominator keeps the Sage split: Accuracy/Crit for damage, or a dedicated Lv100 Healing Boost push for support. Your Arcanist Affinity investment carries straight across.',carry:'Do not rebuild from zero in S2. Continue the Arcanist DPS or healer path you already started.'}
+    Dominator:{season:'s2',line:'Sage → Arcanist → Dominator',path:'sage',focus:'DPS: Accuracy → Crit · Heals: Healing Boost at Lv100',summary:'Dominator has two real paths: Accuracy/Crit for damage, or a dedicated Lv100 Healing Boost push for support.',carry:'Do not rebuild from zero in S2. Continue the Arcanist DPS or healer path you already started.'}
   };
 
   const CRIT_COMMUNITY=['Eiichi','Karlos','Naira','Qin','Wuji','Mateo','Mio'];
@@ -4928,7 +4933,6 @@ function polishBuildLayout(){
   ];
 
   const $c=id=>document.getElementById(id);
-  const seasonStorage='sxs-companion-season';
   const classStorage={s1:'sxs-companion-class-s1',s2:'sxs-companion-class-s2'};
   const roleStorage='sxs-companion-sage-role';
   let currentSeason='s1';
@@ -4936,13 +4940,11 @@ function polishBuildLayout(){
   let sageRole='dps';
 
   function defaultSeason(){
-    try{ if(typeof buildSeasonKey==='function') return buildSeasonKey()==='s2'?'s2':'s1'; }catch(_){}
     return Date.now()>=new Date('2026-08-30T06:00:00-07:00').getTime()?'s2':'s1';
   }
   function loadPrefs(){
     currentSeason=defaultSeason();
     try{
-      const s=localStorage.getItem(seasonStorage); if(s==='s1'||s==='s2') currentSeason=s;
       const r=localStorage.getItem(roleStorage); if(r==='dps'||r==='heals') sageRole=r;
     }catch(_){}
     const list=currentSeason==='s2'?S2_CLASSES:S1_CLASSES;
@@ -4950,7 +4952,7 @@ function polishBuildLayout(){
     currentClass=list.includes(saved)?saved:list[0];
   }
   function savePrefs(){
-    try{localStorage.setItem(seasonStorage,currentSeason);localStorage.setItem(classStorage[currentSeason],currentClass);localStorage.setItem(roleStorage,sageRole);}catch(_){}
+    try{localStorage.setItem(classStorage[currentSeason],currentClass);localStorage.setItem(roleStorage,sageRole);}catch(_){}
   }
   function groupsHtml(groups){
     return groups.map(g=>`<div class="companionGroup"><div class="companionGroupHead"><b>${g.title}</b><small>${g.rank}</small></div><p>${g.why}</p><div class="companionNames">${g.names.map(n=>`<span>${n}</span>`).join('')}</div></div>`).join('');
@@ -4967,21 +4969,18 @@ function polishBuildLayout(){
   function render(){
     const list=currentSeason==='s2'?S2_CLASSES:S1_CLASSES;
     if(!list.includes(currentClass)) currentClass=list[0];
-    document.querySelectorAll('[data-companion-season]').forEach(b=>{const a=b.dataset.companionSeason===currentSeason;b.classList.toggle('active',a);b.setAttribute('aria-pressed',String(a));});
     $c('companionClassTabs').innerHTML=list.map(name=>`<button type="button" class="${name===currentClass?'active':''}" data-companion-class="${name}">${name}</button>`).join('');
     const meta=CLASS_META[currentClass];
     const isSage=meta.path==='sage';
     let pathKey=meta.path;
     if(isSage) pathKey=sageRole==='heals'?'sageHeal':'sageDps';
     const guide=PATHS[pathKey];
-    const roleRow=isSage?`<div class="companionRoleRow"><div class="companionRoleToggle" role="group" aria-label="${currentClass} companion role"><button type="button" data-companion-role="dps" class="${sageRole==='dps'?'active':''}">DPS</button><button type="button" data-companion-role="heals" class="${sageRole==='heals'?'active':''}">Heals</button></div></div>`:'';
-    const carry=meta.carry?`<div class="companionCarry"><b>S2 carryover:</b> ${meta.carry}</div>`:'';
+    const roleToggle=isSage?`<div class="companionRoleToggle" role="group" aria-label="${currentClass} companion role"><button type="button" data-companion-role="dps" class="${sageRole==='dps'?'active':''}">DPS</button><button type="button" data-companion-role="heals" class="${sageRole==='heals'?'active':''}">Heals</button></div>`:'';
     $c('companionContent').innerHTML=`
       <div class="companionHero">
-        <div class="companionHeroMain"><span>${meta.season.toUpperCase()} · ${meta.line}</span><h2>${currentClass}</h2><p>${meta.summary}</p></div>
+        <div class="companionHeroMain"><span>${meta.line}</span><div class="companionTitleRow"><h2>${currentClass}</h2>${roleToggle}</div><p>${meta.summary}</p></div>
         <div class="companionFocus"><small>Stat focus</small><strong>${meta.focus}</strong><p>Affinity is permanent account progression. Match your gifts to the right breakpoint stats instead of leveling companions only because their portrait class matches yours.</p></div>
       </div>
-      ${carry}${roleRow}
       <div class="companionGrid">
         <div>
           <div class="companionPanel"><span class="companionPanelLabel">Recommended leveling route</span><h3>${isSage?(sageRole==='heals'?'Healer Affinity path':'DPS Affinity path'):'Priority order'}</h3><p>Use these as breakpoints, not hard caps. If two targets give the same desired stat, favor the gold-outline companion and the gift type you can actually feed efficiently.</p><div class="companionLadder">${ladderHtml(guide.ladder)}</div></div>
@@ -4998,7 +4997,6 @@ function polishBuildLayout(){
   function setup(){
     if(!$c('companionsSection')) return;
     loadPrefs();
-    $c('companionSeasonToggle')?.addEventListener('click',e=>{const b=e.target.closest('[data-companion-season]');if(!b)return;currentSeason=b.dataset.companionSeason;const list=currentSeason==='s2'?S2_CLASSES:S1_CLASSES;let saved='';try{saved=localStorage.getItem(classStorage[currentSeason])||'';}catch(_){}currentClass=list.includes(saved)?saved:list[0];render();});
     $c('companionClassTabs')?.addEventListener('click',e=>{const b=e.target.closest('[data-companion-class]');if(!b)return;currentClass=b.dataset.companionClass;render();});
     $c('companionContent')?.addEventListener('click',e=>{const b=e.target.closest('[data-companion-role]');if(!b)return;sageRole=b.dataset.companionRole;render();});
     render();
