@@ -1,0 +1,50 @@
+name: Apply coverage-aware resource headroom
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-headroom-coverage-v2.py'
+      - '.github/workflows/apply-headroom-coverage-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply coverage-aware headroom patch
+        run: python .github/patch-headroom-coverage-v2.py
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/inline.js
+      - name: Verify coverage-aware formula
+        run: |
+          grep -q 'DYNAMIC_HEADROOM_WEIGHTS_V2' index.html
+          grep -q 'const fundedCoverage=' index.html
+          grep -q 'const unfundedShare=1-fundedCoverage' index.html
+      - name: Commit optimizer update
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Use funded-cap coverage for resource value'
+          git push origin main
