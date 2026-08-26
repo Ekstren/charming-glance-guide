@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - .github/workflows/fix-active-now-details.yml
+  schedule:
+    - cron: '*/5 * * * *'
 permissions:
   contents: write
 jobs:
