@@ -1,0 +1,54 @@
+name: Apply optimizer priority toggle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-optimizer-priority.py'
+      - '.github/workflows/apply-optimizer-priority.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply optimizer priority patch
+        run: python .github/patch-optimizer-priority.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          import re, pathlib, subprocess, tempfile
+          html=pathlib.Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S|re.I)
+          for i,src in enumerate(scripts):
+              if not src.strip():
+                  continue
+              p=pathlib.Path(tempfile.gettempdir())/f'inline-{i}.js'
+              p.write_text(src,encoding='utf-8')
+              subprocess.run(['node','--check',str(p)],check=True)
+          print(f'Validated {len(scripts)} inline scripts')
+          PY
+      - name: Check diff
+        run: git diff --check
+      - name: Verify optimizer markers
+        run: |
+          grep -q 'OPTIMIZER_PRIORITY_TOGGLE_V1' index.html
+          grep -q 'data-optimizer-mode="preserve"' index.html
+          grep -q 'data-optimizer-mode="balanced"' index.html
+          grep -q "optimizerMode()==='preserve'" index.html
+      - name: Commit optimizer priority toggle
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No index change needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add optimizer priority comparison toggle"
+          git push
