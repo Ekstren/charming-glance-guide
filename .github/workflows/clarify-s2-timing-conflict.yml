@@ -1,0 +1,63 @@
+name: Clarify S2 timing conflict
+on:
+  push:
+    paths:
+      - .github/workflows/clarify-s2-timing-conflict.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch timeline timing note
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old="['2026-08-29',46,'Feature','Season 2 final-day prep','Dungeon runs: buy 2 extra attempts and use none so you enter S2 at 4/2, then buy 2 more after reset for up to 6 day-one runs. Bed EXP historically banks up to 36h, but Aug 21 community reports say recent maintenance behavior may auto-claim stored EXP; verify the in-game transition notice before relying on the full bank.','feature'],"
+          new="['2026-08-29',46,'Feature','Season 2 final-day prep','Expected final prep day if Charming Glance follows the Day-47 S2 model. QY Maple currently says S1 can last ~44–46 days and that server mergers can alter Loong Haven entry timing, so verify the in-game Telescope/countdown before waiting until this date. Dungeon runs: buy 2 extra attempts and use none so you enter S2 at 4/2, then buy 2 more after reset for up to 6 day-one runs. Bed EXP historically banks up to 36h, but Aug 21 community reports say recent maintenance behavior may auto-claim stored EXP; verify the transition notice before relying on the full bank.','feature',null,'unconfirmed'],"
+          assert old in s
+          s=s.replace(old,new,1)
+          old="['2026-08-30',47,'Region','Loong Haven opens','Season 2 Day 1. Level-gated milestones happen when you actually reach them, not automatically on Day 1: Lv.106 = T4 class advancement + Loong Haven Five / area stockpile (Gateway Key ×5 · Withering Potion ×1 · Magic Drill ×1 · Water Mine ×2 · cloud key ×7); Lv.108 = Fantomon Adult / Materialization; Lv.116 = Demonbind Tower. QY merge reference: 01–04 · 05–08 · 09–12 · 13–16.','region'],"
+          new="['2026-08-30',47,'Region','Loong Haven opens','EXPECTED from the common Server Day-47 model: Season 2 Day 1 on Aug 30 at the 6:00 AM PT reset. Prydwen says T4 begins around Day 47, but QY Maple currently says S1 lasts ~44–46 days and explicitly warns that server mergers can alter the day Loong Haven becomes available. No Charming Glance-specific Telescope/countdown confirmation has been found yet, so verify in game. Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Lv.108 = Fantomon Adult / Materialization; Lv.116 = Demonbind Tower.','region',null,'unconfirmed'],"
+          assert old in s
+          s=s.replace(old,new,1)
+          old="if(title==='Season 2 final-day prep') return 'Save dungeon attempts for S2: buy 2 and use none, then buy 2 more after reset for up to 6 day-one runs. Treat 36h Bed EXP banking as unconfirmed until the transition notice verifies it.';"
+          new="if(title==='Season 2 final-day prep') return 'Expected Aug 29 prep if S2 lands Aug 30; verify the in-game Telescope/countdown because QY warns mergers can shift Loong Haven timing. Save dungeon attempts and treat 36h Bed EXP banking as unconfirmed.';"
+          assert old in s
+          s=s.replace(old,new,1)
+          old="if(title==='Loong Haven opens') return 'Season 2 begins. Key level gates: Lv.106 T4/Loong Haven Five, Lv.108 Fantomon Adult/Materialization, Lv.116 Demonbind Tower.';"
+          new="if(title==='Loong Haven opens') return 'Expected Aug 30 from the Day-47 model; QY warns mergers can shift Loong Haven timing, so verify Telescope/countdown. Gates: Lv.106 T4, Lv.108 Fantomon Adult, Lv.116 Demonbind Tower.';"
+          assert old in s
+          s=s.replace(old,new,1)
+          old="[/season 1.*(end|final|prep)|season prep/i, 'Finish Season 1 scoring and any last upgrades before the Aug 30, 6:00 AM PT reset. Preserve the S2 materials your planner marks as reserved.'],"
+          new="[/season 1.*(end|final|prep)|season prep/i, 'Expected S2 reset is Aug 30, but verify the in-game Telescope/countdown because QY warns server mergers can shift Loong Haven timing. Finish S1 scoring early and preserve your S2 reserves.'],"
+          assert old in s
+          s=s.replace(old,new,1)
+          old="[/season 2.*(start|open)|loong haven/i, 'Season 2 opens Aug 30 at the 6:00 AM PT reset. Expect Tier IV progression and a fresh seasonal-growth loop; update the planner after rollover.']"
+          new="[/season 2.*(start|open)|loong haven/i, 'Expected Aug 30 from the common Day-47 model; QY warns mergers can shift Loong Haven entry, so verify Telescope/countdown. After rollover, update the planner before spending saved resources.']"
+          assert old in s
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git commit -m "Clarify unconfirmed Season 2 timing conflict"
+          git push
