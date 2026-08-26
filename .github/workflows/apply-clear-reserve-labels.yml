@@ -1,0 +1,45 @@
+name: Apply clear reserve labels
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-clear-reserve-labels.py'
+      - '.github/workflows/apply-clear-reserve-labels.yml'
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply reserve label clarity patch
+        run: python .github/patch-clear-reserve-labels.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/inline.js').write_text('\n'.join(scripts))
+          PY
+          node --check /tmp/inline.js
+      - name: Verify labels
+        run: |
+          grep -q 'CLEAR_RESERVE_BALANCE_LABELS_V1' index.html
+          grep -q 'spendable after plan' index.html
+          grep -q 'S1 available' index.html
+          grep -q 'S2 reserved' index.html
+          ! grep -q 'S2 relic reserve protected' index.html
+          ! grep -q 'S2 skill reserve protected' index.html
+      - name: Commit clarity update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Clarify S2 reserve balances'
+          git push
