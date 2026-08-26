@@ -8,6 +8,7 @@ on:
       - .github/build-fantomons-inject.html
       - .github/build-role-toggle-inject.html
       - .github/patch-build-presets.py
+      - .github/patch-guide-builds.py
 permissions:
   contents: write
 jobs:
@@ -19,7 +20,9 @@ jobs:
         with:
           ref: main
       - name: Apply maintained build presets
-        run: python3 .github/patch-build-presets.py
+        run: |
+          python3 .github/patch-build-presets.py
+          python3 .github/patch-guide-builds.py
       - name: Sync build Fantomon block
         run: |
           python3 - <<'PY'
@@ -88,5 +91,5 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html .github/build-fantomons-inject.html
-          git commit -m 'Restore Arcanist and Dominator role toggle'
+          git commit -m 'Replace forced build presets with guide loadouts'
           git push origin main
