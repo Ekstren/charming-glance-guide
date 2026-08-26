@@ -2514,11 +2514,24 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return each*8;
   }
 
+  /* RAW_FIRST_TOOL_GAPS_V1
+     S2 reserves consume projected raw material first. Realm tools are protected only for
+     the reserve gap that raw material cannot cover. Result cards show tool rows only when
+     tools are actually needed for the S1 plan or an S2 reserve gap. */
+  function projectedRawReserveSupply(key,cfg=activeCalcConfig()){
+    if(cfg.key!=='s1') return 0;
+    const hours=projectionResourceHoursAt(Date.now(),cfg);
+    if(key==='essence') return Math.max(0,n('essenceCurrent'))+Math.max(0,n('essenceRate'))*hours;
+    if(key==='sand') return savedSandEquivalent()+Math.max(0,n('sandRate'))*hours;
+    if(key==='treat') return savedTreatEquivalent()+Math.max(0,n('treatRate'))*hours;
+    return 0;
+  }
+
   // Protect enough carried Essence to catch all 8 skills up to the Character level that the
-  // held Bed EXP can immediately reach after the S2 reset. Skills reset to the seasonal floor
-  // for planning here, so the reserve is the exact S2 100 -> rollover Character-level skill cost.
+  // held Bed EXP can immediately reach after the S2 reset. Raw Essence covers the reserve first;
+  // Knuckles are protected only for any remaining gap.
   function season2SkillEssenceReserve(cfg=activeCalcConfig()){
-    if(cfg.key!=='s1' || !$('reserveS2Essence')?.checked || !$('holdExp')?.checked) return {target:0,rawEssence:0,knucklesReserved:0,knuckleEssence:0,projectedKnuckles:0,hours:0,exp:0,targetLevel:100};
+    if(cfg.key!=='s1' || !$('reserveS2Essence')?.checked || !$('holdExp')?.checked) return {target:0,rawEssence:0,knucklesReserved:0,knuckleEssence:0,projectedKnuckles:0,shortfall:0,hours:0,exp:0,targetLevel:100};
     const hours=clamp(n('reserveHours',36),0,36);
     const heldExp=Math.max(0,n('bedExp',0))*hours;
     let level=100,exp=heldExp,safety=0;
@@ -2528,61 +2541,76 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       exp-=req; level++;
     }
     const target=Math.max(0,skillCost(100,level,CALC_SEASONS.s2));
-    // Realm tools carry between seasons. Use Knuckles to satisfy the small S2 startup skill reserve first,
-    // just like Shovels satisfy the one-round Relic reserve. The exact S2 Lv100 Realm yield is not fully
-    // verified, so use the current late-S1 1,000 Essence/run as a conservative floor rather than the higher
-    // S2 max-bracket value.
+    const rawEssence=Math.min(target,projectedRawReserveSupply('essence',cfg));
+    const rawGap=Math.max(0,target-rawEssence);
     const projectedKnuckles=Math.max(0,Math.floor(n('knucklesCurrent',0)))+plannedRealmRunsFor('essence',cfg);
+    // Conservative S2 startup floor until the early-S2 Realm bracket is directly verified.
     const conservativePerKnuckle=Math.max(1,Number(CALC_SEASONS.s1.realm?.essence)||1000);
-    const knucklesReserved=Math.min(projectedKnuckles,Math.ceil(target/conservativePerKnuckle));
-    const knuckleEssence=Math.min(target,knucklesReserved*conservativePerKnuckle);
-    const rawEssence=Math.max(0,target-knuckleEssence);
-    return {target,rawEssence,knucklesReserved,knuckleEssence,projectedKnuckles,conservativePerKnuckle,hours,exp:heldExp,targetLevel:level};
+    const knucklesReserved=Math.min(projectedKnuckles,Math.ceil(rawGap/conservativePerKnuckle));
+    const knuckleEssence=Math.min(rawGap,knucklesReserved*conservativePerKnuckle);
+    const shortfall=Math.max(0,rawGap-knuckleEssence);
+    return {target,rawEssence,knucklesReserved,knuckleEssence,projectedKnuckles,conservativePerKnuckle,shortfall,hours,exp:heldExp,targetLevel:level};
   }
 
-  // Preserve exactly one full first S2 Relic round (+10 -> +11 across all 20 slots).
-  // Projected Shovels count first because a carried Shovel is worth the S2 Realm yield (1,000 Sand),
-  // then only enough raw Chrono Sand is protected to cover the remainder. Surplus Sand is spendable in S1.
+  // Preserve one full first S2 Relic round (+10 -> +11 across all 20 slots). Projected raw
+  // Sand covers it first; Shovels are protected only for the remaining gap.
   function season2RelicSandReserve(cfg=activeCalcConfig()){
     if(cfg.key!=='s1' || !$('reserveS2Sand')?.checked) return {target:0,rawSand:0,shovelsReserved:0,shovelSand:0,projectedShovels:0,shortfall:0,fromLevel:10,toLevel:11};
     const s2=CALC_SEASONS.s2;
-    // Seasonal Relic levels reset to +10. S2's relicFloor=13 is the Season Power scoring floor only.
     const fromLevel=10;
     const perRelic=relicStepSand(fromLevel,s2);
     const target=Number.isFinite(perRelic)?perRelic*20:0;
+    const rawSand=Math.min(target,projectedRawReserveSupply('sand',cfg));
+    const rawGap=Math.max(0,target-rawSand);
     const projectedShovels=Math.max(0,Math.floor(n('shovelCurrent',0)))+plannedRealmRunsFor('sand',cfg);
     const perShovel=Math.max(0,Number(s2.realm?.sand)||0);
-    const shovelsReserved=perShovel>0?Math.min(projectedShovels,Math.ceil(target/perShovel)):0;
-    const shovelSand=Math.min(target,shovelsReserved*perShovel);
-    const rawSand=Math.max(0,target-shovelSand);
-    return {target,rawSand,shovelsReserved,shovelSand,projectedShovels,shortfall:0,perRelic,fromLevel,toLevel:fromLevel+1};
+    const shovelsReserved=perShovel>0?Math.min(projectedShovels,Math.ceil(rawGap/perShovel)):0;
+    const shovelSand=Math.min(rawGap,shovelsReserved*perShovel);
+    const shortfall=Math.max(0,rawGap-shovelSand);
+    return {target,rawSand,shovelsReserved,shovelSand,projectedShovels,shortfall,perRelic,fromLevel,toLevel:fromLevel+1};
   }
 
-  // Preserve enough Fantomon Treats to immediately raise all four reset Fantomons from Lv.100 -> 110 in S2.
-  // Treat inventory is normalized to Basic-Treat equivalents, so Premium/Deluxe Treats automatically count toward this reserve.
+  // Treats have no Realm-tool analogue. Protect only the actual Basic-equivalent Treat amount
+  // needed for the S2 startup target; any excess remains spendable in S1.
   function season2FantomonTreatReserve(cfg=activeCalcConfig()){
     if(cfg.key!=='s1' || !$('reserveS2Treats')?.checked) return {target:0,rawTreats:0,shortfall:0,fromLevel:100,toLevel:110,expEquivalent:0};
     const fromLevel=100,toLevel=110;
     const target=Math.max(0,fantoCost(fromLevel,toLevel,CALC_SEASONS.s2));
-    return {target,rawTreats:target,shortfall:0,fromLevel,toLevel,expEquivalent:target*TREAT_BASIC_EXP};
+    const rawTreats=Math.min(target,projectedRawReserveSupply('treat',cfg));
+    const shortfall=Math.max(0,target-rawTreats);
+    return {target,rawTreats,shortfall,fromLevel,toLevel,expEquivalent:target*TREAT_BASIC_EXP};
   }
 
   function applySeasonTransitionReserves(resources,cfg=activeCalcConfig()){
-    const skillReserve=season2SkillEssenceReserve(cfg);
-    const relicReserve=season2RelicSandReserve(cfg);
-    const treatReserve=season2FantomonTreatReserve(cfg);
+    const skillMeta=season2SkillEssenceReserve(cfg);
+    const relicMeta=season2RelicSandReserve(cfg);
+    const treatMeta=season2FantomonTreatReserve(cfg);
     const essenceTotal=Math.max(0,Number(resources.essence)||0);
     const sandTotal=Math.max(0,Number(resources.sand)||0);
     const treatTotal=Math.max(0,Number(resources.treat)||0);
-    const essenceProtected=Math.min(essenceTotal,Math.max(0,skillReserve.rawEssence||0));
-    const essenceReserveShortfall=Math.max(0,(skillReserve.rawEssence||0)-essenceProtected);
-    const finalSkillReserve={...skillReserve,rawEssence:essenceProtected,shortfall:essenceReserveShortfall,protectedEquivalent:(skillReserve.knuckleEssence||0)+essenceProtected};
-    const sandProtected=Math.min(sandTotal,Math.max(0,relicReserve.rawSand||0));
-    const reserveShortfall=Math.max(0,(relicReserve.rawSand||0)-sandProtected);
-    const finalRelicReserve={...relicReserve,rawSand:sandProtected,shortfall:reserveShortfall,protectedEquivalent:(relicReserve.shovelSand||0)+sandProtected};
-    const treatProtected=Math.min(treatTotal,Math.max(0,treatReserve.rawTreats||0));
-    const treatReserveShortfall=Math.max(0,(treatReserve.rawTreats||0)-treatProtected);
-    const finalTreatReserve={...treatReserve,rawTreats:treatProtected,shortfall:treatReserveShortfall,protectedEquivalent:treatProtected};
+
+    const essenceProtected=Math.min(essenceTotal,Math.max(0,skillMeta.target||0));
+    const essenceGap=Math.max(0,(skillMeta.target||0)-essenceProtected);
+    const projectedKnuckles=Math.max(0,Math.floor(n('knucklesCurrent',0)))+plannedRealmRunsFor('essence',cfg);
+    const conservativePerKnuckle=Math.max(1,Number(CALC_SEASONS.s1.realm?.essence)||1000);
+    const knucklesReserved=Math.min(projectedKnuckles,Math.ceil(essenceGap/conservativePerKnuckle));
+    const knuckleEssence=Math.min(essenceGap,knucklesReserved*conservativePerKnuckle);
+    const essenceReserveShortfall=Math.max(0,essenceGap-knuckleEssence);
+    const finalSkillReserve={...skillMeta,rawEssence:essenceProtected,knucklesReserved,knuckleEssence,projectedKnuckles,conservativePerKnuckle,shortfall:essenceReserveShortfall,protectedEquivalent:essenceProtected+knuckleEssence};
+
+    const sandProtected=Math.min(sandTotal,Math.max(0,relicMeta.target||0));
+    const sandGap=Math.max(0,(relicMeta.target||0)-sandProtected);
+    const projectedShovels=Math.max(0,Math.floor(n('shovelCurrent',0)))+plannedRealmRunsFor('sand',cfg);
+    const perShovel=Math.max(0,Number(CALC_SEASONS.s2.realm?.sand)||0);
+    const shovelsReserved=perShovel>0?Math.min(projectedShovels,Math.ceil(sandGap/perShovel)):0;
+    const shovelSand=Math.min(sandGap,shovelsReserved*perShovel);
+    const sandReserveShortfall=Math.max(0,sandGap-shovelSand);
+    const finalRelicReserve={...relicMeta,rawSand:sandProtected,shovelsReserved,shovelSand,projectedShovels,shortfall:sandReserveShortfall,protectedEquivalent:sandProtected+shovelSand};
+
+    const treatProtected=Math.min(treatTotal,Math.max(0,treatMeta.target||0));
+    const treatReserveShortfall=Math.max(0,(treatMeta.target||0)-treatProtected);
+    const finalTreatReserve={...treatMeta,rawTreats:treatProtected,shortfall:treatReserveShortfall,protectedEquivalent:treatProtected};
+
     return {...resources,
       essenceTotal,essenceReserve:essenceProtected,s2SkillReserve:finalSkillReserve,essence:Math.max(0,essenceTotal-essenceProtected),
       sandTotal,sandReserve:sandProtected,s2RelicSandReserve:finalRelicReserve,sand:Math.max(0,sandTotal-sandProtected),
@@ -3434,8 +3462,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const realmDays=Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg);
 
     // Dynamic usability compares remaining safe-cap demand with everything already available
-    // for that category. Spendable Realm tools count as material-equivalent supply; protected
-    // S2 tools do not, because realmInventoryFor() has already removed protected runs.
+    // for that category. Spendable Realm tools count as material-equivalent supply; only tools needed
+    // for a raw-material reserve gap are excluded by realmInventoryFor().
     const essenceInv=realmInventoryFor('essence',cfg);
     const sandInv=realmInventoryFor('sand',cfg);
     resources.acquisitionHeadroomCosts=headroomCosts||{};
@@ -3554,18 +3582,23 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const desiredRuns=Math.max(0,Math.floor(Number.isFinite(finiteRuns)?finiteRuns:(hard>0.5?maxRuns+hardNeedRuns:0)));
     const projectedSpendable=Math.max(0,Math.floor(Number(inv?.banked)||0));
     const used=Math.min(desiredRuns,projectedSpendable);
-    const gained=used*per;
-    const spendableRemaining=Math.max(0,projectedSpendable-used);
-    const spendableMaterial=spendableRemaining*per;
-    const protectedMaterial=protectedCount*per;
+    const usedMaterial=used*per;
     const needed=Math.max(0,desiredRuns-used);
     const neededMaterial=needed*per;
-    const usedLine=`<span class="toolUsageRow toolUsedLine"><i>${label} used</i><b>${fmt(used)}</b><em>${per>0?`≈${fmtCompact(gained)} ${materialName} gained`:''}</em></span>`;
-    const remainingLabel=protectedCount?'S1 available':`${label} remaining`;
-    const remainingLine=`<span class="toolUsageRow toolRemainingLine"><i>${remainingLabel}</i><b>${fmt(spendableRemaining)}</b><em>${per>0?`≈${fmtCompact(spendableMaterial)} ${materialName}`:''}</em></span>`;
-    const reserveLine=protectedCount?`<span class="toolUsageRow toolReserveLine"><i>S2 reserved</i><b>${fmt(protectedCount)}</b><em>${per>0?`≈${fmtCompact(protectedMaterial)} ${materialName}`:''}</em></span>`:'';
-    const needLine=needed?`<span class="toolUsageRow toolNeedLine"><i>Need more</i><b>${fmt(needed)}</b><em>≈${fmtCompact(neededMaterial)} ${materialName}</em></span>`:'';
-    el.innerHTML=usedLine+remainingLine+reserveLine+needLine;
+    const reserveMaterial=protectedCount*per;
+
+    const lines=[];
+    if(used>0) lines.push(`<span class="toolUsageRow toolUsedLine"><i>Use ${label}</i><b>${fmt(used)}</b><em>${per>0?`covers ≈${fmtCompact(usedMaterial)} ${materialName}`:''}</em></span>`);
+    if(protectedCount>0) lines.push(`<span class="toolUsageRow toolReserveLine"><i>S2 reserve gap</i><b>${fmt(protectedCount)} ${label}</b><em>${per>0?`covers ≈${fmtCompact(reserveMaterial)} ${materialName}`:''}</em></span>`);
+    if(needed>0) lines.push(`<span class="toolUsageRow toolNeedLine"><i>Need more ${label}</i><b>${fmt(needed)}</b><em>${per>0?`≈${fmtCompact(neededMaterial)} ${materialName}`:''}</em></span>`);
+
+    if(!lines.length){
+      el.innerHTML='';
+      el.hidden=true;
+      return;
+    }
+    el.hidden=false;
+    el.innerHTML=lines.join('');
     el.classList.add(needed?'toolNeed':'toolLeft');
   }
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
