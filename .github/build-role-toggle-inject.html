@@ -1,6 +1,6 @@
 <!-- BUILD_ROLE_TOGGLE_START -->
 <style>
-/* BUILD_ROLE_TOGGLE_V1 */
+/* BUILD_ROLE_TOGGLE_V2 */
 .buildModeTabs{display:flex;gap:4px;width:min(245px,100%);margin-top:12px;padding:3px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface) 94%,transparent)}
 .buildModeTabs button{flex:1;border:0;border-radius:7px;padding:8px 10px;background:transparent;color:var(--muted);font:inherit;font-size:9px;font-weight:900;cursor:pointer}
 .buildModeTabs button.active{background:var(--accent-strong);color:#fff}
@@ -20,6 +20,17 @@
   function saveMode(cls,mode){
     try{localStorage.setItem(ROLE_KEYS[cls],mode);}catch(_){}
   }
+  function applyModeVisibility(root,cls,mode){
+    const cards=root.querySelectorAll('.buildGrid .buildCard');
+    cards.forEach(card=>{
+      if(!ROLE_CLASSES.has(cls)){
+        card.style.display='';
+        return;
+      }
+      const isHealing=(card.dataset.role||'').toLowerCase()==='healing';
+      card.style.display=(mode==='heals' ? isHealing : !isHealing) ? '' : 'none';
+    });
+  }
   function renderRoleMeta(root,cls,mode){
     if(typeof renderBuildQuickStats==='function') renderBuildQuickStats(root,cls,mode);
     if(typeof BUILD_ROLE_PRIORITY!=='undefined' && typeof setPriorityPanel==='function'){
@@ -30,12 +41,16 @@
         setPriorityPanel(panels[1],pdata[1]);
       }
     }
+    applyModeVisibility(root,cls,mode);
   }
   function ensureTabs(cls){
     const root=document.getElementById('buildContent');
     if(!root) return;
     root.querySelectorAll('.buildModeTabs').forEach(x=>{if(!ROLE_CLASSES.has(cls))x.remove();});
-    if(!ROLE_CLASSES.has(cls)) return;
+    if(!ROLE_CLASSES.has(cls)){
+      applyModeVisibility(root,cls,'dps');
+      return;
+    }
 
     const guide=root.querySelector(':scope > .guideSummary');
     const identity=guide?.children?.[0];
@@ -75,7 +90,7 @@
   function start(){
     queue();
     const root=document.querySelector('.builds');
-    if(root)new MutationObserver(queue).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+    if(root)new MutationObserver(queue).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','data-role']});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   window.addEventListener('load',queue);
