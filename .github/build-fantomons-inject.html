@@ -1,6 +1,7 @@
 <!-- BUILD_FANTOMON_PAIRS_START -->
 <style>
 /* BUILD_FANTOMON_PAIRS_V2_ROLE_PRESETS */
+.builds .buildRoleTabs{display:none!important}
 .buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
 .buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;font-size:9px;font-weight:850;display:block}
 .buildCard .fantomonPairNote{color:var(--muted);font-size:8px;line-height:1.35;margin:-2px 0 7px}
@@ -181,6 +182,7 @@
   function apply(){
     const cls=activeClass();
     if(!cls) return;
+    document.querySelectorAll('.builds .buildRoleTabs').forEach(x=>x.remove());
     applyRoleLoadouts(cls);
     applyFantos(cls);
   }
