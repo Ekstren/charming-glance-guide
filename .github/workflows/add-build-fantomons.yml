@@ -1,4 +1,5 @@
 name: Add build Fantomon recommendations
+# Maintenance policy: S1/T3 is maintained only until Charming Glance enters S2; after handoff, S2/T4 is the active build/Fantomon target. See .github/build-maintenance.md.
 on:
   push:
     paths:
