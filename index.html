@@ -1567,7 +1567,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 </style>
 <!-- SITE_LAYOUT_MOBILE_END -->
 <style id="optimizer-priority-toggle-v1">
-/* OPTIMIZER_PRIORITY_TOGGLE_V1 */
+/* OPTIMIZER_PRIORITY_TOGGLE_V1 · ACQUISITION_OPTIMIZER_V1 */
 .optimizerModeRow{display:flex;align-items:center;justify-content:space-between;gap:16px;border:1px solid var(--line);background:var(--ui-subpanel,var(--bg));border-radius:11px;margin:10px 0;padding:10px 12px}
 .optimizerModeCopy{display:grid;gap:3px;min-width:0}.optimizerModeCopy b{color:var(--ink);font-size:10px}.optimizerModeCopy small{color:var(--muted);font-size:9px;line-height:1.4}
 .optimizerModeToggle{display:grid;grid-template-columns:1fr 1fr;gap:3px;flex:0 0 auto;padding:3px;border:1px solid var(--line);background:var(--input-bg,var(--surface));border-radius:10px}
@@ -1683,10 +1683,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         </div>
         <small class="seasonPlanningNote" id="graceText">Cart income and projected Stamina generation stop 12 hours before season end.</small>
         <div class="optimizerModeRow" id="optimizerModeRow">
-          <div class="optimizerModeCopy"><b>Optimization priority</b><small id="optimizerModeNote">Protect Ore/Hammers after the target and hard S2 reserves are safe.</small></div>
+          <div class="optimizerModeCopy"><b>Optimization priority</b><small id="optimizerModeNote">Use acquisition effort, with an extra future-value premium on Ore/Hammers.</small></div>
           <div class="optimizerModeToggle" role="group" aria-label="Optimization priority">
             <button type="button" data-optimizer-mode="preserve" aria-pressed="true">Preserve Ore</button>
-            <button type="button" data-optimizer-mode="balanced" aria-pressed="false">Balanced resources</button>
+            <button type="button" data-optimizer-mode="acquisition" aria-pressed="false">Acquisition Efficient</button>
           </div>
           <input id="optimizerMode" type="hidden" value="preserve">
         </div>
@@ -1800,7 +1800,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
-<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. Carried Knuckles satisfy this reserve first, with raw Essence protected only for any remainder. That protected amount is not spendable by the S1 optimizer. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, surplus Essence is cheapest to spend, then Treats, then surplus Sand, while Ore/Hammers are preserved most aggressively. Reserved Shovels are removed from the S1 spendable Realm pool. In Auto mode, the planner now tests the complete Ore / Essence / Sand Stamina split for each chosen score plan, minimizing total paid Material Realm cost instead of greedily choosing one node at a time. It then re-solves the score plan until the Stamina split stabilizes. Once the requested current-season target is protected, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
+<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. Carried Knuckles satisfy this reserve first, with raw Essence protected only for any remainder. That protected amount is not spendable by the S1 optimizer. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, the Optimization priority decides the tie-break: Acquisition Efficient minimizes estimated replacement effort from the entered Cart rates plus the current map yield (one 5-Stamina node per natural hour); Preserve Ore uses the same acquisition model but applies a 75% strategic premium to Ore/Hammers because Gear has the broadest progression runway. Reserved Shovels are removed from the S1 spendable Realm pool. In Auto mode, the planner now tests the complete Ore / Essence / Sand Stamina split for each chosen score plan, minimizing total paid Material Realm cost instead of greedily choosing one node at a time. It then re-solves the score plan until the Stamina split stabilizes. Once the requested current-season target is protected, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
 <footer><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </main>
@@ -1866,9 +1866,15 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return ['ore','auto','essence','sand'].includes(raw) ? raw : 'ore';
   };
   const staminaModeLabel = (mode = staminaMode()) => ({ore:'Ore',auto:'Auto',essence:'Skill Essence',sand:'Chrono Sand'})[mode] || 'Ore';
-  const optimizerMode = () => $('optimizerMode')?.value === 'balanced' ? 'balanced' : 'preserve';
+  const optimizerMode = () => {
+    const raw=$('optimizerMode')?.value;
+    // Migrate the short-lived Balanced mode to the new acquisition-efficiency model.
+    return raw==='acquisition'||raw==='balanced' ? 'acquisition' : 'preserve';
+  };
   function updateOptimizerModeUI(){
     const mode=optimizerMode();
+    const input=$('optimizerMode');
+    if(input && input.value==='balanced') input.value='acquisition';
     const row=$('optimizerModeRow');
     if(row) row.hidden=activeCalcConfig().key!=='s1';
     document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>{
@@ -1878,13 +1884,13 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     });
     const note=$('optimizerModeNote');
     if(note) note.textContent=mode==='preserve'
-      ? 'Protect Ore/Hammers after the target and hard S2 reserves are safe.'
-      : 'Treat Ore like the other spendable resources and use the generic balanced-resource tie breaker.';
+      ? 'Acquisition effort + 75% Ore premium for Gear runway; strong Ore preference, no longer absolute.'
+      : 'Minimize estimated replacement effort using Cart/hr + one 5-Stamina map node per hour; no special Ore premium.';
   }
   document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     const input=$('optimizerMode');
     if(!input) return;
-    input.value=btn.dataset.optimizerMode==='balanced'?'balanced':'preserve';
+    input.value=btn.dataset.optimizerMode==='acquisition'?'acquisition':'preserve';
     updateOptimizerModeUI();
     saveState();
     scheduleCalculatorUpdate(0);
@@ -2896,11 +2902,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         if(cp.dawniumCost>bp.dawniumCost+1e-9) return false;
         if(cp.realmPacks<bp.realmPacks) return true;
         if(cp.realmPacks>bp.realmPacks) return false;
-        if(optimizerMode()==='preserve'){
-          const cOre=(Number(state.resources.ore)||0)-(Number(cp.oreCost)||0);
-          const bOre=(Number(best.resources.ore)||0)-(Number(bp.oreCost)||0);
-          if(cOre>bOre+0.5) return true;
-          if(cOre<bOre-0.5) return false;
+        if(cp.seasonKey==='s1'||bp.seasonKey==='s1'){
+          const cm=candidateResourceMetric(cp),bm=candidateResourceMetric(bp);
+          if(cm<bm-1e-9) return true;
+          if(cm>bm+1e-9) return false;
         }
         if(cp.overshoot<bp.overshoot-1e-9) return true;
         if(cp.overshoot>bp.overshoot+1e-9) return false;
@@ -3134,6 +3139,39 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,charScore:characterScore(p,cfg)};
   }
 
+  const ORE_PRESERVE_PREMIUM=0.75; // +75% strategic value, bounded rather than absolute.
+  function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){
+    const map=resources?.yields?.map||cfg.map||{};
+    const horizon=Math.max(24,Number(resources?.cartHours)||24);
+    const projectedTreat=Math.max(0,Number(resources?.treat)||0);
+    const enteredTreatRate=Math.max(0,n('treatRate'));
+    const fallbackTreatRate=projectedTreat>0?projectedTreat/horizon:0;
+    const rates={
+      ore:Math.max(0,n('oreRate'))+Math.max(0,Number(map.ore)||0),
+      essence:Math.max(0,n('essenceRate'))+Math.max(0,Number(map.essence)||0),
+      sand:Math.max(0,n('sandRate'))+Math.max(0,Number(map.sand)||0),
+      treat:enteredTreatRate>0?enteredTreatRate:fallbackTreatRate
+    };
+    const safeHours=(amount,rate)=>{
+      const a=Math.max(0,Number(amount)||0),r=Math.max(0,Number(rate)||0);
+      if(a<=0) return 0;
+      return r>0?a/r:1e9;
+    };
+    const oreHours=safeHours(costs.ore,rates.ore);
+    const essenceHours=safeHours(costs.essence,rates.essence);
+    const sandHours=safeHours(costs.sand,rates.sand);
+    const treatHours=safeHours(costs.treat,rates.treat);
+    const hours=oreHours+essenceHours+sandHours+treatHours;
+    return {hours,oreHours,essenceHours,sandHours,treatHours,treatFallback:enteredTreatRate<=0&&fallbackTreatRate>0};
+  }
+  function candidateResourceMetric(candidate){
+    const base=Number(candidate?.acquisitionHours);
+    if(!Number.isFinite(base)) return 1e18;
+    return optimizerMode()==='preserve'
+      ? Number(candidate?.preserveAcquisitionScore)||base
+      : base;
+  }
+
   function makePlanCandidate(go,so,ro,fo,score,desired,resources,realms){
     const [oreRealm,essenceRealm,sandRealm]=realms;
     const dawniumCost=oreRealm.dawnium+essenceRealm.dawnium+sandRealm.dawnium;
@@ -3144,16 +3182,15 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const treatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
     const refinedShare=resources.refinedTracked&&resources.refined>0?go.refinedCost/resources.refined:0;
     const shares=[oreShare,essenceShare,sandShare,treatShare,refinedShare];
-    // S1 opportunity cost AFTER the hard S2 reserves are removed from the spendable budget.
-    // Surplus Essence is cheapest to burn, Treats next, then surplus Sand. Ore/Hammers are
-    // preserved hardest because Gear has the longest uncapped progression runway next season.
-    const s1ResourcePolicyScore=essenceShare*0.20+treatShare*0.45+sandShare*0.75+oreShare*1.20;
+    const acquisition=acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,activeCalcConfig());
+    const preserveAcquisitionScore=acquisition.hours+acquisition.oreHours*ORE_PRESERVE_PREMIUM;
     return {
       gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,
       skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,
       oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,
       score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,
-      oreShare,essenceShare,sandShare,treatShare,refinedShare,s1ResourcePolicyScore,
+      oreShare,essenceShare,sandShare,treatShare,refinedShare,
+      acquisitionHours:acquisition.hours,oreAcquisitionHours:acquisition.oreHours,preserveAcquisitionScore,
       maxShare:Math.max(...shares),sumShare:shares.reduce((a,b)=>a+b,0),overshoot:score-desired,
       dawniumCost,realmAttempts:realmPacks,realmPacks,
       bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),
@@ -3169,33 +3206,16 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(candidate.dawniumCost<best.dawniumCost-1e-9) return true;
     if(Math.abs(candidate.dawniumCost-best.dawniumCost)>=1e-9) return false;
 
-    // Late-S1 policy. S2 Essence and one full S2 Relic Sand round are already protected,
-    // so compare only the remaining spendable surplus. Lower is better:
-    // Essence -> Treats -> surplus Sand -> Ore (most protected).
-    if(optimizerMode()==='preserve' && (candidate.seasonKey==='s1' || best.seasonKey==='s1')){
-      // After hard S2 reserves are protected, Ore is the resource with the longest useful runway.
-      // At equal paid-Realm cost, minimize actual Ore required before balancing the other surpluses.
-      if(candidate.oreCost<best.oreCost-0.5) return true;
-      if(candidate.oreCost>best.oreCost+0.5) return false;
-      const cp=Number(candidate.s1ResourcePolicyScore)||0;
-      const bp=Number(best.s1ResourcePolicyScore)||0;
-      if(cp<bp-1e-9) return true;
-      if(cp>bp+1e-9) return false;
-
-      // Exact ties: preserve Hammers/Ore first. Reserved Shovels/Knuckles never enter this pool;
-      // surplus Knuckles/Shovels are fair game for current-season score.
-      if((candidate.bankedHammersUsed||0)<(best.bankedHammersUsed||0)) return true;
-      if((candidate.bankedHammersUsed||0)>(best.bankedHammersUsed||0)) return false;
-      if(candidate.skillAdds>best.skillAdds) return true;
-      if(candidate.skillAdds<best.skillAdds) return false;
-      if(candidate.fantoAdds>best.fantoAdds) return true;
-      if(candidate.fantoAdds<best.fantoAdds) return false;
-      if(candidate.relicAdds>best.relicAdds) return true;
-      if(candidate.relicAdds<best.relicAdds) return false;
-      if((candidate.bankedKnucklesUsed||0)>(best.bankedKnucklesUsed||0)) return true;
-      if((candidate.bankedKnucklesUsed||0)<(best.bankedKnucklesUsed||0)) return false;
-      if((candidate.bankedShovelsUsed||0)>(best.bankedShovelsUsed||0)) return true;
-      if((candidate.bankedShovelsUsed||0)<(best.bankedShovelsUsed||0)) return false;
+    // After paid-Realm cost is tied, compare modeled replacement effort. Preserve Ore uses
+    // the same acquisition model with a bounded +75% Ore premium rather than an absolute veto.
+    if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
+      const cm=candidateResourceMetric(candidate),bm=candidateResourceMetric(best);
+      if(cm<bm-1e-9) return true;
+      if(cm>bm+1e-9) return false;
+      if(optimizerMode()==='preserve'){
+        if((candidate.bankedHammersUsed||0)<(best.bankedHammersUsed||0)) return true;
+        if((candidate.bankedHammersUsed||0)>(best.bankedHammersUsed||0)) return false;
+      }
     }
 
     if(candidate.realmPacks<best.realmPacks) return true;
@@ -3217,25 +3237,14 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(candidate.remainingAfterMax<best.remainingAfterMax-0.5) return true;
     if(Math.abs(candidate.remainingAfterMax-best.remainingAfterMax)>0.5) return false;
 
-    if(optimizerMode()==='preserve' && (candidate.seasonKey==='s1' || best.seasonKey==='s1')){
-      if(candidate.oreCost<best.oreCost-0.5) return true;
-      if(candidate.oreCost>best.oreCost+0.5) return false;
-      const cp=Number(candidate.s1ResourcePolicyScore)||0;
-      const bp=Number(best.s1ResourcePolicyScore)||0;
-      if(cp<bp-1e-9) return true;
-      if(cp>bp+1e-9) return false;
-      if((candidate.bankedHammersUsed||0)<(best.bankedHammersUsed||0)) return true;
-      if((candidate.bankedHammersUsed||0)>(best.bankedHammersUsed||0)) return false;
-      if(candidate.skillAdds>best.skillAdds) return true;
-      if(candidate.skillAdds<best.skillAdds) return false;
-      if(candidate.fantoAdds>best.fantoAdds) return true;
-      if(candidate.fantoAdds<best.fantoAdds) return false;
-      if(candidate.relicAdds>best.relicAdds) return true;
-      if(candidate.relicAdds<best.relicAdds) return false;
-      if((candidate.bankedKnucklesUsed||0)>(best.bankedKnucklesUsed||0)) return true;
-      if((candidate.bankedKnucklesUsed||0)<(best.bankedKnucklesUsed||0)) return false;
-      if((candidate.bankedShovelsUsed||0)>(best.bankedShovelsUsed||0)) return true;
-      if((candidate.bankedShovelsUsed||0)<(best.bankedShovelsUsed||0)) return false;
+    if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
+      const cm=candidateResourceMetric(candidate),bm=candidateResourceMetric(best);
+      if(cm<bm-1e-9) return true;
+      if(cm>bm+1e-9) return false;
+      if(optimizerMode()==='preserve'){
+        if((candidate.bankedHammersUsed||0)<(best.bankedHammersUsed||0)) return true;
+        if((candidate.bankedHammersUsed||0)>(best.bankedHammersUsed||0)) return false;
+      }
     }
 
     if(candidate.realmPacks<best.realmPacks) return true;
@@ -3284,7 +3293,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           const dawniumCost=allFeasible?realms.reduce((sum,x)=>sum+x.dawnium,0):Infinity;
 
           const diagOreShare=resources.ore>0?go.oreCost/resources.ore:(go.oreCost>0?go.oreCost/100000:0),diagEssenceShare=resources.essence>0?so.cost/resources.essence:(so.cost>0?so.cost/100000:0),diagSandShare=resources.sand>0?ro.cost/resources.sand:(ro.cost>0?ro.cost/100000:0),diagTreatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
-          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,s1ResourcePolicyScore:diagEssenceShare*0.20+diagTreatShare*0.45+diagSandShare*0.75+diagOreShare*1.20,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
+          const diagAcquisition=acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg);
+          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,oreAcquisitionHours:diagAcquisition.oreHours,preserveAcquisitionScore:diagAcquisition.hours+diagAcquisition.oreHours*ORE_PRESERVE_PREMIUM,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
           if(betterDiagnosticCandidate(diagnostic,bestDiagnostic)) bestDiagnostic=diagnostic;
 
           if(!allFeasible) continue;
@@ -3430,7 +3440,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if((resources?.s2SkillReserve?.target||0)>0) reserveKinds.push('Skill');
     if((resources?.s2RelicSandReserve?.target||0)>0) reserveKinds.push('Relic');
     if((resources?.s2FantomonTreatReserve?.target||0)>0) reserveKinds.push('Fantomon');
-    const policy=optimizerMode()==='preserve'?'minimize Ore':'balance spendable resources';
+    const policy=optimizerMode()==='preserve'?'acquisition effort + 75% Ore premium':'minimize reacquisition effort';
     return reserveKinds.length
       ? `Spend surplus first · ${policy} · S2 ${reserveKinds.join(' + ')} reserve${reserveKinds.length>1?'s':''} protected`
       : `Spend surplus first · ${policy} · no S2 resource reserve`;
