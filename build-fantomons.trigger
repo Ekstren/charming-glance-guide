@@ -1,1 +1,1 @@
-apply-2026-08-26-main-alt-role-fix
+apply-2026-08-26-class-build-rework
