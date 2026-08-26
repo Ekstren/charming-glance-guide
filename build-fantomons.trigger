@@ -1,1 +1,1 @@
-apply-2026-08-26-class-build-rework-v2
+apply-2026-08-26-role-toggle-fix
