@@ -4391,5 +4391,42 @@ function polishBuildLayout(){
 
 </script>
 
+<style>
+/* TIMELINE_DETAILS_FINAL_V2 */
+#timeline .entry details.entryMore > summary,
+#timeline .entry details.timelineCardDetails > summary,
+#timeline .entry .entryMore > summary,
+#timeline .entry .timelineCardDetails > summary{
+  color:color-mix(in srgb,var(--accent-strong) 72%,var(--ink) 28%)!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  line-height:1.45!important;
+}
+#timeline .entry details.entryMore > summary::after,
+#timeline .entry details.timelineCardDetails > summary::after,
+#timeline .entry .entryMore > summary::after,
+#timeline .entry .timelineCardDetails > summary::after{color:currentColor!important}
+#timeline .entry > div > p + p,
+#timeline .entry details.entryMore > div,
+#timeline .entry details.entryMore > div p,
+#timeline .entry details.entryMore > div li,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody p,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody li,
+#timeline .entry .timelineRichBody,
+#timeline .entry .timelineRichBody p,
+#timeline .entry .timelineRichBody li,
+#timeline .entry .timelineRichBody .launchChecklist strong,
+#timeline .entry .timelineRichBody .launchChecklist em{
+  font-size:12px!important;
+  line-height:1.55!important;
+}
+#timeline .entry details.entryMore > div,
+#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
+#timeline .entry .timelineRichBody{
+  color:var(--secondary-text)!important;
+  margin-top:5px!important;
+}
+</style>
 </body>
 </html>
