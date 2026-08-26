@@ -1,3 +1,4 @@
+# trigger: Charming Glance in-game countdown confirmation
 name: Confirm S2 countdown
 on:
   push:
@@ -29,7 +30,6 @@ jobs:
               if old not in s:
                   raise SystemExit('missing expected text: '+old[:80])
               s=s.replace(old,new)
-          s=s.replace("['2026-08-29',46,'Feature','Season 2 final-day prep'", "['2026-08-29',46,'Feature','Season 2 final-day prep'",1)
           s=s.replace("'feature',null,'unconfirmed'],\n    ['2026-08-30',47,'Region','Loong Haven opens'", "'feature'],\n    ['2026-08-30',47,'Region','Loong Haven opens'",1)
           s=s.replace("'region',null,'unconfirmed'],\n    ['2026-08-30',47,'Feature','Gear Refinement & Affix Transfer'", "'region'],\n    ['2026-08-30',47,'Feature','Gear Refinement & Affix Transfer'",1)
           s=s.replace("'feature',null,'unconfirmed'],\n    ['2026-08-30',47,'Feature','Season 2 launch checklist'", "'feature'],\n    ['2026-08-30',47,'Feature','Season 2 launch checklist'",1)
