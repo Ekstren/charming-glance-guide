@@ -17,18 +17,13 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import base64,re
           p=Path('index.html')
           s=p.read_text()
           marker='/* BUILD_FANTOMON_PAIRS_V1 */'
           if marker in s:
               print('Fantomon patch already present.')
               raise SystemExit(0)
-          wf=Path('.github/workflows/add-build-fantomons.yml').read_text()
-          m=re.search(r'^\s*INJECT_B64:\s*([^\s]+)\s*$',wf,re.M)
-          if not m:
-              raise SystemExit('Could not find INJECT_B64 in source workflow')
-          inject=base64.b64decode(m.group(1)).decode()
+          inject=Path('.github/build-fantomons-inject.html').read_text()
           if '</body>' not in s:
               raise SystemExit('missing </body>')
           p.write_text(s.replace('</body>',inject+'</body>',1))
