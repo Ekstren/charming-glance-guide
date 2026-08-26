@@ -1,0 +1,42 @@
+name: Apply marginal resource headroom
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-marginal-headroom.py'
+      - '.github/workflows/apply-marginal-headroom.yml'
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply marginal headroom patch
+        run: python .github/patch-marginal-headroom.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/inline.js').write_text('\n'.join(scripts))
+          PY
+          node --check /tmp/inline.js
+      - name: Verify marginal pricing
+        run: |
+          grep -q 'MARGINAL_HEADROOM_COST_V2' index.html
+          grep -q 'marginalWeightedSpend' index.html
+          grep -q 'marginalWeightedCosts' index.html
+      - name: Commit optimizer update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Use marginal funded-cap resource pricing'
+          git push
