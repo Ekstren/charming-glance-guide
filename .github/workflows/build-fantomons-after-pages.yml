@@ -1,0 +1,56 @@
+name: Build Fantomons After Pages
+on:
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply build Fantomon recommendations
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,re
+          p=Path('index.html')
+          s=p.read_text()
+          marker='/* BUILD_FANTOMON_PAIRS_V1 */'
+          if marker in s:
+              print('Fantomon patch already present.')
+              raise SystemExit(0)
+          wf=Path('.github/workflows/add-build-fantomons.yml').read_text()
+          m=re.search(r'^\s*INJECT_B64:\s*([^\s]+)\s*$',wf,re.M)
+          if not m:
+              raise SystemExit('Could not find INJECT_B64 in source workflow')
+          inject=base64.b64decode(m.group(1)).decode()
+          if '</body>' not in s:
+              raise SystemExit('missing </body>')
+          p.write_text(s.replace('</body>',inject+'</body>',1))
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit patch
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index change needed.'
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git commit -m "Add main and alt Fantomons to build loadouts"
+          git push origin main
