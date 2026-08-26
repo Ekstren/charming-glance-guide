@@ -1884,8 +1884,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     });
     const note=$('optimizerModeNote');
     if(note) note.textContent=mode==='preserve'
-      ? 'Acquisition effort + 75% Ore premium for Gear runway; strong Ore preference, no longer absolute.'
-      : 'Minimize estimated replacement effort using Cart/hr + one 5-Stamina map node per hour; no special Ore premium.';
+      ? 'Spend capped surplus first; replacement effort then gets a +50% Ore premium for Gear runway.'
+      : 'Spend capped surplus efficiently: reserves stay protected, then replacement effort is weighted by future usability.';
   }
   document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     const input=$('optimizerMode');
@@ -3139,7 +3139,15 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,charScore:characterScore(p,cfg)};
   }
 
-  const ORE_PRESERVE_PREMIUM=0.75; // +75% strategic value, bounded rather than absolute.
+  /* SURPLUS_AWARE_OPTIMIZER_V2
+     The resource object presented to the S1 optimizer has already had enabled S2 hard
+     reserves removed. What remains is spendable surplus, not protected rollover stock.
+     Value that surplus by replacement effort *and* by how constrained its future use is.
+     Essence is most aggressively discounted because Skills cannot exceed Character level;
+     Sand/Treats are also progression-gated. Ore retains full opportunity value because Gear
+     has the longest useful runway. Preserve Ore adds a bounded premium rather than a veto. */
+  const SURPLUS_ACQUISITION_WEIGHTS={ore:1.00,essence:0.10,sand:0.35,treat:0.35};
+  const ORE_PRESERVE_PREMIUM=0.50;
   function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){
     const map=resources?.yields?.map||cfg.map||{};
     const horizon=Math.max(24,Number(resources?.cartHours)||24);
@@ -3161,7 +3169,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const essenceHours=safeHours(costs.essence,rates.essence);
     const sandHours=safeHours(costs.sand,rates.sand);
     const treatHours=safeHours(costs.treat,rates.treat);
-    const hours=oreHours+essenceHours+sandHours+treatHours;
+    const hours=
+      oreHours*SURPLUS_ACQUISITION_WEIGHTS.ore+
+      essenceHours*SURPLUS_ACQUISITION_WEIGHTS.essence+
+      sandHours*SURPLUS_ACQUISITION_WEIGHTS.sand+
+      treatHours*SURPLUS_ACQUISITION_WEIGHTS.treat;
     return {hours,oreHours,essenceHours,sandHours,treatHours,treatFallback:enteredTreatRate<=0&&fallbackTreatRate>0};
   }
   function candidateResourceMetric(candidate){
