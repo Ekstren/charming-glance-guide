@@ -1,0 +1,53 @@
+name: Apply Realm tool auto-aging
+
+on:
+  push:
+    paths:
+      - '.github/patch-auto-age-realm-tools.py'
+      - '.github/workflows/apply-auto-age-realm-tools.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply Realm tool auto-aging
+        run: python .github/patch-auto-age-realm-tools.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('no inline script found')
+          Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site-inline.js
+      - name: Verify Realm tool aging
+        run: |
+          grep -q 'AUTO_AGE_REALM_TOOLS_V1' index.html
+          grep -q "\['hammerCurrent','ore'\]" index.html
+          grep -q "\['knucklesCurrent','essence'\]" index.html
+          grep -q "\['shovelCurrent','sand'\]" index.html
+          grep -q 'elapsedRealmResets\*realmDailyValue(key)\*REALM_RUNS_PER_REFRESH' index.html
+          grep -q 'elapsedResourceHours>0 || elapsedExpHours>0 || elapsedRealmResets>0' index.html
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Auto-add planned Realm tools after resets'
+          git push origin main
