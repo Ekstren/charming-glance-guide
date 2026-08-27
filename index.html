@@ -3786,7 +3786,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const remainingTools=Math.max(0,left+reserveRuns);
     const lines=[];
     if(totalRuns>0){
-      lines.push(`<div class="toolSimpleLine"><i>Used:</i><b>${fmt(planRuns)}${planRuns>0&&planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
+      lines.push(`<div class="toolSimpleLine"><i>Use:</i><b>${fmt(planRuns)}${planRuns>0&&planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
       lines.push(`<div class="toolSimpleLine"><i>Remaining:</i><b>${fmt(remainingTools)}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
     }
     if(missing>0){
