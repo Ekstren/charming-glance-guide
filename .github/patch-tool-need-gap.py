@@ -2,32 +2,12 @@ from pathlib import Path
 
 path = Path('index.html')
 text = path.read_text(encoding='utf-8')
-marker = 'TOOL_ACTION_COLORS_V16'
+marker = 'TOOL_ACTION_COLORS_V17'
 if marker in text:
-    print('Realm Use/Need/Remaining colors already applied.')
+    print('Realm action row colors already fully applied.')
     raise SystemExit(0)
 
-# Semantic Realm action colors:
-# Use = informational blue/cyan, Need = warning red, Remaining = positive green.
-old_use = r'''      lines.push(`<div class="toolSimpleLine"><i>Use:</i><b>${fmt(planRuns)}${planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
-'''
-new_use = r'''      lines.push(`<div class="toolSimpleLine toolUseLine"><i>Use:</i><b>${fmt(planRuns)}${planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
-'''
-if text.count(old_use) != 1:
-    raise SystemExit(f'Expected one Realm Use display line, found {text.count(old_use)}')
-text = text.replace(old_use, new_use, 1)
-
-old_css = r'''/* TOOL_NEED_COLOR_V15: keep the entire Need row red, including the ≈ resource estimate;
-   render the entire Remaining row green, including its reserve note. */
-.planCosts small.toolBalance .toolNeedLine,
-.planCosts small.toolBalance .toolNeedLine i,
-.planCosts small.toolBalance .toolNeedLine b,
-.planCosts small.toolBalance .toolNeedLine em{color:var(--status-negative,var(--red))!important}
-.planCosts small.toolBalance .toolRemainingLine,
-.planCosts small.toolBalance .toolRemainingLine i,
-.planCosts small.toolBalance .toolRemainingLine b,
-.planCosts small.toolBalance .toolRemainingLine em{color:var(--status-positive,var(--green))!important}'''
-new_css = r'''/* TOOL_ACTION_COLORS_V16: semantic Realm action colors.
+old_css = r'''/* TOOL_ACTION_COLORS_V16: semantic Realm action colors.
    Use = informational blue/cyan; Need = red; Remaining = green. Keep the whole row consistent. */
 .planCosts small.toolBalance .toolUseLine,
 .planCosts small.toolBalance .toolUseLine i,
@@ -41,9 +21,27 @@ new_css = r'''/* TOOL_ACTION_COLORS_V16: semantic Realm action colors.
 .planCosts small.toolBalance .toolRemainingLine i,
 .planCosts small.toolBalance .toolRemainingLine b,
 .planCosts small.toolBalance .toolRemainingLine em{color:var(--status-positive,var(--green))!important}'''
+
+new_css = r'''/* TOOL_ACTION_COLORS_V17: semantic Realm action colors with enough specificity to
+   override the older per-element helper styles. Every character on each row shares its state color. */
+:root{--realm-use:#2f87aa}
+:root[data-theme="dark"]{--realm-use:#6ec8e8}
+.planCosts small.toolBalance .toolSimpleLine.toolUseLine,
+.planCosts small.toolBalance .toolSimpleLine.toolUseLine i,
+.planCosts small.toolBalance .toolSimpleLine.toolUseLine b,
+.planCosts small.toolBalance .toolSimpleLine.toolUseLine b em{color:var(--realm-use)!important}
+.planCosts small.toolBalance .toolSimpleLine.toolNeedLine,
+.planCosts small.toolBalance .toolSimpleLine.toolNeedLine i,
+.planCosts small.toolBalance .toolSimpleLine.toolNeedLine b,
+.planCosts small.toolBalance .toolSimpleLine.toolNeedLine b em{color:var(--status-negative,var(--red))!important}
+.planCosts small.toolBalance .toolSimpleLine.toolRemainingLine,
+.planCosts small.toolBalance .toolSimpleLine.toolRemainingLine i,
+.planCosts small.toolBalance .toolSimpleLine.toolRemainingLine b,
+.planCosts small.toolBalance .toolSimpleLine.toolRemainingLine b em{color:var(--status-positive,var(--green))!important}'''
+
 if text.count(old_css) != 1:
-    raise SystemExit(f'Expected one Realm V15 color block, found {text.count(old_css)}')
+    raise SystemExit(f'Expected one Realm V16 color block, found {text.count(old_css)}')
 text = text.replace(old_css, new_css, 1)
 
 path.write_text(text, encoding='utf-8')
-print('Applied blue Use, red Need, and green Remaining Realm colors.')
+print('Applied full-row cyan Use, red Need, and green Remaining colors.')
