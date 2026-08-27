@@ -1818,6 +1818,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 .calcGrid .findMaxCell small strong{color:var(--green)}
 @media(max-width:700px){.calcGrid .findMaxCell button{text-align:center}}
 </style>
+<style id="max-helper-text-v2">/* MAX_HELPER_TEXT_V2 */ .findMaxCell #maxAchievableStatus:empty{display:none}</style>
 </head>
 <body>
 <main>
@@ -1912,7 +1913,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
-          <div class="findMaxCell"><span>Maximum target</span><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus">Checks your selected daily Realm plan and the hard Realm-cap ceiling.</small></div>
+          <div class="findMaxCell"><span>Maximum target</span><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus"></small></div>
         </div>
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
         <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
