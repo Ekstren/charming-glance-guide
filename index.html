@@ -2093,8 +2093,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     });
     const note=$('optimizerModeNote');
     if(note) note.textContent=mode==='preserve'
-      ? 'Joint Cart + shared-Stamina efficiency with funded-cap coverage, plus a +50% Ore premium for Gear runway.'
-      : 'Joint Cart + shared-Stamina efficiency; capped resources get cheaper as their reachable cap becomes funded.';
+      ? 'Raw-first gates: reserve S2 tools first, spend safe capped raw before Realm tools, then apply a +50% Ore premium for Gear runway.'
+      : 'Raw-first gates: reserve S2 tools first, spend fully funded capped raw before Realm tools, then minimize replacement effort.';
   }
   document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
     const input=$('optimizerMode');
@@ -3415,7 +3415,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
      category is already comfortably funded, its value falls toward a deferred-use floor.
      Ore remains the 1.00 baseline because Gear has the broadest runway. Preserve Ore applies
      a bounded +50% Ore premium on top of the same joint model. */
-  const SURPLUS_ACQUISITION_FLOORS={ore:1.00,essence:0.10,sand:0.35,treat:0.35};
+  /* GATED_RAW_FIRST_OPTIMIZER_V1: once a capped category's remaining S1 headroom is fully funded by SAFE RAW, spending that raw on its own score progression has zero additional S1 opportunity cost. */
+  const SURPLUS_ACQUISITION_FLOORS={ore:1.00,essence:0.00,sand:0.00,treat:0.00};
   const ORE_PRESERVE_PREMIUM=0.50;
 
   /* OPTIMIZER_AUDIT_V3 · TOOLS_FIRST_S2_RESERVES_V1
@@ -3437,6 +3438,21 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const rawHeld=Math.min(raw,rawNeed);
     const shortfall=Math.max(0,rawNeed-rawHeld);
     return {target,toolRuns,toolValue,rawHeld,shortfall,reservePerRun,toolsAvailable:tools};
+  }
+
+  function rawOnlyAcquisitionSupply(key,resources,cfg=activeCalcConfig()){
+    const raw=Math.max(0,Number(resources?.[key])||0);
+    const reserve=Math.max(0,reserveTargetFor(key,resources,cfg));
+    if(key==='treat') return Math.max(0,raw-reserve);
+    if(key==='essence'||key==='sand'){
+      if(reserve<=0) return raw;
+      const split=toolsFirstReserveSplit(key,reserve,raw,resources,cfg);
+      // Existing/planned Realm tools cover the enabled S2 reserve first. Only the raw
+      // remainder is withheld from the current-season raw-only optimizer.
+      if(split.shortfall>0.5) return 0;
+      return Math.max(0,raw-split.rawHeld);
+    }
+    return raw;
   }
 
   function reserveAdjustedAcquisitionSupply(key,resources,cfg=activeCalcConfig()){
@@ -3689,31 +3705,57 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return null;
   }
 
+  function candidateRealmStage(candidate){
+    const realms=['ore','essence','sand'].map(k=>candidate?.realm?.[k]).filter(Boolean);
+    // A Treat shortage is a hard resource failure because there is no Fantomon-Treat
+    // Material Realm tool. Diagnostics therefore rank it after all actually fundable stages.
+    if(Math.max(0,Number(candidate?.treatShortfall)||0)>0.5) return 3;
+    if(realms.some(x=>Math.max(0,Number(x?.packs)||0)>0 || Math.max(0,Number(x?.paidRunsUsed)||0)>0)) return 2;
+    const usesS1Tools=realms.some(x=>{
+      const planRuns=Number.isFinite(Number(x?.planRuns)) ? Number(x.planRuns) : Number(x?.runsUsed)||0;
+      return planRuns>0;
+    });
+    return usesS1Tools?1:0;
+  }
+
   function betterFeasibleCandidate(candidate,best){
     if(!best) return true;
-    // Buying more Realm refreshes is the last resort. Dawnium/unknown-price penalty wins first.
-    if(candidate.dawniumCost<best.dawniumCost-1e-9) return true;
-    if(Math.abs(candidate.dawniumCost-best.dawniumCost)>=1e-9) return false;
 
-    // Inside the same purchase-cost tier, brute-force safely spendable raw resources before
-    // consuming additional Realm entries. Only once tool burden is tied do we optimize the
-    // long-run replacement-effort model.
-    const toolCmp=betterToolBurden(candidate,best);
-    if(toolCmp!==null) return toolCmp;
+    // STRICT GATES: raw-only beats existing Realm-tool use; existing Realm-tool use beats
+    // buying additional refreshes. Reserved banked tools are not counted as S1 tool usage.
+    const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
+    if(cStage<bStage) return true;
+    if(cStage>bStage) return false;
 
+    // Paid Realm purchases are the final fallback. Inside that stage, Dawnium cost wins.
+    if(cStage===2){
+      if(candidate.dawniumCost<best.dawniumCost-1e-9) return true;
+      if(candidate.dawniumCost>best.dawniumCost+1e-9) return false;
+    }
+
+    // Within a tool-using stage, consume the fewest actual S1 Realm entries before comparing
+    // raw economics. This never unlocks a reserved tool: reserveAwareRealmTopupFor already
+    // allocates those entries to S2 before exposing any S1 plan runs.
+    if(cStage>=1){
+      const toolCmp=betterToolBurden(candidate,best);
+      if(toolCmp!==null) return toolCmp;
+    }
+
+    // Raw-stage economics: fully funded capped raw (Skills / Relics / Fantomons) is allowed
+    // to replace open-ended Gear/Ore. Preserve Ore applies the existing +50% Ore premium.
     if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
       const cm=candidateResourceMetric(candidate),bm=candidateResourceMetric(best);
       if(cm<bm-1e-9) return true;
       if(cm>bm+1e-9) return false;
       if(optimizerMode()==='preserve'){
+        if((candidate.oreCost||0)<(best.oreCost||0)) return true;
+        if((candidate.oreCost||0)>(best.oreCost||0)) return false;
         if((candidate.bankedHammersUsed||0)<(best.bankedHammersUsed||0)) return true;
         if((candidate.bankedHammersUsed||0)>(best.bankedHammersUsed||0)) return false;
       }
     }
 
-    if(candidate.realmPacks<best.realmPacks) return true;
-    if(candidate.realmPacks!==best.realmPacks) return false;
-
+    // Do not spend material just for meaningless overscore once strategic cost is tied.
     return candidate.overshoot<best.overshoot-1e-9||
       (Math.abs(candidate.overshoot-best.overshoot)<1e-9&&candidate.maxShare<best.maxShare-1e-9)||
       (Math.abs(candidate.overshoot-best.overshoot)<1e-9&&Math.abs(candidate.maxShare-best.maxShare)<1e-9&&candidate.sumShare<best.sumShare-1e-9);
@@ -3728,21 +3770,27 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(candidate.remainingAfterMax<best.remainingAfterMax-0.5) return true;
     if(Math.abs(candidate.remainingAfterMax-best.remainingAfterMax)>0.5) return false;
 
-    const toolCmp=betterToolBurden(candidate,best);
-    if(toolCmp!==null) return toolCmp;
+    const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
+    if(cStage<bStage) return true;
+    if(cStage>bStage) return false;
+    if(cStage===2){
+      if(candidate.dawniumCost<best.dawniumCost-1e-9) return true;
+      if(candidate.dawniumCost>best.dawniumCost+1e-9) return false;
+    }
+    if(cStage>=1){
+      const toolCmp=betterToolBurden(candidate,best);
+      if(toolCmp!==null) return toolCmp;
+    }
 
     if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
       const cm=candidateResourceMetric(candidate),bm=candidateResourceMetric(best);
       if(cm<bm-1e-9) return true;
       if(cm>bm+1e-9) return false;
       if(optimizerMode()==='preserve'){
-        if((candidate.bankedHammersUsed||0)<(best.bankedHammersUsed||0)) return true;
-        if((candidate.bankedHammersUsed||0)>(best.bankedHammersUsed||0)) return false;
+        if((candidate.oreCost||0)<(best.oreCost||0)) return true;
+        if((candidate.oreCost||0)>(best.oreCost||0)) return false;
       }
     }
-
-    if(candidate.realmPacks<best.realmPacks) return true;
-    if(candidate.realmPacks!==best.realmPacks) return false;
     return candidate.overshoot<best.overshoot;
   }
 
@@ -3757,10 +3805,12 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     // for that category. Spendable Realm tools count as material-equivalent supply; only tools needed
     // for a raw-material reserve gap are excluded by realmInventoryFor().
     resources.acquisitionHeadroomCosts=headroomCosts||{};
+    // Gate 2 is RAW ONLY. Realm tools do not make a capped category look overfunded here;
+    // they remain banked until no raw-only score plan can reach the requested target.
     resources.acquisitionSupplyEquiv={
-      essence:reserveAdjustedAcquisitionSupply('essence',resources,cfg),
-      sand:reserveAdjustedAcquisitionSupply('sand',resources,cfg),
-      treat:reserveAdjustedAcquisitionSupply('treat',resources,cfg)
+      essence:rawOnlyAcquisitionSupply('essence',resources,cfg),
+      sand:rawOnlyAcquisitionSupply('sand',resources,cfg),
+      treat:rawOnlyAcquisitionSupply('treat',resources,cfg)
     };
 
     if(baseScore>=desired){
@@ -4200,7 +4250,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           treatReserveHint.innerHTML='<b>S2 Fantomon Treat reserve:</b> off · all projected Treats are available to the S1 optimizer.';
         }else{
           const short=tr.shortfall>0?` · reserve still short ${fmt(tr.shortfall)} basic-equivalent`:'';
-          treatReserveHint.innerHTML=`<b>S2 Fantomon Treat reserve:</b> ${fmt(tr.target)} basic-equivalent protected for all 4 Fantomons Lv.${tr.fromLevel} → Lv.${tr.toLevel} · ≈${fmtCompact(tr.expEquivalent)} Fantomon EXP${short}. Treats are used by the S1 plan first; whatever remains must still cover this S2 reserve target.`;
+          treatReserveHint.innerHTML=`<b>S2 Fantomon Treat reserve:</b> ${fmt(tr.target)} basic-equivalent protected for all 4 Fantomons Lv.${tr.fromLevel} → Lv.${tr.toLevel} · ≈${fmtCompact(tr.expEquivalent)} Fantomon EXP${short}. Treats follow the same raw-first gate, but there is no Treat Realm tool, so this enabled reserve remains raw and untouchable.`;
         }
       }else treatReserveHint.hidden=true;
     }
