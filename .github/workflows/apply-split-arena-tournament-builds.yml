@@ -1,0 +1,58 @@
+name: Apply Arena and Tournament build split
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-split-arena-tournament-builds.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Arena Tournament split
+        run: python .github/patch-split-arena-tournament-builds.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          for name in ['index.html','.github/build-fantomons-inject.html']:
+              s=Path(name).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+              p=Path('/tmp/'+Path(name).name+'.js')
+              p.write_text('\n'.join(scripts),encoding='utf-8')
+              subprocess.run(['node','--check',str(p)],check=True)
+              print('validated',name)
+          PY
+      - name: Verify Arena and Tournament coverage
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for name in ['index.html','.github/build-fantomons-inject.html']:
+              s=Path(name).read_text(encoding='utf-8')
+              assert 'BUILD_ARENA_TOURNAMENT_SPLIT_V1' in s
+              assert s.count("role('Arena'") >= 8, (name,s.count("role('Arena'"))
+              assert s.count("role('Tournament'") >= 8, (name,s.count("role('Tournament'"))
+              assert "role('Arena','Solo PvP / anti-Guardian pressure'" in s
+              assert "role('Tournament','Taunt / ally protection'" in s
+              assert "role('Arena','Wind control / solo tempo'" in s
+              assert "role('Tournament','Team support / carry protection'" in s
+              assert "if(t.startsWith('arena')) return 'Arena';" in s
+              assert "if(t.startsWith('tournament')) return 'Tournament';" in s
+              print('Arena/Tournament coverage verified',name)
+          PY
+      - name: Commit
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-fantomons-inject.html
+          git commit -m 'Split PvP builds into Arena and Tournament'
+          git push
