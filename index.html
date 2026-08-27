@@ -3565,18 +3565,19 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.textContent=''; el.innerHTML=''; el.hidden=true;
     el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
   }
-  /* RAW_REMAINING_DISPLAY_V1: visible balance is only raw/material-equivalent left
-     after the S1 upgrade spend. Reserve bookkeeping stays internal. */
-  function setRawRemaining(id,cost,available,unitLabel='raw'){
+  /* RAW_REMAINING_DISPLAY_V1: visible balance is only material-equivalent left
+     after the S1 upgrade spend. Reserve bookkeeping stays internal.
+     RAW_REMAINING_NO_RAW_LABEL_V2 */
+  function setRawRemaining(id,cost,available,unitLabel=''){
     const el=$(id); if(!el) return;
     el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
     el.classList.add('rawRemaining');
     const left=Math.max(0,Math.floor((Number(available)||0)-(Number(cost)||0)+1e-9));
     el.hidden=false;
-    el.textContent=`${fmt(left)} ${unitLabel} left`;
+    el.textContent=`${fmt(left)}${unitLabel?` ${unitLabel}`:''} left`;
   }
-  function setEssenceBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.essence,'raw'); }
-  function setSandBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.sand,'raw'); }
+  function setEssenceBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.essence); }
+  function setSandBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.sand); }
   function setTreatBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.treat,'basic-eq.'); }
 
   function setBalance(id, cost, budget, yieldVal, itemName){
@@ -4004,7 +4005,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       if($('grace12').checked) brief.push('final 12h excluded');
       if(gearLocked) brief.push('Gear locked');
       $('optimizerSummary').textContent=brief.join(' · ');
-      setRawRemaining('oreBalance',plan.oreCost,resources.ore,'raw');
+      setRawRemaining('oreBalance',plan.oreCost,resources.ore);
       setEssenceBalance('essenceBalance',plan.essenceCost,{...resources,planRealmProvided:plan.realm?.essence?.planProvided||0});
       setSandBalance('sandBalance',plan.sandCost,{...resources,planRealmProvided:plan.realm?.sand?.planProvided||0});
       setTreatBalance('treatBalance',plan.treatCost,resources);
