@@ -3565,16 +3565,19 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.textContent=''; el.innerHTML=''; el.hidden=true;
     el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
   }
-  function setEssenceBalance(id,cost,resources){ hidePlanBalance(id); }
-  function setSandBalance(id,cost,resources){ hidePlanBalance(id); }
-  function setTreatBalance(id,cost,resources){
-    const totalNeed=Math.max(0,Number(cost)||0)+Math.max(0,Number(resources?.s2FantomonTreatReserve?.target)||0);
-    const available=Math.max(0,Number(resources?.treat)||0);
+  /* RAW_REMAINING_DISPLAY_V1: visible balance is only raw/material-equivalent left
+     after the S1 upgrade spend. Reserve bookkeeping stays internal. */
+  function setRawRemaining(id,cost,available,unitLabel='raw'){
     const el=$(id); if(!el) return;
-    if(totalNeed<=available+0.5){ hidePlanBalance(id); return; }
-    const short=Math.ceil(totalNeed-available);
-    el.hidden=false; el.textContent=`${fmt(short)} Treats short`; el.classList.add('shortfallCount');
+    el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
+    el.classList.add('rawRemaining');
+    const left=Math.max(0,Math.floor((Number(available)||0)-(Number(cost)||0)+1e-9));
+    el.hidden=false;
+    el.textContent=`${fmt(left)} ${unitLabel} left`;
   }
+  function setEssenceBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.essence,'raw'); }
+  function setSandBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.sand,'raw'); }
+  function setTreatBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.treat,'basic-eq.'); }
 
   function setBalance(id, cost, budget, yieldVal, itemName){
     const el=$(id); if(!el) return;
@@ -4001,8 +4004,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       if($('grace12').checked) brief.push('final 12h excluded');
       if(gearLocked) brief.push('Gear locked');
       $('optimizerSummary').textContent=brief.join(' · ');
-      const oreBudgetWithRealm=resources.ore+(plan.realm?.ore?.provided||0);
-      setBalance('oreBalance',plan.oreCost,oreBudgetWithRealm,resources.yields.orePerHammer,'Hammers');
+      setRawRemaining('oreBalance',plan.oreCost,resources.ore,'raw');
       setEssenceBalance('essenceBalance',plan.essenceCost,{...resources,planRealmProvided:plan.realm?.essence?.planProvided||0});
       setSandBalance('sandBalance',plan.sandCost,{...resources,planRealmProvided:plan.realm?.sand?.planProvided||0});
       setTreatBalance('treatBalance',plan.treatCost,resources);
