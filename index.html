@@ -3645,11 +3645,13 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 
     if(totalRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
     const lines=[];
+    // TOOL_ACTION_LABELS_V8: short action labels. Spend = consume now for S1;
+    // Hold = keep banked to satisfy the enabled S2 reserve.
     if(planRuns>0){
-      lines.push(`<span class="toolUsageRow toolUsedLine"><i>Use</i><b>${fmt(planRuns)} ${label}${planGained>0?` ≈ ${fmtCompact(planGained)} ${materialName}`:''}</b></span>`);
+      lines.push(`<span class="toolUsageRow toolUsedLine"><i>Spend</i><b>${fmt(planRuns)} ${label}${planGained>0?` ≈ ${fmtCompact(planGained)} ${materialName}`:''}</b></span>`);
     }
     if(reserveRuns>0){
-      lines.push(`<span class="toolUsageRow toolReserveLine"><i>S2 reserve</i><b>Hold ${fmt(reserveRuns)} ${label}${reserveValue>0?` ≈ ${fmtCompact(reserveValue)} ${materialName}`:''}</b></span>`);
+      lines.push(`<span class="toolUsageRow toolReserveLine"><i>Hold</i><b>${fmt(reserveRuns)} ${label}${reserveValue>0?` ≈ ${fmtCompact(reserveValue)} ${materialName}`:''}</b></span>`);
     }
     if(totalRuns>0){
       lines.push(`<span class="toolUsageRow toolRemainingLine"><i>Left</i><b>${fmt(left)} ${label} ≈ ${leftValue>0?`${fmtCompact(leftValue)} ${materialName}`:'0'}</b></span>`);
