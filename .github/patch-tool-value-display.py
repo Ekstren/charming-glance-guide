@@ -42,8 +42,48 @@ if 'FANTOMON_TREAT_CARD_COMPACT_V1' not in text:
     text = text.replace(old_card, new_card, 1)
     changed = True
 
+# Show the projected RAW inventory left after the recommended S1 upgrade spend.
+# S2 reserve accounting remains hidden and is handled separately by the optimizer/tool gap logic.
+if 'RAW_REMAINING_DISPLAY_V1' not in text:
+    old_balance = r'''  function setEssenceBalance(id,cost,resources){ hidePlanBalance(id); }
+  function setSandBalance(id,cost,resources){ hidePlanBalance(id); }
+  function setTreatBalance(id,cost,resources){
+    const totalNeed=Math.max(0,Number(cost)||0)+Math.max(0,Number(resources?.s2FantomonTreatReserve?.target)||0);
+    const available=Math.max(0,Number(resources?.treat)||0);
+    const el=$(id); if(!el) return;
+    if(totalNeed<=available+0.5){ hidePlanBalance(id); return; }
+    const short=Math.ceil(totalNeed-available);
+    el.hidden=false; el.textContent=`${fmt(short)} Treats short`; el.classList.add('shortfallCount');
+  }
+'''
+    new_balance = r'''  /* RAW_REMAINING_DISPLAY_V1: visible balance is only raw/material-equivalent left
+     after the S1 upgrade spend. Reserve bookkeeping stays internal. */
+  function setRawRemaining(id,cost,available,unitLabel='raw'){
+    const el=$(id); if(!el) return;
+    el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
+    el.classList.add('rawRemaining');
+    const left=Math.max(0,Math.floor((Number(available)||0)-(Number(cost)||0)+1e-9));
+    el.hidden=false;
+    el.textContent=`${fmt(left)} ${unitLabel} left`;
+  }
+  function setEssenceBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.essence,'raw'); }
+  function setSandBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.sand,'raw'); }
+  function setTreatBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.treat,'basic-eq.'); }
+'''
+    if old_balance not in text:
+        raise SystemExit('hidden balance function block not found')
+    text = text.replace(old_balance, new_balance, 1)
+
+    old_ore = r'''      const oreBudgetWithRealm=resources.ore+(plan.realm?.ore?.provided||0);
+      setBalance('oreBalance',plan.oreCost,oreBudgetWithRealm,resources.yields.orePerHammer,'Hammers');'''
+    new_ore = r'''      setRawRemaining('oreBalance',plan.oreCost,resources.ore,'raw');'''
+    if old_ore not in text:
+        raise SystemExit('feasible Ore balance render block not found')
+    text = text.replace(old_ore, new_ore, 1)
+    changed = True
+
 if changed:
     path.write_text(text, encoding='utf-8')
-    print('Applied consistent Realm tool values and compact Fantomon Treat card.')
+    print('Applied tool display, compact Fantomon card, and raw remaining balances.')
 else:
-    print('Tool value display and Fantomon Treat card already current.')
+    print('Tool display, Fantomon card, and raw remaining balances already current.')
