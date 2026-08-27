@@ -1859,6 +1859,20 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 @media(max-width:700px){.compactProgression .currentProgressGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.compactProgression .gearFields{grid-template-columns:repeat(5,minmax(0,1fr))}.compactProgression .calcGrid input{font-size:12px;padding:6px}}
 @media(max-width:560px){.compactProgression .currentProgressGrid{grid-template-columns:1fr 1fr}.compactProgression .gearFields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+
+<style id="collapsible-character-materials-v1">
+/* COLLAPSIBLE_CHARACTER_MATERIALS_V1 */
+.characterPanel{padding:0!important;overflow:hidden}
+.characterPanelBody{padding:13px 16px 16px!important}
+.characterPanel>summary.characterSummary{padding:12px 16px;min-height:44px}
+.characterPanel>summary.characterSummary span,.materialPlanner>summary.materialsSummary .materialsSummaryTitle{font-size:13px;font-weight:850;color:var(--ink);letter-spacing:-.01em}
+.collapsibleCard>summary{position:relative}
+.collapsibleCard>summary::after{content:'+';flex:0 0 auto;color:var(--muted);font-size:15px;font-weight:900;line-height:1;margin-left:8px}
+.collapsibleCard[open]>summary::after{content:'−'}
+.materialPlanner>summary.materialsSummary{min-height:54px;padding:11px 16px}
+.materialPlanner>summary.materialsSummary .materialsSummaryRight{margin-left:auto}
+@media(max-width:760px){.characterPanelBody{padding:12px 14px 14px!important}.characterPanel>summary.characterSummary,.materialPlanner>summary.materialsSummary{padding:11px 14px}}
+</style>
 </head>
 <body>
 <main>
@@ -1945,7 +1959,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   <div class="calcSeasonNotice" id="calcSeasonNotice" hidden><div><strong id="calcSeasonNoticeTitle">Season rollover</strong><p id="calcSeasonNoticeText">—</p></div><button id="confirmSeasonSnapshot" type="button">Use entries as new snapshot</button></div>
   <div class="calculatorLayout">
     <div class="calcInputs">
-      <div class="calcPanel">
+      <details id="characterDetails" class="calcPanel currentLevelsPanel characterPanel collapsibleCard" open>
+        <summary class="characterSummary"><span>Character</span></summary>
+        <div class="currentLevelsBody characterPanelBody">
         <div class="calcGrid">
           <label>Target Primostars<input id="targetStars" type="number" value="200"></label>
           <label><span id="historicalStarsLabel">Historical stars</span><input id="historicalStars" type="number" value="0"></label>
@@ -2003,11 +2019,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         <div class="seasonRulesHint" id="s2SkillReserveHint">S2 Skill Essence reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2RelicReserveHint">S2 Relic Sand reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2TreatReserveHint">S2 Fantomon Treat reserve: calculating…</div>
-        
-      </div>
+        </div>
+      </details>
 
-      <details id="materialsDetails" class="calcPanel currentLevelsPanel materialPlanner">
-        <summary class="materialsSummary"><span class="materialsSummaryTitle">Edit saved materials and Cart rates</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
+      <details id="materialsDetails" class="calcPanel currentLevelsPanel materialPlanner collapsibleCard">
+        <summary class="materialsSummary"><span class="materialsSummaryTitle">Materials</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
         <div class="currentLevelsBody">
           <div class="resourceInputs resourceInputsFour resourceCards">
             <div class="resourceCard"><div class="resourceCardHead"><strong>Raw Ore</strong><small id="oreProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="oreCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="oreRate" type="number" value="0"></label></div></div>
@@ -2092,7 +2108,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   'use strict';
 
   const STORAGE_KEY = 'charmingGlanceCloneV1';
-  const PANEL_OPEN_IDS = ['materialsDetails'];
+  const PANEL_OPEN_IDS = ['characterDetails','materialsDetails'];
   const S1_END = new Date('2026-08-30T06:00:00-07:00');
   const S2_END = new Date('2026-11-05T06:00:00-08:00');
   const SERVER_START = new Date('2026-07-15T06:00:00-07:00');
@@ -2478,7 +2494,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       PANEL_OPEN_IDS.forEach(id => {
         const panel=$(id);
         if(!panel) return;
-        panel.open = state.panelOpen && typeof state.panelOpen==='object' && state.panelOpen[id]===true;
+        const hasSavedPanelState=state.panelOpen && typeof state.panelOpen==='object' && Object.prototype.hasOwnProperty.call(state.panelOpen,id);
+        panel.open = hasSavedPanelState ? state.panelOpen[id]===true : id==='characterDetails';
       });
       if(Number.isFinite(Number(state.snapshotAt)) && Number(state.snapshotAt)>0){
         snapshotAtMs = Number(state.snapshotAt);
