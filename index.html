@@ -2083,11 +2083,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
             </div>
             <div class="realmDailyPlanRow">
               <div class="realmDailyCustom">
-                <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 10/day per Realm</small></span>
+                <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 20/day per Realm</small></span>
                 <div class="realmDailyInputs">
-                  <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="10" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
-                  <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="10" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
-                  <label>Sand Realm refreshes / day<input id="realmDailySand" type="number" min="0" max="10" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
+                  <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
+                  <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
+                  <label>Sand Realm refreshes / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
                 </div>
               </div>
               <div class="realmPlanSummary"><span>Projected daily gain</span><b id="realmDailyGain">+20 H · +20 K · +20 S / reset</b><small id="realmDaysRemaining">—</small></div>
@@ -2136,7 +2136,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 36-hour EXP reserve removes natural Bed hours only; reset boost hours inside that reserve still count.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. When the 12-hour finishing window is enabled, newly unlocked Skill/Relic/Fantomon caps must be available by that cutoff; final Character EXP can still add score afterward. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
-<p><b>Material Realm buys:</b> one paid refresh grants <b>5 actual Realm entries/tools</b>. Current public guides and community planners consistently document a maximum of <b>10 paid refresh purchases per Realm per server day</b>, with the full Dawnium curve 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. No verified 11–20 purchase tier was found, so the planner no longer invents extra capacity beyond 10. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
+<p><b>Material Realm buys:</b> Each paid refresh grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 refreshes per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers refreshes 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Refreshes 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
@@ -2218,13 +2218,13 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   function realmDailyValue(key){
     const ids={ore:'realmDailyOre',essence:'realmDailyEssence',sand:'realmDailySand'};
     const id=ids[key];
-    return clamp(Math.floor(n(id,4)),0,10);
+    return clamp(Math.floor(n(id,4)),0,MAX_REALM_REFRESHES_PER_DAY);
   }
   function applyRecommendedRealmRefreshes(button){
     const values={
-      realmDailyOre:clamp(Math.floor(Number(button?.dataset?.ore)||0),0,10),
-      realmDailyEssence:clamp(Math.floor(Number(button?.dataset?.essence)||0),0,10),
-      realmDailySand:clamp(Math.floor(Number(button?.dataset?.sand)||0),0,10)
+      realmDailyOre:clamp(Math.floor(Number(button?.dataset?.ore)||0),0,MAX_REALM_REFRESHES_PER_DAY),
+      realmDailyEssence:clamp(Math.floor(Number(button?.dataset?.essence)||0),0,MAX_REALM_REFRESHES_PER_DAY),
+      realmDailySand:clamp(Math.floor(Number(button?.dataset?.sand)||0),0,MAX_REALM_REFRESHES_PER_DAY)
     };
     Object.entries(values).forEach(([id,value])=>{
       const el=$(id);
@@ -3234,10 +3234,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation};
   }
 
-  // Verified public/community curve: 10 paid Material Realm refresh purchases per Realm/day.
-  // Each purchase grants 5 Realm tools/entries.
+  // REALM_20_REFRESH_TOOL_COUNT_V1
+  // One refresh grants 5 Realm tools/entries. The first 10 Dawnium prices are known;
+  // refreshes 11–20 remain usable capacity but their Dawnium prices are intentionally unknown.
   const MATERIAL_REALM_BUY_COSTS = [60,60,100,100,150,150,200,200,250,300];
-  const MAX_REALM_REFRESHES_PER_DAY=MATERIAL_REALM_BUY_COSTS.length;
+  const MAX_REALM_REFRESHES_PER_DAY=20;
   const REALM_RUNS_PER_REFRESH=5;
   const REALM_CHOICE_CACHE=new Map();
   function realmPurchaseChoices(days,baselinePerDay){
