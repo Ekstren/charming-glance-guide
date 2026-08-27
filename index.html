@@ -1741,9 +1741,16 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   font-style:normal!important;
   font-weight:750!important;
 }
+/* TOOL_NEED_COLOR_V15: keep the entire Need row red, including the ≈ resource estimate;
+   render the entire Remaining row green, including its reserve note. */
 .planCosts small.toolBalance .toolNeedLine,
 .planCosts small.toolBalance .toolNeedLine i,
-.planCosts small.toolBalance .toolNeedLine b{color:var(--status-negative,var(--red))!important}
+.planCosts small.toolBalance .toolNeedLine b,
+.planCosts small.toolBalance .toolNeedLine em{color:var(--status-negative,var(--red))!important}
+.planCosts small.toolBalance .toolRemainingLine,
+.planCosts small.toolBalance .toolRemainingLine i,
+.planCosts small.toolBalance .toolRemainingLine b,
+.planCosts small.toolBalance .toolRemainingLine em{color:var(--status-positive,var(--green))!important}
 @media(max-width:720px){
   .planCosts small.toolBalance,
   .planCosts small.toolBalance .toolSimpleLine,
@@ -3808,7 +3815,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Need:</i><b>${fmt(dailyGapRuns)} ${toolNeedLabel}${dailyGapValue>0?` <em>≈ ${fmtCompact(dailyGapValue)} ${materialName}</em>`:''}</b></div>`);
       }
       if(remainingTools>0){
-        lines.push(`<div class="toolSimpleLine"><i>Remaining:</i><b>${fmt(remainingTools)}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
+        lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
       }
     }
     if(missing>0){
