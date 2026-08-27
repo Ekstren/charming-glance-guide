@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 
-FILES=[Path('index.html'),Path('.github/build-fantomons-inject.html')]
+FILES=[Path('.github/build-fantomons-inject.html')]
 MARK='SAGE_TOURNAMENT_HYBRID_V1'
 
 ARCANIST="      role('Tournament','Hybrid team pressure / revive utility',['Mana Blast','Abyssal Hand','Radiant Restoration','Frenzy Totem'],['Resurrection','Shadow Vengeance','Shadow Erosion','Linked Misfortune'],'Tournament should not default to full healing: Mana Blast + Abyssal Hand provide Dark pressure, Erosion and Slow while Frenzy Totem buffs the team and Radiant Restoration gives one efficient group-heal slot.','PvP healing is heavily reduced. Only move toward the dedicated Healing card when your Healing Boost/SPD are genuinely built for it; otherwise keep Resurrection + damage/debuff utility.','Community hybrid PvP')"
@@ -35,9 +35,8 @@ for p in FILES:
         if pos<0:
             raise SystemExit(f'{cls} FANTO anchor missing in {p}')
         pos+=len(anchor)
-        if s.startswith('      Tournament:[',pos):
-            continue
-        s=s[:pos]+block+s[pos:]
+        if not s.startswith('      Tournament:[',pos):
+            s=s[:pos]+block+s[pos:]
 
     old="""    if(role==='Tournament'){
       if(cls==='Arcanist'||cls==='Dominator') return pools.Tournament||pools.Dungeon||pools.PvP||[];
@@ -50,10 +49,9 @@ for p in FILES:
         s=s.replace(old,new,1)
 
     marker='/* BUILD_ARENA_TOURNAMENT_SPLIT_V1 */'
-    if marker in s:
-        s=s.replace(marker,marker+'\n/* '+MARK+' */',1)
-    else:
+    if marker not in s:
         raise SystemExit(f'build split marker missing in {p}')
+    s=s.replace(marker,marker+'\n/* '+MARK+' */',1)
 
     p.write_text(s,encoding='utf-8')
     print('updated hybrid Tournament Sage builds in',p)
