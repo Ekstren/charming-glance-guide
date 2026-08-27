@@ -1,5 +1,6 @@
 name: Apply hybrid Sage Tournament builds
 
+# Applies the maintained Tournament hybrid defaults for Arcanist and Dominator.
 on:
   push:
     paths:
