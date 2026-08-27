@@ -1918,7 +1918,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <summary><span>How the optimizer decides</span><small>Raw first → saved Realm tools → extra Realm purchases</small></summary>
           <div class="optimizerExplainBody">
             <p><b>1 · Protect enabled Season 2 reserves.</b> Skill Essence and Chrono Sand reserves assign carried/projected Realm tools first, then hold raw material only for any reserve amount those tools cannot cover. Fantomon Treats have no Realm-tool conversion, so an enabled Treat reserve stays raw.</p>
-            <p><b>2 · Find the best raw-only score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score. It prefers resources that are already sufficient to fund their reachable Season 1 cap, so surplus Sand, Essence or Treats can replace Ore instead of being stranded. It also avoids paying for meaningless overscore when otherwise-equivalent routes exist.</p>
+            <p><b>2 · Find the best raw-only score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score. It prefers resources that are already sufficient to fund their reachable Season 1 cap, so surplus Sand, Essence or Treats can replace Ore instead of being stranded. It also avoids paying for meaningless overscore when otherwise-equivalent routes exist. If Treat Cart/hr is left at 0, non-surplus Treats are treated as scarce rather than inventing a replacement rate from your saved stock.</p>
             <p><b>3 · Use saved Realm tools only if raw cannot reach the target.</b> Reserved tools stay protected. Unreserved Hammers, Knuckles and Shovels become available only after every feasible raw-only route has been considered.</p>
             <p><b>4 · Buy more Realm refreshes only as the final fallback.</b> If the target still cannot be funded, the planner minimizes additional Realm purchases within the remaining daily capacity. If even the maximum remaining capacity is insufficient, it reports the actual material shortfall instead of lowering the target.</p>
             <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. <b>Gear Lock</b> removes new Gear levels from consideration. The optimizer otherwise uses one consistent acquisition-efficient, raw-first policy so the same inputs always produce the same resource strategy.</p>
@@ -2100,9 +2100,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return ['ore','auto','essence','sand'].includes(raw) ? raw : 'ore';
   };
   const staminaModeLabel = (mode = staminaMode()) => ({ore:'Ore',auto:'Auto',essence:'Skill Essence',sand:'Chrono Sand'})[mode] || 'Ore';
-  /* REMOVE_RESOURCE_STRATEGY_V1: one optimizer policy only — raw-first, acquisition-efficient. */
-  const optimizerMode = () => 'acquisition';
-  function updateOptimizerModeUI(){}
+  /* OPTIMIZER_CLEANUP_V5: one optimizer policy only — raw-first, acquisition-efficient. */
   const SAND_BLUE_EQ=5;
   function savedSandEquivalent(){
     return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ;
@@ -2969,9 +2967,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         : reserveAwareRealmTopupFor(key,costs[key],budget,sim,cfg,p);
     };
 
+    const topupStates=Object.fromEntries(keys.map(key=>[key,{base:topupFor(key,0),full:topupFor(key,total)}]));
     const metricFor=targetKey=>{
       const allocation={...empty,[targetKey]:total};
-      const tops=keys.map(key=>topupFor(key,key===targetKey?total:0));
+      const tops=keys.map(key=>topupStates[key][key===targetKey?'full':'base']);
       const feasible=tops.every(x=>!!x?.feasible);
       const remainingAfterMax=tops.reduce((sum,x)=>sum+Math.max(0,finiteOr(x?.remainingAfterMax,1e15)),0);
       const realmOverflow=tops.reduce((sum,x)=>sum+Math.max(0,finiteOr(x?.packs,1e9)-finiteOr(x?.maxPacks,0)),0);
@@ -3435,32 +3434,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return raw;
   }
 
-  function dynamicAcquisitionWeights(resources){
-    const headroom=resources?.acquisitionHeadroomCosts||{};
-    const supply=resources?.acquisitionSupplyEquiv||{};
-    const result={ore:1.00,essence:SURPLUS_ACQUISITION_FLOORS.essence,sand:SURPLUS_ACQUISITION_FLOORS.sand,treat:SURPLUS_ACQUISITION_FLOORS.treat};
-    for(const key of ['essence','sand','treat']){
-      const floor=Math.max(0,Math.min(1,Number(SURPLUS_ACQUISITION_FLOORS[key])||0));
-      const usefulNeed=Math.max(0,Number(headroom[key])||0);
-      const available=Math.max(0,Number(supply[key])||0);
-      // Value the NEXT unit by how much of the reachable cap is still UNFUNDED, rather
-      // than pinning the material at full value until the entire cap can be paid at once.
-      // Example: if 90% of the reachable Relic cap is already funded, Sand sits only 10%
-      // above its deferred-use floor instead of being treated as maximally scarce.
-      const fundedCoverage=usefulNeed<=0?1:(available>0?Math.min(1,available/usefulNeed):0);
-      const unfundedShare=1-fundedCoverage;
-      result[key]=floor+(1-floor)*unfundedShare;
-    }
-    return result;
-  }
-
   /* MARGINAL_HEADROOM_COST_V2
      Candidate resource cost is priced along the funded-cap curve, not at one static
      pre-spend weight. When a capped category is already overfunded, the first units are
      cheap to spend; as spending consumes that cushion and approaches an unfunded safe cap,
      each additional unit becomes progressively more valuable. */
-  const UNIT_ACQUISITION_WEIGHTS={ore:1,essence:1,sand:1,treat:1};
-
   function marginalWeightedSpend(amount,key,resources){
     const amountTotal=Math.max(0,Number(amount)||0);
     if(amountTotal<=0) return 0;
@@ -3506,8 +3484,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     };
   }
 
-  function jointReacquisitionHours(costs,resources,cfg=activeCalcConfig(),weights=null){
-    weights=weights||dynamicAcquisitionWeights(resources);
+  function jointReacquisitionHours(costs,resources,cfg=activeCalcConfig()){
     const map=resources?.yields?.map||cfg.map||{};
     const enteredTreatRate=Math.max(0,n('treatRate'));
     const cart={
@@ -3522,10 +3499,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       sand:Math.max(0,Number(map.sand)||0)
     };
     const demand={
-      ore:Math.max(0,Number(costs?.ore)||0)*Math.max(0,Number(weights?.ore)||0),
-      essence:Math.max(0,Number(costs?.essence)||0)*Math.max(0,Number(weights?.essence)||0),
-      sand:Math.max(0,Number(costs?.sand)||0)*Math.max(0,Number(weights?.sand)||0),
-      treat:Math.max(0,Number(costs?.treat)||0)*Math.max(0,Number(weights?.treat)||0)
+      ore:Math.max(0,Number(costs?.ore)||0),
+      essence:Math.max(0,Number(costs?.essence)||0),
+      sand:Math.max(0,Number(costs?.sand)||0),
+      treat:Math.max(0,Number(costs?.treat)||0)
     };
 
     let floor=0;
@@ -3583,23 +3560,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   }
 
   function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){
-    const weights=dynamicAcquisitionWeights(resources); // diagnostic snapshot at zero spend
     const marginalCosts=marginalWeightedCosts(costs,resources);
-    const hours=jointReacquisitionHours(marginalCosts,resources,cfg,UNIT_ACQUISITION_WEIGHTS);
-    const map=resources?.yields?.map||cfg.map||{};
-    const single=(effective,key)=>{
-      const target=Math.max(0,Number(effective)||0);
-      if(target<=0) return 0;
-      const rate=Math.max(0,n(key==='ore'?'oreRate':key==='essence'?'essenceRate':'sandRate'))+Math.max(0,Number(map[key])||0);
-      return rate>0?target/rate:1e9;
-    };
-    return {
-      hours,weights,marginalCosts,
-      oreHours:single(marginalCosts.ore,'ore'),
-      essenceHours:single(marginalCosts.essence,'essence'),
-      sandHours:single(marginalCosts.sand,'sand'),
-      treatHours:0
-    };
+    return {hours:jointReacquisitionHours(marginalCosts,resources,cfg)};
   }
   function candidateResourceMetric(candidate){
     const base=Number(candidate?.acquisitionHours);
@@ -3623,7 +3585,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,
       score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,
       oreShare,essenceShare,sandShare,treatShare,refinedShare,
-      acquisitionHours:acquisition.hours,oreAcquisitionHours:acquisition.oreHours,unknownPriceRefreshes,
+      acquisitionHours:acquisition.hours,unknownPriceRefreshes,
       maxShare:Math.max(...shares),sumShare:shares.reduce((a,b)=>a+b,0),overshoot:score-desired,
       dawniumCost,realmAttempts:realmPacks,realmPacks,
       bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),
@@ -3800,7 +3762,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           const diagOreShare=resources.ore>0?go.oreCost/resources.ore:(go.oreCost>0?go.oreCost/100000:0),diagEssenceShare=resources.essence>0?so.cost/resources.essence:(so.cost>0?so.cost/100000:0),diagSandShare=resources.sand>0?ro.cost/resources.sand:(ro.cost>0?ro.cost/100000:0),diagTreatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
           const diagAcquisition=acquisitionFor(go,so,ro,fo);
           const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
-          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,oreAcquisitionHours:diagAcquisition.oreHours,unknownPriceRefreshes,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
+          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,unknownPriceRefreshes,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
           if(betterDiagnosticCandidate(diagnostic,bestDiagnostic)) bestDiagnostic=diagnostic;
 
           if(!allFeasible) continue;
@@ -4169,7 +4131,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   let lastEffectiveTargetStars=null;
 
   function updateCalculator(){
-    updateOptimizerModeUI();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
