@@ -3829,18 +3829,24 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     // reserve yield; otherwise use the current-season Material Realm yield.
     const dailyGapDisplayPer=reserveRuns>0&&reserveDisplayPer>0?reserveDisplayPer:planDisplayPer;
     const dailyGapValue=dailyGapRuns*dailyGapDisplayPer;
+    // TOOL_COUNT_LABELS_V15: these rows are Material Realm TOOL counts, not raw materials.
+    // Always name the tool on Use / Need / Remaining / Still short so the resource card cannot
+    // be misread as mixing another raw-material balance into the lower helper section.
     const lines=[];
+    const planToolLabel=planRuns===1?toolSingular:label;
+    const remainingToolLabel=remainingTools===1?toolSingular:label;
+    const missingToolLabel=missing===1?toolSingular:label;
     if(planRuns>0){
-      lines.push(`<div class="toolSimpleLine toolUseLine"><i>Use:</i><b>${fmt(planRuns)}${planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
+      lines.push(`<div class="toolSimpleLine toolUseLine"><i>Use:</i><b>${fmt(planRuns)} ${planToolLabel}${planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
       if(dailyGapRuns>0){
         lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Need:</i><b>${fmt(dailyGapRuns)} ${toolNeedLabel}${dailyGapValue>0?` <em>≈ ${fmtCompact(dailyGapValue)} ${materialName}</em>`:''}</b></div>`);
       }
       if(remainingTools>0){
-        lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
+        lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
       }
     }
     if(missing>0){
-      lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Still short:</i><b>${fmt(missing)}</b></div>`);
+      lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Still short:</i><b>${fmt(missing)} ${missingToolLabel}</b></div>`);
     }
     el.hidden=false;
     el.innerHTML=lines.join('');
