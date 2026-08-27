@@ -19,6 +19,18 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+      - name: Relax patch anchor for current formatting
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/patch-optimizer-system-audit-v4.py')
+          t=p.read_text(encoding='utf-8')
+          old=r"\\n  \\}\\n  function makePlanCandidate\\(go,so,ro,fo,score,desired,resources,realms\\)\\{"
+          new=r"\\n  \\}\\n+  function makePlanCandidate\\(go,so,ro,fo,score,desired,resources,realms\\)\\{"
+          if old not in t:
+              raise SystemExit('acquisition regex anchor not found in patch script')
+          p.write_text(t.replace(old,new,1),encoding='utf-8')
+          PY
       - name: Apply optimizer audit
         run: python .github/patch-optimizer-system-audit-v4.py
       - name: Validate inline JavaScript
