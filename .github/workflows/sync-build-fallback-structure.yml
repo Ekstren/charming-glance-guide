@@ -45,3 +45,4 @@ jobs:
             git commit -m 'Align fallback T4 build cards with maintenance policy'
             git push origin main
           fi
+# retry after patch matcher fix
