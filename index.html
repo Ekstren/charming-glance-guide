@@ -1770,6 +1770,20 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 #targetMessage .targetMessageDetail{display:block;margin-top:3px}
 </style>
 
+
+<style id="result-border-state-v1">
+/* RESULT_BORDER_STATE_V1
+   Outer season-end result card follows the same semantic state as the status message:
+   success = green, caution = yellow, unachievable = red. */
+.calcResults:has(#targetMessage.caution):not(:has(#targetMessage.danger)){
+  border-color:var(--status-warning)!important;
+}
+.calcResults:has(#targetMessage.danger),
+.calcResults:has(#targetStatus.notMet){
+  border-color:var(--status-negative)!important;
+}
+</style>
+
 </head>
 <body>
 <main>
