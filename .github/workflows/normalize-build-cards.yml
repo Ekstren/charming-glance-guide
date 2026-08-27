@@ -22,11 +22,9 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text()
-
           required=['<h3>Generic / Dungeons</h3>','<h3>Boss / Dragon</h3>','<h3>PvP / Mobility</h3>','<h3>Water / AoE</h3>','<h3>Dragon / Chaos Support</h3>','<h3>Reflect / Solo PvE</h3>']
           missing=[x for x in required if x not in s]
-          if missing:
-              raise SystemExit('Expected build markers missing: '+', '.join(missing))
+          if missing: raise SystemExit('Expected build markers missing: '+', '.join(missing))
 
           s=s.replace('<h3>Generic / Dungeons</h3><p>Default all-content Elemental setup</p>', '<h3>All-Content</h3><p>Default Elemental setup for dungeons, general PvE and PvP swaps</p>', 1)
           s=s.replace('<h3>Boss / Dragon</h3><p>Single-target and long-fight damage</p>', '<h3>Dragon</h3><p>Single-target and long-fight damage</p>', 1)
@@ -34,45 +32,31 @@ jobs:
           s=s.replace('Flash Fire</strong><p>Reliable Elemental damage and a main-slot technique in dungeon, boss and PvP setups.</p>', 'Flash Fire</strong><p>Reliable Elemental damage and a main-slot technique in both core setups.</p>', 1)
           s=s.replace('Flame Aura</strong><p>Main-slot damage for the generic and boss builds. Darkness Descends remains the PvP/utility replacement shown below.</p>', 'Flame Aura</strong><p>Main-slot damage for both core builds. Darkness Descends remains the PvP/utility swap shown below.</p>', 1)
           s=s.replace('Indomitable is the equipped dungeon/PvP safety slot; Blazing Clash is the equipped boss damage slot.', 'Indomitable is the equipped all-content safety slot; Blazing Clash is the equipped Dragon damage slot.', 1)
-          pat=r'\n        <article class="buildCard"><header><div><h3>PvP / Mobility</h3>.*?</article>'
-          s,n=re.subn(pat,'',s,count=1,flags=re.S)
+          s,n=re.subn(r'\n        <article class="buildCard"><header><div><h3>PvP / Mobility</h3>.*?</article>','',s,count=1,flags=re.S)
           if n!=1: raise SystemExit('Could not remove Conqueror PvP card')
 
           s=s.replace('<h3>Water / AoE</h3><p>Cold stacking with real damage</p>', '<h3>Water Offensive</h3><p>Cold stacking with real damage</p>', 1)
           s=s.replace('<h3>Dragon / Chaos Support</h3><p>Buff, cleanse and debuff support</p>', '<h3>Support / Boss</h3><p>Buff, cleanse and debuff support for Dragon, Chaos and guild bosses</p>', 1)
-          pat=r'\n        <article class="buildCard"><header><div><h3>Reflect / Solo PvE</h3>.*?</article>'
-          s,n=re.subn(pat,'',s,count=1,flags=re.S)
+          s,n=re.subn(r'\n        <article class="buildCard"><header><div><h3>Reflect / Solo PvE</h3>.*?</article>','',s,count=1,flags=re.S)
           if n!=1: raise SystemExit('Could not remove Guardian reflect card')
 
+          # Validate the exact intended visible structure before writing.
+          for marker in ('<h3>All-Content</h3>','<h3>Dragon</h3>','<h3>Water Offensive</h3>','<h3>Support / Boss</h3>'):
+              if marker not in s: raise SystemExit('Missing normalized marker: '+marker)
+          for marker in ('<h3>PvP / Mobility</h3>','<h3>Reflect / Solo PvE</h3>'):
+              if marker in s: raise SystemExit('Obsolete card remains: '+marker)
           p.write_text(s)
           PY
-      - name: Validate build structure and inline JavaScript
+      - name: Validate inline JavaScript
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re, subprocess
+          import re
           s=Path('index.html').read_text()
-          checks={
-            'Conqueror All-Content':'<h3>All-Content</h3>' in s,
-            'Conqueror Dragon':'<h3>Dragon</h3>' in s,
-            'No Conqueror PvP card':'<h3>PvP / Mobility</h3>' not in s,
-            'Guardian Water Offensive':'<h3>Water Offensive</h3>' in s,
-            'Guardian Support / Boss':'<h3>Support / Boss</h3>' in s,
-            'No Guardian reflect card':'<h3>Reflect / Solo PvE</h3>' not in s,
-          }
-          bad=[k for k,v in checks.items() if not v]
-          if bad: raise SystemExit('Structure validation failed: '+', '.join(bad))
-          checked=0
-          for i,m in enumerate(re.finditer(r'<script([^>]*)>(.*?)</script>',s,re.S|re.I)):
-              attrs,src=m.group(1),m.group(2)
-              if re.search(r'\bsrc\s*=',attrs,re.I) or not src.strip(): continue
-              tm=re.search(r'\btype\s*=\s*["\']([^"\']+)',attrs,re.I)
-              if tm and tm.group(1).lower() not in ('text/javascript','application/javascript','module'): continue
-              f=Path(f'/tmp/inline-{i}.js'); f.write_text(src)
-              subprocess.run(['node','--check',str(f)],check=True)
-              checked+=1
-          print(f'Validated {checked} executable inline scripts')
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n;\n'.join(blocks))
           PY
+          node --check /tmp/inline.js
       - name: Commit normalized builds and remove one-shot workflow
         run: |
           git config user.name github-actions[bot]
