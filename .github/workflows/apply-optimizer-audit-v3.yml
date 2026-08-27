@@ -1,0 +1,58 @@
+name: Apply optimizer audit v3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-optimizer-audit-v3.py'
+      - '.github/workflows/apply-optimizer-audit-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply optimizer audit
+        run: python .github/patch-optimizer-audit-v3.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('no inline script found')
+          Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site-inline.js
+      - name: Verify optimizer audit
+        run: |
+          grep -q 'OPTIMIZER_AUDIT_V3' index.html
+          grep -q 'reserveAdjustedAcquisitionSupply' index.html
+          grep -q 'deficit\*Math.log(usefulNeed/denomEnd)' index.html
+          grep -q 'raw+planProvided-cost' index.html
+          grep -q 'betterFeasibleCandidate(cp,bp)' index.html
+          grep -q 'const ORE_PRESERVE_PREMIUM=0.50' index.html
+          if grep -q '75% Ore premium' index.html; then
+            echo 'stale 75% Ore premium text remains'
+            exit 1
+          fi
+      - name: Commit optimizer audit
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Tighten optimizer resource economics'
+          git push origin main
