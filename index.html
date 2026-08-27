@@ -1873,6 +1873,17 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 .materialPlanner>summary.materialsSummary .materialsSummaryRight{margin-left:auto}
 @media(max-width:760px){.characterPanelBody{padding:12px 14px 14px!important}.characterPanel>summary.characterSummary,.materialPlanner>summary.materialsSummary{padding:11px 14px}}
 </style>
+
+<style id="materials-header-compact-v1">
+/* MATERIALS_HEADER_COMPACT_V1 */
+#materialsDetails>summary.materialsSummary{min-height:0!important;padding:14px 16px!important;display:flex!important;align-items:center!important;gap:10px!important}
+#materialsDetails>summary.materialsSummary>span{font-size:12px!important;font-weight:850!important;color:var(--ink)!important}
+.materialsStaminaRow{display:grid;grid-template-columns:auto minmax(150px,190px) minmax(0,1fr);align-items:center;gap:10px;margin:0 0 10px;padding:0 0 10px;border-bottom:1px solid var(--line)}
+.materialsStaminaRow>b{color:var(--muted);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.materialsStaminaRow select{min-height:36px;padding:7px 30px 7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--input-bg);color:var(--ink);font-size:12px;font-weight:800}
+.materialsStaminaRow small{margin:0;color:var(--green);font-size:9px;font-weight:800;line-height:1.3;text-align:right}
+@media(max-width:620px){.materialsStaminaRow{grid-template-columns:auto minmax(130px,1fr)}.materialsStaminaRow small{grid-column:1/-1;text-align:left}}
+</style>
 </head>
 <body>
 <main>
@@ -2023,8 +2034,13 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       </details>
 
       <details id="materialsDetails" class="calcPanel currentLevelsPanel materialPlanner collapsibleCard">
-        <summary class="materialsSummary"><span class="materialsSummaryTitle">Materials</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
+        <summary class="materialsSummary compactCardSummary"><span>Materials</span></summary>
         <div class="currentLevelsBody">
+          <div class="materialsStaminaRow">
+            <b>Stamina</b>
+            <select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select>
+            <small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small>
+          </div>
           <div class="resourceInputs resourceInputsFour resourceCards">
             <div class="resourceCard"><div class="resourceCardHead"><strong>Raw Ore</strong><small id="oreProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="oreCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="oreRate" type="number" value="0"></label></div></div>
             <div class="resourceCard"><div class="resourceCardHead"><strong>Skill Essence</strong><small id="essenceProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="essenceCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="essenceRate" type="number" value="0"></label></div></div>
