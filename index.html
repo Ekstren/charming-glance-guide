@@ -3755,9 +3755,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.hidden=false;
     el.textContent=`Remaining: ${fmt(left)}${unitLabel?` ${unitLabel}`:''}`;
   }
-  // ALL_RESOURCE_REMAINING_V3: use one Remaining format for Ore / Essence / Sand / Treats.
-  // S2-protected resources show the FULL reserve requirement. Do not cap the displayed reserve
-  // at the raw amount left after the S1 plan; Realm tools can cover the rest of that requirement.
+  // ALL_RESOURCE_REMAINING_V4: use the same compact reserve wording as Realm tools.
+  // Keep showing the FULL S2 reserve requirement; only simplify the label to "(<amount> reserved)".
   function setReservedRawRemaining(id,cost,resources,key,unitLabel=''){
     const el=$(id); if(!el) return;
     el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
@@ -3767,7 +3766,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const reserveTarget=Math.max(0,Math.floor(reserveTargetFor(key,resources)+1e-9));
     const unit=unitLabel?` ${unitLabel}`:'';
     el.hidden=false;
-    el.textContent=`Remaining: ${fmt(left)}${unit}${reserveTarget>0?` (S2 reserve: ${fmt(reserveTarget)}${unit})`:''}`;
+    el.textContent=`Remaining: ${fmt(left)}${unit}${reserveTarget>0?` (${fmt(reserveTarget)}${unit} reserved)`:''}`;
   }
   function setEssenceBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'essence'); }
   function setSandBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'sand'); }
