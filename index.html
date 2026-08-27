@@ -1806,6 +1806,18 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 .maxAchievableBar small strong{color:var(--green)}
 @media(max-width:700px){.maxAchievableBar{align-items:stretch;flex-direction:column}.maxAchievableBar button{width:100%}}
 </style>
+
+<style id="max-layout-speed-realm-cap-v1">
+/* MAX_LAYOUT_SPEED_REALM_CAP_V1 */
+.calcGrid .findMaxCell{display:grid;gap:4px;align-content:start;min-width:0}
+.calcGrid .findMaxCell>span{color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:9px;font-weight:850}
+.calcGrid .findMaxCell button{border:1px solid var(--today-border);background:var(--today-bg);color:var(--ink);border-radius:10px;cursor:pointer;min-height:38px;padding:7px 10px;font-size:10px;font-weight:850;text-align:left}
+.calcGrid .findMaxCell button:hover{border-color:var(--green);color:var(--green)}
+.calcGrid .findMaxCell button:disabled{cursor:wait;opacity:.65}
+.calcGrid .findMaxCell small{color:var(--muted);font-size:8px;line-height:1.35;min-width:0}
+.calcGrid .findMaxCell small strong{color:var(--green)}
+@media(max-width:700px){.calcGrid .findMaxCell button{text-align:center}}
+</style>
 </head>
 <body>
 <main>
@@ -1900,9 +1912,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
-          <label class="freeSpeedToggle">Daily free speed-up<span class="freeSpeedCheck"><input id="freeSpeed" type="checkbox" checked> Use free 2-hour boost every reset</span></label>
+          <div class="findMaxCell"><span>Maximum target</span><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus">Checks your selected daily Realm plan and the hard Realm-cap ceiling.</small></div>
         </div>
-        <div class="maxAchievableBar"><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus">Shows the maximum with your selected daily Realm plan and the hard maximum using all remaining Realm capacity.</small></div>
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
         <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="rolloverHold seasonPlanningControls">
@@ -1977,11 +1988,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
             </div>
             <div class="realmDailyPlanRow">
               <div class="realmDailyCustom">
-                <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 20/day per Realm</small></span>
+                <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 10/day per Realm</small></span>
                 <div class="realmDailyInputs">
-                  <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
-                  <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
-                  <label>Sand Realm refreshes / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
+                  <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="10" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
+                  <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="10" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
+                  <label>Sand Realm refreshes / day<input id="realmDailySand" type="number" min="0" max="10" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
                 </div>
               </div>
               <div class="realmPlanSummary"><span>Projected daily gain</span><b id="realmDailyGain">+20 H · +20 K · +20 S / reset</b><small id="realmDaysRemaining">—</small></div>
@@ -2028,9 +2039,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. With the separate S2 reserve toggles enabled, the planner can independently protect the startup Skill Essence reserve and/or exactly one full first S2 Relic round (+10→+11 across all 20 relics). Projected Shovels count toward that Sand reserve at the S2 Realm yield first; only the remaining raw Sand is protected. Surplus Essence/Treats/Sand can then be spent in S1 while Ore/Hammers are preserved for the much longer Gear progression runway.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The free speed-up is a discrete 2-hour reset event, not a fractional daily rate: when enabled, every actual reset before the cutoff contributes 2 boost hours to Bed EXP, Cart production and Stamina regeneration. A 36-hour EXP reserve removes natural Bed hours only; boost hours that occur inside that reserve still count.</p>
+<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 36-hour EXP reserve removes natural Bed hours only; reset boost hours inside that reserve still count.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. When the 12-hour finishing window is enabled, newly unlocked Skill/Relic/Fantomon caps must be available by that cutoff; final Character EXP can still add score afterward. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
-<p><b>Material Realm buys:</b> one paid refresh grants <b>5 actual Realm entries/tools</b>. Live-server correction: the daily purchase cap is treated as <b>20 per resource per server day</b>. Public references currently publish the Dawnium curve only for purchases 1–10 (60, 60, 100, 100, 150, 150, 200, 200, 250, 300), so purchases 11–20 count toward real capacity and feasibility but their Dawnium price is intentionally not fabricated. The optimizer ranks routes using fewer unknown-price 11–20 purchases ahead of routes using more, then compares only the Dawnium cost that is actually known. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 20-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
+<p><b>Material Realm buys:</b> one paid refresh grants <b>5 actual Realm entries/tools</b>. Current public guides and community planners consistently document a maximum of <b>10 paid refresh purchases per Realm per server day</b>, with the full Dawnium curve 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. No verified 11–20 purchase tier was found, so the planner no longer invents extra capacity beyond 10. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
@@ -2082,7 +2093,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
-  const CHECK_IDS = ['freeSpeed','holdExp','grace12','reserveS2Essence','reserveS2Sand','reserveS2Treats'];
+  const CHECK_IDS = ['holdExp','grace12','reserveS2Essence','reserveS2Sand','reserveS2Treats'];
   const defaults = Object.create(null);
   INPUT_IDS.forEach(id => defaults[id] = document.getElementById(id)?.value ?? '');
   CHECK_IDS.forEach(id => defaults[id] = document.getElementById(id)?.checked ?? false);
@@ -2272,7 +2283,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const wallHours=Math.max(0,(cfg.end.getTime()-capped)/3_600_000);
     const reserve=$('holdExp')?.checked?clamp(n('reserveHours',36),0,36):0;
     const naturalHours=Math.max(0,wallHours-reserve);
-    const boostHours=($('freeSpeed')?.checked ? 2 : 0)*countFuturePacificResets(capped,cfg.end.getTime());
+    const boostHours=2*countFuturePacificResets(capped,cfg.end.getTime());
     return naturalHours+boostHours;
   }
   function projectionResourceHoursAt(ms,cfg=activeCalcConfig()){
@@ -2280,7 +2291,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const capped=Math.min(ms,cutoff);
     if(capped>=cutoff) return 0;
     const wallHours=(cutoff-capped)/3_600_000;
-    const boostHours=($('freeSpeed')?.checked ? 2 : 0)*countFuturePacificResets(capped,cutoff);
+    const boostHours=2*countFuturePacificResets(capped,cutoff);
     return Math.max(0,wallHours+boostHours);
   }
 
@@ -2398,7 +2409,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         if(state.reserveS2Sand===undefined) state.reserveS2Sand=oldReserve;
       }
       if(hadState && state.reserveS2Treats===undefined) state.reserveS2Treats=true;
-      if(hadState && state.freeSpeed!==undefined && typeof state.freeSpeed!=='boolean') state.freeSpeed=Number(state.freeSpeed)>0;
       // v39 replaces the old single Realm preset with independent per-resource daily inputs.
       // Preserve the user's prior shared preset when migrating; otherwise default each Realm to 4/day.
       if(hadState && (Number(state.snapshotSchema)||0)<5){
@@ -2529,7 +2539,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const naturalEnd=Math.min(target,reserveStart);
     const naturalHours=Math.max(0,(naturalEnd-now)/3_600_000);
     const boostResets=countFuturePacificResets(now,target);
-    const boostHours=($('freeSpeed')?.checked ? 2 : 0)*boostResets;
+    const boostHours=2*boostResets;
     const acceleratedHours=naturalHours+boostHours;
     exp += Math.max(0,n('bedExp',0))*acceleratedHours;
     let safety=0;
@@ -3112,11 +3122,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation};
   }
 
-  // Live-server correction: up to 20 paid Material Realm purchases per resource per server day.
-  // Public references currently publish Dawnium prices only for purchases 1-10. Purchases 11-20
-  // are treated as valid capacity but get a conservative planning penalty until their exact prices are verified.
+  // Verified public/community curve: 10 paid Material Realm refresh purchases per Realm/day.
+  // Each purchase grants 5 Realm tools/entries.
   const MATERIAL_REALM_BUY_COSTS = [60,60,100,100,150,150,200,200,250,300];
-  const MAX_REALM_REFRESHES_PER_DAY=20;
+  const MAX_REALM_REFRESHES_PER_DAY=MATERIAL_REALM_BUY_COSTS.length;
   const REALM_RUNS_PER_REFRESH=5;
   const REALM_CHOICE_CACHE=new Map();
   function realmPurchaseChoices(days,baselinePerDay){
@@ -4116,10 +4125,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           if(routineFundable(mid)) routineLo=mid; else routineHi=mid-1;
         }
         const routine=routineLo;
-        const hardPlan=solveStars(hard).plan;
-        const unknown=Math.max(0,Number(hardPlan?.unknownPriceRefreshes)||0);
         maxAchievableState={fingerprint,routine,hard};
-        status.innerHTML=`Selected daily plan max: <strong>${fmt(routine)}</strong> · Hard Realm-cap max: <strong>${fmt(hard)}</strong>${unknown?` · ${fmt(unknown)} unpriced tier 11–20 purchase${unknown===1?'':'s'} at hard max`:''}`;
+        status.innerHTML=`Selected daily plan max: <strong>${fmt(routine)}</strong> · Hard Realm-cap max: <strong>${fmt(hard)}</strong>`;
         btn.disabled=false;btn.textContent=`Use ${fmt(hard)} target`;
       }catch(err){
         console.error(err);resetMaxAchievableUi();status.textContent='Could not calculate the ceiling from the current inputs.';
@@ -4504,7 +4511,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     } else {
       const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
-      $('freeSpeed').checked=true; $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
+      $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
     }
     gearLocked=false; snapshotAtMs=Date.now(); snapshotSeason=cfg.key; snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
     updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();
