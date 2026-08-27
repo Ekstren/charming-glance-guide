@@ -34,12 +34,13 @@ jobs:
           node --check /tmp/site-inline.js
       - name: Verify unified Remaining display
         run: |
-          grep -q 'ALL_RESOURCE_REMAINING_V2' index.html
+          grep -q 'ALL_RESOURCE_REMAINING_V3' index.html
           grep -q 'Remaining: ${fmt(left)}' index.html
+          grep -q 'S2 reserve: ${fmt(reserveTarget)}' index.html
           grep -q "setReservedRawRemaining(id,cost,resources,'essence')" index.html
           grep -q "setReservedRawRemaining(id,cost,resources,'sand')" index.html
           grep -q "setReservedRawRemaining(id,cost,resources,'treat','basic-eq.')" index.html
-          grep -q 'reserved)' index.html
+          grep -q 'const reserveTarget=Math.max(0,Math.floor(reserveTargetFor(key,resources)+1e-9));' index.html
       - name: Commit site update
         run: |
           if git diff --quiet -- index.html; then
@@ -49,5 +50,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Unify Remaining labels across resource cards'
+          git commit -m 'Show full S2 reserve targets on resource cards'
           git push origin main
