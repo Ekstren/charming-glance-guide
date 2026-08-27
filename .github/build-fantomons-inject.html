@@ -3,6 +3,7 @@
 /* BUILD_FANTOMON_PAIRS_V5_GUIDE_LOADOUTS_MAIN_ALT */
 /* BUILD_GUIDE_CONSENSUS_PVP_V1 */
 /* BUILD_ARENA_TOURNAMENT_SPLIT_V1 */
+/* SAGE_TOURNAMENT_HYBRID_V1 */
 .builds .buildRoleTabs{display:none!important}
 .buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
 .buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;font-size:9px;font-weight:850;display:block}
@@ -46,7 +47,7 @@
       role('Single Target DPS','Boss-focused Dark Erosion',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Use for bosses and other concentrated targets.','If Erosion is unreliable, the problem is usually insufficient Effect Hit Rate.','Guide consensus'),
       role('Healing','Dungeon / group healer',['Void Blessing','Waterling Summon','Radiant Restoration','Frenzy Totem'],['Resurrection','Healing Mastery','Overhealing','Gale Shield'],'Gale Shield is a practical flex; replace it with encounter-specific utility when needed.','This is the dedicated healer/support setup, not a DPS variation.','Guide consensus'),
       role('Arena','Solo Dark burst / Erosion cash-out',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Solo Arena favors actually killing the target: build Erosion, cash it out with Shadow of Termination and let Shadow Vengeance buy the finishing turn.','Do not default to the healer bar in solo PvP; PvP healing is reduced and needs real Healing Boost/SPD investment to justify it.','Guide-derived Arena'),
-      role('Tournament','Team sustain / revive support',['Void Blessing','Waterling Summon','Radiant Restoration','Frenzy Totem'],['Resurrection','Healing Mastery','Overhealing','Shadow Vengeance'],'Team PvP is where the healer shell makes sense: sustain, revive value and Shadow Vengeance to survive focus.','If your Healing Boost/SPD are weak, use the AoE DPS card instead of forcing a low-output healer build.','Community team PvP')
+      role('Tournament','Hybrid team pressure / revive utility',['Mana Blast','Abyssal Hand','Radiant Restoration','Frenzy Totem'],['Resurrection','Shadow Vengeance','Shadow Erosion','Linked Misfortune'],'Tournament should not default to full healing: Mana Blast + Abyssal Hand provide Dark pressure, Erosion and Slow while Frenzy Totem buffs the team and Radiant Restoration gives one efficient group-heal slot.','PvP healing is heavily reduced. Only move toward the dedicated Healing card when your Healing Boost/SPD are genuinely built for it; otherwise keep Resurrection + damage/debuff utility.','Community hybrid PvP')
     ],
     Conqueror:[
       role('All-Content','Default S2 build for almost everything',['Flash Fire','Flame Aura','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'High Crit: Insightful Eye → Soul Breaker. If you are safe in PvE, Indomitable Will → Soul Splash.','This is the published T4 generic core and the best default starting point.','Prydwen core'),
@@ -73,7 +74,7 @@
       role('Single Target DPS','T4 boss / direct-damage hybrid',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'High EHR: Chaos Rune → Mana Blast for the higher Erosion ceiling. Frenzy Totem + Soul Pact Resonance is another viable hybrid depending on ranks/stats.','The listed direct-damage hybrid is safer when Erosion landing is inconsistent.','Guide consensus'),
       role('Healing','Primary T4 healer/support',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'Need more raw healing: Frenzy Totem → Healing Touch. If nobody needs Resurrection, use Mantra of Blessings; if you personally die early, use Shadow Vengeance.','Phantom Light is mandatory for the T4 healer identity.','Guide consensus'),
       role('Arena','Solo Arena burst / utility',['Abyssal Hand','Dark Starburst','Dark Bullet','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Mantra of Blessings','Shadow Vengeance'],'This follows the published Loot & Waifus Solo PvP shell: reliable Dark pressure plus Mantra utility instead of forcing a full healer bar.','A healing hybrid is possible, but pure sustain has a much higher gear requirement in solo PvP.','Loot & Waifus Arena'),
-      role('Tournament','Team support / carry protection',['Decoy Clone','Waterling Summon','Radiant Restoration','Rejuvenating Rain'],['Phantom Light','Mantra of Blessings','Resurrection','Shadow Vengeance'],'Team PvP changes the job: Decoy Clone/Mantra support the carry while healing and Resurrection add real squad value.','If your healing stats are not developed, use the AoE Erosion card and consider Aberrancy instead; Loot & Waifus specifically flags Aberrancy as more useful in AoE/Tournament than Arena.','Multi-guide team PvP')
+      role('Tournament','Hybrid support / anti-tank pressure',['Decoy Clone','Frenzy Totem','Dark Starburst','Abyssal Hand'],['Mantra of Blessings','Resurrection','Shadow Vengeance',"Night's Blessing"],'Use Dominator as a support/sub-DPS, not a pure healer: Decoy Clone pressures shield-heavy tanks, Frenzy Totem + Mantra amplify the carry, and Dark Starburst/Abyssal Hand keep meaningful direct pressure and Slow utility.','If your team truly needs healing, Abyssal Hand → Radiant Restoration. Full healing should be reserved for unusually high Healing Boost/SPD setups because PvP cuts healing effectiveness.','Community hybrid PvP')
     ]
   };
 
@@ -97,6 +98,7 @@
       PvP:[pick('Aegiswing','Main survival-first PvP pick; its base Assist buys extra life before Materialization exists.'),pick('Nyxarchon','Greedy damage/DEF-shred alternative.'),pick('Armopi','Pre-Materialization DEF + personal shield can buy a critical extra turn.'),pick('Sylvaerie','SPD helps contest turn order while adding ATK.')]
     },
     Arcanist:{
+      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: damage plus DEF shred contributes even while you spend slots on team utility.'),pick('Sylvaerie','Alt for ATK + SPD; speed is especially valuable for getting support/debuff actions out early.')],
       Solo:[pick('Nyxarchon','Main DPS lead: Dark damage and the debuff line up naturally with Arcanist.'),pick('Zeioletus','Best simple F2P damage stopgap before Nyx.'),pick('Sylvaerie','Permanent SPD + ATK can beat Zei depending on your stats.'),pick('Aegiswing','Use its S1 survival/recovery when staying alive is more important than max DPS.')],
       Dungeon:[pick('Mandragora','Main healer pick: every ally-targeted Technique can trigger extra healing, with no Materialization needed.'),pick('Sylvaerie','SPD means more turns to heal and support.'),pick('Aegiswing','Keeps the healer alive through dangerous rooms using only its S1 Assist effect.'),pick('Herbote','Fallback self-heal/cleanse option, but unevolved S1 Herbote is weaker for pure healing than Mandragora.')],
       Boss:[pick('Nyxarchon','Main boss DPS choice: Dark damage plus a useful debuff.'),pick('Zeioletus','Straightforward damage alternative before Nyx.'),pick('Sylvaerie','SPD + ATK scales the whole DoT rotation.'),pick('Terragon','Can reduce boss ATK while still contributing damage.')],
@@ -121,6 +123,7 @@
       PvP:[pick('Aegiswing','Main PvP survival pick: cheat-death style utility is more valuable than another pure damage pet here.'),pick('Nyxarchon','Greedy damage/DEF-shred option.'),pick('Armopi','DEF + shield gives a fragile caster another way to survive focus.'),pick('Sylvaerie','SPD helps contest turn order and still adds ATK.')]
     },
     Dominator:{
+      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: adds real damage and DEF shred while the Dominator handles buffs and utility.'),pick('Terragon','Alt team-utility pick when reducing enemy ATK/pressure matters more than personal damage.')],
       Solo:[pick('Nyxarchon','Main DPS choice: Prydwen calls Nyx Dominator’s BIS thanks to Dark AoE damage and its supportive effect.'),pick('Zeioletus','Best straightforward F2P damage stopgap.'),pick('Sylvaerie','ATK + SPD can outperform Zei on some accounts.'),pick('Aegiswing','Use when surviving solo progression is more important than max damage.')],
       Dungeon:[pick('Mandragora','Main pure-healing pick: directly adds healing whenever you use ally-targeted Techniques.'),pick('Herbote','Strong S2 healing alternative once Materialized because it can extend its healing to allies.'),pick('Sylvaerie','SPD gives you more actions to heal/support.'),pick('Terragon','Support alternative when reducing enemy ATK/DMG helps the whole party more than extra healing.')],
       Boss:[pick('Nyxarchon','Main DPS lead for single-target Dark builds and team damage support.'),pick('Zeioletus','Direct damage alternative before or instead of Nyx.'),pick('Sylvaerie','Permanent SPD + ATK scales the whole boss rotation.'),pick('Terragon','Useful support option when lowering the boss’s ATK matters.')],
@@ -166,8 +169,7 @@
     const pools=FANTO[cls]||{};
     if(role==='Arena') return pools.Arena||pools.PvP||[];
     if(role==='Tournament'){
-      if(cls==='Arcanist'||cls==='Dominator') return pools.Tournament||pools.Dungeon||pools.PvP||[];
-      return pools.Tournament||pools.PvP||[];
+      return pools.Tournament||pools.PvP||pools.Dungeon||[];
     }
     return pools[role]||[];
   }
