@@ -1,0 +1,46 @@
+name: Apply Stamina Auto default
+
+on:
+  push:
+    paths:
+      - '.github/patch-stamina-auto-default.py'
+      - '.github/workflows/apply-stamina-auto-default.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python .github/patch-stamina-auto-default.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          import re, pathlib, subprocess, tempfile
+          s=pathlib.Path('index.html').read_text(encoding='utf-8')
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          js='\n'.join(blocks)
+          with tempfile.NamedTemporaryFile('w',suffix='.js',delete=False) as f:
+              f.write(js); name=f.name
+          subprocess.run(['node','--check',name],check=True)
+          PY
+      - name: Verify Auto is first/default
+        run: |
+          grep -F '<option value="auto" selected>Auto</option><option value="ore">Raw Ore</option>' index.html
+          grep -F "defaults.staminaMode = 'auto'; // STAMINA_AUTO_DEFAULT_V1" index.html
+          grep -F "staminaMode:'auto',realmDailyOre:0" index.html
+      - name: Commit
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Default Stamina planning to Auto'
+          git push
