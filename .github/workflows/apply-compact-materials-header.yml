@@ -1,0 +1,45 @@
+name: Apply compact Materials header
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-compact-materials-header.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python .github/patch-compact-materials-header.py
+      - name: Verify compact Materials header
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert 'MATERIALS_HEADER_COMPACT_V1' in s
+          assert '<summary class="materialsSummary compactCardSummary"><span>Materials</span></summary>' in s
+          assert 'class="materialsStaminaRow"' in s
+          assert s.count('id="staminaMode"') == 1
+          assert s.count('id="staminaCurrentPlan"') == 1
+          a=s.index('<summary class="materialsSummary compactCardSummary">')
+          b=s.index('class="materialsStaminaRow"')
+          c=s.index('class="resourceInputs resourceInputsFour resourceCards"')
+          assert a < b < c
+          assert 'Optional · makes the final plan account-specific' not in s
+          print('compact Materials header verified')
+          PY
+      - name: Commit
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Compact Materials card header'
+          git push
