@@ -1689,6 +1689,66 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 }
 </style>
 
+
+<style id="simple-tool-counts-v11">
+/* SIMPLE_TOOL_COUNTS_V11 */
+.planCosts small.toolBalance{
+  display:grid!important;
+  gap:3px!important;
+  margin-top:7px!important;
+  padding:7px 0 0!important;
+  border-top:1px solid var(--line)!important;
+  background:transparent!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+}
+.planCosts small.toolBalance .toolSimpleLine{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:baseline!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--secondary-text)!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+}
+.planCosts small.toolBalance .toolSimpleLine i{
+  color:var(--secondary-text)!important;
+  font-style:normal!important;
+  font-weight:700!important;
+}
+.planCosts small.toolBalance .toolSimpleLine b{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:var(--status-positive,var(--green))!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+  font-weight:850!important;
+  white-space:normal!important;
+}
+.planCosts small.toolBalance .toolSimpleLine b em{
+  color:var(--secondary-text)!important;
+  font-size:inherit!important;
+  font-style:normal!important;
+  font-weight:750!important;
+}
+.planCosts small.toolBalance .toolNeedLine b{color:var(--status-negative,var(--red))!important}
+@media(max-width:720px){
+  .planCosts small.toolBalance,
+  .planCosts small.toolBalance .toolSimpleLine,
+  .planCosts small.toolBalance .toolSimpleLine b{font-size:10px!important}
+}
+</style>
+
 </head>
 <body>
 <main>
@@ -3720,25 +3780,20 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const missing=Math.max(0,required-maxRuns);
 
     if(totalRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
+    // SIMPLE_TOOL_COUNTS_V11: keep this deliberately boring and readable.
+    // Used = tools actually consumed now for the current-season target.
+    // Remaining includes the S2-reserved subset, shown in parentheses.
+    const remainingTools=Math.max(0,left+reserveRuns);
     const lines=[];
-    // COMPACT_TOOL_SUMMARY_V9: keep Realm tool actions on one compact, wrapping helper line.
-    // Spend = consume now for the S1 target. Hold = keep banked for the enabled S2 reserve.
-    // Free = tools left after both commitments.
-    const toolParts=[];
-    if(planRuns>0){
-      toolParts.push(`<b class="toolSpend">Spend ${fmt(planRuns)} ${label}${planGained>0?` ≈ ${fmtCompact(planGained)} ${materialName}`:''}</b>`);
-    }
-    if(reserveRuns>0){
-      toolParts.push(`<b class="toolHold">Hold ${fmt(reserveRuns)} ${label}${reserveValue>0?` ≈ ${fmtCompact(reserveValue)} ${materialName}`:''}</b>`);
-    }
     if(totalRuns>0){
-      toolParts.push(`<b class="toolFree">${fmt(left)} left${leftValue>0?` ≈ ${fmtCompact(leftValue)} ${materialName}`:''}</b>`);
+      lines.push(`<div class="toolSimpleLine"><i>Used:</i><b>${fmt(planRuns)}${planRuns>0&&planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
+      lines.push(`<div class="toolSimpleLine"><i>Remaining:</i><b>${fmt(remainingTools)}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
     }
-    if(toolParts.length){
-      lines.push(`<span class="toolCompactLine">${toolParts.join('<i class="toolSep">·</i>')}</span>`);
+    if(missing>0){
+      lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Still short:</i><b>${fmt(missing)}</b></div>`);
     }
-    if(missing>0) lines.push(`<span class="toolUsageRow toolNeedLine"><i>Still short</i><b>${fmt(missing)} ${label}</b><em></em></span>`);
-    el.hidden=false; el.innerHTML=lines.join('');
+    el.hidden=false;
+    el.innerHTML=lines.join('');
     el.classList.add(missing?'toolNeed':'toolLeft');
   }
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
