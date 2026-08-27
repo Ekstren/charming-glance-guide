@@ -1,0 +1,55 @@
+name: Patch Fantomon materialization gate
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-fantomon-materialization-gate.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct Lv108 Materialization gate
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          replacements={
+            "Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Lv.108 = Fantomon Adult / Materialization; Lv.116 = Demonbind Tower.":
+            "Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Fantomon Adult / Materialization requires Lv.108, Numbuville unlocked, and Mythic rarity (duplicate); Lv.116 = Demonbind Tower.",
+            "['2026-08-30',47,'Fantomon','Fantomon Adult / Materialization unlock','Level-gated in Season 2 at Player Lv.108. Date is shown at the S2 start only as a timeline reference; actual unlock happens when Lv.108 is reached.','fantomon']":
+            "['2026-08-30',47,'Fantomon','Fantomon Adult / Materialization unlock','Season 2 gate: Player Lv.108 + Numbuville unlocked + Mythic rarity; Mythic evolution requires a duplicate copy. Date is shown at S2 start only as a timeline reference; the unlock occurs when all requirements are met.','fantomon']",
+            "if(title==='Loong Haven opens') return 'Confirmed Aug 30 at 6:00 AM PDT from Charming Glance’s in-game season countdown. Gates: Lv.106 T4, Lv.108 Fantomon Adult, Lv.116 Demonbind Tower.';":
+            "if(title==='Loong Haven opens') return 'Confirmed Aug 30 at 6:00 AM PDT. Gates: Lv.106 T4; Lv.108 + Numbuville + Mythic duplicate for Fantomon Adult; Lv.116 Demonbind Tower.';"
+          }
+          for old,new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f'Missing expected text: {old[:100]}')
+              s=s.replace(old,new)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          import re, pathlib, subprocess, tempfile, sys
+          text=pathlib.Path('index.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, re.S|re.I)
+          for i,src in enumerate(scripts):
+              with tempfile.NamedTemporaryFile('w',suffix='.js',delete=False) as f:
+                  f.write(src); name=f.name
+              r=subprocess.run(['node','--check',name],capture_output=True,text=True)
+              if r.returncode:
+                  print(r.stderr); sys.exit(r.returncode)
+          print(f'Validated {len(scripts)} inline script block(s).')
+          PY
+      - name: Commit patch and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/patch-fantomon-materialization-gate.yml
+          git add index.html .github/workflows/patch-fantomon-materialization-gate.yml
+          git commit -m 'Correct Fantomon Materialization unlock gate'
+          git push
