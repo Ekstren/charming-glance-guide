@@ -2313,6 +2313,30 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const oldResourceHours = projectionResourceHoursAt(snapshotAtMs,cfg);
     const newResourceHours = projectionResourceHoursAt(cappedNow,cfg);
     const elapsedResourceHours = Math.max(0, oldResourceHours-newResourceHours);
+
+    /* AUTO_AGE_REALM_TOOLS_V1
+       Treat the saved Daily Realm refresh plan like Cart production: once a planned 6 AM
+       reset has actually passed, move those purchased entries into the on-hand tool counts.
+       Future projection then loses that reset at the same time, so season-end tool totals stay
+       stable instead of requiring the user to manually add Hammers/Knuckles/Shovels each day.
+       Match futureRealmPurchaseDays(): purchases stop at the optional finishing-window cutoff. */
+    const realmCutoffMs=cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0);
+    const realmAgeEnd=Math.min(cappedNow,realmCutoffMs);
+    const elapsedRealmResets=realmAgeEnd>snapshotAtMs
+      ? countFuturePacificResets(snapshotAtMs,realmAgeEnd)
+      : 0;
+    if(elapsedRealmResets>0){
+      const toolDefs=[
+        ['hammerCurrent','ore'],
+        ['knucklesCurrent','essence'],
+        ['shovelCurrent','sand']
+      ];
+      toolDefs.forEach(([currentId,key])=>{
+        const gained=elapsedRealmResets*realmDailyValue(key)*REALM_RUNS_PER_REFRESH;
+        if(gained>0 && $(currentId)) $(currentId).value=String(Math.max(0,Math.floor(n(currentId,0)))+gained);
+      });
+    }
+
     const resourceDefs = [
       ['oreCurrent','oreRate','ore'],
       ['essenceCurrent','essenceRate','essence'],
@@ -2337,7 +2361,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     // Already-held Stamina is intentionally not snapshot-aged because the calculator tracks only future regenerated Stamina.
     snapshotAtMs = cappedNow;
     if(persist) saveState();
-    return elapsedResourceHours>0 || elapsedExpHours>0;
+    return elapsedResourceHours>0 || elapsedExpHours>0 || elapsedRealmResets>0;
   }
 
   function markManualSnapshot(id){
