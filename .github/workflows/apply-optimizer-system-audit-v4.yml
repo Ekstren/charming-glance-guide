@@ -19,16 +19,35 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Relax patch anchor for current formatting
+      - name: Make acquisition hot-path replacement robust
         run: |
           python - <<'PY'
           from pathlib import Path
           p=Path('.github/patch-optimizer-system-audit-v4.py')
           t=p.read_text(encoding='utf-8')
-          old=r"\\n  \\}\\n  function makePlanCandidate\\(go,so,ro,fo,score,desired,resources,realms\\)\\{"
-          new=r"\\n  \\}\\n+  function makePlanCandidate\\(go,so,ro,fo,score,desired,resources,realms\\)\\{"
+          old="""def sub_once(pattern, repl, label, flags=re.S):
+    global s
+    ns, count = re.subn(pattern, lambda m: repl, s, count=1, flags=flags)
+    if count != 1:
+        raise SystemExit(f'expected one match for {label}, got {count}')
+    s = ns
+"""
+          new="""def sub_once(pattern, repl, label, flags=re.S):
+    global s
+    ns, count = re.subn(pattern, lambda m: repl, s, count=1, flags=flags)
+    if count != 1 and label == 'acquisition hot path':
+        start = s.find('  function acquisitionEffortFor(costs,resources,cfg=activeCalcConfig()){')
+        header = '  function makePlanCandidate(go,so,ro,fo,score,desired,resources,realms){'
+        end = s.find(header, start + 1)
+        if start >= 0 and end >= 0:
+            ns = s[:start] + repl + s[end + len(header):]
+            count = 1
+    if count != 1:
+        raise SystemExit(f'expected one match for {label}, got {count}')
+    s = ns
+"""
           if old not in t:
-              raise SystemExit('acquisition regex anchor not found in patch script')
+              raise SystemExit('sub_once helper anchor not found')
           p.write_text(t.replace(old,new,1),encoding='utf-8')
           PY
       - name: Apply optimizer audit
