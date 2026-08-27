@@ -1,5 +1,4 @@
 from pathlib import Path
-import re
 
 p = Path('index.html')
 s = p.read_text()
@@ -21,11 +20,25 @@ head = head.replace('<h3>Dragon / Chaos Support</h3><p>Buff, cleanse and debuff 
                     '<h3>Support / Boss</h3><p>Boss, Chaos and group support</p>', 1)
 
 def drop_card(text, title):
-    pat = re.compile(r'\n\s*<article class=\\?"buildCard\\?">(?:(?!<article class=\\?"buildCard\\?">).)*?<h3>' + re.escape(title) + r'</h3>.*?</article>', re.S)
-    text2, n = pat.subn('', text, count=1)
-    if n != 1:
-        raise SystemExit(f'expected one fallback card for {title!r}, found {n}')
-    return text2
+    token = '<article class=\\"buildCard\\">'
+    parts = text.split(token)
+    kept = [parts[0]]
+    removed = 0
+    needle = f'<h3>{title}</h3>'
+    for part in parts[1:]:
+        if needle in part and removed == 0:
+            # Each split part begins with one card body, followed by whatever comes
+            # after its closing </article>. Preserve that suffix.
+            end = part.find('</article>')
+            if end < 0:
+                raise SystemExit(f'unclosed fallback card for {title!r}')
+            kept.append(part[end + len('</article>'):])
+            removed += 1
+        else:
+            kept.append(token + part)
+    if removed != 1:
+        raise SystemExit(f'expected one fallback card for {title!r}, found {removed}')
+    return ''.join(kept)
 
 for title in ('PvP / Mobility', 'Reflect / Solo PvE', 'Carry Support'):
     head = drop_card(head, title)
