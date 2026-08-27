@@ -1954,6 +1954,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
           <div class="findMaxCell"><span>Maximum target</span><div class="maxTargetControl"><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus"></small></div></div>
         </div>
+        <!-- MOVE_PROJECTION_BEFORE_PROGRESSION_V1 -->
+        <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
+        <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <!-- COMPACT_PROGRESSION_TOP_V1 -->
         <div class="compactProgression" aria-label="Current progression used by the optimizer">
           <div class="calcGrid currentProgressGrid">
@@ -1978,8 +1981,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
             </div>
           </details>
         </div>
-        <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
-        <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="rolloverHold seasonPlanningControls">
           <label class="holdExpOption"><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span><small class="bedReserveStartNote">Start <b>Aug 28, 6:00 PM PDT</b></small></label>
           <label><input id="grace12" checked type="checkbox"> Keep a 12-hour finishing window</label>
