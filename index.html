@@ -1749,6 +1749,12 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 }
 </style>
 
+
+<style id="target-message-lines-v1">
+/* TARGET_MESSAGE_LINES_V1 */
+#targetMessage .targetMessageDetail{display:block;margin-top:3px}
+</style>
+
 </head>
 <body>
 <main>
@@ -4160,7 +4166,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       const shortageBits=[];if(oreHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(oreHardShort))} Ore`);if(essHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(essHardShort))} Essence`);if(sandHardShort>0.5)shortageBits.push(`${fmt(Math.ceil(sandHardShort))} Sand`);if(treatShort>0.5)shortageBits.push(`${fmt(Math.ceil(treatShort))} Treats`);if(refinedShort>0.5)shortageBits.push(`${fmt(Math.ceil(refinedShort))} Refined Ore`);
       const dailyShortBits=[];if(orePlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(orePlanShort))} Ore`);if(essPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(essPlanShort))} Essence`);if(sandPlanShort>0.5)dailyShortBits.push(`${fmt(Math.ceil(sandPlanShort))} Sand`);
       $('targetMessage').hidden=false;$('targetMessage').classList.add('warning','danger');
-      $('targetMessage').textContent=`⚠ Goal not achievable with remaining Realm capacity. Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.`;
+      $('targetMessage').innerHTML=`⚠ Goal not achievable with remaining Realm capacity.<span class="targetMessageDetail">Short at max 20 refreshes/day: ${shortageBits.join(' · ')||'resources'}.</span>`;
       const brief=[];
       /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
@@ -4236,10 +4242,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       if(!resourceBlocked && hasRealmNeed){
         $('targetMessage').hidden=false;
         $('targetMessage').classList.add('warning','caution');
+        // TARGET_MESSAGE_LINES_V1: keep the status sentence and recommendation on separate lines.
         const route=dailySuggested.changed
-          ? ` Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.`
+          ? `<span class="targetMessageDetail">Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.</span>`
           : '';
-        $('targetMessage').textContent=`⚠ Goal is achievable, but your current Material Realm refresh plan is too low.${route}`;
+        $('targetMessage').innerHTML=`⚠ Goal is achievable, but your current Material Realm refresh plan is too low.${route}`;
       }
       realmRec.title=realmDetailParts.join(' · ');
     }else{realmRec.hidden=true;realmRec.textContent='';realmRec.classList.remove('realmFeasible','realmImpossible');realmRec.removeAttribute('title');}
