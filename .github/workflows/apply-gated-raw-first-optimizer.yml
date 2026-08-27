@@ -1,0 +1,56 @@
+name: Apply gated raw-first optimizer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-gated-raw-first-optimizer.py'
+      - '.github/workflows/apply-gated-raw-first-optimizer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply gated optimizer patch
+        run: python .github/patch-gated-raw-first-optimizer.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('no inline script found')
+          Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site-inline.js
+      - name: Verify gated optimizer behavior
+        run: |
+          grep -q 'GATED_RAW_FIRST_OPTIMIZER_V1' index.html
+          grep -q 'function rawOnlyAcquisitionSupply' index.html
+          grep -q "treat:rawOnlyAcquisitionSupply('treat'" index.html
+          grep -q 'function candidateRealmStage' index.html
+          grep -q 'if(cStage<bStage) return true' index.html
+          grep -q 'SURPLUS_ACQUISITION_FLOORS={ore:1.00,essence:0.00,sand:0.00,treat:0.00}' index.html
+          grep -q 'const ORE_PRESERVE_PREMIUM=0.50' index.html
+          grep -q 'there is no Treat Realm tool' index.html
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Gate optimizer raw before Realm tools'
+          git push origin main
