@@ -28,7 +28,6 @@ jobs:
           if missing:
               raise SystemExit('Expected build markers missing: '+', '.join(missing))
 
-          # Conqueror: Prydwen's current core structure is Generic/all-content + Dragon.
           s=s.replace('<h3>Generic / Dungeons</h3><p>Default all-content Elemental setup</p>', '<h3>All-Content</h3><p>Default Elemental setup for dungeons, general PvE and PvP swaps</p>', 1)
           s=s.replace('<h3>Boss / Dragon</h3><p>Single-target and long-fight damage</p>', '<h3>Dragon</h3><p>Single-target and long-fight damage</p>', 1)
           s=s.replace('<li><b>Defensive/utility:</b> Flame Aura → Darkness Descends when mobility/dispel keeps you safer</li>', '<li><b>PvP / utility:</b> Flame Aura → Darkness Descends for mobility + dispel; keep Indomitable Will</li>', 1)
@@ -39,7 +38,6 @@ jobs:
           s,n=re.subn(pat,'',s,count=1,flags=re.S)
           if n!=1: raise SystemExit('Could not remove Conqueror PvP card')
 
-          # Guardian: keep the three materially distinct primary roles; reflect remains a situational swap, not a separate card.
           s=s.replace('<h3>Water / AoE</h3><p>Cold stacking with real damage</p>', '<h3>Water Offensive</h3><p>Cold stacking with real damage</p>', 1)
           s=s.replace('<h3>Dragon / Chaos Support</h3><p>Buff, cleanse and debuff support</p>', '<h3>Support / Boss</h3><p>Buff, cleanse and debuff support for Dragon, Chaos and guild bosses</p>', 1)
           pat=r'\n        <article class="buildCard"><header><div><h3>Reflect / Solo PvE</h3>.*?</article>'
@@ -52,7 +50,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re, subprocess, tempfile
+          import re, subprocess
           s=Path('index.html').read_text()
           checks={
             'Conqueror All-Content':'<h3>All-Content</h3>' in s,
@@ -64,12 +62,16 @@ jobs:
           }
           bad=[k for k,v in checks.items() if not v]
           if bad: raise SystemExit('Structure validation failed: '+', '.join(bad))
-          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
-          for i,src in enumerate(scripts):
-              if not src.strip(): continue
+          checked=0
+          for i,m in enumerate(re.finditer(r'<script([^>]*)>(.*?)</script>',s,re.S|re.I)):
+              attrs,src=m.group(1),m.group(2)
+              if re.search(r'\bsrc\s*=',attrs,re.I) or not src.strip(): continue
+              tm=re.search(r'\btype\s*=\s*["\']([^"\']+)',attrs,re.I)
+              if tm and tm.group(1).lower() not in ('text/javascript','application/javascript','module'): continue
               f=Path(f'/tmp/inline-{i}.js'); f.write_text(src)
               subprocess.run(['node','--check',str(f)],check=True)
-          print(f'Validated {len(scripts)} inline scripts')
+              checked+=1
+          print(f'Validated {checked} executable inline scripts')
           PY
       - name: Commit normalized builds and remove one-shot workflow
         run: |
