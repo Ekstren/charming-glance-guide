@@ -1996,7 +1996,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       </details>
 
       <details id="materialsDetails" class="calcPanel currentLevelsPanel materialPlanner">
-        <summary class="materialsSummary"><span class="materialsSummaryTitle">Edit saved materials and Cart rates</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="ore" selected>Raw Ore</option><option value="auto">Auto</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
+        <summary class="materialsSummary"><span class="materialsSummaryTitle">Edit saved materials and Cart rates</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
         <div class="currentLevelsBody">
           <div class="resourceInputs resourceInputsFour resourceCards">
             <div class="resourceCard"><div class="resourceCardHead"><strong>Raw Ore</strong><small id="oreProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="oreCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="oreRate" type="number" value="0"></label></div></div>
@@ -2124,7 +2124,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   CHECK_IDS.forEach(id => defaults[id] = document.getElementById(id)?.checked ?? false);
   defaults.gearLocked = false;
   defaults.theme = 'dark';
-  if(!defaults.staminaMode) defaults.staminaMode = 'ore';
+  if(!defaults.staminaMode) defaults.staminaMode = 'auto'; // STAMINA_AUTO_DEFAULT_V1
 
   const $ = id => document.getElementById(id);
   const n = (id, fallback=0) => {
@@ -2132,8 +2132,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return Number.isFinite(v) ? v : fallback;
   };
   const staminaMode = () => {
-    const raw = $('staminaMode')?.value || 'ore';
-    return ['ore','auto','essence','sand'].includes(raw) ? raw : 'ore';
+    const raw = $('staminaMode')?.value || 'auto';
+    return ['auto','ore','essence','sand'].includes(raw) ? raw : 'auto';
   };
   const staminaModeLabel = (mode = staminaMode()) => ({ore:'Ore',auto:'Auto',essence:'Skill Essence',sand:'Chrono Sand'})[mode] || 'Ore';
   /* OPTIMIZER_CLEANUP_V5: one optimizer policy only — raw-first, acquisition-efficient. */
@@ -4553,7 +4553,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=defaults[id];});
       CHECK_IDS.forEach(id=>{if($(id)) $(id).checked=defaults[id];});
     } else {
-      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
+      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'auto',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
       $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
     }
