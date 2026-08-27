@@ -1,0 +1,52 @@
+name: Apply tool action labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-tool-action-labels.py'
+      - '.github/workflows/apply-tool-action-labels.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply concise tool action labels
+        run: python .github/patch-tool-action-labels.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('no inline script found')
+          Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site-inline.js
+      - name: Verify labels
+        run: |
+          grep -q 'TOOL_ACTION_LABELS_V8' index.html
+          grep -q '<i>Spend</i><b>${fmt(planRuns)}' index.html
+          grep -q '<i>Hold</i><b>${fmt(reserveRuns)}' index.html
+          grep -q '<i>Left</i><b>${fmt(left)}' index.html
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Use Spend Hold Left for Realm tools'
+          git push origin main
