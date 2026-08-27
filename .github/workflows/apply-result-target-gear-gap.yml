@@ -1,0 +1,38 @@
+name: Result target gear gap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-result-target-gear-gap.py'
+      - '.github/workflows/apply-result-target-gear-gap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply spacing patch
+        run: python .github/patch-result-target-gear-gap.py
+      - name: Verify spacing rule
+        run: |
+          grep -q 'result-target-gear-gap-v1' index.html
+          grep -q '.optimizerTargets{margin-bottom:14px!important}' index.html
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Increase gap between progression targets and Gear slots'
+          git push origin main
