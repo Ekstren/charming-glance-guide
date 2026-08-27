@@ -1839,6 +1839,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 #targetMessage .applyRealmRecommendation:hover{background:var(--status-warning);color:var(--surface)}
 @media(max-width:700px){#targetMessage.caution:has(.applyRealmRecommendation){align-items:stretch;flex-direction:column;gap:9px}#targetMessage .applyRealmRecommendation{width:100%}}
 </style>
+
+<style id="apply-realm-refresh-button-delegation-v2">
+/* APPLY_REALM_REFRESH_BUTTON_DELEGATION_V2 */
+.applyRealmRecommendation{pointer-events:auto!important}
+</style>
 </head>
 <body>
 <main>
@@ -4506,7 +4511,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           ? `<span class="targetMessageDetail">Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.</span>`
           : '';
         const action=dailySuggested.changed
-          ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}" onclick="applyRecommendedRealmRefreshes(this)">Apply refreshes</button>`
+          ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}">Apply refreshes</button>`
           : '';
         $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠ Goal is achievable, but your current Material Realm refresh plan is too low.${route}</span>${action}`;
       }
@@ -5207,6 +5212,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     $('gearLockButton').addEventListener('click',()=>{gearLocked=!gearLocked;resetMaxAchievableUi();markManualSnapshot('gearLocked');updateGearLockUI();scheduleCalculatorUpdate(0);});
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
     $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
+    $('targetMessage')?.addEventListener('click',e=>{
+      const btn=e.target.closest?.('.applyRealmRecommendation');
+      if(btn) applyRecommendedRealmRefreshes(btn);
+    });
     $('copyPlan').addEventListener('click',copyPlan);
     $('resetCalc').addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
     // Do not wake the hidden calculator every minute before the user has opened it.
