@@ -1819,6 +1819,17 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 @media(max-width:700px){.calcGrid .findMaxCell button{text-align:center}}
 </style>
 <style id="max-helper-text-v2">/* MAX_HELPER_TEXT_V2 */ .findMaxCell #maxAchievableStatus:empty{display:none}</style>
+
+<style id="max-target-contained-v1">
+/* MAX_TARGET_CONTAINED_V1 */
+.calcGrid .findMaxCell .maxTargetControl{border:1px solid var(--today-border);background:var(--today-bg);border-radius:10px;min-height:38px;padding:6px 10px;display:grid;align-content:center;gap:2px;min-width:0}
+.calcGrid .findMaxCell .maxTargetControl button{border:0!important;background:transparent!important;border-radius:0!important;min-height:0!important;padding:0!important;text-align:left;color:var(--ink);font-size:10px;font-weight:850}
+.calcGrid .findMaxCell .maxTargetControl:hover{border-color:var(--green)}
+.calcGrid .findMaxCell .maxTargetControl:hover button{color:var(--green)}
+.calcGrid .findMaxCell .maxTargetControl small{margin:0;color:var(--muted);font-size:8px;line-height:1.25;white-space:normal}
+.calcGrid .findMaxCell .maxTargetControl small strong{color:var(--green)}
+@media(max-width:700px){.calcGrid .findMaxCell .maxTargetControl button{text-align:center}}
+</style>
 </head>
 <body>
 <main>
@@ -1913,7 +1924,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
-          <div class="findMaxCell"><span>Maximum target</span><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus"></small></div>
+          <div class="findMaxCell"><span>Maximum target</span><div class="maxTargetControl"><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus"></small></div></div>
         </div>
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
         <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
