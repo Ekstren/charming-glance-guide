@@ -1,0 +1,60 @@
+name: Apply hybrid Sage Tournament builds
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-sage-tournament-hybrid.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply hybrid Tournament builds
+        run: python .github/patch-sage-tournament-hybrid.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          for name in ['index.html','.github/build-fantomons-inject.html']:
+              s=Path(name).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+              p=Path('/tmp/'+Path(name).name+'.js')
+              p.write_text('\n'.join(scripts),encoding='utf-8')
+              subprocess.run(['node','--check',str(p)],check=True)
+              print('validated',name)
+          PY
+      - name: Verify hybrid Sage Tournament builds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for name in ['index.html','.github/build-fantomons-inject.html']:
+              s=Path(name).read_text(encoding='utf-8')
+              assert 'SAGE_TOURNAMENT_HYBRID_V1' in s
+              assert "role('Tournament','Hybrid team pressure / revive utility'" in s
+              assert "['Mana Blast','Abyssal Hand','Radiant Restoration','Frenzy Totem']" in s
+              assert "['Resurrection','Shadow Vengeance','Shadow Erosion','Linked Misfortune']" in s
+              assert "role('Tournament','Hybrid support / anti-tank pressure'" in s
+              assert "['Decoy Clone','Frenzy Totem','Dark Starburst','Abyssal Hand']" in s
+              assert "['Mantra of Blessings','Resurrection','Shadow Vengeance',\"Night's Blessing\"]" in s
+              assert "Tournament:[pick('Nyxarchon'" in s
+              assert "pick('Terragon','Alt team-utility pick" in s
+              assert "Team sustain / revive support" not in s
+              assert "Team support / carry protection" not in s
+              print('hybrid Sage Tournament builds verified',name)
+          PY
+      - name: Commit
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-fantomons-inject.html
+          git commit -m 'Make Sage Tournament builds hybrid instead of full heal'
+          git push
