@@ -3930,7 +3930,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.classList.add('shortfallCount');
   }
 
-  function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0){
+  function setToolBalance(id,top,hardShort,yieldVal,label,protectedRuns=0,rawRemaining=0){
     const el=$(id); if(!el) return;
     el.classList.remove('toolNeed','toolLeft');
     const materialName=label==='Hammers'?'Ore':label==='Knuckles'?'Essence':label==='Shovels'?'Sand':'materials';
@@ -3960,10 +3960,14 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const maxRuns=Math.max(0,Math.floor(Number(top?.maxRuns)||0));
     const missing=Math.max(0,required-maxRuns);
 
-    // TOOL_DAILY_GAP_V13 · TOOLS_FIRST_S2_RESERVES_V1: reserve-only tools stay visible
-    // so it is clear which entries are being held for S2. With reserves off and no S1
-    // shortage, the tool row remains hidden.
-    if(planRuns<=0 && reserveRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
+    // TOOL_DAILY_GAP_V13 · TOOLS_FIRST_S2_RESERVES_V1 · HIDE_RESERVE_TOOLS_WHEN_RAW_REMAINS_V1
+    // Result cards are about what the S1 upgrade plan actually needs. If raw material still
+    // remains and no Realm tool is required for the S1 spend, hide reserve-only tool counts;
+    // the Material Realm panel remains the place to inspect the carried S2 tool reserve.
+    // If a tool was genuinely needed to bridge a raw shortage, keep showing Use/Need even
+    // when the final Realm conversion leaves a small raw overage from whole-tool rounding.
+    const visibleRawRemaining=Math.max(0,Number(rawRemaining)||0);
+    if(planRuns<=0 && missing<=0 && (reserveRuns<=0 || visibleRawRemaining>0.5)){ el.innerHTML=''; el.hidden=true; return; }
     const remainingTools=Math.max(0,left+reserveRuns);
     const dailyGapRuns=Math.max(0,Math.floor(Number(top?.paidRunsUsed)||0));
     const toolSingular=label==='Hammers'?'Hammer':label==='Knuckles'?'Knuckle':label==='Shovels'?'Shovel':'tool';
@@ -4394,9 +4398,12 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       setTreatBalance('treatBalance',plan.treatCost,resources);
     }
 
-    setToolBalance('oreToolBalance',plan.realm?.ore,oreHardShort,oreYield,'Hammers');
-    setToolBalance('essenceToolBalance',plan.realm?.essence,essHardShort,essenceYield,'Knuckles',resources.s2SkillReserve?.knucklesReserved||0);
-    setToolBalance('sandToolBalance',plan.realm?.sand,sandHardShort,sandYield,'Shovels',resources.s2RelicSandReserve?.shovelsReserved||0);
+    const rawOreRemaining=Math.max(0,(Number(resources.ore)||0)-(Number(plan.oreCost)||0));
+    const rawEssenceRemaining=Math.max(0,(Number(resources.essenceTotal??resources.essence)||0)-(Number(plan.essenceCost)||0));
+    const rawSandRemaining=Math.max(0,(Number(resources.sandTotal??resources.sand)||0)-(Number(plan.sandCost)||0));
+    setToolBalance('oreToolBalance',plan.realm?.ore,oreHardShort,oreYield,'Hammers',0,rawOreRemaining);
+    setToolBalance('essenceToolBalance',plan.realm?.essence,essHardShort,essenceYield,'Knuckles',resources.s2SkillReserve?.knucklesReserved||0,rawEssenceRemaining);
+    setToolBalance('sandToolBalance',plan.realm?.sand,sandHardShort,sandYield,'Shovels',resources.s2RelicSandReserve?.shovelsReserved||0,rawSandRemaining);
 
     renderRealmDailyRecommendations(plan,resources,cfg);
 
