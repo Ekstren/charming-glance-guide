@@ -1838,7 +1838,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
-<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. Carried Knuckles satisfy this reserve first, with raw Essence protected only for any remainder. That protected amount is not spendable by the S1 optimizer. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, the Optimization priority decides the tie-break: Acquisition Efficient minimizes estimated replacement effort from the entered Cart rates plus the current map yield (one 5-Stamina node per natural hour); Preserve Ore uses the same acquisition model but applies a 75% strategic premium to Ore/Hammers because Gear has the broadest progression runway. Reserved Shovels are removed from the S1 spendable Realm pool. In Auto mode, the planner now tests the complete Ore / Essence / Sand Stamina split for each chosen score plan, minimizing total paid Material Realm cost instead of greedily choosing one node at a time. It then re-solves the score plan until the Stamina split stabilizes. Once the requested current-season target is protected, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
+<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. The S1 plan spends raw Essence normally; after the plan, leftover raw Essence covers the reserve first and Knuckles cover only any remaining reserve gap. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, the Optimization priority decides the tie-break: Acquisition Efficient minimizes estimated replacement effort from the entered Cart rates plus the current map yield (one 5-Stamina node per natural hour); Preserve Ore uses the same acquisition model but applies a 50% strategic premium to Ore/Hammers because Gear has the broadest progression runway. Sand follows the same post-plan raw-first rule: leftover raw Sand covers the reserve before Shovels are assigned to any gap. In Auto mode, the planner now tests the complete Ore / Essence / Sand Stamina split for each chosen score plan, minimizing total paid Material Realm cost instead of greedily choosing one node at a time. It then re-solves the score plan until the Stamina split stabilizes. Once the requested current-season target is protected, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
 <footer><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </main>
@@ -2908,18 +2908,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       const cp=state.result.plan, bp=best.result.plan;
       if(!!cp!==!!bp) return !!cp;
       if(cp&&bp){
-        if(cp.dawniumCost<bp.dawniumCost-1e-9) return true;
-        if(cp.dawniumCost>bp.dawniumCost+1e-9) return false;
-        if(cp.realmPacks<bp.realmPacks) return true;
-        if(cp.realmPacks>bp.realmPacks) return false;
-        if(cp.seasonKey==='s1'||bp.seasonKey==='s1'){
-          const cm=candidateResourceMetric(cp),bm=candidateResourceMetric(bp);
-          if(cm<bm-1e-9) return true;
-          if(cm>bm+1e-9) return false;
-        }
-        if(cp.overshoot<bp.overshoot-1e-9) return true;
-        if(cp.overshoot>bp.overshoot+1e-9) return false;
-        return (cp.bankedToolsUsed||0)<(bp.bankedToolsUsed||0);
+        if(betterFeasibleCandidate(cp,bp)) return true;
+        if(betterFeasibleCandidate(bp,cp)) return false;
+        return false;
       }
       const cd=state.result.diagnostic, bd=best.result.diagnostic;
       if(cd&&bd) return betterDiagnosticCandidate(cd,bd);
@@ -3078,9 +3069,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const planPerRun=Math.max(0,realmYieldFor(resources,key));
     const reservePerRun=Math.max(0,reserveYieldFor(key,cfg));
     const rawPlanShortfall=Math.max(0,cost-raw);
-    const rawAfterPlan=Math.max(0,raw-cost);
-    const reserveGap=Math.max(0,reserveTarget-rawAfterPlan);
     const planRuns=rawPlanShortfall>0&&planPerRun>0?Math.ceil(rawPlanShortfall/planPerRun):(rawPlanShortfall>0?Infinity:0);
+    const planProvided=Number.isFinite(planRuns)?planRuns*planPerRun:0;
+    const rawAfterPlan=Math.max(0,raw+planProvided-cost);
+    const reserveGap=Math.max(0,reserveTarget-rawAfterPlan);
     const reserveRuns=reserveGap>0&&reservePerRun>0?Math.ceil(reserveGap/reservePerRun):(reserveGap>0?Infinity:0);
     if(!Number.isFinite(planRuns)||!Number.isFinite(reserveRuns)){
       const inv=realmInventoryFor(key,cfg);
@@ -3090,7 +3082,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const inv=realmInventoryFor(key,cfg);
     const days=Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg);
     const top=realmTopup(totalRuns,0,1,days,inv.banked,inv.baselineRefreshes);
-    const planProvided=planRuns*planPerRun;
     const reserveProvided=reserveRuns*reservePerRun;
     return {...top,
       shortfall:rawPlanShortfall+reserveGap,
@@ -3099,7 +3090,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       planRuns,reserveRuns,planProvided,reserveProvided,
       planShortfall:rawPlanShortfall,reserveGap,rawAfterPlan,reserveTarget,
       reservePerRun,planPerRun,
-      // realmTopup() operated in run units; expose a material-scale diagnostic as well.
       remainingRunsAfterMax:Math.max(0,Number(top.remainingAfterMax)||0)
     };
   }
@@ -3215,6 +3205,41 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   const SURPLUS_ACQUISITION_FLOORS={ore:1.00,essence:0.10,sand:0.35,treat:0.35};
   const ORE_PRESERVE_PREMIUM=0.50;
 
+  /* OPTIMIZER_AUDIT_V3
+     Resource scarcity is evaluated against supply that is genuinely safe to spend after
+     enabled S2 reserves. Raw and carried tools can trade off: whichever combination leaves
+     the most current-season material available while still funding the reserve is used. */
+  function reserveAdjustedAcquisitionSupply(key,resources,cfg=activeCalcConfig()){
+    const raw=Math.max(0,Number(resources?.[key])||0);
+    const reserve=Math.max(0,reserveTargetFor(key,resources,cfg));
+    if(key==='treat') return Math.max(0,raw-reserve);
+    if(key!=='essence'&&key!=='sand') return raw;
+
+    const inv=realmInventoryFor(key,cfg);
+    const tools=Math.max(0,Math.floor(Number(inv?.banked)||0));
+    const currentPer=Math.max(0,realmYieldFor(resources,key));
+    if(reserve<=0) return raw+tools*currentPer;
+
+    const reservePer=Math.max(0,reserveYieldFor(key,cfg));
+    if(reservePer<=0) return Math.max(0,raw-reserve)+tools*currentPer;
+
+    // The objective is piecewise linear in reserved tool count, so only the boundary
+    // choices can win. Include the minimum feasible reserve-tool count and the floor/ceil
+    // around the all-tool reserve point to handle the final partial tool exactly.
+    const minTools=Math.max(0,Math.min(tools,Math.ceil(Math.max(0,reserve-raw)/reservePer)));
+    const floorTools=Math.max(0,Math.min(tools,Math.floor(reserve/reservePer)));
+    const ceilTools=Math.max(0,Math.min(tools,Math.ceil(reserve/reservePer)));
+    let best=0,feasible=false;
+    for(const held of new Set([minTools,floorTools,ceilTools,tools])){
+      const rawHeld=Math.max(0,reserve-held*reservePer);
+      if(rawHeld>raw+1e-9) continue;
+      feasible=true;
+      const spendable=Math.max(0,raw-rawHeld)+Math.max(0,tools-held)*currentPer;
+      if(spendable>best) best=spendable;
+    }
+    return feasible?best:0;
+  }
+
   function dynamicAcquisitionWeights(resources){
     const headroom=resources?.acquisitionHeadroomCosts||{};
     const supply=resources?.acquisitionSupplyEquiv||{};
@@ -3242,40 +3267,38 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   const UNIT_ACQUISITION_WEIGHTS={ore:1,essence:1,sand:1,treat:1};
 
   function marginalWeightedSpend(amount,key,resources){
-    let remaining=Math.max(0,Number(amount)||0);
-    if(remaining<=0) return 0;
-    if(key==='ore') return remaining;
+    const amountTotal=Math.max(0,Number(amount)||0);
+    if(amountTotal<=0) return 0;
+    if(key==='ore') return amountTotal;
 
     const floor=Math.max(0,Math.min(1,Number(SURPLUS_ACQUISITION_FLOORS[key])||0));
     const usefulNeed=Math.max(0,Number(resources?.acquisitionHeadroomCosts?.[key])||0);
-    let available=Math.max(0,Number(resources?.acquisitionSupplyEquiv?.[key])||0);
-    if(usefulNeed<=0) return remaining*floor;
+    const available=Math.max(0,Number(resources?.acquisitionSupplyEquiv?.[key])||0);
+    if(usefulNeed<=0) return amountTotal*floor;
 
+    // Candidate costs should never exceed productive headroom, but keep any impossible
+    // excess fully scarce rather than silently discounting it.
+    const productive=Math.min(amountTotal,usefulNeed);
     let effective=0;
 
-    // Supply above the full reachable-cap requirement is pure cushion and carries only
-    // the deferred-use floor value.
-    const excess=Math.max(0,available-usefulNeed);
-    if(excess>0){
-      const cheap=Math.min(remaining,excess);
-      effective+=cheap*floor;
-      remaining-=cheap;
-      available-=cheap;
+    if(available>=usefulNeed-1e-9){
+      // Fully funded cap: as this resource is spent on its OWN upgrades, supply and
+      // remaining demand fall together, so coverage stays full through the useful band.
+      effective+=productive*floor;
+    }else if(available<=1e-9){
+      effective+=productive;
+    }else{
+      // With an initial deficit D=N-A, after spending t on this same category the deficit
+      // remains D while remaining demand becomes N-t. Marginal scarcity is therefore
+      // floor + (1-floor)*D/(N-t). Integrate exactly until usable supply is exhausted.
+      const covered=Math.min(productive,available);
+      const deficit=Math.max(0,usefulNeed-available);
+      const denomEnd=Math.max(1e-12,usefulNeed-covered);
+      effective+=floor*covered+(1-floor)*deficit*Math.log(usefulNeed/denomEnd);
+      if(productive>covered) effective+=productive-covered;
     }
 
-    // Within the funded-cap band, marginal value rises linearly from the floor at 100%
-    // funded to 1.00 at 0% funded. Integrate that curve exactly over this candidate spend.
-    if(remaining>0 && available>0){
-      const band=Math.min(remaining,available);
-      const start=Math.min(usefulNeed,available);
-      const end=Math.max(0,start-band);
-      effective+=band-((1-floor)/(2*usefulNeed))*((start*start)-(end*end));
-      remaining-=band;
-      available-=band;
-    }
-
-    // Any spend beyond current usable supply represents fully scarce replacement demand.
-    if(remaining>0) effective+=remaining;
+    if(amountTotal>productive) effective+=amountTotal-productive;
     return effective;
   }
 
@@ -3432,7 +3455,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(Math.abs(candidate.dawniumCost-best.dawniumCost)>=1e-9) return false;
 
     // After paid-Realm cost is tied, compare modeled replacement effort. Preserve Ore uses
-    // the same acquisition model with a bounded +75% Ore premium rather than an absolute veto.
+    // the same acquisition model with a bounded +50% Ore premium rather than an absolute veto.
     if(candidate.seasonKey==='s1' || best.seasonKey==='s1'){
       const cm=candidateResourceMetric(candidate),bm=candidateResourceMetric(best);
       if(cm<bm-1e-9) return true;
@@ -3489,13 +3512,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     // Dynamic usability compares remaining safe-cap demand with everything already available
     // for that category. Spendable Realm tools count as material-equivalent supply; only tools needed
     // for a raw-material reserve gap are excluded by realmInventoryFor().
-    const essenceInv=realmInventoryFor('essence',cfg);
-    const sandInv=realmInventoryFor('sand',cfg);
     resources.acquisitionHeadroomCosts=headroomCosts||{};
     resources.acquisitionSupplyEquiv={
-      essence:Math.max(0,Number(resources?.essence)||0)+Math.max(0,Number(essenceInv?.banked)||0)*Math.max(0,realmYieldFor(resources,'essence')),
-      sand:Math.max(0,Number(resources?.sand)||0)+Math.max(0,Number(sandInv?.banked)||0)*Math.max(0,realmYieldFor(resources,'sand')),
-      treat:Math.max(0,Number(resources?.treat)||0)
+      essence:reserveAdjustedAcquisitionSupply('essence',resources,cfg),
+      sand:reserveAdjustedAcquisitionSupply('sand',resources,cfg),
+      treat:reserveAdjustedAcquisitionSupply('treat',resources,cfg)
     };
 
     if(baseScore>=desired){
@@ -3680,7 +3701,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if((resources?.s2SkillReserve?.target||0)>0) reserveKinds.push('Skill');
     if((resources?.s2RelicSandReserve?.target||0)>0) reserveKinds.push('Relic');
     if((resources?.s2FantomonTreatReserve?.target||0)>0) reserveKinds.push('Fantomon');
-    const policy=optimizerMode()==='preserve'?'acquisition effort + 75% Ore premium':'minimize reacquisition effort';
+    const policy=optimizerMode()==='preserve'?'acquisition effort + 50% Ore premium':'minimize reacquisition effort';
     return reserveKinds.length
       ? `Spend surplus first · ${policy} · S2 ${reserveKinds.join(' + ')} reserve${reserveKinds.length>1?'s':''} protected`
       : `Spend surplus first · ${policy} · no S2 resource reserve`;
