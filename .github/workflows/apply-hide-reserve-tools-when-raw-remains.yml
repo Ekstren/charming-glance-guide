@@ -1,10 +1,10 @@
-name: Hide reserve tools when raw remains
+name: Hide result tools until used
 
 on:
   push:
     branches: [main]
     paths:
-      - '.github/patch-hide-reserve-tools-when-raw-remains.py'
+      - '.github/patch-hide-tools-until-used.py'
       - '.github/workflows/apply-hide-reserve-tools-when-raw-remains.yml'
   workflow_dispatch:
 
@@ -19,8 +19,8 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Apply display patch
-        run: python .github/patch-hide-reserve-tools-when-raw-remains.py
+      - name: Apply hide-until-used display patch
+        run: python .github/patch-hide-tools-until-used.py
       - name: Validate inline JavaScript
         run: |
           python - <<'PY'
@@ -33,12 +33,10 @@ jobs:
           Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/site-inline.js
-      - name: Verify raw-remains tool hiding
+      - name: Verify tool rows hide until use
         run: |
-          grep -q 'HIDE_RESERVE_TOOLS_WHEN_RAW_REMAINS_V1' index.html
-          grep -q 'visibleRawRemaining>0.5' index.html
-          grep -q 'rawEssenceRemaining' index.html
-          grep -q 'rawSandRemaining' index.html
+          grep -q 'HIDE_TOOL_ROWS_UNTIL_USED_V2' index.html
+          grep -q "if(planRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }" index.html
       - name: Commit site update
         run: |
           if git diff --quiet -- index.html; then
@@ -48,5 +46,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Hide reserve tool counts when raw remains'
+          git commit -m 'Hide result tool rows until actually used'
           git push origin main
