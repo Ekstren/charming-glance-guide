@@ -1578,14 +1578,13 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 }
 </style>
 <!-- SITE_LAYOUT_MOBILE_END -->
-<style id="optimizer-priority-toggle-v1">
-/* OPTIMIZER_PRIORITY_TOGGLE_V1 · ACQUISITION_OPTIMIZER_V1 */
+<style id="favor-saving-ore-toggle-v1">
+/* FAVOR_SAVING_ORE_TOGGLE_V1 · efficient optimizer is always the base policy */
 .optimizerModeRow{display:flex;align-items:center;justify-content:space-between;gap:16px;border:1px solid var(--line);background:var(--ui-subpanel,var(--bg));border-radius:11px;margin:10px 0;padding:10px 12px}
 .optimizerModeCopy{display:grid;gap:3px;min-width:0}.optimizerModeCopy b{color:var(--ink);font-size:10px}.optimizerModeCopy small{color:var(--muted);font-size:9px;line-height:1.4}
-.optimizerModeToggle{display:grid;grid-template-columns:1fr 1fr;gap:3px;flex:0 0 auto;padding:3px;border:1px solid var(--line);background:var(--input-bg,var(--surface));border-radius:10px}
-.optimizerModeToggle button{min-height:34px;border:0;border-radius:7px;padding:7px 11px;color:var(--muted);background:transparent;cursor:pointer;font-size:9px;font-weight:850;white-space:nowrap}
-.optimizerModeToggle button:hover{color:var(--ink)}.optimizerModeToggle button.active,.optimizerModeToggle button[aria-pressed="true"]{background:var(--calc-accent-strong,var(--accent-strong));color:#fff}
-@media(max-width:700px){.optimizerModeRow{align-items:stretch;flex-direction:column}.optimizerModeToggle{width:100%}.optimizerModeToggle button{white-space:normal;min-height:42px}}
+.favorOreToggle{display:flex;align-items:center;gap:8px;flex:0 0 auto;min-height:34px;border:1px solid var(--line);background:var(--input-bg,var(--surface));border-radius:10px;padding:7px 11px;color:var(--ink);cursor:pointer;font-size:9px;font-weight:850;white-space:nowrap}
+.favorOreToggle input{margin:0;accent-color:var(--calc-accent-strong,var(--accent-strong));cursor:pointer}
+@media(max-width:700px){.optimizerModeRow{align-items:stretch;flex-direction:column}.favorOreToggle{width:100%;justify-content:flex-start;white-space:normal;min-height:42px}}
 </style>
 
 <style id="post-plan-reserve-lines-v2">
@@ -1892,12 +1891,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         </div>
         <small class="seasonPlanningNote" id="graceText">Cart income and projected Stamina generation stop 12 hours before season end.</small>
         <div class="optimizerModeRow" id="optimizerModeRow">
-          <div class="optimizerModeCopy"><b>Optimization priority</b><small id="optimizerModeNote">Use acquisition effort, with an extra future-value premium on Ore/Hammers.</small></div>
-          <div class="optimizerModeToggle" role="group" aria-label="Optimization priority">
-            <button type="button" data-optimizer-mode="preserve" aria-pressed="true">Preserve Ore</button>
-            <button type="button" data-optimizer-mode="acquisition" aria-pressed="false">Acquisition Efficient</button>
-          </div>
-          <input id="optimizerMode" type="hidden" value="preserve">
+          <div class="optimizerModeCopy"><b>Resource strategy</b><small id="optimizerModeNote">Efficient raw-first planning using normal replacement effort across resources.</small></div>
+          <label class="favorOreToggle"><input id="favorOre" type="checkbox"> Favor saving Ore</label>
         </div>
         <div class="seasonRulesHint" id="s2SkillReserveHint">S2 Skill Essence reserve: calculating…</div>
         <div class="seasonRulesHint" id="s2RelicReserveHint">S2 Relic Sand reserve: calculating…</div>
@@ -2009,7 +2004,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
-<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. The S1 plan spends raw Essence normally; after the plan, leftover raw Essence covers the reserve first and Knuckles cover only any remaining reserve gap. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, the Optimization priority decides the tie-break: Acquisition Efficient minimizes estimated replacement effort from the entered Cart rates plus the current map yield (one 5-Stamina node per natural hour); Preserve Ore uses the same acquisition model but applies a 50% strategic premium to Ore/Hammers because Gear has the broadest progression runway. Sand follows the same post-plan raw-first rule: leftover raw Sand covers the reserve before Shovels are assigned to any gap. In Auto mode, the planner now tests the complete Ore / Essence / Sand Stamina split for each chosen score plan, minimizing total paid Material Realm cost instead of greedily choosing one node at a time. It then re-solves the score plan until the Stamina split stabilizes. Once the requested current-season target is protected, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
+<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, when Reserve S2 Essence is enabled, the planner protects enough carried Skill material to raise all 8 S2 skills from Lv.100 to the Character level immediately reachable from the held Bed EXP reserve. The S1 plan spends raw Essence normally; after the plan, leftover raw Essence covers the reserve first and Knuckles cover only any remaining reserve gap. Among equally cheap paid-Realm routes, S1 respects whichever rollover reserves are enabled: the S2 Skill Essence reserve, one 320,000-Sand-equivalent Relic round, and/or 22,840 Basic-Treat equivalents for four Fantomons Lv.100→110. After those are protected, the planner always minimizes estimated replacement effort from the entered Cart rates plus the current map yield (one 5-Stamina node per natural hour). If Favor saving Ore is enabled, that same efficient model applies a 50% strategic premium to Ore/Hammers because Gear has the broadest progression runway. Sand follows the same post-plan raw-first rule: leftover raw Sand covers the reserve before Shovels are assigned to any gap. In Auto mode, the planner now tests the complete Ore / Essence / Sand Stamina split for each chosen score plan, minimizing total paid Material Realm cost instead of greedily choosing one node at a time. It then re-solves the score plan until the Stamina split stabilizes. Once the requested current-season target is protected, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical upgrade runway while Skill Essence is constrained by Character level. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
 <footer><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </main>
@@ -2055,9 +2050,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   const INPUT_IDS = [
     'targetStars','historicalStars','charLevel','charExp','bedExp','reserveHours','skillLevel','relicLevel','fantomonLevel',
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
-    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','optimizerMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
+    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
-  const CHECK_IDS = ['freeSpeed','holdExp','grace12','reserveS2Essence','reserveS2Sand','reserveS2Treats'];
+  const CHECK_IDS = ['freeSpeed','holdExp','grace12','reserveS2Essence','reserveS2Sand','reserveS2Treats','favorOre'];
   const defaults = Object.create(null);
   INPUT_IDS.forEach(id => defaults[id] = document.getElementById(id)?.value ?? '');
   CHECK_IDS.forEach(id => defaults[id] = document.getElementById(id)?.checked ?? false);
@@ -2075,35 +2070,18 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     return ['ore','auto','essence','sand'].includes(raw) ? raw : 'ore';
   };
   const staminaModeLabel = (mode = staminaMode()) => ({ore:'Ore',auto:'Auto',essence:'Skill Essence',sand:'Chrono Sand'})[mode] || 'Ore';
-  const optimizerMode = () => {
-    const raw=$('optimizerMode')?.value;
-    // Migrate the short-lived Balanced mode to the new acquisition-efficiency model.
-    return raw==='acquisition'||raw==='balanced' ? 'acquisition' : 'preserve';
-  };
+  // FAVOR_SAVING_ORE_TOGGLE_V1: acquisition-efficient planning is always the base model.
+  // The checkbox only adds the existing +50% strategic Ore/Hammer premium.
+  const optimizerMode = () => $('favorOre')?.checked ? 'preserve' : 'acquisition';
   function updateOptimizerModeUI(){
-    const mode=optimizerMode();
-    const input=$('optimizerMode');
-    if(input && input.value==='balanced') input.value='acquisition';
+    const favorOre=optimizerMode()==='preserve';
     const row=$('optimizerModeRow');
     if(row) row.hidden=activeCalcConfig().key!=='s1';
-    document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>{
-      const active=btn.dataset.optimizerMode===mode;
-      btn.classList.toggle('active',active);
-      btn.setAttribute('aria-pressed',active?'true':'false');
-    });
     const note=$('optimizerModeNote');
-    if(note) note.textContent=mode==='preserve'
-      ? 'Raw-first gates: reserve S2 tools first, spend safe capped raw before Realm tools, then apply a +50% Ore premium for Gear runway.'
-      : 'Raw-first gates: reserve S2 tools first, spend fully funded capped raw before Realm tools, then minimize replacement effort.';
+    if(note) note.textContent=favorOre
+      ? 'Efficient raw-first planning with a +50% strategic premium on Ore/Hammers.'
+      : 'Efficient raw-first planning using normal replacement effort across resources.';
   }
-  document.querySelectorAll('[data-optimizer-mode]').forEach(btn=>btn.addEventListener('click',()=>{
-    const input=$('optimizerMode');
-    if(!input) return;
-    input.value=btn.dataset.optimizerMode==='acquisition'?'acquisition':'preserve';
-    updateOptimizerModeUI();
-    saveState();
-    scheduleCalculatorUpdate(0);
-  }));
   const SAND_BLUE_EQ=5;
   function savedSandEquivalent(){
     return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ;
@@ -2409,6 +2387,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         if(state.realmDailyOre===undefined) state.realmDailyOre=String(oldDaily);
         if(state.realmDailyEssence===undefined) state.realmDailyEssence=String(oldDaily);
         if(state.realmDailySand===undefined) state.realmDailySand=String(oldDaily);
+      }
+      // FAVOR_SAVING_ORE_TOGGLE_V1 migration: preserve the user's previous selector choice.
+      if(state.favorOre===undefined && state.optimizerMode!==undefined){
+        state.favorOre = state.optimizerMode==='preserve';
       }
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });
@@ -4498,7 +4480,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=defaults[id];});
       CHECK_IDS.forEach(id=>{if($(id)) $(id).checked=defaults[id];});
     } else {
-      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',optimizerMode:'preserve',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
+      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:36,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'ore',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
       $('freeSpeed').checked=true; $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
     }
