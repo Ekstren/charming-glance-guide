@@ -19,7 +19,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re, subprocess, tempfile
+          import re, subprocess
           s=Path('index.html').read_text(encoding='utf-8')
           scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
           js='\n'.join(scripts)
@@ -36,8 +36,8 @@ jobs:
           assert 'return clamp(Math.floor(n(id,4)),0,MAX_REALM_REFRESHES_PER_DAY);' in s
           assert s.count('max="20" step="1" value="0"') >= 3
           assert 'Each refresh = 5 tools · max 20/day per Realm' in s
-          assert 'refreshes 11–20 count fully toward tool capacity' in s
-          print('20 refreshes = 100 tools accounting verified for all Realm types')
+          assert 'Refreshes 11–20 count fully toward tool capacity' in s
+          print('20 refreshes = 100 tools accounting verified for Ore, Essence, and Sand')
           PY
       - name: Commit
         run: |
