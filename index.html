@@ -3262,31 +3262,48 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const raw=Math.max(0,Number(rawBudget)||0);
     const cost=Math.max(0,Number(planCost)||0);
     const reserveTarget=reserveTargetFor(key,resources,cfg);
-    const planPerRun=Math.max(0,realmYieldFor(resources,key));
-    const reservePerRun=Math.max(0,reserveYieldFor(key,cfg));
-    const rawPlanShortfall=Math.max(0,cost-raw);
-    const planRuns=rawPlanShortfall>0&&planPerRun>0?Math.ceil(rawPlanShortfall/planPerRun):(rawPlanShortfall>0?Infinity:0);
-    const planProvided=Number.isFinite(planRuns)?planRuns*planPerRun:0;
-    const rawAfterPlan=Math.max(0,raw+planProvided-cost);
-    const reserveGap=Math.max(0,reserveTarget-rawAfterPlan);
-    const reserveRuns=reserveGap>0&&reservePerRun>0?Math.ceil(reserveGap/reservePerRun):(reserveGap>0?Infinity:0);
-    if(!Number.isFinite(planRuns)||!Number.isFinite(reserveRuns)){
-      const inv=realmInventoryFor(key,cfg);
-      return {feasible:false,unsupported:true,shortfall:rawPlanShortfall+reserveGap,runsNeeded:Infinity,runsUsed:0,bankedUsed:0,bankedRemaining:inv.banked,packs:Infinity,attempts:Infinity,purchasedRuns:0,sparePurchasedRuns:0,dawnium:Infinity,days:Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg),dailyCounts:[],provided:0,maxPacks:0,maxAttempts:0,maxRuns:inv.banked,maxProvided:0,remainingAfterMax:rawPlanShortfall+reserveGap,baselinePerDay:inv.baselineRefreshes,planRuns:0,reserveRuns:0,planProvided:0,reserveProvided:0,reserveGap,rawAfterPlan,reserveTarget};
-    }
-    const totalRuns=planRuns+reserveRuns;
+    if(reserveTarget<=0) return realmTopupFor(key,cost,raw,resources,cfg,p);
+
     const inv=realmInventoryFor(key,cfg);
     const days=Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg);
+    const planPerRun=Math.max(0,realmYieldFor(resources,key));
+    const reservePerRun=Math.max(0,reserveYieldFor(key,cfg));
+    const split=toolsFirstReserveSplit(key,reserveTarget,raw,resources,cfg);
+    const rawSpendable=Math.max(0,raw-split.rawHeld);
+    const planShortfall=Math.max(0,cost-rawSpendable);
+    const planRuns=planShortfall>0&&planPerRun>0?Math.ceil(planShortfall/planPerRun):(planShortfall>0?Infinity:0);
+    const reserveExtraRuns=split.shortfall>0&&reservePerRun>0?Math.ceil(split.shortfall/reservePerRun):(split.shortfall>0?Infinity:0);
+    if(!Number.isFinite(planRuns)||!Number.isFinite(reserveExtraRuns)){
+      return {feasible:false,unsupported:true,shortfall:planShortfall+split.shortfall,runsNeeded:Infinity,runsUsed:0,bankedUsed:0,bankedRemaining:inv.banked,packs:Infinity,attempts:Infinity,purchasedRuns:0,paidRunsUsed:0,sparePurchasedRuns:0,dawnium:Infinity,days,dailyCounts:[],provided:0,maxPacks:0,maxAttempts:0,maxRuns:inv.banked,maxProvided:0,remainingAfterMax:planShortfall+split.shortfall,baselinePerDay:inv.baselineRefreshes,planRuns:0,reserveRuns:split.toolRuns,planProvided:0,reserveProvided:split.toolValue,reserveGap:split.shortfall,rawAfterPlan:Math.max(0,raw-cost),rawReserveHeld:split.rawHeld,rawSpendable,reserveTarget,reservePerRun,planPerRun};
+    }
+
+    const reserveRuns=split.toolRuns+reserveExtraRuns;
+    const totalRuns=reserveRuns+planRuns;
+    // Run realmTopup in TOOL units so banked entries, 5-entry purchases, daily limits and
+    // Dawnium pricing are shared correctly between the held reserve and the S1 plan.
     const top=realmTopup(totalRuns,0,1,days,inv.banked,inv.baselineRefreshes);
-    const reserveProvided=reserveRuns*reservePerRun;
+    const maxToolRuns=Math.max(0,Math.floor(Number(top.maxRuns)||0));
+    const actualReserveRuns=Math.min(reserveRuns,maxToolRuns);
+    const maxPlanRuns=Math.max(0,maxToolRuns-actualReserveRuns);
+    const actualPlanRuns=top.feasible?planRuns:Math.min(planRuns,maxPlanRuns);
+    const planProvided=actualPlanRuns*planPerRun;
+    const reserveProvided=Math.min(reserveTarget,actualReserveRuns*reservePerRun+split.rawHeld);
+    const reserveShortAfterMax=Math.max(0,reserveTarget-(actualReserveRuns*reservePerRun+split.rawHeld));
+    const planShortAfterMax=Math.max(0,planShortfall-actualPlanRuns*planPerRun);
+    const remainingAfterMax=reserveShortAfterMax+planShortAfterMax;
+    const rawAfterPlan=Math.max(0,raw+planProvided-cost);
+
     return {...top,
-      shortfall:rawPlanShortfall+reserveGap,
-      runsNeeded:totalRuns,runsUsed:totalRuns,
+      shortfall:planShortfall+split.shortfall,
+      runsNeeded:totalRuns,
+      runsUsed:top.feasible?totalRuns:Math.min(totalRuns,maxToolRuns),
       provided:planProvided,
+      maxProvided:maxPlanRuns*planPerRun,
       planRuns,reserveRuns,planProvided,reserveProvided,
-      planShortfall:rawPlanShortfall,reserveGap,rawAfterPlan,reserveTarget,
-      reservePerRun,planPerRun,
-      remainingRunsAfterMax:Math.max(0,Number(top.remainingAfterMax)||0)
+      reserveBankedRuns:split.toolRuns,reserveExtraRuns,
+      planShortfall,reserveGap:split.shortfall,rawAfterPlan,
+      rawReserveHeld:split.rawHeld,rawSpendable,reserveTarget,
+      reservePerRun,planPerRun,remainingAfterMax
     };
   }
 
@@ -3401,10 +3418,27 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   const SURPLUS_ACQUISITION_FLOORS={ore:1.00,essence:0.10,sand:0.35,treat:0.35};
   const ORE_PRESERVE_PREMIUM=0.50;
 
-  /* OPTIMIZER_AUDIT_V3
-     Resource scarcity is evaluated against supply that is genuinely safe to spend after
-     enabled S2 reserves. Raw and carried tools can trade off: whichever combination leaves
-     the most current-season material available while still funding the reserve is used. */
+  /* OPTIMIZER_AUDIT_V3 · TOOLS_FIRST_S2_RESERVES_V1
+     Enabled S2 Essence/Sand reserves hold carried/planned Realm tools first. Raw material
+     is reserved only for the portion those tools cannot cover. If a reserve is disabled,
+     raw remains the first current-season spend source and Realm tools stay untouched until
+     the raw material is genuinely exhausted. */
+  function toolsFirstReserveSplit(key,reserveTarget,rawAvailable,resources,cfg=activeCalcConfig()){
+    const target=Math.max(0,Number(reserveTarget)||0);
+    const raw=Math.max(0,Number(rawAvailable)||0);
+    if(target<=0 || (key!=='essence'&&key!=='sand')) return {target,toolRuns:0,toolValue:0,rawHeld:Math.min(raw,target),shortfall:Math.max(0,target-raw),reservePerRun:0,toolsAvailable:0};
+    const inv=realmInventoryFor(key,cfg);
+    const tools=Math.max(0,Math.floor(Number(inv?.banked)||0));
+    const reservePerRun=Math.max(0,reserveYieldFor(key,cfg));
+    if(reservePerRun<=0) return {target,toolRuns:0,toolValue:0,rawHeld:Math.min(raw,target),shortfall:Math.max(0,target-raw),reservePerRun,toolsAvailable:tools};
+    const toolRuns=Math.min(tools,Math.ceil(target/reservePerRun));
+    const toolValue=Math.min(target,toolRuns*reservePerRun);
+    const rawNeed=Math.max(0,target-toolValue);
+    const rawHeld=Math.min(raw,rawNeed);
+    const shortfall=Math.max(0,rawNeed-rawHeld);
+    return {target,toolRuns,toolValue,rawHeld,shortfall,reservePerRun,toolsAvailable:tools};
+  }
+
   function reserveAdjustedAcquisitionSupply(key,resources,cfg=activeCalcConfig()){
     const raw=Math.max(0,Number(resources?.[key])||0);
     const reserve=Math.max(0,reserveTargetFor(key,resources,cfg));
@@ -3416,24 +3450,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const currentPer=Math.max(0,realmYieldFor(resources,key));
     if(reserve<=0) return raw+tools*currentPer;
 
-    const reservePer=Math.max(0,reserveYieldFor(key,cfg));
-    if(reservePer<=0) return Math.max(0,raw-reserve)+tools*currentPer;
-
-    // The objective is piecewise linear in reserved tool count, so only the boundary
-    // choices can win. Include the minimum feasible reserve-tool count and the floor/ceil
-    // around the all-tool reserve point to handle the final partial tool exactly.
-    const minTools=Math.max(0,Math.min(tools,Math.ceil(Math.max(0,reserve-raw)/reservePer)));
-    const floorTools=Math.max(0,Math.min(tools,Math.floor(reserve/reservePer)));
-    const ceilTools=Math.max(0,Math.min(tools,Math.ceil(reserve/reservePer)));
-    let best=0,feasible=false;
-    for(const held of new Set([minTools,floorTools,ceilTools,tools])){
-      const rawHeld=Math.max(0,reserve-held*reservePer);
-      if(rawHeld>raw+1e-9) continue;
-      feasible=true;
-      const spendable=Math.max(0,raw-rawHeld)+Math.max(0,tools-held)*currentPer;
-      if(spendable>best) best=spendable;
-    }
-    return feasible?best:0;
+    const split=toolsFirstReserveSplit(key,reserve,raw,resources,cfg);
+    // If the enabled reserve still cannot be covered, every existing raw unit/tool is
+    // already spoken for; additional Realm purchases are a last-resort feasibility path.
+    if(split.shortfall>0.5) return 0;
+    return Math.max(0,raw-split.rawHeld)+Math.max(0,tools-split.toolRuns)*currentPer;
   }
 
   function dynamicAcquisitionWeights(resources){
@@ -3820,10 +3841,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.hidden=false;
     el.textContent=`Remaining: ${fmt(left)}${unitLabel?` ${unitLabel}`:''}`;
   }
-  // RAW_FIRST_RESERVE_DISPLAY_V5: Remaining is strictly RAW material left after the
-  // current-season upgrade spend. S2 reserve text may annotate only the portion of that
-  // raw remainder that is actually reserved. Any reserve gap is handled separately by
-  // Material Realm tools; tool-equivalent value must never inflate the raw Remaining number.
+  // TOOLS_FIRST_RAW_RESERVE_DISPLAY_V6: Remaining is strictly RAW material left
+  // after the S1 plan. The reserve annotation is only the raw remainder that must be held
+  // AFTER carried/planned Realm tools have been assigned to the enabled S2 reserve first.
   function setReservedRawRemaining(id,cost,resources,key,unitLabel=''){
     const el=$(id); if(!el) return;
     el.classList.remove('shortfallCount','shortfallBreakdown','reserveHasGap');
@@ -3831,10 +3851,18 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const available=Math.max(0,Number(resources?.[key])||0);
     const left=Math.max(0,Math.floor(available-(Number(cost)||0)+1e-9));
     const reserveTarget=Math.max(0,Math.floor(reserveTargetFor(key,resources)+1e-9));
-    const rawReserved=Math.min(left,reserveTarget);
+    let rawReserved=0;
+    if(reserveTarget>0){
+      if(key==='essence'||key==='sand'){
+        const split=toolsFirstReserveSplit(key,reserveTarget,available,resources,activeCalcConfig());
+        rawReserved=Math.min(left,Math.max(0,Math.floor(split.rawHeld+1e-9)));
+      }else{
+        rawReserved=Math.min(left,reserveTarget);
+      }
+    }
     const unit=unitLabel?` ${unitLabel}`:'';
     el.hidden=false;
-    el.textContent=`Remaining: ${fmt(left)}${unit}${reserveTarget>0?` (${fmt(rawReserved)}${unit} reserved)`:''}`;
+    el.textContent=`Remaining: ${fmt(left)}${unit}${rawReserved>0?` (${fmt(rawReserved)}${unit} reserved)`:''}`;
   }
   function setEssenceBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'essence'); }
   function setSandBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'sand'); }
@@ -3882,11 +3910,10 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const maxRuns=Math.max(0,Math.floor(Number(top?.maxRuns)||0));
     const missing=Math.max(0,required-maxRuns);
 
-    // TOOL_DAILY_GAP_V13: shared by Hammers, Knuckles and Shovels.
-    // Reserve-only tools stay hidden unless the current-season plan actually uses this tool.
-    // Need = additional tool entries required beyond the CURRENT daily refresh plan. It falls
-    // as the user raises that daily setting and disappears once the configured plan covers it.
-    if(planRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
+    // TOOL_DAILY_GAP_V13 · TOOLS_FIRST_S2_RESERVES_V1: reserve-only tools stay visible
+    // so it is clear which entries are being held for S2. With reserves off and no S1
+    // shortage, the tool row remains hidden.
+    if(planRuns<=0 && reserveRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
     const remainingTools=Math.max(0,left+reserveRuns);
     const dailyGapRuns=Math.max(0,Math.floor(Number(top?.paidRunsUsed)||0));
     const toolSingular=label==='Hammers'?'Hammer':label==='Knuckles'?'Knuckle':label==='Shovels'?'Shovel':'tool';
@@ -3911,6 +3938,9 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       if(remainingTools>0){
         lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
       }
+    }
+    if(planRuns<=0 && reserveRuns>0 && remainingTools>0){
+      lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel} <em>(${fmt(reserveRuns)} reserved)</em></b></div>`);
     }
     if(missing>0){
       const rawStillShort=Math.max(0,Math.ceil(Number(hardShort)||0));
@@ -4124,15 +4154,16 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     if(reserveHint){
       if(cfg.key==='s1'&&(sr?.target||0)>0){
         reserveHint.hidden=false;
-        const rawPart=sr.rawEssence?`${fmt(sr.rawEssence)} raw Essence`:'';
-        const knucklePart=sr.knucklesReserved?`${fmt(sr.knucklesReserved)} Knuckles (≥${fmt(sr.knuckleEssence)} Essence)` : '';
-        const parts=[rawPart,knucklePart].filter(Boolean).join(' + ');
-        const short=sr.shortfall>0?` · reserve still short ${fmt(sr.shortfall)} Essence`:'';
-        reserveHint.innerHTML=`<b>S2 Skill reserve:</b> ${fmt(sr.target)} Essence-equivalent for all 8 skills Lv.100 → Lv.${sr.targetLevel}${parts?` · ${parts}`:''}${short}. Raw Essence is used by the S1 plan first; leftover raw covers this reserve, and Knuckles are needed only for any remaining reserve gap.`;
+        const split=toolsFirstReserveSplit('essence',sr.target,displayedEssence,resources,cfg);
+        const toolPart=split.toolRuns?`${fmt(split.toolRuns)} Knuckles first`:'';
+        const rawPart=split.rawHeld?`${fmt(split.rawHeld)} raw Essence`:'';
+        const parts=[toolPart,rawPart].filter(Boolean).join(' + ');
+        const short=split.shortfall>0?` · reserve still short ${fmt(split.shortfall)} Essence before extra purchases`:'';
+        reserveHint.innerHTML=`<b>S2 Skill reserve:</b> ${fmt(sr.target)} Essence-equivalent for all 8 skills Lv.100 → Lv.${sr.targetLevel}${parts?` · ${parts}`:''}${short}. Material Realm tools cover the reserve first; raw Essence is held only for any remainder.`;
       }else if(cfg.key==='s1'){
         reserveHint.hidden=false;
         reserveHint.innerHTML = !$('reserveS2Essence')?.checked
-          ? '<b>S2 Skill reserve:</b> off · all projected Essence and Knuckles are available to the S1 optimizer.'
+          ? '<b>S2 Skill reserve:</b> off · raw Essence is spent first; Knuckles stay banked unless raw runs out.'
           : '<b>S2 Skill reserve:</b> 0 · enable held Bed EXP to reserve startup skill materials automatically.';
       }else reserveHint.hidden=true;
     }
@@ -4142,13 +4173,14 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         const rr=resources.s2RelicSandReserve||season2RelicSandReserve(cfg);
         relicReserveHint.hidden=false;
         if(!$('reserveS2Sand')?.checked){
-          relicReserveHint.innerHTML='<b>S2 Relic Sand reserve:</b> off · all projected Sand and Shovels are available to the S1 optimizer.';
+          relicReserveHint.innerHTML='<b>S2 Relic Sand reserve:</b> off · raw Sand is spent first; Shovels stay banked unless raw runs out.';
         }else{
-          const rawPart=rr.rawSand?`${fmt(rr.rawSand)} raw Sand`:'';
-          const shovelPart=rr.shovelsReserved?`${fmt(rr.shovelsReserved)} Shovels (${fmt(rr.shovelSand)} S2 Sand)`:'';
-          const parts=[rawPart,shovelPart].filter(Boolean).join(' + ');
-          const short=rr.shortfall>0?` · reserve still short ${fmt(rr.shortfall)} Sand`:'';
-          relicReserveHint.innerHTML=`<b>S2 Relic Sand reserve:</b> ${fmt(rr.target)} Sand-equivalent protected for one full +${rr.fromLevel} → +${rr.toLevel} round across all 20 relics${parts?` · ${parts}`:''}${short}. Raw Sand is used by the S1 plan first; leftover raw covers this reserve, and Shovels are needed only for any remaining reserve gap.`;
+          const split=toolsFirstReserveSplit('sand',rr.target,Number(resources.sandTotal??resources.sand)||0,resources,cfg);
+          const toolPart=split.toolRuns?`${fmt(split.toolRuns)} Shovels first`:'';
+          const rawPart=split.rawHeld?`${fmt(split.rawHeld)} raw Sand`:'';
+          const parts=[toolPart,rawPart].filter(Boolean).join(' + ');
+          const short=split.shortfall>0?` · reserve still short ${fmt(split.shortfall)} Sand before extra purchases`:'';
+          relicReserveHint.innerHTML=`<b>S2 Relic Sand reserve:</b> ${fmt(rr.target)} Sand-equivalent protected for one full +${rr.fromLevel} → +${rr.toLevel} round across all 20 relics${parts?` · ${parts}`:''}${short}. Material Realm tools cover the reserve first; raw Sand is held only for any remainder.`;
         }
       }else relicReserveHint.hidden=true;
     }
@@ -4336,8 +4368,8 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         if(extraTools>0) extraRealmBits.push(`${entry.label} +${fmt(extraTools)}`);
       }
     }
-    const protectedKnuckles=Math.max(0,Math.floor(Number(resources.s2SkillReserve?.knucklesReserved)||0));
-    const protectedShovels=Math.max(0,Math.floor(Number(resources.s2RelicSandReserve?.shovelsReserved)||0));
+    const protectedKnuckles=Math.max(0,Math.floor(Number(plan.realm?.essence?.reserveRuns)||0));
+    const protectedShovels=Math.max(0,Math.floor(Number(plan.realm?.sand?.reserveRuns)||0));
     const afterPlanTools={
       ore:Math.max(0,(plan.realm?.ore?.bankedRemaining||0)+(plan.realm?.ore?.sparePurchasedRuns||0)),
       essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)),
