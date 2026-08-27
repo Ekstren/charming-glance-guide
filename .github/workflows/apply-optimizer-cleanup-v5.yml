@@ -1,0 +1,55 @@
+name: Apply optimizer cleanup v5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-optimizer-cleanup-v5.py'
+      - '.github/workflows/apply-optimizer-cleanup-v5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply optimizer cleanup
+        run: python .github/patch-optimizer-cleanup-v5.py
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts: raise SystemExit('no inline script found')
+          Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/site-inline.js
+      - name: Verify cleanup
+        run: |
+          grep -q 'OPTIMIZER_CLEANUP_V5' index.html
+          grep -q 'topupStates=Object.fromEntries' index.html
+          grep -q 'non-surplus Treats are treated as scarce' index.html
+          ! grep -q 'optimizerMode' index.html
+          ! grep -q 'updateOptimizerModeUI' index.html
+          ! grep -q 'dynamicAcquisitionWeights' index.html
+          ! grep -q 'UNIT_ACQUISITION_WEIGHTS' index.html
+          ! grep -q 'oreAcquisitionHours' index.html
+      - name: Commit site update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No site change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+Ekstren@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Clean up Primostar optimizer hot path'
+          git push origin main
