@@ -3753,9 +3753,11 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.classList.add('rawRemaining');
     const left=Math.max(0,Math.floor((Number(available)||0)-(Number(cost)||0)+1e-9));
     el.hidden=false;
-    el.textContent=`${fmt(left)}${unitLabel?` ${unitLabel}`:''} left`;
+    el.textContent=`Remaining: ${fmt(left)}${unitLabel?` ${unitLabel}`:''}`;
   }
-  // ESSENCE_TREAT_RESERVE_DISPLAY_V1: make S2-protected raw resources as obvious as
+  // ALL_RESOURCE_REMAINING_V2: use one Remaining format for Ore / Essence / Sand / Treats.
+  // S2-protected resources also show the protected amount in parentheses.
+  // make S2-protected raw resources as obvious as
   // reserved Realm tools. Remaining includes the protected amount; the parenthetical shows
   // how much of that total must stay untouched for S2.
   function setReservedRawRemaining(id,cost,resources,key,unitLabel=''){
@@ -3770,7 +3772,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     el.textContent=`Remaining: ${fmt(left)}${unit}${reserve>0?` (${fmt(reserve)}${unit} reserved)`:''}`;
   }
   function setEssenceBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'essence'); }
-  function setSandBalance(id,cost,resources){ setRawRemaining(id,cost,resources?.sand); }
+  function setSandBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'sand'); }
   function setTreatBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'treat','basic-eq.'); }
 
   function setBalance(id, cost, budget, yieldVal, itemName){
