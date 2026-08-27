@@ -1844,6 +1844,21 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
 /* APPLY_REALM_REFRESH_BUTTON_DELEGATION_V2 */
 .applyRealmRecommendation{pointer-events:auto!important}
 </style>
+
+<style id="compact-progression-top-v1">
+/* COMPACT_PROGRESSION_TOP_V1 */
+.compactProgression{border-top:1px solid var(--line);margin-top:11px;padding-top:10px}
+.compactProgression .currentProgressGrid{margin:0 0 7px;gap:7px}
+.compactProgression .gearFields{gap:7px}
+.compactProgression .calcGrid label{gap:4px;font-size:8px}
+.compactProgression .calcGrid input{min-height:36px;padding:6px 9px;font-size:13px}
+.compactProgression .exactInputs{margin-top:7px}
+.compactProgression .exactInputs>summary{padding:8px 10px;font-size:9px}
+.compactProgression .exactInputsBody{padding:10px}
+.compactProgression .exactInputsBody input{min-height:36px;margin-top:4px;padding:6px 8px}
+@media(max-width:700px){.compactProgression .currentProgressGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.compactProgression .gearFields{grid-template-columns:repeat(5,minmax(0,1fr))}.compactProgression .calcGrid input{font-size:12px;padding:6px}}
+@media(max-width:560px){.compactProgression .currentProgressGrid{grid-template-columns:1fr 1fr}.compactProgression .gearFields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 </head>
 <body>
 <main>
@@ -1939,6 +1954,30 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
           <div class="findMaxCell"><span>Maximum target</span><div class="maxTargetControl"><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus"></small></div></div>
         </div>
+        <!-- COMPACT_PROGRESSION_TOP_V1 -->
+        <div class="compactProgression" aria-label="Current progression used by the optimizer">
+          <div class="calcGrid currentProgressGrid">
+            <label>Average Skill level<input id="skillLevel" type="number" step="0.125" value="100"></label>
+            <label>Average Relic level<input id="relicLevel" min="10" type="number" step="0.05" value="10"></label>
+            <label>Average Fantomon level<input id="fantomonLevel" min="100" type="number" step="0.25" value="100"></label>
+          </div>
+          <div class="calcGrid gearFields">
+            <label>Weapon<input id="gearWeapon" type="number" value="100"></label>
+            <label>Off-hand<input id="gearOffhand" type="number" value="100"></label>
+            <label>Helmet<input id="gearHelmet" type="number" value="100"></label>
+            <label>Armor<input id="gearArmor" type="number" value="100"></label>
+            <label>Boots<input id="gearBoots" type="number" value="100"></label>
+          </div>
+          <details class="exactInputs progressionExactInputs compactExactInputs">
+            <summary><span>Exact slot levels</span><small>Optional · overrides averages</small></summary>
+            <div class="exactInputsBody exactProgressGrid">
+              <label>Skills · 8 slots<input id="exactSkillLevels" type="text" placeholder="Example: 7x130, 1x129"></label>
+              <label>Relics · 20 slots<input id="exactRelicLevels" type="text" placeholder="Example: 13x14, 7x13"></label>
+              <label>Fantomons · 4 slots<input id="exactFantoLevels" type="text" placeholder="Example: 2x136, 2x135"></label>
+              <small id="exactProgressStatus">Leave blank to keep using the balanced average model.</small>
+            </div>
+          </details>
+        </div>
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
         <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="rolloverHold seasonPlanningControls">
@@ -1957,7 +1996,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
             <p><b>2 · Find the best raw-only score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score. It prefers resources that are already sufficient to fund their reachable Season 1 cap, so surplus Sand, Essence or Treats can replace Ore instead of being stranded. It also avoids paying for meaningless overscore when otherwise-equivalent routes exist. If Treat Cart/hr is left at 0, non-surplus Treats are treated as scarce rather than inventing a replacement rate from your saved stock.</p>
             <p><b>3 · Use saved Realm tools only if raw cannot reach the target.</b> Reserved tools stay protected. Unreserved Hammers, Knuckles and Shovels become available only after every feasible raw-only route has been considered.</p>
             <p><b>4 · Buy more Realm refreshes only as the final fallback.</b> If the target still cannot be funded, the planner minimizes additional Realm purchases within the remaining daily capacity. If even the maximum remaining capacity is insufficient, it reports the actual material shortfall instead of lowering the target.</p>
-            <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. <b>Gear Lock</b> removes new Gear levels from consideration. The optimizer otherwise uses one consistent acquisition-efficient, raw-first policy so the same inputs always produce the same resource strategy.</p>
+            <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. The optimizer uses one consistent acquisition-efficient, raw-first policy and always considers Gear alongside Skills, Relics and Fantomons.</p>
           </div>
         </details>
         <div class="seasonRulesHint" id="s2SkillReserveHint">S2 Skill Essence reserve: calculating…</div>
@@ -1965,35 +2004,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
         <div class="seasonRulesHint" id="s2TreatReserveHint">S2 Fantomon Treat reserve: calculating…</div>
         
       </div>
-
-      <details id="currentLevelsDetails" class="calcPanel currentLevelsPanel">
-        <summary><span>Edit current levels</span><small id="levelSummary">—</small></summary>
-        <div class="currentLevelsBody">
-          <div class="panelTitleRow"><h3>Progression used by the optimizer</h3><button id="gearLockButton" class="gearLockButton" type="button" aria-pressed="false">🔓 Lock Gear</button></div>
-          <p id="gearLockNote" class="optimizerNote">Gear is unlocked. The optimizer can raise Gear when it is the most resource-efficient path.</p>
-          <div class="calcGrid currentProgressGrid">
-            <label>Average Skill level<input id="skillLevel" type="number" step="0.125" value="100"></label>
-            <label>Average Relic level<input id="relicLevel" min="10" type="number" step="0.05" value="10"></label>
-            <label>Average Fantomon level<input id="fantomonLevel" min="100" type="number" step="0.25" value="100"></label>
-          </div>
-          <div class="calcGrid gearFields">
-            <label>Weapon<input id="gearWeapon" type="number" value="100"></label>
-            <label>Off-hand<input id="gearOffhand" type="number" value="100"></label>
-            <label>Helmet<input id="gearHelmet" type="number" value="100"></label>
-            <label>Armor<input id="gearArmor" type="number" value="100"></label>
-            <label>Boots<input id="gearBoots" type="number" value="100"></label>
-          </div>
-          <details class="exactInputs progressionExactInputs">
-            <summary><span>Exact slot levels</span><small>Optional · overrides the averages above</small></summary>
-            <div class="exactInputsBody exactProgressGrid">
-              <label>Skills · 8 slots<input id="exactSkillLevels" type="text" placeholder="Example: 7x130, 1x129"></label>
-              <label>Relics · 20 slots<input id="exactRelicLevels" type="text" placeholder="Example: 13x14, 7x13"></label>
-              <label>Fantomons · 4 slots<input id="exactFantoLevels" type="text" placeholder="Example: 2x136, 2x135"></label>
-              <small id="exactProgressStatus">Leave blank to keep using the balanced average model.</small>
-            </div>
-          </details>
-        </div>
-      </details>
 
       <details id="materialsDetails" class="calcPanel currentLevelsPanel materialPlanner">
         <summary class="materialsSummary"><span class="materialsSummaryTitle">Edit saved materials and Cart rates</span><span class="materialsSummaryRight"><small>Optional · makes the final plan account-specific</small><span class="staminaHeaderControl" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()"><b>Stamina</b><span class="staminaControl"><select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select><small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small></span></span></span></summary>
@@ -2081,7 +2091,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   'use strict';
 
   const STORAGE_KEY = 'charmingGlanceCloneV1';
-  const PANEL_OPEN_IDS = ['currentLevelsDetails','materialsDetails'];
+  const PANEL_OPEN_IDS = ['materialsDetails'];
   const S1_END = new Date('2026-08-30T06:00:00-07:00');
   const S2_END = new Date('2026-11-05T06:00:00-08:00');
   const SERVER_START = new Date('2026-07-15T06:00:00-07:00');
@@ -2461,7 +2471,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });
       if(!hadState && activeCalcConfig().key==='s2' && $('targetStars')) $('targetStars').value='680';
-      gearLocked = !!state.gearLocked;
+      gearLocked = false; // gear lock UI removed; optimizer always considers Gear
       document.documentElement.dataset.theme = (state.theme === 'light' || state.theme === 'dark') ? state.theme : 'dark';
       // Main calculator editors default closed, then remember the user's last open/collapsed state.
       PANEL_OPEN_IDS.forEach(id => {
@@ -4238,7 +4248,7 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
     const expEstimated=cfg.key==='s1'&&s1ProjectionUsesEstimatedExp(currentCharacter.level,p.level);
     $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
     $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 unknown EXP steps use the community-style ~1.83M/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
-    $('levelSummary').textContent=`Skills ${formatAverage(skill)} · Relics +${formatAverage(relic)} · Fantomons ${formatAverage(fanto)} · Gear avg ${(gear.reduce((a,b)=>a+b,0)/5).toFixed(0)}`;
+    if($('levelSummary')) $('levelSummary').textContent=`Skills ${formatAverage(skill)} · Relics +${formatAverage(relic)} · Fantomons ${formatAverage(fanto)} · Gear avg ${(gear.reduce((a,b)=>a+b,0)/5).toFixed(0)}`;
 
     const graceHours=$('grace12').checked?12:0;
     $('graceText').textContent=`Effective Cart/Stamina production: ${resources.cartHours.toFixed(1)}h (${resources.wallResourceHours.toFixed(1)} wall hours + ${resources.boostResets} reset boost${resources.boostResets===1?'':'s'}). Cutoff is ${graceHours}h before ${cfg.name} end.`;
@@ -4532,7 +4542,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       `Relics: ${$('targetRelics').textContent}`,
       `Fantomons: ${$('targetFantomons').textContent}`,
       `Gear: W ${$('targetGearWeapon').textContent} / OH ${$('targetGearOffhand').textContent} / H ${$('targetGearHelmet').textContent} / A ${$('targetGearArmor').textContent} / B ${$('targetGearBoots').textContent}`,
-      `Gear lock: ${gearLocked?'ON':'OFF'}`,
       `Projected Stamina focus: ${staminaModeLabel(staminaMode())}${staminaMode()==='auto'&&$('staminaCurrentPlan')?` · ${$('staminaCurrentPlan').innerText.replace(/\n+/g,' · ')}`:''}`,
       `Ore: ${$('oreCost').textContent} (${ $('oreBalance').textContent })`,
       `Essence: ${$('essenceCost').textContent} (${ $('essenceBalance').textContent })`,
@@ -5208,7 +5217,6 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
       else initializeCalculatorIfNeeded();
     }));
     PANEL_OPEN_IDS.forEach(id=>$(id)?.addEventListener('toggle',saveState));
-    $('gearLockButton').addEventListener('click',()=>{gearLocked=!gearLocked;resetMaxAchievableUi();markManualSnapshot('gearLocked');updateGearLockUI();scheduleCalculatorUpdate(0);});
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
     $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
     $('targetMessage')?.addEventListener('click',e=>{
