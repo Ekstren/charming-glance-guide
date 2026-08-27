@@ -18,7 +18,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Apply tool value display patch
+      - name: Apply result-card display patch
         run: python .github/patch-tool-value-display.py
       - name: Validate inline JavaScript
         run: |
@@ -32,12 +32,16 @@ jobs:
           Path('/tmp/site-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
           node --check /tmp/site-inline.js
-      - name: Verify tool value display
+      - name: Verify result-card display
         run: |
           grep -q 'TOOL_VALUE_DISPLAY_V6' index.html
           grep -q 'const displayPer=reserveRuns>0&&reservePer>0' index.html
           grep -q 'const gained=totalRuns\*displayPer' index.html
           grep -q 'const leftValue=left\*displayPer' index.html
+          grep -q 'FANTOMON_TREAT_CARD_COMPACT_V1' index.html
+          grep -q 'RAW_REMAINING_DISPLAY_V1' index.html
+          grep -q "setRawRemaining('oreBalance',plan.oreCost,resources.ore,'raw')" index.html
+          grep -q "setRawRemaining(id,cost,resources?.treat,'basic-eq.')" index.html
       - name: Commit update
         run: |
           if git diff --quiet -- index.html; then
@@ -47,5 +51,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Use one value basis for all Realm tools'
+          git commit -m 'Show raw material remaining after plan'
           git push origin main
