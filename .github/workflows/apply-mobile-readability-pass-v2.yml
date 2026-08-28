@@ -1,0 +1,48 @@
+name: Apply mobile readability pass v2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-mobile-readability-pass-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply mobile/readability patch
+        run: python .github/patch-mobile-readability-pass-v2.py
+      - name: Verify mobile/readability override
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          checks = [
+              'MOBILE_READABILITY_PASS_V2',
+              '<style id="mobile-readability-pass-v2">',
+              '@media(max-width:760px)',
+              '@media(max-width:520px)',
+              '.sectionSwitch::-webkit-scrollbar',
+              '.calculatorLayout{grid-template-columns:1fr',
+              '.timelineNowGrid{grid-template-columns:1fr}',
+              'button:focus-visible',
+          ]
+          missing = [x for x in checks if x not in s]
+          if missing:
+              raise SystemExit(f'missing expected mobile/readability rules: {missing}')
+          print('mobile/readability pass verified')
+          PY
+      - name: Commit
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Improve mobile layout and readability'
+          git push
