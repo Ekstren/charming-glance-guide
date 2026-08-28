@@ -1,0 +1,48 @@
+name: Apply resource card consistency v1
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-resource-card-consistency-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python .github/patch-resource-card-consistency-v1.py
+      - name: Verify resource cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          checks=[
+            'RESOURCE_CARD_CONSISTENCY_V1',
+            '<style id="resource-card-consistency-v1">',
+            'Reserve: <b>${fmt(reserveTarget)}</b>',
+            'class="reserveProtected">✓ protected',
+            '.planCosts>span>b:before,',
+            '#sandCost:after{content:none!important',
+            'class="resourceRemainingLine">Remaining: <b>${fmt(left)}</b>',
+          ]
+          missing=[x for x in checks if x not in s]
+          if missing:
+              raise SystemExit('missing verification markers: '+repr(missing))
+          print('resource card consistency verification passed')
+          PY
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Clean up resource card redundancy'
+          git push
