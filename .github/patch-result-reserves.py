@@ -1,4 +1,6 @@
 from pathlib import Path
+import re
+import subprocess
 
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
@@ -135,3 +137,14 @@ if marker not in s:
     s=s.replace('</head>',css+'</head>',1)
 
 p.write_text(s,encoding='utf-8')
+
+# Validate every inline script independently so separate global script scopes do not conflict.
+text=p.read_text(encoding='utf-8')
+scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+if not scripts:
+    raise SystemExit('No inline scripts found')
+for i,js in enumerate(scripts):
+    tmp=Path(f'/tmp/charming-inline-{i}.js')
+    tmp.write_text(js,encoding='utf-8')
+    subprocess.run(['node','--check',str(tmp)],check=True)
+print(f'Validated {len(scripts)} inline scripts')
