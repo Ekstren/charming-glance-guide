@@ -1,0 +1,44 @@
+name: Restore Arena Tournament now
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-arena-tournament-now.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore last known-good Arena and Tournament implementation
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git revert 023513a8e30f69e55b77e0e30b45ec94a12ac465 --no-edit
+          rm -f .github/patch-restore-arena-tournament-builds.py
+          rm -f .github/workflows/apply-restore-arena-tournament-builds.yml
+          rm -f .github/workflows/cleanup-arena-tournament-regression.yml
+          rm -f .github/workflows/restore-arena-tournament-now.yml
+          python3 - <<'PY'
+          import re, pathlib, subprocess, tempfile
+          s=pathlib.Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          for i,js in enumerate(scripts):
+              if not js.strip(): continue
+              p=pathlib.Path(tempfile.gettempdir())/f'cg-inline-{i}.js'
+              p.write_text(js,encoding='utf-8')
+              subprocess.run(['node','--check',str(p)],check=True)
+          assert 'ARENA_TOURNAMENT_RESTORE_V2' in s
+          for label in ['Arena','Tournament']:
+              assert f"role('{label}'" in s
+          print('inline JavaScript and Arena/Tournament markers validated')
+          PY
+          git add -A
+          git commit --amend -m 'Restore Arena and Tournament builds'
+          git push
