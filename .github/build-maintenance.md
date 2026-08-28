@@ -10,22 +10,27 @@
 
 - **Do not force every class into Solo / Dungeon / Boss / PvP cards.** Show only materially distinct loadouts that actually make sense for that class and are supported by current guides, skill mechanics, or repeated community testing.
 - A class may have 2, 3, or more loadouts depending on its real meta. If one general build is best for multiple activities, keep one card and explain the relevant swap instead of duplicating it under artificial mode names.
+- **Arena and Tournament are intentional distinct PvP contexts in the current maintained site. Do not remove, merge, or revert the existing Arena/Tournament cards merely because an older baseline structure omitted them.** Keep them when they represent meaningfully different solo-PvP versus team-PvP priorities; change or remove one only when current credible evidence shows it is wrong, obsolete, redundant, or broken.
 - Each loadout should show the 4 Techniques and 4 Charms actually equipped, plus concise swaps/conditions where useful.
-- Arcanist and Dominator keep their **DPS / Heals** selector. DPS shows their DPS loadouts; Heals shows the dedicated Healing loadout. Switching roles must not destroy or recreate the build data or remove Fantomon recommendations.
+- Arcanist and Dominator keep their **DPS / Heals** selector. DPS shows their DPS loadouts plus the intentional PvP cards where applicable; Heals shows the dedicated Healing loadout. Switching roles must not destroy or recreate the build data or remove Fantomon recommendations.
 - Prefer exact reputable build-guide presets when they exist. Cross-check major recommendations against at least one other credible guide/community source when possible.
 - Keep recommendations limited to Techniques and Charms that actually belong in that loadout; do not recommend unrelated investment pieces as though they are equipped.
 - Avoid weak novelty builds when the guide itself labels them underperforming; for example, do not add Destroyer's Water/Frozen build merely to increase the number of cards.
 
 ## Current intended loadout structure
 
-- **Berserker (S1/T3):** Generic PvE, Dragon, PvP.
-- **Paladin (S1/T3):** Dungeon Tank, Water Offensive, Boss DPS / Off-Tank.
-- **Archmage (S1/T3):** AoE, Single Target (with the PvP Tempest Sphere variation noted inside Single Target).
-- **Arcanist (S1/T3):** AoE DPS, Single Target DPS, Healing.
-- **Conqueror (S2/T4):** All-Content, Dragon (PvP/mobile swaps noted inside All-Content).
-- **Guardian (S2/T4):** Dungeon Tank, Water Offensive, Support / Boss.
-- **Destroyer (S2/T4):** AoE, Single Target, Fire AoE.
-- **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing.
+The PvE/core cards below remain the baseline, with the restored **Arena + Tournament** cards intentionally retained where they are currently implemented and materially distinct. Do not use this section as a reason to delete those PvP cards.
+
+- **Berserker (S1/T3):** Generic PvE, Dragon, Arena, Tournament.
+- **Paladin (S1/T3):** Dungeon Tank, Water Offensive, Boss DPS / Off-Tank, Arena, Tournament.
+- **Archmage (S1/T3):** AoE, Single Target, Arena, Tournament.
+- **Arcanist (S1/T3):** AoE DPS, Single Target DPS, Healing, Arena, Tournament.
+- **Conqueror (S2/T4):** All-Content, Dragon, Arena, Tournament.
+- **Guardian (S2/T4):** Dungeon Tank, Water Offensive, Support / Boss, Arena, Tournament.
+- **Destroyer (S2/T4):** AoE, Single Target, Fire AoE, Arena, Tournament.
+- **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing, Arena, Tournament.
+
+Do not add additional mode cards just to make every class symmetrical. Arena/Tournament are preserved because the maintained recommendations intentionally distinguish those modes, not because every future mode must receive its own card.
 
 ## Combat Fantomon format
 
