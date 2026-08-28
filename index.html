@@ -4411,9 +4411,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
     el.hidden=false;
     el.innerHTML=`<span class="resourceRemainingLine">Remaining: <b>${fmt(left)}</b>${unit}</span>`+
-      (reserveTarget>0?`<span class="reserveRequirementLine${shortfall>0?' reserveShort':''}">Reserve: <b>${fmt(reserveTarget)}</b>${unit}${shortfall>0?` · <strong>${fmt(shortfall)} short</strong>`:' · <strong class="reserveProtected">✓ protected</strong>'}</span>`:'');
+      (reserveTarget>0?`<span class="reserveRequirementLine${shortfall>0?' reserveShort':''}">Reserve: <b>${fmt(reserveTarget)}</b>${unit}${shortfall>0?` · <strong>${fmt(Math.abs(shortfall))} short</strong>`:' · <strong class="reserveProtected">✓ protected</strong>'}</span>`:'');
     el.classList.toggle('reserveHasGap',shortfall>0);
   }
+  // POSITIVE_SHORTFALL_LABEL_V1: 'short' already implies a deficit; never render a negative sign.
   function setEssenceBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'essence'); }
   function setSandBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'sand'); }
   function setTreatBalance(id,cost,resources){ setReservedRawRemaining(id,cost,resources,'treat','basic-eq.'); }
