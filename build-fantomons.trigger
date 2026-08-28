@@ -1,1 +1,1 @@
-apply-2026-08-26-blue-sand
+apply-2026-08-28-maintained-build-structure
