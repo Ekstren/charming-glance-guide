@@ -1,0 +1,52 @@
+name: Add Pandarial timing conflict note
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-pandarial-timing-conflict.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch Charming Glance Pandarial timing note
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old="['2026-10-14',92,'Fantomon','Pandarial','Global Fantomon name · older translated calendars may call it Bamboo Immortal','fantomon'],"
+          new="['2026-10-14',92,'Fantomon','Pandarial','Global Fantomon name · older translated calendars may call it Bamboo Immortal. UNCONFIRMED CONFLICT: Aug. 27 BlueStacks and recent LDShop/WishGM general-Global guides say Pandarial joined the Summon Crystal exchange on Aug. 18, but a server-age community roadmap places Pandarial at Server Day 92. For Charming Glance, Day 92 maps to Oct. 14; do not treat Pandarial as usable before the in-game exchange confirms it on this server.','fantomon'],"
+          if old not in s:
+              raise SystemExit('Pandarial timeline row not found or already changed')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/charming-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          print(f'Extracted {len(scripts)} inline script blocks')
+          PY
+          node --check /tmp/charming-inline.js
+      - name: Commit update and remove one-shot workflow
+        run: |
+          rm .github/workflows/add-pandarial-timing-conflict.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/add-pandarial-timing-conflict.yml
+          git commit -m 'Document Pandarial timing conflict'
+          git push
