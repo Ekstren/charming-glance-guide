@@ -1959,6 +1959,21 @@ input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
   .calcGrid .findMaxCell .maxTargetControl{gap:7px!important;padding:0 9px!important}
 }
 </style>
+
+<style id="all-section-top-spacing-v1">
+/* ALL_SECTION_TOP_SPACING_V1 */
+/* Remove the extra section-level gap on Builds, Companions, and Calculator too. */
+.siteSection{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+.siteSection > :first-child{
+  margin-top:10px!important;
+}
+@media(max-width:700px){
+  .siteSection > :first-child{margin-top:8px!important}
+}
+</style>
 </head>
 <body>
 <main>
