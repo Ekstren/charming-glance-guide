@@ -1,0 +1,57 @@
+name: Clarify S2 affix transfer
+on:
+  push:
+    paths:
+      - '.github/workflows/clarify-s2-affix-transfer.yml'
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch S2 affix transfer timeline note
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old="Season 2 feature confirmed by Prydwen: Mythic-or-better gear can reroll affixes, and affixes can transfer to same-type Mythic-or-better gear. Same-season Affix Transfer is free; carrying chosen affixes across seasons uses Divinecraft Stones. Charming Glance Season 2 is confirmed for the Aug 30 6:00 AM PDT reset by the in-game season countdown."
+          new="Season 2 feature confirmed by Prydwen: Mythic-or-better S2+ gear can reroll affixes, and affixes can transfer to same-type Mythic-or-better gear. Same-season Affix Transfer is free; carrying chosen affixes across later seasons uses Divinecraft Stones. S1 gear is not eligible for Affix Transfer, even at Mythic rarity, so do not save S1 gear expecting to move its stats into S2. Charming Glance Season 2 is confirmed for the Aug 30 6:00 AM PDT reset by the in-game season countdown."
+          if old not in s:
+              raise SystemExit('Gear Refinement timeline anchor not found')
+          s=s.replace(old,new,1)
+          old2="if(title==='Gear Refinement & Affix Transfer') return 'S2 feature: Mythic+ gear can reroll or transfer affixes; same-season transfer is free. Charming Glance S2 is confirmed for Aug 30 at 6:00 AM PDT.';"
+          new2="if(title==='Gear Refinement & Affix Transfer') return 'S2 feature: Mythic+ S2 gear can reroll or transfer affixes; S1 gear cannot transfer forward. Same-season transfer is free.';"
+          if old2 not in s:
+              raise SystemExit('Gear Refinement compact summary anchor not found')
+          s=s.replace(old2,new2,1)
+          p.write_text(s,encoding='utf-8')
+      - name: Validate inline JavaScript
+        shell: python
+        run: |
+          import re, subprocess, pathlib
+          text=pathlib.Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          for i,js in enumerate(scripts):
+              f=pathlib.Path(f'/tmp/inline-{i}.js')
+              f.write_text(js,encoding='utf-8')
+              subprocess.run(['node','--check',str(f)],check=True)
+          print(f'Validated {len(scripts)} inline scripts')
+      - name: Verify and commit
+        run: |
+          grep -q 'S1 gear is not eligible for Affix Transfer' index.html
+          grep -q 'S1 gear cannot transfer forward' index.html
+          rm -f .github/workflows/clarify-s2-affix-transfer.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/clarify-s2-affix-transfer.yml
+          git commit -m 'Clarify S2 affix transfer eligibility'
+          git push
