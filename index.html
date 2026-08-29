@@ -2520,7 +2520,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. With the separate S2 reserve toggles enabled, the planner can independently protect the startup Skill Essence reserve and/or exactly one full first S2 Relic round (+10→+11 across all 20 relics). Projected Shovels count toward that Sand reserve at the S2 Realm yield first; only the remaining raw Sand is protected. Surplus Essence/Treats/Sand can then be spent in S1 while Ore/Hammers are preserved for the much longer Gear progression runway.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve removes natural Bed hours only; reset boost hours inside that reserve still count.</p>
+<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve is a hard current-season Bed cutoff: natural Bed accrual and reset speed-ups after the hold begins stay banked for Season 2 and do not count toward the Season 1 score.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. When the 12-hour finishing window is enabled, newly unlocked Skill/Relic/Fantomon caps must be available by that cutoff; final Character EXP can still add score afterward. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each paid refresh grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 refreshes per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers refreshes 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Refreshes 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
@@ -2833,12 +2833,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function resourceCutoffMs(cfg=activeCalcConfig()){
     return Math.max(Date.now(),cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0));
   }
+  /* BED_HOLD_STOPS_ALL_EXP_V1
+     Once the Bed hold begins, all Bed-generated EXP is banked for the next season and is
+     not collectible for the current-season score. This includes both natural Bed accrual
+     and the free reset speed-up. */
   function projectionExpHoursAt(ms,cfg=activeCalcConfig()){
-    const capped=Math.min(ms,cfg.end.getTime());
-    const wallHours=Math.max(0,(cfg.end.getTime()-capped)/3_600_000);
+    const endMs=cfg.end.getTime();
     const reserve=$('holdExp')?.checked?clamp(n('reserveHours',34),0,36):0;
-    const naturalHours=Math.max(0,wallHours-reserve);
-    const boostHours=2*countFuturePacificResets(capped,cfg.end.getTime());
+    const collectibleEnd=reserve>0?endMs-reserve*3_600_000:endMs;
+    const capped=Math.min(ms,collectibleEnd);
+    if(capped>=collectibleEnd) return 0;
+    const naturalHours=Math.max(0,(collectibleEnd-capped)/3_600_000);
+    const boostHours=2*countFuturePacificResets(capped,collectibleEnd);
     return naturalHours+boostHours;
   }
   function projectionResourceHoursAt(ms,cfg=activeCalcConfig()){
@@ -3092,10 +3098,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const target=Math.max(now,Math.min(Number(targetMs)||endMs,endMs));
     const reserve=$('holdExp').checked?clamp(n('reserveHours',34),0,36):0;
     const reserveStart=endMs-reserve*3_600_000;
-    // Natural Bed EXP stops when the reserve window starts; reset speed-ups remain usable.
-    const naturalEnd=Math.min(target,reserveStart);
-    const naturalHours=Math.max(0,(naturalEnd-now)/3_600_000);
-    const boostResets=countFuturePacificResets(now,target);
+    // The hold is a hard S1 collection cutoff: natural Bed EXP and reset speed-ups after
+    // reserveStart stay banked for S2 and cannot increase the S1 projected score.
+    const collectibleEnd=reserve>0?Math.min(target,reserveStart):target;
+    const naturalHours=Math.max(0,(collectibleEnd-now)/3_600_000);
+    const boostResets=collectibleEnd>now?countFuturePacificResets(now,collectibleEnd):0;
     const boostHours=2*boostResets;
     const acceleratedHours=naturalHours+boostHours;
     exp += Math.max(0,n('bedExp',0))*acceleratedHours;
