@@ -1,0 +1,40 @@
+name: Apply Bed hold EXP cutoff
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-bed-hold-stops-all-exp-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply Bed hold collection cutoff
+        run: python .github/patch-bed-hold-stops-all-exp-v1.py
+      - name: Verify Bed hold behavior
+        run: |
+          grep -q 'BED_HOLD_STOPS_ALL_EXP_V1' index.html
+          grep -q 'countFuturePacificResets(capped,collectibleEnd)' index.html
+          grep -q 'countFuturePacificResets(now,collectibleEnd)' index.html
+          grep -q 'hard current-season Bed cutoff' index.html
+          ! grep -q 'reset boost hours inside that reserve still count' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Stop S1 Bed EXP when hold begins'
+          git push
