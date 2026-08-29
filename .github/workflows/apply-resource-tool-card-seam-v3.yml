@@ -1,0 +1,35 @@
+name: Apply seamless resource tool card
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-resource-tool-card-seam-v3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Remove seam gap
+        run: python .github/patch-resource-tool-card-seam-v3.py
+      - name: Verify
+        run: |
+          grep -q 'RESOURCE_TOOL_CARD_SEAM_V3' index.html
+          grep -q 'margin-top:-5px!important' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove gaps between resource and tool sections'
+          git push
