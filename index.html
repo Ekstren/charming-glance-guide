@@ -5233,8 +5233,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       essence:Math.max(0,(plan.realm?.essence?.bankedRemaining||0)+(plan.realm?.essence?.sparePurchasedRuns||0)),
       sand:Math.max(0,(plan.realm?.sand?.bankedRemaining||0)+(plan.realm?.sand?.sparePurchasedRuns||0))
     };
+    // COMPACT_REALM_AFTER_PLAN_V1: keep the useful post-plan balance without repeating context.
     const toolLeftEls=[['hammerAfterPlan',afterPlanTools.ore,0],['knucklesAfterPlan',afterPlanTools.essence,protectedKnuckles],['shovelAfterPlan',afterPlanTools.sand,protectedShovels]];
-    toolLeftEls.forEach(([id,value,protectedCount])=>{const el=$(id);if(el){el.textContent=`After recommended plan: ${fmt(value)} spendable left${protectedCount?` · ${fmt(protectedCount)} S2 reserve`:''}`;el.classList.toggle('toolLow',value<=10);}});
+    toolLeftEls.forEach(([id,value,protectedCount])=>{const el=$(id);if(el){el.textContent=`After plan: ${fmt(value)} left${protectedCount?` · ${fmt(protectedCount)} reserved`:''}`;el.classList.toggle('toolLow',value<=10);}});
     if(hasRealmNeed||resourceBlocked){
       realmRec.hidden=false;
       const hardNotes=[];
