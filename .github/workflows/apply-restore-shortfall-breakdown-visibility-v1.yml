@@ -1,0 +1,38 @@
+name: Apply shortfall breakdown visibility restore
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-restore-shortfall-breakdown-visibility-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Restore shortfall visibility
+        run: python .github/patch-restore-shortfall-breakdown-visibility-v1.py
+      - name: Verify
+        run: |
+          grep -q 'SHORTFALL_BREAKDOWN_VISIBLE_V1' index.html
+          grep -q 'shortfallBreakdown{display:grid!important' index.html
+          ! grep -q 'shortfallBreakdown{display:none!important' index.html
+          ! grep -q 'Still short:' index.html
+          grep -q 'short on daily plan' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore visible resource shortfall details'
+          git push
