@@ -4544,11 +4544,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       el.innerHTML=`<span class="hardShort">${hardLine}</span>${appendText?`<span>${appendText}</span>`:''}`;
       return;
     }
-    const line1=`${fmt(short)} ${resourceName} short`;
+    /* RECOVERABLE_SHORTFALL_REFRESH_PLAN_V1
+       Recoverable resource cards show the exact material gap and additional tool count.
+       Once the combined daily Realm recommendation is known later in updateCalculator(),
+       the yellow bridge line is replaced with that resource's actionable refreshes/day. */
+    const line1=`${fmt(short)} ${resourceName} short${runsToCover?` · ${fmt(runsToCover)} ${itemName} needed`:''}`;
     let line2='';
     if(extraRuns>0 && per>0){
-      line2=`Extra ${itemName} can cover requirements`;
+      line2=`${fmt(runsToCover)} ${itemName} can cover`;
     }
+    el.dataset.shortfallTools=String(runsToCover||0);
+    el.dataset.shortfallItem=itemName;
+    el.dataset.shortfallResource=resourceName;
     el.innerHTML=`<span class="planShort">${line1}</span>${line2?`<span class="realmBridge">${line2}</span>`:''}${appendText?`<span>${appendText}</span>`:''}`;
   }
 
@@ -5064,6 +5071,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       const extraText=extraRealmBits.length?`Goal achievable with extra Realm entries · ${extraRealmBits.join(' · ')} beyond daily plan`:(realmCan?'Goal achievable · selected daily Realm plan covers it':'Goal not achievable through remaining Realm capacity');
       const dailyPreset={ore:realmDailyValue('ore'),essence:realmDailyValue('essence'),sand:realmDailyValue('sand')};
       const dailySuggested=suggestedRealmDailyPlan(plan,cfg);
+      // RECOVERABLE_SHORTFALL_REFRESH_PLAN_V1: put the resource-specific action directly
+      // on each recoverable shortage card. dailySuggested values are refreshes/day, while
+      // the first line keeps the exact number of additional Realm tools needed overall.
+      const applyShortfallRefreshPlan=(id,key,realmLabel)=>{
+        const el=$(id);
+        if(!el || !el.classList.contains('shortfallBreakdown') || el.querySelector('.hardShort')) return;
+        const bridge=el.querySelector('.realmBridge');
+        if(!bridge) return;
+        const recommended=Math.max(0,Math.floor(Number(dailySuggested?.[key])||0));
+        const current=Math.max(0,Math.floor(Number(dailyPreset?.[key])||0));
+        const tools=Math.max(0,Math.ceil(Number(el.dataset.shortfallTools)||0));
+        const item=el.dataset.shortfallItem||'tools';
+        if(recommended>current){
+          bridge.textContent=`Recommended: ${fmt(recommended)} ${realmLabel} Realm refresh${recommended===1?'':'es'}/day`;
+        }else if(tools>0){
+          bridge.textContent=`${fmt(tools)} ${item} can cover`;
+        }
+      };
+      applyShortfallRefreshPlan('oreBalance','ore','Ore');
+      applyShortfallRefreshPlan('essenceBalance','essence','Essence');
+      applyShortfallRefreshPlan('sandBalance','sand','Sand');
       const unknownTierCount=realmEntries.reduce((sum,e)=>sum+Math.max(0,Number(e.top?.unknownPriceRefreshes)||0),0);
       const priceNote=unknownTierCount>0?` · ${fmt(unknownTierCount)} extra purchase${unknownTierCount===1?'':'s'} use unverified 11–20 pricing`:'';
       const suggestionLine=realmCan&&dailySuggested.changed&&dailySuggested.needsExtra
@@ -5082,12 +5110,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         const action=dailySuggested.changed
           ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}">Apply refreshes</button>`
           : '';
-        const recoverableBits=[];
-        if(orePlanShort>0.5 && oreHardShort<=0.5) recoverableBits.push(`${fmt(Math.ceil(orePlanShort))} Ore short · extra Hammers can cover`);
-        if(essPlanShort>0.5 && essHardShort<=0.5) recoverableBits.push(`${fmt(Math.ceil(essPlanShort))} Essence short · extra Knuckles can cover`);
-        if(sandPlanShort>0.5 && sandHardShort<=0.5) recoverableBits.push(`${fmt(Math.ceil(sandPlanShort))} Sand short · extra Shovels can cover`);
-        const recoverableText=recoverableBits.length?` ${recoverableBits.join(' · ')}.`:' Goal is achievable with additional Material Realm refreshes.';
-        $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠${recoverableText}${route}</span>${action}`;
+        // Resource cards now carry the exact deficit + resource-specific refresh action.
+        // Keep this banner focused on the combined plan and its one-click Apply control.
+        $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠ Goal is achievable with the recommended Material Realm refresh plan.${route}</span>${action}`;
       }
       realmRec.title=realmDetailParts.join(' · ');
     }else{realmRec.hidden=true;realmRec.textContent='';realmRec.classList.remove('realmFeasible','realmImpossible');realmRec.removeAttribute('title');}
