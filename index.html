@@ -4535,19 +4535,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       el.textContent=`0 short${appendText}`;
       return;
     }
-    const line1=`${fmt(short)} short on daily plan${runsToCover?` · ${fmt(runsToCover)} ${itemName} to fully cover`:''}`;
-    /* HARD_SHORT_STATUS_V1: a hard short is an unachievable/error state, not a warning.
-       Keep the exact raw-material deficit visible and explain that remaining Realm-tool
-       capacity cannot close it. Recoverable Realm bridges stay yellow. */
-    let line2='';
-    let line2Class='realmBridge';
+    /* SHORTFALL_MESSAGING_V2
+       Hard shorts collapse to one red failure line; don't show a theoretical daily-plan
+       bridge that cannot actually succeed. Recoverable shortages keep a concise red+yellow
+       two-line pattern with the exact raw-material deficit. */
     if(hard>0){
-      line2=`${fmt(hard)} ${resourceName} hard short · Extra ${itemName} will not cover requirements`;
-      line2Class='hardShort';
-    }else if(extraRuns>0 && per>0){
-      line2=`${fmt(usableExtra)} extra ${itemName} still available = ${fmt(extraResource)} ${resourceName}`;
+      const hardLine=`${fmt(hard)} ${resourceName} hard short · Extra ${itemName} will not cover requirements`;
+      el.innerHTML=`<span class="hardShort">${hardLine}</span>${appendText?`<span>${appendText}</span>`:''}`;
+      return;
     }
-    el.innerHTML=`<span class="planShort">${line1}</span>${line2?`<span class="${line2Class}">${line2}</span>`:''}${appendText?`<span>${appendText}</span>`:''}`;
+    const line1=`${fmt(short)} ${resourceName} short`;
+    let line2='';
+    if(extraRuns>0 && per>0){
+      line2=`Extra ${itemName} can cover requirements`;
+    }
+    el.innerHTML=`<span class="planShort">${line1}</span>${line2?`<span class="realmBridge">${line2}</span>`:''}${appendText?`<span>${appendText}</span>`:''}`;
   }
 
   function renderAstralPact(totalStars){
@@ -5080,7 +5082,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         const action=dailySuggested.changed
           ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}">Apply refreshes</button>`
           : '';
-        $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠ Goal is achievable, but your current Material Realm refresh plan is too low.${route}</span>${action}`;
+        const recoverableBits=[];
+        if(orePlanShort>0.5 && oreHardShort<=0.5) recoverableBits.push(`${fmt(Math.ceil(orePlanShort))} Ore short · extra Hammers can cover`);
+        if(essPlanShort>0.5 && essHardShort<=0.5) recoverableBits.push(`${fmt(Math.ceil(essPlanShort))} Essence short · extra Knuckles can cover`);
+        if(sandPlanShort>0.5 && sandHardShort<=0.5) recoverableBits.push(`${fmt(Math.ceil(sandPlanShort))} Sand short · extra Shovels can cover`);
+        const recoverableText=recoverableBits.length?` ${recoverableBits.join(' · ')}.`:' Goal is achievable with additional Material Realm refreshes.';
+        $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠${recoverableText}${route}</span>${action}`;
       }
       realmRec.title=realmDetailParts.join(' · ');
     }else{realmRec.hidden=true;realmRec.textContent='';realmRec.classList.remove('realmFeasible','realmImpossible');realmRec.removeAttribute('title');}
