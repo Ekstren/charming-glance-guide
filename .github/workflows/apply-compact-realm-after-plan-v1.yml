@@ -22,9 +22,9 @@ jobs:
         run: |
           grep -q 'COMPACT_REALM_AFTER_PLAN_V1' index.html
           grep -q 'After plan:' index.html
+          grep -q '${fmt(protectedCount)} reserved' index.html
           ! grep -q 'After recommended plan:' index.html
           ! grep -q 'spendable left' index.html
-          ! grep -q 'S2 reserve' index.html
       - name: Commit generated index
         run: |
           if git diff --quiet -- index.html; then
