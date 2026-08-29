@@ -1230,10 +1230,11 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 
 <style id="goal-achievability-cleanup">
 /* GOAL_ACHIEVABILITY_CLEANUP_V1
-   One goal-status warning; resource cards keep only the useful balance/shortfall line. */
+   One goal-status warning; resource cards keep the detailed shortfall block without a duplicate tool-footer shortage. */
 .materialRealmRecommendation{display:none!important}
 .planCosts small.toolBalance{display:grid!important;gap:3px!important}
-.planCosts small.shortfallBreakdown{display:none!important}
+/* SHORTFALL_BREAKDOWN_VISIBLE_V1: keep the detailed daily-plan / Realm-capacity shortfall card visible; the duplicate Still short footer remains removed. */
+.planCosts small.shortfallBreakdown{display:grid!important;gap:2px!important}
 .planCosts span{gap:6px!important}
 .targetMessage:not([hidden]){margin:10px 0 14px!important;min-height:0!important}
 </style>
