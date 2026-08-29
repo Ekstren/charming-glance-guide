@@ -1,0 +1,39 @@
+name: Apply resource tool and reward layout
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-resource-tools-and-reward-layout-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply layout polish
+        run: python .github/patch-resource-tools-and-reward-layout-v1.py
+      - name: Verify
+        run: |
+          grep -q 'RESOURCE_TOOLS_REWARD_LAYOUT_V1' index.html
+          grep -q 'primostarRewardColumns' index.html
+          grep -q 'rawRemaining:has(+ small.toolBalance:not(\[hidden\]))' index.html
+          grep -q 'reserveRequirementLine{' index.html
+          grep -q 'REMAINING_REALM_TOOLS_VISIBLE_V1' index.html
+          grep -q 'TARGET_PLAN_HEADER_COMPLETE_V1' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Group Realm tools inside resource cards'
+          git push
