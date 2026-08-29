@@ -1,0 +1,38 @@
+name: Apply rich resource shortfall restore
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-restore-rich-resource-shortfall-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Restore rich shortfall cards
+        run: python .github/patch-restore-rich-resource-shortfall-v1.py
+      - name: Verify
+        run: |
+          grep -q 'RICH_RESOURCE_SHORTFALL_NO_DUPLICATE_V1' index.html
+          grep -q 'short on daily plan' index.html
+          grep -q 'hard short · no extra' index.html
+          ! grep -q 'Still short:</i>' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore detailed resource shortfall cards'
+          git push
