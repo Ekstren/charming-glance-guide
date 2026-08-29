@@ -1,0 +1,42 @@
+name: Apply remaining Realm tools restore
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-restore-remaining-tools-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Restore remaining tool rows
+        run: python .github/patch-restore-remaining-tools-v1.py
+      - name: Verify regressions
+        run: |
+          grep -q 'REMAINING_REALM_TOOLS_VISIBLE_V1' index.html
+          grep -q 'TARGET_PLAN_HEADER_COMPLETE_V1' index.html
+          grep -q 'toolRemainingLine' index.html
+          grep -q "if(remainingTools>0)" index.html
+          ! grep -q "if(planRuns<=0){ el.innerHTML=''; el.hidden=true; return; }" index.html
+          ! grep -q 'intro.textContent=next' index.html
+          grep -q "summaryOptimizedScore').textContent=fmt(plan.score)" index.html
+          grep -q "desiredScore').textContent=fmt(desired)" index.html
+          grep -q "targetStatus').textContent=resourceBlocked?'resources':'✓'" index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore remaining Realm tools in result cards'
+          git push
