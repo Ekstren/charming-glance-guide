@@ -1,0 +1,37 @@
+name: Apply Blue Sand label cleanup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-remove-blue-sand-x5-labels-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Remove redundant Blue Sand x5 labels
+        run: python .github/patch-remove-blue-sand-x5-labels-v1.py
+      - name: Verify
+        run: |
+          grep -q 'BLUE_SAND_LABEL_CLEANUP_V1' index.html
+          grep -q 'Saved · Blue</span>' index.html
+          ! grep -q 'Saved · Blue ×5' index.html
+          ! grep -q 'Blue counts ×' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove redundant Blue Sand x5 labels'
+          git push
