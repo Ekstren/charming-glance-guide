@@ -3526,8 +3526,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
     // RESERVE_REQUIREMENT_FIXED_V1: the configured rollover requirement never shrinks just
     // because the account is currently short. Coverage and shortfall are tracked separately.
-    const skillSplit=toolsFirstReserveSplit('essence',skillBase.target,essenceTotal,resources,cfg);
-    const relicSplit=toolsFirstReserveSplit('sand',relicBase.target,sandTotal,resources,cfg);
+    const skillSplit=rawFirstReserveSplit('essence',skillBase.target,essenceTotal,resources,cfg);
+    const relicSplit=rawFirstReserveSplit('sand',relicBase.target,sandTotal,resources,cfg);
     const treatCovered=Math.min(treatTotal,Math.max(0,Number(treatBase.target)||0));
     const skillMeta={...skillBase,rawEssence:skillSplit.rawHeld,knucklesReserved:skillSplit.toolRuns,knuckleEssence:skillSplit.toolValue,shortfall:skillSplit.shortfall};
     const relicMeta={...relicBase,rawSand:relicSplit.rawHeld,shovelsReserved:relicSplit.toolRuns,shovelSand:relicSplit.toolValue,shortfall:relicSplit.shortfall};
@@ -3997,7 +3997,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const days=Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg);
     const planPerRun=Math.max(0,realmYieldFor(resources,key));
     const reservePerRun=Math.max(0,reserveYieldFor(key,cfg));
-    const split=toolsFirstReserveSplit(key,reserveTarget,raw,resources,cfg);
+    const split=rawFirstReserveSplit(key,reserveTarget,raw,resources,cfg);
     const rawSpendable=Math.max(0,raw-split.rawHeld);
     const planShortfall=Math.max(0,cost-rawSpendable);
     const planRuns=planShortfall>0&&planPerRun>0?Math.ceil(planShortfall/planPerRun):(planShortfall>0?Infinity:0);
@@ -4151,19 +4151,28 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
      is reserved only for the portion those tools cannot cover. If a reserve is disabled,
      raw remains the first current-season spend source and Realm tools stay untouched until
      the raw material is genuinely exhausted. */
-  function toolsFirstReserveSplit(key,reserveTarget,rawAvailable,resources,cfg=activeCalcConfig()){
+  /* RAW_FIRST_S2_TOOL_RESERVE_V1
+     Protect the S2 raw-material requirement with raw material first. Realm tools are
+     reserved only for the uncovered remainder. This prevents Knuckles/Shovels (and any
+     future Ore-tool reserve) from being needlessly locked when raw stock already covers
+     the rollover target. */
+  function rawFirstReserveSplit(key,reserveTarget,rawAvailable,resources,cfg=activeCalcConfig()){
     const target=Math.max(0,Number(reserveTarget)||0);
     const raw=Math.max(0,Number(rawAvailable)||0);
-    if(target<=0 || (key!=='essence'&&key!=='sand')) return {target,toolRuns:0,toolValue:0,rawHeld:Math.min(raw,target),shortfall:Math.max(0,target-raw),reservePerRun:0,toolsAvailable:0};
+    const rawHeld=Math.min(raw,target);
+    const uncovered=Math.max(0,target-rawHeld);
+    if(target<=0 || (key!=='ore'&&key!=='essence'&&key!=='sand')){
+      return {target,toolRuns:0,toolValue:0,rawHeld,shortfall:uncovered,reservePerRun:0,toolsAvailable:0};
+    }
     const inv=realmInventoryFor(key,cfg);
     const tools=Math.max(0,Math.floor(Number(inv?.banked)||0));
     const reservePerRun=Math.max(0,reserveYieldFor(key,cfg));
-    if(reservePerRun<=0) return {target,toolRuns:0,toolValue:0,rawHeld:Math.min(raw,target),shortfall:Math.max(0,target-raw),reservePerRun,toolsAvailable:tools};
-    const toolRuns=Math.min(tools,Math.ceil(target/reservePerRun));
-    const toolValue=Math.min(target,toolRuns*reservePerRun);
-    const rawNeed=Math.max(0,target-toolValue);
-    const rawHeld=Math.min(raw,rawNeed);
-    const shortfall=Math.max(0,rawNeed-rawHeld);
+    if(reservePerRun<=0 || uncovered<=0){
+      return {target,toolRuns:0,toolValue:0,rawHeld,shortfall:uncovered,reservePerRun,toolsAvailable:tools};
+    }
+    const toolRuns=Math.min(tools,Math.ceil(uncovered/reservePerRun));
+    const toolValue=Math.min(uncovered,toolRuns*reservePerRun);
+    const shortfall=Math.max(0,uncovered-toolValue);
     return {target,toolRuns,toolValue,rawHeld,shortfall,reservePerRun,toolsAvailable:tools};
   }
 
@@ -4173,9 +4182,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if(key==='treat') return Math.max(0,raw-reserve);
     if(key==='essence'||key==='sand'){
       if(reserve<=0) return raw;
-      const split=toolsFirstReserveSplit(key,reserve,raw,resources,cfg);
-      // Existing/planned Realm tools cover the enabled S2 reserve first. Only the raw
-      // remainder is withheld from the current-season raw-only optimizer.
+      const split=rawFirstReserveSplit(key,reserve,raw,resources,cfg);
+      // Raw material covers the enabled S2 reserve first. Realm tools are reserved only
+      // for any uncovered remainder; the protected raw amount is withheld from S1 spending.
       if(split.shortfall>0.5) return 0;
       return Math.max(0,raw-split.rawHeld);
     }
@@ -4574,7 +4583,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     let covered=0,shortfall=0,detail='';
 
     if(reserveTarget>0 && (key==='essence'||key==='sand')){
-      const split=toolsFirstReserveSplit(key,reserveTarget,left,resources,activeCalcConfig());
+      const split=rawFirstReserveSplit(key,reserveTarget,left,resources,activeCalcConfig());
       covered=Math.min(reserveTarget,Math.floor(split.toolValue+split.rawHeld+1e-9));
       shortfall=Math.max(0,reserveTarget-covered);
       const parts=[];
@@ -5032,12 +5041,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if(reserveHint){
       if(cfg.key==='s1'&&(sr?.target||0)>0){
         reserveHint.hidden=false;
-        const split=toolsFirstReserveSplit('essence',sr.target,displayedEssence,resources,cfg);
-        const toolPart=split.toolRuns?`${fmt(split.toolRuns)} Knuckles first`:'';
+        const split=rawFirstReserveSplit('essence',sr.target,displayedEssence,resources,cfg);
+        const toolPart=split.toolRuns?`${fmt(split.toolRuns)} Knuckles reserved`:'';
         const rawPart=split.rawHeld?`${fmt(split.rawHeld)} raw Essence`:'';
         const parts=[toolPart,rawPart].filter(Boolean).join(' + ');
         const short=split.shortfall>0?` · reserve still short ${fmt(split.shortfall)} Essence before extra purchases`:'';
-        reserveHint.innerHTML=`<b>S2 Skill reserve:</b> ${fmt(sr.target)} Essence-equivalent for all 8 skills Lv.100 → Lv.${sr.targetLevel}${parts?` · ${parts}`:''}${short}. Material Realm tools cover the reserve first; raw Essence is held only for any remainder.`;
+        reserveHint.innerHTML=`<b>S2 Skill reserve:</b> ${fmt(sr.target)} Essence-equivalent for all 8 skills Lv.100 → Lv.${sr.targetLevel}${parts?` · ${parts}`:''}${short}. Raw Essence covers the reserve first; Knuckles are reserved only for any uncovered remainder.`;
       }else if(cfg.key==='s1'){
         reserveHint.hidden=false;
         reserveHint.innerHTML = !$('reserveS2Essence')?.checked
@@ -5053,12 +5062,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         if(!$('reserveS2Sand')?.checked){
           relicReserveHint.innerHTML='<b>S2 Relic Sand reserve:</b> off · raw Sand is spent first; Shovels stay banked unless raw runs out.';
         }else{
-          const split=toolsFirstReserveSplit('sand',rr.target,Number(resources.sandTotal??resources.sand)||0,resources,cfg);
-          const toolPart=split.toolRuns?`${fmt(split.toolRuns)} Shovels first`:'';
+          const split=rawFirstReserveSplit('sand',rr.target,Number(resources.sandTotal??resources.sand)||0,resources,cfg);
+          const toolPart=split.toolRuns?`${fmt(split.toolRuns)} Shovels reserved`:'';
           const rawPart=split.rawHeld?`${fmt(split.rawHeld)} raw Sand`:'';
           const parts=[toolPart,rawPart].filter(Boolean).join(' + ');
           const short=split.shortfall>0?` · reserve still short ${fmt(split.shortfall)} Sand before extra purchases`:'';
-          relicReserveHint.innerHTML=`<b>S2 Relic Sand reserve:</b> ${fmt(rr.target)} Sand-equivalent protected for one full +${rr.fromLevel} → +${rr.toLevel} round across all 20 relics${parts?` · ${parts}`:''}${short}. Material Realm tools cover the reserve first; raw Sand is held only for any remainder.`;
+          relicReserveHint.innerHTML=`<b>S2 Relic Sand reserve:</b> ${fmt(rr.target)} Sand-equivalent protected for one full +${rr.fromLevel} → +${rr.toLevel} round across all 20 relics${parts?` · ${parts}`:''}${short}. Raw Sand covers the reserve first; Shovels are reserved only for any uncovered remainder.`;
         }
       }else relicReserveHint.hidden=true;
     }
