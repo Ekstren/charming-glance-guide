@@ -1,0 +1,38 @@
+name: Apply concise shortfall messaging
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-shortfall-messaging-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply shortfall messaging
+        run: python .github/patch-shortfall-messaging-v2.py
+      - name: Verify
+        run: |
+          grep -q 'SHORTFALL_MESSAGING_V2' index.html
+          grep -q 'hard short · Extra .* will not cover requirements' index.html
+          grep -q 'Extra .* can cover requirements' index.html
+          ! grep -q 'short on daily plan' index.html
+          ! grep -q 'Still short:' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Simplify recoverable and hard shortfalls'
+          git push
