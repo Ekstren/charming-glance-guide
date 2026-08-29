@@ -4515,25 +4515,33 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     el.innerHTML=lines.join('');
     el.classList.add((missing>0||dailyGapRuns>0)?'toolNeed':'toolLeft');
   }
-  /* RESOURCE_SHORTFALL_CARD_CLEANUP_V1
-     Resource cards use one shortage status instead of repeating daily-plan, hard-cap,
-     and tool-footer warnings. Detailed Realm capacity remains in the Material Realm panel. */
+  /* RICH_RESOURCE_SHORTFALL_NO_DUPLICATE_V1
+     Keep the richer daily-plan / hard-cap presentation in the resource card itself.
+     The separate Material Realm tool footer no longer repeats a "Still short" line. */
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
     const el=$(id); if(!el) return;
     const short=Math.max(0,Math.ceil(Number(planShort)||0));
     const per=Math.max(0,Number(yieldVal)||0);
     const runsToCover=per>0?Math.ceil(short/per):0;
     const extraRuns=Math.max(0,Math.floor(Number(maxExtraRuns)||0));
+    const usableExtra=Math.min(runsToCover,extraRuns);
+    const extraResource=usableExtra*per;
     const hard=Math.max(0,Math.ceil(Number(hardShort)||0));
-    el.classList.remove('shortfallBreakdown','rawRemaining','reserveHasGap');
-    el.classList.add('shortfallCount');
+    el.classList.remove('shortfallCount','rawRemaining','reserveHasGap');
+    el.classList.add('shortfallBreakdown');
     el.hidden=false;
-    if(short<=0){ el.textContent=''; el.hidden=true; return; }
-    let suffix='';
-    if(hard>0) suffix=' · hard cap';
-    else if(runsToCover>0 && extraRuns>=runsToCover) suffix=` · ${fmt(runsToCover)} ${itemName} can cover`;
-    else if(extraRuns>0) suffix=` · ${fmt(extraRuns)} extra ${itemName} available`;
-    el.textContent=`${fmt(short)} short${suffix}${appendText||''}`;
+    if(short<=0){
+      el.textContent=`0 short${appendText}`;
+      return;
+    }
+    const line1=`${fmt(short)} short on daily plan${runsToCover?` · ${fmt(runsToCover)} ${itemName} to fully cover`:''}`;
+    let line2='';
+    if(extraRuns>0 && per>0){
+      line2=`${fmt(usableExtra)} extra ${itemName} still available = ${fmt(extraResource)} ${resourceName}${hard>0?` · ${fmt(hard)} hard short`:''}`;
+    }else if(hard>0){
+      line2=`${fmt(hard)} hard short · no extra ${itemName} capacity remains`;
+    }
+    el.innerHTML=`<span class="planShort">${line1}</span>${line2?`<span class="realmBridge">${line2}</span>`:''}${appendText?`<span>${appendText}</span>`:''}`;
   }
 
   function renderAstralPact(totalStars){
