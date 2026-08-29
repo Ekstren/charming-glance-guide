@@ -2421,13 +2421,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         </div>
         <div class="rolloverHold seasonPlanningControls">
           <label class="holdExpOption"><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span><small class="bedReserveStartNote">Start <b>Aug 28, 8:00 PM PDT</b></small></label>
-          <label><input id="grace12" checked type="checkbox"> Keep a 12-hour finishing window</label>
           <label><input id="reserveS2Essence" checked type="checkbox"> Reserve S2 Essence</label>
           <label><input id="reserveS2Sand" checked type="checkbox"> Reserve S2 Sand</label>
           <label><input id="reserveS2Treats" checked type="checkbox"> Reserve S2 Treats</label>
           <input id="reserveHours" min="0" max="36" type="number" value="34" hidden>
         </div>
-        <small class="seasonPlanningNote" id="graceText">Cart income and projected Stamina generation stop 12 hours before season end.</small>
+        <small class="seasonPlanningNote" id="graceText">Cart income, Stamina generation, Realm purchase availability, and upgrade timing run through the season reset.</small>
         <details class="optimizerExplain" id="optimizerExplain">
           <summary><span>How the optimizer decides</span><small>Raw first → saved Realm tools → extra Realm purchases</small></summary>
           <div class="optimizerExplainBody">
@@ -2521,7 +2520,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve is a hard current-season Bed cutoff: natural Bed accrual and reset speed-ups after the hold begins stay banked for Season 2 and do not count toward the Season 1 score.</p>
-<p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. When the 12-hour finishing window is enabled, newly unlocked Skill/Relic/Fantomon caps must be available by that cutoff; final Character EXP can still add score afterward. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
+<p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each paid refresh grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 refreshes per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers refreshes 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Refreshes 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
@@ -2632,7 +2631,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
-  const CHECK_IDS = ['holdExp','grace12','reserveS2Essence','reserveS2Sand','reserveS2Treats'];
+  const CHECK_IDS = ['holdExp','reserveS2Essence','reserveS2Sand','reserveS2Treats'];
   const defaults = Object.create(null);
   INPUT_IDS.forEach(id => defaults[id] = document.getElementById(id)?.value ?? '');
   CHECK_IDS.forEach(id => defaults[id] = document.getElementById(id)?.checked ?? false);
@@ -2682,7 +2681,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   }
   function futureRealmPurchaseDays(cfg=activeCalcConfig()){
     const now=Date.now();
-    const cutoff=cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0);
+    const cutoff=cfg.end.getTime();
     return cutoff>now ? countFuturePacificResets(now,cutoff) : 0;
   }
   function plannedRealmRunsFor(key,cfg=activeCalcConfig()){
@@ -2831,7 +2830,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if($('timelineResetLocal')) $('timelineResetLocal').textContent=reset;
   }
   function resourceCutoffMs(cfg=activeCalcConfig()){
-    return Math.max(Date.now(),cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0));
+    return Math.max(Date.now(),cfg.end.getTime());
   }
   /* BED_HOLD_STOPS_ALL_EXP_V1
      Once the Bed hold begins, all Bed-generated EXP is banked for the next season and is
@@ -2848,7 +2847,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return naturalHours+boostHours;
   }
   function projectionResourceHoursAt(ms,cfg=activeCalcConfig()){
-    const cutoff=cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0);
+    const cutoff=cfg.end.getTime();
     const capped=Math.min(ms,cutoff);
     if(capped>=cutoff) return 0;
     const wallHours=(cutoff-capped)/3_600_000;
@@ -2889,7 +2888,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
        Future projection then loses that reset at the same time, so season-end tool totals stay
        stable instead of requiring the user to manually add Hammers/Knuckles/Shovels each day.
        Match futureRealmPurchaseDays(): purchases stop at the optional finishing-window cutoff. */
-    const realmCutoffMs=cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0);
+    const realmCutoffMs=cfg.end.getTime();
     const realmAgeEnd=Math.min(cappedNow,realmCutoffMs);
     const elapsedRealmResets=realmAgeEnd>snapshotAtMs
       ? countFuturePacificResets(snapshotAtMs,realmAgeEnd)
@@ -3120,7 +3119,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return projectCharacterTo(cfg.end.getTime(),cfg);
   }
   function upgradeFinishCutoffMs(cfg=activeCalcConfig()){
-    return cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0);
+    return cfg.end.getTime();
   }
 
   const gearScore = (levels,cfg=activeCalcConfig()) => levels.reduce((s,l) => s + Math.max(0,l-cfg.scoreFloor)*cfg.weights.gear, 0);
@@ -3448,7 +3447,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function projectedResources(hours,cfg=activeCalcConfig()){
     const now=Date.now();
     const resourceHours=projectionResourceHoursAt(now,cfg); // includes only discrete reset boosts that really occur
-    const cutoff=cfg.end.getTime()-($('grace12').checked?12*3_600_000:0);
+    const cutoff=cfg.end.getTime();
     const wallResourceHours=Math.max(0,(cutoff-now)/3_600_000);
     const boostResets=countFuturePacificResets(now,cutoff);
     const staminaStart=0;
@@ -3734,7 +3733,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
   function materialRealmDaysAvailable(cfg=activeCalcConfig()){
     const now=Date.now();
-    const cutoff=cfg.end.getTime()-($('grace12')?.checked?12*3_600_000:0);
+    const cutoff=cfg.end.getTime();
     if(cutoff<=now) return 0;
     // Current server-day window + each future 6 AM reset strictly before the cutoff.
     return 1+countFuturePacificResets(now,cutoff);
@@ -4741,8 +4740,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
     const p=projectCharacter(cfg);
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
-    // The optional 12h finishing window is a real planning cutoff: score still receives final Character EXP,
-    // but upgrades unlocked only after that cutoff are not treated as safely available.
+    // Upgrade availability now runs through the actual season reset; there is no separate finishing cutoff.
     p.upgradeCapLevel=upgradeP.level;
     p.upgradeCapPct=upgradeP.pct;
     const currentCharacter=p.current||characterSnapshot(cfg);
@@ -4797,8 +4795,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 unknown EXP steps use the community-style ~1.83M/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
     if($('levelSummary')) $('levelSummary').textContent=`Skills ${formatAverage(skill)} · Relics +${formatAverage(relic)} · Fantomons ${formatAverage(fanto)} · Gear avg ${(gear.reduce((a,b)=>a+b,0)/5).toFixed(0)}`;
 
-    const graceHours=$('grace12').checked?12:0;
-    $('graceText').textContent=`Effective Cart/Stamina production: ${resources.cartHours.toFixed(1)}h (${resources.wallResourceHours.toFixed(1)} wall hours + ${resources.boostResets} reset boost${resources.boostResets===1?'':'s'}). Cutoff is ${graceHours}h before ${cfg.name} end.`;
+    $('graceText').textContent=`Effective Cart/Stamina production: ${resources.cartHours.toFixed(1)}h (${resources.wallResourceHours.toFixed(1)} wall hours + ${resources.boostResets} reset boost${resources.boostResets===1?'':'s'}). Runs through the ${cfg.name} reset.`;
     const allocation=staminaPlan||resources.staminaAllocation||{ore:0,essence:0,sand:0,rolla:0,unassigned:resources.staminaNodes||0};
     const added=resources.staminaAdded||{ore:0,essence:0,sand:0,rolla:0};
     renderStaminaCurrentPlan(allocation,added,resources);
@@ -4926,8 +4923,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     $('recommendedBreakdownExplain').textContent=resourceBlocked?`This is the score-capable upgrade route for your ORIGINAL ${fmt(targetStars)}-Primostar target. It is not being downgraded; the resource cards below show what still needs funding.`:`Actual ${cfg.name} season-end score used by the recommendation: projected Character plus every suggested upgrade, adding ${fmt(Math.max(0,recommendationDelta))} progression points over the no-upgrade baseline.`;
 
     const lockedText=gearLocked?' Gear is locked at the five current levels.':'';
-    const graceText=$('grace12').checked?' Final 12-hour Cart income and Stamina regen are excluded.':'';
-    const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level}${$('grace12').checked?` at the 12h finishing cutoff (final Character projects Lv.${p.level})`:''}: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120; Global live values are still spot-checked at rollover before changing the model.`;
+    const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120; Global live values are still spot-checked at rollover before changing the model.`;
     const planStars=historical+cfg.starBase+Math.floor(plan.score/cfg.scorePerStar);
     renderAstralPact(resourceBlocked?targetStars:planStars);
     if($('resultEyebrow')) $('resultEyebrow').textContent=resourceBlocked?'Target plan · resource shortfall':'Recommended season-end result';
@@ -4987,7 +4983,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       const brief=[];
       /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
-      if($('grace12').checked) brief.push('final 12h excluded');
       if(gearLocked) brief.push('Gear locked');
       brief.push('cards = after selected daily Realm plan');
       $('optimizerSummary').textContent=brief.join(' · ');
@@ -4995,7 +4990,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       const brief=[];
       /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
-      if($('grace12').checked) brief.push('final 12h excluded');
       if(gearLocked) brief.push('Gear locked');
       $('optimizerSummary').textContent=brief.join(' · ');
       setRawRemaining('oreBalance',plan.oreCost,resources.ore);
@@ -5111,7 +5105,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     } else {
       const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:34,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'auto',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
-      $('holdExp').checked=true; $('grace12').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
+      $('holdExp').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
     }
     gearLocked=false; snapshotAtMs=Date.now(); snapshotSeason=cfg.key; snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
     updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();
