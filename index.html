@@ -4482,7 +4482,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     // Result cards only show Material Realm tools when the S1 plan actually consumes/needs
     // them. Reserve-only and merely-carried tool counts stay hidden here regardless of the
     // raw balance; the Material Realm panel remains the place to inspect saved S2 tools.
-    if(planRuns<=0 && missing<=0){ el.innerHTML=''; el.hidden=true; return; }
+    if(planRuns<=0){ el.innerHTML=''; el.hidden=true; return; }
     const remainingTools=Math.max(0,left+reserveRuns);
     const dailyGapRuns=Math.max(0,Math.floor(Number(top?.paidRunsUsed)||0));
     const toolSingular=label==='Hammers'?'Hammer':label==='Knuckles'?'Knuckle':label==='Shovels'?'Shovel':'tool';
@@ -4511,37 +4511,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if(planRuns<=0 && reserveRuns>0 && remainingTools>0){
       lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel} <em>(${fmt(reserveRuns)} reserved)</em></b></div>`);
     }
-    if(missing>0){
-      const rawStillShort=Math.max(0,Math.ceil(Number(hardShort)||0));
-      lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Still short:</i><b>${fmt(rawStillShort)} ${materialName}</b></div>`);
-    }
     el.hidden=false;
     el.innerHTML=lines.join('');
     el.classList.add((missing>0||dailyGapRuns>0)?'toolNeed':'toolLeft');
   }
+  /* RESOURCE_SHORTFALL_CARD_CLEANUP_V1
+     Resource cards use one shortage status instead of repeating daily-plan, hard-cap,
+     and tool-footer warnings. Detailed Realm capacity remains in the Material Realm panel. */
   function setRealmShortfallBreakdown(id,planShort,yieldVal,itemName,maxExtraRuns,hardShort,resourceName='resource',appendText=''){
-    const el=$(id);
+    const el=$(id); if(!el) return;
     const short=Math.max(0,Math.ceil(Number(planShort)||0));
     const per=Math.max(0,Number(yieldVal)||0);
     const runsToCover=per>0?Math.ceil(short/per):0;
     const extraRuns=Math.max(0,Math.floor(Number(maxExtraRuns)||0));
-    const usableExtra=Math.min(runsToCover,extraRuns);
-    const extraResource=usableExtra*per;
     const hard=Math.max(0,Math.ceil(Number(hardShort)||0));
-    el.classList.remove('shortfallCount');
-    el.classList.add('shortfallBreakdown');
-    if(short<=0){
-      el.textContent=`0 short${appendText}`;
-      return;
-    }
-    const line1=`${fmt(short)} short on daily plan${runsToCover?` · ${fmt(runsToCover)} ${itemName} to fully cover`:''}`;
-    let line2='';
-    if(extraRuns>0 && per>0){
-      line2=`${fmt(usableExtra)} extra ${itemName} still available = ${fmt(extraResource)} ${resourceName}${hard>0?` · ${fmt(hard)} hard short`:''}`;
-    }else if(hard>0){
-      line2=`${fmt(hard)} hard short · no extra ${itemName} capacity remains`;
-    }
-    el.innerHTML=`<span class="planShort">${line1}</span>${line2?`<span class="realmBridge">${line2}</span>`:''}${appendText?`<span>${appendText}</span>`:''}`;
+    el.classList.remove('shortfallBreakdown','rawRemaining','reserveHasGap');
+    el.classList.add('shortfallCount');
+    el.hidden=false;
+    if(short<=0){ el.textContent=''; el.hidden=true; return; }
+    let suffix='';
+    if(hard>0) suffix=' · hard cap';
+    else if(runsToCover>0 && extraRuns>=runsToCover) suffix=` · ${fmt(runsToCover)} ${itemName} can cover`;
+    else if(extraRuns>0) suffix=` · ${fmt(extraRuns)} extra ${itemName} available`;
+    el.textContent=`${fmt(short)} short${suffix}${appendText||''}`;
   }
 
   function renderAstralPact(totalStars){
