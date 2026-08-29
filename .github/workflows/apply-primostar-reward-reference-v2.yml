@@ -1,0 +1,38 @@
+name: Apply Primostar reward status fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-primostar-reward-reference-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Fix reward statuses
+        run: python .github/patch-primostar-reward-reference-v2.py
+      - name: Verify
+        run: |
+          grep -q 'PRIMOSTAR_REWARD_REFERENCE_V2' index.html
+          grep -q "cfg.key==='s2'" index.html
+          grep -q 'renderPrimostarRewardReference(currentStarsNow,baselineStars)' index.html
+          grep -q 'renderPrimostarRewardReference(currentStarsNow,achievableRewardStars)' index.html
+          grep -q 'const achievableRewardStars=resourceBlocked?baselineStars:planStars' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Fix Primostar reward status tracking'
+          git push
