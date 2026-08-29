@@ -1,0 +1,128 @@
+name: Restore maintained build structure
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-build-structure.yml'
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Repair build structure and policy
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p=Path('index.html')
+          lines=p.read_text().splitlines()
+          out=[]
+          cls=None
+          classes={'Berserker','Paladin','Archmage','Arcanist','Conqueror','Guardian','Destroyer','Dominator'}
+          removed=0
+          renamed=0
+          for line in lines:
+              m=re.match(r'\s*(Berserker|Paladin|Archmage|Arcanist|Conqueror|Guardian|Destroyer|Dominator):\[\s*$', line)
+              if m:
+                  cls=m.group(1)
+              if "role('Arena'" in line:
+                  if cls=='Berserker':
+                      line=line.replace("role('Arena','Solo PvP burst / mobility'", "role('PvP','PvP burst / mobility'")
+                      line=line.replace("'Prydwen Arena'", "'Prydwen PvP'")
+                      renamed += 1
+                  else:
+                      removed += 1
+                      continue
+              if "role('Tournament'" in line:
+                  removed += 1
+                  continue
+              out.append(line)
+          if renamed < 1 or removed < 15:
+              raise SystemExit(f'Unexpected build patch counts renamed={renamed} removed={removed}')
+          p.write_text('\n'.join(out)+'\n')
+
+          policy='''# Build & Fantomon maintenance policy
+
+## Charming Glance season handoff
+
+- **Before Season 2 is live on Charming Glance:** maintain both Season 1 / Tier 3 and Season 2 / Tier 4 build and Combat Fantomon recommendations.
+- **Once Season 2 is live on Charming Glance:** stop ongoing Season 1 / Tier 3 build and Fantomon maintenance. Keep the existing S1/T3 builds as a legacy snapshot unless there is a site-breaking issue.
+- After the handoff, active build maintenance is **Season 2 / Tier 4 only:** Conqueror, Guardian, Destroyer, and Dominator.
+
+## Build format
+
+- **Do not force every class into Solo / Dungeon / Boss / PvP cards.** Show only materially distinct loadouts supported by current guides, skill mechanics, or repeated community testing.
+- If one general build is best for multiple activities, keep one card and explain useful swaps instead of duplicating artificial mode cards.
+- Each loadout must show exactly 4 Techniques and 4 Charms actually equipped, plus concise swaps/conditions where useful.
+- Arcanist and Dominator keep their **DPS / Heals** selector. DPS shows their DPS loadouts; Heals shows only the dedicated Healing loadout. Switching roles must not destroy/recreate build data or remove Fantomon recommendations.
+- Prefer reputable build-guide presets when available and cross-check major recommendations against at least one other credible source/community consensus when possible.
+- Do not recommend unrelated investment pieces as though they are equipped.
+- Avoid weaker novelty builds, including Destroyer's Water/Frozen branch, merely to increase card count.
+
+## Current intended loadout structure
+
+- **Berserker (S1/T3):** Generic PvE, Dragon, PvP.
+- **Paladin (S1/T3):** Dungeon Tank, Water Offensive, Boss DPS / Off-Tank.
+- **Archmage (S1/T3):** AoE, Single Target.
+- **Arcanist (S1/T3):** AoE DPS, Single Target DPS, Healing.
+- **Conqueror (S2/T4):** All-Content, Dragon.
+- **Guardian (S2/T4):** Dungeon Tank, Water Offensive, Support / Boss.
+- **Destroyer (S2/T4):** AoE, Single Target, Fire AoE.
+- **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing.
+
+Change this structure only when credible current evidence supports a real meta change. Do not add Arena/Tournament cards just to create mode coverage.
+
+## Combat Fantomon format
+
+- Show exactly **Main + Alt** Combat Fantomon recommendations for each displayed loadout when two credible choices are available.
+- **Main** is the strongest loadout-appropriate consensus choice. **Alt** is the best practical alternative for a different constraint such as survivability, utility, availability, or account stats.
+- Add a short reason under both Fantomons explaining why each fits that specific loadout.
+- Do not show ranked #3/#4 choices in the default build UI.
+- In **Season 1 / Tier 3**, evaluate Fantomons only from the pre-Materialization Assist kit; give zero recommendation credit for later Battle skills.
+- In **Season 2 / Tier 4**, Materialization effects may be considered only once actually available for Charming Glance.
+
+## Pandarial trigger
+
+Pandarial releases later in Season 2. When it becomes available for Charming Glance / Global progression, re-evaluate every S2/T4 **Main + Alt** Combat Fantomon pair rather than assuming the pre-release recommendations remain correct.
+
+Do not list Pandarial as currently usable before it is actually available on Charming Glance. Remove future-release wording once it becomes obtainable.
+
+## Evidence standard
+
+Do not replace a working build from a single unsupported post. Prefer official skill text, reputable databases/guides, repeatable mechanics, or repeated community testing/consensus. Preliminary recommendations should be labeled as such instead of presented as settled meta.
+'''
+          Path('.github/build-maintenance.md').write_text(policy)
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          import re, pathlib, subprocess, tempfile
+          html=pathlib.Path('index.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S|re.I)
+          checked=0
+          for i,s in enumerate(scripts):
+              if not s.strip(): continue
+              path=f'/tmp/inline-{i}.js'
+              pathlib.Path(path).write_text(s)
+              subprocess.run(['node','--check',path],check=True)
+              checked+=1
+          print(f'validated {checked} inline scripts')
+          PY
+          grep -q "role('PvP','PvP burst / mobility'" index.html
+          ! grep -q "role('Arena'" index.html
+          ! grep -q "role('Tournament'" index.html
+      - name: Commit repair and remove one-shot workflow
+        shell: bash
+        run: |
+          git config user.name 'Charming Glance Site Watch'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm .github/workflows/restore-build-structure.yml
+          git add index.html .github/build-maintenance.md
+          git commit -m 'Restore intended build card structure'
+          git push
