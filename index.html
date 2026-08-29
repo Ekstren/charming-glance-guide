@@ -4500,11 +4500,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const maxRuns=Math.max(0,Math.floor(Number(top?.maxRuns)||0));
     const missing=Math.max(0,required-maxRuns);
 
-    // TOOL_DAILY_GAP_V13 · TOOLS_FIRST_S2_RESERVES_V1 · HIDE_TOOL_ROWS_UNTIL_USED_V2
-    // Result cards only show Material Realm tools when the S1 plan actually consumes/needs
-    // them. Reserve-only and merely-carried tool counts stay hidden here regardless of the
-    // raw balance; the Material Realm panel remains the place to inspect saved S2 tools.
-    if(planRuns<=0){ el.innerHTML=''; el.hidden=true; return; }
+    // REMAINING_REALM_TOOLS_VISIBLE_V1
+    // Keep the cards compact: never print Use: 0, but always preserve useful inventory context
+    // by showing remaining Hammers/Knuckles/Shovels when any are still available.
     const remainingTools=Math.max(0,left+reserveRuns);
     const dailyGapRuns=Math.max(0,Math.floor(Number(top?.paidRunsUsed)||0));
     const toolSingular=label==='Hammers'?'Hammer':label==='Knuckles'?'Knuckle':label==='Shovels'?'Shovel':'tool';
@@ -4520,19 +4518,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const lines=[];
     const planToolLabel=planRuns===1?toolSingular:label;
     const remainingToolLabel=remainingTools===1?toolSingular:label;
-    const missingToolLabel=missing===1?toolSingular:label;
     if(planRuns>0){
       lines.push(`<div class="toolSimpleLine toolUseLine"><i>Use:</i><b>${fmt(planRuns)} ${planToolLabel}${planGained>0?` <em>≈ ${fmtCompact(planGained)} ${materialName}</em>`:''}</b></div>`);
       if(dailyGapRuns>0){
         lines.push(`<div class="toolSimpleLine toolNeedLine"><i>Need:</i><b>${fmt(dailyGapRuns)} ${toolNeedLabel}${dailyGapValue>0?` <em>≈ ${fmtCompact(dailyGapValue)} ${materialName}</em>`:''}</b></div>`);
       }
-      if(remainingTools>0){
-        lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
-      }
     }
-    if(planRuns<=0 && reserveRuns>0 && remainingTools>0){
-      lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel} <em>(${fmt(reserveRuns)} reserved)</em></b></div>`);
+    if(remainingTools>0){
+      lines.push(`<div class="toolSimpleLine toolRemainingLine"><i>Remaining:</i><b>${fmt(remainingTools)} ${remainingToolLabel}${reserveRuns>0?` <em>(${fmt(reserveRuns)} reserved)</em>`:''}</b></div>`);
     }
+    // Hard/recoverable material shortages are already communicated by the resource card above.
+    // Do not resurrect the old duplicate "Still short" tool footer.
+    if(!lines.length){ el.innerHTML=''; el.hidden=true; return; }
     el.hidden=false;
     el.innerHTML=lines.join('');
     el.classList.add((missing>0||dailyGapRuns>0)?'toolNeed':'toolLeft');
@@ -5008,6 +5005,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     renderAstralPact(achievableRewardStars);
     renderPrimostarRewardReference(currentStarsNow,achievableRewardStars);
     if($('resultEyebrow')) $('resultEyebrow').textContent=resourceBlocked?'Target plan · resource shortfall':'Recommended season-end result';
+    // TARGET_PLAN_HEADER_COMPLETE_V1: reward-reference rendering must never prevent the target-plan score/status from populating.
     $('currentStars').textContent=fmt(resourceBlocked?targetStars:planStars);$('summaryOptimizedScore').textContent=fmt(plan.score);
     if($('targetStatus')){$('targetStatus').textContent=resourceBlocked?'resources':'✓';$('targetStatus').classList.toggle('notMet',resourceBlocked);}
     $('optimizedScore').textContent=resourceBlocked?`${fmt(plan.score)} / ${fmt(desired)} score · ${fmt(targetStars)} Primostars target plan`:`${fmt(plan.score)} / ${fmt(desired)} score · ${fmt(planStars)} Primostars`;
