@@ -1,0 +1,48 @@
+name: Apply 12-hour finishing window removal
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-remove-12h-finishing-window-v1.yml'
+      - '.github/patch-remove-12h-finishing-window-v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Remove 12-hour finishing window
+        run: python .github/patch-remove-12h-finishing-window-v1.py
+      - name: Verify removal
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert 'grace12' not in s
+          assert 'Keep a 12-hour finishing window' not in s
+          assert 'final 12h excluded' not in s
+          assert '12h finishing cutoff' not in s
+          assert "function resourceCutoffMs(cfg=activeCalcConfig()){\n    return Math.max(Date.now(),cfg.end.getTime());" in s
+          assert "function upgradeFinishCutoffMs(cfg=activeCalcConfig()){\n    return cfg.end.getTime();" in s
+          assert 'Runs through the ${cfg.name} reset.' in s
+          assert 'reserveHours" min="0" max="36" type="number" value="34" hidden' in s
+          print('verified')
+          PY
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove 12-hour finishing window'
+          git push
