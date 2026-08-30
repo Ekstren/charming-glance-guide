@@ -10,7 +10,7 @@ old='''          <!-- DAILY_SHOP_ESTIMATE_V2 -->
               <div class="realmDailyCustom">
                 <span class="realmDailyTitle">Shop refreshes / day <small>Estimated material value only</small></span>
                 <div class="realmDailyInputs">
-                  <label>Refreshes / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="3"><small>Default plan: 3/day</small></label>
+                  <label>Refreshes / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Default: 0/day</small></label>
                 </div>
               </div>
               <div class="realmPlanSummary"><span>Estimated gain</span><b id="shopRefreshEstimate">—</b><small id="shopRefreshEstimateNote">~700 Ore · 900 Essence · 600 Sand · 50 Basic Treats per refresh</small></div>
@@ -21,7 +21,7 @@ new='''          <!-- DAILY_SHOP_ESTIMATE_V4 -->
             <div class="realmInventoryTop"><strong>Daily Shop material estimate</strong><small>Extremely conservative estimate · material rolls only</small></div>
             <div class="shopEstimateCompact">
               <div class="shopRefreshControl">
-                <label>Shop refreshes / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="3"><small>Default plan: 3/day</small></label>
+                <label>Shop refreshes / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Default: 0/day</small></label>
               </div>
               <div class="shopGainSummary" aria-label="Estimated shop material gain per day">
                 <div><span>Raw Ore</span><b id="shopGainOre">—</b></div>
