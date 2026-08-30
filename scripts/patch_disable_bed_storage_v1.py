@@ -100,6 +100,13 @@ s = re.sub(
     count=1,
 )
 
+# Diagnostics for any old Hold references that survived the targeted cleanup.
+if "'holdExp'" in s or '"holdExp"' in s:
+    for m in re.finditer(r"holdExp", s):
+        a=max(0,m.start()-220); b=min(len(s),m.end()+320)
+        print('--- holdExp context ---')
+        print(s[a:b].replace('\n','\\n'))
+
 # Old saved fields are automatically dropped on the next save because they are no longer INPUT/CHECK ids.
 # Fail closed if any executable references to the removed feature remain.
 for forbidden in ("bedStoredExp", "'holdExp'", '"holdExp"', 'reserveHours', 'committedHoldExpState', 'elapsedExpHours'):
