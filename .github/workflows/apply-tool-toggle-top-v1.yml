@@ -1,0 +1,55 @@
+name: Apply tool toggle top placement v1
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/patch-tool-toggle-top-v1.py'
+      - '.github/workflows/apply-tool-toggle-top-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply placement patch
+        run: python .github/patch-tool-toggle-top-v1.py
+      - name: Verify placement and JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert 'TOOL_TOGGLE_TOP_V1' in s
+          assert s.count('id="preserveRealmTools"') == 1
+          hold=s.index('id="holdExp"')
+          tool=s.index('id="preserveRealmTools"')
+          realm=s.index('Daily Realm refresh plan')
+          assert hold < tool < realm, 'Minimize tools must sit by Hold EXP, above Material Realm plan'
+          assert 'REALM_SAVED_TOOL_EFFICIENCY_HURDLE=0.10' in s
+          assert 'REALM_PAID_REFRESH_EFFICIENCY_HURDLE=0.20' in s
+          assert 'reserveHours:34' in s
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          print('placement and policy guards OK')
+          PY
+          node --check /tmp/inline.js
+      - name: Commit patched site
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Move Minimize tools beside Hold EXP'
+          git push
