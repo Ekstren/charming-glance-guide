@@ -2781,6 +2781,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 }
 </style>
 
+
+<style id="s2-scoring-start-prep-v1-style">
+/* S2_SCORING_START_PREP_V1 */
+.s2TargetPresets>div{gap:6px!important}
+.s2TargetPresets button{white-space:nowrap!important}
+@media(max-width:760px){.s2TargetPresets>div{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))}.s2TargetPresets button{width:100%;white-space:normal!important}}
+</style>
+
 </head>
 <body>
 <main>
@@ -2873,7 +2881,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         <div class="calcGrid">
           <label>Target Primostars<input id="targetStars" type="number" value="200"></label>
           <label><span id="historicalStarsLabel">Historical stars</span><input id="historicalStars" type="number" value="0"></label>
-          <div class="s2TargetPresets" id="s2TargetPresets" hidden aria-label="Season 2 common planning targets"><span>S2 planning targets</span><div><button type="button" data-s2-target="530">530</button><button type="button" data-s2-target="680">680</button><button type="button" data-s2-target="920">920</button></div><small>Quick-fill only — your target can still be any value.</small></div>
+          <div class="s2TargetPresets" id="s2TargetPresets" hidden aria-label="Season 2 common planning targets"><span>S2 planning targets</span><div><button type="button" data-s2-target="680" title="QY: Basic">680 · Basic</button><button type="button" data-s2-target="800" title="QY: F2P / Light">800 · F2P/Light</button><button type="button" data-s2-target="920" title="QY: Light / Mid spender">920 · Light/Mid</button><button type="button" data-s2-target="1060" title="QY: Stop point">1060 · Stop</button></div><small>QY recommendation tiers · any total still works.</small></div>
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
@@ -2920,7 +2928,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         <details class="optimizerExplain" id="optimizerExplain">
           <summary><span>How the optimizer decides</span><small>Raw first → saved Realm tools → extra Realm purchases</small></summary>
           <div class="optimizerExplainBody">
-            <p><b>1 · Protect enabled Season 2 reserves.</b> Skill Essence and Chrono Sand reserves assign carried/projected Realm tools first, then hold raw material only for any reserve amount those tools cannot cover. Fantomon Treats have no Realm-tool conversion, so an enabled Treat reserve stays raw.</p>
+            <p><b>1 · Protect enabled rollover reserves during Season 1.</b> Raw Essence/Sand cover those reserves first; Knuckles/Shovels are reserved only for any uncovered remainder. Once S2 scoring is active, the old S1→S2 reserve toggles are hidden and the planner uses your live S2 inventory directly.</p>
             <p><b>2 · Find the best raw-only score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score. It prefers resources that are already sufficient to fund their reachable Season 1 cap, so surplus Sand, Essence or Treats can replace Ore instead of being stranded. It also avoids paying for meaningless overscore when otherwise-equivalent routes exist. If Treat Cart/hr is left at 0, non-surplus Treats are treated as scarce rather than inventing a replacement rate from your saved stock.</p>
             <p><b>3 · Use saved Realm tools only if raw cannot reach the target.</b> Reserved tools stay protected. Unreserved Hammers, Knuckles and Shovels become available only after every feasible raw-only route has been considered.</p>
             <p><b>4 · Buy more Realm refreshes only as the final fallback.</b> If the target still cannot be funded, the planner minimizes additional Realm purchases within the remaining daily capacity. If even the maximum remaining capacity is insufficient, it reports the actual material shortfall instead of lowering the target.</p>
@@ -3006,7 +3014,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>Season 1:</b> 10 fixed stars plus 1 star per 100 cultivation score. Character = 100 points per seasonal level and 1 point per completed 1% EXP progress inside the level; Gear = 38; Skills = 13; Relics = 57 per level above +10; Fantomons = 14. Levels at or below 100 do not score. Fantomon upgrades use the next 10-level seasonal band, so Character Lv.130 opens Fantomons through Lv.140.</p>
 <p><b>Season 2:</b> the calculator automatically switches after the Aug 30 reset. Seasonal progression above the old floor resets to Lv.100 / Relics +10; S2 Season Power itself uses the new Lv.130 / Relic +13 scoring floor: Character = 100 points/level + completed percentage progress; Gear = 18 per slot level; Skills = 7 per level across 8 skills; Relics = 33 per level across 20 relics; Fantomons = 8 per level across 4 slots. S2 Primostars use <code>45 + floor(score / 27)</code>, plus the prior-season Primostars you enter. The score system unlocks at Lv.130.</p>
 <p><b>Astral Pact:</b> bonuses are calculated from <b>total cumulative Primostars</b>, not Character level. The calculator uses QY Maple's documented S1 Witching Hours thresholds (5–480) and S2 Crossed Paths continuation (505–1880). For example, 200 Primostars gives ATK +3%, Ascension +9%, Gem +15%, Dungeon double +6% and EXP +6%; 230 additionally reaches ATK +4% and Ascension +12%.</p>
-<p><b>S2 Primostar calculator readiness:</b> Season 2 is preloaded as a separate profile and does not replace Season 1. The scoring model uses the cross-region S2 consensus: normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. The rollover guard still requires a fresh S2 account snapshot before calculations resume, so stale S1 levels/resources cannot silently contaminate the S2 plan. Exact Global cost/unlock data that is not independently confirmed remains conservative rather than fabricated. As a regression check, the formula also reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
+<p><b>S2 Primostar calculator readiness:</b> Season 2 is preloaded as a separate scoring-only profile and does not replace Season 1. QY's current timeline confirms Season Power at Player Lv.130; Lv.120 is only the maximum S2 Material Realm bracket. The calculator therefore starts score planning at Lv.130 and intentionally excludes the Lv.100→130 catch-up costs. Normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. S2 cost curves are used only for score-relevant upgrades from that floor forward: Gear/Ore and Skill Essence use the current late-S2 tables, Relic Sand uses the known +13-and-up steps, and Fantomon Treats use the S2 level curve. Exact data that is not independently confirmed stays conservative rather than fabricated. As a regression check, the formula still reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
 <p><b>S2 progression gates:</b> the prepared calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, Lv.120 maximum S2 Realm/open-map material bracket and Lv.130 Season Power scoring/second-dungeon milestone. These gates are informational; they do not override the calculator's conservative upgrade-cap logic.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. With the separate S2 reserve toggles enabled, the planner can independently protect the startup Skill Essence reserve and/or exactly one full first S2 Relic round (+10→+11 across all 20 relics). Projected Shovels count toward that Sand reserve at the S2 Realm yield first; only the remaining raw Sand is protected. Surplus Essence/Treats/Sand can then be spent in S1 while Ore/Hammers are preserved for the much longer Gear progression runway.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
@@ -3060,7 +3068,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     fixedStars:45,
     scorePerStar:27,
     weights:Object.freeze({character:100,gear:18,skill:7,relic:33,fanto:8}),
-    commonTargets:Object.freeze([530,680,920]),
+    commonTargets:Object.freeze([680,800,920,1060]),
     /* S2_PRIMO_BENCHMARK_V2
        Published S2 920 end-state: 131 carried S1 stars, Lv.190 at ~80%, Gear 195,
        Skills 180, four deployed Fantomons represented as 175/175/173/173, Relics +19.
@@ -3077,6 +3085,30 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       Object.freeze({level:130,label:'Season Power scoring / second dungeon'})
     ])
   });
+  /* S2_SCORING_START_PREP_V1
+     This calculator is a Season Power / Primostar planner, not a Lv.100→130 launch-day simulator.
+     QY's current Global timeline puts S2 Season Power at Player Lv.130; Lv.120 is only the
+     maximum S2 Material Realm / open-map bracket. New S2 calculator states therefore begin
+     from a representative scoring-unlock profile. Account-specific rates/materials remain 0
+     until the player enters them so the optimizer never fabricates spendable resources. */
+  const S2_SCORING_START_DEFAULTS=Object.freeze({
+    targetStars:800,
+    // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
+    historicalStars:128,
+    charLevel:130,charExp:0,bedExp:0,reserveHours:34,
+    skillLevel:130,relicLevel:14,fantomonLevel:130,
+    gearWeapon:130,gearOffhand:130,gearHelmet:130,gearArmor:130,gearBoots:130,
+    oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,
+    sandCurrent:0,sandBlueCurrent:0,sandRate:0,
+    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,
+    hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,
+    staminaMode:'auto',realmDailyOre:4,realmDailyEssence:4,realmDailySand:4,
+    refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
+  });
+  const S2_SCORING_START_CHECKS=Object.freeze({
+    holdExp:true,reserveS2Ore:false,reserveS2Essence:false,reserveS2Sand:false,reserveS2Treats:false
+  });
+
   function validateS2PrimoModel(){
     const c=CALC_SEASONS.s2,m=S2_PRIMO_META,w=c.weights||{},mw=m.weights;
     const constantsOk=c.scoreFloor===m.scoreFloor &&
@@ -3150,6 +3182,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   const TREAT_BASIC_EXP=50, TREAT_PREMIUM_EQ=8, TREAT_DELUXE_EQ=40;
   function savedTreatEquivalent(){
     return Math.max(0,n('treatCurrent')) + Math.max(0,n('treatPremiumCurrent'))*TREAT_PREMIUM_EQ + Math.max(0,n('treatDeluxeCurrent'))*TREAT_DELUXE_EQ;
+  }
+  function applyS2ScoringStartDefaults(){
+    Object.entries(S2_SCORING_START_DEFAULTS).forEach(([id,value])=>{ if($(id)) $(id).value=String(value); });
+    Object.entries(S2_SCORING_START_CHECKS).forEach(([id,value])=>{ if($(id)) $(id).checked=!!value; });
   }
   function realmDailyValue(key){
     const ids={ore:'realmDailyOre',essence:'realmDailyEssence',sand:'realmDailySand'};
@@ -3475,7 +3511,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       if(Number(state.reserveHours)===36) state.reserveHours='34'; // BED_HOLD_34H_V1 migrate old hidden default
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });
-      if(!hadState && activeCalcConfig().key==='s2' && $('targetStars')) $('targetStars').value='680';
+      if(!hadState && activeCalcConfig().key==='s2') applyS2ScoringStartDefaults();
       gearLocked = false; // gear lock UI removed; optimizer always considers Gear
       document.documentElement.dataset.theme = (state.theme === 'light' || state.theme === 'dark') ? state.theme : 'dark';
       // Main calculator editors default closed, then remember the user's last open/collapsed state.
@@ -5145,28 +5181,50 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     }
     const setInputMax=(id,max)=>{const el=$(id);if(!el)return;if(Number.isFinite(max))el.max=String(max);else el.removeAttribute('max');};
     if(cfg.key==='s2'){
-      $('seasonRulesHint').innerHTML='<b>S2 score:</b> +45 fixed · 27 score / Primostar · floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120</b> is the max S2 Material Realm/open-map resource bracket. Late-S2 upgrade gates stay conservative where an exact unlock rule is not verified.';
+      $('seasonRulesHint').innerHTML='<b>S2 scoring mode starts at Lv.130:</b> +45 fixed · 27 score / Primostar · normal floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120</b> is only the max S2 Material Realm/open-map bracket. Starter profile: Lv.130 · Gear 130 · Skills 130 · Fantomons 130 · Relics +14; carried stars/resources should be replaced with your actual snapshot.';
       const currentCaps=categoryInputCapsForCharacter(characterSnapshot(cfg).level,cfg);
-      $('skillLevel').min='100'; setInputMax('skillLevel',currentCaps.skill); $('skillLevel').step='0.125';
-      $('relicLevel').min='10'; setInputMax('relicLevel',currentCaps.relic); $('relicLevel').step='0.05';
-      $('fantomonLevel').min='100'; setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
+      $('skillLevel').min=String(cfg.scoreFloor); setInputMax('skillLevel',currentCaps.skill); $('skillLevel').step='0.125';
+      $('relicLevel').min=String(cfg.relicFloor); setInputMax('relicLevel',currentCaps.relic); $('relicLevel').step='0.05';
+      $('fantomonLevel').min=String(cfg.scoreFloor); setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
+      GEAR_IDS.forEach(id=>{if($(id)) $(id).min=String(cfg.scoreFloor);});
     } else {
       $('seasonRulesHint').innerHTML='Season 2 data is preloaded: <b>Material Realm reaches its S2 max at Lv.120</b>; Season Power scoring starts at Lv.130.';
       const currentCaps=categoryInputCapsForCharacter(characterSnapshot(cfg).level,cfg);
       $('skillLevel').min='100'; setInputMax('skillLevel',currentCaps.skill); $('skillLevel').step='0.125';
       $('relicLevel').min='10'; setInputMax('relicLevel',currentCaps.relic); $('relicLevel').step='0.05';
       $('fantomonLevel').min='100'; setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
+      GEAR_IDS.forEach(id=>{if($(id)) $(id).min='100';});
     }
+    ['reserveS2Ore','reserveS2Essence','reserveS2Sand','reserveS2Treats'].forEach(id=>{
+      const label=$(id)?.closest('label'); if(label) label.hidden=cfg.key==='s2';
+    });
     const mismatch=snapshotSeason!==cfg.key;
     $('calcSeasonNotice').hidden=!mismatch;
     $('calcResults').classList.toggle('rolloverBlocked',mismatch);
     if(mismatch){
       $('calcSeasonNoticeTitle').textContent=`${cfg.name} is live — refresh the saved snapshot`;
-      $('calcSeasonNoticeText').textContent=`Your saved calculator state is from ${CALC_SEASONS[snapshotSeason]?.name||'the prior season'}. Update Character level/EXP, Gear, Skills, Relics, Fantomons, resources/Cart rates and carried Primostars, then confirm. The site intentionally refuses to assume how the seasonal reset changed your account.`;
+      $('calcSeasonNoticeText').textContent=cfg.key==='s2'
+        ? `Your saved calculator state is from ${CALC_SEASONS[snapshotSeason]?.name||'the prior season'}. S2 Season Power does not unlock until Lv.130, so this scoring planner intentionally ignores the Lv.100→130 catch-up phase. At Lv.130, enter your actual carried Primostars/resources and current progression, then confirm the S2 snapshot.`
+        : `Your saved calculator state is from ${CALC_SEASONS[snapshotSeason]?.name||'the prior season'}. Update Character level/EXP, Gear, Skills, Relics, Fantomons, resources/Cart rates and carried Primostars, then confirm. The site intentionally refuses to assume how the seasonal reset changed your account.`;
       $('confirmSeasonSnapshot').textContent=`Use entries as ${cfg.name} snapshot`;
     }
     return mismatch;
   }
+  function clearS2PreScoring(cfg){
+    const current=characterSnapshot(cfg),p=projectCharacter(cfg);
+    $('seasonRemaining').textContent=formatRemaining(remainingHoursAt(Date.now(),cfg));
+    $('projectedCharacter').textContent=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
+    $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
+    $('currentStars').textContent='—'; $('currentScoreNow').textContent='—'; $('summaryOptimizedScore').textContent='—'; $('desiredScore').textContent='—';
+    $('targetMessage').hidden=false; $('targetMessage').classList.remove('danger'); $('targetMessage').classList.add('warning','caution');
+    $('targetMessage').textContent=`Season Power scoring unlocks at Lv.${cfg.scoreFloor}. Current Lv.${current.level} is still in the S2 catch-up phase, so 100→${cfg.scoreFloor} upgrade costs are intentionally excluded from this Primostar planner.`;
+    if($('targetStatus')){$('targetStatus').textContent='locked';$('targetStatus').classList.remove('notMet');}
+    $('optimizerSummary').textContent=`Return at Lv.${cfg.scoreFloor} and enter your actual scoring-start snapshot. The default S2 profile is Lv.130 / Gear 130 / Skills 130 / Fantomons 130 / Relics +14.`;
+    $('optimizedScore').textContent='—';
+    $('materialRealmRecommendation').hidden=true;
+    renderRealmToolProjection(cfg);
+  }
+
   function clearCalcForRollover(cfg){
     $('seasonRemaining').textContent=formatRemaining(remainingHoursAt(Date.now(),cfg));
     $('projectedCharacter').textContent='Update snapshot';
@@ -5185,7 +5243,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     // preserve any target the user already raised for S2.
     if(cfg.key==='s2' && $('targetStars')){
       const target=Number($('targetStars').value);
-      if(!Number.isFinite(target) || target<=230) $('targetStars').value='680';
+      if(!Number.isFinite(target) || target<=480) $('targetStars').value=String(S2_SCORING_START_DEFAULTS.targetStars);
     }
     snapshotSeason=cfg.key; snapshotAtMs=Date.now(); snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
     saveState(); renderCalculatorSeasonChrome(cfg); updateCalculator();
@@ -5224,13 +5282,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
     p.upgradeCapLevel=upgradeP.level;p.upgradeCapPct=upgradeP.pct;
     const currentCharacter=p.current||characterSnapshot(cfg);
+    if(cfg.key==='s2' && currentCharacter.level<cfg.scoreFloor) return null;
     const projectedResourceTotals=projectedResources(p.hours,cfg);
     const baseResources=applySeasonTransitionReserves(projectedResourceTotals,cfg);
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
-    const gear=GEAR_IDS.map(id=>Math.max(100,Math.floor(n(id,143))));
-    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,100,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?100:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,10,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?10:13);
-    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,100,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?100:130);
+    const normalInputFloor=cfg.key==='s2'?cfg.scoreFloor:100;
+    const relicInputFloor=cfg.key==='s2'?cfg.relicFloor:10;
+    const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
+    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?14:13);
+    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
     const baselineScore=characterScore(p,cfg)+gearScore(gear,cfg)+skillState.score+relicState.score+fantoState.score;
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
     return {cfg,p,baseResources,baselineScore,historical,baselineStars:historical+cfg.starBase+Math.floor(baselineScore/cfg.scorePerStar)};
@@ -5298,6 +5359,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const cfg=activeCalcConfig();
     if($('oreReserveNote')) $('oreReserveNote').hidden=!(cfg.key==='s1' && $('reserveS2Ore')?.checked);
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
+    if(cfg.key==='s2' && characterSnapshot(cfg).level<cfg.scoreFloor){ clearS2PreScoring(cfg); return; }
     const p=projectCharacter(cfg);
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
     // Upgrade availability now runs through the actual season reset; there is no separate finishing cutoff.
@@ -5310,15 +5372,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     let resources=baseResources;
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
     const projectedCaps=categoryCapsForCharacter(p.upgradeCapLevel??p.level,cfg);
-    const gear=GEAR_IDS.map(id=>Math.max(100,Math.floor(n(id,143))));
-    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,100,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?100:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,10,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?10:13);
-    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,100,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?100:130);
+    const normalInputFloor=cfg.key==='s2'?cfg.scoreFloor:100;
+    const relicInputFloor=cfg.key==='s2'?cfg.relicFloor:10;
+    const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
+    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?14:13);
+    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
     const skill=skillState.avg,relic=relicState.avg,fanto=fantoState.avg;
     const exactChecks=[
-      ['exactSkillLevels',8,100,currentCaps.skill,'Skills'],
-      ['exactRelicLevels',20,10,currentCaps.relic,'Relics'],
-      ['exactFantoLevels',4,100,currentCaps.fanto,'Fantomons']
+      ['exactSkillLevels',8,normalInputFloor,currentCaps.skill,'Skills'],
+      ['exactRelicLevels',20,relicInputFloor,currentCaps.relic,'Relics'],
+      ['exactFantoLevels',4,normalInputFloor,currentCaps.fanto,'Fantomons']
     ].map(([id,count,min,max,label])=>({label,...parseExactLevelInput(id,count,min,max)}));
     const exactStatus=$('exactProgressStatus');
     if(exactStatus){
@@ -5692,9 +5756,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       INPUT_IDS.forEach(id=>{if($(id)) $(id).value=defaults[id];});
       CHECK_IDS.forEach(id=>{if($(id)) $(id).checked=defaults[id];});
     } else {
-      const s2Defaults={targetStars:680,historicalStars:0,charLevel:100,charExp:0,bedExp:0,reserveHours:34,skillLevel:100,relicLevel:10,fantomonLevel:100,gearWeapon:100,gearOffhand:100,gearHelmet:100,gearArmor:100,gearBoots:100,oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,sandCurrent:0,sandBlueCurrent:0,sandRate:0,treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,staminaMode:'auto',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''};
-      INPUT_IDS.forEach(id=>{if($(id)) $(id).value=String(s2Defaults[id]??'');});
-      $('holdExp').checked=true; $('reserveS2Ore').checked=true; $('reserveS2Essence').checked=true; $('reserveS2Sand').checked=true; $('reserveS2Treats').checked=true;
+      applyS2ScoringStartDefaults();
     }
     gearLocked=false; snapshotAtMs=Date.now(); snapshotSeason=cfg.key; snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
     updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();
