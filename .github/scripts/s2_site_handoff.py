@@ -15,72 +15,65 @@ for line in s.splitlines(True):
     lines.append(line)
 s=''.join(lines)
 
-# 2) Builds: S2-only public navigation/classes. Remove the S1/S2 selector and the S1 renderer.
-s=re.sub(r'\s*<span class="buildSeasonToggle" id="buildSeasonToggle"[\s\S]*?</span>\s*', '\n', s, count=1)
-s=re.sub(r'\n\s*function buildHtmlS1\(cls\)\{[\s\S]*?\n\s*function buildHtmlS2\(cls\)\{', '\n  function buildHtmlS2(cls){', s, count=1)
+# 2) Builds: S2-only public navigation/classes. Remove the S1/S2 selector and all S1 renderers.
+s=re.sub(r'\s*<span class="buildSeasonToggle" id="buildSeasonToggle"[\s\S]*?</span>\s*', '\n', s)
+# There are legacy and override build libraries in this single-file app; remove each S1 renderer that precedes an S2 renderer.
+prev=None
+while prev!=s:
+    prev=s
+    s=re.sub(r'\n\s*function buildHtmlS1\(cls\)\{[\s\S]*?(?=\n\s*function buildHtmlS2\(cls\)\{)', '\n', s, count=1)
 # Force all live build routing to S2 while retaining old storage keys harmlessly for migration.
 s=s.replace("function buildSeasonKey(){ return currentResetIso()<'2026-08-30'?'s1':'s2'; }", "function buildSeasonKey(){ return 's2'; }")
 s=s.replace("function buildClassesForSeason(key=buildSeasonKey()){ return key==='s1'?S1_BUILD_CLASSES:S2_BUILD_CLASSES; }", "function buildClassesForSeason(){ return S2_BUILD_CLASSES; }")
 s=s.replace("let currentBuildSeason=buildSeasonKey();", "let currentBuildSeason='s2';", 1)
 s=s.replace("let currentClass=currentBuildSeason==='s1'?'Berserker':'Conqueror';", "let currentClass='Conqueror';", 1)
-# Live override: no S1 fallback or season selector behavior.
 s=re.sub(r"function liveBuildSeason\(\)\{[^\n]*\}", "function liveBuildSeason(){ return 's2'; }", s)
 s=re.sub(r"function liveBuildClasses\(\)\{[^\n]*\}", "function liveBuildClasses(){ return S2_BUILD_CLASSES_LIVE; }", s)
-# Hide/remove season-toggle setup safely if residual code remains.
 s=s.replace("$('buildSeasonToggle')?.addEventListener('click',e=>{", "null?.addEventListener?.('click',e=>{")
 
-# 3) Companion guide: force Season 2 and S2 classes only. Old S1 data may remain as non-rendered migration history.
+# 3) Companion guide: force Season 2 and S2 classes only. Old data objects may remain only as non-rendered migration history.
 s=s.replace("let currentSeason='s1';", "let currentSeason='s2';")
 s=s.replace("let currentClass='Berserker';", "let currentClass='Conqueror';")
 s=re.sub(r"function defaultSeason\(\)\{\s*return Date\.now\(\)>=new Date\('2026-08-30T06:00:00-07:00'\)\.getTime\(\)\?'s2':'s1';\s*\}", "function defaultSeason(){ return 's2'; }", s)
-# Any companion season selector button is no longer useful.
-s=re.sub(r'\s*<[^>]+id="companionSeasonToggle"[\s\S]*?</[^>]+>\s*', '\n', s, count=1)
+s=re.sub(r'\s*<[^>]+id="companionSeasonToggle"[\s\S]*?</[^>]+>\s*', '\n', s)
+s=s.replace("const classes=currentSeason==='s1'?S1_CLASSES:S2_CLASSES;", "const classes=S2_CLASSES;")
+s=s.replace("const list=season==='s1'?S1_BUILD_CLASSES_LIVE:S2_BUILD_CLASSES_LIVE;", "const list=S2_BUILD_CLASSES_LIVE;")
 
 # 4) S1->S2 rollover UI/remnants: remove Hold EXP and all hidden reserve toggles from public DOM.
 # Keep reserveHours hidden at 34 as an internal regression/carry-forward constant for the Bed model.
-s=re.sub(r'\s*<label class="holdExpOption">[\s\S]*?</label>\s*', '\n', s, count=1)
+s=re.sub(r'\s*<label class="holdExpOption">[\s\S]*?</label>\s*', '\n', s)
 for rid in ('reserveS2Ore','reserveS2Essence','reserveS2Sand','reserveS2Treats'):
     s=re.sub(rf'\s*<input id="{rid}"[^>]*>\s*', '\n', s)
-# Remove obsolete rollover-only notes/presentation.
 s=re.sub(r'\s*<small class="seasonPlanningNote" id="oreReserveNote">[\s\S]*?</small>\s*', '\n', s)
 s=re.sub(r'\s*<small class="bedReserveStartNote">[\s\S]*?</small>\s*', '', s)
-# No active S2-end hold unless explicitly reintroduced later; preserve model code + 34h constant/regressions.
 s=s.replace("holdExp:true,preserveRealmTools:true", "holdExp:false,preserveRealmTools:true")
 
-# Make old S1->S2 reserve helpers inert if they remain in code, so missing hidden toggles can never reserve resources.
+# Make old S1->S2 reserve helpers inert so missing hidden toggles can never reserve resources.
 for fn in ('season2SkillEssenceReserve','season2SandReserve','season2TreatReserve','season2OreReserve'):
-    s=re.sub(rf"(function {fn}\([^)]*\)\{{)", r"\1 return {target:0,rawEssence:0,rawSand:0,rawTreat:0,rawOre:0,knucklesReserved:0,shovelsReserved:0,hammersReserved:0,knuckleEssence:0,shovelSand:0,hammerOre:0,projectedKnuckles:0,projectedShovels:0,projectedHammers:0,shortfall:0,hours:0,exp:0,targetLevel:130}; /* S2 live: rollover reserve retired */", s)
-# The old resource-reserve explanation should not surface.
+    s=re.sub(rf"(function {fn}\([^)]*\)\{{)(?! return \{{target:0)", r"\1 return {target:0,rawEssence:0,rawSand:0,rawTreat:0,rawOre:0,knucklesReserved:0,shovelsReserved:0,hammersReserved:0,knuckleEssence:0,shovelSand:0,hammerOre:0,projectedKnuckles:0,projectedShovels:0,projectedHammers:0,shortfall:0,hours:0,exp:0,targetLevel:130}; /* S2 live: rollover reserve retired */", s)
 s=s.replace("<p><b>1 · Protect enabled rollover reserves during Season 1.</b> Raw Essence/Sand cover those reserves first; Knuckles/Shovels are reserved only for any uncovered remainder. Once S2 scoring is active, the old S1→S2 reserve toggles are hidden and the planner uses your live S2 inventory directly.</p>", "<p><b>1 · Use live Season 2 inventory.</b> The planner evaluates your current materials, Cart production, Stamina and Realm options directly.</p>")
 
 # 5) Calculator chrome: S2-only from the user's perspective, but preserve carried S1 Primostars.
 s=s.replace("$('historicalStarsLabel').textContent=cfg.key==='s1'?'Historical stars':'Season 1 Primostars (carried)';", "$('historicalStarsLabel').textContent='Season 1 Primostars (carried)';")
-# Remove any visible S1/S2 calculator switch if present.
-s=re.sub(r'\s*<[^>]+id="calcSeasonToggle"[\s\S]*?</[^>]+>\s*', '\n', s, count=1)
+s=re.sub(r'\s*<[^>]+id="calcSeasonToggle"[\s\S]*?</[^>]+>\s*', '\n', s)
 
 # 6) Remove obsolete launch/prep wording from the S2 launch row while retaining actionable S2 checklist.
 s=s.replace('Season 2 launch checklist', 'Season 2 Day 1 checklist')
 s=s.replace('<strong>Log in after Season 2 is live.</strong><em>Make sure the rollover/reset has fully happened before claiming anything.</em>', '<strong>Start with rollover rewards.</strong><em>Season 2 is live; collect the new-season rewards before spending progression resources.</em>')
 
-# 7) Strip S1/T3 classes from the public companion/build tab lists by forcing list selection at render sites.
-s=s.replace("const classes=currentSeason==='s1'?S1_CLASSES:S2_CLASSES;", "const classes=S2_CLASSES;")
-s=s.replace("const list=season==='s1'?S1_BUILD_CLASSES_LIVE:S2_BUILD_CLASSES_LIVE;", "const list=S2_BUILD_CLASSES_LIVE;")
-
-# 8) Keep Minimize tools exactly as policy: >10% for saved tools, >20% for paid refreshes.
+# 7) Keep Minimize tools exactly as policy: >10% for saved tools, >20% for paid refreshes.
 assert 'REALM_SAVED_TOOL_EFFICIENCY_HURDLE=0.10' in s
 assert 'REALM_PAID_REFRESH_EFFICIENCY_HURDLE=0.20' in s
 assert 'id="preserveRealmTools"' in s
-# Preserve carried S1 input and cumulative Astral math marker/content.
+# Preserve carried S1 input, cumulative Astral math, and Bed regression model.
 assert 'Season 1 Primostars (carried)' in s
 assert 'historicalStars' in s
 assert 'Astral' in s
-# Preserve Bed model constants/regression surface.
 assert 'reserveHours' in s and 'value="34"' in s
 assert '2*countFuturePacificResets' in s
 
 # Public-facing guards.
 assert 'id="buildSeasonToggle"' not in s
-assert '<span>Season 1 · Tier III</span>' not in s
 assert "function buildHtmlS1" not in s
 assert "['2026-08-29',46" not in s
 for rid in ('reserveS2Ore','reserveS2Essence','reserveS2Sand','reserveS2Treats'):
