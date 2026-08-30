@@ -90,6 +90,8 @@ s = s.replace("    committedHoldExpState=!!$('holdExp')?.checked;\n", '')
 s = s.replace("    if($('holdExpLabel')) $('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;\n", '')
 s = s.replace("    $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;",
               "    $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); future free 2-hour reset boosts are included automatically.`;")
+s = s.replace("      : `Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;",
+              "      : `Uses exact server resets (${nextResetLocalLabel()} on this device); future free 2-hour reset boosts are included automatically.`;")
 s = s.replace("    committedHoldExpState=!!$('holdExp')?.checked;\n    updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();",
               "    updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();")
 
@@ -108,6 +110,13 @@ s = re.sub(
     s,
     count=1,
 )
+
+# Diagnostics if any reserve-hours reference survived the targeted cleanup.
+if 'reserveHours' in s:
+    for m in re.finditer(r'reserveHours', s):
+        a=max(0,m.start()-240); b=min(len(s),m.end()+360)
+        print('--- reserveHours context ---')
+        print(s[a:b].replace('\n','\\n'))
 
 # Old saved fields are automatically dropped on the next save because they are no longer INPUT/CHECK ids.
 for forbidden in ("bedStoredExp", "'holdExp'", '"holdExp"', 'reserveHours', 'committedHoldExpState', 'elapsedExpHours', '#holdExp', 'holdExpOption', 'holdExpLabel'):
