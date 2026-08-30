@@ -1,0 +1,38 @@
+name: Apply build Arena role UI repair v4
+on:
+  push:
+    paths:
+      - '.github/patch-build-arena-role-ui-v4.py'
+      - '.github/workflows/apply-build-arena-role-ui-v4.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Repair build Arena/Tournament and role UI
+        run: python .github/patch-build-arena-role-ui-v4.py
+      - name: Verify build renderer
+        run: |
+          grep -q 'BUILD_ARENA_ROLE_UI_REPAIR_V4' index.html
+          grep -q "role('Arena'" index.html
+          grep -q "role('Tournament'" index.html
+          grep -q "const alwaysVisible=role==='arena'||role==='tournament'" index.html
+          grep -q 'buildRoleTabs{display:none!important}' index.html
+          grep -q "PVP_ROLE_PRESETS" index.html
+          grep -q "Nyxarchon','Main hybrid Tournament pick" index.html
+      - name: Commit generated build fixes
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore Arena Tournament and fix role tabs'
+          git push
