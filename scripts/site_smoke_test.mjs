@@ -91,7 +91,8 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
 }
 
 // Dominator keeps its DPS / Heals switch, role-specific slot stats, and a separate
-// Technique-left / Charm-right recommendation pair for each role.
+// Technique-left / Charm-right recommendation pair for each role. Arena/Tournament
+// remain visible reference cards in BOTH modes; only role-specific PvE cards filter.
 await waitBuild('Dominator');
 assert(await page.locator('#buildContent .dominatorModeTabs button').count() === 2, 'Dominator DPS/Heals tabs missing');
 let titles=await buildTitles();
@@ -110,7 +111,8 @@ await page.waitForFunction(()=>[...document.querySelectorAll('#buildContent .bui
 await page.waitForTimeout(80);
 titles=await buildTitles();
 assert(titles.some(x=>/^Healing/i.test(x)), `Dominator healer card not visible: ${titles.join(' | ')}`);
-assert(!titles.some(x=>/Single Target DPS|AoE DPS|^Arena|^Tournament/i.test(x)), `Dominator DPS/PvP cards remained visible in Heals mode: ${titles.join(' | ')}`);
+assert(titles.some(x=>/^Arena/i.test(x)) && titles.some(x=>/^Tournament/i.test(x)), `Dominator PvP reference cards disappeared in Heals mode: ${titles.join(' | ')}`);
+assert(!titles.some(x=>/Single Target DPS|AoE DPS/i.test(x)), `Dominator DPS PvE cards remained visible in Heals mode: ${titles.join(' | ')}`);
 domPair=page.locator('#buildContent > .priorityPair[data-dominator-role="heals"]:visible');
 assert(await domPair.count()===1 && await domPair.locator(':scope > .priorityPanel').count()===2, 'Dominator Heals Technique/Charm pair missing');
 domKinds=await domPair.locator('.priorityIntro span').allTextContents();
@@ -152,5 +154,5 @@ if(pageErrors.length){
   throw new Error('page runtime errors:\n' + pageErrors.join('\n---\n'));
 }
 
-console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + slot stats + Technique/Charm pair + Fantomon pairs + Dominator roles + mobile stack, calculator yielded in ${calcYieldMs}ms`);
+console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + slot stats + Technique/Charm pair + Fantomon pairs + Dominator roles/PvP refs + mobile stack, calculator yielded in ${calcYieldMs}ms`);
 await browser.close();
