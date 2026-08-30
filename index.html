@@ -3166,10 +3166,50 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   if(!defaults.staminaMode) defaults.staminaMode = 'auto'; // STAMINA_AUTO_DEFAULT_V1
 
   const $ = id => document.getElementById(id);
-  const n = (id, fallback=0) => {
-    const v = Number($(id)?.value);
-    return Number.isFinite(v) ? v : fallback;
-  };
+
+  /* COMPACT_NUMBER_INPUTS_V1
+     High-volume calculator fields accept shorthand such as 22.7k, 1.3m, and 2b.
+     Values are expanded to their full numeric form on commit so persisted state stays plain. */
+  const COMPACT_NUMBER_INPUT_IDS = new Set([
+    'charExp','bedExp','bedStoredExp',
+    'oreCurrent','oreRate','essenceCurrent','essenceRate',
+    'sandCurrent','sandBlueCurrent','sandRate',
+    'treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
+    'hammerCurrent','knucklesCurrent','shovelCurrent','refinedOreCurrent'
+  ]);
+  function parseCompactNumber(raw,fallback=0){
+    if(typeof raw==='number') return Number.isFinite(raw)?raw:fallback;
+    const s=String(raw ?? '').trim().replace(/,/g,'');
+    if(!s) return fallback;
+    const match=s.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*([kmb])?$/i);
+    if(!match) return fallback;
+    const multiplier=match[2]?({k:1e3,m:1e6,b:1e9})[match[2].toLowerCase()]:1;
+    const value=Number(match[1])*multiplier;
+    return Number.isFinite(value)?value:fallback;
+  }
+  function normalizeCompactNumberInput(id){
+    if(!COMPACT_NUMBER_INPUT_IDS.has(id)) return;
+    const el=$(id);
+    if(!el) return;
+    const raw=String(el.value ?? '').trim();
+    if(!raw) return;
+    const value=parseCompactNumber(raw,NaN);
+    if(Number.isFinite(value)) el.value=String(value);
+  }
+  function enableCompactNumberInputs(){
+    COMPACT_NUMBER_INPUT_IDS.forEach(id=>{
+      const el=$(id);
+      if(!el) return;
+      if(el.type==='number') el.type='text';
+      el.inputMode='decimal';
+      el.autocomplete='off';
+      el.dataset.compactNumber='1';
+      const hint='Supports k/m/b shorthand (example: 22.7k = 22700, 1.3m = 1300000).';
+      el.title=el.title?`${el.title} ${hint}`:hint;
+    });
+  }
+  enableCompactNumberInputs();
+  const n = (id, fallback=0) => parseCompactNumber($(id)?.value,fallback);
   const staminaMode = () => {
     const raw = $('staminaMode')?.value || 'auto';
     return ['auto','ore','essence','sand'].includes(raw) ? raw : 'auto';
@@ -6243,7 +6283,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         el.addEventListener('change',()=>{resetMaxAchievableUi();markManualSnapshot(id);scheduleCalculatorUpdate(0);});
         return;
       }
-      el.addEventListener('change',()=>{if(id!=='targetStars')resetMaxAchievableUi();markManualSnapshot(id);scheduleCalculatorUpdate(0);});
+      el.addEventListener('change',()=>{
+        normalizeCompactNumberInput(id);
+        if(id!=='targetStars') resetMaxAchievableUi();
+        markManualSnapshot(id);
+        scheduleCalculatorUpdate(0);
+      });
       el.addEventListener('keydown',e=>{
         if(e.key==='Enter'){
           e.preventDefault();
