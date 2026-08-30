@@ -3038,6 +3038,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 }
 </style>
 
+
+<style id="build-dominator-reset-perf-v1">
+/* BUILD_DOMINATOR_RESET_PERF_V1 */
+.sectionSwitch>button{display:grid;place-items:center;text-align:center}
+.dominatorModeTabs{display:flex;gap:6px;margin:0 0 10px;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.dominatorModeTabs button{min-height:38px;flex:1;border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850;letter-spacing:.03em}
+.dominatorModeTabs button:hover{color:var(--green)}
+.dominatorModeTabs button.active{background:var(--accent-strong);color:#fff}
+@media(max-width:520px){.dominatorModeTabs button{min-height:42px;font-size:11px}}
+</style>
+
 </head>
 <body>
 <main>
@@ -3047,9 +3058,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 </header>
 <nav aria-label="Site sections" class="sectionSwitch" role="tablist">
   <button class="active" role="tab" aria-selected="true" data-section="timeline">Timeline</button>
-  <div class="buildsNavCell">
-    <button role="tab" aria-selected="false" data-section="builds">Builds</button>
-</div>
+  <button role="tab" aria-selected="false" data-section="builds">Builds</button>
   <button role="tab" aria-selected="false" data-section="companions">Companions</button>
   <button role="tab" aria-selected="false" data-section="calculator">Primostar Calculator</button>
 </nav>
@@ -3507,7 +3516,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function dailyShopMaterialEstimate(cfg=activeCalcConfig()){
     const active=cfg.key==='s1'||cfg.key==='s2';
     const refreshes=active?clamp(Math.floor(n('shopRefreshesDaily',0)),0,20):0;
-    const days=active?Math.max(0,countFuturePacificResets(Date.now(),cfg.end.getTime())):0;
+    const days=active?Math.max(0,futureRealmPurchaseDays(cfg)):0;
     const perRefresh=dailyShopMatsPerRefresh(cfg);
     const perDay=Object.fromEntries(Object.entries(perRefresh).map(([k,v])=>[k,v*refreshes]));
     const total=Object.fromEntries(Object.entries(perDay).map(([k,v])=>[k,v*days]));
@@ -3542,7 +3551,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function futureRealmPurchaseDays(cfg=activeCalcConfig()){
     const now=Date.now();
     const cutoff=cfg.end.getTime();
-    return cutoff>now ? countFuturePacificResets(now,cutoff) : 0;
+    if(cutoff<=now) return 0;
+    const key=`${cfg.key}|${cutoff}`;
+    if(FUTURE_REALM_DAY_CACHE.key===key && now<FUTURE_REALM_DAY_CACHE.validUntil) return FUTURE_REALM_DAY_CACHE.value;
+    const nextReset=nextPacificResetMs(now);
+    const value=countFuturePacificResets(now,cutoff);
+    FUTURE_REALM_DAY_CACHE={key,value,validUntil:Math.min(nextReset,now+60_000)};
+    return value;
   }
   function plannedRealmRunsFor(key,cfg=activeCalcConfig()){
     return futureRealmPurchaseDays(cfg)*realmDailyValue(key)*REALM_RUNS_PER_REFRESH;
@@ -3645,15 +3660,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
   function remainingHoursAt(ms, cfg=activeCalcConfig()){ return Math.max(0, (cfg.end.getTime() - ms) / 3_600_000); }
 
-  // Convert a Pacific-local calendar date/time to an exact instant without hard-coding PDT/PST.
-  // The small iterative correction handles the November DST boundary safely.
+  // BUILD_DOMINATOR_RESET_PERF_V1
+  // Pacific reset math is hot in S2: Realm/tool/resource projection asks the same
+  // question many times during a solve. Reuse Intl formatters and memoize each
+  // first-reset/cutoff pair while preserving exact PDT/PST behavior.
+  const PACIFIC_DATE_TIME_DTF=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+  const PACIFIC_DATE_DTF=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'});
+  const FUTURE_RESET_COUNT_CACHE=new Map();
+  let FUTURE_REALM_DAY_CACHE={key:'',value:0,validUntil:0};
   function pacificLocalMs(iso,hour=6,minute=0){
     const [y,m,d]=iso.split('-').map(Number);
     const desiredAsUtc=Date.UTC(y,m-1,d,hour,minute,0);
     let guess=desiredAsUtc;
-    const dtf=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
     for(let i=0;i<4;i++){
-      const parts=Object.fromEntries(dtf.formatToParts(new Date(guess)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
+      const parts=Object.fromEntries(PACIFIC_DATE_TIME_DTF.formatToParts(new Date(guess)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
       const shownAsUtc=Date.UTC(Number(parts.year),Number(parts.month)-1,Number(parts.day),Number(parts.hour),Number(parts.minute),Number(parts.second));
       const delta=desiredAsUtc-shownAsUtc;
       guess+=delta;
@@ -3662,7 +3682,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return guess;
   }
   function pacificIsoAt(ms){
-    const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(ms)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
+    const parts=Object.fromEntries(PACIFIC_DATE_DTF.formatToParts(new Date(ms)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
     return `${parts.year}-${parts.month}-${parts.day}`;
   }
   function nextPacificResetMs(afterMs){
@@ -3672,8 +3692,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   }
   function countFuturePacificResets(startMs,cutoffMs){
     if(!(cutoffMs>startMs)) return 0;
-    let t=nextPacificResetMs(startMs), count=0, safety=0;
-    while(t<cutoffMs && safety++<500){ count++; t=pacificLocalMs(isoAddDays(pacificIsoAt(t),1),6,0); }
+    const first=nextPacificResetMs(startMs);
+    if(!(first<cutoffMs)) return 0;
+    const key=`${first}|${cutoffMs}`;
+    if(FUTURE_RESET_COUNT_CACHE.has(key)) return FUTURE_RESET_COUNT_CACHE.get(key);
+    let t=first,count=0,safety=0;
+    while(t<cutoffMs && safety++<500){
+      count++;
+      t=pacificLocalMs(isoAddDays(pacificIsoAt(t),1),6,0);
+    }
+    FUTURE_RESET_COUNT_CACHE.set(key,count);
+    if(FUTURE_RESET_COUNT_CACHE.size>64) FUTURE_RESET_COUNT_CACHE.delete(FUTURE_RESET_COUNT_CACHE.keys().next().value);
     return count;
   }
   function localClockLabel(ms){
@@ -4514,11 +4543,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   }
 
   function materialRealmDaysAvailable(cfg=activeCalcConfig()){
-    const now=Date.now();
-    const cutoff=cfg.end.getTime();
-    if(cutoff<=now) return 0;
+    if(cfg.end.getTime()<=Date.now()) return 0;
     // Current server-day window + each future 6 AM reset strictly before the cutoff.
-    return 1+countFuturePacificResets(now,cutoff);
+    return 1+futureRealmPurchaseDays(cfg);
   }
   function realmInventoryFor(key,cfg=activeCalcConfig()){
     const ids={ore:'hammerCurrent',essence:'knucklesCurrent',sand:'shovelCurrent'};
@@ -6270,18 +6297,38 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       </div><p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus Sorcerer/Destroyer ↗</a></p>`;
 
     if(cls==='Dominator') return `
+      <div class="dominatorModeTabs" role="group" aria-label="Dominator build role"><button type="button" data-dominator-mode="dps">DPS</button><button type="button" data-dominator-mode="heals">Heals</button></div>
       <div class="guideSummary"><div><span>Dark DPS / healer / support</span><strong>Dominator</strong><p>T4 is a difficult DPS tier for Sage because Erosion needs high Effect Hit Rate and summons are easier to kill. Healing/support gets meaningful upgrades and remains the most reliable role.</p></div><p><b>Quick stat rule</b>DPS: Effect Hit Rate ≥ Elemental Mastery ≥ ATK &gt; SPD. Healer: SPD &gt; Effect Hit Rate &gt; Elemental Mastery &gt; ATK. Do not use one gear priority for both jobs.</p></div>
       <div class="gearPanel"><div class="gearIntro"><span>Season 2 gearing</span><strong>Two gear profiles</strong><p>Dominator is the class where a DPS preset and a healer preset are genuinely worth maintaining.</p></div><div class="gearGrid"><div class="gearItem"><span>DPS main lines</span><p>Staff/Orb: Effect Hit Rate ≥ Elemental Mastery ≥ ATK &gt; SPD. Boots: Elemental Mastery &gt; ATK &gt; SPD. Defensive slots: DEF/RES &gt; HP.</p></div><div class="gearItem"><span>Healer main lines</span><p>Staff/Orb: SPD &gt; Effect Hit Rate &gt; Elemental Mastery &gt; ATK. Helmet/Chest favor HP first, then DEF/RES. Boots: SPD &gt; Elemental Mastery &gt; ATK.</p></div><div class="gearItem"><span>Substats</span><p>DPS: Crit+Accuracy / Crit+Crit DMG / ailment damage, then EHR and conversions. Healer: DMG RES + Healing, Block packages, Healing Boost, then SPD/HP.</p></div><div class="gearItem"><span>Gem plan</span><p>Healer: Amethyst weapon, Amber off-hand/helm/boots, Moonstone armor. DPS: Obsidian weapon/off-hand, Citrine helm, Moonstone armor, Amethyst boots.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core support investment</span><strong>Phantom Light is mandatory</strong><p>These are all equipped in the Healing/Group or Carry Support builds below, not standalone wishlist recommendations.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Phantom Light</strong><p>Healing boost plus overheal-to-shield conversion. The must-have Dominator healer Charm.</p></div></li><li><b>2</b><div><strong>Rejuvenating Rain</strong><p>Repeatable single-target heal and a clean answer to low-HP allies.</p></div></li><li><b>3</b><div><strong>Mantra of Blessings</strong><p>High-value carry buff for co-op and scoring content when raw survival is already handled.</p></div></li><li><b>4</b><div><strong>Decoy Clone</strong><p>Excellent hypercarry/scoring utility when your team can exploit the clone connection and positioning.</p></div></li></ol></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core DPS investment</span><strong>EHR decides the build</strong><p>These are all equipped in the listed Single Target or AoE/Erosion builds; situational alternates remain in the build notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Dark Starburst</strong><p>Reliable multi-hit single-target damage that does not require Erosion stacks to function.</p></div></li><li><b>2</b><div><strong>Shadow of Termination</strong><p>Key single-target Dark finisher/core technique.</p></div></li><li><b>3</b><div><strong>Shadow Erosion</strong><p>Core DPS Charm when your Effect Hit Rate is high enough to land the status reliably.</p></div></li><li><b>4</b><div><strong>Linked Misfortune</strong><p>Standard Erosion/Dark damage package piece across both ST and AoE builds.</p></div></li></ol></div>
+      <div class="priorityPanel" data-dominator-role="heals"><div class="priorityIntro"><span>Core support investment</span><strong>Phantom Light is mandatory</strong><p>These are all equipped in the Healing/Group or Carry Support builds below, not standalone wishlist recommendations.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Phantom Light</strong><p>Healing boost plus overheal-to-shield conversion. The must-have Dominator healer Charm.</p></div></li><li><b>2</b><div><strong>Rejuvenating Rain</strong><p>Repeatable single-target heal and a clean answer to low-HP allies.</p></div></li><li><b>3</b><div><strong>Mantra of Blessings</strong><p>High-value carry buff for co-op and scoring content when raw survival is already handled.</p></div></li><li><b>4</b><div><strong>Decoy Clone</strong><p>Excellent hypercarry/scoring utility when your team can exploit the clone connection and positioning.</p></div></li></ol></div>
+      <div class="priorityPanel" data-dominator-role="dps"><div class="priorityIntro"><span>Core DPS investment</span><strong>EHR decides the build</strong><p>These are all equipped in the listed Single Target or AoE/Erosion builds; situational alternates remain in the build notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Dark Starburst</strong><p>Reliable multi-hit single-target damage that does not require Erosion stacks to function.</p></div></li><li><b>2</b><div><strong>Shadow of Termination</strong><p>Key single-target Dark finisher/core technique.</p></div></li><li><b>3</b><div><strong>Shadow Erosion</strong><p>Core DPS Charm when your Effect Hit Rate is high enough to land the status reliably.</p></div></li><li><b>4</b><div><strong>Linked Misfortune</strong><p>Standard Erosion/Dark damage package piece across both ST and AoE builds.</p></div></li></ol></div>
       <div class="buildGrid">
-        <article class="buildCard"><header><div><h3>Single Target</h3><p>Reliable hybrid before perfect EHR</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Dark Bullet</b><b>Dark Starburst</b><b>Chaos Rune</b><b>Shadow of Termination</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Shadow Vengeance</b><b>Night's Blessing</b><b>Shadow Erosion</b><b>Linked Misfortune</b></div></div><ul><li><b>Offensive:</b> high EHR → Chaos Rune → Mana Blast</li><li><b>Defensive:</b> retain Shadow Vengeance</li><li>Frenzy Totem + Soul Pact Resonance is another offensive variant depending on rarity/stats</li></ul></article>
-        <article class="buildCard"><header><div><h3>AoE / Erosion</h3><p>Still the old Arcanist AoE core</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Mana Blast</b><b>Dark Bullet</b><b>Abyssal Hand</b><b>Shadow Impact</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Shadow Vengeance</b><b>Night's Blessing</b><b>Shadow Erosion</b><b>Linked Misfortune</b></div></div><ul><li><b>Offensive:</b> once survival is safe, Shadow Vengeance → Soul Pact Resonance / offense</li><li><b>Defensive:</b> keep Shadow Vengeance</li><li>T4 adds no new dedicated AoE technique/charm package for Dominator</li></ul></article>
-        <article class="buildCard"><header><div><h3>Healing / Group</h3><p>Best all-around Dominator role</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Waterling Summon</b><b>Rejuvenating Rain</b><b>Radiant Restoration</b><b>Frenzy Totem</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Phantom Light</b><b>Healing Mastery</b><b>Overhealing</b><b>FLEX</b></div></div><ul><li><b>Offensive/support:</b> FLEX → Mantra of Blessings when the party is stable</li><li><b>Defensive:</b> FLEX → Resurrection if allies die, or Shadow Vengeance if you die</li><li>Need more healing: Frenzy Totem → Healing Touch</li></ul></article>
-        <article class="buildCard"><header><div><h3>Carry Support</h3><p>Scoring / hypercarry utility</p></div></header><div class="skillGroup"><span>Core pieces</span><div><b>Mantra of Blessings</b><b>Decoy Clone</b><b>Rejuvenating Rain</b><b>Radiant Restoration</b></div></div><div class="skillGroup"><span>Support shell</span><div><b>Phantom Light</b><b>Healing Mastery</b><b>Resurrection / Overhealing</b><b>Flex</b></div></div><ul><li><b>Offensive/support:</b> favor Mantra + Decoy when a stronger DPS is carrying score</li><li><b>Defensive:</b> remove the greed slot for Resurrection / Shadow Vengeance</li><li>Pandarial later in S2 is a strong hybrid lead because opening CD reduction can enable earlier healing</li></ul></article>
+        <article class="buildCard" data-dominator-role="dps"><header><div><h3>Single Target</h3><p>Reliable hybrid before perfect EHR</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Dark Bullet</b><b>Dark Starburst</b><b>Chaos Rune</b><b>Shadow of Termination</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Shadow Vengeance</b><b>Night's Blessing</b><b>Shadow Erosion</b><b>Linked Misfortune</b></div></div><ul><li><b>Offensive:</b> high EHR → Chaos Rune → Mana Blast</li><li><b>Defensive:</b> retain Shadow Vengeance</li><li>Frenzy Totem + Soul Pact Resonance is another offensive variant depending on rarity/stats</li></ul></article>
+        <article class="buildCard" data-dominator-role="dps"><header><div><h3>AoE / Erosion</h3><p>Still the old Arcanist AoE core</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Mana Blast</b><b>Dark Bullet</b><b>Abyssal Hand</b><b>Shadow Impact</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Shadow Vengeance</b><b>Night's Blessing</b><b>Shadow Erosion</b><b>Linked Misfortune</b></div></div><ul><li><b>Offensive:</b> once survival is safe, Shadow Vengeance → Soul Pact Resonance / offense</li><li><b>Defensive:</b> keep Shadow Vengeance</li><li>T4 adds no new dedicated AoE technique/charm package for Dominator</li></ul></article>
+        <article class="buildCard" data-dominator-role="heals"><header><div><h3>Healing / Group</h3><p>Best all-around Dominator role</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Waterling Summon</b><b>Rejuvenating Rain</b><b>Radiant Restoration</b><b>Frenzy Totem</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Phantom Light</b><b>Healing Mastery</b><b>Overhealing</b><b>FLEX</b></div></div><ul><li><b>Offensive/support:</b> FLEX → Mantra of Blessings when the party is stable</li><li><b>Defensive:</b> FLEX → Resurrection if allies die, or Shadow Vengeance if you die</li><li>Need more healing: Frenzy Totem → Healing Touch</li></ul></article>
+        <article class="buildCard" data-dominator-role="heals"><header><div><h3>Carry Support</h3><p>Scoring / hypercarry utility</p></div></header><div class="skillGroup"><span>Core pieces</span><div><b>Mantra of Blessings</b><b>Decoy Clone</b><b>Rejuvenating Rain</b><b>Radiant Restoration</b></div></div><div class="skillGroup"><span>Support shell</span><div><b>Phantom Light</b><b>Healing Mastery</b><b>Resurrection / Overhealing</b><b>Flex</b></div></div><ul><li><b>Offensive/support:</b> favor Mantra + Decoy when a stronger DPS is carrying score</li><li><b>Defensive:</b> remove the greed slot for Resurrection / Shadow Vengeance</li><li>Pandarial later in S2 is a strong hybrid lead because opening CD reduction can enable earlier healing</li></ul></article>
       </div><p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-dominator" rel="noreferrer" target="_blank">Prydwen Dominator ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sage/" rel="noreferrer" target="_blank">Loot &amp; Waifus Sage/Dominator ↗</a></p>`;
 
     return '';
+  }
+
+  const DOMINATOR_BUILD_MODE_KEY='sxs-build-dominator-mode';
+  let dominatorBuildMode='dps';
+  try{
+    const saved=localStorage.getItem(DOMINATOR_BUILD_MODE_KEY);
+    if(saved==='dps'||saved==='heals') dominatorBuildMode=saved;
+  }catch(_){}
+  function applyDominatorBuildMode(){
+    const root=$('buildContent');
+    if(!root || currentClass!=='Dominator') return;
+    root.querySelectorAll('[data-dominator-mode]').forEach(btn=>{
+      const active=btn.dataset.dominatorMode===dominatorBuildMode;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-pressed',String(active));
+    });
+    root.querySelectorAll('[data-dominator-role]').forEach(el=>{
+      el.hidden=el.dataset.dominatorRole!==dominatorBuildMode;
+    });
   }
 
   function buildHtml(cls){ return buildSeasonKey()==='s1'?buildHtmlS1(cls):buildHtmlS2(cls); }
@@ -6305,6 +6352,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       : 'Season 2 / Tier IV is live. Your selected class tab is remembered separately for each season.';
     $('classTabs').innerHTML=classes.map(c=>`<button class="${c===currentClass?'active':''}" data-class="${c}">${c}</button>`).join('');
     $('buildContent').innerHTML=buildHtml(currentClass);
+    applyDominatorBuildMode();
   }
   let buildsInitialized=false;
   function setupBuilds(){
@@ -6382,6 +6430,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       : 'Season 2 / Tier IV is live. Your selected class tab is remembered separately for each season.';
     $('classTabs').innerHTML=list.map(c=>`<button class="${c===currentClass?'active':''}" data-class="${c}">${c}</button>`).join('');
     $('buildContent').innerHTML=buildHtml(currentClass);
+    applyDominatorBuildMode();
   };
   setupBuilds=function(){
     null?.addEventListener?.('click',e=>{
@@ -6397,6 +6446,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       currentClass=b.dataset.class;
       try{localStorage.setItem(liveBuildStorageKey(),currentClass);}catch(_){}
       renderBuilds();
+    });
+    $('buildContent').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-dominator-mode]');
+      if(!b || currentClass!=='Dominator') return;
+      dominatorBuildMode=b.dataset.dominatorMode==='heals'?'heals':'dps';
+      try{localStorage.setItem(DOMINATOR_BUILD_MODE_KEY,dominatorBuildMode);}catch(_){}
+      applyDominatorBuildMode();
     });
     renderBuilds();
     let lastBuildSeasonTick=liveBuildSeason();
