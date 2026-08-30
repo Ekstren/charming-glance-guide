@@ -2767,9 +2767,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 @media(max-width:760px){.s2TargetPresets>div{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))}.s2TargetPresets button{width:100%;white-space:normal!important}}
 </style>
 
-<style id="realm-tool-preserve-policy-v3">
-.realmToolPreserveOption{display:flex;align-items:flex-start;gap:8px;margin:9px 0 12px;color:var(--body-text);font-size:11px;font-weight:750;line-height:1.35}.realmToolPreserveOption input{margin-top:2px;flex:0 0 auto}.realmToolPreserveOption span{white-space:nowrap}.realmToolPreserveOption small{color:var(--muted);font-size:9px;font-weight:600;line-height:1.4}
-@media(max-width:680px){.realmToolPreserveOption{flex-wrap:wrap}.realmToolPreserveOption small{flex-basis:100%;padding-left:22px}}
+<style id="realm-tool-preserve-policy-v4">
+/* TOOL_TOGGLE_TOP_V1: keep the optimizer policy beside the season-level Bed EXP control, not buried in Material Realm details. */
+.realmToolPreserveOption{display:flex;align-items:flex-start;gap:8px;color:var(--body-text);font-size:11px;font-weight:750;line-height:1.35}.realmToolPreserveOption input{margin-top:2px;flex:0 0 auto}.realmToolPreserveOption span{white-space:nowrap}.realmToolPreserveOption small{color:var(--muted);font-size:9px;font-weight:600;line-height:1.4}
+.realmToolPreserveTop{align-items:center;margin:0;min-width:0}.realmToolPreserveTop input{margin-top:0}.realmToolPreserveTop small{max-width:420px}
+@media(max-width:760px){.seasonPlanningControls .realmToolPreserveTop{flex-basis:100%;margin-top:5px}.realmToolPreserveTop{flex-wrap:wrap}.realmToolPreserveTop small{flex-basis:100%;max-width:none;padding-left:22px}}
 </style>
 </head>
 <body>
@@ -2899,6 +2901,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         </div>
         <div class="rolloverHold seasonPlanningControls">
           <label class="holdExpOption"><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span><small class="bedReserveStartNote">Start <b>Aug 28, 8:00 PM PDT</b></small></label>
+          <label class="realmToolPreserveOption realmToolPreserveTop"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved tools need >10% improvement; paid Realm refreshes need >20%. Turn off for pure efficiency.</small></label>
           <input id="reserveS2Ore" checked type="checkbox" hidden>
           <input id="reserveS2Essence" checked type="checkbox" hidden>
           <input id="reserveS2Sand" checked type="checkbox" hidden>
@@ -2947,7 +2950,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
             <div class="realmDailyPlanRow">
               <div class="realmDailyCustom">
                 <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 20/day per Realm</small></span>
-                <label class="realmToolPreserveOption"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved Realm tools need >10% acquisition improvement to justify spending; paid refreshes need >20%. Turn off for pure efficiency.</small></label>
                 <div class="realmDailyInputs">
                   <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
                   <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
