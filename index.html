@@ -3680,24 +3680,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
   // Convert a Pacific-local calendar date/time to an exact instant without hard-coding PDT/PST.
   // The small iterative correction handles the November DST boundary safely.
-  /* PACIFIC_RESET_PERF_V1
-     S2 spans many weeks, so reset counting must be O(1), not a per-day timezone loop.
-     Reuse Intl formatters and count Pacific-local reset dates arithmetically; this stays
-     correct across the November PDT -> PST transition because reset eligibility is based
-     on local calendar dates and an exact 6:00 AM boundary check. */
-  const PACIFIC_DATE_FORMATTER = new Intl.DateTimeFormat('en-US',{
-    timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'
-  });
-  const PACIFIC_DATE_TIME_FORMATTER = new Intl.DateTimeFormat('en-US',{
-    timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit',
-    hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'
-  });
   function pacificLocalMs(iso,hour=6,minute=0){
     const [y,m,d]=iso.split('-').map(Number);
     const desiredAsUtc=Date.UTC(y,m-1,d,hour,minute,0);
     let guess=desiredAsUtc;
+    const dtf=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
     for(let i=0;i<4;i++){
-      const parts=Object.fromEntries(PACIFIC_DATE_TIME_FORMATTER.formatToParts(new Date(guess)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
+      const parts=Object.fromEntries(dtf.formatToParts(new Date(guess)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
       const shownAsUtc=Date.UTC(Number(parts.year),Number(parts.month)-1,Number(parts.day),Number(parts.hour),Number(parts.minute),Number(parts.second));
       const delta=desiredAsUtc-shownAsUtc;
       guess+=delta;
@@ -3706,7 +3695,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return guess;
   }
   function pacificIsoAt(ms){
-    const parts=Object.fromEntries(PACIFIC_DATE_FORMATTER.formatToParts(new Date(ms)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
+    const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(ms)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
     return `${parts.year}-${parts.month}-${parts.day}`;
   }
   function nextPacificResetMs(afterMs){
@@ -3714,21 +3703,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const sameDay=pacificLocalMs(iso,6,0);
     return sameDay>afterMs ? sameDay : pacificLocalMs(isoAddDays(iso,1),6,0);
   }
-  function isoDayOrdinal(iso){
-    const [y,m,d]=iso.split('-').map(Number);
-    return Math.floor(Date.UTC(y,m-1,d)/86_400_000);
-  }
   function countFuturePacificResets(startMs,cutoffMs){
     if(!(cutoffMs>startMs)) return 0;
-    const startIso=pacificIsoAt(startMs);
-    const startReset=pacificLocalMs(startIso,6,0);
-    const firstIso=startReset>startMs ? startIso : isoAddDays(startIso,1);
-
-    const cutoffIso=pacificIsoAt(cutoffMs);
-    const cutoffReset=pacificLocalMs(cutoffIso,6,0);
-    const lastIso=cutoffReset<cutoffMs ? cutoffIso : isoAddDays(cutoffIso,-1);
-
-    return Math.max(0,isoDayOrdinal(lastIso)-isoDayOrdinal(firstIso)+1);
+    let t=nextPacificResetMs(startMs), count=0, safety=0;
+    while(t<cutoffMs && safety++<500){ count++; t=pacificLocalMs(isoAddDays(pacificIsoAt(t),1),6,0); }
+    return count;
   }
   function localClockLabel(ms){
     return new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(ms));
