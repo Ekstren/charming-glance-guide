@@ -24,10 +24,13 @@ jobs:
         run: |
           grep -q 'REALM_UI_CLEANUP_V3' index.html
           grep -q 'Hammers owned' index.html
+          grep -q 'Knuckles owned' index.html
+          grep -q 'Shovels owned' index.html
           grep -q 'Ore Purchases / Day' index.html
-          grep -q 'grid-template-columns:repeat(3,minmax(0,1fr))!important' index.html
-          ! grep -q 'Hammers on hand' index.html
-          ! grep -q 'Ore Realm Purchases / Day' index.html
+          grep -q 'Essence Purchases / Day' index.html
+          grep -q 'Sand Purchases / Day' index.html
+          grep -q 'grid-column:2 / 4!important' index.html
+          grep -q 'margin-top:-6px!important' index.html
       - name: Commit generated index
         run: |
           git config user.name 'ekstren'
