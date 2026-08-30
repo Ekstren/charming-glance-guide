@@ -14,6 +14,14 @@ s = s.replace('          <label>Bed XP Stored<input id="bedStoredExp" type="numb
 s = s.replace('          <input id="reserveHours" min="0" max="36" type="number" value="34" hidden>\n', '')
 s = re.sub(r'\n<style id="bed-exp-hold-layout-v4">[\s\S]*?</style>\n', '\n', s, count=1)
 
+# Remove older generic reserve-control CSS while keeping the remaining planning-control layout.
+s = s.replace('.seasonPlanningControls>label:not(.reserveHoursControl){white-space:nowrap}', '.seasonPlanningControls>label{white-space:nowrap}')
+s = re.sub(r'\.seasonPlanningControls \.reserveHoursControl\{[^}]*\}', '', s)
+s = re.sub(r'\.seasonPlanningControls \.reserveHoursControl input\{[^}]*\}', '', s)
+s = re.sub(r'\.seasonPlanningControls \.reserveHoursControl\{margin-left:0\}', '', s)
+s = re.sub(r'\.seasonPlanningControls \.reserveHoursControl\{justify-content:space-between\}', '', s)
+s = re.sub(r'\.seasonPlanningControls \.reserveHoursControl input\{font-size:16px;min-height:44px\}', '', s)
+
 # Keep Bed EXP / hour, but remove stored/hold state from defaults and persisted calculator inputs.
 s = s.replace('    charLevel:130,charExp:0,bedExp:0,reserveHours:34,', '    charLevel:130,charExp:0,bedExp:0,')
 s = s.replace("  const S2_SCORING_START_CHECKS=Object.freeze({\n    holdExp:false,preserveRealmTools:true\n  });",
@@ -110,13 +118,6 @@ s = re.sub(
     s,
     count=1,
 )
-
-# Diagnostics if any reserve-hours reference survived the targeted cleanup.
-if 'reserveHours' in s:
-    for m in re.finditer(r'reserveHours', s):
-        a=max(0,m.start()-240); b=min(len(s),m.end()+360)
-        print('--- reserveHours context ---')
-        print(s[a:b].replace('\n','\\n'))
 
 # Old saved fields are automatically dropped on the next save because they are no longer INPUT/CHECK ids.
 for forbidden in ("bedStoredExp", "'holdExp'", '"holdExp"', 'reserveHours', 'committedHoldExpState', 'elapsedExpHours', '#holdExp', 'holdExpOption', 'holdExpLabel'):
