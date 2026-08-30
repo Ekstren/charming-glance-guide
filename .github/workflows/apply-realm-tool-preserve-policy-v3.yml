@@ -121,8 +121,8 @@ jobs:
 
           preserve=true;
           assertPick('1% gain does not burn saved tools', candidate('tools',9.9,1,{runs:10}), candidate('raw',10,0), 'raw');
-          assertPick('4.9% gain still preserves tools', candidate('tools',9.51,1,{runs:10}), candidate('raw',10,0), 'raw');
-          assertPick('>5% gain is allowed to use tools', candidate('tools',9.4,1,{runs:10}), candidate('raw',10,0), 'tools');
+          assertPick('inside 5% window still preserves tools', candidate('tools',9.53,1,{runs:10}), candidate('raw',10,0), 'raw');
+          assertPick('outside 5% window is allowed to use tools', candidate('tools',9.4,1,{runs:10}), candidate('raw',10,0), 'tools');
           assertPick('2.5% paid gain does not spend Dawnium', candidate('paid',7.8,2,{runs:10,paid:10,dawnium:200}), candidate('saved',8.0,1,{runs:5}), 'saved');
           assertPick('materially better paid route can win', candidate('paid',9.0,2,{runs:10,paid:10,dawnium:200}), candidate('raw',10.0,0), 'paid');
 
