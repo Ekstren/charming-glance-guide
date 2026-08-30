@@ -1,0 +1,55 @@
+name: Apply Season 2 scoring-start prep
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-s2-scoring-start-prep-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Prepare Season 2 scoring calculator
+        run: python .github/patch-s2-scoring-start-prep-v1.py
+      - name: Verify Season 2 scoring scope and defaults
+        run: |
+          grep -q 'S2_SCORING_START_PREP_V1' index.html
+          grep -q 'data-s2-target="680"' index.html
+          grep -q 'data-s2-target="800"' index.html
+          grep -q 'data-s2-target="920"' index.html
+          grep -q 'data-s2-target="1060"' index.html
+          grep -q 'commonTargets:Object.freeze(\[680,800,920,1060\])' index.html
+          grep -q 'targetStars:800' index.html
+          grep -q 'historicalStars:128' index.html
+          grep -q 'charLevel:130' index.html
+          grep -q 'skillLevel:130' index.html
+          grep -q 'relicLevel:14' index.html
+          grep -q 'fantomonLevel:130' index.html
+          grep -q 'realmDailyOre:4' index.html
+          grep -q 'realmDailyEssence:4' index.html
+          grep -q 'realmDailySand:4' index.html
+          grep -q "characterSnapshot(cfg).level<cfg.scoreFloor" index.html
+          grep -q 'normalInputFloor' index.html
+          grep -q "label.hidden=cfg.key==='s2'" index.html
+          grep -q 'scoring-only profile' index.html
+          grep -q 'scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27' index.html
+          grep -q 'expectedTotalStars:920' index.html
+          ! grep -q 'const s2Defaults={targetStars:680' index.html
+      - name: Commit generated calculator
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Prepare Season 2 scoring-start calculator'
+          git push
