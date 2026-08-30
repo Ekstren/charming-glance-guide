@@ -1,0 +1,39 @@
+name: Correct Guardian shield slot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_guardian_shield_slot_v1.py'
+      - '.github/workflows/apply-guardian-shield-slot-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct Guardian off-hand slot
+        run: python scripts/patch_guardian_shield_slot_v1.py
+      - name: Verify Guardian stat profile
+        shell: bash
+        run: |
+          grep -q 'GUARDIAN_SHIELD_SLOT_V1' index.html
+          grep -q "Guardian:{" index.html
+          grep -q "\['Shield','DEF > HP > Physical / Elemental RES'\]" index.html
+          ! grep -q "Guardian:{.*Gauntlets" index.html
+      - name: Commit generated correction
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html scripts/patch_restore_rich_builds_v1.py; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html scripts/patch_restore_rich_builds_v1.py
+          git commit -m 'Correct Guardian off-hand stat slot to Shield'
+          git push origin HEAD:main
