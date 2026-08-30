@@ -7261,8 +7261,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   }
   document.addEventListener('DOMContentLoaded',()=>{
     queueApply();
-    const root=document.querySelector('.builds');
-    if(root) new MutationObserver(queueApply).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','aria-pressed']});
+    const root=document.getElementById('buildContent');
+    if(root) new MutationObserver(queueApply).observe(root,{childList:true});
   });
   window.addEventListener('load',queueApply);
 })();
@@ -7432,6 +7432,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       pair.append(panels[0],panels[1]);
     }
   }
+  // RICH_BUILDS_V2: role tabs filter only role-specific PvE. Arena and Tournament
+  // remain useful references in either Dominator mode and stay visible in both.
   function applyDominatorRole(host,mode){
     if(activeClass()!=='Dominator') return;
     host.querySelectorAll(':scope > .priorityPair[data-dominator-role]').forEach(el=>{
@@ -7439,10 +7441,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     });
     host.querySelectorAll('.buildGrid .buildCard').forEach(card=>{
       const title=card.querySelector('h3')?.childNodes?.[0]?.textContent?.trim()||card.querySelector('h3')?.textContent?.trim()||'';
+      const alwaysVisible=/^(Arena|Tournament)/i.test(title);
       const healing=/^Healing/i.test(title);
       const role=healing?'heals':'dps';
-      card.dataset.dominatorRole=role;
-      card.hidden=role!==mode;
+      card.dataset.dominatorRole=alwaysVisible?'pvp':role;
+      card.hidden=!alwaysVisible && role!==mode;
     });
   }
   function signature(host,cls,mode){
@@ -7470,7 +7473,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   }
   document.addEventListener('DOMContentLoaded',()=>{
     const host=root();
-    if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','aria-pressed']});
+    if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
     document.getElementById('classTabs')?.addEventListener('click',queue);
     host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]')) setTimeout(()=>{if(host) host.dataset.richBuildSig='';queue();},0);});
     queue();
