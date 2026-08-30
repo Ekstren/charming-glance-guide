@@ -3029,6 +3029,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1200,essence:1500,sand:1000,rolla:11800},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true}
   };
 
+  /* S2_SCORING_SOURCE_CONFIRM_V1
+     Cross-checked against live-player CN/TW S2 references: scoring begins above Lv.130
+     (Relics above +13), weights are Character 100 / Gear 18 / Skill 7 / Fantomon 8 /
+     Relic 33, S2 contributes 45 fixed Primostars, and progression converts at 27 score
+     per Primostar. Existing 920-star benchmark remains the regression check. */
   /* S2_PRIMO_READY_V1
      Season 2 is prepared in parallel; Season 1 remains the active calculator until the
      existing season boundary switches activeCalcConfig() to S2.
@@ -5176,7 +5181,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     }
     const setInputMax=(id,max)=>{const el=$(id);if(!el)return;if(Number.isFinite(max))el.max=String(max);else el.removeAttribute('max');};
     if(cfg.key==='s2'){
-      $('seasonRulesHint').innerHTML='<b>S2 scoring mode starts at Lv.130:</b> +45 fixed · 27 score / Primostar · normal floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120</b> is only the max S2 Material Realm/open-map bracket. Starter profile: Lv.130 · Gear 130 · Skills 130 · Fantomons 130 · Relics +14; carried stars/resources should be replaced with your actual snapshot.';
+      $('seasonRulesHint').innerHTML='<b>S2 scoring mode starts at Lv.130:</b> +45 fixed · 27 score / Primostar · normal floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120</b> is only the max S2 Material Realm/open-map bracket. Starter profile: Lv.130 · Gear 130 · Skills 130 · Fantomons 130 · Relics +13; carried stars/resources should be replaced with your actual snapshot.';
       const currentCaps=categoryInputCapsForCharacter(characterSnapshot(cfg).level,cfg);
       /* S2_SCORING_INPUT_FLOOR_V2: Character Lv.130 unlocks the planner; actual category
          inputs may still be below their score floors and must retain their real catch-up costs. */
@@ -5287,7 +5292,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const relicInputFloor=10;
     const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
     const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?14:13);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
     const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
     const baselineScore=characterScore(p,cfg)+gearScore(gear,cfg)+skillState.score+relicState.score+fantoState.score;
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
@@ -5373,7 +5378,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const relicInputFloor=10;
     const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
     const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?14:13);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
     const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
     const skill=skillState.avg,relic=relicState.avg,fanto=fantoState.avg;
     const exactChecks=[
