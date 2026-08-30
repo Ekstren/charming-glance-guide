@@ -2956,6 +2956,118 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 }
 </style>
 
+
+<style id="consistency-mobile-v4">
+/* CONSISTENCY_MOBILE_V4
+   Final wording/spacing pass for Materials + result cards, with explicit narrow-screen rules. */
+
+/* Keep the section helpers compact and semantically aligned with the labels below. */
+.realmInventoryTop small,.realmDailyTitle small,.shopEstimatePanel .realmInventoryTop small{
+  line-height:1.35!important;
+}
+
+/* Full tool names are clearer than H/K/S; let the summary wrap naturally instead of clipping. */
+.realmPlanSummary b{
+  line-height:1.35!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+.realmPlanSummary small{
+  line-height:1.4!important;
+  white-space:normal!important;
+}
+
+/* Result balance rows: one readable label/value pair, with the value + unit kept together. */
+.planCosts .resourceRemainingLine{
+  grid-template-columns:auto minmax(0,1fr)!important;
+  column-gap:6px!important;
+  align-items:baseline!important;
+}
+.planCosts .resourceRemainingLine b{
+  min-width:0!important;
+  white-space:nowrap!important;
+}
+
+/* Long projected values may wrap, but headers should stay aligned rather than collide. */
+.resourceCardHead{
+  gap:6px 10px!important;
+}
+.resourceCardHead small{
+  line-height:1.3!important;
+  text-align:right!important;
+}
+
+/* The shop uses the same 1/3 + 2/3 rhythm as the purchase row above. */
+.shopEstimateCompact{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+}
+.shopRefreshControl{grid-column:1!important;min-width:0!important}
+.shopGainSummary{grid-column:2 / 4!important;min-width:0!important}
+.shopGainSummary>div{min-width:0!important}
+.shopGainSummary span{min-width:0!important}
+
+@media(max-width:700px){
+  /* Tablet/phone: stack explanatory text and keep controls touch-friendly. */
+  .realmInventoryTop,.realmDailyTitle{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:3px!important;
+  }
+  .realmInventoryTop small,.realmDailyTitle small,.shopEstimatePanel .realmInventoryTop small{
+    max-width:none!important;
+    text-align:left!important;
+  }
+  .shopEstimateCompact{
+    grid-template-columns:1fr!important;
+  }
+  .shopRefreshControl,.shopGainSummary{
+    grid-column:1!important;
+  }
+  .shopGainSummary>div{
+    gap:12px!important;
+  }
+  .realmPlanSummary{
+    grid-template-columns:1fr!important;
+    gap:4px!important;
+  }
+  .realmPlanSummary small{
+    text-align:left!important;
+  }
+  .resourceCardHead{
+    align-items:flex-start!important;
+    flex-wrap:wrap!important;
+  }
+  .resourceCardHead small{
+    max-width:100%!important;
+    text-align:left!important;
+  }
+  .planCosts .resourceRemainingLine{
+    white-space:normal!important;
+  }
+}
+
+@media(max-width:520px){
+  /* Phone: no compressed three-across Realm controls. */
+  .realmInventoryGrid,.realmDailyInputs,.shopEstimateCompact{
+    grid-template-columns:1fr!important;
+  }
+  .realmDailyInputs>label,.realmInventoryGrid>label,.shopRefreshControl,.shopGainSummary{
+    min-width:0!important;
+    width:100%!important;
+  }
+  .realmDailyInputs input,.realmInventoryGrid input,.shopRefreshControl input{
+    width:100%!important;
+  }
+  .shopGainSummary>div{
+    min-height:30px!important;
+  }
+  .planCosts .resourceRemainingLine b{
+    white-space:normal!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <main>
@@ -3098,30 +3210,30 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
             <div class="resourceCard treatResourceCard"><div class="resourceCardHead"><strong>Fantomon Treats</strong><small id="treatProjected">Projected: —</small></div><div class="resourceCardFields treatResourceFields"><label><span>Basic · +50 EXP</span><input id="treatCurrent" type="number" min="0" step="1" value="0"></label><label><span>Premium · +400 EXP</span><input id="treatPremiumCurrent" type="number" min="0" step="1" value="0"></label><label><span>Deluxe · +2,000 EXP</span><input id="treatDeluxeCurrent" type="number" min="0" step="1" value="0"></label><label><span>Cart / hr · Basic</span><input id="treatRate" type="number" min="0" value="0"></label></div><small class="treatEquivalent" id="treatEquivalentNow">Saved total: —</small></div>
           </div>
           <div class="realmInventory">
-            <div class="realmInventoryTop"><strong>Material Realm plan</strong><small>Saved tools + daily purchases</small></div>
+            <div class="realmInventoryTop"><strong>Material Realm plan</strong><small>Owned tools + daily purchases</small></div>
             <div class="realmInventoryGrid">
-              <label>Hammers owned<input id="hammerCurrent" type="number" min="0" step="1" value="0"><small class="realmCurrentValue" id="hammerMaterialValue">Worth now: —</small><small id="hammerProjected">Season end: —</small></label>
-              <label>Knuckles owned<input id="knucklesCurrent" type="number" min="0" step="1" value="0"><small class="realmCurrentValue" id="knucklesMaterialValue">Worth now: —</small><small id="knucklesProjected">Season end: —</small></label>
-              <label>Shovels owned<input id="shovelCurrent" type="number" min="0" step="1" value="0"><small class="realmCurrentValue" id="shovelMaterialValue">Worth now: —</small><small id="shovelProjected">Season end: —</small></label>
+              <label>Hammers owned<input id="hammerCurrent" type="number" min="0" step="1" value="0"><small class="realmCurrentValue" id="hammerMaterialValue">Worth now: —</small><small id="hammerProjected">Season-end estimate: —</small></label>
+              <label>Knuckles owned<input id="knucklesCurrent" type="number" min="0" step="1" value="0"><small class="realmCurrentValue" id="knucklesMaterialValue">Worth now: —</small><small id="knucklesProjected">Season-end estimate: —</small></label>
+              <label>Shovels owned<input id="shovelCurrent" type="number" min="0" step="1" value="0"><small class="realmCurrentValue" id="shovelMaterialValue">Worth now: —</small><small id="shovelProjected">Season-end estimate: —</small></label>
             </div>
             <div class="realmDailyPlanRow">
               <div class="realmDailyCustom">
-                <span class="realmDailyTitle">Daily Realm purchase plan <small>Each purchase = 5 tools · max 20/day per Realm</small></span>
+                <span class="realmDailyTitle">Daily purchase plan <small>Each purchase = 5 tools · max 20/day per material</small></span>
                 <div class="realmDailyInputs">
-                  <label>Ore Realm purchases / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
-                  <label>Essence Realm purchases / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
-                  <label>Sand Realm purchases / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
+                  <label>Ore purchases / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
+                  <label>Essence purchases / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
+                  <label>Sand purchases / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
                 </div>
               </div>
-              <div class="realmPlanSummary"><span>Projected daily gain</span><b id="realmDailyGain">+20 H · +20 K · +20 S / reset</b><small id="realmDaysRemaining">—</small></div>
+              <div class="realmPlanSummary"><span>Daily tools added</span><b id="realmDailyGain">+20 Hammers · +20 Knuckles · +20 Shovels per reset</b><small id="realmDaysRemaining">—</small></div>
             </div>
           </div>
           <!-- DAILY_SHOP_ESTIMATE_V4 -->
           <div class="realmInventory shopEstimatePanel">
-            <div class="realmInventoryTop"><strong>Daily Shop material estimate</strong><small>Extremely conservative estimate · material rolls only</small></div>
+            <div class="realmInventoryTop"><strong>Daily Shop material estimate</strong><small>Extremely conservative estimate · materials only</small></div>
             <div class="shopEstimateCompact">
               <div class="shopRefreshControl">
-                <label>Shop restocks / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Default: 0/day</small></label>
+                <label>Shop restocks / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Planner default: 0/day</small></label>
               </div>
               <div class="shopGainSummary" aria-label="Estimated shop material gain per day">
                 <div><span>Raw Ore</span><b id="shopGainOre">—</b></div>
@@ -3130,7 +3242,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
                 <div><span>Basic Treats</span><b id="shopGainTreat">—</b></div>
               </div>
             </div>
-            <small id="shopRefreshEstimateNote" class="shopEstimateNote">Current day excluded to avoid double-counting materials already entered under Saved.</small>
+            <small id="shopRefreshEstimateNote" class="shopEstimateNote">Today excluded to avoid double-counting Saved materials.</small>
             <span id="shopRefreshEstimate" hidden>—</span>
           </div>
           <input id="refinedOreCurrent" type="hidden" value="">
@@ -3160,7 +3272,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         <span>Raw Ore<b id="oreCost">0</b><small id="oreBalance">—</small><small id="oreToolBalance" class="toolBalance">—</small></span>
         <span>Skill Essence<b id="essenceCost">0</b><small id="essenceBalance">—</small><small id="essenceToolBalance" class="toolBalance">—</small></span>
         <span>Chrono Sand<b id="sandCost">0</b><small id="sandBalance">—</small><small id="sandToolBalance" class="toolBalance">—</small></span>
-        <span><!-- FANTOMON_TREAT_CARD_COMPACT_V1 -->Fantomon Treats · basic-eq.<b id="treatCost">0</b><small id="treatBalance">—</small></span>
+        <span><!-- FANTOMON_TREAT_CARD_COMPACT_V1 -->Fantomon Treats<b id="treatCost">0</b><small id="treatBalance">—</small></span>
       </div>
       <div class="secondaryCostNote" id="secondaryCostNote" hidden style="display:none!important"></div>
       <details class="resultDetails"><summary>Bonuses and score breakdown</summary><div><div id="astralBonusReference"><h3>Projected Astral Pact bonuses</h3><div class="rewardTotals" id="astralRewardTotals"></div><p class="rewardCount" id="astralRewardCount">Calculated from projected total Primostars.</p></div><h3>Current score now</h3><p class="breakdownExplain" id="currentBreakdownExplain">Exactly what you have entered right now, including your current EXP progress inside the Character level.</p><dl class="scoreBreakdown"><div><dt id="currentCharacterLabel">Character</dt><dd id="currentBreakCharacter">—</dd></div><div><dt id="currentGearLabel">Gear</dt><dd id="currentBreakGear">—</dd></div><div><dt id="currentSkillsLabel">Skills</dt><dd id="currentBreakSkills">—</dd></div><div><dt id="currentRelicsLabel">Relics</dt><dd id="currentBreakRelics">—</dd></div><div><dt id="currentFantomonsLabel">Fantomons</dt><dd id="currentBreakFantomons">—</dd></div></dl><div id="recommendedBreakdownSection"><h3>After recommended upgrades <span class="mutedInline">· season end</span></h3><p class="breakdownExplain" id="recommendedBreakdownExplain">Your projected season-end Character score plus every upgrade recommended above.</p><dl class="scoreBreakdown"><div><dt id="recommendedCharacterLabel">Character</dt><dd id="recommendedBreakCharacter">—</dd></div><div><dt id="recommendedGearLabel">Gear</dt><dd id="recommendedBreakGear">—</dd></div><div><dt id="recommendedSkillsLabel">Skills</dt><dd id="recommendedBreakSkills">—</dd></div><div><dt id="recommendedRelicsLabel">Relics</dt><dd id="recommendedBreakRelics">—</dd></div><div><dt id="recommendedFantomonsLabel">Fantomons</dt><dd id="recommendedBreakFantomons">—</dd></div></dl></div></div></details>
@@ -3492,11 +3604,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if($('hammerMaterialValue')) $('hammerMaterialValue').textContent=`${worthLabel}: ~${fmtCompact(onHand.hammer*(Number(realmYield.ore)||0))} Raw Ore`;
     if($('knucklesMaterialValue')) $('knucklesMaterialValue').textContent=`${worthLabel}: ~${fmtCompact(onHand.knuckles*(Number(realmYield.essence)||0))} Skill Essence`;
     if($('shovelMaterialValue')) $('shovelMaterialValue').textContent=`${worthLabel}: ~${fmtCompact(onHand.shovel*(Number(realmYield.sand)||0))} Chrono Sand`;
-    if($('hammerProjected')) $('hammerProjected').textContent=`Season end: ${fmt(totals.hammer)} estimated`;
-    if($('knucklesProjected')) $('knucklesProjected').textContent=`Season end: ${fmt(totals.knuckles)} estimated`;
-    if($('shovelProjected')) $('shovelProjected').textContent=`Season end: ${fmt(totals.shovel)} estimated`;
-    if($('realmDailyGain')) $('realmDailyGain').textContent=`+${fmt(daily.ore*REALM_RUNS_PER_REFRESH)} H · +${fmt(daily.essence*REALM_RUNS_PER_REFRESH)} K · +${fmt(daily.sand*REALM_RUNS_PER_REFRESH)} S per future reset`;
-    if($('realmDaysRemaining')) $('realmDaysRemaining').textContent=`${fmt(days)} future purchase day${days===1?'':'s'} · current routine adds ${fmt(added.ore)} H / ${fmt(added.essence)} K / ${fmt(added.sand)} S`;
+    if($('hammerProjected')) $('hammerProjected').textContent=`Season-end estimate: ${fmt(totals.hammer)}`;
+    if($('knucklesProjected')) $('knucklesProjected').textContent=`Season-end estimate: ${fmt(totals.knuckles)}`;
+    if($('shovelProjected')) $('shovelProjected').textContent=`Season-end estimate: ${fmt(totals.shovel)}`;
+    if($('realmDailyGain')) $('realmDailyGain').textContent=`+${fmt(daily.ore*REALM_RUNS_PER_REFRESH)} Hammers · +${fmt(daily.essence*REALM_RUNS_PER_REFRESH)} Knuckles · +${fmt(daily.sand*REALM_RUNS_PER_REFRESH)} Shovels per reset`;
+    if($('realmDaysRemaining')) $('realmDaysRemaining').textContent=`${fmt(days)} future purchase day${days===1?'':'s'} · plan adds ${fmt(added.ore)} Hammers · ${fmt(added.essence)} Knuckles · ${fmt(added.sand)} Shovels`;
   }
   function suggestedRealmDailyPlan(plan,cfg=activeCalcConfig()){
     const current={ore:realmDailyValue('ore'),essence:realmDailyValue('essence'),sand:realmDailyValue('sand')};
@@ -3701,7 +3813,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const elapsedResourceHours = Math.max(0, oldResourceHours-newResourceHours);
 
     /* AUTO_AGE_REALM_TOOLS_V1
-       Treat the saved Daily Realm purchase plan like Cart production: once a planned 6 AM
+       Treat the saved Daily purchase plan like Cart production: once a planned 6 AM
        reset has actually passed, move those purchased entries into the on-hand tool counts.
        Future projection then loses that reset at the same time, so season-end tool totals stay
        stable instead of requiring the user to manually add Hammers/Knuckles/Shovels each day.
@@ -4389,7 +4501,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       el.textContent=unassigned?`Current plan: ${fmt(unassigned)} node${unassigned===1?'':'s'} unassigned`:'Current plan: no projected Stamina nodes';
       return;
     }
-    const prefix=mode==='auto'?'Auto currently →':'Current plan →';
+    const prefix=mode==='auto'?'Auto allocation:':'Current allocation:';
     const allocText=active.map(k=>`${labels[k]} ${fmt(Math.floor(Number(a[k])||0))}`).join(' · ');
     const gainText=active.map(k=>`+${fmtCompact(Number(gain[k])||0)} ${labels[k]}`).join(' · ');
     el.innerHTML=`${prefix} ${allocText}<span class="staminaGain"><br>Projected gain: ${gainText}</span>`;
@@ -5128,7 +5240,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     el.classList.add('rawRemaining');
     const left=Math.max(0,Math.floor((Number(available)||0)-(Number(cost)||0)+1e-9));
     el.hidden=false;
-    el.innerHTML=`<span class="resourceRemainingLine">Remaining: <b>${fmt(left)}</b>${unitLabel?` ${unitLabel}`:''}</span>`;
+    el.innerHTML=`<span class="resourceRemainingLine">Remaining: <b>${fmt(left)}${unitLabel?` ${unitLabel}`:''}</b></span>`;
   }
   function setEssenceBalance(id,cost,resources){ setRawRemaining(id,cost,resources.essence); }
   function setSandBalance(id,cost,resources){ setRawRemaining(id,cost,resources.sand); }
@@ -5584,9 +5696,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const allocation=staminaPlan||resources.staminaAllocation||{ore:0,essence:0,sand:0,rolla:0,unassigned:resources.staminaNodes||0};
     const added=resources.staminaAdded||{ore:0,essence:0,sand:0,rolla:0};
     renderStaminaCurrentPlan(allocation,added,resources);
-    const oreStam=added.ore?` · +${fmtCompact(added.ore)} Stamina`:'';
-    const essStam=added.essence?` · +${fmtCompact(added.essence)} Stamina`:'';
-    const sandStam=added.sand?` · +${fmtCompact(added.sand)} Stamina`:'';
+    const oreStam=added.ore?` · Stamina +${fmtCompact(added.ore)}`:'';
+    const essStam=added.essence?` · Stamina +${fmtCompact(added.essence)}`:'';
+    const sandStam=added.sand?` · Stamina +${fmtCompact(added.sand)}`:'';
     $('oreProjected').textContent=`Projected: ${fmtCompact(resources.ore)}${oreStam}`;
     const displayedEssence=Number(resources.essence)||0;
     $('essenceProjected').textContent=`Projected: ${fmtCompact(displayedEssence)}${essStam}`;
@@ -5601,7 +5713,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     $('treatProjected').textContent=`Projected: ${fmtCompact(displayedTreats)} basic-eq.`;
     if($('shopRefreshEstimate')){
       const shop=resources.shopEstimate||dailyShopMaterialEstimate(cfg);
-      const gain=(id,value)=>{const el=$(id);if(el)el.textContent=shop.refreshes?`+${fmtCompact(value)} / day`:'Off';};
+      const gain=(id,value)=>{const el=$(id);if(el)el.textContent=shop.refreshes?`+${fmtCompact(value)}/day`:'Off';};
       gain('shopGainOre',shop.perDay.ore);
       gain('shopGainEssence',shop.perDay.essence);
       gain('shopGainSand',shop.perDay.sand);
