@@ -1082,25 +1082,7 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 </style>
 
 
-<style id="v57-tool-usage-polish">
-.planCosts small.toolBalance{display:grid!important;gap:3px!important}
-.planCosts small.toolBalance .toolUsedLine,.planCosts small.toolBalance .toolRemainingLine,.planCosts small.toolBalance .toolNeedLine{display:block}
-.planCosts small.toolBalance .toolUsedLine{color:var(--green)!important;font-weight:850}
-.planCosts small.toolBalance .toolRemainingLine{color:var(--green)!important;font-weight:750}
-.planCosts small.toolBalance .toolNeedLine{color:var(--red)!important;font-weight:850;margin-top:1px}
-</style>
 
-<style id="compact-tool-summary-v9">
-.planCosts small.toolBalance{display:block!important;line-height:1.35}
-.planCosts small.toolBalance .toolCompactLine{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 5px;color:var(--secondary-text);font-size:8px;font-weight:750}
-.planCosts small.toolBalance .toolCompactLine b{font-size:inherit;line-height:inherit;font-weight:800}
-.planCosts small.toolBalance .toolCompactLine .toolSpend{color:var(--status-positive,var(--green))}
-.planCosts small.toolBalance .toolCompactLine .toolHold{color:var(--status-info,var(--blue))}
-.planCosts small.toolBalance .toolCompactLine .toolFree{color:var(--secondary-text)}
-.planCosts small.toolBalance .toolCompactLine .toolSep{color:var(--muted);font-style:normal;font-weight:500}
-.planCosts small.toolBalance .toolNeedLine{display:block;margin-top:3px}
-@media(max-width:520px){.planCosts small.toolBalance .toolCompactLine{font-size:8px;gap:2px 4px}}
-</style>
 
 <style id="v59-treat-timezone-polish">
 .treatResourceFields{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1285,23 +1267,35 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 </style>
 <style id="sand-cost-clarity-v1">#sandCost::after{content:" needed"!important}</style>
 
-<style id="bed-exp-start-note">
-.bedReserveStartNote{display:block;margin:5px 0 0 25px;color:var(--status-info,var(--secondary-text));font-size:10px;line-height:1.3;font-weight:750;letter-spacing:0;text-transform:none}
-.bedReserveStartNote b{color:var(--status-info,var(--blue));font-weight:850}
-input[type="checkbox"]:not(:checked)~.bedReserveStartNote{display:none}
-</style>
-<style id="bed-exp-note-under-toggle-v3">
-.holdExpOption{display:grid!important;grid-template-columns:auto max-content;grid-template-rows:auto auto;column-gap:7px;row-gap:2px;align-items:center;justify-content:start}
-.holdExpOption>input{grid-column:1;grid-row:1;margin:0}
-.holdExpOption>#holdExpLabel{grid-column:2;grid-row:1}
-.holdExpOption>.bedReserveStartNote{grid-column:2;grid-row:2;margin:0!important;padding:0!important;display:block;line-height:1.25}
-.holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
-</style>
-<style id="season-toggle-top-align-v1">.seasonPlanningControls{align-items:flex-start!important}.seasonPlanningControls>label{align-self:flex-start!important}.holdExpOption{align-self:flex-start!important}</style><style id="bed-exp-absolute-note-align-v1">
+
+
+<style id="bed-exp-hold-layout-v4">
+/* SPAGHETTI_CLEANUP_V1: consolidated Bed EXP hold toggle + note layout. */
 .seasonPlanningControls{align-items:center!important}
-.holdExpOption{position:relative!important;display:flex!important;align-items:center!important;align-self:auto!important;justify-content:flex-start!important;gap:7px!important;grid-template-columns:none!important;grid-template-rows:none!important}
-.holdExpOption>input,.holdExpOption>#holdExpLabel{margin:0!important;grid-column:auto!important;grid-row:auto!important}
-.holdExpOption>.bedReserveStartNote{position:absolute!important;left:25px!important;top:calc(100% + 3px)!important;margin:0!important;padding:0!important;white-space:nowrap!important;line-height:1.25!important}
+.holdExpOption{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  align-self:auto!important;
+  justify-content:flex-start!important;
+  gap:7px!important;
+}
+.holdExpOption>input,.holdExpOption>#holdExpLabel{margin:0!important}
+.holdExpOption>.bedReserveStartNote{
+  position:absolute!important;
+  left:25px!important;
+  top:calc(100% + 3px)!important;
+  margin:0!important;
+  padding:0!important;
+  white-space:nowrap!important;
+  color:var(--status-info,var(--secondary-text));
+  font-size:10px;
+  line-height:1.25!important;
+  font-weight:750;
+  letter-spacing:0;
+  text-transform:none;
+}
+.holdExpOption>.bedReserveStartNote b{color:var(--status-info,var(--blue));font-weight:850}
 .seasonPlanningControls:has(#holdExp:checked){padding-bottom:24px!important}
 .holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
 </style>
@@ -2381,6 +2375,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   padding:9px 10px 7px!important;
   border-bottom:0!important;
   border-radius:10px 10px 0 0!important;
+  position:relative;
+  z-index:1;
 }
 .planCosts small.rawRemaining:has(+ small.toolBalance:not([hidden])) .resourceRemainingLine{
   line-height:1.35!important;
@@ -2393,7 +2389,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 }
 .planCosts small.rawRemaining + small.toolBalance:not([hidden]){
   min-height:0!important;
-  margin:0!important;
+  margin:-5px 0 0!important;
+  width:100%!important;
+  box-sizing:border-box!important;
   padding:7px 10px 8px!important;
   border:1px solid var(--line)!important;
   border-top:1px solid var(--line)!important;
@@ -2401,6 +2399,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   background:color-mix(in srgb,var(--surface) 84%,var(--bg) 16%)!important;
   box-shadow:none!important;
   gap:2px!important;
+  position:relative;
+  z-index:2;
 }
 .planCosts small.rawRemaining + small.toolBalance:not([hidden]) .toolSimpleLine{
   min-height:0!important;
@@ -2428,28 +2428,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 </style>
 
 
-<style id="resource-tool-card-seam-v3">
-/* RESOURCE_TOOL_CARD_SEAM_V3
-   The raw and Realm-tool halves are separate grid items. The parent keeps a 5px row
-   gap for the title/amount rhythm, so cancel that gap only at the raw -> tool seam. */
-.planCosts small.rawRemaining + small.toolBalance:not([hidden]){
-  margin-top:-5px!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-}
-/* Keep the seam as one deliberate divider, with no exposed background between side borders. */
-.planCosts small.rawRemaining:has(+ small.toolBalance:not([hidden])){
-  position:relative;
-  z-index:1;
-}
-.planCosts small.rawRemaining + small.toolBalance:not([hidden]){
-  position:relative;
-  z-index:2;
-}
-@media(max-width:700px){
-  .planCosts small.rawRemaining + small.toolBalance:not([hidden]){margin-top:-5px!important}
-}
-</style>
 
 
 <style id="calculator-size-consistency-v1">
@@ -6559,7 +6537,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function run(){
     document.querySelectorAll('.timeline .entry').forEach(compactEntry);
     document.querySelectorAll('#timelineNow .timelineNowCard').forEach(compactNow);
-    document.querySelectorAll('#timelineNow .timelineNowCard').forEach(compactNow);
   }
   let queued=false;
   function queue(){ if(queued) return; queued=true; requestAnimationFrame(()=>{queued=false;run();}); }
@@ -6574,6 +6551,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
 
 // BUILD_LAYOUT_V2
+// SPAGHETTI_CLEANUP_V1: dead build observers/CSS generations consolidated.
 function buildPriorityPanelHtml(kind,title,desc,items){
   return `<div class="priorityPanel"><div class="priorityIntro"><span>${kind}</span><strong>${title}</strong><p>${desc}</p></div><ol class="priorityList">${items.map((x,i)=>`<li><b>${i+1}</b><div><strong>${x[0]}</strong><p>${x[1]}</p></div></li>`).join('')}</ol></div>`;
 }
@@ -6670,23 +6648,13 @@ function renderBuildQuickStats(root,name,mode){
   if(!quick){quick=document.createElement('div');quick.className='buildQuickStats';guide.children[1]?.replaceWith(quick);guide.classList.add('buildSummaryCompact');}
   quick.innerHTML=`<div class="quickTitle">Quick stats</div><p class="quickRule">${profile.rule}</p><div class="quickGearGrid">${profile.rows.map(r=>`<div class="quickGearRow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}</div><div class="quickSubstats"><b>Substats</b><span>${profile.substats}</span></div>`;
 }
-function applyBuildRole(root,name,mode){
-  if(!BUILD_ROLE_KEYS[name]) return;
-  // BUILD_ARENA_ROLE_UI_REPAIR_V4: BUILD_ROLE_TOGGLE_V2 is the one canonical
-  // DPS/Heals control. Remove the legacy duplicate and only sync role metadata here.
-  root.querySelectorAll('.buildRoleTabs').forEach(x=>x.remove());
-  const panels=[...root.querySelectorAll(':scope > .priorityPanel, :scope > .priorityPair > .priorityPanel')];
-  const pdata=BUILD_ROLE_PRIORITY[name]?.[mode];
-  if(pdata && panels.length>=2){setPriorityPanel(panels[0],pdata[0]);setPriorityPanel(panels[1],pdata[1]);}
-}
-
+// SPAGHETTI_CLEANUP_V1: role filtering/priority swapping is owned by BUILD_ROLE_TOGGLE_V2.
 function polishBuildLayout(){
   const root=document.getElementById('buildContent');
   if(!root || !root.children.length) return;
   splitBerserkerPriorities(root);
   const name=renderedBuildName(root);
   const mode=buildRoleMode(name);
-  applyBuildRole(root,name,mode);
   renderBuildQuickStats(root,name,mode);
   const gear=root.querySelector(':scope > .gearPanel');
   if(gear) gear.hidden=true;
@@ -6982,20 +6950,20 @@ function polishBuildLayout(){
     queued=true;
     requestAnimationFrame(()=>{queued=false;apply();});
   }
-  document.addEventListener('DOMContentLoaded',()=>{
+  function startBuildLoadoutSync(){
     queueApply();
-    const root=document.querySelector('.builds');
-    if(root) new MutationObserver(queueApply).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','aria-pressed']});
-  });
-  window.addEventListener('load',queueApply);
+    const content=document.getElementById('buildContent');
+    if(content) new MutationObserver(queueApply).observe(content,{childList:true});
+    document.querySelector('.builds .classTabs')?.addEventListener('click',queueApply);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',startBuildLoadoutSync,{once:true});
+  else startBuildLoadoutSync();
 })();
 </script>
 <!-- BUILD_FANTOMON_PAIRS_END -->
 <!-- BUILD_ROLE_TOGGLE_START -->
 <style>
-/* BUILD_ARENA_ROLE_UI_REPAIR_V4: only .buildModeTabs is interactive. */
-.buildRoleTabs{display:none!important}
-
+/* SPAGHETTI_CLEANUP_V1: .buildModeTabs is the only role control. */
 /* BUILD_ROLE_TOGGLE_V2 */
 .buildModeTabs{display:flex;gap:4px;width:min(245px,100%);margin-top:12px;padding:3px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface) 94%,transparent)}
 .buildModeTabs button{flex:1;border:0;border-radius:7px;padding:8px 10px;background:transparent;color:var(--muted);font:inherit;font-size:9px;font-weight:900;cursor:pointer}
@@ -7004,17 +6972,16 @@ function polishBuildLayout(){
 <script>
 (function(){
   const ROLE_CLASSES=new Set(['Arcanist','Dominator']);
-  const ROLE_KEYS={Arcanist:'sxs-build-role-arcanist',Dominator:'sxs-build-role-dominator'};
 
   function activeClass(){
     const b=document.querySelector('.builds .classTabs button.active');
     return b ? b.textContent.trim() : '';
   }
   function currentMode(cls){
-    try{return localStorage.getItem(ROLE_KEYS[cls])==='heals'?'heals':'dps';}catch(_){return 'dps';}
+    try{return localStorage.getItem(BUILD_ROLE_KEYS[cls])==='heals'?'heals':'dps';}catch(_){return 'dps';}
   }
   function saveMode(cls,mode){
-    try{localStorage.setItem(ROLE_KEYS[cls],mode);}catch(_){}
+    try{localStorage.setItem(BUILD_ROLE_KEYS[cls],mode);}catch(_){}
   }
   function applyModeVisibility(root,cls,mode){
     const cards=root.querySelectorAll('.buildGrid .buildCard');
@@ -7087,11 +7054,11 @@ function polishBuildLayout(){
   function queue(){if(queued)return;queued=true;requestAnimationFrame(sync);}
   function start(){
     queue();
-    const root=document.querySelector('.builds');
-    if(root)new MutationObserver(queue).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','data-role']});
+    const content=document.getElementById('buildContent');
+    if(content)new MutationObserver(queue).observe(content,{childList:true});
+    document.querySelector('.builds .classTabs')?.addEventListener('click',queue);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-  window.addEventListener('load',queue);
 })();
 </script>
 <!-- BUILD_ROLE_TOGGLE_END -->

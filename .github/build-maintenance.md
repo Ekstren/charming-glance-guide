@@ -11,7 +11,7 @@
 - **Do not force every class into Solo / Dungeon / Boss / PvP cards.** Show only materially distinct loadouts supported by current guides, skill mechanics, or repeated community testing.
 - If one general build is best for multiple activities, keep one card and explain useful swaps instead of duplicating artificial mode cards.
 - Each loadout must show exactly 4 Techniques and 4 Charms actually equipped, plus concise swaps/conditions where useful.
-- Arcanist and Dominator keep their **DPS / Heals** selector. DPS shows their DPS loadouts; Heals shows only the dedicated Healing loadout. Switching roles must not destroy/recreate build data or remove Fantomon recommendations.
+- Arcanist and Dominator keep one **DPS / Heals** selector. DPS/Heals filters only the role-specific PvE cards; **Arena and Tournament stay visible in both modes**. Switching roles must not destroy/recreate build data or remove Fantomon recommendations.
 - Prefer reputable build-guide presets when available and cross-check major recommendations against another credible source/community consensus when possible.
 - Avoid weaker novelty builds, including Destroyer's Water/Frozen branch, merely to increase card count.
 
@@ -26,7 +26,14 @@
 - **Destroyer (S2/T4):** AoE, Single Target, Fire AoE.
 - **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing.
 
-Change this structure only when credible current evidence supports a real meta change. Do not add Arena/Tournament cards just to create mode coverage.
+Change the PvE structure only when credible current evidence supports a real meta change. **Arena and Tournament are deliberate always-visible reference cards for every class** and are maintained separately from the PvE card-count rule.
+
+## Runtime ownership
+
+- `ROLE_PRESETS` owns evidence-based PvE loadout data; `PVP_ROLE_PRESETS` owns Arena/Tournament loadouts. The renderer combines them once.
+- `.buildModeTabs` / `BUILD_ROLE_TOGGLE_V2` is the **only** Arcanist/Dominator role control. Layout-polish code may update presentation, but must not create another role toggle or independently filter cards.
+- Build observers watch the main `#buildContent` replacement boundary instead of the full Builds subtree. Enhancers must not observe their own Fantomon/card DOM writes.
+- Current Realm-tool result markup uses `toolSimpleLine`. Do not revive retired `toolUsedLine`, `toolUsageRow`, or `toolCompactLine` CSS generations.
 
 ## Combat Fantomon format
 
