@@ -3096,7 +3096,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
     charLevel:130,charExp:0,bedExp:0,reserveHours:34,
-    skillLevel:130,relicLevel:14,fantomonLevel:130,
+    skillLevel:130,relicLevel:13,fantomonLevel:130,
     gearWeapon:130,gearOffhand:130,gearHelmet:130,gearArmor:130,gearBoots:130,
     oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,
     sandCurrent:0,sandBlueCurrent:0,sandRate:0,
@@ -3108,6 +3108,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   const S2_SCORING_START_CHECKS=Object.freeze({
     holdExp:true,reserveS2Ore:false,reserveS2Essence:false,reserveS2Sand:false,reserveS2Treats:false
   });
+  /* S2_ZERO_SCORE_DEFAULTS_V1
+     The assumed scoring-start profile sits exactly on every S2 scoring floor. It is a
+     neutral starting snapshot: carried/fixed Primostars may exist, but assumed progression
+     itself must contribute exactly 0 Season Power before the optimizer recommends upgrades. */
+  function validateS2ScoringStartDefaults(){
+    const d=S2_SCORING_START_DEFAULTS,c=CALC_SEASONS.s2,w=c.weights;
+    const gear=[d.gearWeapon,d.gearOffhand,d.gearHelmet,d.gearArmor,d.gearBoots];
+    const score=
+      Math.max(0,(Number(d.charLevel)||0)-c.scoreFloor)*w.character +
+      gear.reduce((sum,l)=>sum+Math.max(0,(Number(l)||0)-c.scoreFloor)*w.gear,0) +
+      Math.max(0,(Number(d.skillLevel)||0)-c.scoreFloor)*8*w.skill +
+      Math.max(0,(Number(d.relicLevel)||0)-c.relicFloor)*20*w.relic +
+      Math.max(0,(Number(d.fantomonLevel)||0)-c.scoreFloor)*4*w.fanto;
+    if(score!==0) console.warn('S2_ZERO_SCORE_DEFAULTS_V1: assumed scoring-start progression must contribute 0 Season Power.',{score,defaults:d});
+    return score===0;
+  }
+  validateS2ScoringStartDefaults();
 
   function validateS2PrimoModel(){
     const c=CALC_SEASONS.s2,m=S2_PRIMO_META,w=c.weights||{},mw=m.weights;
@@ -5221,7 +5238,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     $('targetMessage').hidden=false; $('targetMessage').classList.remove('danger'); $('targetMessage').classList.add('warning','caution');
     $('targetMessage').textContent=`Season Power scoring unlocks at Lv.${cfg.scoreFloor}. Current Lv.${current.level} is still in the pre-Season-Power catch-up phase, so the planner stays paused until Character Lv.${cfg.scoreFloor}. Once unlocked, enter your actual Gear/Skill/Relic/Fantomon levels; lagging slots are allowed and their future catch-up costs are counted.`;
     if($('targetStatus')){$('targetStatus').textContent='locked';$('targetStatus').classList.remove('notMet');}
-    $('optimizerSummary').textContent=`Return at Lv.${cfg.scoreFloor} and enter your actual scoring-start snapshot. The default S2 profile is Lv.130 / Gear 130 / Skills 130 / Fantomons 130 / Relics +14.`;
+    $('optimizerSummary').textContent=`Return at Lv.${cfg.scoreFloor} and enter your actual scoring-start snapshot. The default S2 profile is Lv.130 / Gear 130 / Skills 130 / Fantomons 130 / Relics +13, so assumed progression contributes 0 Season Power.`;
     $('optimizedScore').textContent='—';
     $('materialRealmRecommendation').hidden=true;
     renderRealmToolProjection(cfg);
