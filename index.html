@@ -3072,8 +3072,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
      This calculator is a Season Power / Primostar planner, not a Lv.100→130 launch-day simulator.
      QY's current Global timeline puts S2 Season Power at Player Lv.130; Lv.120 is only the
      maximum S2 Material Realm / open-map bracket. New S2 calculator states therefore begin
-     from a representative scoring-unlock profile. Account-specific rates/materials remain 0
-     until the player enters them so the optimizer never fabricates spendable resources. */
+     from a representative scoring-unlock profile. Saved materials remain 0 until the player enters them. Starter Cart rates use conservative S2 planning defaults
+     (Ore 1,000/hr, Essence 1,200/hr, Sand 800/hr, Treats 80/hr) and can be replaced with live values at any time. */
   const S2_SCORING_START_DEFAULTS=Object.freeze({
     targetStars:800,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
@@ -3081,9 +3081,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     charLevel:130,charExp:0,bedExp:0,reserveHours:34,
     skillLevel:130,relicLevel:13,fantomonLevel:130,
     gearWeapon:130,gearOffhand:130,gearHelmet:130,gearArmor:130,gearBoots:130,
-    oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,
-    sandCurrent:0,sandBlueCurrent:0,sandRate:0,
-    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,
+    // S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.
+    oreCurrent:0,oreRate:1000,essenceCurrent:0,essenceRate:1200,
+    sandCurrent:0,sandBlueCurrent:0,sandRate:800,
+    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:80,
     hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,
     staminaMode:'auto',realmDailyOre:4,realmDailyEssence:4,realmDailySand:4,
     refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
