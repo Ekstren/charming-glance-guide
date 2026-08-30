@@ -2900,7 +2900,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         </div>
         <div class="rolloverHold seasonPlanningControls">
           <label class="holdExpOption"><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span><small class="bedReserveStartNote">Start <b>Aug 28, 8:00 PM PDT</b></small></label>
-          <label class="realmToolPreserveOption realmToolPreserveTop"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved tools need >10% improvement; paid Realm refreshes need >20%. Turn off for pure efficiency.</small></label>
+          <label class="realmToolPreserveOption realmToolPreserveTop"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved tools need >10% improvement; paid Realm purchases need >20%. Turn off for pure efficiency.</small></label>
           <input id="reserveHours" min="0" max="36" type="number" value="34" hidden>
         </div>
         <small class="seasonPlanningNote" id="graceText">Cart income, Stamina generation, Realm purchase availability, and upgrade timing run through the season reset.</small>
@@ -2909,8 +2909,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
           <div class="optimizerExplainBody">
             <p><b>1 · Use the active season’s scoring rules.</b> Season 1 keeps its own Primostar formula and S1 score weights; Season 2 keeps its separate S2 formula. The optimizer method is shared, but scoring values are never mixed between seasons.</p>
             <p><b>2 · Find the most acquisition-efficient score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score, using the active season's real cost curves and resource yields. It avoids meaningless overscore and does not force a fixed Gear/Skill/Relic/Fantomon order.</p>
-            <p><b>3 · Minimize Realm tools unless they materially improve the route.</b> With <i>Minimize tools</i> enabled, spending saved Realm tools must improve acquisition effort by more than 10%. A route that requires additional paid Realm refreshes must improve it by more than 20%. Turn the toggle off for strict pure-efficiency ranking.</p>
-            <p><b>4 · Paid refreshes face the higher hurdle.</b> Premium-currency Realm purchases only win when their route is more than 20% better on modeled acquisition effort. If even maximum Realm capacity cannot fund the requested target, the planner reports the actual shortfall instead of lowering the target.</p>
+            <p><b>3 · Minimize Realm tools unless they materially improve the route.</b> With <i>Minimize tools</i> enabled, spending saved Realm tools must improve acquisition effort by more than 10%. A route that requires additional Realm purchases must improve it by more than 20%. Turn the toggle off for strict pure-efficiency ranking.</p>
+            <p><b>4 · Realm purchases face the higher hurdle.</b> Premium-currency Realm purchases only win when their route is more than 20% better on modeled acquisition effort. If even maximum Realm capacity cannot fund the requested target, the planner reports the actual shortfall instead of lowering the target.</p>
             <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. The optimizer uses one consistent acquisition-efficiency policy and always considers Gear alongside Skills, Relics and Fantomons.</p>
           </div>
         </details>
@@ -2940,11 +2940,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
             </div>
             <div class="realmDailyPlanRow">
               <div class="realmDailyCustom">
-                <span class="realmDailyTitle">Daily Realm refresh plan <small>Each refresh = 5 tools · max 20/day per Realm</small></span>
+                <span class="realmDailyTitle">Daily Realm purchase plan <small>Each purchase = 5 tools · max 20/day per Realm</small></span>
                 <div class="realmDailyInputs">
-                  <label>Ore Realm refreshes / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
-                  <label>Essence Realm refreshes / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
-                  <label>Sand Realm refreshes / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
+                  <label>Ore Realm purchases / day<input id="realmDailyOre" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyOreRec">Recommended: —</small></label>
+                  <label>Essence Realm purchases / day<input id="realmDailyEssence" type="number" min="0" max="20" step="1" value="0"><small id="realmDailyEssenceRec">Recommended: —</small></label>
+                  <label>Sand Realm purchases / day<input id="realmDailySand" type="number" min="0" max="20" step="1" value="0"><small id="realmDailySandRec">Recommended: —</small></label>
                 </div>
               </div>
               <div class="realmPlanSummary"><span>Projected daily gain</span><b id="realmDailyGain">+20 H · +20 K · +20 S / reset</b><small id="realmDaysRemaining">—</small></div>
@@ -2955,7 +2955,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
             <div class="realmInventoryTop"><strong>Daily Shop material estimate</strong><small>Extremely conservative estimate · material rolls only</small></div>
             <div class="shopEstimateCompact">
               <div class="shopRefreshControl">
-                <label>Shop refreshes / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Default: 0/day</small></label>
+                <label>Shop restocks / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Default: 0/day</small></label>
               </div>
               <div class="shopGainSummary" aria-label="Estimated shop material gain per day">
                 <div><span>Raw Ore</span><b id="shopGainOre">—</b></div>
@@ -3011,16 +3011,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>S2 progression gates:</b> the prepared calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, Lv.120 maximum S2 Realm/open-map material bracket and Lv.130 Season Power scoring/second-dungeon milestone. These gates are informational; they do not override the calculator's conservative upgrade-cap logic.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. The active planning control is the single soft Realm-tool preservation toggle, while Season 2 uses live inventory directly.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
-<p><b>Daily Shop estimate:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b>: each paid refresh counts only <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per refresh; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. The default is 0 refreshes/day; users opt in to the number they actually buy. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
+<p><b>Daily Shop estimate:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b>: each restock counts only <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per restock; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. The default is 0 refreshes/day; users opt in to the number they actually buy. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. With <i>Minimize tools</i> enabled, saved Realm tools are spent only when their route is more than 10% better; routes requiring additional paid refreshes must be more than 20% better. Turn the toggle off for strict pure-efficiency ranking.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve routes natural Bed accrual and reset speed-ups after the hold begins into Bed XP Stored. Unchecking Hold claims that stored EXP into the player, and the stored balance persists through season rollover.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
-<p><b>Material Realm buys:</b> Each paid refresh grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 refreshes per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers refreshes 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Refreshes 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. With Minimize tools enabled, existing Hammers/Knuckles/Shovels stay banked unless consuming them improves modeled acquisition effort by more than 10%; additional paid refreshes require more than a 20% improvement. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
+<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. With Minimize tools enabled, existing Hammers/Knuckles/Shovels stay banked unless consuming them improves modeled acquisition effort by more than 10%; additional Realm purchases require more than a 20% improvement. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
-<p><b>S2 Ore preservation:</b> When Reserve S2 Ore is enabled during S1, Ore carries a 50% soft premium in resource-efficiency comparisons. Existing optimizer stage rules remain stricter, so the preference will not burn Realm tools or paid refreshes merely to save Ore; it only favors comparable non-Ore upgrade routes.</p>
+<p><b>S2 Ore preservation:</b> When Reserve S2 Ore is enabled during S1, Ore carries a 50% soft premium in resource-efficiency comparisons. Existing optimizer stage rules remain stricter, so the preference will not burn Realm tools or Realm purchases merely to save Ore; it only favors comparable non-Ore upgrade routes.</p>
 <p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, an enabled rollover reserve is protected before S1 Realm tools become spendable. For Essence and Sand, carried/projected Knuckles or Shovels cover the reserve first; raw material is held only for any reserve amount those tools cannot cover. Treats have no Realm-tool conversion, so an enabled Treat reserve stays raw. After those reserves are protected, the planner first searches every fundable raw-only Gear / Skill / Relic / Fantomon route. Existing unreserved Realm tools unlock only if raw cannot reach the target, and additional paid Realm refreshes are the final fallback. In Auto mode, the planner compares exactly three easy-to-follow Stamina destinations—all Ore, all Essence or all Sand—for each candidate route, then re-solves until the selected destination stabilizes. Once the requested current-season target is funded, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical progression runway. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
 <footer><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
@@ -3535,7 +3535,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const elapsedResourceHours = Math.max(0, oldResourceHours-newResourceHours);
 
     /* AUTO_AGE_REALM_TOOLS_V1
-       Treat the saved Daily Realm refresh plan like Cart production: once a planned 6 AM
+       Treat the saved Daily Realm purchase plan like Cart production: once a planned 6 AM
        reset has actually passed, move those purchased entries into the on-hand tool counts.
        Future projection then loses that reset at the same time, so season-end tool totals stay
        stable instead of requiring the user to manually add Hammers/Knuckles/Shovels each day.
@@ -5446,7 +5446,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       if($('shopRefreshEstimateNote')){
         $('shopRefreshEstimateNote').textContent=shop.refreshes
           ? `${shop.days} future reset day${shop.days===1?'':'s'} counted · current day excluded to avoid double-counting materials already entered under Saved.`
-          : 'Set refreshes/day to include the extremely conservative Daily Shop material estimate.';
+          : 'Set restocks/day to include the extremely conservative Daily Shop material estimate.';
       }
     }
 
@@ -5648,7 +5648,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         const tools=Math.max(0,Math.ceil(Number(el.dataset.shortfallTools)||0));
         const item=el.dataset.shortfallItem||'tools';
         if(recommended>current){
-          bridge.textContent=`Recommended: ${fmt(recommended)} ${realmLabel} Realm refresh${recommended===1?'':'es'}/day`;
+          bridge.textContent=`Recommended: ${fmt(recommended)} ${realmLabel} Realm purchase${recommended===1?'':'s'}/day`;
         }else if(tools>0){
           bridge.textContent=`${fmt(tools)} ${item} can cover`;
         }
@@ -5672,11 +5672,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
           ? `<span class="targetMessageDetail">Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.</span>`
           : '';
         const action=dailySuggested.changed
-          ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}">Apply refreshes</button>`
+          ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}">Apply purchases</button>`
           : '';
         // Resource cards now carry the exact deficit + resource-specific refresh action.
         // Keep this banner focused on the combined plan and its one-click Apply control.
-        $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠ Goal is achievable with the recommended Material Realm refresh plan.${route}</span>${action}`;
+        $('targetMessage').innerHTML=`<span class="targetMessageCopy">⚠ Goal is achievable with the recommended Material Realm purchase plan.${route}</span>${action}`;
       }
       realmRec.title=realmDetailParts.join(' · ');
     }else{realmRec.hidden=true;realmRec.textContent='';realmRec.classList.remove('realmFeasible','realmImpossible');realmRec.removeAttribute('title');}
@@ -7056,6 +7056,8 @@ function polishBuildLayout(){
   .shopRefreshControl,.shopGainSummary{padding:12px!important}
 }
 
+
+/* PURCHASE_RESTOCK_LABELS_V1 */
 </style>
 <script>
 (function(){
