@@ -15,6 +15,7 @@
 - **Desktop investment layout is fixed:** Technique investment on the **left**, Charm investment on the **right**. On phone widths these two panels may stack vertically, Technique first then Charm.
 - **Keep the compact stat-priority panel:** show the priority for each individual gear slot, then show the complete prioritized substat line underneath. Do not replace this with generic grouped cards such as “Main lines / Best substats / Gem plan.”
 - Arcanist and Dominator keep one **DPS / Heals** selector. DPS/Heals filters only the role-specific PvE cards; **Arena and Tournament stay visible in both modes**. Switching roles must not destroy/recreate build data or remove Fantomon recommendations.
+- **Dominator's DPS / Heals selector stays inline directly beside the “Dominator” class title** in the guide-summary header; do not move it back into a separate full-width row above the summary.
 - Prefer reputable build-guide presets when available and cross-check major recommendations against another credible source/community consensus when possible.
 - Avoid weaker novelty builds, including Destroyer's Water/Frozen branch, merely to increase card count.
 
