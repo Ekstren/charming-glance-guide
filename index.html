@@ -5437,7 +5437,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     renderLocalTimeLabels();
     $('seasonDeadlineLabel').textContent=`${cfg.name} ends`;
     $('seasonDeadlineDate').textContent=localDeadlineLabel(cfg.end,cfg.key==='s2');
-    $('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;
+    if($('holdExpLabel')) $('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;
     $('historicalStarsLabel').textContent='Season 1 Primostars (carried)';
     $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
     if($('astralBonusReference')) $('astralBonusReference').hidden=false;
