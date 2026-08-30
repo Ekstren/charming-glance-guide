@@ -1,0 +1,58 @@
+name: Apply remove S1 reserves v1
+on:
+  push:
+    paths:
+      - '.github/patch-remove-s1-reserves-v1.py'
+      - '.github/workflows/apply-remove-s1-reserves-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply patch
+        run: python .github/patch-remove-s1-reserves-v1.py
+      - name: Verify reserve removal and scoring guards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          banned=['reserveS2Essence','reserveS2Sand','reserveS2Treats','season2SkillEssenceReserve','season2RelicSandReserve','season2FantomonTreatReserve','applySeasonTransitionReserves','reserveTargetFor','reserveAwareRealmTopupFor','rawFirstReserveSplit','S2 Skill reserve:','S2 Relic Sand reserve:','S2 Fantomon Treat reserve:']
+          for x in banned:
+              assert x not in s, x
+          assert "scoreFloor:100,relicFloor:10,starBase:10,scorePerStar:100,weights:{character:100,gear:38,skill:13,relic:57,fanto:14}" in s
+          assert 'REALM_SAVED_TOOL_EFFICIENCY_HURDLE=0.10' in s
+          assert 'REALM_PAID_REFRESH_EFFICIENCY_HURDLE=0.20' in s
+          assert 'S1_SCORING_METHOD_REFRESH_V1' in s
+          assert "reserveHours:34" in s
+          print('reserve/scoring guards OK')
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n'.join(scripts))
+          print('scripts',len(scripts))
+          PY
+          node --check /tmp/inline.js
+      - name: Commit updated site
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove S1 rollover resource reserves'
+          git push origin main
