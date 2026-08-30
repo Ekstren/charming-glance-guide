@@ -11,28 +11,32 @@
 - **Do not force every class into Solo / Dungeon / Boss / PvP cards.** Show only materially distinct loadouts supported by current guides, skill mechanics, or repeated community testing.
 - If one general build is best for multiple activities, keep one card and explain useful swaps instead of duplicating artificial mode cards.
 - Each loadout must show exactly 4 Techniques and 4 Charms actually equipped, plus concise swaps/conditions where useful.
+- **Investment recommendations must come from Techniques/Charms actually equipped in the displayed loadouts.** Do not rank wishlist, swap-only, or unrelated pieces as core investments. If an item is only a situational swap, keep it in the build note instead of the ranked investment panel.
+- **Desktop investment layout is fixed:** Technique investment on the **left**, Charm investment on the **right**. On phone widths these two panels may stack vertically, Technique first then Charm.
+- **Keep the compact stat-priority panel:** show the priority for each individual gear slot, then show the complete prioritized substat line underneath. Do not replace this with generic grouped cards such as “Main lines / Best substats / Gem plan.”
 - Arcanist and Dominator keep one **DPS / Heals** selector. DPS/Heals filters only the role-specific PvE cards; **Arena and Tournament stay visible in both modes**. Switching roles must not destroy/recreate build data or remove Fantomon recommendations.
 - Prefer reputable build-guide presets when available and cross-check major recommendations against another credible source/community consensus when possible.
 - Avoid weaker novelty builds, including Destroyer's Water/Frozen branch, merely to increase card count.
 
 ## Current intended loadout structure
 
-- **Berserker (S1/T3):** Generic PvE, Dragon, PvP.
-- **Paladin (S1/T3):** Dungeon Tank, Water Offensive, Boss DPS / Off-Tank.
-- **Archmage (S1/T3):** AoE, Single Target.
-- **Arcanist (S1/T3):** AoE DPS, Single Target DPS, Healing.
-- **Conqueror (S2/T4):** All-Content, Dragon.
-- **Guardian (S2/T4):** Dungeon Tank, Water Offensive, Support / Boss.
-- **Destroyer (S2/T4):** AoE, Single Target, Fire AoE.
-- **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing.
+- **Berserker (S1/T3):** Generic PvE, Dragon, Arena, Tournament.
+- **Paladin (S1/T3):** Dungeon Tank, Water Offensive, Boss DPS / Off-Tank, Arena, Tournament.
+- **Archmage (S1/T3):** AoE, Single Target, Arena, Tournament.
+- **Arcanist (S1/T3):** AoE DPS, Single Target DPS, Healing, Arena, Tournament.
+- **Conqueror (S2/T4):** All-Content, Dragon, Arena, Tournament.
+- **Guardian (S2/T4):** Dungeon Tank, Water Offensive, Support / Boss, Arena, Tournament.
+- **Destroyer (S2/T4):** AoE, Single Target, Fire AoE, Arena, Tournament.
+- **Dominator (S2/T4):** AoE DPS, Single Target DPS, Healing, Arena, Tournament.
 
 Change the PvE structure only when credible current evidence supports a real meta change. **Arena and Tournament are deliberate always-visible reference cards for every class** and are maintained separately from the PvE card-count rule.
 
 ## Runtime ownership
 
-- `ROLE_PRESETS` owns evidence-based PvE loadout data; `PVP_ROLE_PRESETS` owns Arena/Tournament loadouts. The renderer combines them once.
-- `.buildModeTabs` / `BUILD_ROLE_TOGGLE_V2` is the **only** Arcanist/Dominator role control. Layout-polish code may update presentation, but must not create another role toggle or independently filter cards.
-- Build observers watch the main `#buildContent` replacement boundary instead of the full Builds subtree. Enhancers must not observe their own Fantomon/card DOM writes.
+- `ROLE_PRESETS` owns the displayed loadout data, including the maintained Arena/Tournament references. Do not overwrite it with an older reduced card set.
+- The Builds presentation layer owns the compact per-slot stat table, complete substat priority, Technique-left/Charm-right investment pair, and Main+Alt Fantomon display. These are product requirements, not optional polish.
+- Dominator has one DPS/Heals role control. Layout-polish code may update presentation, but must not create a second role toggle or independently destroy loadout cards.
+- Build observers should watch the `#buildContent` replacement boundary or child-list changes needed for an enhancer; **do not observe broad Builds subtree attributes or an enhancer's own class/hidden writes**, which can cause redundant render loops.
 - Current Realm-tool result markup uses `toolSimpleLine`. Do not revive retired `toolUsedLine`, `toolUsageRow`, or `toolCompactLine` CSS generations.
 
 ## Combat Fantomon format
