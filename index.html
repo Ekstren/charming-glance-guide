@@ -3011,7 +3011,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>S2 progression gates:</b> the prepared calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, Lv.120 maximum S2 Realm/open-map material bracket and Lv.130 Season Power scoring/second-dungeon milestone. These gates are informational; they do not override the calculator's conservative upgrade-cap logic.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. The active planning control is the single soft Realm-tool preservation toggle, while Season 2 uses live inventory directly.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
-<p><b>Daily Shop estimate:</b> in both S1 and S2, until a trustworthy shop slot/drop-rate table is available, the optional shop planner uses a deliberately simple material-only estimate of <b>~700 Ore, ~900 Skill Essence, ~600 Chrono Sand and ~50 Basic Treats per refresh</b>. The default plan is 3 refreshes/day. Only future server-reset days are projected; the current day is excluded so materials already represented in the Saved fields are not double-counted. This does not value non-material shop rolls or estimate the Rolla cost of buying them.</p>
+<p><b>Daily Shop estimate:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b>: each paid refresh counts only <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per refresh; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. The default plan is 3 refreshes/day. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. With <i>Minimize tools</i> enabled, saved Realm tools are spent only when their route is more than 10% better; routes requiring additional paid refreshes must be more than 20% better. Turn the toggle off for strict pure-efficiency ranking.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve routes natural Bed accrual and reset speed-ups after the hold begins into Bed XP Stored. Unchecking Hold claims that stored EXP into the player, and the stored balance persists through season rollover.</p>
@@ -3244,18 +3244,33 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return Math.max(0,n('treatCurrent')) + Math.max(0,n('treatPremiumCurrent'))*TREAT_PREMIUM_EQ + Math.max(0,n('treatDeluxeCurrent'))*TREAT_DELUXE_EQ;
   }
 
-  // DAILY_SHOP_ESTIMATE_V2
-  // Planning-only EV until a trustworthy shop slot/drop-rate table is available.
-  // The estimate intentionally excludes the current server day so a user's live Saved
-  // inventory can represent anything already bought today without being double-counted.
-  const DAILY_SHOP_MATS_PER_REFRESH=Object.freeze({ore:700,essence:900,sand:600,treat:50});
+  // DAILY_SHOP_ESTIMATE_V5
+  // No trustworthy public slot/drop-rate table exists. Community evidence does show that
+  // shop material stack sizes rise with progression and broadly track map-gathering amounts.
+  // To avoid optimistic planning, count only 2/3 of one current-season map bundle per paid
+  // refresh for Ore / Essence / Sand, rounded DOWN to 25. Treats stay at a deliberately low
+  // 35 Basic-equivalent per refresh because their appearance rate and quality mix are less certain.
+  // The current server day is excluded so Saved inventory can include anything already bought today.
+  const DAILY_SHOP_CORE_BUNDLE_FACTOR=2/3;
+  const DAILY_SHOP_TREAT_EQ_PER_REFRESH=35;
+  function dailyShopMatsPerRefresh(cfg=activeCalcConfig()){
+    const roundDown25=v=>Math.max(0,Math.floor((Number(v)||0)/25)*25);
+    const map=cfg?.map||{};
+    return {
+      ore:roundDown25((Number(map.ore)||0)*DAILY_SHOP_CORE_BUNDLE_FACTOR),
+      essence:roundDown25((Number(map.essence)||0)*DAILY_SHOP_CORE_BUNDLE_FACTOR),
+      sand:roundDown25((Number(map.sand)||0)*DAILY_SHOP_CORE_BUNDLE_FACTOR),
+      treat:DAILY_SHOP_TREAT_EQ_PER_REFRESH
+    };
+  }
   function dailyShopMaterialEstimate(cfg=activeCalcConfig()){
     const active=cfg.key==='s1'||cfg.key==='s2';
     const refreshes=active?clamp(Math.floor(n('shopRefreshesDaily',0)),0,20):0;
     const days=active?Math.max(0,countFuturePacificResets(Date.now(),cfg.end.getTime())):0;
-    const perDay=Object.fromEntries(Object.entries(DAILY_SHOP_MATS_PER_REFRESH).map(([k,v])=>[k,v*refreshes]));
+    const perRefresh=dailyShopMatsPerRefresh(cfg);
+    const perDay=Object.fromEntries(Object.entries(perRefresh).map(([k,v])=>[k,v*refreshes]));
     const total=Object.fromEntries(Object.entries(perDay).map(([k,v])=>[k,v*days]));
-    return {active,refreshes,days,perRefresh:DAILY_SHOP_MATS_PER_REFRESH,perDay,total};
+    return {active,refreshes,days,perRefresh,perDay,total};
   }
 
   function applyS2ScoringStartDefaults(){
