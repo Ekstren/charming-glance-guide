@@ -1,0 +1,63 @@
+name: Apply main runtime repair
+
+on:
+  push:
+    paths:
+      - 'scripts/patch_restore_main_runtime_v1.py'
+      - '.github/workflows/apply-restore-main-runtime-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Repair main runtime
+        run: python scripts/patch_restore_main_runtime_v1.py
+      - name: Static runtime checks
+        run: |
+          grep -q 'MAIN_RUNTIME_REPAIR_V1' index.html
+          grep -q 'setupNavigation();' index.html
+          grep -q 'setupTimeline();' index.html
+          grep -q 'setupBuilds();' index.html
+          grep -q 'setupCalculator();' index.html
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          html=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S|re.I)
+          failures=[]
+          for i,code in enumerate(scripts):
+              if not code.strip():
+                  continue
+              f=Path(tempfile.gettempdir())/f'sxs-inline-{i}.js'
+              f.write_text(code,encoding='utf-8')
+              r=subprocess.run(['node','--check',str(f)],capture_output=True,text=True)
+              if r.returncode:
+                  failures.append((i,r.stderr))
+          if failures:
+              for i,err in failures:
+                  print(f'inline script {i} failed syntax check:\n{err}')
+              raise SystemExit(1)
+          print(f'checked {len(scripts)} inline scripts')
+          PY
+      - name: Commit repaired index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore site runtime initialization'
+          git push
