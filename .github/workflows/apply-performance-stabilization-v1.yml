@@ -1,0 +1,67 @@
+name: Apply performance stabilization
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_performance_stabilization_v1.py'
+      - '.github/workflows/apply-performance-stabilization-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Apply performance stabilization
+        run: python scripts/patch_performance_stabilization_v1.py
+
+      - name: Verify performance cleanup
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          required = [
+              'PERFORMANCE_STABILIZATION_V1',
+              'lastGearAdds===go.adds',
+              'timelineMinuteSignature',
+              'lastBuildSeasonTick',
+              'lastPrimostarRewardRenderKey',
+              'calcSection.dataset.lastSolveMs',
+          ]
+          forbidden = [
+              'function legacyBuildHtmlS1',
+              'acquisitionCache=new Map()',
+              "if(before!==currentClass || liveBuildSeason()==='s2') renderBuilds();",
+              "if(rollSnapshotForward(Date.now(),true)) scheduleCalculatorUpdate(0);",
+          ]
+          for token in required:
+              assert token in s, f'Missing required token: {token}'
+          for token in forbidden:
+              assert token not in s, f'Stale hot-path token remains: {token}'
+          assert '<label>Bed XP Stored' not in s
+          assert 'id="bedStoredExp"' not in s
+          print(f'Validated optimized index.html: {len(s):,} characters')
+          PY
+
+      - name: Commit optimized index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Stabilize site performance'
+          git push
