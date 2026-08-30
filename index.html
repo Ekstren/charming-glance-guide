@@ -1072,13 +1072,13 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 /* v55: season-planning controls grouped together */
 .seasonPlanningControls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 12px}
 .seasonPlanningControls>label{display:flex;align-items:center;gap:6px;min-height:34px;color:var(--body-text);font-size:10px;font-weight:750}
-.seasonPlanningControls>label:not(.reserveHoursControl){white-space:nowrap}
+.seasonPlanningControls>label{white-space:nowrap}
 .seasonPlanningControls input[type="checkbox"]{width:16px;height:16px;accent-color:var(--green)}
-.seasonPlanningControls .reserveHoursControl{margin-left:auto}
-.seasonPlanningControls .reserveHoursControl input{width:58px;min-height:34px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 8px;font-weight:800}
+
+
 .seasonPlanningNote{display:block;color:var(--muted);font-size:9px;line-height:1.45;margin:6px 2px 10px}
-@media(max-width:700px){.seasonPlanningControls{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}.seasonPlanningControls .reserveHoursControl{margin-left:0}.seasonPlanningControls>label{white-space:normal!important}}
-@media(max-width:480px){.seasonPlanningControls{grid-template-columns:1fr}.seasonPlanningControls .reserveHoursControl{justify-content:space-between}.seasonPlanningControls .reserveHoursControl input{font-size:16px;min-height:44px}.seasonPlanningControls>label{min-height:42px;font-size:11px}.seasonPlanningControls input[type="checkbox"]{width:18px;height:18px}}
+@media(max-width:700px){.seasonPlanningControls{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}.seasonPlanningControls>label{white-space:normal!important}}
+@media(max-width:480px){.seasonPlanningControls{grid-template-columns:1fr}.seasonPlanningControls>label{min-height:42px;font-size:11px}.seasonPlanningControls input[type="checkbox"]{width:18px;height:18px}}
 </style>
 
 
@@ -1269,36 +1269,6 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 
 
 
-<style id="bed-exp-hold-layout-v4">
-/* SPAGHETTI_CLEANUP_V1: consolidated Bed EXP hold toggle + note layout. */
-.seasonPlanningControls{align-items:center!important}
-.holdExpOption{
-  position:relative!important;
-  display:flex!important;
-  align-items:center!important;
-  align-self:auto!important;
-  justify-content:flex-start!important;
-  gap:7px!important;
-}
-.holdExpOption>input,.holdExpOption>#holdExpLabel{margin:0!important}
-.holdExpOption>.bedReserveStartNote{
-  position:absolute!important;
-  left:25px!important;
-  top:calc(100% + 3px)!important;
-  margin:0!important;
-  padding:0!important;
-  white-space:nowrap!important;
-  color:var(--status-info,var(--secondary-text));
-  font-size:10px;
-  line-height:1.25!important;
-  font-weight:750;
-  letter-spacing:0;
-  text-transform:none;
-}
-.holdExpOption>.bedReserveStartNote b{color:var(--status-info,var(--blue));font-weight:850}
-.seasonPlanningControls:has(#holdExp:checked){padding-bottom:24px!important}
-.holdExpOption>input:not(:checked)~.bedReserveStartNote{display:none!important}
-</style>
 
 <style id="s2-launch-checklist-v1">
 .launchChecklist{display:grid;gap:8px;margin-top:8px}
@@ -3142,7 +3112,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
-          <label>Bed XP Stored<input id="bedStoredExp" type="number" min="0" step="1" value="0"></label>
         </div>
         <!-- MOVE_PROJECTION_BEFORE_PROGRESSION_V1 -->
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
@@ -3174,7 +3143,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         </div>
         <div class="rolloverHold seasonPlanningControls">
 <label class="realmToolPreserveOption realmToolPreserveTop"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved tools need >10% improvement; paid Realm purchases need >20%. Turn off for pure efficiency.</small></label>
-          <input id="reserveHours" min="0" max="36" type="number" value="34" hidden>
         </div>
         <small class="seasonPlanningNote" id="graceText">Cart income, Stamina generation, Realm purchase availability, and upgrade timing run through the season reset.</small>
         <details class="optimizerExplain" id="optimizerExplain">
@@ -3287,7 +3255,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>Daily Shop estimate:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b>: each restock counts only <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per restock; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. The default is 0 refreshes/day; users opt in to the number they actually buy. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. With <i>Minimize tools</i> enabled, saved Realm tools are spent only when their route is more than 10% better; routes requiring additional paid refreshes must be more than 20% better. Turn the toggle off for strict pure-efficiency ranking.</p>
-<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve routes natural Bed accrual and reset speed-ups after the hold begins into Bed XP Stored. Unchecking Hold claims that stored EXP into the player, and the stored balance persists through season rollover.</p>
+<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. With Minimize tools enabled, existing Hammers/Knuckles/Shovels stay banked unless consuming them improves modeled acquisition effort by more than 10%; additional Realm purchases require more than a 20% improvement. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
@@ -3369,7 +3337,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     targetStars:800,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
-    charLevel:130,charExp:0,bedExp:0,reserveHours:34,
+    charLevel:130,charExp:0,bedExp:0,
     skillLevel:130,relicLevel:13,fantomonLevel:130,
     gearWeapon:130,gearOffhand:130,gearHelmet:130,gearArmor:130,gearBoots:130,
     // S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.
@@ -3382,7 +3350,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
   });
   const S2_SCORING_START_CHECKS=Object.freeze({
-    holdExp:false,preserveRealmTools:true
+    preserveRealmTools:true
   });
   /* S2_ZERO_SCORE_DEFAULTS_V1
      The assumed scoring-start profile sits exactly on every S2 scoring floor. It is a
@@ -3445,11 +3413,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
   const GEAR_IDS = ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'];
   const INPUT_IDS = [
-    'targetStars','historicalStars','charLevel','charExp','bedExp','bedStoredExp','reserveHours','skillLevel','relicLevel','fantomonLevel',
+    'targetStars','historicalStars','charLevel','charExp','bedExp','skillLevel','relicLevel','fantomonLevel',
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
-  const CHECK_IDS = ['holdExp','preserveRealmTools'];
+  const CHECK_IDS = ['preserveRealmTools'];
   const defaults = Object.create(null);
   INPUT_IDS.forEach(id => defaults[id] = document.getElementById(id)?.value ?? '');
   CHECK_IDS.forEach(id => defaults[id] = document.getElementById(id)?.checked ?? false);
@@ -3463,7 +3431,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
      High-volume calculator fields accept shorthand such as 22.7k, 1.3m, and 2b.
      Values are expanded to their full numeric form on commit so persisted state stays plain. */
   const COMPACT_NUMBER_INPUT_IDS = new Set([
-    'charExp','bedExp','bedStoredExp',
+    'charExp','bedExp',
     'oreCurrent','oreRate','essenceCurrent','essenceRate',
     'sandCurrent','sandBlueCurrent','sandRate',
     'treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
@@ -3670,7 +3638,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   let snapshotSeason = seasonKeyAt(snapshotAtMs);
   let snapshotCarry = {ore:0, essence:0, sand:0, treat:0, exp:0};
   let snapshotStateLoaded = false;
-  let committedHoldExpState = !!document.getElementById('holdExp')?.checked;
   const numberFromState = (state,id,fallback=0) => {
     const v = Number(state?.[id]);
     return Number.isFinite(v) ? v : fallback;
@@ -3725,20 +3692,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function resourceCutoffMs(cfg=activeCalcConfig()){
     return Math.max(Date.now(),cfg.end.getTime());
   }
-  /* BED_HOLD_STOPS_ALL_EXP_V1
-     Once the Bed hold begins, all Bed-generated EXP is banked for the next season and is
-     not collectible for the current-season score. This includes both natural Bed accrual
-     and the free reset speed-up. */
-  function projectionExpHoursAt(ms,cfg=activeCalcConfig()){
-    const endMs=cfg.end.getTime();
-    const reserve=$('holdExp')?.checked?clamp(n('reserveHours',34),0,36):0;
-    const collectibleEnd=reserve>0?endMs-reserve*3_600_000:endMs;
-    const capped=Math.min(ms,collectibleEnd);
-    if(capped>=collectibleEnd) return 0;
-    const naturalHours=Math.max(0,(collectibleEnd-capped)/3_600_000);
-    const boostHours=2*countFuturePacificResets(capped,collectibleEnd);
-    return naturalHours+boostHours;
-  }
   function projectionResourceHoursAt(ms,cfg=activeCalcConfig()){
     const cutoff=cfg.end.getTime();
     const capped=Math.min(ms,cutoff);
@@ -3746,38 +3699,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const wallHours=(cutoff-capped)/3_600_000;
     const boostHours=2*countFuturePacificResets(capped,cutoff);
     return Math.max(0,wallHours+boostHours);
-  }
-
-  /* BED_STORED_EXP_V1
-     Bed EXP is a first-class persisted balance. While Hold is active, generation before
-     the reserve cutoff is claimed normally and generation after the cutoff is routed into
-     Bed XP Stored. Turning Hold off claims the stored balance into the character. */
-  function bedHoursInRange(startMs,endMs){
-    const start=Number(startMs)||0,end=Number(endMs)||0;
-    if(end<=start) return 0;
-    return Math.max(0,(end-start)/3_600_000)+2*countFuturePacificResets(start,end);
-  }
-  function bedExpHourSplitBetween(startMs,endMs,cfg=activeCalcConfig(),holdEnabled=!!$('holdExp')?.checked){
-    const start=Math.max(0,Number(startMs)||0);
-    const end=Math.max(start,Math.min(Number(endMs)||start,cfg.end.getTime()));
-    if(end<=start) return {claimedHours:0,storedHours:0};
-    if(!holdEnabled) return {claimedHours:bedHoursInRange(start,end),storedHours:0};
-    const reserve=clamp(n('reserveHours',34),0,36);
-    if(reserve<=0) return {claimedHours:bedHoursInRange(start,end),storedHours:0};
-    const reserveStart=cfg.end.getTime()-reserve*3_600_000;
-    const claimedEnd=Math.min(end,reserveStart);
-    const storedStart=Math.max(start,reserveStart);
-    return {
-      claimedHours:claimedEnd>start?bedHoursInRange(start,claimedEnd):0,
-      storedHours:end>storedStart?bedHoursInRange(storedStart,end):0
-    };
-  }
-  function claimStoredBedExp(cfg=activeCalcConfig()){
-    const stored=Math.max(0,Math.floor(n('bedStoredExp',0)));
-    if(stored<=0) return 0;
-    advanceCharacterSnapshot(stored,cfg);
-    if($('bedStoredExp')) $('bedStoredExp').value='0';
-    return stored;
   }
 
   function advanceCharacterSnapshot(deltaExp,cfg=CALC_SEASONS[snapshotSeason] || activeCalcConfig()){
@@ -3843,24 +3764,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       if(whole>0 && $(currentId)) $(currentId).value = String(Math.max(0,n(currentId,0))+whole);
     });
 
-    const bedSplit=bedExpHourSplitBetween(snapshotAtMs,cappedNow,cfg,!!$('holdExp')?.checked);
     const bedRate=Math.max(0,n('bedExp',0));
-    let claimedExpFloat=bedRate*bedSplit.claimedHours;
-    let storedExpFloat=bedRate*bedSplit.storedHours;
-    const expCarry=Math.max(0,Number(snapshotCarry.exp)||0);
-    // Carry the sub-EXP remainder into whichever destination is active at the end of the interval.
-    if(bedSplit.storedHours>0) storedExpFloat+=expCarry;
-    else claimedExpFloat+=expCarry;
-    const claimedExp=Math.floor(claimedExpFloat+1e-9);
-    const storedExp=Math.floor(storedExpFloat+1e-9);
-    snapshotCarry.exp=Math.max(0,(claimedExpFloat-claimedExp)+(storedExpFloat-storedExp));
-    if(claimedExp>0) advanceCharacterSnapshot(claimedExp,cfg);
-    if(storedExp>0 && $('bedStoredExp')) $('bedStoredExp').value=String(Math.max(0,n('bedStoredExp',0))+storedExp);
+    const producedExp=bedRate*elapsedResourceHours + Math.max(0,Number(snapshotCarry.exp)||0);
+    const wholeExp=Math.floor(producedExp+1e-9);
+    snapshotCarry.exp=Math.max(0,producedExp-wholeExp);
+    if(wholeExp>0) advanceCharacterSnapshot(wholeExp,cfg);
 
     // Already-held Stamina is intentionally not snapshot-aged because the calculator tracks only future regenerated Stamina.
     snapshotAtMs = cappedNow;
     if(persist) saveState();
-    return elapsedResourceHours>0 || elapsedExpHours>0 || elapsedRealmResets>0;
+    return elapsedResourceHours>0 || elapsedRealmResets>0;
   }
 
   function markManualSnapshot(id){
@@ -3907,7 +3820,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         if(state.realmDailyEssence===undefined) state.realmDailyEssence=String(oldDaily);
         if(state.realmDailySand===undefined) state.realmDailySand=String(oldDaily);
       }
-      if(Number(state.reserveHours)===36) state.reserveHours='34'; // BED_HOLD_34H_V1 migrate old hidden default
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });
       if(!hadState && activeCalcConfig().key==='s2') applyS2ScoringStartDefaults();
@@ -3939,7 +3851,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       snapshotSeason=seasonKeyAt(snapshotAtMs);
       snapshotCarry={ore:0, essence:0, sand:0, treat:0, exp:0};
     }
-    committedHoldExpState=!!$('holdExp')?.checked;
     snapshotStateLoaded=true;
     if(hadState) rollSnapshotForward(Date.now(),false);
     updateGearLockUI();
@@ -4020,21 +3931,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const pct=req>0?clamp(exp/req,0,0.999999999):0;
     return {level:lvl,exp,req,pct,decimal:lvl+pct};
   }
+  /* BED_STORAGE_DISABLED_V1
+     Stored/hold Bed automation is temporarily disabled. The planner still uses the entered
+     Bed EXP/hour for ordinary season-end projection, including the free 2-hour reset boosts. */
   function projectCharacterTo(targetMs,cfg=activeCalcConfig()){
     const now=Date.now();
     const current=characterSnapshot(cfg);
     let lvl=current.level, exp=current.exp;
-    // Defensive projection: if a stored balance exists while Hold is off, it is immediately claimable.
-    if(!$('holdExp')?.checked) exp+=Math.max(0,n('bedStoredExp',0));
     const endMs=cfg.end.getTime();
     const target=Math.max(now,Math.min(Number(targetMs)||endMs,endMs));
-    const reserve=$('holdExp')?.checked?clamp(n('reserveHours',34),0,36):0; /* S2_PROJECTION_HOLD_NULL_V1 */
-    const reserveStart=endMs-reserve*3_600_000;
-    // The hold is a hard S1 collection cutoff: natural Bed EXP and reset speed-ups after
-    // reserveStart stay banked for S2 and cannot increase the S1 projected score.
-    const collectibleEnd=reserve>0?Math.min(target,reserveStart):target;
-    const naturalHours=Math.max(0,(collectibleEnd-now)/3_600_000);
-    const boostResets=collectibleEnd>now?countFuturePacificResets(now,collectibleEnd):0;
+    const naturalHours=Math.max(0,(target-now)/3_600_000);
+    const boostResets=target>now?countFuturePacificResets(now,target):0;
     const boostHours=2*boostResets;
     const acceleratedHours=naturalHours+boostHours;
     exp += Math.max(0,n('bedExp',0))*acceleratedHours;
@@ -4046,7 +3953,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     }
     const req=expRequiredForLevel(lvl,cfg);
     const pct=req>0?clamp(exp/req,0,0.999999999):0;
-    return {level:lvl,exp,req,pct,decimal:lvl+pct,hours:Math.max(0,(target-now)/3_600_000),reserve,acceleratedHours,naturalHours,boostHours,boostResets,current,targetMs:target};
+    return {level:lvl,exp,req,pct,decimal:lvl+pct,hours:naturalHours,reserve:0,acceleratedHours,naturalHours,boostHours,boostResets,current,targetMs:target};
   }
   function projectCharacter(cfg=activeCalcConfig()){
     return projectCharacterTo(cfg.end.getTime(),cfg);
@@ -5437,9 +5344,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     renderLocalTimeLabels();
     $('seasonDeadlineLabel').textContent=`${cfg.name} ends`;
     $('seasonDeadlineDate').textContent=localDeadlineLabel(cfg.end,cfg.key==='s2');
-    if($('holdExpLabel')) $('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;
     $('historicalStarsLabel').textContent='Season 1 Primostars (carried)';
-    $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
+    $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); future free 2-hour reset boosts are included automatically.`;
     if($('astralBonusReference')) $('astralBonusReference').hidden=false;
     const s2Presets=$('s2TargetPresets'),s2Gates=$('s2ProgressionGates'),seasonHint=$('seasonRulesHint');
     if(s2Presets) s2Presets.hidden=cfg.key!=='s2';
@@ -5992,7 +5898,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       applyS2ScoringStartDefaults();
     }
     gearLocked=false; snapshotAtMs=Date.now(); snapshotSeason=cfg.key; snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
-    committedHoldExpState=!!$('holdExp')?.checked;
     updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();
   }
 
@@ -6577,719 +6482,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     });
     CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{
       resetMaxAchievableUi();
-      if(id==='holdExp'){
-        const el=$('holdExp');
-        const next=!!el.checked;
-        const previous=committedHoldExpState;
-        // Age elapsed Bed production under the state that was actually active, then commit the toggle.
-        el.checked=previous;
-        rollSnapshotForward(Date.now(),false);
-        el.checked=next;
-        committedHoldExpState=next;
-        if(snapshotSeason===seasonKeyAt(Date.now())) snapshotAtMs=Date.now();
-        if(previous && !next) claimStoredBedExp(activeCalcConfig());
-      } else {
-        markManualSnapshot(id);
-      }
-      // Checkbox state must be persisted before recalculation so reserve changes apply immediately.
-      saveState();
-      if(calculatorInitialized) updateCalculator();
-      else initializeCalculatorIfNeeded();
-    }));
-    PANEL_OPEN_IDS.forEach(id=>$(id)?.addEventListener('toggle',saveState));
-    $('s2TargetPresets')?.addEventListener('click',e=>{
-      const btn=e.target.closest?.('[data-s2-target]');
-      if(!btn || activeCalcConfig().key!=='s2') return;
-      $('targetStars').value=btn.dataset.s2Target;
-      resetMaxAchievableUi();
-      markManualSnapshot('targetStars');
-      saveState();
-      scheduleCalculatorUpdate(0);
-    });
-    $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
-    $('targetMessage')?.addEventListener('click',e=>{
-      const btn=e.target.closest?.('.applyRealmRecommendation');
-      if(btn) applyRecommendedRealmRefreshes(btn);
-    });
-    $('copyPlan').addEventListener('click',copyPlan);
-    $('resetCalc').addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
-    // Do not wake the hidden calculator every minute before the user has opened it.
-    setInterval(()=>{
-      if(!calculatorInitialized) return;
-      rollSnapshotForward(Date.now(),true);
-      if(!document.getElementById('calculatorSection')?.hidden) scheduleCalculatorUpdate(0);
-    },60_000);
-  }
-
-  loadState();
-  setupNavigation();
-  let initialSection='timeline';
-  try{ const savedSection=localStorage.getItem(SECTION_STORAGE_KEY); if(['timeline','builds','companions','calculator'].includes(savedSection)) initialSection=savedSection; }catch(_){}
-  setSection(initialSection);
-  setupTimeline();
-  setupBuilds();
-  setupCalculator();
-})();
-
-</script>
-
-<style>
-/* TIMELINE_COMPACT_RENDERER_V1 */
-.entry .timelineCardDetails{display:block!important}
-.timelineCardDetails{margin-top:6px;border-top:1px solid var(--line)}
-.timelineCardDetails>summary{cursor:pointer;list-style:none;color:var(--muted);font-size:9px;font-weight:850;padding:6px 0 2px;width:max-content}
-.timelineCardDetails>summary::-webkit-details-marker{display:none}
-.timelineCardDetails>summary:after{content:' +';color:var(--green)}
-.timelineCardDetails[open]>summary:after{content:' −'}
-.timelineCardDetailsBody{color:var(--secondary-text);font-size:11px;line-height:1.5;padding:3px 0 2px}
-.timelineCardDetailsBody p{font-size:inherit!important;color:inherit!important;margin:0!important}
-.timelineNowCard .timelineCardDetails{margin-top:5px}
-.timelineNowCard .timelineCardDetails>summary{font-size:8px;padding-top:4px}
-.timelineNowCard .timelineCardDetailsBody{font-size:8px}
-.timelineNowBadge{display:inline-flex;margin-left:5px;padding:1px 5px;border-radius:999px;border:1px solid rgba(213,166,83,.45);color:var(--gold);font-size:7px;font-weight:900;letter-spacing:.05em;vertical-align:1px}
-</style>
-<script>
-(() => {
-  'use strict';
-  const COMPACT_MARK='timelineCompactDone';
-  const explicit = [
-    [/oceanic festival/i, 'Aug 18–31. Do the daily Ice Cream Shop and Ocean Chase, then spend Festival currency on the rewards you actually need.'],
-    [/bingo draw/i, 'Aug 19–26 on Charming Glance. Clear daily missions first; use Destiny Fruits only if you are pushing Bingo or overlapping Oceanic objectives.'],
-    [/lucky scratch/i, 'Aug 26–Sep 2. Spend saved Material Realm tools while Lucky Scratch is active to generate scratch cards; Oceanic overlaps through Aug 31.'],
-    [/grand treasure hunt|treasure hunt/i, 'Weekly phase. Auroradrasil Energy carries over, so save it unless this phase has the Lv.5 reward or relic you want.'],
-    [/gift code · summer|gift code summer/i, 'UNCONFIRMED cutoff: Summer gives 160 Dawnium and is reported valid through Sep 1; redeem promptly.'],
-    [/weekly gift code|4p7y2r9m/i, 'Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT). Reward was 2,000 Rolla + 120 Dawnium.'],
-    [/season 1.*(end|final|prep)|season prep/i, 'Aug 29 is the confirmed final prep day before Charming Glance Season 2 begins Aug 30 at the 6:00 AM PDT reset. Finish S1 scoring early and preserve your S2 reserves.'],
-    [/season 2.*(start|open)|loong haven/i, 'Confirmed for Charming Glance: Season 2 begins Aug 30 at the 6:00 AM PDT reset, based on the in-game season countdown. After rollover, update the planner before spending saved resources.']
-  ];
-
-  function plain(node){ return (node?.textContent||'').replace(/\s+/g,' ').trim(); }
-  function titleFor(card){
-    const firstP=card.querySelector('p');
-    return plain(card.querySelector('strong,h3,b'))+' '+plain(firstP);
-  }
-  function summaryFor(title,text){
-    for(const [re,sum] of explicit) if(re.test(title+' '+text)) return sum;
-    const sentences=(text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[]).map(x=>x.trim()).filter(Boolean);
-    let out=sentences.slice(0,2).join(' ');
-    if(!out) out=text;
-    if(out.length>190){
-      out=out.slice(0,187).replace(/\s+\S*$/,'').trim()+'…';
-    }
-    return out;
-  }
-  function addDetails(afterNode, original){
-    const details=document.createElement('details');
-    details.className='timelineCardDetails';
-    const summary=document.createElement('summary');
-    summary.textContent='Details';
-    const body=document.createElement('div');
-    body.className='timelineCardDetailsBody';
-    body.appendChild(original.cloneNode(true));
-    details.append(summary,body);
-    afterNode.insertAdjacentElement('afterend',details);
-  }
-  function compactEntry(card){
-    if(card.dataset[COMPACT_MARK]) return;
-    if(card.querySelector('details.entryMore')){ card.dataset[COMPACT_MARK]='1'; return; }
-    if(card.querySelector('.launchChecklist')){ card.dataset[COMPACT_MARK]='1'; return; }
-    const ps=[...card.querySelectorAll('p')];
-    if(ps.length<2){ card.dataset[COMPACT_MARK]='1'; return; }
-    const desc=ps[ps.length-1];
-    const full=plain(desc);
-    const title=titleFor(card);
-    if(!full){ card.dataset[COMPACT_MARK]='1'; return; }
-    const short=summaryFor(title,full);
-    if(short!==full || full.length>210){
-      const clone=desc.cloneNode(true);
-      desc.textContent=short;
-      addDetails(desc,clone);
-    }
-    card.dataset[COMPACT_MARK]='1';
-  }
-  function compactNow(card){
-    if(card.dataset[COMPACT_MARK]) return;
-    const desc=card.querySelector('small');
-    if(!desc){ card.dataset[COMPACT_MARK]='1'; return; }
-    const full=plain(desc);
-    const title=plain(card.querySelector('strong'));
-    if(!full){ card.dataset[COMPACT_MARK]='1'; return; }
-    const short=summaryFor(title,full);
-    if(short!==full || full.length>150){
-      const clone=desc.cloneNode(true);
-      desc.textContent=short;
-      addDetails(desc,clone);
-    }
-    card.dataset[COMPACT_MARK]='1';
-  }
-  function run(){
-    document.querySelectorAll('.timeline .entry').forEach(compactEntry);
-    document.querySelectorAll('#timelineNow .timelineNowCard').forEach(compactNow);
-  }
-  let queued=false;
-  function queue(){ if(queued) return; queued=true; requestAnimationFrame(()=>{queued=false;run();}); }
-  const observer=new MutationObserver(queue);
-  function start(){
-    run();
-    const root=document.querySelector('#timelineSection')||document.body;
-    observer.observe(root,{childList:true,subtree:true});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true}); else start();
-})();
-
-
-// BUILD_LAYOUT_V2
-// SPAGHETTI_CLEANUP_V1: dead build observers/CSS generations consolidated.
-function buildPriorityPanelHtml(kind,title,desc,items){
-  return `<div class="priorityPanel"><div class="priorityIntro"><span>${kind}</span><strong>${title}</strong><p>${desc}</p></div><ol class="priorityList">${items.map((x,i)=>`<li><b>${i+1}</b><div><strong>${x[0]}</strong><p>${x[1]}</p></div></li>`).join('')}</ol></div>`;
-}
-function splitBerserkerPriorities(root){
-  const buildName=root.querySelector(':scope > .guideSummary strong')?.textContent.trim()||'';
-  if(buildName!=='Berserker') return;
-  const panel=[...root.children].find(el=>el.classList&&el.classList.contains('priorityPanel'));
-  if(!panel || !/Core investment/i.test(panel.querySelector('.priorityIntro span')?.textContent||'')) return;
-  const technique=buildPriorityPanelHtml('Core technique investment','Eclipse Slash first','Rank the techniques that actually stay equipped across the standard Season 1 Berserker builds.',[
-    ['Eclipse Slash','Six-hit single-target nuke and the most universal T3 damage technique.'],
-    ['Sunset Sword','Equipped in every listed Berserker build and a reliable multi-hit core.'],
-    ['Lion Combo','Another universal multi-hit slot that feeds the T3 damage loop well.'],
-    ["Hunter's Judgment / Flame Aura / Darkness Descends",'Content slot: grouping for general PvE, damage for bosses, mobility/dispel for PvP.']
-  ]);
-  const charm=buildPriorityPanelHtml('Core charm investment','Blade of Judgment first','Keep technique and charm investment separate so upgrade priorities are easier to follow.',[
-    ['Blade of Judgment','The defining T3 charm and the main reason multi-hit techniques scale so well.'],
-    ['Insightful Eye','Reliable Crit support across PvE, Dragon and PvP.'],
-    ['Indomitable Will','The default survival investment and the safest general-purpose defensive slot.'],
-    ['Blade Siphon / Blazing Clash / Frame of Battles','Content slot: sustain for general PvE, damage for bosses, PvP utility for arena.']
-  ]);
-  const holder=document.createElement('div');
-  holder.innerHTML=technique+charm;
-  panel.replaceWith(...holder.children);
-}
-function parseGearRows(mainText){
-  if(!mainText) return [];
-  const rows=[];
-  mainText.split(/\.\s+/).map(x=>x.trim().replace(/\.$/,'' )).filter(Boolean).forEach(part=>{
-    const idx=part.indexOf(':');
-    if(idx<0) return;
-    const slots=part.slice(0,idx).trim().split(/\s*\/\s*/).filter(Boolean);
-    const stats=part.slice(idx+1).trim();
-    slots.forEach(slot=>rows.push([slot,stats]));
-  });
-  return rows;
-}
-
-// BUILD_STATS_ROLES_V3
-const BUILD_STAT_PROFILES={
-  Berserker:{rule:'Physical multi-hit DPS. Main lines stay Physical through Season 1.',rows:[['Sword','Physical Mastery > ATK > SPD'],['Gauntlets','Physical Mastery > ATK > SPD'],['Helmet','DEF >= Physical RES = Elemental RES > HP'],['Chest','DEF >= Physical RES = Elemental RES > HP'],['Boots','Physical Mastery > ATK > SPD']],substats:'Crit Rate% > Crit DMG% > Technique DMG vs debuffed targets > Physical Mastery / Accuracy > SPD'},
-  Paladin:{rule:'Block/DEF first; add damage only after the tank loop is stable.',rows:[['Sword','SPD > ATK > Physical Mastery'],['Shield','DEF > HP > RES'],['Helmet','DEF > HP > RES'],['Chest','DEF > HP > RES'],['Boots','SPD > ATK > Elemental / Physical Mastery']],substats:'Block Rate% > DEF% > DEF / HP% / HP; offensive stats come after survivability is reliable'},
-  Archmage:{rule:'Elemental burst DPS. Crit and speed are premium once main lines are solved.',rows:[['Staff','Elemental Mastery > ATK > Crit > SPD'],['Codex','Elemental Mastery > ATK > Crit > SPD'],['Helmet','DEF / RES > HP'],['Chest','DEF / RES > HP'],['Boots','Elemental Mastery > ATK > SPD']],substats:'Crit Rate > Crit DMG > SPD > Elemental Mastery / Accuracy'},
-  Arcanist:{
-    dps:{rule:'Dark DoT DPS. Effect Hit Rate comes first so Erosion lands reliably.',rows:[['Staff','Effect Hit Rate >= Elemental Mastery >= ATK > SPD'],['Orb','Effect Hit Rate >= Elemental Mastery >= ATK > SPD'],['Helmet','HP > DEF / RES'],['Chest','HP > DEF / RES'],['Boots','Elemental Mastery > ATK > SPD']],substats:'Effect Hit Rate > Crit Rate / Crit DMG > Elemental Mastery > Accuracy / SPD'},
-    heals:{rule:'Healing/support. Speed and Healing Boost matter more than DPS lines.',rows:[['Staff','SPD > Effect Hit Rate > Elemental Mastery'],['Orb','SPD > Effect Hit Rate > Elemental Mastery'],['Helmet','HP > DEF / RES'],['Chest','HP > DEF / RES'],['Boots','SPD > Elemental Mastery > HP']],substats:'Healing Boost% > SPD > HP% > Effect Hit Rate / Elemental Mastery > DEF / RES'}
-  },
-  Conqueror:{rule:'Elemental melee DPS. S2 Crit RES makes Crit Rate especially valuable.',rows:[['Sword','ATK >= Elemental Mastery > SPD'],['Gauntlets','ATK >= Elemental Mastery > SPD'],['Helmet','DEF >= Physical RES = Elemental RES > HP'],['Chest','DEF >= Physical RES = Elemental RES > HP'],['Boots','ATK >= Elemental Mastery > SPD']],substats:'Crit Rate% > Crit DMG% > Elemental Mastery / Accuracy% > SPD or HP/SPD-to-ATK conversion'},
-  Guardian:{rule:'Block is the premium defensive stat; offensive slots still value speed.',rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Gauntlets','DEF > HP > Physical / Elemental RES'],['Helmet','DEF > HP > RES'],['Chest','DEF > HP > RES'],['Boots','SPD > ATK > Elemental / Physical Mastery']],substats:'Block Rate% > Block Efficiency > PvE/PvP DMG + DMG RES > DEF / SPD / HP / useful Crit'},
-  Destroyer:{rule:'Elemental ranged DPS. Crit quality and Accuracy are major S2 damage checks.',rows:[['Staff','Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate'],['Codex','Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate'],['Helmet','DEF / RES > HP'],['Chest','DEF / RES > HP'],['Boots','Elemental Mastery > SPD > ATK']],substats:'Crit + Accuracy / Crit + Crit DMG > Elemental Mastery > Crit Rate / Accuracy / Crit DMG'},
-  Dominator:{
-    dps:{rule:'Dark DPS. High Effect Hit Rate is required before Erosion becomes dependable.',rows:[['Staff','Effect Hit Rate >= Elemental Mastery >= ATK > SPD'],['Orb','Effect Hit Rate >= Elemental Mastery >= ATK > SPD'],['Helmet','DEF / RES > HP'],['Chest','DEF / RES > HP'],['Boots','Elemental Mastery > ATK > SPD']],substats:'Crit + Accuracy / Crit + Crit DMG / ailment damage > Effect Hit Rate > useful conversions'},
-    heals:{rule:'Healing/support is Dominator’s most reliable S2 role.',rows:[['Staff','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Orb','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Helmet','HP > DEF / RES'],['Chest','HP > DEF / RES'],['Boots','SPD > Elemental Mastery > ATK']],substats:'DMG RES + Healing > Healing Boost > Block packages > SPD / HP'}
-  }
-};
-const BUILD_ROLE_KEYS={Arcanist:'sxs-build-role-arcanist',Dominator:'sxs-build-role-dominator'};
-const BUILD_ROLE_PRIORITY={
-  Arcanist:{
-    dps:[
-      ['DPS technique investment','Erosion engine first','Rank the Dark techniques that stay equipped in the standard DPS setups.',[['Mana Blast','Core AoE Dark hit with Erosion application.'],['Dark Bullet','Reliable single-target Erosion application.'],['Abyssal Hand','Reusable Dark AoE plus Slow utility.'],['Shadow of Termination / Shadow Impact','Boss cash-out or AoE Erosion trigger depending on content.']]],
-      ['DPS charm investment','Stack Erosion faster','Build the DoT engine first, then its damage/safety shell.',[['Shadow Erosion','Foundation of the T3 DoT engine.'],['Linked Misfortune','Accelerates Erosion stacking.'],["Night's Blessing",'Straight Dark damage scaling.'],['Shadow Vengeance','Cheat-death plus a burst window.']]]
-    ],
-    heals:[
-      ['Healing technique investment','Radiant Restoration first','Prioritize the techniques that keep the party alive and stabilize difficult content.',[['Radiant Restoration','Primary direct healing investment.'],['Frenzy Totem','High-value team sustain/support slot.'],['Waterling Summon','Reliable recurring party healing.'],['Void Blessing','Flexible support/healing utility.']]],
-      ['Healing charm investment','Healing Mastery first','Invest in the core healing shell before flex utility.',[['Healing Mastery','Most universal healing throughput charm.'],['Overhealing','Turns excess healing into additional safety/value.'],['Resurrection','Best recovery tool when deaths are the failure point.'],['Flex support slot','Use party damage, utility or extra safety based on the encounter.']]]
-    ]
-  },
-  Dominator:{
-    dps:[
-      ['DPS technique investment','Dark Starburst first','Keep technique and charm investment separate for the S2 Dark DPS profile.',[['Dark Starburst','Reliable multi-hit single-target damage.'],['Shadow of Termination','Key single-target Dark finisher.'],['Dark Bullet','Consistent Erosion application.'],['Mana Blast / Abyssal Hand','Use Mana Blast for Erosion/AoE pressure or Abyssal Hand for utility.']]],
-      ['DPS charm investment','Shadow Erosion first','Only lean hard into the Erosion package once your Effect Hit Rate supports it.',[['Shadow Erosion','Core Erosion engine.'],['Linked Misfortune','Accelerates stack generation.'],["Night's Blessing",'Universal Dark damage scaling.'],['Shadow Vengeance / Soul Pact Resonance','Safety or greed depending on content.']]]
-    ],
-    heals:[
-      ['Healing technique investment','Rejuvenating Rain first','T4 healing gets meaningful upgrades; rank the active healing tools first.',[['Rejuvenating Rain','Repeatable single-target heal and a core T4 upgrade.'],['Radiant Restoration','Strong direct party sustain.'],['Waterling Summon','Reliable recurring healing.'],['Frenzy Totem','Support/throughput option; Healing Touch can replace it when raw healing is needed.']]],
-      ['Healing charm investment','Phantom Light first','Dominator’s strongest healer identity comes from its T4 charm package.',[['Phantom Light','Mandatory healing boost plus overheal-to-shield conversion.'],['Healing Mastery','Universal throughput.'],['Overhealing','Excellent with the T4 shield/heal loop.'],['Resurrection / Mantra of Blessings','Safety for progression or carry buff when the group is stable.']]]
-    ]
-  }
-};
-function renderedBuildName(root){return root.querySelector(':scope > .guideSummary strong')?.textContent.trim()||'';}
-function buildRoleMode(name){
-  if(!BUILD_ROLE_KEYS[name]) return 'dps';
-  try{const v=localStorage.getItem(BUILD_ROLE_KEYS[name]);return v==='heals'?'heals':'dps';}catch(_){return 'dps';}
-}
-function buildStatProfile(name,mode){const p=BUILD_STAT_PROFILES[name];return p&&p[mode]?p[mode]:p;}
-function setPriorityPanel(panel,data){
-  const [kind,title,desc,items]=data;
-  panel.innerHTML=`<div class="priorityIntro"><span>${kind}</span><strong>${title}</strong><p>${desc}</p></div><ol class="priorityList">${items.map((x,i)=>`<li><b>${i+1}</b><div><strong>${x[0]}</strong><p>${x[1]}</p></div></li>`).join('')}</ol>`;
-}
-function renderBuildQuickStats(root,name,mode){
-  const guide=root.querySelector(':scope > .guideSummary');
-  if(!guide) return;
-  const profile=buildStatProfile(name,mode);
-  if(!profile) return;
-  let quick=guide.querySelector('.buildQuickStats');
-  if(!quick){quick=document.createElement('div');quick.className='buildQuickStats';guide.children[1]?.replaceWith(quick);guide.classList.add('buildSummaryCompact');}
-  quick.innerHTML=`<div class="quickTitle">Quick stats</div><p class="quickRule">${profile.rule}</p><div class="quickGearGrid">${profile.rows.map(r=>`<div class="quickGearRow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}</div><div class="quickSubstats"><b>Substats</b><span>${profile.substats}</span></div>`;
-}
-// SPAGHETTI_CLEANUP_V1: role filtering/priority swapping is owned by BUILD_ROLE_TOGGLE_V2.
-function polishBuildLayout(){
-  const root=document.getElementById('buildContent');
-  if(!root || !root.children.length) return;
-  splitBerserkerPriorities(root);
-  const name=renderedBuildName(root);
-  const mode=buildRoleMode(name);
-  renderBuildQuickStats(root,name,mode);
-  const gear=root.querySelector(':scope > .gearPanel');
-  if(gear) gear.hidden=true;
-  if(!root.querySelector(':scope > .priorityPair')){
-    const panels=[...root.children].filter(el=>el.classList&&el.classList.contains('priorityPanel'));
-    if(panels.length>=2){
-      const pair=document.createElement('div');
-      pair.className='priorityPair';
-      panels[0].before(pair);
-      pair.append(panels[0],panels[1]);
-    }
-  }
-}
-
-(function setupBuildLayoutPolish(){
-  const root=document.getElementById('buildContent');
-  if(!root) return;
-  let queued=false;
-  const run=()=>{queued=false;polishBuildLayout();};
-  const observer=new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(run);}});
-  observer.observe(root,{childList:true,subtree:false});
-  polishBuildLayout();
-})();
-
-</script>
-
-<style>
-/* TIMELINE_DETAILS_FINAL_V2 */
-#timeline .entry details.entryMore > summary,
-#timeline .entry details.timelineCardDetails > summary,
-#timeline .entry .entryMore > summary,
-#timeline .entry .timelineCardDetails > summary{
-  color:color-mix(in srgb,var(--accent-strong) 72%,var(--ink) 28%)!important;
-  font-size:12px!important;
-  font-weight:850!important;
-  line-height:1.45!important;
-}
-#timeline .entry details.entryMore > summary::after,
-#timeline .entry details.timelineCardDetails > summary::after,
-#timeline .entry .entryMore > summary::after,
-#timeline .entry .timelineCardDetails > summary::after{color:currentColor!important}
-#timeline .entry > div > p + p,
-#timeline .entry details.entryMore > div,
-#timeline .entry details.entryMore > div p,
-#timeline .entry details.entryMore > div li,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody p,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody li,
-#timeline .entry .timelineRichBody,
-#timeline .entry .timelineRichBody p,
-#timeline .entry .timelineRichBody li,
-#timeline .entry .timelineRichBody .launchChecklist strong,
-#timeline .entry .timelineRichBody .launchChecklist em{
-  font-size:12px!important;
-  line-height:1.55!important;
-}
-#timeline .entry details.entryMore > div,
-#timeline .entry details.timelineCardDetails .timelineCardDetailsBody,
-#timeline .entry .timelineRichBody{
-  color:var(--secondary-text)!important;
-  margin-top:5px!important;
-}
-</style>
-<!-- BUILD_FANTOMON_PAIRS_START -->
-<style>
-/* BUILD_FANTOMON_PAIRS_V5_GUIDE_LOADOUTS_MAIN_ALT */
-.buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
-.buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;font-size:9px;font-weight:850;display:block}
-.buildCard .fantomonPairNote{color:var(--muted);font-size:8px;line-height:1.35;margin:-2px 0 7px}
-.buildCard .fantomonRankList{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.buildCard .fantomonPick{border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,var(--accent-strong) 12%);border-radius:9px;padding:8px 9px;min-width:0}
-.buildCard .fantomonPick small{color:var(--muted);display:block;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
-.buildCard .fantomonPick b{color:var(--ink);display:block;font-size:10px;line-height:1.3}
-.buildCard .fantomonPick p{color:var(--muted);font-size:9px;line-height:1.35;margin:4px 0 0}
-.buildCard .fantomonPick.main{border-color:color-mix(in srgb,var(--accent-strong) 48%,var(--line))}
-.buildCard .roleBadge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 6px;margin-left:6px;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
-@media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
-</style>
-<script>
-(function(){
-  const role=(name,subtitle,techniques,charms,offensive,defensive,confidence='Guide core')=>({name,subtitle,techniques,charms,offensive,defensive,confidence});
-  const pick=(name,why)=>({name,why});
-
-  const ROLE_PRESETS={
-    Berserker:[
-      role('Generic PvE','Default S1 progression and general PvE',["Hunter's Judgment",'Sunset Sword','Eclipse Slash','Lion Combo'],['Insightful Eye','Blade of Judgment','Blade Siphon','Indomitable Will'],'If survival is already solved, Indomitable Will → a damage charm.','Low Crit: Blade Siphon → Blade of Lament.','Guide consensus'),
-      role('Dragon','Long single-target / Dragon damage',['Flame Aura','Sunset Sword','Eclipse Slash','Lion Combo'],['Insightful Eye','Blade of Judgment','Blazing Clash','Crit Mastery'],'This is the dedicated damage setup for Dragon and similar long single-target fights.','If the boss can actually kill you, replace one greed charm with Indomitable Will.','Guide consensus'),
-      role('PvP','Mobility, burst and cheat-death',['Darkness Descends','Lion Combo','Eclipse Slash','Sunset Sword'],['Insightful Eye','Blade of Judgment','Frame of Battles','Indomitable Will'],'For 2v2/4v4, Lion Combo → Hunter’s Judgment when grouping is more valuable.','Keep Indomitable Will for PvP.','Guide consensus')
-    ],
-    Paladin:[
-      role('Dungeon Tank','Primary party-tank setup',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Fortress','Block Mastery','Block Awareness','Stone Skin'],'If survival is comfortable, Luminous Shield → Lunarwater Threads for damage and pull utility.','This is the defense-first setup for difficult dungeons and also maps well to team PvP.','Guide consensus'),
-      role('Water Offensive','AoE-oriented Water / counter damage',['Guardian Ring','Lunarwater Threads','Frostbite Blossom','Heart of Challenge'],['Ripple Impact','Defensive Assault','Pursuit of Victory','Insightful Eye'],'Use when you need real damage instead of maximum party protection.','If you die too easily, move back toward the Dungeon Tank shell or add Potential Rebirth.','Prydwen core'),
-      role('Boss DPS / Off-Tank','Damage-oriented boss setup',['Valor Surge','Leap Attack','Heavy Impact','Star Shattering Slash'],['Strength Rules','Insightful Eye','Pursuit of Victory',"Warrior's Essence"],'Use when another tank or your gear already handles survival and the group needs more damage.','If survival becomes the limiter, use Dungeon Tank instead.','Multi-guide')
-    ],
-    Archmage:[
-      role('AoE','Best general wave-clear and mixed-group setup',['Divine Wrath','Howling Hurricane','Meteoric Flames','Lightning Chain'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Mana Surge can flex to Repelling Wind, Lightning Mystery, or Elemental Harmony if one tests better for your account.','Keep Void Bubble unless you completely outgear the content.','Guide consensus'),
-      role('Single Target','Boss / concentrated damage',['Divine Wrath','Howling Hurricane','Meteoric Flames',"Wind's Delight"],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'On smaller bosses, Divine Wrath → Tempest Sphere. The Tempest Sphere version is also the better PvP adaptation.','Keep Void Bubble unless survival is irrelevant.','Guide consensus')
-    ],
-    Arcanist:[
-      role('AoE DPS','Dark Erosion for groups and mixed waves',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'This is the standard T3 AoE Erosion package.','Effect Hit Rate matters; fix EHR before breaking the Erosion core.','Guide consensus'),
-      role('Single Target DPS','Boss-focused Dark Erosion',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Use for bosses and other concentrated targets.','If Erosion is unreliable, the problem is usually insufficient Effect Hit Rate.','Guide consensus'),
-      role('Healing','Dungeon / group healer',['Void Blessing','Waterling Summon','Radiant Restoration','Frenzy Totem'],['Resurrection','Healing Mastery','Overhealing','Gale Shield'],'Gale Shield is the practical default flex from AllClash; replace it with encounter-specific utility when needed.','This is the dedicated healer/support setup, not a DPS variation.','Guide consensus')
-    ],
-    Conqueror:[
-      role('All-Content','Default S2 build for almost everything',['Flash Fire','Flame Aura','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'High Crit: Insightful Eye → Soul Breaker. If you are safe in PvE, Indomitable Will → Soul Splash. Flame Aura → Darkness Descends for mobility/dispel and PvP.','Always keep Indomitable Will for PvP.','Guide consensus'),
-      role('Dragon','Dedicated sustained boss damage',['Flame Aura','Blade Storm','Flash Fire','Flickering Blade'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Blazing Clash'],'Once Crit is high enough, Insightful Eye → Crit Mastery.','If surviving is the real damage loss, Blazing Clash → Indomitable Will.','Guide consensus')
-    ],
-    Guardian:[
-      role('Dungeon Tank','Primary S2 party tank',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Need more Taunt: Valor Surge → Hamper Strike. Need more damage: Desperate Protection → Swirling Blade or Star Shattering Slash.','If the team still dies, Iron Fortress is the first extra defensive flex.','Prydwen core'),
-      role('Water Offensive','Cold-stacking offensive Guardian',['Swirling Blade','Lunarwater Threads','Seismic Tide','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Potential Rebirth'],'Use for AoE and content where Guardian needs to contribute meaningful personal damage.','Potential Rebirth is the safety slot; other damage/sustain charms can replace it when appropriate.','Prydwen core'),
-      role('Support / Boss','Boss, Chaos and group support',['Valor Surge','Leap Attack','Holy Purification','Lunarwater Threads'],['Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil'],'If there is nothing worth dispelling, Holy Purification → damage. Lunarwater Threads → Seismic Tide for steadier Cold stacking.','This is the support setup both Prydwen and AllClash point toward for boss/group content.','Guide consensus')
-    ],
-    Destroyer:[
-      role('AoE','Default S2 mixed-wave damage',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Best general setup for mixed packs and boss+mob encounters.','Strong accounts can replace Void Bubble with more offense.','Guide consensus'),
-      role('Single Target','Boss-focused Destroyer',['Formation Breaker','Divine Wrath','Wind Blade Spiral','Thunder of Judgment'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Wind Blade Spiral → Tempest Sphere if it tests better; on small bosses Divine Wrath → Meteoric Flames.','Mana Surge → Overload Protection when a little extra survival is enough to stabilize the fight.','Guide consensus'),
-      role('Fire AoE','Dedicated horde-clear setup',['Formation Breaker','Fiery Star Trail','Fireball','Meteoric Flames'],['Rapid Cast','Void Bubble','Explosive Spirit','Fiery Burst'],'Use specifically for dense mob waves; Fiery Burst is the engine of the build.','Do not default to this against bosses or small packs just because it is a distinct element build.','Guide consensus')
-    ],
-    Dominator:[
-      role('AoE DPS','Legacy T3 Erosion remains the T4 AoE build',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Dominator gains no better T4 AoE package, so the Arcanist AoE core remains correct.','Effect Hit Rate remains essential for reliable Erosion.','Guide consensus'),
-      role('Single Target DPS','T4 boss / direct-damage hybrid',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'High EHR: Chaos Rune → Mana Blast for the higher Erosion ceiling. Frenzy Totem + Soul Pact Resonance is another viable hybrid depending on ranks/stats.','The listed direct-damage hybrid is safer when Erosion landing is inconsistent.','Guide consensus'),
-      role('Healing','Primary T4 healer/support',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'Need more raw healing: Frenzy Totem → Healing Touch. If nobody needs Resurrection, use Mantra of Blessings; if you personally die early, use Shadow Vengeance.','Phantom Light is mandatory for the T4 healer identity.','Guide consensus')
-    ]
-  };
-
-  /* BUILD_ARENA_ROLE_UI_REPAIR_V4
-     Arena/Tournament belong to the same canonical loadout renderer as PvE. Keeping
-     them here prevents later Fantomon/build polishing passes from replacing them. */
-  const PVP_ROLE_PRESETS={
-    Berserker:[
-      role('Arena','Burst, reach and survival',['Darkness Descends','Lion Combo','Eclipse Slash','Sunset Sword'],['Insightful Eye','Blade of Judgment','Frame of Battles','Indomitable Will'],'Indomitable Will → Blazing Clash when the matchup is safe enough to greed damage.','Keep Indomitable Will when survival or anti-burst value matters.','Guide consensus'),
-      role('Tournament','Fast team-fight pressure',["Hunter's Judgment",'Flame Aura','Eclipse Slash','Sunset Sword'],['Insightful Eye','Blade of Judgment','Frame of Battles','Indomitable Will'],'Indomitable Will → Blazing Clash when your team already protects you.','Keep Indomitable Will for safer tournament rounds.','Guide consensus')
-    ],
-    Paladin:[
-      role('Arena','Control, pressure and Block',['Luminous Shield','Leap Attack','Star Shattering Slash','Valor Surge'],['Rebound','Block Mastery','Block Awareness','Stone Skin'],'Stone Skin → a damage/counter charm when your defenses are already comfortable.','Keep Stone Skin for maximum durability.','Guide consensus'),
-      role('Tournament','Team tank / protection',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Fortress','Block Mastery','Block Awareness','Stone Skin'],'Stone Skin → an offensive flex only when the enemy cannot break you.','This is already the defense-first tournament shell.','Guide consensus')
-    ],
-    Archmage:[
-      role('Arena','Immediate ranged pressure',['Tempest Sphere','Howling Hurricane','Meteoric Flames',"Wind's Delight"],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → an offensive charm if you can safely play full burst.','Keep Void Bubble when enemy burst can reach you.','Guide consensus'),
-      role('Tournament','AoE team-fight damage',['Tempest Sphere','Howling Hurricane','Meteoric Flames','Lightning Chain'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Void Bubble → an offensive charm if your team provides enough protection.','Keep Void Bubble for safer tournament rounds.','Guide consensus')
-    ],
-    Arcanist:[
-      role('Arena','Erosion pressure with single-target finish',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Shadow Vengeance → a greedier damage charm when you are not being focused.','Keep Shadow Vengeance when surviving the first burst is important.','Guide consensus'),
-      role('Tournament','Hybrid support / sub-DPS',['Mana Blast','Abyssal Hand','Radiant Restoration','Frenzy Totem'],['Resurrection','Shadow Vengeance','Shadow Erosion','Linked Misfortune'],'Resurrection → a damage/support charm if your team does not need the revive safety net.','Keep Resurrection for progression or fragile teams.','Hybrid support')
-    ],
-    Conqueror:[
-      role('Arena','Mobility, burst and anti-burst',['Darkness Descends','Doom Blade','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Breaker','Indomitable Will'],'Indomitable Will → Insightful Eye / another damage charm when the matchup is safe.','Keep Indomitable Will against real burst threats.','Guide consensus'),
-      role('Tournament','Fast team-fight pressure',['Flash Fire','Darkness Descends','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'Indomitable Will → Soul Breaker when your team already covers survival.','Keep Indomitable Will for safer tournament rounds.','Guide consensus')
-    ],
-    Guardian:[
-      role('Arena','Block, control and disruption',['Luminous Shield','Forceful Charge','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Block Awareness'],'Block Awareness → an offensive flex if your defensive stats are already excessive.','Keep the full Block shell when holding the line matters most.','Guide consensus'),
-      role('Tournament','Team tank / peel',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Iron Fortress','Oath of Vigil'],'Oath of Vigil → an offensive/support flex only when team survival is solved.','This is already the defense-first tournament setup.','Guide consensus')
-    ],
-    Destroyer:[
-      role('Arena','Immediate caster pressure',['Tempest Sphere','Wind Blade Spiral',"Wind's Delight",'Howling Hurricane'],['Cyclone Lament','Repelling Wind',"Wind's Shadow",'Void Bubble'],'Void Bubble → Rapid Cast / another damage charm if you can safely full-send.','Keep Void Bubble when enemy burst can reach you.','Guide consensus'),
-      role('Tournament','AoE team-fight burst',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Void Bubble → a damage charm if your team provides enough protection.','Keep Void Bubble for safer tournament rounds.','Guide consensus')
-    ],
-    Dominator:[
-      role('Arena','Dark pressure with utility',['Abyssal Hand','Dark Starburst','Dark Bullet','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Mantra of Blessings','Shadow Vengeance'],'Shadow Vengeance → a greedier damage charm when you are not being focused.','Keep Shadow Vengeance when surviving the opener matters.','Guide consensus'),
-      role('Tournament','Hybrid support / sub-DPS',['Decoy Clone','Frenzy Totem','Dark Starburst','Abyssal Hand'],['Mantra of Blessings','Resurrection','Shadow Vengeance',"Night's Blessing"],'Resurrection → Linked Misfortune / another damage flex if your team does not need revive insurance.','Keep Resurrection for fragile teams and progression rounds.','Hybrid support')
-    ]
-  };
-
-  const FANTO={
-    Berserker:{
-      Solo:[pick('Nyxarchon','Main damage choice: extra damage plus DEF shred works in every S1 fight.'),pick('Aegiswing','S1 Assist survival/recovery is excellent for pushing stages above your power.'),pick('Sylvaerie','Permanent ATK + SPD improves both damage and turn tempo.'),pick('Zeioletus','Straightforward recurring burst when you want more damage instead of safety.')],
-      Dungeon:[pick('Nyxarchon','Best overall clear lead: damage plus DEF shred benefits every target you focus.'),pick('Sylvaerie','ATK + SPD is consistent across every dungeon room.'),pick('Zeioletus','Extra AoE burst helps clean packs quickly.'),pick('Terragon','Physical-friendly damage with a chance to cut enemy ATK; useful when rooms hit hard.')],
-      Boss:[pick('Nyxarchon','Best long-fight damage lead thanks to repeated damage and DEF shred.'),pick('Sylvaerie','Permanent ATK + SPD scales your whole boss rotation.'),pick('Terragon','Physical-friendly extra damage plus an ATK-down chance on the boss.'),pick('Zeioletus','Reliable extra burst if it outperforms Sylvaerie on your stats.')],
-      PvP:[pick('Aegiswing','Main PvP pick: its S1 Assist survival/recovery buys another life without relying on Materialization.'),pick('Nyxarchon','Greedy option when you can trade safety for damage and DEF shred.'),pick('Sylvaerie','Speed can help you win action tempo while still adding ATK.'),pick('Terragon','ATK reduction can blunt enemy burst while still adding damage.')]
-    },
-    Paladin:{
-      Solo:[pick('Aegiswing','Main S1 tank pick: survival/recovery adds a strong durability layer.'),pick('Armopi','Its S1 Assist already cycles DEF into a personal shield; good for DEF-heavy counter builds.'),pick('Boaro','Budget shield option that repeatedly triggers as you lose HP.'),pick('Kels','Useful when solo enemies have buffs worth dispelling.')],
-      Dungeon:[pick('Aegiswing','Best general tank lead for surviving repeated party-dungeon pressure.'),pick('Armopi','DEF stacking and its personal shield work in S1 without Materialization.'),pick('Kels','Bring it when dungeon enemies use important buffs you want to dispel.'),pick('Boaro','Cheap repeated shielding when you need raw durability.')],
-      Boss:[pick('Aegiswing','Safest default boss lead and Prydwen’s primary Paladin tank recommendation.'),pick('Kels','Excellent situational boss pick when dispel matters; its S1 value does not require Materialization.'),pick('Armopi','DEF + personal shield is strong when the boss repeatedly tests your tankiness.'),pick('Boaro','Budget defensive alternative with repeated shields.')],
-      PvP:[pick('Aegiswing','Main PvP tank pick: S1 survival/recovery is immediately useful.'),pick('Armopi','DEF stacking plus personal shield helps into sustained focus fire.'),pick('Boaro','Repeated shields can be annoying to chew through in longer fights.'),pick('Kels','Use when stripping enemy buffs matters more than maximum personal durability.')]
-    },
-    Archmage:{
-      Solo:[pick('Nyxarchon','Main damage lead: DEF shred and strong pet damage fit glass-cannon progression.'),pick('Armopi','Its pre-Materialization DEF-to-shield Assist can buy the one extra turn Archmage often needs.'),pick('Sylvaerie','Permanent ATK + SPD improves burst and action order.'),pick('Zeioletus','Extra recurring damage is strong when survival is already solved.')],
-      Dungeon:[pick('Nyxarchon','Best premium damage lead for deleting rooms quickly.'),pick('Sylvaerie','ATK + SPD is ideal for fast dungeon clears.'),pick('Zeioletus','Additional AoE burst helps finish packs.'),pick('Armopi','Take the personal DEF/shield cycle if you are dying before the room is cleared.')],
-      Boss:[pick('Nyxarchon','Best premium boss damage option with DEF shred.'),pick('Sylvaerie','Permanent ATK + SPD scales every cast.'),pick('Zeioletus','Good recurring damage when it tests better on your account.'),pick('Armopi','Safety option if the boss survives long enough to threaten you.')],
-      PvP:[pick('Aegiswing','Main survival-first PvP pick; its base Assist buys extra life before Materialization exists.'),pick('Nyxarchon','Greedy damage/DEF-shred alternative.'),pick('Armopi','Pre-Materialization DEF + personal shield can buy a critical extra turn.'),pick('Sylvaerie','SPD helps contest turn order while adding ATK.')]
-    },
-    Arcanist:{
-      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: damage plus DEF shred contributes even while you spend slots on team utility.'),pick('Sylvaerie','Alt for ATK + SPD; speed is especially valuable for getting support/debuff actions out early.')],
-      Solo:[pick('Nyxarchon','Main DPS lead: Dark damage and the debuff line up naturally with Arcanist.'),pick('Zeioletus','Best simple F2P damage stopgap before Nyx.'),pick('Sylvaerie','Permanent SPD + ATK can beat Zei depending on your stats.'),pick('Aegiswing','Use its S1 survival/recovery when staying alive is more important than max DPS.')],
-      Dungeon:[pick('Mandragora','Main healer pick: every ally-targeted Technique can trigger extra healing, with no Materialization needed.'),pick('Sylvaerie','SPD means more turns to heal and support.'),pick('Aegiswing','Keeps the healer alive through dangerous rooms using only its S1 Assist effect.'),pick('Herbote','Fallback self-heal/cleanse option, but unevolved S1 Herbote is weaker for pure healing than Mandragora.')],
-      Boss:[pick('Nyxarchon','Main boss DPS choice: Dark damage plus a useful debuff.'),pick('Zeioletus','Straightforward damage alternative before Nyx.'),pick('Sylvaerie','SPD + ATK scales the whole DoT rotation.'),pick('Terragon','Can reduce boss ATK while still contributing damage.')],
-      PvP:[pick('Aegiswing','Main support PvP choice: base survival/recovery helps you keep healing through burst.'),pick('Mandragora','More raw healing whenever you target allies.'),pick('Nyxarchon','Offensive option when you can afford to pressure instead of purely sustain.'),pick('Sylvaerie','Extra SPD improves support tempo.')]
-    },
-    Conqueror:{
-      Solo:[pick('Nyxarchon','Main current S2 pick: Prydwen still rates its damage + DEF shred as BIS for generic content.'),pick('Aegiswing','Excellent high-push alternative when survival is the limiter.'),pick('Sylvaerie','Permanent ATK + SPD is the best currently available general damage alternative.'),pick('Zeioletus','Extra recurring burst if your stats make it outperform Sylvaerie.')],
-      Dungeon:[pick('Nyxarchon','Best default damage lead for fast clears and DEF-shred stacking.'),pick('Aegiswing','Use when a high dungeon is killing you before your damage comes online.'),pick('Sylvaerie','ATK + SPD improves room-clearing speed.'),pick('Zeioletus','Adds direct burst to help finish packs.')],
-      Boss:[pick('Nyxarchon','Main long-fight choice: DEF shred remains extremely valuable on hard bosses.'),pick('Sylvaerie','Permanent ATK + SPD scales the full boss rotation.'),pick('Zeioletus','Reliable extra damage if it tests better on your account.'),pick('Aegiswing','Defensive fallback for bosses where dying is the actual DPS loss.')],
-      PvP:[pick('Aegiswing','Main PvP choice: extra survival plus its S2 Materialization utility is more valuable here than pure damage.'),pick('Nyxarchon','Greedy damage/DEF-shred alternative.'),pick('Sylvaerie','SPD can help win action tempo while still boosting ATK.'),pick('Zeioletus','Pure damage alternative when survivability is already covered.')]
-    },
-    Guardian:{
-      Solo:[pick('Aegiswing','Main Guardian investment: Prydwen calls it the priority Mythic for the class, with survival and Taunt synergy.'),pick('Nyxarchon','Best offensive support alternative when you need more damage and debuffs.'),pick('Kels','Useful dispel/DEF-down utility when the stage benefits from it.'),pick('Boaro','Budget defensive option with shielding and S2 knockback utility.')],
-      Dungeon:[pick('Aegiswing','Main tank lead: survival, extra Taunt and reduced damage from taunted enemies fit the dungeon job perfectly.'),pick('Kels','Strong party utility through dispel and Materialized DEF Down.'),pick('Nyxarchon','Offensive support option when your team wants faster kills.'),pick('Terragon','ATK/DMG reduction utility when enemy damage is the bigger problem.')],
-      Boss:[pick('Kels','Main boss-support pick: Prydwen specifically highlights its dispel + Materialized DEF Down for team support.'),pick('Nyxarchon','Amplifies team damage with reliable debuffs and its own damage.'),pick('Terragon','Great when the raid needs enemy ATK/DMG reduction more than another damage debuff.'),pick('Aegiswing','Use when your personal survival or Taunt uptime is the limiting factor.')],
-      PvP:[pick('Aegiswing','Main PvP Guardian pet: extra Taunt, survival and anti-Taunt damage reduction match the class role.'),pick('Kels','Utility alternative for dispelling buffs and adding DEF Down.'),pick('Nyxarchon','Greedy pressure option when your team already has enough protection.'),pick('Boaro','Budget control/survival alternative with shielding and knockback utility.')]
-    },
-    Destroyer:{
-      Solo:[pick('Nyxarchon','Main premium choice: DEF shred plus strong damage suits a glass-cannon Destroyer.'),pick('Armopi','Prydwen’s survival alternative; its DEF/shield cycle can buy one extra turn.'),pick('Sylvaerie','Permanent ATK + SPD improves damage and action order.'),pick('Zeioletus','Simple recurring burst when you do not need extra safety.')],
-      Dungeon:[pick('Nyxarchon','Main damage lead for clearing difficult rooms quickly.'),pick('Sylvaerie','ATK + SPD is excellent for speed-clearing dungeons.'),pick('Zeioletus','Extra AoE burst complements the Fire/AoE setup.'),pick('Armopi','Take the shield/DEF option if you are dying before your turn.')],
-      Boss:[pick('Nyxarchon','Main premium boss option with damage and DEF shred.'),pick('Sylvaerie','Permanent ATK + SPD scales every cast.'),pick('Zeioletus','Additional recurring damage when it tests better on your stats.'),pick('Armopi','Safety fallback when the boss survives long enough to threaten you.')],
-      PvP:[pick('Aegiswing','Main PvP survival pick: cheat-death style utility is more valuable than another pure damage pet here.'),pick('Nyxarchon','Greedy damage/DEF-shred option.'),pick('Armopi','DEF + shield gives a fragile caster another way to survive focus.'),pick('Sylvaerie','SPD helps contest turn order and still adds ATK.')]
-    },
-    Dominator:{
-      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: adds real damage and DEF shred while the Dominator handles buffs and utility.'),pick('Terragon','Alt team-utility pick when reducing enemy ATK/pressure matters more than personal damage.')],
-      Solo:[pick('Nyxarchon','Main DPS choice: Prydwen calls Nyx Dominator’s BIS thanks to Dark AoE damage and its supportive effect.'),pick('Zeioletus','Best straightforward F2P damage stopgap.'),pick('Sylvaerie','ATK + SPD can outperform Zei on some accounts.'),pick('Aegiswing','Use when surviving solo progression is more important than max damage.')],
-      Dungeon:[pick('Mandragora','Main pure-healing pick: directly adds healing whenever you use ally-targeted Techniques.'),pick('Herbote','Strong S2 healing alternative once Materialized because it can extend its healing to allies.'),pick('Sylvaerie','SPD gives you more actions to heal/support.'),pick('Terragon','Support alternative when reducing enemy ATK/DMG helps the whole party more than extra healing.')],
-      Boss:[pick('Nyxarchon','Main DPS lead for single-target Dark builds and team damage support.'),pick('Zeioletus','Direct damage alternative before or instead of Nyx.'),pick('Sylvaerie','Permanent SPD + ATK scales the whole boss rotation.'),pick('Terragon','Useful support option when lowering the boss’s ATK matters.')],
-      PvP:[pick('Mandragora','Main support/healing pick when your job is keeping teammates alive.'),pick('Aegiswing','Survival-first alternative when you are being focused.'),pick('Terragon','Debuffing option that can reduce enemy pressure while you support.'),pick('Sylvaerie','SPD improves support tempo when raw healing is already sufficient.')]
-    }
-  };
-
-  function activeClass(){
-    const b=document.querySelector('.builds .classTabs button.active');
-    return b ? b.textContent.trim() : '';
-  }
-  function esc(s){
-    return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  function roleKey(title){
-    const t=(title||'').toLowerCase();
-    if(t==='arena'||t.startsWith('arena ')) return 'Arena';
-    if(t==='tournament'||t.startsWith('tournament ')) return 'Tournament';
-    if(t.startsWith('pvp')) return 'PvP';
-    if(t.includes('dragon') || t.includes('single target') || t.includes('boss dps') || t.includes('support / boss')) return 'Boss';
-    if(t.includes('dungeon tank') || t==='healing' || t.includes('fire aoe')) return 'Dungeon';
-    return 'Solo';
-  }
-  function buildCardHtml(r){
-    return '<article class="buildCard" data-role="'+esc(r.name)+'">'
-      +'<header><div><h3>'+esc(r.name)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
-      +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
-      +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
-      +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'
-      +'</article>';
-  }
-  function applyRoleLoadouts(cls){
-    const presets=[...(ROLE_PRESETS[cls]||[]),...(PVP_ROLE_PRESETS[cls]||[])];
-    const grid=document.querySelector('.builds .buildGrid');
-    if(!presets.length||!grid) return;
-    const sig=cls+'|'+presets.map(r=>[r.name,...r.techniques,...r.charms,r.offensive,r.defensive].join('~')).join('|');
-    if(grid.dataset.rolePresetSig===sig) return;
-    grid.dataset.rolePresetSig=sig;
-    grid.innerHTML=presets.map(buildCardHtml).join('');
-  }
-  function picksFor(cls,title){
-    const role=roleKey(title);
-    const pools=FANTO[cls]||{};
-    if(role==='Arena') return pools.Arena||pools.PvP||[];
-    if(role==='Tournament'){
-      if(cls==='Arcanist') return [
-        pick('Nyxarchon','Main hybrid Tournament pick: adds damage and DEF shred while Arcanist supplies healing/support.'),
-        pick('Sylvaerie','Alt hybrid pick: permanent ATK + SPD improves both support tempo and sub-DPS output.')
-      ];
-      return pools.Tournament||pools.PvP||pools.Dungeon||[];
-    }
-    return pools[role]||[];
-  }
-  function applyFantos(cls){
-    document.querySelectorAll('.builds .buildCard').forEach(card=>{
-      const h3=card.querySelector('h3');
-      const title=h3?.childNodes?.[0]?.textContent?.trim() || h3?.textContent.trim() || '';
-      const picks=picksFor(cls,title);
-      if(!picks.length) return;
-      let box=card.querySelector('.fantomonPair');
-      if(!box){
-        box=document.createElement('div');
-        box.className='fantomonPair';
-        card.appendChild(box);
-      }
-      const sig=[cls,roleKey(title),...picks.flatMap(p=>[p.name,p.why])].join('|');
-      if(box.dataset.sig===sig) return;
-      box.dataset.sig=sig;
-      const pair=picks.slice(0,2);
-      box.innerHTML='<span>Combat Fantomons</span>'
-        +'<div class="fantomonRankList">'
-        +pair.map((p,i)=>'<div class="fantomonPick'+(i===0?' main':'')+'"><small>'+(i===0?'Main':'Alt')+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
-        +'</div>';
-    });
-  }
-  function apply(){
-    const cls=activeClass();
-    if(!cls) return;
-    applyRoleLoadouts(cls);
-    applyFantos(cls);
-  }
-  let queued=false;
-  function queueApply(){
-    if(queued) return;
-    queued=true;
-    requestAnimationFrame(()=>{queued=false;apply();});
-  }
-  function startBuildLoadoutSync(){
-    queueApply();
-    const content=document.getElementById('buildContent');
-    if(content) new MutationObserver(queueApply).observe(content,{childList:true});
-    document.querySelector('.builds .classTabs')?.addEventListener('click',queueApply);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',startBuildLoadoutSync,{once:true});
-  else startBuildLoadoutSync();
-})();
-</script>
-<!-- BUILD_FANTOMON_PAIRS_END -->
-<!-- BUILD_ROLE_TOGGLE_START -->
-<style>
-/* SPAGHETTI_CLEANUP_V1: .buildModeTabs is the only role control. */
-/* BUILD_ROLE_TOGGLE_V2 */
-.buildModeTabs{display:flex;gap:4px;width:min(245px,100%);margin-top:12px;padding:3px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface) 94%,transparent)}
-.buildModeTabs button{flex:1;border:0;border-radius:7px;padding:8px 10px;background:transparent;color:var(--muted);font:inherit;font-size:9px;font-weight:900;cursor:pointer}
-.buildModeTabs button.active{background:var(--accent-strong);color:#fff}
-
-/* DAILY_SHOP_ESTIMATE_V4: compact two-column shop planner */
-.shopEstimatePanel{margin-top:14px}
-.shopEstimateCompact{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(260px,1.28fr);gap:18px;align-items:stretch;padding:12px 14px 10px}
-.shopRefreshControl{display:flex;align-items:center}
-.shopRefreshControl label{display:flex;flex-direction:column;gap:7px;width:100%;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
-.shopRefreshControl input{width:100%;min-height:44px}
-.shopRefreshControl small{font-size:10px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--muted)}
-.shopGainSummary{display:grid;grid-template-columns:1fr;gap:5px;border-left:1px solid var(--line);padding-left:18px}
-.shopGainSummary>div{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:26px}
-.shopGainSummary span{font-size:11px;color:var(--muted);font-weight:700}
-.shopGainSummary b{font-size:12px;color:var(--accent2);white-space:nowrap}
-.shopEstimateNote{display:block;padding:0 14px 12px;color:var(--muted);font-size:9px;line-height:1.35}
-@media(max-width:700px){.shopEstimateCompact{grid-template-columns:1fr}.shopGainSummary{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:10px}}
-
-
-/* DAILY_SHOP_LAYOUT_POLISH_V7 */
-.shopEstimatePanel{margin-top:14px;overflow:hidden}
-.shopEstimatePanel .realmInventoryTop{align-items:center;padding-bottom:10px;border-bottom:1px solid var(--line)}
-.shopEstimatePanel .realmInventoryTop small{font-size:9px;line-height:1.25;text-align:right}
-.shopEstimateCompact{display:grid;grid-template-columns:minmax(190px,.66fr) minmax(300px,1.34fr);gap:12px;align-items:stretch;padding:12px 0 0}
-.shopRefreshControl,.shopGainSummary{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:12px 13px}
-.shopRefreshControl{display:flex;align-items:stretch}
-.shopRefreshControl label{display:flex;flex-direction:column;justify-content:flex-start;gap:7px;width:100%;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
-.shopRefreshControl input{width:100%;min-height:42px;margin:0}
-.shopRefreshControl small{font-size:9px;font-weight:650;text-transform:none;letter-spacing:0;color:var(--status-info)}
-.shopGainSummary{display:grid;grid-template-columns:1fr;gap:0;border-left:1px solid var(--line)}
-.shopGainSummary>div{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:31px;padding:5px 1px;border-bottom:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
-.shopGainSummary>div:last-child{border-bottom:0}
-.shopGainSummary span{font-size:10px;color:var(--body-text);font-weight:700}
-.shopGainSummary b{font-size:11px;color:var(--status-positive);white-space:nowrap;font-variant-numeric:tabular-nums}
-.shopEstimateNote{display:block;padding:8px 1px 0;margin:0;color:var(--muted);font-size:8px;line-height:1.35}
-@media(max-width:700px){
-  .shopEstimatePanel .realmInventoryTop{align-items:flex-start}
-  .shopEstimatePanel .realmInventoryTop small{text-align:left}
-  .shopEstimateCompact{grid-template-columns:1fr}
-  .shopRefreshControl,.shopGainSummary{padding:12px}
-}
-
-
-/* DAILY_SHOP_LAYOUT_MATCH_REALM_V8
-   Match the Material Realm visual language: rounded inset inputs, soft nested cards,
-   and no sharp table-like separators inside the gain summary. */
-.shopEstimateCompact{
-  grid-template-columns:minmax(210px,.72fr) minmax(320px,1.28fr)!important;
-  gap:10px!important;
-  align-items:stretch!important;
-}
-.shopRefreshControl,.shopGainSummary{
-  border:1px solid var(--line)!important;
-  border-radius:11px!important;
-  background:var(--surface)!important;
-  padding:12px 13px!important;
-}
-.shopRefreshControl label{
-  display:flex!important;
-  flex-direction:column!important;
-  gap:6px!important;
-}
-.shopRefreshControl input{
-  display:block!important;
-  width:100%!important;
-  height:46px!important;
-  min-height:46px!important;
-  margin:0!important;
-  padding:9px 11px!important;
-  border:1px solid var(--line)!important;
-  border-radius:10px!important;
-  background:var(--input-bg)!important;
-  color:var(--ink)!important;
-  font-size:14px!important;
-  font-weight:850!important;
-  box-sizing:border-box!important;
-}
-.shopRefreshControl input:focus{
-  outline:none!important;
-  border-color:var(--green)!important;
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 15%,transparent)!important;
-}
-.shopRefreshControl small{
-  margin-top:0!important;
-  color:var(--secondary-text)!important;
-  font-size:9px!important;
-}
-.shopGainSummary{
-  display:grid!important;
-  grid-template-columns:1fr!important;
-  gap:5px!important;
-}
-.shopGainSummary>div{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:16px!important;
-  min-height:32px!important;
-  padding:3px 0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-}
-.shopGainSummary span{font-size:10px!important;color:var(--body-text)!important;font-weight:700!important}
-.shopGainSummary b{font-size:11px!important;color:var(--status-positive)!important;font-weight:850!important;font-variant-numeric:tabular-nums!important}
-.shopEstimateNote{padding-top:7px!important}
-@media(max-width:700px){
-  .shopEstimateCompact{grid-template-columns:1fr!important}
-  .shopRefreshControl,.shopGainSummary{padding:12px!important}
-}
-
-
-/* PURCHASE_RESTOCK_LABELS_V1 */
-
-/* REMOVE_REALM_AFTER_PLAN_V1 */
-</style>
-<script>
-(function(){
-  const ROLE_CLASSES=new Set(['Arcanist','Dominator']);
-
-  function activeClass(){
-    const b=document.querySelector('.builds .classTabs button.active');
-    return b ? b.textContent.trim() : '';
-  }
-  function currentMode(cls){
-    try{return localStorage.getItem(BUILD_ROLE_KEYS[cls])==='heals'?'heals':'dps';}catch(_){return 'dps';}
-  }
-  function saveMode(cls,mode){
-    try{localStorage.setItem(BUILD_ROLE_KEYS[cls],mode);}catch(_){}
-  }
-  function applyModeVisibility(root,cls,mode){
-    const cards=root.querySelectorAll('.buildGrid .buildCard');
-    cards.forEach(card=>{
-      if(!ROLE_CLASSES.has(cls)){
-        card.style.display='';
-        return;
-      }
       const role=(card.dataset.role||'').toLowerCase();
       const alwaysVisible=role==='arena'||role==='tournament';
       const isHealing=role==='healing';
