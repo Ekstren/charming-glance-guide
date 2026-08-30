@@ -1,0 +1,39 @@
+name: Apply compact calculator number inputs
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-compact-number-inputs-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply compact number entry
+        run: python .github/patch-compact-number-inputs-v1.py
+      - name: Verify shorthand parser
+        run: |
+          grep -q 'COMPACT_NUMBER_INPUTS_V1' index.html
+          grep -q "k:1e3,m:1e6,b:1e9" index.html
+          grep -q 'normalizeCompactNumberInput(id)' index.html
+          grep -q "22.7k = 22700, 1.3m = 1300000" index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Accept k and m shorthand in calculator inputs'
+          git push
