@@ -1,0 +1,53 @@
+name: Apply remove ore preservation v1
+
+on:
+  push:
+    paths:
+      - '.github/patch-remove-ore-preservation-v1.py'
+      - '.github/workflows/apply-remove-ore-preservation-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply patch
+        run: python .github/patch-remove-ore-preservation-v1.py
+      - name: Verify inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          print(f'inline scripts: {len(scripts)}')
+          PY
+          node --check /tmp/inline.js
+      - name: Verify cleanup
+        run: |
+          ! grep -q 'oreReserveNote' index.html
+          ! grep -q 'reserveS2Ore' index.html
+          ! grep -q 'S2_ORE_PREMIUM_V1' index.html
+          ! grep -q 'orePremium' index.html
+          grep -q 'REMOVE_ORE_PRESERVATION_V1' index.html
+          grep -q 'REALM_SAVED_TOOL_EFFICIENCY_HURDLE=0.10' index.html
+          grep -q 'REALM_PAID_REFRESH_EFFICIENCY_HURDLE=0.20' index.html
+          grep -q 'reserveHours:34' index.html
+      - name: Commit change
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove obsolete Ore preservation bias'
+          git push
