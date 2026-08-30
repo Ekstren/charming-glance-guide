@@ -1,0 +1,42 @@
+name: Apply Bed stored EXP model
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-bed-stored-exp-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply Bed stored EXP patch
+        run: python .github/patch-bed-stored-exp-v1.py
+      - name: Verify Bed stored EXP behavior
+        run: |
+          grep -q 'BED_STORED_EXP_V1' index.html
+          grep -q 'id="bedStoredExp"' index.html
+          grep -q "'bedExp','bedStoredExp','reserveHours'" index.html
+          grep -q 'bedExpHourSplitBetween' index.html
+          grep -q 'claimStoredBedExp' index.html
+          grep -q 'committedHoldExpState' index.html
+          ! grep -q 'id="findMaxStars"' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Track stored Bed EXP and claim on release'
+          git push
