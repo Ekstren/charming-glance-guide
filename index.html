@@ -2997,7 +2997,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. With the separate S2 reserve toggles enabled, the planner can independently protect the startup Skill Essence reserve and/or exactly one full first S2 Relic round (+10→+11 across all 20 relics). Projected Shovels count toward that Sand reserve at the S2 Realm yield first; only the remaining raw Sand is protected. Surplus Essence/Treats/Sand can then be spent in S1 while Ore/Hammers are preserved for the much longer Gear progression runway.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization:</b> once the Realm/tool stage is tied, target plans are ranked by marginal acquisition effort using the active season resource model. For S2 that means the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can therefore move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes, while still preferring raw-only routes over consuming saved tools and avoiding paid Realm refreshes when a cheaper same-stage route exists.</p>
+<p><b>S2 target optimization:</b> once the Realm/tool stage is tied, target plans are ranked by marginal acquisition effort using the active season resource model. For S2 that means the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can therefore move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. Raw inventory, existing Realm tools and paid refreshes are compared in one global efficiency ranking; sourcing method only breaks ties, so a paid refresh can be recommended when it materially lowers the total acquisition burden.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve is a hard current-season Bed cutoff: natural Bed accrual and reset speed-ups after the hold begins stay banked for Season 2 and do not count toward the Season 1 score.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each paid refresh grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 refreshes per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers refreshes 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Refreshes 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing plus routine-purchased Hammers/Knuckles/Shovels are treated as a reserve and, among otherwise equal routes, the optimizer preserves the route with more tools left. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
@@ -4697,10 +4697,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return Number.isFinite(base)?base:1e18;
   }
   /* S2_ACQUISITION_OPTIMIZER_V1
-     Compare same-stage target plans by the time-equivalent burden of reacquiring the
-     marginal resources they consume. This is season-agnostic: S2 uses its Lv.120
-     Realm/open-map yields and its own scoring/cost curves instead of falling back to
-     minimum overscore after the Realm-stage gates are satisfied. */
+     Compare target plans by the time-equivalent burden of reacquiring the marginal
+     resources they consume. This is season-agnostic: S2 uses its Lv.120 Realm/open-map
+     yields and its own scoring/cost curves. GLOBAL_ACQUISITION_PRIORITY_V2 makes this
+     metric primary across raw, existing-tool and paid-refresh sourcing instead of only
+     comparing plans after Realm-stage gates are satisfied. */
   function compareAcquisitionEffort(candidate,best){
     const cm=candidateResourceMetric(candidate),bm=candidateResourceMetric(best);
     if(cm<bm-1e-9) return true;
@@ -4775,8 +4776,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function betterFeasibleCandidate(candidate,best){
     if(!best) return true;
 
-    // STRICT GATES: raw-only beats existing Realm-tool use; existing Realm-tool use beats
-    // buying additional refreshes. Reserved/banked tools remain a distinct strategic stage.
+    /* GLOBAL_ACQUISITION_PRIORITY_V2
+       Rank every fundable route by acquisition efficiency before considering how it is
+       sourced. Raw inventory, existing Realm tools and paid refreshes are therefore not
+       hard tiers anymore. Realm/tool/Dawnium burden only breaks an acquisition-effort tie,
+       so a paid-refresh route may win when it is genuinely the cheaper progression path. */
+    const effortFirst=compareAcquisitionEffort(candidate,best);
+    if(effortFirst!==null) return effortFirst;
+
+    // With acquisition effort tied, prefer the less expensive sourcing method so we do not
+    // burn saved tools or Dawnium for no progression-efficiency gain.
     const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
     if(cStage<bStage) return true;
     if(cStage>bStage) return false;
@@ -4816,6 +4825,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if(candidate.realmOverflow!==best.realmOverflow) return false;
     if(candidate.remainingAfterMax<best.remainingAfterMax-0.5) return true;
     if(Math.abs(candidate.remainingAfterMax-best.remainingAfterMax)>0.5) return false;
+
+    // Among equally fundable diagnostics, show the lowest acquisition burden first. Realm
+    // stage is only a tie-breaker after efficiency, matching the main plan comparator.
+    const diagnosticEffortFirst=compareAcquisitionEffort(candidate,best);
+    if(diagnosticEffortFirst!==null) return diagnosticEffortFirst;
 
     const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
     if(cStage<bStage) return true;
