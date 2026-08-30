@@ -18,11 +18,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Apply compact Daily Shop layout
+      - name: Apply Daily Shop layout polish
         run: python scripts/patch_shop_panel_compact_v3.py
       - name: Verify shop layout
         run: |
-          grep -q 'DAILY_SHOP_ESTIMATE_V3' index.html
+          grep -q 'DAILY_SHOP_LAYOUT_POLISH_V7' index.html
           grep -q 'shopGainOre' index.html
           grep -q 'shopGainEssence' index.html
           grep -q 'shopGainSand' index.html
@@ -33,5 +33,5 @@ jobs:
           git config user.email '38091958+Ekstren@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Compact Daily Shop gain layout'
+          git commit -m 'Polish Daily Shop card layout'
           git push
