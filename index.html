@@ -2902,13 +2902,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         <div class="rolloverHold seasonPlanningControls">
           <label class="holdExpOption"><input id="holdExp" checked type="checkbox"> <span id="holdExpLabel">Hold Bed EXP for Season 2</span><small class="bedReserveStartNote">Start <b>Aug 28, 8:00 PM PDT</b></small></label>
           <label class="realmToolPreserveOption realmToolPreserveTop"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved tools need >10% improvement; paid Realm refreshes need >20%. Turn off for pure efficiency.</small></label>
-          <input id="reserveS2Ore" checked type="checkbox" hidden>
           <input id="reserveS2Essence" checked type="checkbox" hidden>
           <input id="reserveS2Sand" checked type="checkbox" hidden>
           <input id="reserveS2Treats" checked type="checkbox" hidden>
           <input id="reserveHours" min="0" max="36" type="number" value="34" hidden>
         </div>
-        <small class="seasonPlanningNote" id="oreReserveNote"><b>Ore preservation:</b> Ore gets a 50% premium in optimizer comparisons, so comparable non-Ore routes are preferred. It is a soft preference, not a hard reserve—the planner will still spend Ore when preserving it would sacrifice overall efficiency.</small>
         <small class="seasonPlanningNote" id="graceText">Cart income, Stamina generation, Realm purchase availability, and upgrade timing run through the season reset.</small>
         <details class="optimizerExplain" id="optimizerExplain">
           <summary><span>How the optimizer decides</span><small>Best efficiency · minimize tools</small></summary>
@@ -3506,8 +3504,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         if(state.reserveS2Sand===undefined) state.reserveS2Sand=oldReserve;
       }
       if(hadState && state.reserveS2Treats===undefined) state.reserveS2Treats=true;
-      // S2_ORE_PREMIUM_V1: existing saved states opt into the new soft Ore-preservation preference.
-      if(hadState && state.reserveS2Ore===undefined) state.reserveS2Ore=true;
       if(hadState && state.preserveRealmTools===undefined) state.preserveRealmTools=true;
       // v39 replaces the old single Realm preset with independent per-resource daily inputs.
       // Preserve the user's prior shared preset when migrating; otherwise default each Realm to 4/day.
@@ -4607,14 +4603,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return effective;
   }
 
-  /* S2_ORE_PREMIUM_V1
-     Soft S2 Ore preservation: within the optimizer's existing efficiency stage, spending Ore
-     is valued at 1.5x. Hard efficiency gates still win first, so this cannot force extra Realm
-     tool use or paid refreshes merely to save Ore. */
+  /* REMOVE_ORE_PRESERVATION_V1
+     Ore now participates in the same acquisition-efficiency model as every other score
+     resource. Tool preservation is handled only by the Minimize-tools 10%/20% hurdles. */
   function marginalWeightedCosts(costs,resources,cfg=activeCalcConfig()){
-    const orePremium=(cfg.key==='s1' && $('reserveS2Ore')?.checked)?1.5:1;
     return {
-      ore:Math.max(0,Number(costs?.ore)||0)*orePremium,
+      ore:Math.max(0,Number(costs?.ore)||0),
       essence:marginalWeightedSpend(costs?.essence,'essence',resources),
       sand:marginalWeightedSpend(costs?.sand,'sand',resources),
       treat:marginalWeightedSpend(costs?.treat,'treat',resources)
@@ -5264,7 +5258,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       $('fantomonLevel').min='100'; setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
       GEAR_IDS.forEach(id=>{if($(id)) $(id).min='100';});
     }
-    ['reserveS2Ore','reserveS2Essence','reserveS2Sand','reserveS2Treats'].forEach(id=>{
+    ['reserveS2Essence','reserveS2Sand','reserveS2Treats'].forEach(id=>{
       const label=$(id)?.closest('label'); if(label) label.hidden=cfg.key==='s2';
     });
     const mismatch=snapshotSeason!==cfg.key;
@@ -5426,7 +5420,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function updateCalculator(){
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
-    if($('oreReserveNote')) $('oreReserveNote').hidden=!(cfg.key==='s1' && $('reserveS2Ore')?.checked);
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
     if(cfg.key==='s2' && characterSnapshot(cfg).level<cfg.scoreFloor){ clearS2PreScoring(cfg); return; }
     const p=projectCharacter(cfg);
