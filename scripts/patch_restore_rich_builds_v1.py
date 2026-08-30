@@ -82,7 +82,7 @@ rich = r'''
     },
     Guardian:{
       rule:'Block is the premium defensive stat; offensive slots still value speed.',
-      rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Gauntlets','DEF > HP > Physical / Elemental RES'],['Helmet','DEF > HP > RES'],['Chest','DEF > HP > RES'],['Boots','SPD > ATK > Elemental / Physical Mastery']],
+      rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical / Elemental RES'],['Helmet','DEF > HP > RES'],['Chest','DEF > HP > RES'],['Boots','SPD > ATK > Elemental / Physical Mastery']],
       substats:'Block Rate% > Block Efficiency > PvE/PvP DMG + DMG RES > DEF / SPD / HP / useful Crit'
     },
     Destroyer:{
