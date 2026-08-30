@@ -6486,80 +6486,55 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         }
       });
     });
+    /* MAIN_RUNTIME_REPAIR_V1
+       Restore the calculator setup tail and startup sequence. A build-role patch had
+       accidentally replaced this block, preventing navigation/timeline initialization. */
     CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{
       resetMaxAchievableUi();
-      const role=(card.dataset.role||'').toLowerCase();
-      const alwaysVisible=role==='arena'||role==='tournament';
-      const isHealing=role==='healing';
-      card.style.display=alwaysVisible ? '' : ((mode==='heals' ? isHealing : !isHealing) ? '' : 'none');
+      markManualSnapshot(id);
+      saveState();
+      if(calculatorInitialized) scheduleCalculatorUpdate(0);
+      else initializeCalculatorIfNeeded();
+    }));
+    PANEL_OPEN_IDS.forEach(id=>$(id)?.addEventListener('toggle',saveState));
+    $('s2TargetPresets')?.addEventListener('click',e=>{
+      const btn=e.target.closest?.('[data-s2-target]');
+      if(!btn || activeCalcConfig().key!=='s2') return;
+      $('targetStars').value=btn.dataset.s2Target;
+      resetMaxAchievableUi();
+      markManualSnapshot('targetStars');
+      saveState();
+      scheduleCalculatorUpdate(0);
     });
-  }
-  function renderRoleMeta(root,cls,mode){
-    if(typeof renderBuildQuickStats==='function') renderBuildQuickStats(root,cls,mode);
-    if(typeof BUILD_ROLE_PRIORITY!=='undefined' && typeof setPriorityPanel==='function'){
-      const pdata=BUILD_ROLE_PRIORITY[cls]?.[mode];
-      const panels=[...root.querySelectorAll(':scope > .priorityPanel, :scope > .priorityPair > .priorityPanel')];
-      if(pdata && panels.length>=2){
-        setPriorityPanel(panels[0],pdata[0]);
-        setPriorityPanel(panels[1],pdata[1]);
-      }
-    }
-    applyModeVisibility(root,cls,mode);
-  }
-  function ensureTabs(cls){
-    const root=document.getElementById('buildContent');
-    if(!root) return;
-    root.querySelectorAll('.buildModeTabs').forEach(x=>{if(!ROLE_CLASSES.has(cls))x.remove();});
-    if(!ROLE_CLASSES.has(cls)){
-      applyModeVisibility(root,cls,'dps');
-      return;
-    }
-
-    const guide=root.querySelector(':scope > .guideSummary');
-    const identity=guide?.children?.[0];
-    if(!guide||!identity) return;
-    let tabs=identity.querySelector('.buildModeTabs');
-    if(!tabs){
-      tabs=document.createElement('div');
-      tabs.className='buildModeTabs';
-      tabs.setAttribute('role','group');
-      tabs.setAttribute('aria-label',cls+' build role');
-      tabs.innerHTML='<button type="button" data-mode="dps">DPS</button><button type="button" data-mode="heals">Heals</button>';
-      identity.appendChild(tabs);
-    }
-
-    const mode=currentMode(cls);
-    tabs.querySelectorAll('button').forEach(btn=>{
-      const on=btn.dataset.mode===mode;
-      btn.classList.toggle('active',on);
-      btn.setAttribute('aria-pressed',String(on));
-      btn.onclick=()=>{
-        const next=btn.dataset.mode==='heals'?'heals':'dps';
-        saveMode(cls,next);
-        tabs.querySelectorAll('button').forEach(b=>{
-          const active=b.dataset.mode===next;
-          b.classList.toggle('active',active);
-          b.setAttribute('aria-pressed',String(active));
-        });
-        renderRoleMeta(root,cls,next);
-      };
+    $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
+    $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
+    $('targetMessage')?.addEventListener('click',e=>{
+      const btn=e.target.closest?.('.applyRealmRecommendation');
+      if(btn) applyRecommendedRealmRefreshes(btn);
     });
-    renderRoleMeta(root,cls,mode);
+    $('copyPlan')?.addEventListener('click',copyPlan);
+    $('resetCalc')?.addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
+    setInterval(()=>{
+      if(!calculatorInitialized) return;
+      rollSnapshotForward(Date.now(),true);
+      if(!document.getElementById('calculatorSection')?.hidden) scheduleCalculatorUpdate(0);
+    },60_000);
   }
 
-  let queued=false;
-  function sync(){queued=false;ensureTabs(activeClass());}
-  function queue(){if(queued)return;queued=true;requestAnimationFrame(sync);}
-  function start(){
-    queue();
-    const content=document.getElementById('buildContent');
-    if(content)new MutationObserver(queue).observe(content,{childList:true});
-    document.querySelector('.builds .classTabs')?.addEventListener('click',queue);
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  loadState();
+  setupNavigation();
+  let initialSection='timeline';
+  try{
+    const savedSection=localStorage.getItem(SECTION_STORAGE_KEY);
+    if(['timeline','builds','companions','calculator'].includes(savedSection)) initialSection=savedSection;
+  }catch(_){}
+  setSection(initialSection);
+  setupTimeline();
+  setupBuilds();
+  setupCalculator();
 })();
+
 </script>
-<!-- BUILD_ROLE_TOGGLE_END -->
 <!-- COMPANION_GUIDE_SCRIPT_START -->
 <script id="companion-guide-script-v1">
 (()=>{
