@@ -1,0 +1,38 @@
+name: Apply rich Builds v2 cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_rich_builds_v2.py'
+      - '.github/workflows/apply-rich-builds-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Builds v2 cleanup
+        run: python scripts/patch_rich_builds_v2.py
+      - name: Verify
+        shell: bash
+        run: |
+          grep -q 'RICH_BUILDS_V2' index.html
+          grep -q 'alwaysVisible=/^(Arena|Tournament)/i' index.html
+          grep -q "observe(root,{childList:true})" index.html
+      - name: Commit generated page
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Keep Dominator PvP references and trim Builds observers'
+          git push origin HEAD:main
