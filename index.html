@@ -5065,25 +5065,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       return {plan:zero,diagnostic:zero};
     }
 
-    const oreCache=new Map(),essCache=new Map(),sandCache=new Map(),acquisitionCache=new Map();
+    const oreCache=new Map(),essCache=new Map(),sandCache=new Map();
     const oreFor=go=>{const k=go.oreCost;if(!oreCache.has(k))oreCache.set(k,realmTopupFor('ore',k,resources.ore,resources,cfg,p));return oreCache.get(k);};
     const essFor=so=>{const k=so.cost;if(!essCache.has(k))essCache.set(k,realmTopupFor('essence',k,resources.essence,resources,cfg,p));return essCache.get(k);};
     const sandFor=ro=>{const k=ro.cost;if(!sandCache.has(k))sandCache.set(k,realmTopupFor('sand',k,resources.sand,resources,cfg,p));return sandCache.get(k);};
-    const acquisitionFor=(go,so,ro,fo)=>{
-      const k=`${go.oreCost}|${so.cost}|${ro.cost}|${fo.cost}`;
-      if(!acquisitionCache.has(k)) acquisitionCache.set(k,acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg));
-      return acquisitionCache.get(k);
-    };
+    const acquisitionFor=(go,so,ro,fo)=>acquisitionEffortFor(
+      {ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg
+    );
     let best=null,bestDiagnostic=null;
 
     for(const ro of cats.relicOptions){
       const sandRealm=sandFor(ro);
       for(const fo of cats.fantoOptions){
         const treatShortfall=Math.max(0,fo.cost-resources.treat);
+        const fixedBeforeSkill=charScore+ro.score+fo.score;
+        let lastGearAdds=null;
         for(const so of cats.skillOptions){
-          const fixedScore=charScore+ro.score+fo.score+so.score;
+          const fixedScore=fixedBeforeSkill+so.score;
           const go=gearLocked?(gearOptions[0].score>=Math.max(0,desired-fixedScore)?gearOptions[0]:null):firstGearOptionAtLeast(gearOptions,Math.max(0,desired-fixedScore));
           if(!go)continue;
+          // PERFORMANCE_STABILIZATION_V1: if Gear did not step down, this later Skill
+          // option spends more Essence for the same required Gear and cannot win.
+          if(lastGearAdds===go.adds) continue;
+          lastGearAdds=go.adds;
           const score=fixedScore+go.score;if(score<desired)continue;
 
           const oreRealm=oreFor(go),essenceRealm=essFor(so);
@@ -5096,22 +5100,37 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
           const allFeasible=realms.every(x=>x.feasible)&&hardShortfall<=0.5;
           const dawniumCost=allFeasible?realms.reduce((sum,x)=>sum+x.dawnium,0):Infinity;
 
+          const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
+
+          if(allFeasible){
+            // A route that costs at least as much as the current winner in every tracked
+            // resource (and Refined Ore) is strictly dominated and cannot win later tie-breaks.
+            if(best && go.oreCost>=best.oreCost && so.cost>=best.essenceCost && ro.cost>=best.sandCost && fo.cost>=best.treatCost && go.refinedCost>=best.refinedCost) continue;
+            const acquisition=acquisitionFor(go,so,ro,fo);
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
+            candidate.realm.days=realmDays;
+            candidate.realmFeasible=true;
+            if(betterFeasibleCandidate(candidate,best)) best=candidate;
+            continue;
+          }
+
+          // betterDiagnosticCandidate always compares these three fields first. If this route
+          // already loses there, the expensive acquisition metric cannot rescue it.
+          if(bestDiagnostic){
+            if(hardShortfall>bestDiagnostic.hardShortfall+0.5) continue;
+            if(Math.abs(hardShortfall-bestDiagnostic.hardShortfall)<=0.5){
+              if(realmOverflow>bestDiagnostic.realmOverflow) continue;
+              if(realmOverflow===bestDiagnostic.realmOverflow && remainingAfterMax>bestDiagnostic.remainingAfterMax+0.5) continue;
+            }
+          }
           const diagOreShare=resources.ore>0?go.oreCost/resources.ore:(go.oreCost>0?go.oreCost/100000:0),diagEssenceShare=resources.essence>0?so.cost/resources.essence:(so.cost>0?so.cost/100000:0),diagSandShare=resources.sand>0?ro.cost/resources.sand:(ro.cost>0?ro.cost/100000:0),diagTreatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
           const diagAcquisition=acquisitionFor(go,so,ro,fo);
-          const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
-          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,unknownPriceRefreshes,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:allFeasible,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
+          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:diagAcquisition.hours,unknownPriceRefreshes,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:false,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
           if(betterDiagnosticCandidate(diagnostic,bestDiagnostic)) bestDiagnostic=diagnostic;
-
-          if(!allFeasible) continue;
-          const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],diagAcquisition);
-          // makePlanCandidate already receives the once-computed resources.realmDays. Never rerun timezone/reset math per candidate.
-          candidate.realm.days=realmDays;
-          candidate.realmFeasible=true;
-          if(betterFeasibleCandidate(candidate,best)) best=candidate;
         }
       }
     }
-    return {plan:best,diagnostic:bestDiagnostic};
+    return {plan:best,diagnostic:best||bestDiagnostic};
   }
 
   function optimizer(baseScore,desired,p,resources,cfg=activeCalcConfig(),ctx=null){
@@ -5267,8 +5286,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     el.innerHTML=`<span class="planShort">${line1}</span>${line2?`<span class="realmBridge">${line2}</span>`:''}${appendText?`<span>${appendText}</span>`:''}`;
   }
 
+  let lastAstralRenderKey='';
+  let lastPrimostarRewardRenderKey='';
   function renderAstralPact(totalStars){
     const stars=Math.max(0,Math.floor(Number(totalStars)||0));
+    const renderKey=String(stars);
+    if(renderKey===lastAstralRenderKey) return;
+    lastAstralRenderKey=renderKey;
     const totals=Object.fromEntries(ASTRAL_ORDER.map(k=>[k,0]));
     let unlocked=0;
     for(const [threshold,key,value] of ASTRAL_PACT_NODES){
@@ -5296,6 +5320,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function renderPrimostarRewardReference(currentTotalStars,projectedTotalStars=currentTotalStars){
     const currentStars=Math.max(0,Math.floor(Number(currentTotalStars)||0));
     const projectedStars=Math.max(currentStars,Math.floor(Number(projectedTotalStars)||0));
+    const rewardRenderKey=`${activeCalcConfig().key}|${currentStars}|${projectedStars}`;
+    if(rewardRenderKey===lastPrimostarRewardRenderKey) return;
+    lastPrimostarRewardRenderKey=rewardRenderKey;
     const host=$('primostarRewardSeasons');
     const intro=$('primostarRewardsIntro');
     if(!host) return;
@@ -5530,6 +5557,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   let lastEffectiveTargetStars=null;
 
   function updateCalculator(){
+    const perfStarted=performance.now();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
@@ -5861,6 +5889,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     }else{realmRec.hidden=true;realmRec.textContent='';realmRec.classList.remove('realmFeasible','realmImpossible');realmRec.removeAttribute('title');}
     $('milestoneNote').hidden=true;$('milestoneNote').textContent='';
     saveState();
+    const perfMs=performance.now()-perfStarted;
+    const calcSection=$('calculatorSection');
+    if(calcSection) calcSection.dataset.lastSolveMs=perfMs.toFixed(1);
+    if(perfMs>750) console.warn(`Primostar solve took ${perfMs.toFixed(0)} ms`,{season:cfg.key,target:targetStars});
   }
 
   function copyPlan(){
@@ -6160,7 +6192,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     $('showPast').addEventListener('change',renderTimeline);
     $('todayButton').addEventListener('click',()=>{const groups=[...$('timeline').querySelectorAll('.dayGroup')];const reset=currentResetIso();const target=groups.find(g=>g.classList.contains('today'))||groups.find(g=>g.dataset.date>=reset)||groups[0];if(target)target.scrollIntoView({behavior:'smooth',block:'center'});});
     renderTimeline();
-    setInterval(renderTimeline,60_000);
+    let timelineMinuteSignature='';
+    const currentTimelineSignature=()=>{
+      const boundary=currentResetIso();
+      const active=timelineData.filter(e=>eventIsActive(e,boundary)).map(e=>`${e[0]}:${e[3]}`).join('|');
+      return `${boundary}::${active}`;
+    };
+    timelineMinuteSignature=currentTimelineSignature();
+    setInterval(()=>{
+      renderLocalTimeLabels();
+      const nextSignature=currentTimelineSignature();
+      if(nextSignature!==timelineMinuteSignature){
+        timelineMinuteSignature=nextSignature;
+        renderTimeline();
+      }
+    },60_000);
   }
 
 
@@ -6274,53 +6320,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     setInterval(()=>{ if(buildsInitialized && buildSeasonKey()!==currentBuildSeason) renderBuilds(); },60_000);
   }
 
-
-  function legacyBuildHtmlS1(cls){
-    if(cls==='Berserker') return `
-      <div class="guideSummary"><div><span>Season 1 · Tier III</span><strong>Berserker</strong><p>Physical multi-hit DPS. Blade of Judgment is the core T3 engine: stack marks quickly with multi-hit techniques and burst them repeatedly.</p></div><p><b>Quick stat rule</b>Physical Mastery &gt; ATK &gt; SPD on offensive main lines. Crit Rate and Crit DMG are premium substats; Elemental Mastery is not a T3 priority.</p></div>
-      <div class="gearPanel"><div class="gearIntro"><span>Season 1 gearing</span><strong>Gear & stat priorities</strong><p>Stay Physical through the end of S1. Do not pre-convert your whole setup to the T4 Elemental plan before the season actually changes.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Sword / Gauntlets / Boots: Physical Mastery &gt; ATK &gt; SPD. Helmet / Chest: DEF ≥ Physical RES = Elemental RES &gt; HP.</p></div><div class="gearItem"><span>Best substats</span><p>Crit Rate% → Crit DMG% → Technique DMG vs debuffed targets → Physical Mastery / Accuracy → SPD.</p></div><div class="gearItem"><span>Fantomon</span><p>Nyxarchon is the strongest all-content lead when available. Sylvaerie and Zeioletus are strong damage alternatives; Aegiswing is more PvP/safety focused.</p></div><div class="gearItem"><span>S2 transition</span><p>Physical gear remains correct for Berserker today. Conqueror changes the damage plan in S2, so save exceptional S2-ready affixes without weakening your current S1 build.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core investment</span><strong>Blade of Judgment first</strong><p>Prioritize pieces that are actually used in the standard T3 loadouts below.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Blade of Judgment</strong><p>The defining T3 charm and the reason multi-hit techniques outperform many larger single hits.</p></div></li><li><b>2</b><div><strong>Eclipse Slash</strong><p>Six-hit single-target nuke that feeds Blade of Judgment extremely well.</p></div></li><li><b>3</b><div><strong>Insightful Eye</strong><p>Reliable Crit support across PvE, Dragon and PvP.</p></div></li><li><b>4</b><div><strong>Indomitable Will / damage slot</strong><p>Keep Indomitable for safety; greed the slot only when survival is already solved.</p></div></li></ol></div>
-      <div class="buildGrid">
-        <article class="buildCard"><header><div><h3>Generic PvE</h3><p>Default S1 farming / dungeon setup</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Hunter's Judgment</b><b>Sunset Sword</b><b>Eclipse Slash</b><b>Lion Combo</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Insightful Eye</b><b>Blade of Judgment</b><b>Blade Siphon</b><b>Indomitable Will</b></div></div><ul><li><b>Offensive:</b> Indomitable Will → Blazing Clash / another damage charm when safe</li><li><b>Defensive:</b> keep Indomitable Will; low Crit can use Blade of Lament instead of Blade Siphon</li></ul></article>
-        <article class="buildCard"><header><div><h3>Dragon / Boss</h3><p>Single-target damage</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Flame Aura</b><b>Sunset Sword</b><b>Eclipse Slash</b><b>Lion Combo</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Insightful Eye</b><b>Blade of Judgment</b><b>Blazing Clash</b><b>Crit Mastery</b></div></div><ul><li><b>Offensive:</b> this is already the greedier damage version</li><li><b>Defensive:</b> Crit Mastery or Blazing Clash → Indomitable Will if the fight can kill you</li></ul></article>
-        <article class="buildCard"><header><div><h3>PvP / Mobility</h3><p>Burst, reach and survival</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Darkness Descends</b><b>Lion Combo</b><b>Eclipse Slash</b><b>Sunset Sword</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Insightful Eye</b><b>Blade of Judgment</b><b>Frame of Battles</b><b>Indomitable Will</b></div></div><ul><li><b>Offensive:</b> Indomitable Will → Blazing Clash for lower-risk fights</li><li><b>Defensive:</b> keep Indomitable Will; in team PvP Lion Combo → Hunter's Judgment for grouping</li></ul></article>
-      </div><p class="buildSource">Season 1 Tier III · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-berserker" rel="noreferrer" target="_blank">Prydwen Berserker ↗</a></p>`;
-
-    if(cls==='Paladin') return `
-      <div class="guideSummary"><div><span>Season 1 · Tier III</span><strong>Paladin</strong><p>Tank/support with Block, shields, taunt and stronger Water options. Your first job in party content is still keeping the group alive.</p></div><p><b>Quick stat rule</b>Block Rate and DEF are premium. Sword/Boots value SPD; Shield and defensive slots prioritize DEF, HP and RES.</p></div>
-      <div class="gearPanel"><div class="gearIntro"><span>Season 1 gearing</span><strong>Gear & stat priorities</strong><p>Build enough speed to establish taunt/buffs early, then stack Block/DEF so your counter and protection loop stays alive.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Sword: SPD &gt; ATK &gt; Physical Mastery. Shield: DEF &gt; HP &gt; RES. Boots: SPD &gt; ATK &gt; Elemental/Physical Mastery.</p></div><div class="gearItem"><span>Best substats</span><p>Block Rate% → DEF% → DEF / HP% / HP. Damage stats come after the tank loop is reliable.</p></div><div class="gearItem"><span>Dungeon role</span><p>Valor Surge + Heart of Challenge establish support/taunt; Desperate Protection adds party safety when damage is threatening.</p></div><div class="gearItem"><span>Damage option</span><p>Star Shattering Slash is your major T3 nuke. Water builds use Lunarwater Threads and Frostbite Blossom when survival allows it.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core technique investment</span><strong>Star Shattering Slash first</strong><p>Prioritize techniques that are actually used in the Season 1 Paladin builds below. Tank/support utility stays valuable, but the T3 nuke is the biggest new power spike.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Star Shattering Slash</strong><p>Paladin's signature T3 single-target nuke; useful for pushing PvE, Dragon and PvP.</p></div></li><li><b>2</b><div><strong>Heart of Challenge</strong><p>Appears across the listed Paladin setups and anchors the class's control/tank loop.</p></div></li><li><b>3</b><div><strong>Luminous Shield</strong><p>Core survival tool in dungeon and generic PvE builds; directly improves the Block-focused game plan.</p></div></li><li><b>4</b><div><strong>Lunarwater Threads</strong><p>Wide Water AoE with pull utility; key to the Water setup and a strong damage/utility swap in dungeons.</p></div></li></ol></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core charm investment</span><strong>Block Mastery first</strong><p>Paladin's T3 charm priorities are still defense-first. Water-specific damage charms come after the Block core unless you are deliberately building the offensive variant.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Block Mastery</strong><p>The standout T3 Paladin charm: directly raises Block Efficiency and scales the class's main defensive mechanic.</p></div></li><li><b>2</b><div><strong>Block Awareness</strong><p>More Block Rate and equipped in the default dungeon and generic PvE builds.</p></div></li><li><b>3</b><div><strong>Iron Fortress</strong><p>High-value dungeon/tank investment when your main job is keeping the party alive.</p></div></li><li><b>4</b><div><strong>Defensive Assault / Rebound</strong><p>Choose by build: Defensive Assault for Water/offense while shielded; Rebound for the generic counter setup.</p></div></li></ol></div>
-      <div class="buildGrid">
-        <article class="buildCard"><header><div><h3>Dungeon Tank</h3><p>Party-first defensive setup</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Valor Surge</b><b>Heart of Challenge</b><b>Luminous Shield</b><b>Desperate Protection</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Iron Fortress</b><b>Block Mastery</b><b>Block Awareness</b><b>Stone Skin</b></div></div><ul><li><b>Offensive:</b> Luminous Shield → Lunarwater Threads when survival is easy</li><li><b>Defensive:</b> keep the listed setup; it is already the party-safety version</li></ul></article>
-        <article class="buildCard"><header><div><h3>Generic PvE</h3><p>Solo progression / balanced damage</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Luminous Shield</b><b>Forceful Charge</b><b>Star Shattering Slash</b><b>Heart of Challenge</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Rebound</b><b>Counter Blade</b><b>Block Mastery</b><b>Block Awareness</b></div></div><ul><li><b>Offensive:</b> Luminous Shield → Valor Surge once survival is solved</li><li><b>Defensive:</b> keep Luminous Shield or add Desperate Protection for harder stages</li></ul></article>
-        <article class="buildCard"><header><div><h3>Water Paladin</h3><p>More aggressive elemental variant</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Guardian Ring</b><b>Lunarwater Threads</b><b>Frostbite Blossom</b><b>Heart of Challenge</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Ripple Impact</b><b>Defensive Assault</b><b>Pursuit of Victory</b><b>Insightful Eye</b></div></div><ul><li><b>Offensive:</b> retain Insightful Eye for consistency</li><li><b>Defensive:</b> Insightful Eye → Potential Rebirth if survivability is the problem</li></ul></article>
-      </div><p class="buildSource">Season 1 Tier III · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-paladin" rel="noreferrer" target="_blank">Prydwen Paladin ↗</a></p>`;
-
-    if(cls==='Archmage') return `
-      <div class="guideSummary"><div><span>Season 1 · Tier III</span><strong>Archmage</strong><p>Front-loaded multi-element DPS. Rapid Cast is the defining T3 charm because acting before enemies is often both your damage plan and your survival plan.</p></div><p><b>Quick stat rule</b>Elemental Mastery &gt; ATK &gt; Crit &gt; SPD on Staff/Codex; Crit Rate, Crit DMG and SPD are premium substats.</p></div>
-      <div class="gearPanel"><div class="gearIntro"><span>Season 1 gearing</span><strong>Gear & stat priorities</strong><p>Stay Elemental and lean into fast burst. Light is especially valuable; Fire/Wind remain important parts of the T3 damage package.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Staff / Codex: Elemental Mastery &gt; ATK &gt; Crit &gt; SPD. Boots: Elemental Mastery &gt; ATK &gt; SPD. Defensive slots: DEF/RES &gt; HP.</p></div><div class="gearItem"><span>Core charms</span><p>Rapid Cast is extremely hard to replace. Radiant Sear is a premier damage trigger; Void Bubble and Mana Surge round out the standard set.</p></div><div class="gearItem"><span>Boss note</span><p>Divine Wrath shines on large single targets but is less reliable into scattered/small groups.</p></div><div class="gearItem"><span>Fantomon</span><p>Nyxarchon is the premium damage lead; Sylvaerie and Zeioletus are strong offensive alternatives.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core technique investment</span><strong>Meteoric Flames + Hurricane</strong><p>These priorities favor techniques that remain equipped across both listed T3 Archmage loadouts, then the encounter-specific finishers.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Meteoric Flames</strong><p>Excellent Fire damage and persistent ground pressure; equipped in both AoE and single-target builds.</p></div></li><li><b>2</b><div><strong>Howling Hurricane</strong><p>Large AoE, strong damage and another universal slot across the standard T3 builds.</p></div></li><li><b>3</b><div><strong>Divine Wrath</strong><p>Exceptional against large single targets and still useful in mixed groups, though its hit pattern can be inconsistent on small targets.</p></div></li><li><b>4</b><div><strong>Wind's Delight / Lightning Chain</strong><p>Use Wind's Delight for single-target consistency and Lightning Chain when AoE coverage matters more.</p></div></li></ol></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core charm investment</span><strong>Rapid Cast is mandatory</strong><p>The standard T3 Archmage charm package barely changes between AoE and boss builds, which makes these upgrades unusually safe.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Rapid Cast</strong><p>Very hard to replace: adds Elemental Mastery and lets key techniques come online a turn earlier.</p></div></li><li><b>2</b><div><strong>Radiant Sear</strong><p>The strongest pure damage charm in the T3 Archmage kit and a core proc in both listed builds.</p></div></li><li><b>3</b><div><strong>Void Bubble</strong><p>Universal survival insurance for a glass-cannon class and equipped in both standard setups.</p></div></li><li><b>4</b><div><strong>Mana Surge</strong><p>Reliable Crit support in both builds; this is the first core slot to flex into Lightning Mystery, Elemental Harmony or Repelling Wind.</p></div></li></ol></div>
-      <div class="buildGrid">
-        <article class="buildCard"><header><div><h3>AoE / Dungeons</h3><p>Front-load the room</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Divine Wrath</b><b>Howling Hurricane</b><b>Meteoric Flames</b><b>Lightning Chain</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Rapid Cast</b><b>Void Bubble</b><b>Mana Surge</b><b>Radiant Sear</b></div></div><ul><li><b>Offensive:</b> Mana Surge → Lightning Mystery / Elemental Harmony if it sims better for your account</li><li><b>Defensive:</b> Mana Surge → Repelling Wind when control/safety matters more</li></ul></article>
-        <article class="buildCard"><header><div><h3>Single Target</h3><p>Boss-focused elemental burst</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Divine Wrath</b><b>Howling Hurricane</b><b>Meteoric Flames</b><b>Wind's Delight</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Rapid Cast</b><b>Void Bubble</b><b>Mana Surge</b><b>Radiant Sear</b></div></div><ul><li><b>Offensive:</b> Divine Wrath can become Tempest Sphere on smaller targets to trigger Radiant Sear more consistently</li><li><b>Defensive:</b> Mana Surge → Repelling Wind if you need breathing room</li></ul></article>
-      </div><p class="buildSource">Season 1 Tier III · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-archmage" rel="noreferrer" target="_blank">Prydwen Archmage ↗</a></p>`;
-
-    if(cls==='Arcanist') return `
-      <div class="guideSummary"><div><span>Season 1 · Tier III</span><strong>Arcanist</strong><p>Dark DoT DPS with a real healer/support branch. T3 shifts damage builds toward Effect Hit Rate so the DoT package lands reliably on bosses.</p></div><p><b>Quick stat rule</b>DPS: Effect Hit Rate ≥ Elemental Mastery ≥ ATK &gt; SPD. Healer: SPD first, then EHR/Elemental Mastery; defensive slots favor HP.</p></div>
-      <div class="gearPanel"><div class="gearIntro"><span>Season 1 gearing</span><strong>Gear & stat priorities</strong><p>DoT and healer sets want different priorities. Do not flatten them into one compromise set if you routinely swap roles.</p></div><div class="gearGrid"><div class="gearItem"><span>DPS</span><p>Staff / Orb: EHR ≥ Elemental Mastery ≥ ATK &gt; SPD. Boots: Elemental Mastery &gt; ATK &gt; SPD. Crit remains valuable as a substat.</p></div><div class="gearItem"><span>Healer</span><p>Staff / Orb / Boots: SPD first. Helmet/Chest: HP first, then DEF/RES. Healing Boost% is the premium healer substat.</p></div><div class="gearItem"><span>DoT core</span><p>Shadow Vengeance, Night's Blessing, Shadow Erosion and Linked Misfortune form the standard damage charm package.</p></div><div class="gearItem"><span>Support core</span><p>Resurrection + Healing Mastery + Overhealing are the stable healer charms, leaving one flexible slot.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>DPS technique investment</span><strong>Erosion engine first</strong><p>These priorities cover the Dark DoT loadouts. If you mainly heal, prioritize Radiant Restoration and Frenzy Totem instead of forcing the DPS order.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Mana Blast</strong><p>AoE Dark damage with an Erosion chance and a core slot in both the single-target and AoE builds.</p></div></li><li><b>2</b><div><strong>Dark Bullet</strong><p>Reliable single-target Erosion application and equipped in both standard DPS setups.</p></div></li><li><b>3</b><div><strong>Abyssal Hand</strong><p>Reusable Dark AoE plus Slow utility; another shared slot across both DPS builds.</p></div></li><li><b>4</b><div><strong>Shadow of Termination / Shadow Impact</strong><p>Termination cashes out all Erosion on bosses; Shadow Impact is the AoE version that immediately triggers Erosion stacks.</p></div></li></ol></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>DPS charm investment</span><strong>Stack Erosion faster</strong><p>All four charms below are equipped in both standard Arcanist DPS builds. Healers should instead invest in Healing Mastery, Overhealing and Resurrection as needed.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Shadow Erosion</strong><p>Dark Technique hits can apply additional Erosion, making it the foundation of the T3 DoT engine.</p></div></li><li><b>2</b><div><strong>Linked Misfortune</strong><p>Each Erosion application can immediately add another stack, accelerating both sustained damage and burst cash-outs.</p></div></li><li><b>3</b><div><strong>Night's Blessing</strong><p>Straight Dark damage scaling that benefits the entire DPS package.</p></div></li><li><b>4</b><div><strong>Shadow Vengeance</strong><p>Cheat-death plus a one-turn Shadow Form burst window; especially valuable in PvP and difficult progression.</p></div></li></ol></div>
-      <div class="buildGrid">
-        <article class="buildCard"><header><div><h3>Single Target DoT</h3><p>Boss / long-fight damage</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Mana Blast</b><b>Dark Bullet</b><b>Abyssal Hand</b><b>Shadow of Termination</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Shadow Vengeance</b><b>Night's Blessing</b><b>Shadow Erosion</b><b>Linked Misfortune</b></div></div><ul><li><b>Offensive:</b> keep the full DoT package</li><li><b>Defensive:</b> flex the lowest-impact damage slot only when survival becomes the limiter</li></ul></article>
-        <article class="buildCard"><header><div><h3>AoE DoT</h3><p>Multi-target clearing</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Mana Blast</b><b>Dark Bullet</b><b>Abyssal Hand</b><b>Shadow Impact</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Shadow Vengeance</b><b>Night's Blessing</b><b>Shadow Erosion</b><b>Linked Misfortune</b></div></div><ul><li><b>Offensive:</b> standard full DoT package</li><li><b>Defensive:</b> swap a damage charm only if the stage requires extra sustain/control</li></ul></article>
-        <article class="buildCard"><header><div><h3>Healing / Support</h3><p>Party sustain</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Void Blessing</b><b>Waterling Summon</b><b>Radiant Restoration</b><b>Frenzy Totem</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Resurrection</b><b>Healing Mastery</b><b>Overhealing</b><b>Flex</b></div></div><ul><li><b>Offensive:</b> use the flex slot for party damage/utility when healing is comfortable</li><li><b>Defensive:</b> keep the three core healing charms and use the flex slot for additional safety</li></ul></article>
-      </div><p class="buildSource">Season 1 Tier III · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-arcanist" rel="noreferrer" target="_blank">Prydwen Arcanist ↗</a></p>`;
-
-    return '<div class="emptyBuild">No Season 1 build data is available for this class yet.</div>';
-  }
-
+  // PERFORMANCE_STABILIZATION_V1
+  // Dead S1 build-template blob removed after the S2 cutover.
 
   // SEASONAL_BUILD_OVERRIDE_V1
   // Keep the live Builds section on T3/S1 until the Aug 30 6:00 AM Pacific reset,
@@ -6398,12 +6399,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       renderBuilds();
     });
     renderBuilds();
+    let lastBuildSeasonTick=liveBuildSeason();
     setInterval(()=>{
-      if(buildsInitialized){
-        const before=currentClass;
-        normalizeLiveBuildClass();
-        if(before!==currentClass || liveBuildSeason()==='s2') renderBuilds();
-      }
+      if(!buildsInitialized) return;
+      const beforeClass=currentClass;
+      const beforeSeason=lastBuildSeasonTick;
+      normalizeLiveBuildClass();
+      const afterSeason=liveBuildSeason();
+      if(beforeClass!==currentClass || beforeSeason!==afterSeason) renderBuilds();
+      lastBuildSeasonTick=afterSeason;
     },60_000);
   };
 
@@ -6454,7 +6458,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   function setupCalculator(){
     document.getElementById('calculatorSection')?.addEventListener('focusin',e=>{
       if(e.target?.matches?.('input')){
-        if(rollSnapshotForward(Date.now(),true)) scheduleCalculatorUpdate(0);
+        // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
+        // expensive optimizer just for tabbing/clicking between fields.
+        rollSnapshotForward(Date.now(),true);
       }
     });
     // Heavy optimizer work only commits after the user finishes editing a field.
