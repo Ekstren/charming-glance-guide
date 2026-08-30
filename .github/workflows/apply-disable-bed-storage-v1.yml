@@ -1,0 +1,38 @@
+name: Apply temporary Bed storage disable
+
+on:
+  push:
+    paths:
+      - 'scripts/patch_disable_bed_storage_v1.py'
+      - '.github/workflows/apply-disable-bed-storage-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Disable Bed storage/hold automation
+        run: python scripts/patch_disable_bed_storage_v1.py
+      - name: Verify temporary Bed simplification
+        run: |
+          grep -Fq 'BED_STORAGE_DISABLED_V1' index.html
+          grep -Fq 'id="bedExp"' index.html
+          ! grep -Fq 'bedStoredExp' index.html
+          ! grep -Fq "'holdExp'" index.html
+          ! grep -Fq 'reserveHours' index.html
+          ! grep -Fq 'elapsedExpHours' index.html
+      - name: Commit generated index
+        run: |
+          git config user.name 'ekstren'
+          git config user.email '38091958+Ekstren@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Temporarily disable Bed storage automation'
+          git push
