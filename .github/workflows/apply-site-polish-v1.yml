@@ -1,0 +1,39 @@
+name: Apply site polish v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_site_polish_v1.py'
+      - '.github/workflows/apply-site-polish-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply consistency, efficiency and readability pass
+        run: python scripts/patch_site_polish_v1.py
+      - name: Verify generated page
+        shell: bash
+        run: |
+          grep -q 'SITE_POLISH_V1' index.html
+          grep -q 'Only equipped Techniques' index.html
+          grep -q 'if(document.hidden)' index.html
+          grep -q 'grid-template-columns:repeat(2,minmax(0,1fr))' index.html
+      - name: Commit generated page
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Polish site consistency readability and idle efficiency'
+          git push origin HEAD:main
