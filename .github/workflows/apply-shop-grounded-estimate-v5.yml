@@ -1,0 +1,36 @@
+name: Apply grounded Daily Shop estimate
+
+on:
+  push:
+    paths:
+      - 'scripts/patch_shop_grounded_estimate_v5.py'
+      - '.github/workflows/apply-shop-grounded-estimate-v5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply progression-scaled shop estimate
+        run: python scripts/patch_shop_grounded_estimate_v5.py
+      - name: Verify shop model
+        run: |
+          grep -q 'DAILY_SHOP_ESTIMATE_V5' index.html
+          grep -q 'DAILY_SHOP_CORE_BUNDLE_FACTOR=2/3' index.html
+          grep -q '600 Ore / 975 Essence / 550 Sand / 35 Treats' index.html
+          grep -q '925 Ore / 1,175 Essence / 775 Sand / 35 Treats' index.html
+      - name: Commit generated index
+        run: |
+          git config user.name 'ekstren'
+          git config user.email '38091958+Ekstren@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Ground Daily Shop estimate in progression scaling'
+          git push
