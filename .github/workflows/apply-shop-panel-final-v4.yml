@@ -1,0 +1,36 @@
+name: Apply final Daily Shop panel
+
+on:
+  push:
+    paths:
+      - 'scripts/patch_shop_panel_final_v4.py'
+      - '.github/workflows/apply-shop-panel-final-v4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply final Daily Shop layout
+        run: python scripts/patch_shop_panel_final_v4.py
+      - name: Verify Daily Shop V4
+        run: |
+          grep -q 'DAILY_SHOP_ESTIMATE_V4' index.html
+          grep -q 'Extremely conservative estimate' index.html
+          grep -q 'shopGainOre' index.html
+          ! grep -q 'S1 / S2 planning estimate' index.html
+      - name: Commit generated index
+        run: |
+          git config user.name 'ekstren'
+          git config user.email '38091958+Ekstren@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Polish Daily Shop estimate layout'
+          git push
