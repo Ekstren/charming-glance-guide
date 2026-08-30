@@ -48,6 +48,7 @@ for fn in ('season2SkillEssenceReserve','season2SandReserve','season2TreatReserv
 s=s.replace("<p><b>1 · Protect enabled rollover reserves during Season 1.</b> Raw Essence/Sand cover those reserves first; Knuckles/Shovels are reserved only for any uncovered remainder. Once S2 scoring is active, the old S1→S2 reserve toggles are hidden and the planner uses your live S2 inventory directly.</p>", "<p><b>1 · Use live Season 2 inventory.</b> The planner evaluates your current materials, Cart production, Stamina and Realm options directly.</p>")
 
 s=s.replace("$('historicalStarsLabel').textContent=cfg.key==='s1'?'Historical stars':'Season 1 Primostars (carried)';", "$('historicalStarsLabel').textContent='Season 1 Primostars (carried)';")
+s=s.replace("$('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;", "if($('holdExpLabel')) $('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;")
 s=re.sub(r'\s*<[^>]+id="calcSeasonToggle"[\s\S]*?</[^>]+>\s*', '\n', s)
 s=s.replace('Season 2 launch checklist', 'Season 2 Day 1 checklist')
 s=s.replace('<strong>Log in after Season 2 is live.</strong><em>Make sure the rollover/reset has fully happened before claiming anything.</em>', '<strong>Start with rollover rewards.</strong><em>Season 2 is live; collect the new-season rewards before spending progression resources.</em>')
