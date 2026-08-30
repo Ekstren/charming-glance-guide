@@ -3061,6 +3061,119 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .dominatorHeadingRow .dominatorModeTabs button{min-height:30px;min-width:52px;font-size:10px}
 }
 </style>
+
+<style id="site-polish-v1">
+/* SITE_POLISH_V1
+   Conservative consistency/readability pass. No optimizer math changes. */
+html{scrollbar-gutter:stable}
+
+/* One predictable focus treatment across navigation, calculator controls and toggles. */
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:2px;
+}
+
+/* Keep the main navigation families visually related. */
+.sectionSwitch,.classTabs{border-radius:14px!important;padding:5px!important;gap:6px!important}
+.sectionSwitch button,.classTabs button{border-radius:9px!important;line-height:1.2}
+
+/* Builds: readable at normal desktop viewing distance without making the page bulky. */
+.guideSummary{padding:17px 18px!important;gap:18px!important}
+.guideSummary span,.guideSummary>p b,.buildQuickStats .quickTitle,
+.priorityIntro>span,.skillGroup>span,.buildCard .fantomonPair>span{
+  font-size:10px!important;
+  line-height:1.25;
+}
+.guideSummary p,.buildQuickStats .quickRule{font-size:11px!important;line-height:1.5!important}
+.quickGearGrid{gap:7px 18px!important}
+.quickGearRow,.quickSubstats{gap:9px!important;padding-top:7px!important}
+.quickGearRow b,.quickSubstats b{font-size:10px!important}
+.quickGearRow span,.quickSubstats span{font-size:10px!important;line-height:1.45!important}
+.priorityPair{gap:12px!important}
+.priorityPair>.priorityPanel{border-radius:15px!important}
+.priorityPair .priorityIntro{padding:16px 17px!important}
+.priorityPair .priorityIntro>strong{font-size:16px!important;line-height:1.3}
+.priorityPair .priorityIntro p{font-size:10.5px!important;line-height:1.5!important}
+.priorityPair .priorityList li{padding:13px 15px!important;gap:11px!important}
+.priorityPair .priorityList strong{font-size:12px!important}
+.priorityPair .priorityList p{font-size:10.5px!important;line-height:1.45!important}
+.buildGrid{gap:12px!important}
+.buildCard{border-radius:15px!important;padding:17px!important;min-width:0}
+.buildCard h3{font-size:15px!important;line-height:1.25}
+.buildCard header p,.buildCard ul{font-size:11px!important;line-height:1.55!important}
+.skillGroup{margin-top:14px!important}
+.skillGroup b{font-size:10px!important;line-height:1.25!important;padding:5px 7px!important}
+.buildSource{font-size:10px!important;line-height:1.45}
+.buildCard .fantomonPair{margin-top:13px!important;padding-top:12px!important}
+.buildCard .fantomonPairNote{font-size:9.5px!important;line-height:1.4!important}
+.buildCard .fantomonRankList{gap:8px!important}
+.buildCard .fantomonPick{border-radius:10px!important;padding:9px 10px!important}
+.buildCard .fantomonPick small{font-size:9px!important}
+.buildCard .fantomonPick b{font-size:11px!important}
+.buildCard .fantomonPick p{font-size:10px!important;line-height:1.4!important}
+
+/* Dominator role control belongs to the title, not as a visually separate section. */
+.dominatorHeadingRow{gap:9px!important;align-items:center!important;flex-wrap:wrap}
+.dominatorHeadingRow .dominatorModeTabs{padding:3px!important;gap:3px!important}
+.dominatorHeadingRow .dominatorModeTabs button{min-height:30px!important;min-width:52px!important;padding:4px 9px!important;font-size:10px!important}
+
+/* Calculator: several historical 8–9px labels were unnecessarily hard to read. */
+#calculatorSection .calcGrid label,
+#calculatorSection .autoToggle,
+#calculatorSection .calcEyebrow,
+#calculatorSection .optimizerNote,
+#calculatorSection .scoreSummary span,
+#calculatorSection .optimizerSummary,
+#calculatorSection .resourceCaption,
+#calculatorSection .resourceInputs label,
+#calculatorSection .resourceInputs small,
+#calculatorSection .resourceUse span,
+#calculatorSection .optimizedResult span,
+#calculatorSection .seasonDeadline span,
+#calculatorSection .seasonDeadline small,
+#calculatorSection .projectionCallout span,
+#calculatorSection .projectionCallout small,
+#calculatorSection .resultDetails>summary,
+#calculatorSection .calcActions span,
+#calculatorSection .planCosts span,
+#calculatorSection .planCosts small{
+  font-size:10px!important;
+  line-height:1.4;
+}
+#calculatorSection .resourceInputs strong,
+#calculatorSection .resourceUse b,
+#calculatorSection .optimizedResult b{font-size:11px!important}
+#calculatorSection .calcPanel h3,#calculatorSection .calcResults h3{font-size:14px!important}
+
+/* Medium widths: do not squeeze three dense build cards into unreadable columns. */
+@media(max-width:920px){
+  .buildGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+/* Phone/tablet: deterministic grids beat conflicting old flex/overflow rules. */
+@media(max-width:620px){
+  .sectionSwitch{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));margin-left:12px!important;margin-right:12px!important}
+  .sectionSwitch button{min-width:0!important;min-height:44px!important;font-size:11px!important;padding:8px!important}
+  .classTabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible!important}
+  .classTabs button{min-width:0!important;width:auto!important;min-height:44px!important;font-size:11px!important;padding:9px 7px!important}
+  .buildGrid{grid-template-columns:1fr!important}
+  .guideSummary{padding:15px!important;gap:12px!important}
+  .buildQuickStats{padding-top:12px!important}
+  .priorityPair{grid-template-columns:1fr!important;gap:9px!important}
+  .buildCard{padding:15px!important}
+  .buildCard .fantomonRankList{grid-template-columns:1fr 1fr}
+  .dominatorHeadingRow{gap:7px!important}
+}
+@media(max-width:420px){
+  .buildCard .fantomonRankList{grid-template-columns:1fr!important}
+  .dominatorHeadingRow .dominatorModeTabs button{min-width:50px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+</style>
+
 </head>
 <body>
 <main>
@@ -6239,6 +6352,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     };
     timelineMinuteSignature=currentTimelineSignature();
     setInterval(()=>{
+      if(document.hidden) return;
       renderLocalTimeLabels();
       const nextSignature=currentTimelineSignature();
       if(nextSignature!==timelineMinuteSignature){
@@ -6274,10 +6388,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
     function buildHtmlS2(cls){
     if(cls==='Conqueror') return `
-      <div class="guideSummary"><div><span>Elemental melee DPS</span><strong>Conqueror</strong><p>T4 pivots from the old Physical-first Berserker plan into Elemental damage, DEF ignore and repeatable attacks. Excellent in both bosses and dungeons.</p></div><p><b>Quick stat rule</b>ATK ≥ Elemental Mastery &gt; SPD on offensive main lines. Crit Rate → Crit DMG are the premium substats. Aim past 100% Crit because S2 PvE enemies carry Crit RES.</p></div>
+      <div class="guideSummary"><div><span>Elemental melee DPS</span><strong>Conqueror</strong><p>T4 pivots from the old Physical-first Berserker plan into Elemental damage, DEF ignore and repeatable attacks. Excellent in both bosses and dungeons.</p></div><p><b>Stat priority</b>ATK ≥ Elemental Mastery &gt; SPD on offensive main lines. Crit Rate → Crit DMG are the premium substats. Aim past 100% Crit because S2 PvE enemies carry Crit RES.</p></div>
       <div class="gearPanel"><div class="gearIntro"><span>Season 2 gearing</span><strong>Gear & stat priorities</strong><p>Keep large power upgrades, but protect excellent rolls for S2 affix inheritance. Physical Mastery becomes a niche old-build stat rather than the default.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Sword / Gauntlets / Boots: ATK ≥ Elemental Mastery &gt; SPD. Helmet / Chest: DEF ≥ Physical RES = Elemental RES &gt; HP.</p></div><div class="gearItem"><span>Best substats</span><p>Crit Rate% → Crit DMG% → Elemental Mastery / Accuracy% → SPD or HP/SPD-to-ATK conversion. ATK is useful but less scarce.</p></div><div class="gearItem"><span>Gem plan</span><p>Weapon: Obsidian &gt; Amethyst ≥ Ruby. Off-hand: Obsidian &gt; Amethyst ≥ Citrine. Boots: Amethyst &gt; Citrine. Armor: Moonstone. Helm: Citrine.</p></div><div class="gearItem"><span>Important breakpoint</span><p>S2 PvE enemies have about 18% Crit RES, so roughly 118% displayed Crit Rate is the practical 100%-crit target before dropping Crit support.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core technique investment</span><strong>Only skills equipped below</strong><p>Rank the techniques that actually occupy your standard Conqueror loadouts; swap-only utility stays in the build notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Flickering Blade</strong><p>No cooldown, very high single-target ceiling, and it is equipped in every listed Conqueror build.</p></div></li><li><b>2</b><div><strong>Blade Storm</strong><p>Core T4 AoE and also equipped across every listed build.</p></div></li><li><b>3</b><div><strong>Flash Fire</strong><p>Reliable Elemental damage and a main-slot technique in dungeon, boss and PvP setups.</p></div></li><li><b>4</b><div><strong>Flame Aura</strong><p>Main-slot damage for the generic and boss builds. Darkness Descends remains the PvP/utility replacement shown below.</p></div></li></ol></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core charm investment</span><strong>Piercing Assault first</strong><p>These are all actually equipped in the listed builds. Soul Breaker and Soul Splash remain optional swaps, not core upgrade recommendations.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Piercing Assault</strong><p>Primary T4 investment and equipped in every Conqueror build below.</p></div></li><li><b>2</b><div><strong>Tactical Adaptation</strong><p>Universal offensive/defensive value and equipped in every listed build.</p></div></li><li><b>3</b><div><strong>Insightful Eye</strong><p>Actually occupies a slot in every listed build until your S2 gear solves the Crit requirement.</p></div></li><li><b>4</b><div><strong>Indomitable Will / Blazing Clash</strong><p>Indomitable is the equipped dungeon/PvP safety slot; Blazing Clash is the equipped boss damage slot.</p></div></li></ol></div>
+      <div class="priorityPanel"><div class="priorityIntro"><span>Technique investment</span><strong>Only equipped Techniques</strong><p>Rank the techniques that actually occupy your standard Conqueror loadouts; swap-only utility stays in the build notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Flickering Blade</strong><p>No cooldown, very high single-target ceiling, and it is equipped in every listed Conqueror build.</p></div></li><li><b>2</b><div><strong>Blade Storm</strong><p>Core T4 AoE and also equipped across every listed build.</p></div></li><li><b>3</b><div><strong>Flash Fire</strong><p>Reliable Elemental damage and a main-slot technique in dungeon, boss and PvP setups.</p></div></li><li><b>4</b><div><strong>Flame Aura</strong><p>Main-slot damage for the generic and boss builds. Darkness Descends remains the PvP/utility replacement shown below.</p></div></li></ol></div>
+      <div class="priorityPanel"><div class="priorityIntro"><span>Charm investment</span><strong>Piercing Assault first</strong><p>These are all actually equipped in the listed builds. Soul Breaker and Soul Splash remain optional swaps, not core upgrade recommendations.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Piercing Assault</strong><p>Primary T4 investment and equipped in every Conqueror build below.</p></div></li><li><b>2</b><div><strong>Tactical Adaptation</strong><p>Universal offensive/defensive value and equipped in every listed build.</p></div></li><li><b>3</b><div><strong>Insightful Eye</strong><p>Actually occupies a slot in every listed build until your S2 gear solves the Crit requirement.</p></div></li><li><b>4</b><div><strong>Indomitable Will / Blazing Clash</strong><p>Indomitable is the equipped dungeon/PvP safety slot; Blazing Clash is the equipped boss damage slot.</p></div></li></ol></div>
       <div class="buildGrid">
         <article class="buildCard"><header><div><h3>Generic / Dungeons</h3><p>Default all-content Elemental setup</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Flash Fire</b><b>Flame Aura</b><b>Flickering Blade</b><b>Blade Storm</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Insightful Eye</b><b>Piercing Assault</b><b>Tactical Adaptation</b><b>Indomitable Will</b></div></div><ul><li><b>Offensive:</b> Indomitable Will → Soul Splash</li><li><b>Defensive/utility:</b> Flame Aura → Darkness Descends when mobility/dispel keeps you safer</li><li>Once Crit is solved, Insightful Eye → Soul Breaker</li></ul></article>
         <article class="buildCard"><header><div><h3>Boss / Dragon</h3><p>Single-target and long-fight damage</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Flame Aura</b><b>Blade Storm</b><b>Flash Fire</b><b>Flickering Blade</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Insightful Eye</b><b>Piercing Assault</b><b>Tactical Adaptation</b><b>Blazing Clash</b></div></div><ul><li><b>Offensive:</b> high Crit → Insightful Eye → Crit Mastery</li><li><b>Defensive:</b> Blazing Clash → Indomitable Will</li><li>Nyxarchon is the safest raw-DPS lead Fantomon; Pandarial can front-load cooldowns later in S2</li></ul></article>
@@ -6285,9 +6399,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       </div><p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-conqueror" rel="noreferrer" target="_blank">Prydwen Conqueror ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-duelist/" rel="noreferrer" target="_blank">Loot &amp; Waifus Duelist/Conqueror ↗</a></p>`;
 
     if(cls==='Guardian') return `
-      <div class="guideSummary"><div><span>Tank / support / bruiser</span><strong>Guardian</strong><p>T4 finally gives Knight real taunt tools plus stronger Water/Light offense. The long-term identity is still protection: Block, DEF, shields, taunt control and party support.</p></div><p><b>Quick stat rule</b>Block is the premium substat. Sword/Boots value SPD heavily; defensive slots prioritize DEF, then HP/RES. Build damage only after the tank loop is stable.</p></div>
+      <div class="guideSummary"><div><span>Tank / support / bruiser</span><strong>Guardian</strong><p>T4 finally gives Knight real taunt tools plus stronger Water/Light offense. The long-term identity is still protection: Block, DEF, shields, taunt control and party support.</p></div><p><b>Stat priority</b>Block is the premium substat. Sword/Boots value SPD heavily; defensive slots prioritize DEF, then HP/RES. Build damage only after the tank loop is stable.</p></div>
       <div class="gearPanel"><div class="gearIntro"><span>Season 2 gearing</span><strong>Gear & stat priorities</strong><p>Guardian has very different offensive and defensive slots. Do not flatten everything into one generic tank stat.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Sword: SPD &gt; ATK &gt; Physical Mastery &gt; Elemental Mastery. Gauntlets: DEF &gt; HP &gt; Physical/Elemental RES. Boots: SPD &gt; ATK &gt; Elemental/Physical Mastery.</p></div><div class="gearItem"><span>Best substats</span><p>Block Rate% → Block Rate + Block Efficiency → PvE/PvP DMG + DMG RES. Then flat DEF / SPD / HP and useful Crit.</p></div><div class="gearItem"><span>Gem plan</span><p>Weapon: Obsidian &gt; Amethyst ≥ Ruby. Off-hand: Moonstone &gt; Sapphire &gt; Citrine. Boots: Amethyst &gt; Citrine. Armor: Moonstone &gt; Sapphire/Beryl. Helm: Sapphire &gt; Citrine &gt; Beryl.</p></div><div class="gearItem"><span>Fantomon focus</span><p>Adult Aegiswing is the Guardian priority for tanking. Kels is excellent support (DEF down + dispel). Nyx adds damage/debuffs; Pandarial later adds opening-CD reduction and healing.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core technique investment</span><strong>Build slots first</strong><p>These priorities now follow the techniques actually equipped in the Guardian builds below. Hamper Strike remains a useful taunt swap, but is no longer ranked as if it were a default slot.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Valor Surge</strong><p>Equipped in both the dungeon and Dragon/Chaos support builds for party damage and cleanse utility.</p></div></li><li><b>2</b><div><strong>Heart of Challenge</strong><p>The core group-taunt slot in the default dungeon tank build.</p></div></li><li><b>3</b><div><strong>Luminous Shield</strong><p>Equipped in both the dungeon tank and reflect/solo builds and directly supports the Guardian survival loop.</p></div></li><li><b>4</b><div><strong>Lunarwater Threads</strong><p>Used in both Water/AoE and Dragon/Chaos support; the most reusable offensive/control slot across those variants.</p></div></li></ol></div>
+      <div class="priorityPanel"><div class="priorityIntro"><span>Technique investment</span><strong>Build slots first</strong><p>These priorities now follow the techniques actually equipped in the Guardian builds below. Hamper Strike remains a useful taunt swap, but is no longer ranked as if it were a default slot.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Valor Surge</strong><p>Equipped in both the dungeon and Dragon/Chaos support builds for party damage and cleanse utility.</p></div></li><li><b>2</b><div><strong>Heart of Challenge</strong><p>The core group-taunt slot in the default dungeon tank build.</p></div></li><li><b>3</b><div><strong>Luminous Shield</strong><p>Equipped in both the dungeon tank and reflect/solo builds and directly supports the Guardian survival loop.</p></div></li><li><b>4</b><div><strong>Lunarwater Threads</strong><p>Used in both Water/AoE and Dragon/Chaos support; the most reusable offensive/control slot across those variants.</p></div></li></ol></div>
       <div class="priorityPanel"><div class="priorityIntro"><span>Charm investment</span><strong>Iron Will is the keeper</strong><p>Community long-term rankings line up with the T4 guide: Iron Will and Holy Aegis age extremely well. Soul Protection is especially strong right now.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Iron Will</strong><p>Damage reduction from taunted enemies; one of the strongest long-lasting Guardian investments.</p></div></li><li><b>2</b><div><strong>Holy Aegis</strong><p>More DEF and stronger DEF-scaling shields—directly reinforces the class core.</p></div></li><li><b>3</b><div><strong>Soul Protection</strong><p>Huge opening shield and excellent dungeon value; particularly strong during T4 progression.</p></div></li><li><b>4</b><div><strong>Oath of Vigil</strong><p>Excellent group/PvP protection. Get at least one copy; it is useful even without forcing heavy rank investment.</p></div></li></ol></div>
       <div class="buildGrid">
         <article class="buildCard"><header><div><h3>Dungeon Tank</h3><p>Safest default party grid</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Valor Surge</b><b>Heart of Challenge</b><b>Luminous Shield</b><b>Desperate Protection</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Iron Will</b><b>Holy Aegis</b><b>Block Awareness</b><b>Soul Protection</b></div></div><ul><li><b>Offensive:</b> Desperate Protection → Swirling Blade or Star Shattering Slash</li><li><b>Defensive:</b> Valor Surge → Hamper Strike for more taunt uptime</li><li>If the party still folds, add Iron Fortress</li></ul></article>
@@ -6297,10 +6411,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       </div><p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-guardian" rel="noreferrer" target="_blank">Prydwen Guardian ↗</a></p>`;
 
     if(cls==='Destroyer') return `
-      <div class="guideSummary"><div><span>Ranged elemental DPS</span><strong>Destroyer</strong><p>T4 is more specialized than Archmage: Light/Wind handles general and boss content while pure Fire becomes the horde-clearing specialist. Freeze remains playable but is less reliable.</p></div><p><b>Quick stat rule</b>Elemental Mastery &gt; Crit &gt; ATK &gt; SPD on Staff/Codex. Your best builds are Crit-sensitive, especially Fire, so good Crit/Accuracy lines matter more than raw ATK%.</p></div>
+      <div class="guideSummary"><div><span>Ranged elemental DPS</span><strong>Destroyer</strong><p>T4 is more specialized than Archmage: Light/Wind handles general and boss content while pure Fire becomes the horde-clearing specialist. Freeze remains playable but is less reliable.</p></div><p><b>Stat priority</b>Elemental Mastery &gt; Crit &gt; ATK &gt; SPD on Staff/Codex. Your best builds are Crit-sensitive, especially Fire, so good Crit/Accuracy lines matter more than raw ATK%.</p></div>
       <div class="gearPanel"><div class="gearIntro"><span>Season 2 gearing</span><strong>Gear & stat priorities</strong><p>Destroyer leans harder into elemental scaling than the other classes. Affinity and Crit quality can matter more than a small power-score gain.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Staff/Codex: Elemental Mastery &gt; Crit &gt; ATK &gt; SPD &gt; Effect Hit Rate. Helmet/Chest: DEF/RES &gt; HP. Boots: Elemental Mastery &gt; SPD &gt; ATK.</p></div><div class="gearItem"><span>Best substats</span><p>Top unique survival/dodge lines are excellent. Otherwise Crit + Accuracy, Crit + Crit DMG, then Elemental Mastery / Crit Rate / Accuracy / Crit DMG.</p></div><div class="gearItem"><span>Gem plan</span><p>Weapon &amp; Off-hand: Obsidian / Amethyst. Boots: Amethyst. Armor: Moonstone. Helm: Citrine; use Beryl/Sapphire mainly for conversion or power padding.</p></div><div class="gearItem"><span>Relic elements</span><p>Light is mandatory priority, Fire is next because of the new horde build. Then Wind &gt; Water &gt; Dark for most Destroyer accounts.</p></div></div></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core technique investment</span><strong>Formation Breaker is #1</strong><p>Every ranked technique here is equipped in at least one listed Destroyer build; swap-only options stay in the card notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Formation Breaker</strong><p>Universal party ATK support plus a chance to accelerate allies; appears in essentially every serious T4 setup.</p></div></li><li><b>2</b><div><strong>Thunder of Judgment</strong><p>Destroyer’s best T4 single-target nuke and it prioritizes large targets.</p></div></li><li><b>3</b><div><strong>Wind Blade Spiral</strong><p>Fast-cycling Wind damage; more efficient than older Hurricane-style options in sustained fights.</p></div></li><li><b>4</b><div><strong>Meteoric Flames</strong><p>Still a workhorse for both mixed AoE and pure Fire compositions.</p></div></li></ol></div>
-      <div class="priorityPanel"><div class="priorityIntro"><span>Core charm investment</span><strong>Universal first, Fire second</strong><p>Every ranked charm here is equipped in the builds below; Fire-specific pieces are ranked because they occupy the Fire Horde loadout.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Rapid Cast</strong><p>Elemental Mastery plus opening cooldown acceleration—excellent across multiple Destroyer builds.</p></div></li><li><b>2</b><div><strong>Radiant Sear</strong><p>Core generic Destroyer damage proc and a staple of the Light/mixed setups.</p></div></li><li><b>3</b><div><strong>Fiery Burst</strong><p>The damage engine of the pure Fire horde build; scales hard with Crit frequency.</p></div></li><li><b>4</b><div><strong>Explosive Spirit</strong><p>Stacks Crit from Fire techniques and helps Fiery Burst trigger consistently. Mana Surge is the fallback.</p></div></li></ol></div>
+      <div class="priorityPanel"><div class="priorityIntro"><span>Technique investment</span><strong>Formation Breaker is #1</strong><p>Every ranked technique here is equipped in at least one listed Destroyer build; swap-only options stay in the card notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Formation Breaker</strong><p>Universal party ATK support plus a chance to accelerate allies; appears in essentially every serious T4 setup.</p></div></li><li><b>2</b><div><strong>Thunder of Judgment</strong><p>Destroyer’s best T4 single-target nuke and it prioritizes large targets.</p></div></li><li><b>3</b><div><strong>Wind Blade Spiral</strong><p>Fast-cycling Wind damage; more efficient than older Hurricane-style options in sustained fights.</p></div></li><li><b>4</b><div><strong>Meteoric Flames</strong><p>Still a workhorse for both mixed AoE and pure Fire compositions.</p></div></li></ol></div>
+      <div class="priorityPanel"><div class="priorityIntro"><span>Charm investment</span><strong>Universal first, Fire second</strong><p>Every ranked charm here is equipped in the builds below; Fire-specific pieces are ranked because they occupy the Fire Horde loadout.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Rapid Cast</strong><p>Elemental Mastery plus opening cooldown acceleration—excellent across multiple Destroyer builds.</p></div></li><li><b>2</b><div><strong>Radiant Sear</strong><p>Core generic Destroyer damage proc and a staple of the Light/mixed setups.</p></div></li><li><b>3</b><div><strong>Fiery Burst</strong><p>The damage engine of the pure Fire horde build; scales hard with Crit frequency.</p></div></li><li><b>4</b><div><strong>Explosive Spirit</strong><p>Stacks Crit from Fire techniques and helps Fiery Burst trigger consistently. Mana Surge is the fallback.</p></div></li></ol></div>
       <div class="buildGrid">
         <article class="buildCard"><header><div><h3>General AoE</h3><p>Mixed Wind/Fire wave clear</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Formation Breaker</b><b>Howling Hurricane</b><b>Meteoric Flames</b><b>Wind Blade Spiral</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Rapid Cast</b><b>Void Bubble</b><b>Cyclone Lament</b><b>Radiant Sear</b></div></div><ul><li><b>Offensive:</b> safe content → Void Bubble → Mana Surge / another damage charm</li><li><b>Defensive:</b> keep Void Bubble when pushing deficits</li><li>Cyclone Lament benefits from running two Wind techniques here</li></ul></article>
         <article class="buildCard"><header><div><h3>Boss / Single Target</h3><p>Default S2 boss setup</p></div></header><div class="skillGroup"><span>Techniques</span><div><b>Formation Breaker</b><b>Divine Wrath</b><b>Wind Blade Spiral</b><b>Thunder of Judgment</b></div></div><div class="skillGroup"><span>Charms</span><div><b>Rapid Cast</b><b>Void Bubble</b><b>Mana Surge</b><b>Radiant Sear</b></div></div><ul><li><b>Offensive:</b> Void Bubble → another damage charm when survival is irrelevant</li><li><b>Defensive:</b> Mana Surge → Overload Protection</li><li>Small bosses: Divine Wrath can be replaced by Meteoric Flames</li></ul></article>
@@ -6309,7 +6423,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       </div><p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus Sorcerer/Destroyer ↗</a></p>`;
 
     if(cls==='Dominator') return `
-      <div class="guideSummary dominatorGuideSummary"><div><span>Dark DPS / healer / support</span><div class="dominatorHeadingRow"><strong>Dominator</strong><div class="dominatorModeTabs" role="group" aria-label="Dominator build role"><button type="button" data-dominator-mode="dps">DPS</button><button type="button" data-dominator-mode="heals">Heals</button></div></div><p>T4 is a difficult DPS tier for Sage because Erosion needs high Effect Hit Rate and summons are easier to kill. Healing/support gets meaningful upgrades and remains the most reliable role.</p></div><p><b>Quick stat rule</b>DPS: Effect Hit Rate ≥ Elemental Mastery ≥ ATK &gt; SPD. Healer: SPD &gt; Effect Hit Rate &gt; Elemental Mastery &gt; ATK. Do not use one gear priority for both jobs.</p></div>
+      <div class="guideSummary dominatorGuideSummary"><div><span>Dark DPS / healer / support</span><div class="dominatorHeadingRow"><strong>Dominator</strong><div class="dominatorModeTabs" role="group" aria-label="Dominator build role"><button type="button" data-dominator-mode="dps">DPS</button><button type="button" data-dominator-mode="heals">Heals</button></div></div><p>T4 is a difficult DPS tier for Sage because Erosion needs high Effect Hit Rate and summons are easier to kill. Healing/support gets meaningful upgrades and remains the most reliable role.</p></div><p><b>Stat priority</b>DPS: Effect Hit Rate ≥ Elemental Mastery ≥ ATK &gt; SPD. Healer: SPD &gt; Effect Hit Rate &gt; Elemental Mastery &gt; ATK. Do not use one gear priority for both jobs.</p></div>
       <div class="gearPanel"><div class="gearIntro"><span>Season 2 gearing</span><strong>Two gear profiles</strong><p>Dominator is the class where a DPS preset and a healer preset are genuinely worth maintaining.</p></div><div class="gearGrid"><div class="gearItem"><span>DPS main lines</span><p>Staff/Orb: Effect Hit Rate ≥ Elemental Mastery ≥ ATK &gt; SPD. Boots: Elemental Mastery &gt; ATK &gt; SPD. Defensive slots: DEF/RES &gt; HP.</p></div><div class="gearItem"><span>Healer main lines</span><p>Staff/Orb: SPD &gt; Effect Hit Rate &gt; Elemental Mastery &gt; ATK. Helmet/Chest favor HP first, then DEF/RES. Boots: SPD &gt; Elemental Mastery &gt; ATK.</p></div><div class="gearItem"><span>Substats</span><p>DPS: Crit+Accuracy / Crit+Crit DMG / ailment damage, then EHR and conversions. Healer: DMG RES + Healing, Block packages, Healing Boost, then SPD/HP.</p></div><div class="gearItem"><span>Gem plan</span><p>Healer: Amethyst weapon, Amber off-hand/helm/boots, Moonstone armor. DPS: Obsidian weapon/off-hand, Citrine helm, Moonstone armor, Amethyst boots.</p></div></div></div>
       <div class="priorityPanel" data-dominator-role="heals"><div class="priorityIntro"><span>Core support investment</span><strong>Phantom Light is mandatory</strong><p>These are all equipped in the Healing/Group or Carry Support builds below, not standalone wishlist recommendations.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Phantom Light</strong><p>Healing boost plus overheal-to-shield conversion. The must-have Dominator healer Charm.</p></div></li><li><b>2</b><div><strong>Rejuvenating Rain</strong><p>Repeatable single-target heal and a clean answer to low-HP allies.</p></div></li><li><b>3</b><div><strong>Mantra of Blessings</strong><p>High-value carry buff for co-op and scoring content when raw survival is already handled.</p></div></li><li><b>4</b><div><strong>Decoy Clone</strong><p>Excellent hypercarry/scoring utility when your team can exploit the clone connection and positioning.</p></div></li></ol></div>
       <div class="priorityPanel" data-dominator-role="dps"><div class="priorityIntro"><span>Core DPS investment</span><strong>EHR decides the build</strong><p>These are all equipped in the listed Single Target or AoE/Erosion builds; situational alternates remain in the build notes.</p></div><ol class="priorityList"><li><b>1</b><div><strong>Dark Starburst</strong><p>Reliable multi-hit single-target damage that does not require Erosion stacks to function.</p></div></li><li><b>2</b><div><strong>Shadow of Termination</strong><p>Key single-target Dark finisher/core technique.</p></div></li><li><b>3</b><div><strong>Shadow Erosion</strong><p>Core DPS Charm when your Effect Hit Rate is high enough to land the status reliably.</p></div></li><li><b>4</b><div><strong>Linked Misfortune</strong><p>Standard Erosion/Dark damage package piece across both ST and AoE builds.</p></div></li></ol></div>
@@ -6376,7 +6490,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     });
     renderBuilds();
     buildsInitialized=true;
-    setInterval(()=>{ if(buildsInitialized && buildSeasonKey()!==currentBuildSeason) renderBuilds(); },60_000);
+    setInterval(()=>{ if(!document.hidden && buildsInitialized && buildSeasonKey()!==currentBuildSeason) renderBuilds(); },60_000);
   }
 
   // PERFORMANCE_STABILIZATION_V1
@@ -6468,7 +6582,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     renderBuilds();
     let lastBuildSeasonTick=liveBuildSeason();
     setInterval(()=>{
-      if(!buildsInitialized) return;
+      if(document.hidden||!buildsInitialized) return;
       const beforeClass=currentClass;
       const beforeSeason=lastBuildSeasonTick;
       normalizeLiveBuildClass();
@@ -6582,7 +6696,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     $('copyPlan')?.addEventListener('click',copyPlan);
     $('resetCalc')?.addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
     setInterval(()=>{
-      if(!calculatorInitialized) return;
+      if(document.hidden||!calculatorInitialized) return;
       rollSnapshotForward(Date.now(),true);
       if(!document.getElementById('calculatorSection')?.hidden) scheduleCalculatorUpdate(0);
     },60_000);
@@ -7404,7 +7518,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     }
     quick.innerHTML=`<div class="quickTitle">Stat priorities</div><p class="quickRule">${esc(profile.rule)}</p><div class="quickGearGrid">${profile.rows.map(([slot,stats])=>`<div class="quickGearRow"><b>${esc(slot)}</b><span>${esc(stats)}</span></div>`).join('')}</div><div class="quickSubstats"><b>Substats</b><span>${esc(profile.substats)}</span></div>`;
     const gear=host.querySelector(':scope > .gearPanel');
-    if(gear) gear.hidden=true;
+    if(gear) gear.remove();
   }
   function makePanel(data){
     const [kind,title,desc,items]=data;
