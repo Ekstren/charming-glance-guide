@@ -4028,7 +4028,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     if(!$('holdExp')?.checked) exp+=Math.max(0,n('bedStoredExp',0));
     const endMs=cfg.end.getTime();
     const target=Math.max(now,Math.min(Number(targetMs)||endMs,endMs));
-    const reserve=$('holdExp').checked?clamp(n('reserveHours',34),0,36):0;
+    const reserve=$('holdExp')?.checked?clamp(n('reserveHours',34),0,36):0; /* S2_PROJECTION_HOLD_NULL_V1 */
     const reserveStart=endMs-reserve*3_600_000;
     // The hold is a hard S1 collection cutoff: natural Bed EXP and reset speed-ups after
     // reserveStart stay banked for S2 and cannot increase the S1 projected score.
