@@ -2868,7 +2868,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" value="0"></label>
-          <div class="findMaxCell"><span>Maximum target</span><div class="maxTargetControl"><button id="findMaxStars" type="button">Find max achievable</button><small id="maxAchievableStatus"></small></div></div>
+          <label>Bed XP Stored<input id="bedStoredExp" type="number" min="0" step="1" value="0"></label>
         </div>
         <!-- MOVE_PROJECTION_BEFORE_PROGRESSION_V1 -->
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
@@ -2996,7 +2996,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. With <i>Minimize tools</i> enabled, saved Realm tools are spent only when their route is more than 10% better; routes requiring additional paid refreshes must be more than 20% better. Turn the toggle off for strict pure-efficiency ranking.</p>
-<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve is a hard current-season Bed cutoff: natural Bed accrual and reset speed-ups after the hold begins stay banked for Season 2 and do not count toward the Season 1 score.</p>
+<p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. The planner assumes the free 2-hour speed-up is used at every reset and counts it as a discrete event for Bed EXP, Cart production and Stamina regeneration. A 34-hour EXP reserve routes natural Bed accrual and reset speed-ups after the hold begins into Bed XP Stored. Unchecking Hold claims that stored EXP into the player, and the stored balance persists through season rollover.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each paid refresh grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 refreshes per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers refreshes 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Refreshes 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. With Minimize tools enabled, existing Hammers/Knuckles/Shovels stay banked unless consuming them improves modeled acquisition effort by more than 10%; additional paid refreshes require more than a 20% improvement. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
@@ -3152,7 +3152,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
   const GEAR_IDS = ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'];
   const INPUT_IDS = [
-    'targetStars','historicalStars','charLevel','charExp','bedExp','reserveHours','skillLevel','relicLevel','fantomonLevel',
+    'targetStars','historicalStars','charLevel','charExp','bedExp','bedStoredExp','reserveHours','skillLevel','relicLevel','fantomonLevel',
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
@@ -3307,6 +3307,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   let snapshotSeason = seasonKeyAt(snapshotAtMs);
   let snapshotCarry = {ore:0, essence:0, sand:0, treat:0, exp:0};
   let snapshotStateLoaded = false;
+  let committedHoldExpState = !!document.getElementById('holdExp')?.checked;
   const numberFromState = (state,id,fallback=0) => {
     const v = Number(state?.[id]);
     return Number.isFinite(v) ? v : fallback;
@@ -3384,6 +3385,38 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     return Math.max(0,wallHours+boostHours);
   }
 
+  /* BED_STORED_EXP_V1
+     Bed EXP is a first-class persisted balance. While Hold is active, generation before
+     the reserve cutoff is claimed normally and generation after the cutoff is routed into
+     Bed XP Stored. Turning Hold off claims the stored balance into the character. */
+  function bedHoursInRange(startMs,endMs){
+    const start=Number(startMs)||0,end=Number(endMs)||0;
+    if(end<=start) return 0;
+    return Math.max(0,(end-start)/3_600_000)+2*countFuturePacificResets(start,end);
+  }
+  function bedExpHourSplitBetween(startMs,endMs,cfg=activeCalcConfig(),holdEnabled=!!$('holdExp')?.checked){
+    const start=Math.max(0,Number(startMs)||0);
+    const end=Math.max(start,Math.min(Number(endMs)||start,cfg.end.getTime()));
+    if(end<=start) return {claimedHours:0,storedHours:0};
+    if(!holdEnabled) return {claimedHours:bedHoursInRange(start,end),storedHours:0};
+    const reserve=clamp(n('reserveHours',34),0,36);
+    if(reserve<=0) return {claimedHours:bedHoursInRange(start,end),storedHours:0};
+    const reserveStart=cfg.end.getTime()-reserve*3_600_000;
+    const claimedEnd=Math.min(end,reserveStart);
+    const storedStart=Math.max(start,reserveStart);
+    return {
+      claimedHours:claimedEnd>start?bedHoursInRange(start,claimedEnd):0,
+      storedHours:end>storedStart?bedHoursInRange(storedStart,end):0
+    };
+  }
+  function claimStoredBedExp(cfg=activeCalcConfig()){
+    const stored=Math.max(0,Math.floor(n('bedStoredExp',0)));
+    if(stored<=0) return 0;
+    advanceCharacterSnapshot(stored,cfg);
+    if($('bedStoredExp')) $('bedStoredExp').value='0';
+    return stored;
+  }
+
   function advanceCharacterSnapshot(deltaExp,cfg=CALC_SEASONS[snapshotSeason] || activeCalcConfig()){
     let lvl = Math.max(1, Math.floor(n('charLevel',cfg.key==='s2'?100:122)));
     let exp = Math.max(0,n('charExp',0)) + Math.max(0,deltaExp);
@@ -3447,13 +3480,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       if(whole>0 && $(currentId)) $(currentId).value = String(Math.max(0,n(currentId,0))+whole);
     });
 
-    const oldExpHours = projectionExpHoursAt(snapshotAtMs,cfg);
-    const newExpHours = projectionExpHoursAt(cappedNow,cfg);
-    const elapsedExpHours = Math.max(0, oldExpHours-newExpHours);
-    const gainedExpFloat = Math.max(0,n('bedExp',0))*elapsedExpHours + Math.max(0,Number(snapshotCarry.exp)||0);
-    const gainedExp = Math.floor(gainedExpFloat + 1e-9);
-    snapshotCarry.exp = Math.max(0, gainedExpFloat-gainedExp);
-    if(gainedExp>0) advanceCharacterSnapshot(gainedExp,cfg);
+    const bedSplit=bedExpHourSplitBetween(snapshotAtMs,cappedNow,cfg,!!$('holdExp')?.checked);
+    const bedRate=Math.max(0,n('bedExp',0));
+    let claimedExpFloat=bedRate*bedSplit.claimedHours;
+    let storedExpFloat=bedRate*bedSplit.storedHours;
+    const expCarry=Math.max(0,Number(snapshotCarry.exp)||0);
+    // Carry the sub-EXP remainder into whichever destination is active at the end of the interval.
+    if(bedSplit.storedHours>0) storedExpFloat+=expCarry;
+    else claimedExpFloat+=expCarry;
+    const claimedExp=Math.floor(claimedExpFloat+1e-9);
+    const storedExp=Math.floor(storedExpFloat+1e-9);
+    snapshotCarry.exp=Math.max(0,(claimedExpFloat-claimedExp)+(storedExpFloat-storedExp));
+    if(claimedExp>0) advanceCharacterSnapshot(claimedExp,cfg);
+    if(storedExp>0 && $('bedStoredExp')) $('bedStoredExp').value=String(Math.max(0,n('bedStoredExp',0))+storedExp);
 
     // Already-held Stamina is intentionally not snapshot-aged because the calculator tracks only future regenerated Stamina.
     snapshotAtMs = cappedNow;
@@ -3532,6 +3571,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       snapshotSeason=seasonKeyAt(snapshotAtMs);
       snapshotCarry={ore:0, essence:0, sand:0, treat:0, exp:0};
     }
+    committedHoldExpState=!!$('holdExp')?.checked;
     snapshotStateLoaded=true;
     if(hadState) rollSnapshotForward(Date.now(),false);
     updateGearLockUI();
@@ -3616,6 +3656,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     const now=Date.now();
     const current=characterSnapshot(cfg);
     let lvl=current.level, exp=current.exp;
+    // Defensive projection: if a stored balance exists while Hold is off, it is immediately claimable.
+    if(!$('holdExp')?.checked) exp+=Math.max(0,n('bedStoredExp',0));
     const endMs=cfg.end.getTime();
     const target=Math.max(now,Math.min(Number(targetMs)||endMs,endMs));
     const reserve=$('holdExp').checked?clamp(n('reserveHours',34),0,36):0;
@@ -5565,6 +5607,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       applyS2ScoringStartDefaults();
     }
     gearLocked=false; snapshotAtMs=Date.now(); snapshotSeason=cfg.key; snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
+    committedHoldExpState=!!$('holdExp')?.checked;
     updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();
   }
 
@@ -6209,9 +6252,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     });
     CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{
       resetMaxAchievableUi();
-      markManualSnapshot(id);
-      // Checkbox state must be persisted before recalculation so S2 reserve toggles
-      // immediately add/remove their protected resource pools.
+      if(id==='holdExp'){
+        const el=$('holdExp');
+        const next=!!el.checked;
+        const previous=committedHoldExpState;
+        // Age elapsed Bed production under the state that was actually active, then commit the toggle.
+        el.checked=previous;
+        rollSnapshotForward(Date.now(),false);
+        el.checked=next;
+        committedHoldExpState=next;
+        if(snapshotSeason===seasonKeyAt(Date.now())) snapshotAtMs=Date.now();
+        if(previous && !next) claimStoredBedExp(activeCalcConfig());
+      } else {
+        markManualSnapshot(id);
+      }
+      // Checkbox state must be persisted before recalculation so reserve changes apply immediately.
       saveState();
       if(calculatorInitialized) updateCalculator();
       else initializeCalculatorIfNeeded();
@@ -6227,7 +6282,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       scheduleCalculatorUpdate(0);
     });
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
-    $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
     $('targetMessage')?.addEventListener('click',e=>{
       const btn=e.target.closest?.('.applyRealmRecommendation');
       if(btn) applyRecommendedRealmRefreshes(btn);
