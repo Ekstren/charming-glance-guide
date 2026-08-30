@@ -1,0 +1,53 @@
+name: Apply S2 scoring source confirmation v1
+on:
+  push:
+    paths:
+      - '.github/patch-s2-scoring-source-confirm-v1.py'
+      - '.github/workflows/apply-s2-scoring-source-confirm-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply patch
+        run: python .github/patch-s2-scoring-source-confirm-v1.py
+      - name: Verify S2 scoring model
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          checks={
+            'source marker':'S2_SCORING_SOURCE_CONFIRM_V1' in s,
+            'S2 model constants':"scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8}" in s,
+            'neutral starter defaults':'skillLevel:130,relicLevel:13,fantomonLevel:130' in s,
+            'starter text +13':'Starter profile: Lv.130 · Gear 130 · Skills 130 · Fantomons 130 · Relics +13' in s,
+            'no stale starter +14':'Starter profile: Lv.130 · Gear 130 · Skills 130 · Fantomons 130 · Relics +14' not in s,
+            'no S2 relic fallback +14':"cfg.key==='s2'?14:13" not in s,
+            '920 benchmark':'expectedTotalStars:920' in s,
+          }
+          bad=[k for k,v in checks.items() if not v]
+          if bad: raise SystemExit('verification failed: '+', '.join(bad))
+          print('S2 scoring guards OK')
+          PY
+          node - <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('index.html','utf8');
+          const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
+          let i=0;
+          for(const js of scripts){i++;if(!js.trim())continue;try{new Function(js)}catch(e){console.error('inline script',i,e.message);process.exit(1)}}
+          console.log('inline JavaScript parses');
+          NODE
+      - name: Commit correction
+        run: |
+          if git diff --quiet; then echo 'No changes'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Confirm Season 2 scoring baseline'
+          git push
