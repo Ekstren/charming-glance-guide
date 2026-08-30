@@ -9,11 +9,15 @@ if marker in s:
     print('Bed storage/hold automation already disabled')
     raise SystemExit(0)
 
-# Remove the temporary stored-Bed field and the obsolete hidden reserve control.
+# Remove the temporary stored-Bed field and all now-obsolete hold/reserve UI.
 s = s.replace('          <label>Bed XP Stored<input id="bedStoredExp" type="number" min="0" step="1" value="0"></label>\n', '')
 s = s.replace('          <input id="reserveHours" min="0" max="36" type="number" value="34" hidden>\n', '')
+s = re.sub(r'\n<style id="bed-exp-hold-layout-v4">[\s\S]*?</style>\n', '\n', s, count=1)
 
-# Keep Bed EXP / hour, but remove the stored/hold state from persisted calculator inputs.
+# Keep Bed EXP / hour, but remove stored/hold state from defaults and persisted calculator inputs.
+s = s.replace('    charLevel:130,charExp:0,bedExp:0,reserveHours:34,', '    charLevel:130,charExp:0,bedExp:0,')
+s = s.replace("  const S2_SCORING_START_CHECKS=Object.freeze({\n    holdExp:false,preserveRealmTools:true\n  });",
+              "  const S2_SCORING_START_CHECKS=Object.freeze({\n    preserveRealmTools:true\n  });")
 s = s.replace("    'targetStars','historicalStars','charLevel','charExp','bedExp','bedStoredExp','reserveHours','skillLevel','relicLevel','fantomonLevel',",
               "    'targetStars','historicalStars','charLevel','charExp','bedExp','skillLevel','relicLevel','fantomonLevel',")
 s = s.replace("  const CHECK_IDS = ['holdExp','preserveRealmTools'];", "  const CHECK_IDS = ['preserveRealmTools'];")
@@ -34,7 +38,7 @@ s = re.sub(
     count=1,
 )
 
-# Replace character projection with the simple, pre-storage model: current EXP + future Bed production.
+# Replace character projection with the simple model: current EXP + future Bed production.
 project_pattern = r"  function projectCharacterTo\(targetMs,cfg=activeCalcConfig\(\)\)\{[\s\S]*?\n  \}\n  function projectCharacter\(cfg=activeCalcConfig\(\)\)\{"
 project_replacement = '''  /* BED_STORAGE_DISABLED_V1
      Stored/hold Bed automation is temporarily disabled. The planner still uses the entered
@@ -80,13 +84,18 @@ if bed_age_count != 1:
 s = s.replace('    return elapsedResourceHours>0 || elapsedExpHours>0 || elapsedRealmResets>0;',
               '    return elapsedResourceHours>0 || elapsedRealmResets>0;')
 
-# Remove stale storage migration/state synchronization.
+# Remove stale storage migration/state synchronization and reset handling.
 s = s.replace("      if(Number(state.reserveHours)===36) state.reserveHours='34'; // BED_HOLD_34H_V1 migrate old hidden default\n", '')
 s = s.replace("    committedHoldExpState=!!$('holdExp')?.checked;\n", '')
+s = s.replace("    if($('holdExpLabel')) $('holdExpLabel').textContent=`Hold Bed EXP for ${cfg.nextName}`;\n", '')
+s = s.replace("    $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;",
+              "    $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); future free 2-hour reset boosts are included automatically.`;")
+s = s.replace("    committedHoldExpState=!!$('holdExp')?.checked;\n    updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();",
+              "    updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();")
 
-# Remove any explicit Hold checkbox listener left behind by older patches.
+# CHECK_IDS no longer contains holdExp, so remove the dead special-case branch from its generic listener.
 s = re.sub(
-    r"\n\s*\$\('holdExp'\)\?*\.addEventListener\('change',[\s\S]*?\n\s*\}\);",
+    r"\n      if\(id==='holdExp'\)\{[\s\S]*?\n        return;\n      \}",
     '',
     s,
     count=1,
@@ -100,16 +109,8 @@ s = re.sub(
     count=1,
 )
 
-# Diagnostics for any old Hold references that survived the targeted cleanup.
-if "'holdExp'" in s or '"holdExp"' in s:
-    for m in re.finditer(r"holdExp", s):
-        a=max(0,m.start()-220); b=min(len(s),m.end()+320)
-        print('--- holdExp context ---')
-        print(s[a:b].replace('\n','\\n'))
-
 # Old saved fields are automatically dropped on the next save because they are no longer INPUT/CHECK ids.
-# Fail closed if any executable references to the removed feature remain.
-for forbidden in ("bedStoredExp", "'holdExp'", '"holdExp"', 'reserveHours', 'committedHoldExpState', 'elapsedExpHours'):
+for forbidden in ("bedStoredExp", "'holdExp'", '"holdExp"', 'reserveHours', 'committedHoldExpState', 'elapsedExpHours', '#holdExp', 'holdExpOption', 'holdExpLabel'):
     if forbidden in s:
         raise SystemExit(f'Removed Bed-storage token still present: {forbidden}')
 
