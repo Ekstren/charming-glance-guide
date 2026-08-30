@@ -1,0 +1,25 @@
+name: Site runtime smoke
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'scripts/site_smoke_test.mjs'
+      - '.github/workflows/site-runtime-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium
+      - name: Run browser smoke test
+        run: node scripts/site_smoke_test.mjs
