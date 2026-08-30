@@ -1,0 +1,40 @@
+name: Apply S2 Cart rate defaults
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-s2-cart-rate-defaults-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply S2 Cart rate defaults
+        run: python .github/patch-s2-cart-rate-defaults-v1.py
+      - name: Verify S2 Cart defaults
+        run: |
+          grep -q 'S2_CART_RATE_DEFAULTS_V1' index.html
+          grep -q 'oreRate:1000' index.html
+          grep -q 'essenceRate:1200' index.html
+          grep -q 'sandRate:800' index.html
+          grep -q 'treatRate:80' index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Set conservative S2 Cart rate defaults'
+          git push
