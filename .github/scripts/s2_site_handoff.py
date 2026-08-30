@@ -17,11 +17,14 @@ s=''.join(lines)
 
 # 2) Builds: S2-only public navigation/classes. Remove the S1/S2 selector and all S1 renderers.
 s=re.sub(r'\s*<span class="buildSeasonToggle" id="buildSeasonToggle"[\s\S]*?</span>\s*', '\n', s)
-# There are legacy and override build libraries in this single-file app; remove each S1 renderer that precedes an S2 renderer.
-prev=None
-while prev!=s:
-    prev=s
-    s=re.sub(r'\n\s*function buildHtmlS1\(cls\)\{[\s\S]*?(?=\n\s*function buildHtmlS2\(cls\)\{)', '\n', s, count=1)
+while 'function buildHtmlS1' in s:
+    a=s.find('function buildHtmlS1')
+    a=s.rfind('\n',0,a)+1
+    b=s.find('function buildHtmlS2',a)
+    if b<0:
+        raise SystemExit('Found buildHtmlS1 without following buildHtmlS2')
+    b=s.rfind('\n',0,b)+1
+    s=s[:a]+s[b:]
 # Force all live build routing to S2 while retaining old storage keys harmlessly for migration.
 s=s.replace("function buildSeasonKey(){ return currentResetIso()<'2026-08-30'?'s1':'s2'; }", "function buildSeasonKey(){ return 's2'; }")
 s=s.replace("function buildClassesForSeason(key=buildSeasonKey()){ return key==='s1'?S1_BUILD_CLASSES:S2_BUILD_CLASSES; }", "function buildClassesForSeason(){ return S2_BUILD_CLASSES; }")
