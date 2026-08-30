@@ -1,5 +1,7 @@
 from pathlib import Path
 
+# Maintained source of truth: only materially distinct loadouts from build-maintenance.md.
+# Do not reintroduce blanket Arena/Tournament cards; PvP adaptations belong in swaps unless a genuinely distinct build is supported.
 p = Path('.github/build-fantomons-inject.html')
 s = p.read_text()
 
@@ -60,5 +62,10 @@ new_role_key = r'''  function roleKey(title){
   }'''
 s = s[:a] + new_role_key + s[b:]
 
+# Remove obsolete regression markers and restore the DPS/Heals selector visibility.
+for marker in ['/* BUILD_GUIDE_CONSENSUS_PVP_V1 */\n','/* BUILD_ARENA_TOURNAMENT_SPLIT_V1 */\n','/* SAGE_TOURNAMENT_HYBRID_V1 */\n','/* ARENA_TOURNAMENT_RESTORE_V2 */\n']:
+    s = s.replace(marker, '')
+s = s.replace('.builds .buildRoleTabs{display:none!important}\n', '')
+s = s.replace("    document.querySelectorAll('.builds .buildRoleTabs').forEach(x=>x.remove());\n", '')
 s = s.replace('/* BUILD_FANTOMON_PAIRS_V4_CLASS_ROLES_MAIN_ALT */','/* BUILD_FANTOMON_PAIRS_V5_GUIDE_LOADOUTS_MAIN_ALT */')
 p.write_text(s)
