@@ -70,7 +70,7 @@ const runScenario=async(name,fields)=>page.evaluate(async ({name,fields})=>{
     gear:text('.suggestedGear'),
     costs:text('.planCosts')
   };
-});
+},{name,fields});
 
 const results=[];
 for(const [name,fields] of scenarios){
