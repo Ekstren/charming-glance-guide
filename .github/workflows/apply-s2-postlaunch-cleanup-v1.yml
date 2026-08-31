@@ -1,0 +1,61 @@
+name: Apply S2 post-launch cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-s2-postlaunch-cleanup-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply S2 post-launch cleanup
+        run: python .github/patch-s2-postlaunch-cleanup-v1.py
+      - name: Verify guide invariants
+        run: |
+          grep -q 'Season 1 carry-forward' index.html
+          grep -q 'Season 2 is the active Charming Glance scoring profile' index.html
+          grep -q '34 hours of natural accumulation plus the single 2-hour reset boost' index.html
+          ! grep -q 'full 36h banking remains unconfirmed' index.html
+          ! grep -q 'Nexus Tournament · expected' index.html
+          ! grep -q 'does not replace Season 1' index.html
+          grep -q 'Conqueror' index.html
+          grep -q 'Guardian' index.html
+          grep -q 'Destroyer' index.html
+          grep -q 'Dominator' index.html
+          grep -q 'Arena' index.html
+          grep -q 'Tournament' index.html
+      - name: Validate inline JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:[^>]*)>(.*?)</script>',s,re.S|re.I)
+          for i,code in enumerate(scripts):
+              if not code.strip(): continue
+              f=Path(tempfile.gettempdir())/f'cg-inline-{i}.js'
+              f.write_text(code,encoding='utf-8')
+              subprocess.run(['node','--check',str(f)],check=True)
+          print(f'Validated {len(scripts)} inline script blocks')
+          PY
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Clean up guide for active Season 2'
+          git push
