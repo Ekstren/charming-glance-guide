@@ -8,6 +8,7 @@ on:
       - 'scripts/patch_raw_funded_search_fast_v1.py'
       - 'scripts/patch_treat_funded_search_fast_v1.py'
       - 'scripts/patch_affordable_treat_feasible_v1.py'
+      - 'scripts/calculator_perf_check.mjs'
       - '.github/workflows/apply-optimizer-speed-audit-v1.yml'
   workflow_dispatch:
 
