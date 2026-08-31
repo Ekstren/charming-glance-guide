@@ -1,0 +1,25 @@
+name: Minimize tools audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/minimize_tools_audit.mjs'
+      - '.github/workflows/minimize-tools-audit.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium
+      - name: Run Minimize tools behavior audit
+        run: node scripts/minimize_tools_audit.mjs
