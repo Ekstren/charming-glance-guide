@@ -1,0 +1,37 @@
+name: Apply confirmed Vegetable Fairy collab
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-veggie-fairy-confirmed-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply confirmed collab update
+        run: python .github/patch-veggie-fairy-confirmed-v1.py
+      - name: Verify
+        run: |
+          grep -q 'CONFIRMED by the official Sword x Staff Global announcements channel on Aug. 31' index.html
+          grep -q "The announcement also teases a Fantomon coming with the collab" index.html
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Confirm Vegetable Fairy Part Two collab'
+          git push
