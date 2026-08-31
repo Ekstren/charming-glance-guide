@@ -1,0 +1,37 @@
+name: Clarify Realm tool remainder label
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_tool_saved_left_label_v1.py'
+      - '.github/workflows/apply-tool-saved-left-label-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply clearer saved-tool label
+        run: python scripts/patch_tool_saved_left_label_v1.py
+      - name: Verify
+        shell: bash
+        run: |
+          grep -q 'TOOL_SAVED_LEFT_LABEL_V1' index.html
+          grep -q '<i>Saved left:</i>' index.html
+      - name: Commit generated page
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Clarify saved Realm tools left after plan'
+          git push origin HEAD:main
