@@ -79,7 +79,7 @@ for fn in ['preserveRealmToolsEnabled','acquisitionImprovementFraction','realmTo
 s=s.replace('acquisitionEffortWinsAfterToolHurdle(candidate,best)','compareAcquisitionEffort(candidate,best)')
 s=s.replace('Diagnostics follow the same saved-tool / paid-refresh hurdles as funded plans.','Diagnostics follow the same acquisition-effort ranking as funded plans.')
 
-# 3) Rewrite optimizer explanation so UI matches the now-single policy.
+# 3) Rewrite optimizer explanation and source-check copy so UI/docs match the single policy.
 replace_once(
     '<summary><span>How the optimizer decides</span><small>Best efficiency · minimize tools</small></summary>',
     '<summary><span>How the optimizer decides</span><small>Best overall acquisition efficiency</small></summary>',
@@ -88,6 +88,14 @@ old_steps='''            <p><b>3 · Minimize Realm tools unless they materially 
 new_steps='''            <p><b>3 · Rank by overall acquisition efficiency.</b> Raw materials, saved Realm tools and paid Realm purchases are all sourcing options for the same progression route. The optimizer chooses the route with the lowest modeled acquisition burden instead of applying a separate tool-preservation mode.</p>\n            <p><b>4 · Use Realm burden only to break true efficiency ties.</b> If two routes have effectively identical acquisition effort, the planner prefers the one with the lighter Realm/tool sourcing burden. If even maximum Realm capacity cannot fund the requested target, it reports the actual shortfall instead of lowering the target.</p>'''
 replace_once(old_steps,new_steps,'optimizer steps 3-4')
 s=s.replace('The active planning control is the single soft Realm-tool preservation toggle, while Season 2 uses live inventory directly.','Season 2 uses live inventory directly; Realm tools and paid purchases are treated as sourcing options rather than a separate optimizer mode.')
+replace_once(
+    '<p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. With <i>Minimize tools</i> enabled, saved Realm tools are spent only when their route is more than 10% better; routes requiring additional paid refreshes must be more than 20% better. Turn the toggle off for strict pure-efficiency ranking.</p>',
+    '<p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. Raw materials, saved Realm tools and paid Realm purchases share one acquisition-efficiency ranking; Realm/tool burden is used only to break effectively equal routes.</p>',
+    'S2 optimization source note')
+replace_once(
+    '<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. With Minimize tools enabled, existing Hammers/Knuckles/Shovels stay banked unless consuming them improves modeled acquisition effort by more than 10%; additional Realm purchases require more than a 20% improvement. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>',
+    '<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>',
+    'Material Realm source note')
 
 # 4) Clean reward-table headings; the chapter names already identify the seasons.
 s=s.replace("const groups=[{title:'Season 1 · Witching Hours',nodes:s1Nodes,offset:0}];","const groups=[{title:'Witching Hours',nodes:s1Nodes,offset:0}];",1)
@@ -108,7 +116,7 @@ if '</head>' not in s: raise SystemExit('head close missing')
 s=s.replace('</head>',style+'</head>',1)
 
 # Strong invariants: none of the removed mode can survive in active page code.
-for token in ['id="preserveRealmTools"','preserveRealmToolsEnabled','REALM_SAVED_TOOL_EFFICIENCY_HURDLE','REALM_PAID_REFRESH_EFFICIENCY_HURDLE','acquisitionEffortWinsAfterToolHurdle','Minimize tools']:
+for token in ['id="preserveRealmTools"','preserveRealmToolsEnabled','REALM_SAVED_TOOL_EFFICIENCY_HURDLE','REALM_PAID_REFRESH_EFFICIENCY_HURDLE','acquisitionEffortWinsAfterToolHurdle','Minimize tools','minimize tools']:
     if token in s: raise SystemExit(f'removed optimizer mode token still present: {token}')
 if s.count('class="timelineSources"')!=1: raise SystemExit('Timeline source footer is not uniquely scoped')
 
