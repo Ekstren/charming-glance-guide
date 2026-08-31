@@ -3201,7 +3201,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   <div class="timelineNow" id="timelineNow"></div>
   <div class="timelineIntelWrap">
     <details class="timelineIntel" id="timelineCoverageDetails">
-      <summary><span>Timeline coverage & source confidence</span><small>Full refresh Aug 23 · QY Maple + current Global/community data</small></summary>
+      <summary><span>Timeline coverage & source confidence</span><small>Current + next season only · QY Maple + current Global/community data</small></summary>
       <div class="timelineIntelBody">
         <p><b>Charming Glance calendar:</b> Day 1 = Jul 15. The server reset is converted automatically to <b id="timelineResetLocal">this device's local time</b>. Season 2 / <b>Crossed Paths</b> is <b>confirmed for Server Day 47 / Aug 30 at the 6:00 AM PDT reset</b> on Charming Glance. On Aug 26 at about 8:15 AM PDT, the in-game season countdown showed 3d 21h remaining, aligning with the Aug 30 reset; Prydwen's Day-47 model independently matches that timing. <b>QY Maple is now the primary season-day table</b> for later unlock timing; legacy Qenu/Limitless rows are retained only when they add a useful conflict note rather than creating duplicate milestones.</p>
         <p class="timelineWarning"><b>Important:</b> the in-game telescope/countdown always wins. QY notes that mergers can alter the wait between kingdoms, so S3+ absolute Charming Glance dates remain projections even when the season-day offset is known. Future content not yet live on Global is labeled <b>pre-release English/data name</b>. The site re-checks the server reset boundary every minute; all visible reset/deadline times are translated to the timezone of the device viewing this file.</p>
@@ -3227,7 +3227,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   <div class="controls"><div class="filters" id="timelineFilters"></div><label class="pastToggle"><input id="showPast" type="checkbox"> Show past entries</label></div>
   <div class="timeline" id="timeline"></div>
   <button class="todayButton" id="todayButton">Jump to current</button>
-  <footer class="timelineSources"><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
+  <footer class="timelineSources"><p>Timeline is intentionally limited to the <b>current season and the next season</b>. Older seasons stay hidden even with Show past, and farther roadmap seasons enter automatically when the season window advances. Dates use QY Maple plus current Global/community cross-checks.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </section>
 
 <section id="buildsSection" class="siteSection builds" hidden>
@@ -6514,11 +6514,39 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       details.slice(1).forEach(el=>el.remove());
     });
   }
+  /* TIMELINE_CURRENT_NEXT_SEASONS_V1
+     Keep the visible roadmap focused: only the current season and the immediately
+     following season are eligible for timeline cards. Historical seasons never come
+     back through Show past; when a season rolls over, the window advances automatically. */
+  const TIMELINE_SEASON_WINDOWS=[
+    {key:'s1',label:'Season 1',start:1,end:46},
+    {key:'s2',label:'Season 2 · Crossed Paths',start:47,end:113},
+    {key:'s3',label:'Season 3 · Aethyris',start:114,end:225},
+    {key:'s4',label:'Season 4 · Hapadi',start:226,end:334},
+    {key:'s5',label:'Season 5 · Ignis',start:335,end:Infinity}
+  ];
+  function timelineSeasonScope(boundaryIso=currentResetIso()){
+    const serverDay=Math.max(1,isoDayDiff(SERVER_START_ISO,boundaryIso)+1);
+    let index=TIMELINE_SEASON_WINDOWS.findIndex(x=>serverDay>=x.start&&serverDay<=x.end);
+    if(index<0) index=TIMELINE_SEASON_WINDOWS.length-1;
+    const current=TIMELINE_SEASON_WINDOWS[index];
+    const next=TIMELINE_SEASON_WINDOWS[index+1]||null;
+    return {serverDay,current,next,minDay:current.start,maxDay:next?next.end:current.end};
+  }
+  function timelineDataForScope(boundaryIso=currentResetIso()){
+    const scope=timelineSeasonScope(boundaryIso);
+    return {scope,data:timelineData.filter(e=>{
+      const day=Number(e?.[1]);
+      return Number.isFinite(day)&&day>=scope.minDay&&day<=scope.maxDay;
+    })};
+  }
+
   function renderTimeline(){
     renderLocalTimeLabels();
     const boundaryIso=currentResetIso();
+    const {scope,data:scopedTimelineData}=timelineDataForScope(boundaryIso);
     const showPast=$('showPast').checked;
-    const filtered=timelineData.filter(e=>{
+    const filtered=scopedTimelineData.filter(e=>{
       const active=eventIsActive(e,boundaryIso);
       if(!showPast && e[0]<boundaryIso && !active) return false;
       return timelineFilterMatches(e);
@@ -6533,11 +6561,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     }).join('') || '<div class="emptyBuild">No timeline entries match this filter.</div>';
     dedupeTimelineDetails();
 
-    const serverDay=Math.max(1,isoDayDiff(SERVER_START_ISO,boundaryIso)+1);
-    const fixedUpcoming=timelineData.find(e=>e[0]>=boundaryIso && e[5]!=='event') || timelineData[timelineData.length-1];
-    const season=serverDay<47?'Season 1':serverDay<114?'Season 2 · Crossed Paths':serverDay<226?'Season 3 · Aethyris':serverDay<335?'Season 4 · Hapadi':'Season 5 · Ignis';
-    const nextDate=displayDate(fixedUpcoming[0]).toLocaleString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
-    $('timelineSummary').innerHTML=`<div><span>Server day</span><strong>${serverDay}</strong></div><div><span>Current season</span><strong>${season}</strong></div><div><span>Next fixed milestone</span><strong>${fixedUpcoming[3]} · ${nextDate}</strong></div>`;
+    const serverDay=scope.serverDay;
+    const fixedUpcoming=scopedTimelineData.find(e=>e[0]>=boundaryIso && e[5]!=='event') || scopedTimelineData.filter(e=>e[5]!=='event').at(-1) || null;
+    const nextMilestone=fixedUpcoming
+      ? `${fixedUpcoming[3]} · ${displayDate(fixedUpcoming[0]).toLocaleString('en-US',{month:'short',day:'numeric',timeZone:'UTC'})}`
+      : 'No fixed milestone loaded';
+    $('timelineSummary').innerHTML=`<div><span>Server day</span><strong>${serverDay}</strong></div><div><span>Current season</span><strong>${scope.current.label}</strong></div><div><span>Next fixed milestone</span><strong>${nextMilestone}</strong></div>`;
 
     const activeEvents=timelineData.filter(e=>eventIsActive(e,boundaryIso));
     const live=$('timelineNow');
