@@ -1,0 +1,24 @@
+name: Calculator efficiency performance check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/calculator_perf_check.mjs'
+      - '.github/workflows/calculator-perf-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@latest
+          npx playwright install --with-deps chromium
+      - name: Run calculator performance audit
+        run: node scripts/calculator_perf_check.mjs
