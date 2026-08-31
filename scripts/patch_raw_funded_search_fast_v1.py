@@ -22,28 +22,24 @@ fast=r'''    if(baseScore>=desired){
     }
 
     /* RAW_FUNDED_SEARCH_FAST_V1
-       Exact fast path for the expensive "everything is already funded" case.
+       Exact fast path for the expensive case where every reachable NON-ORE category is
+       already funded by raw inventory. marginalWeightedSpend then prices all productive
+       Essence/Sand/Treat spend at zero (their configured fully-funded floors), while Ore
+       remains the 1.00 acquisition baseline. Ore itself does NOT need to be fully funded:
+       lower Gear Ore cost still has strictly lower acquisition effort before Realm sourcing
+       is considered, even if that Gear route ultimately uses banked/paid Ore Realm entries.
 
-       When raw Ore can fund every reachable Gear upgrade and raw Essence/Sand/Treats can
-       fund every reachable upgrade in their categories, marginalWeightedSpend prices all
-       productive non-Ore spend at zero (their configured fully-funded floor), while Ore
-       remains the 1.00 baseline. Therefore acquisition effort is strictly determined by
-       Gear Ore cost. The global winner must use the LOWEST Gear option that can still reach
-       the requested score with the maximum non-Gear score available.
-
-       With Gear fixed at that minimum, every remaining candidate has identical acquisition
-       effort and Realm stage (raw-only). The normal comparator then reduces exactly to:
-       minimum overscore -> minimum maxShare -> minimum sumShare. We can evaluate that exact
-       tie-break space as Relic x Fantomon with a binary-search Skill lookup instead of the
-       old Relic x Fantomon x Skill scan. This removes millions of equivalent candidates
-       without changing scoring or the winner. Refined-Ore tracking stays on the general path. */
-    const maxGearOption=gearOptions[gearOptions.length-1];
-    const rawFundsAllReachable=!resources.refinedTracked &&
-      (Number(resources.ore)||0)>=(Number(maxGearOption?.oreCost)||0)-0.5 &&
+       Therefore the global winner must use the LOWEST Gear option that can still reach the
+       requested score with maximum non-Gear score. With Gear fixed, every candidate has the
+       same acquisition effort and Ore Realm stage. The normal comparator then reduces to
+       overscore -> maxShare -> sumShare. Evaluate that exact tie-break space as
+       Relic x Fantomon with a binary-search Skill lookup instead of Relic x Fantomon x Skill.
+       Refined-Ore tracking stays on the general path because it adds a separate hard constraint. */
+    const nonOreRawFunded=!resources.refinedTracked &&
       (Number(resources.essence)||0)>=Math.max(0,Number(headroomCosts?.essence)||0)-0.5 &&
       (Number(resources.sand)||0)>=Math.max(0,Number(headroomCosts?.sand)||0)-0.5 &&
       (Number(resources.treat)||0)>=Math.max(0,Number(headroomCosts?.treat)||0)-0.5;
-    if(rawFundsAllReachable){
+    if(nonOreRawFunded){
       const skillMax=cats.skillOptions[cats.skillOptions.length-1];
       const relicMax=cats.relicOptions[cats.relicOptions.length-1];
       const fantoMax=cats.fantoOptions[cats.fantoOptions.length-1];
@@ -60,7 +56,7 @@ fast=r'''    if(baseScore>=desired){
           }
           return ans;
         };
-        const zeroOre=realmTopupFor('ore',0,resources.ore,resources,cfg,p);
+        const oreRealm=realmTopupFor('ore',go.oreCost,resources.ore,resources,cfg,p);
         const zeroEssence=realmTopupFor('essence',0,resources.essence,resources,cfg,p);
         const zeroSand=realmTopupFor('sand',0,resources.sand,resources,cfg,p);
         const sharedAcquisition=acquisitionEffortFor({ore:go.oreCost,essence:0,sand:0,treat:0},resources,cfg);
@@ -72,9 +68,10 @@ fast=r'''    if(baseScore>=desired){
             if(!so) continue;
             const score=charScore+go.score+so.score+ro.score+fo.score;
             if(score<desired) continue;
-            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[zeroOre,zeroEssence,zeroSand],sharedAcquisition);
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,zeroEssence,zeroSand],sharedAcquisition);
             candidate.realm.days=realmDays;
-            candidate.realmFeasible=true;
+            candidate.realmFeasible=oreRealm.feasible;
+            if(!oreRealm.feasible) continue;
             if(betterFeasibleCandidate(candidate,fastBest)) fastBest=candidate;
           }
         }
@@ -86,4 +83,4 @@ fast=r'''    if(baseScore>=desired){
 s=s.replace(anchor,fast,1)
 
 p.write_text(s,encoding='utf-8')
-print('added exact raw-funded search fast path')
+print('added exact non-Ore-funded search fast path')
