@@ -2736,12 +2736,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 @media(max-width:760px){.s2TargetPresets>div{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))}.s2TargetPresets button{width:100%;white-space:normal!important}}
 </style>
 
-<style id="realm-tool-preserve-policy-v4">
-/* TOOL_TOGGLE_TOP_V1: keep the optimizer policy beside the season-level Bed EXP control, not buried in Material Realm details. */
-.realmToolPreserveOption{display:flex;align-items:flex-start;gap:8px;color:var(--body-text);font-size:11px;font-weight:750;line-height:1.35}.realmToolPreserveOption input{margin-top:2px;flex:0 0 auto}.realmToolPreserveOption span{white-space:nowrap}.realmToolPreserveOption small{color:var(--muted);font-size:9px;font-weight:600;line-height:1.4}
-.realmToolPreserveTop{align-items:center;margin:0;min-width:0}.realmToolPreserveTop input{margin-top:0}.realmToolPreserveTop small{max-width:420px}
-@media(max-width:760px){.seasonPlanningControls .realmToolPreserveTop{flex-basis:100%;margin-top:5px}.realmToolPreserveTop{flex-wrap:wrap}.realmToolPreserveTop small{flex-basis:100%;max-width:none;padding-left:22px}}
-</style>
 
 <style id="result-card-consistency-v2">
 /* RESULT_CARD_CONSISTENCY_V2
@@ -3175,6 +3169,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+
+<style id="timeline-source-scope-v1">
+/* REMOVE_TOOL_MODE_SCOPE_TIMELINE_V1: Timeline audit + sources belong to Timeline only, not the global shell. */
+#timelineSection>.timelineSources{max-width:940px;margin:0 auto 34px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--muted);display:flex;align-items:flex-start;justify-content:space-between;gap:18px;font-size:10px;line-height:1.5}
+#timelineSection>.timelineSources p{margin:0;max-width:760px}
+#timelineSection>.timelineSources .footerLinks{display:flex;gap:10px;flex-wrap:wrap;flex:0 0 auto}
+#timelineSection>.timelineSources a{color:var(--green);font-weight:800;text-decoration:none;white-space:nowrap}
+@media(max-width:720px){#timelineSection>.timelineSources{margin:0 10px 24px;padding:14px;flex-direction:column;gap:10px}}
+</style>
 </head>
 <body>
 <main>
@@ -3220,6 +3223,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   <div class="controls"><div class="filters" id="timelineFilters"></div><label class="pastToggle"><input id="showPast" type="checkbox"> Show past entries</label></div>
   <div class="timeline" id="timeline"></div>
   <button class="todayButton" id="todayButton">Jump to current</button>
+  <footer class="timelineSources"><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </section>
 
 <section id="buildsSection" class="siteSection builds" hidden>
@@ -3276,17 +3280,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
             </div>
           </details>
         </div>
-        <div class="rolloverHold seasonPlanningControls">
-<label class="realmToolPreserveOption realmToolPreserveTop"><input id="preserveRealmTools" checked type="checkbox"><span>Minimize tools</span><small>Saved tools need >10% improvement; paid Realm purchases need >20%. Turn off for pure efficiency.</small></label>
-        </div>
         <small class="seasonPlanningNote" id="graceText">Cart income, Stamina generation, Realm purchase availability, and upgrade timing run through the season reset.</small>
         <details class="optimizerExplain" id="optimizerExplain">
-          <summary><span>How the optimizer decides</span><small>Best efficiency · minimize tools</small></summary>
+          <summary><span>How the optimizer decides</span><small>Best overall acquisition efficiency</small></summary>
           <div class="optimizerExplainBody">
             <p><b>1 · Use the active season’s scoring rules.</b> Season 1 keeps its own Primostar formula and S1 score weights; Season 2 keeps its separate S2 formula. The optimizer method is shared, but scoring values are never mixed between seasons.</p>
             <p><b>2 · Find the most acquisition-efficient score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score, using the active season's real cost curves and resource yields. It avoids meaningless overscore and does not force a fixed Gear/Skill/Relic/Fantomon order.</p>
-            <p><b>3 · Minimize Realm tools unless they materially improve the route.</b> With <i>Minimize tools</i> enabled, spending saved Realm tools must improve acquisition effort by more than 10%. A route that requires additional Realm purchases must improve it by more than 20%. Turn the toggle off for strict pure-efficiency ranking.</p>
-            <p><b>4 · Realm purchases face the higher hurdle.</b> Premium-currency Realm purchases only win when their route is more than 20% better on modeled acquisition effort. If even maximum Realm capacity cannot fund the requested target, the planner reports the actual shortfall instead of lowering the target.</p>
+            <p><b>3 · Rank by overall acquisition efficiency.</b> Raw materials, saved Realm tools and paid Realm purchases are all sourcing options for the same progression route. The optimizer chooses the route with the lowest modeled acquisition burden instead of applying a separate tool-preservation mode.</p>
+            <p><b>4 · Use Realm burden only to break true efficiency ties.</b> If two routes have effectively identical acquisition effort, the planner prefers the one with the lighter Realm/tool sourcing burden. If even maximum Realm capacity cannot fund the requested target, it reports the actual shortfall instead of lowering the target.</p>
             <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. The optimizer uses one consistent acquisition-efficiency policy and always considers Gear alongside Skills, Relics and Fantomons.</p>
           </div>
         </details>
@@ -3385,21 +3386,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>Astral Pact:</b> bonuses are calculated from <b>total cumulative Primostars</b>, not Character level. The calculator uses QY Maple's documented S1 Witching Hours thresholds (5–480) and S2 Crossed Paths continuation (505–1880). For example, 200 Primostars gives ATK +3%, Ascension +9%, Gem +15%, Dungeon double +6% and EXP +6%; 230 additionally reaches ATK +4% and Ascension +12%.</p>
 <p><b>S2 Primostar calculator readiness:</b> Season 2 is preloaded as a separate scoring-only profile and does not replace Season 1. QY's current timeline confirms Season Power at Player Lv.130; Lv.120 is only the maximum S2 Material Realm bracket. The calculator therefore starts planning only once Character Lv.130 unlocks Season Power. Progression already spent before that snapshot is outside the plan; however, any Gear/Skill/Fantomon/Relic slot that is still below its score floor at Lv.130 can be entered normally, scores zero until it crosses the floor, and keeps its real catch-up resource cost. Normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. S2 cost curves are applied from the actual scoring-start levels you enter: Gear/Ore and Skill Essence use the current S2 tables, Relic Sand uses the known S2 step table, and Fantomon Treats use the S2 level curve. This preserves the cost of catching up a lagging slot after Season Power unlocks instead of granting a free jump to the score floor. Exact data that is not independently confirmed stays conservative rather than fabricated. As a regression check, the formula still reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
 <p><b>S2 progression gates:</b> the prepared calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, Lv.120 maximum S2 Realm/open-map material bracket and Lv.130 Season Power scoring/second-dungeon milestone. These gates are informational; they do not override the calculator's conservative upgrade-cap logic.</p>
-<p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. The active planning control is the single soft Realm-tool preservation toggle, while Season 2 uses live inventory directly.</p>
+<p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. Season 2 uses live inventory directly; Realm tools and paid purchases are treated as sourcing options rather than a separate optimizer mode.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Daily Shop estimate:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b>: each restock counts only <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per restock; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. The default is 0 refreshes/day; users opt in to the number they actually buy. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. With <i>Minimize tools</i> enabled, saved Realm tools are spent only when their route is more than 10% better; routes requiring additional paid refreshes must be more than 20% better. Turn the toggle off for strict pure-efficiency ranking.</p>
+<p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. Raw materials, saved Realm tools and paid Realm purchases share one acquisition-efficiency ranking; Realm/tool burden is used only to break effectively equal routes.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
-<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. With Minimize tools enabled, existing Hammers/Knuckles/Shovels stay banked unless consuming them improves modeled acquisition effort by more than 10%; additional Realm purchases require more than a 20% improvement. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same 10-purchase daily cap. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
+<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
 <p><b>S2 Ore preservation:</b> When Reserve S2 Ore is enabled during S1, Ore carries a 50% soft premium in resource-efficiency comparisons. Existing optimizer stage rules remain stricter, so the preference will not burn Realm tools or Realm purchases merely to save Ore; it only favors comparable non-Ore upgrade routes.</p>
 <p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, an enabled rollover reserve is protected before S1 Realm tools become spendable. For Essence and Sand, carried/projected Knuckles or Shovels cover the reserve first; raw material is held only for any reserve amount those tools cannot cover. Treats have no Realm-tool conversion, so an enabled Treat reserve stays raw. After those reserves are protected, the planner first searches every fundable raw-only Gear / Skill / Relic / Fantomon route. Existing unreserved Realm tools unlock only if raw cannot reach the target, and additional paid Realm refreshes are the final fallback. In Auto mode, the planner compares exactly three easy-to-follow Stamina destinations—all Ore, all Essence or all Sand—for each candidate route, then re-solves until the selected destination stabilizes. Once the requested current-season target is funded, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical progression runway. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
-<footer><p>Timeline refreshed Aug 26, 2026 / v69 timeline audit: S1/S2 scoring and seasonal floors cross-checked, Fantomon seasonal +10 ceiling restored, three Fantomon Treat tiers added, device-local reset/deadline display added, S2 Gear ceiling repaired, level-gated S2 milestones separated from calendar dates, Lv.108 Fantomon Adult and Lv.116 Demonbind Tower restored as visible entries, QY S3/S4 season lengths rechecked, Hapadi/T6 projection corrected to Server Day 226, Realm max brackets rechecked, and Astral Pact rewards made dynamic from the verified cumulative S1/S2 threshold table.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
+
 </main>
 <script>
   // v62 audit: preserve rollover resources, exact uneven slot levels, seasonal Fantomon +10 ceilings, device-local reset display, and Material Realm tools on equal-cost routes.
@@ -3484,9 +3485,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     staminaMode:'auto',realmDailyOre:4,realmDailyEssence:4,realmDailySand:4,
     refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
   });
-  const S2_SCORING_START_CHECKS=Object.freeze({
-    preserveRealmTools:true
-  });
+  const S2_SCORING_START_CHECKS=Object.freeze({});
   /* S2_ZERO_SCORE_DEFAULTS_V1
      The assumed scoring-start profile sits exactly on every S2 scoring floor. It is a
      neutral starting snapshot: carried/fixed Primostars may exist, but assumed progression
@@ -3552,7 +3551,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
-  const CHECK_IDS = ['preserveRealmTools'];
+  const CHECK_IDS = [];
   const defaults = Object.create(null);
   INPUT_IDS.forEach(id => defaults[id] = document.getElementById(id)?.value ?? '');
   CHECK_IDS.forEach(id => defaults[id] = document.getElementById(id)?.checked ?? false);
@@ -3966,7 +3965,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         if(Number(state.shopRefreshesDaily)===3) state.shopRefreshesDaily=0;
         localStorage.setItem('sxs-shop-refresh-default-zero-v1','1');
       }
-      if(hadState && state.preserveRealmTools===undefined) state.preserveRealmTools=true;
       // v39 replaces the old single Realm preset with independent per-resource daily inputs.
       // Preserve the user's prior shared preset when migrating; otherwise default each Realm to 4/day.
       if(hadState && (Number(state.snapshotSchema)||0)<5){
@@ -5011,48 +5009,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(cm>bm+1e-9) return false;
     return null;
   }
-  /* REALM_TOOL_EFFICIENCY_V4
-     "Minimize tools" is a soft economic hurdle, not a hard reserve. Spending already-banked
-     Realm tools must improve modeled acquisition effort by more than 10%; introducing paid
-     Realm refreshes must improve it by more than 20%. This intentionally uses percentage
-     reduction from the slower route (e.g. 88h vs 100h = 12% better), which matches the
-     user-facing meaning of "10% better". Disable the toggle for strict pure efficiency. */
-  const REALM_SAVED_TOOL_EFFICIENCY_HURDLE=0.10;
-  const REALM_PAID_REFRESH_EFFICIENCY_HURDLE=0.20;
-  function preserveRealmToolsEnabled(){
-    return $('preserveRealmTools')?.checked!==false;
-  }
-  function acquisitionImprovementFraction(faster,slower){
-    const f=candidateResourceMetric(faster),s=candidateResourceMetric(slower);
-    if(!Number.isFinite(f)||!Number.isFinite(s)||s<=1e-9||f>=s-1e-9) return 0;
-    return Math.max(0,(s-f)/s);
-  }
-  function realmToolHurdleForMoreEfficientRoute(faster,slower){
-    const f=candidateRealmToolBurden(faster),s=candidateRealmToolBurden(slower);
-    // Any increase in paid runs carries the premium-currency hurdle.
-    if(f.paidRuns>s.paidRuns) return REALM_PAID_REFRESH_EFFICIENCY_HURDLE;
-    // Otherwise any increase in total/banked Realm-tool consumption carries the saved-tool hurdle.
-    if(f.totalRuns>s.totalRuns || f.bankedUsed>s.bankedUsed) return REALM_SAVED_TOOL_EFFICIENCY_HURDLE;
-    return 0;
-  }
-  function acquisitionEffortWinsAfterToolHurdle(candidate,best){
-    const effortCmp=compareAcquisitionEffort(candidate,best);
-    if(effortCmp===null) return null;
-    if(!preserveRealmToolsEnabled()) return effortCmp;
-    const faster=effortCmp?candidate:best;
-    const slower=effortCmp?best:candidate;
-    const hurdle=realmToolHurdleForMoreEfficientRoute(faster,slower);
-    if(hurdle<=0) return effortCmp;
-    const improvement=acquisitionImprovementFraction(faster,slower);
-    if(improvement>hurdle+1e-9) return effortCmp;
-    // The faster route did not clear the tool-spending hurdle. Prefer the lower sourcing burden.
-    const toolCmp=betterToolBurden(candidate,best);
-    if(toolCmp!==null) return toolCmp;
-    const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
-    if(cStage<bStage) return true;
-    if(cStage>bStage) return false;
-    return effortCmp;
-  }
   function makePlanCandidate(go,so,ro,fo,score,desired,resources,realms,acquisitionResult=null){
     const [oreRealm,essenceRealm,sandRealm]=realms;
     const dawniumCost=oreRealm.dawnium+essenceRealm.dawnium+sandRealm.dawnium;
@@ -5126,7 +5082,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
        sourced. Raw inventory, existing Realm tools and paid refreshes are therefore not
        hard tiers anymore. Realm/tool/Dawnium burden only breaks an acquisition-effort tie,
        so a paid-refresh route may win when it is genuinely the cheaper progression path. */
-    const effortFirst=acquisitionEffortWinsAfterToolHurdle(candidate,best);
+    const effortFirst=compareAcquisitionEffort(candidate,best);
     if(effortFirst!==null) return effortFirst;
 
     // Exact acquisition ties fall through to sourcing burden and overscore tie-breakers.
@@ -5170,8 +5126,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(candidate.remainingAfterMax<best.remainingAfterMax-0.5) return true;
     if(Math.abs(candidate.remainingAfterMax-best.remainingAfterMax)>0.5) return false;
 
-    // Diagnostics follow the same saved-tool / paid-refresh hurdles as funded plans.
-    const diagnosticEffortFirst=acquisitionEffortWinsAfterToolHurdle(candidate,best);
+    // Diagnostics follow the same acquisition-effort ranking as funded plans.
+    const diagnosticEffortFirst=compareAcquisitionEffort(candidate,best);
     if(diagnosticEffortFirst!==null) return diagnosticEffortFirst;
 
     const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
@@ -5484,8 +5440,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const visibleNodes=cfg.key==='s2'?ASTRAL_PACT_NODES:s1Nodes;
     const nextIndex=visibleNodes.findIndex(([threshold])=>threshold>currentStars);
     const nextReward=visibleNodes.find(([threshold])=>threshold>currentStars);
-    const groups=[{title:'Season 1 · Witching Hours',nodes:s1Nodes,offset:0}];
-    if(cfg.key==='s2') groups.push({title:'Season 2 · Crossed Paths',nodes:ASTRAL_PACT_NODES.slice(40),offset:40});
+    const groups=[{title:'Witching Hours',nodes:s1Nodes,offset:0}];
+    if(cfg.key==='s2') groups.push({title:'Crossed Paths',nodes:ASTRAL_PACT_NODES.slice(40),offset:40});
     const row=(node,index)=>{
       const [threshold,key,value]=node;
       const state=threshold<=currentStars?'reached':index===nextIndex?'next':'future';
