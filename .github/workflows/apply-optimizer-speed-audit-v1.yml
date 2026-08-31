@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/patch_acquisition_kernel_v1.py'
       - 'scripts/patch_raw_funded_search_fast_v1.py'
       - 'scripts/patch_treat_funded_search_fast_v1.py'
       - 'scripts/patch_affordable_treat_feasible_v1.py'
@@ -20,6 +21,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Apply exact Auto Stamina state search
         run: python scripts/patch_auto_stamina_exact_three_v1.py
+      - name: Apply allocation-free acquisition kernel
+        run: python scripts/patch_acquisition_kernel_v1.py
       - name: Apply exact raw-funded search fast path
         run: python scripts/patch_raw_funded_search_fast_v1.py
       - name: Apply exact Treat-funded search fast path
@@ -30,6 +33,7 @@ jobs:
         shell: bash
         run: |
           grep -q 'AUTO_STAMINA_EXACT_THREE_V1' index.html
+          grep -q 'ACQUISITION_KERNEL_V1' index.html
           grep -q 'RAW_FUNDED_SEARCH_FAST_V1' index.html
           grep -q 'TREAT_FUNDED_SEARCH_FAST_V1' index.html
           grep -q 'AFFORDABLE_TREAT_FEASIBLE_V1' index.html
