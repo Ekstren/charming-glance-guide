@@ -7,18 +7,11 @@ if MARK in s:
     print('Treat-funded optimizer fast path already applied')
     raise SystemExit(0)
 
-anchor='''    const oreCache=new Map(),essCache=new Map(),sandCache=new Map();
-    const oreFor=go=>{const k=go.oreCost;if(!oreCache.has(k))oreCache.set(k,realmTopupFor('ore',k,resources.ore,resources,cfg,p));return oreCache.get(k);};
-    const essFor=so=>{const k=so.cost;if(!essCache.has(k))essCache.set(k,realmTopupFor('essence',k,resources.essence,resources,cfg,p));return essCache.get(k);};
-    const sandFor=ro=>{const k=ro.cost;if(!sandCache.has(k))sandCache.set(k,realmTopupFor('sand',k,resources.sand,resources,cfg,p));return sandCache.get(k);};
-    const acquisitionFor=(go,so,ro,fo)=>acquisitionEffortFor(
-      {ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg
-    );
-    let best=null,bestDiagnostic=null;
+anchor='''    let best=null,bestDiagnostic=null;
 
 '''
 if anchor not in s:
-    raise SystemExit('searchPlans cache anchor not found')
+    raise SystemExit('searchPlans best-state anchor not found')
 
 insert=anchor+r'''    /* TREAT_FUNDED_SEARCH_FAST_V1
        Exact dimensional collapse when raw Treats already fund every reachable Fantomon
