@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/patch_raw_funded_search_fast_v1.py'
       - 'scripts/patch_treat_funded_search_fast_v1.py'
+      - 'scripts/patch_affordable_treat_feasible_v1.py'
       - '.github/workflows/apply-optimizer-speed-audit-v1.yml'
   workflow_dispatch:
 
@@ -23,12 +24,15 @@ jobs:
         run: python scripts/patch_raw_funded_search_fast_v1.py
       - name: Apply exact Treat-funded search fast path
         run: python scripts/patch_treat_funded_search_fast_v1.py
+      - name: Apply affordable-Treat feasible presearch
+        run: python scripts/patch_affordable_treat_feasible_v1.py
       - name: Verify exact speed paths
         shell: bash
         run: |
           grep -q 'AUTO_STAMINA_EXACT_THREE_V1' index.html
           grep -q 'RAW_FUNDED_SEARCH_FAST_V1' index.html
           grep -q 'TREAT_FUNDED_SEARCH_FAST_V1' index.html
+          grep -q 'AFFORDABLE_TREAT_FEASIBLE_V1' index.html
           ! grep -q 'for(let pass=0;pass<5;pass++)' index.html
       - name: Install Playwright
         run: |
