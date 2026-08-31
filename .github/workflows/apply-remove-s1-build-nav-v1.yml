@@ -1,0 +1,37 @@
+name: Remove S1 Builds nav
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_remove_s1_build_nav_v1.py'
+      - '.github/workflows/apply-remove-s1-build-nav-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove obsolete S1 Builds selector
+        run: python scripts/patch_remove_s1_build_nav_v1.py
+      - name: Verify
+        shell: bash
+        run: |
+          grep -q 'S2_ONLY_BUILD_NAV_V1' index.html
+          grep -q 'stripLegacyBuildSeasonNav' index.html
+      - name: Commit generated page
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove obsolete Season 1 Builds selector'
+          git push origin HEAD:main
