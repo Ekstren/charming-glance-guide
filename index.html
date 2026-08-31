@@ -4562,6 +4562,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     el.innerHTML=`${prefix} ${allocText}<span class="staminaGain"><br>Projected gain: ${gainText}</span>`;
   }
 
+  /* AUTO_STAMINA_EXACT_THREE_V1
+     Auto Stamina has exactly three legal strategies: all Ore, all Essence, or all Sand.
+     Solve each legal resource state directly and compare the globally optimal score plan
+     from each state. This is both more exact and cheaper than the old alternating solver,
+     which could run the full optimizer up to six times while chasing a fixed point.
+
+     If safe raw inventory already funds every reachable Ore/Essence/Sand upgrade through
+     the projected cap, Stamina cannot change feasibility or marginal scarcity. In that
+     common surplus case solve once and bank the otherwise-unused nodes as Ore. */
   function solveTargetWithAutoStamina(baseScore,desired,p,baseResources,cfg=activeCalcConfig()){
     const ctx=createPlanningContext(baseScore,desired,p,cfg);
 
@@ -4581,53 +4590,58 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation};
     }
 
-    // Auto mode alternates between two exact subproblems:
-    //   1) global score-plan search for the current resource mix;
-    //   2) three-way single-destination Stamina comparison for that fixed plan.
-    // Iterate until the destination stabilizes (or a short cycle is detected) instead of stopping after one retarget pass.
-    const initial=searchPlans(baseScore,desired,p,baseResources,cfg,ctx);
-    let guidance=initial.plan||initial.diagnostic;
-    if(!guidance){
-      const allocation=allocateStaminaForPlan(null,baseResources,cfg,p);
+    const total=Math.max(0,Math.floor(baseResources.staminaNodes||0));
+    const map=baseResources.yields?.map||{};
+    const empty={ore:0,essence:0,sand:0,rolla:0,unassigned:0};
+    const resultState=(allocation)=>{
       const resources=applyStaminaAllocation(baseResources,allocation,cfg);
-      return {plan:null,diagnostic:null,resources,allocation};
-    }
-
-    const seen=new Set();
-    let bestState=null;
+      const result=searchPlans(baseScore,desired,p,resources,cfg,ctx);
+      return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation,result};
+    };
     const betterState=(state,best)=>{
       if(!best) return true;
-      const cp=state.result.plan, bp=best.result.plan;
+      const cp=state.result.plan,bp=best.result.plan;
       if(!!cp!==!!bp) return !!cp;
       if(cp&&bp){
         if(betterFeasibleCandidate(cp,bp)) return true;
         if(betterFeasibleCandidate(bp,cp)) return false;
         return false;
       }
-      const cd=state.result.diagnostic, bd=best.result.diagnostic;
-      if(cd&&bd) return betterDiagnosticCandidate(cd,bd);
-      return !!cd;
+      const cd=state.result.diagnostic,bd=best.result.diagnostic;
+      if(cd&&bd){
+        if(betterDiagnosticCandidate(cd,bd)) return true;
+        if(betterDiagnosticCandidate(bd,cd)) return false;
+      }
+      return !!cd&&!bd;
     };
 
-    for(let pass=0;pass<5;pass++){
-      const allocation=allocateStaminaForPlan(guidance,baseResources,cfg,p);
-      const signature=staminaAllocationSignature(allocation);
-      if(seen.has(signature)) break;
-      seen.add(signature);
-      const resources=applyStaminaAllocation(baseResources,allocation,cfg);
-      const result=searchPlans(baseScore,desired,p,resources,cfg,ctx);
-      const state={plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation,result};
-      if(betterState(state,bestState)) bestState=state;
-      const nextGuidance=result.plan||result.diagnostic;
-      if(!nextGuidance) break;
-      guidance=nextGuidance;
+    // Surplus fast path: every reachable raw-material category is already fully funded.
+    // Extra Stamina cannot alter candidate feasibility or the marginal scarcity weights.
+    const maxGearOre=Math.max(0,Number(ctx.gearOptions?.[ctx.gearOptions.length-1]?.oreCost)||0);
+    const fullyRawFunded=
+      (Number(baseResources.ore)||0)>=maxGearOre-0.5 &&
+      (Number(baseResources.essence)||0)>=Math.max(0,Number(ctx.headroomCosts?.essence)||0)-0.5 &&
+      (Number(baseResources.sand)||0)>=Math.max(0,Number(ctx.headroomCosts?.sand)||0)-0.5;
+    if(fullyRawFunded){
+      const allocation=(Number(map.ore)||0)>0?{...empty,ore:total}:{...empty,unassigned:total};
+      const state=resultState(allocation);
+      return {plan:state.result.plan,diagnostic:state.result.plan||state.result.diagnostic,resources:state.resources,allocation:state.allocation};
     }
 
-    if(bestState) return {plan:bestState.result.plan,diagnostic:bestState.result.plan||bestState.result.diagnostic,resources:bestState.resources,allocation:bestState.allocation};
-    const allocation=allocateStaminaForPlan(guidance,baseResources,cfg,p);
-    const resources=applyStaminaAllocation(baseResources,allocation,cfg);
-    const result=searchPlans(baseScore,desired,p,resources,cfg,ctx);
-    return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation};
+    // Evaluate the complete legal Auto-Stamina state space directly: at most three searches.
+    let bestState=null;
+    for(const key of ['ore','essence','sand']){
+      if((Number(map[key])||0)<=0) continue;
+      const state=resultState({...empty,[key]:total});
+      if(betterState(state,bestState)) bestState=state;
+    }
+    if(bestState){
+      return {plan:bestState.result.plan,diagnostic:bestState.result.plan||bestState.result.diagnostic,resources:bestState.resources,allocation:bestState.allocation};
+    }
+
+    const allocation={...empty,unassigned:total};
+    const state=resultState(allocation);
+    return {plan:state.result.plan,diagnostic:state.result.plan||state.result.diagnostic,resources:state.resources,allocation};
   }
 
   // REALM_20_REFRESH_TOOL_COUNT_V1
@@ -4903,8 +4917,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
 
   /* REMOVE_ORE_PRESERVATION_V1
-     Ore now participates in the same acquisition-efficiency model as every other score
-     resource. Tool preservation is handled only by the Minimize-tools 10%/20% hurdles. */
+     Ore participates in the same acquisition-efficiency model as every other score
+     resource. Realm/tool burden is now only a true-efficiency tie-breaker. */
   function marginalWeightedCosts(costs,resources,cfg=activeCalcConfig()){
     return {
       ore:Math.max(0,Number(costs?.ore)||0),
@@ -5036,12 +5050,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     };
   }
 
-  /* RAW_BEFORE_REALM_TOOLS_V1
-     Upgrade selection is efficient WITHIN the cheapest Realm-tool tier, but raw materials
-     that are safely spendable should be brute-forced before the planner consumes more Realm
-     entries. Paid Realm purchases remain the strongest penalty; after that, fewer actual
-     tool entries needed/consumed beats modeled reacquisition efficiency. This lets surplus
-     Treats/Essence/Sand/Ore replace a tool-funded upgrade whenever the score math allows it. */
+  /* REALM_TOOL_TIEBREAK_V1
+     Acquisition effort is the primary route metric. Realm stage, Dawnium and actual tool
+     burden are consulted only when acquisition effort is effectively tied, so sourcing
+     details cannot override a materially better progression route. */
   function candidateRealmToolBurden(candidate){
     const realms=['ore','essence','sand'].map(k=>candidate?.realm?.[k]).filter(Boolean);
     return {
@@ -5174,14 +5186,250 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       return {plan:zero,diagnostic:zero};
     }
 
+    /* RAW_FUNDED_SEARCH_FAST_V1
+       Exact fast path for the expensive case where every reachable NON-ORE category is
+       already funded by raw inventory. marginalWeightedSpend then prices all productive
+       Essence/Sand/Treat spend at zero (their configured fully-funded floors), while Ore
+       remains the 1.00 acquisition baseline. Ore itself does NOT need to be fully funded:
+       lower Gear Ore cost still has strictly lower acquisition effort before Realm sourcing
+       is considered, even if that Gear route ultimately uses banked/paid Ore Realm entries.
+
+       Therefore the global winner must use the LOWEST Gear option that can still reach the
+       requested score with maximum non-Gear score. With Gear fixed, every candidate has the
+       same acquisition effort and Ore Realm stage. The normal comparator then reduces to
+       overscore -> maxShare -> sumShare. Evaluate that exact tie-break space as
+       Relic x Fantomon with a binary-search Skill lookup instead of Relic x Fantomon x Skill.
+       Refined-Ore tracking stays on the general path because it adds a separate hard constraint. */
+    const nonOreRawFunded=!resources.refinedTracked &&
+      (Number(resources.essence)||0)>=Math.max(0,Number(headroomCosts?.essence)||0)-0.5 &&
+      (Number(resources.sand)||0)>=Math.max(0,Number(headroomCosts?.sand)||0)-0.5 &&
+      (Number(resources.treat)||0)>=Math.max(0,Number(headroomCosts?.treat)||0)-0.5;
+    if(nonOreRawFunded){
+      const skillMax=cats.skillOptions[cats.skillOptions.length-1];
+      const relicMax=cats.relicOptions[cats.relicOptions.length-1];
+      const fantoMax=cats.fantoOptions[cats.fantoOptions.length-1];
+      const maxNonGearScore=(skillMax?.score||0)+(relicMax?.score||0)+(fantoMax?.score||0);
+      const go=gearLocked
+        ? (gearOptions[0].score>=Math.max(0,desired-charScore-maxNonGearScore)?gearOptions[0]:null)
+        : firstGearOptionAtLeast(gearOptions,Math.max(0,desired-charScore-maxNonGearScore));
+      if(go){
+        const firstSkillAtLeast=scoreNeeded=>{
+          let lo=0,hi=cats.skillOptions.length-1,ans=null;
+          while(lo<=hi){
+            const mid=(lo+hi)>>1;
+            if(cats.skillOptions[mid].score>=scoreNeeded){ans=cats.skillOptions[mid];hi=mid-1;}else lo=mid+1;
+          }
+          return ans;
+        };
+        const oreRealm=realmTopupFor('ore',go.oreCost,resources.ore,resources,cfg,p);
+        const zeroEssence=realmTopupFor('essence',0,resources.essence,resources,cfg,p);
+        const zeroSand=realmTopupFor('sand',0,resources.sand,resources,cfg,p);
+        const sharedAcquisition=acquisitionEffortFor({ore:go.oreCost,essence:0,sand:0,treat:0},resources,cfg);
+        let fastBest=null;
+        for(const ro of cats.relicOptions){
+          for(const fo of cats.fantoOptions){
+            const neededSkill=Math.max(0,desired-charScore-go.score-ro.score-fo.score);
+            const so=firstSkillAtLeast(neededSkill);
+            if(!so) continue;
+            const score=charScore+go.score+so.score+ro.score+fo.score;
+            if(score<desired) continue;
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,zeroEssence,zeroSand],sharedAcquisition);
+            candidate.realm.days=realmDays;
+            candidate.realmFeasible=oreRealm.feasible;
+            if(!oreRealm.feasible) continue;
+            if(betterFeasibleCandidate(candidate,fastBest)) fastBest=candidate;
+          }
+        }
+        if(fastBest) return {plan:fastBest,diagnostic:fastBest};
+      }
+    }
+
     const oreCache=new Map(),essCache=new Map(),sandCache=new Map();
     const oreFor=go=>{const k=go.oreCost;if(!oreCache.has(k))oreCache.set(k,realmTopupFor('ore',k,resources.ore,resources,cfg,p));return oreCache.get(k);};
     const essFor=so=>{const k=so.cost;if(!essCache.has(k))essCache.set(k,realmTopupFor('essence',k,resources.essence,resources,cfg,p));return essCache.get(k);};
     const sandFor=ro=>{const k=ro.cost;if(!sandCache.has(k))sandCache.set(k,realmTopupFor('sand',k,resources.sand,resources,cfg,p));return sandCache.get(k);};
-    const acquisitionFor=(go,so,ro,fo)=>acquisitionEffortFor(
-      {ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg
-    );
+    /* ACQUISITION_KERNEL_V1
+       This metric is evaluated in the hottest optimizer loop. Precompute each category's
+       marginal weighted spend once per resource state, read Cart/map rates once, and run
+       the same joint-reacquisition equation with scalar locals. This removes repeated DOM
+       reads, logarithms, temporary objects and arrays from millions of candidate comparisons
+       without changing the acquisition formula or any tie-break rule. */
+    for(const so of cats.skillOptions) so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
+    for(const ro of cats.relicOptions) ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
+    for(const fo of cats.fantoOptions) fo.__acqTreatV1=marginalWeightedSpend(fo.cost,'treat',resources);
+    const acqMap=resources?.yields?.map||cfg.map||{};
+    const acqCartOre=Math.max(0,n('oreRate'));
+    const acqCartEssence=Math.max(0,n('essenceRate'));
+    const acqCartSand=Math.max(0,n('sandRate'));
+    const acqCartTreat=Math.max(0,n('treatRate'));
+    const acqNodeOre=Math.max(0,Number(acqMap.ore)||0);
+    const acqNodeEssence=Math.max(0,Number(acqMap.essence)||0);
+    const acqNodeSand=Math.max(0,Number(acqMap.sand)||0);
+    const jointHoursFast=(oreRaw,essRaw,sandRaw,treatRaw)=>{
+      const ore=Math.max(0,Number(oreRaw)||0);
+      const essence=Math.max(0,Number(essRaw)||0);
+      const sand=Math.max(0,Number(sandRaw)||0);
+      const treat=Math.max(0,Number(treatRaw)||0);
+      let floor=0;
+      if(treat>0){
+        if(acqCartTreat<=0) return 1e9;
+        floor=Math.max(floor,treat/acqCartTreat);
+      }
+      if(ore>0&&acqNodeOre<=0){if(acqCartOre<=0)return 1e9;floor=Math.max(floor,ore/acqCartOre);}
+      if(essence>0&&acqNodeEssence<=0){if(acqCartEssence<=0)return 1e9;floor=Math.max(floor,essence/acqCartEssence);}
+      if(sand>0&&acqNodeSand<=0){if(acqCartSand<=0)return 1e9;floor=Math.max(floor,sand/acqCartSand);}
+      const nodesAt=hours=>{
+        let total=0,rem=0;
+        rem=Math.max(0,ore-acqCartOre*hours);if(rem>0){if(acqNodeOre<=0)return Infinity;total+=rem/acqNodeOre;}
+        rem=Math.max(0,essence-acqCartEssence*hours);if(rem>0){if(acqNodeEssence<=0)return Infinity;total+=rem/acqNodeEssence;}
+        rem=Math.max(0,sand-acqCartSand*hours);if(rem>0){if(acqNodeSand<=0)return Infinity;total+=rem/acqNodeSand;}
+        return total;
+      };
+      if(nodesAt(floor)<=floor+1e-9) return floor;
+      let mask=0;
+      if(ore>acqCartOre*floor+1e-9&&acqNodeOre>0) mask|=1;
+      if(essence>acqCartEssence*floor+1e-9&&acqNodeEssence>0) mask|=2;
+      if(sand>acqCartSand*floor+1e-9&&acqNodeSand>0) mask|=4;
+      let hours=floor;
+      for(let pass=0;pass<4;pass++){
+        let numerator=0,denominator=1;
+        if(mask&1){numerator+=ore/acqNodeOre;denominator+=acqCartOre/acqNodeOre;}
+        if(mask&2){numerator+=essence/acqNodeEssence;denominator+=acqCartEssence/acqNodeEssence;}
+        if(mask&4){numerator+=sand/acqNodeSand;denominator+=acqCartSand/acqNodeSand;}
+        hours=Math.max(floor,numerator/denominator);
+        let next=0;
+        if((mask&1)&&ore>acqCartOre*hours+1e-9) next|=1;
+        if((mask&2)&&essence>acqCartEssence*hours+1e-9) next|=2;
+        if((mask&4)&&sand>acqCartSand*hours+1e-9) next|=4;
+        if(next===mask){
+          if(nodesAt(hours)<=hours+1e-7) return hours;
+          break;
+        }
+        mask=next;
+        if(!mask) return floor;
+      }
+      let lo=floor,hi=Math.max(1,hours,floor);
+      while(nodesAt(hi)>hi+1e-9&&hi<1e9) hi*=2;
+      if(hi>=1e9&&nodesAt(hi)>hi+1e-9) return 1e9;
+      for(let i=0;i<48;i++){
+        const mid=(lo+hi)/2;
+        if(nodesAt(mid)<=mid) hi=mid; else lo=mid;
+      }
+      return hi;
+    };
+    const acquisitionFor=(go,so,ro,fo)=>({hours:jointHoursFast(go.oreCost,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1)});
     let best=null,bestDiagnostic=null;
+
+    /* TREAT_FUNDED_SEARCH_FAST_V1
+       Exact dimensional collapse when raw Treats already fund every reachable Fantomon
+       upgrade. In that state the configured fully-funded Treat acquisition floor is zero,
+       so Fantomon score is free in the PRIMARY acquisition metric.
+
+       For each Skill+Relic choice, the best acquisition route therefore uses enough free
+       Fantomon score to force Gear to its lowest possible option. Once that Gear option is
+       fixed, extra Fantomon upgrades cannot improve acquisition and only worsen/equal the
+       normal overscore/share tie-breaks, so select the first Fantomon option that reaches
+       target. This replaces Relic x Fantomon x Skill with Relic x Skill while preserving
+       the exact candidate comparator. */
+    const treatFullyFunded=!resources.refinedTracked &&
+      (Number(resources.treat)||0)>=Math.max(0,Number(headroomCosts?.treat)||0)-0.5;
+    if(treatFullyFunded && cats.fantoOptions.length>1){
+      const fantoMax=cats.fantoOptions[cats.fantoOptions.length-1];
+      const firstFantoAtLeast=scoreNeeded=>{
+        let lo=0,hi=cats.fantoOptions.length-1,ans=null;
+        while(lo<=hi){
+          const mid=(lo+hi)>>1;
+          if(cats.fantoOptions[mid].score>=scoreNeeded){ans=cats.fantoOptions[mid];hi=mid-1;}else lo=mid+1;
+        }
+        return ans;
+      };
+      let fastBest=null,fastDiagnostic=null;
+      for(const ro of cats.relicOptions){
+        const sandRealm=sandFor(ro);
+        for(const so of cats.skillOptions){
+          const fixedScore=charScore+ro.score+so.score;
+          const go=gearLocked
+            ? (gearOptions[0].score+fantoMax.score>=Math.max(0,desired-fixedScore)?gearOptions[0]:null)
+            : firstGearOptionAtLeast(gearOptions,Math.max(0,desired-fixedScore-fantoMax.score));
+          if(!go) continue;
+          const neededFanto=Math.max(0,desired-fixedScore-go.score);
+          const fo=firstFantoAtLeast(neededFanto);
+          if(!fo) continue;
+          const score=fixedScore+go.score+fo.score;
+          if(score<desired) continue;
+
+          const oreRealm=oreFor(go),essenceRealm=essFor(so);
+          const refinedShortfall=0;
+          const hardShortfall=0;
+          const realms=[oreRealm,essenceRealm,sandRealm];
+          const realmOverflow=realms.reduce((sum,x)=>sum+Math.max(0,(Number.isFinite(x.packs)?x.packs:1e9)-(x.maxPacks||0)),0);
+          const remainingAfterMax=realms.reduce((sum,x)=>sum+Math.max(0,x.remainingAfterMax||0),0);
+          const realmPacks=realms.reduce((sum,x)=>sum+(Number.isFinite(x.packs)?x.packs:1e9),0);
+          const allFeasible=realms.every(x=>x.feasible);
+          const dawniumCost=allFeasible?realms.reduce((sum,x)=>sum+x.dawnium,0):Infinity;
+          const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
+          const acquisition=acquisitionFor(go,so,ro,fo);
+
+          if(allFeasible){
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,realms,acquisition);
+            candidate.realm.days=realmDays;
+            candidate.realmFeasible=true;
+            if(betterFeasibleCandidate(candidate,fastBest)) fastBest=candidate;
+            continue;
+          }
+
+          const treatShortfall=0;
+          const diagOreShare=resources.ore>0?go.oreCost/resources.ore:(go.oreCost>0?go.oreCost/100000:0);
+          const diagEssenceShare=resources.essence>0?so.cost/resources.essence:(so.cost>0?so.cost/100000:0);
+          const diagSandShare=resources.sand>0?ro.cost/resources.sand:(ro.cost>0?ro.cost/100000:0);
+          const diagTreatShare=resources.treat>0?fo.cost/resources.treat:0;
+          const diagnostic={gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,oreCost:go.oreCost,essenceCost:so.cost,sandCost:ro.cost,treatCost:fo.cost,refinedCost:go.refinedCost,score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,overshoot:score-desired,dawniumCost,realmAttempts:realmPacks,realmPacks,oreShare:diagOreShare,essenceShare:diagEssenceShare,sandShare:diagSandShare,treatShare:diagTreatShare,acquisitionHours:acquisition.hours,unknownPriceRefreshes,bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),realmOverflow,remainingAfterMax,treatShortfall,refinedShortfall,hardShortfall,seasonKey:cfg.key,realmFeasible:false,realm:{days:realmDays,ore:oreRealm,essence:essenceRealm,sand:sandRealm}};
+          if(betterDiagnosticCandidate(diagnostic,fastDiagnostic)) fastDiagnostic=diagnostic;
+        }
+      }
+      if(fastBest) return {plan:fastBest,diagnostic:fastBest};
+      if(fastDiagnostic) return {plan:null,diagnostic:fastDiagnostic};
+    }
+
+    /* AFFORDABLE_TREAT_FEASIBLE_V1
+       Treats have no Material-Realm top-up path. Any actually FUNDABLE plan must therefore
+       choose a Fantomon option whose Treat cost is already covered by projected Treat
+       inventory. When that affordable slice is much smaller than the full Fantomon search
+       range, do a cheap feasible-only pass first. If it finds a plan, every excluded
+       Fantomon option is provably infeasible and the expensive diagnostic scan is unnecessary.
+       If it finds nothing, fall through to the complete scan so shortfall diagnostics remain exact. */
+    const affordableFantoOptions=cats.fantoOptions.filter(fo=>fo.cost<=(Number(resources.treat)||0)+0.5);
+    if(affordableFantoOptions.length>0 && affordableFantoOptions.length*1.25<cats.fantoOptions.length){
+      let affordableBest=null;
+      for(const ro of cats.relicOptions){
+        const sandRealm=sandFor(ro);
+        for(const fo of affordableFantoOptions){
+          const fixedBeforeSkill=charScore+ro.score+fo.score;
+          let lastGearAdds=null;
+          for(const so of cats.skillOptions){
+            const fixedScore=fixedBeforeSkill+so.score;
+            const go=gearLocked?(gearOptions[0].score>=Math.max(0,desired-fixedScore)?gearOptions[0]:null):firstGearOptionAtLeast(gearOptions,Math.max(0,desired-fixedScore));
+            if(!go) continue;
+            if(lastGearAdds===go.adds) continue;
+            lastGearAdds=go.adds;
+            const score=fixedScore+go.score;
+            if(score<desired) continue;
+            const refinedShortfall=resources.refinedTracked?Math.max(0,go.refinedCost-resources.refined):0;
+            if(refinedShortfall>0.5) continue;
+            const oreRealm=oreFor(go),essenceRealm=essFor(so);
+            const realms=[oreRealm,essenceRealm,sandRealm];
+            if(!realms.every(x=>x.feasible)) continue;
+            if(affordableBest && go.oreCost>=affordableBest.oreCost && so.cost>=affordableBest.essenceCost && ro.cost>=affordableBest.sandCost && fo.cost>=affordableBest.treatCost && go.refinedCost>=affordableBest.refinedCost) continue;
+            const acquisition=acquisitionFor(go,so,ro,fo);
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,realms,acquisition);
+            candidate.realm.days=realmDays;
+            candidate.realmFeasible=true;
+            if(betterFeasibleCandidate(candidate,affordableBest)) affordableBest=candidate;
+          }
+        }
+      }
+      if(affordableBest) return {plan:affordableBest,diagnostic:affordableBest};
+    }
 
     for(const ro of cats.relicOptions){
       const sandRealm=sandFor(ro);
