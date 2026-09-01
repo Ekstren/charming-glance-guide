@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Remove sentence punctuation from compact build substat priority lines.
 FILES=[Path('index.html'),Path('scripts/patch_restore_rich_builds_v1.py')]
 repls={
 "substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD > ATK.'":"substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD > ATK'",
