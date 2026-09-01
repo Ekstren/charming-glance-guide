@@ -871,13 +871,6 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 @media(max-width:760px){.materialPlanner>summary.materialsSummary{align-items:flex-start;flex-wrap:wrap}.materialsSummaryRight{width:100%;justify-content:space-between;gap:10px;flex-wrap:wrap}.materialsSummaryRight>small{white-space:normal}.staminaHeaderControl{border-left:0;padding-left:0;min-width:min(100%,260px);margin-left:auto}}
 
 
-
-/* TIMELINE_REPORT_BUTTON_V1 */
-.timelineReportRow{display:flex;justify-content:flex-end;margin-top:8px}
-.timelineReportLink{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.04em;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 8px;transition:border-color .15s,color .15s,background .15s}
-.timelineReportLink:hover{color:var(--ink);border-color:var(--muted);background:var(--filter-bg)}
-.timelineReportLink:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-
 </style>
 
 <style id="v54-mobile-polish">
@@ -6562,50 +6555,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     })};
   }
 
-  function timelineReportPlainText(value){
-    return String(value||'')
-      .replace(/<br\s*\/?>/gi,'\n')
-      .replace(/<\/p>|<\/div>|<\/span>/gi,'\n')
-      .replace(/<[^>]*>/g,' ')
-      .replace(/&nbsp;/g,' ')
-      .replace(/&amp;/g,'&')
-      .replace(/&lt;/g,'<')
-      .replace(/&gt;/g,'>')
-      .replace(/\s+\n/g,'\n')
-      .replace(/\n\s+/g,'\n')
-      .replace(/[ \t]{2,}/g,' ')
-      .trim();
-  }
-  function timelineReportUrl(e){
-    const eventName=String((e&&e[3])||'Timeline event');
-    const date=String((e&&e[0])||'');
-    const serverDay=String((e&&e[1])||'');
-    const category=String((e&&e[2])||'');
-    const details=timelineReportPlainText((e&&e[4])||'');
-    const title=`[Timeline Report] ${eventName} · ${date}`;
-    const body=[
-      '### Timeline event',
-      `- **Event:** ${eventName}`,
-      `- **Date:** ${date}`,
-      `- **Server day:** ${serverDay}`,
-      `- **Category:** ${category}`,
-      '',
-      '### Current timeline details',
-      details || '_No details are currently loaded for this entry._',
-      '',
-      '### What seems wrong?',
-      '<!-- Tell us what looks incorrect. A screenshot, source link, server day, season day, or older-server timing is especially helpful. -->',
-      '',
-      '> Generated from the Charming Glance timeline. The automated timeline watcher will re-check this event against current sources after the issue is submitted.'
-    ].join('\n');
-    return `https://github.com/Ekstren/charming-glance-guide/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-  }
-  function timelineReportHtml(e){
-    const href=timelineReportUrl(e).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-    const label=`Report possible problem with ${String((e&&e[3])||'timeline event')}`.replace(/"/g,'&quot;');
-    return `<div class="timelineReportRow"><a class="timelineReportLink" href="${href}" target="_blank" rel="noopener noreferrer" aria-label="${label}" title="Report this timeline event">Report</a></div>`;
-  }
-
   function renderTimeline(){
     renderLocalTimeLabels();
     const boundaryIso=currentResetIso();
@@ -6624,7 +6573,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       const groupActive=entries.some(e=>eventIsActive(e,boundaryIso));
       const entrySeason=TIMELINE_SEASON_WINDOWS.find(x=>Number(first[1])>=x.start&&Number(first[1])<=x.end);
       const seasonDay=entrySeason?Math.max(1,Number(first[1])-entrySeason.start+1):1;
-      return `<article class="dayGroup${today?' today':''}${groupActive?' activeEvent':''}" data-date="${date}"><div class="dayMarker"><span>Server Day ${first[1]}</span><small class="seasonDayLabel">Season Day ${seasonDay}</small><b>${today?'CURRENT RESET':groupActive?'ACTIVE EVENT':''}</b></div><div class="dateBlock"><span>${month}</span><strong>${day}</strong><small>${weekday}</small></div><div class="entryStack">${entries.map(e=>{const active=eventIsActive(e,boundaryIso);return `<div class="entry${active?' entry-active':''}"><span class="category category-${e[5]}">${e[2]}</span><div><p><b>${e[3]}</b>${active?'<span class="activePill">ACTIVE</span>':''}</p>${timelineDetailHtml(e)}${timelineReportHtml(e)}</div></div>`;}).join('')}</div></article>`;
+      return `<article class="dayGroup${today?' today':''}${groupActive?' activeEvent':''}" data-date="${date}"><div class="dayMarker"><span>Server Day ${first[1]}</span><small class="seasonDayLabel">Season Day ${seasonDay}</small><b>${today?'CURRENT RESET':groupActive?'ACTIVE EVENT':''}</b></div><div class="dateBlock"><span>${month}</span><strong>${day}</strong><small>${weekday}</small></div><div class="entryStack">${entries.map(e=>{const active=eventIsActive(e,boundaryIso);return `<div class="entry${active?' entry-active':''}"><span class="category category-${e[5]}">${e[2]}</span><div><p><b>${e[3]}</b>${active?'<span class="activePill">ACTIVE</span>':''}</p>${timelineDetailHtml(e)}</div></div>`;}).join('')}</div></article>`;
     }).join('') || '<div class="emptyBuild">No timeline entries match this filter.</div>';
     dedupeTimelineDetails();
 
