@@ -1,0 +1,59 @@
+name: Activate Warlord's Rest roll guide
+
+on:
+  # Warlord's Rest is expected on Charming Glance at the Sep 12, 2026
+  # 6:00 AM PDT reset (13:00 UTC). Run hourly that calendar day so a
+  # delayed/failed first run can retry; the activation script is date-gated
+  # and idempotent.
+  schedule:
+    - cron: '10 * 12 9 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate staged activator
+        run: |
+          python3 -m py_compile scripts/activate_warlords_rest_roll_guide_v1.py
+          python3 -m json.tool data/warlords-rest-roll-guide-v1.json >/dev/null
+
+      - name: Activate if release gate is live
+        run: python3 scripts/activate_warlords_rest_roll_guide_v1.py
+
+      - name: Verify activated data when changed
+        run: |
+          if git diff --quiet -- index.html scripts/patch_build_roll_guide_v2.py; then
+            echo 'No activation changes in this run.'
+            exit 0
+          fi
+          grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' index.html
+          grep -Fq "Warlord's Rest · Lv162" index.html
+          grep -Fq "crit:['Crit Rate','≈ 7.50%',1" index.html
+          grep -Fq "critdmg:['Crit DMG','≈ 11.25%',1" index.html
+          grep -Fq "critpair:['Crit Rate + Crit DMG','15.3% + 23%',0" index.html
+          grep -Fq "critacc:['Crit Rate + Accuracy','15.3% + 15.3%',1" index.html
+          grep -Fq "blockpair:['Block Rate + Block Efficiency','15.3% + 23%',1" index.html
+          grep -Fq "healpair:['DMG RES + Healing Boost','7.68% + 30.7%',1" index.html
+          grep -Fq "em:['Elemental Mastery','Lv162 scaling',1" index.html
+          grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' scripts/patch_build_roll_guide_v2.py
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html scripts/patch_build_roll_guide_v2.py; then
+            echo 'Warlord roll guide is not due yet or is already active.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html scripts/patch_build_roll_guide_v2.py
+          git commit -m "Activate Warlord's Rest roll guide"
+          git push
