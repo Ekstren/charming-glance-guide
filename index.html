@@ -81,7 +81,7 @@
 .staminaBottom small{color:var(--green);text-align:right;font-size:9px;font-weight:800;line-height:1.4}
 @media (width<=520px){.staminaSimple{align-items:stretch;flex-direction:column}.staminaControl{align-items:stretch;min-width:0;width:100%}.staminaSimple select{width:100%;min-width:0}.staminaCurrentPlan{max-width:none;text-align:left}.resourceInputsFour{grid-template-columns:1fr}.resourceCardFields{grid-template-columns:1fr 1fr}.staminaTopline{align-items:flex-start;flex-direction:column}.staminaModePicker{min-width:100%;width:100%}.staminaModePicker select{width:100%}.staminaBottom{grid-template-columns:1fr}.staminaBottom small{text-align:left}}
 
-.calcSeasonNotice{max-width:1080px;margin:12px auto 0;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--surface));border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:18px}.calcSeasonNotice[hidden]{display:none}.calcSeasonNotice strong{font-size:11px}.calcSeasonNotice p{color:var(--secondary-text);margin:3px 0 0;font-size:9px;line-height:1.5}.calcSeasonNotice button{border:1px solid var(--gold);background:var(--surface);color:var(--ink);border-radius:9px;padding:8px 11px;font-size:9px;font-weight:850;cursor:pointer;white-space:nowrap}.calcSeasonNotice button:hover{background:var(--gold);color:#151515}.seasonRulesHint{border:1px solid var(--line);background:var(--filter-bg);color:var(--secondary-text);border-radius:10px;margin-top:9px;padding:8px 10px;font-size:9px;line-height:1.45}.seasonRulesHint b{color:var(--green)}.calcResults.rolloverBlocked{opacity:.62}.calcResults.rolloverBlocked .targetMessage{color:var(--gold)}
+.calcSeasonNotice{max-width:1080px;margin:12px auto 0;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--surface));border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:18px}.calcSeasonNotice[hidden]{display:none}.calcSeasonNotice strong{font-size:11px}.calcSeasonNotice p{color:var(--secondary-text);margin:3px 0 0;font-size:9px;line-height:1.5}.calcSeasonNoticeActions{display:flex;align-items:center;gap:8px;flex:0 0 auto}.calcSeasonNotice button{border:1px solid var(--gold);background:var(--surface);color:var(--ink);border-radius:9px;padding:8px 11px;font-size:9px;font-weight:850;cursor:pointer;white-space:nowrap}.calcSeasonNotice button:hover{background:var(--gold);color:#151515}.calcSeasonNotice .calcSeasonReset{border-color:var(--line);color:var(--secondary-text)}.calcSeasonNotice .calcSeasonReset:hover{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,var(--surface));color:var(--ink)}@media(max-width:620px){.calcSeasonNotice{align-items:stretch;flex-direction:column}.calcSeasonNoticeActions{width:100%;display:grid;grid-template-columns:1fr 1fr}.calcSeasonNoticeActions button{width:100%;white-space:normal}}.seasonRulesHint{border:1px solid var(--line);background:var(--filter-bg);color:var(--secondary-text);border-radius:10px;margin-top:9px;padding:8px 10px;font-size:9px;line-height:1.45}.seasonRulesHint b{color:var(--green)}.calcResults.rolloverBlocked{opacity:.62}.calcResults.rolloverBlocked .targetMessage{color:var(--gold)}
 
 
 /* Wide desktop readability pass v18 */
@@ -3428,7 +3428,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 </section>
 <!-- COMPANION_GUIDE_SECTION_END -->
 <section id="calculatorSection" class="siteSection calculator" hidden aria-label="Primostar Calculator">
-  <div class="calcSeasonNotice" id="calcSeasonNotice" hidden><div><strong id="calcSeasonNoticeTitle">Season rollover</strong><p id="calcSeasonNoticeText">—</p></div><button id="confirmSeasonSnapshot" type="button">Use entries as new snapshot</button></div>
+  <div class="calcSeasonNotice" id="calcSeasonNotice" hidden><div><strong id="calcSeasonNoticeTitle">Season rollover</strong><p id="calcSeasonNoticeText">—</p></div><div class="calcSeasonNoticeActions"><button id="confirmSeasonSnapshot" type="button">Use entries as new snapshot</button><button id="resetSeasonSnapshot" type="button" class="calcSeasonReset">Reset calculator</button></div></div>
   <div class="calculatorLayout">
     <div class="calcInputs">
       <details id="characterDetails" class="calcPanel currentLevelsPanel characterPanel collapsibleCard" open>
@@ -7151,7 +7151,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       saveState();
       scheduleCalculatorUpdate(0);
     });
+    /* S2_ROLLOVER_HEADER_RESET_V1 */
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
+    $('resetSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
     $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
     $('targetMessage')?.addEventListener('click',e=>{
       const btn=e.target.closest?.('.applyRealmRecommendation');
