@@ -1,0 +1,42 @@
+name: Apply S2 rollover header reset
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_s2_rollover_header_reset_v1.py'
+      - '.github/workflows/apply-s2-rollover-header-reset-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch rollover header
+        run: python3 scripts/patch_s2_rollover_header_reset_v1.py
+
+      - name: Verify
+        run: |
+          grep -Fq 'S2_ROLLOVER_HEADER_RESET_V1' index.html
+          grep -Fq 'id="resetSeasonSnapshot"' index.html
+          grep -Fq 'Reset calculator' index.html
+          grep -Fq "$('resetSeasonSnapshot')?.addEventListener" index.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Add reset to S2 snapshot header'
+          git push
