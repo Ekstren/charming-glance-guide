@@ -78,28 +78,28 @@ rich = r'''
     Conqueror:{
       rule:'Current T4 evidence supports ATK ≥ Elemental Mastery on main secondaries. Crit Rate/Crit DMG are the premium reroll stats; Accuracy matters more in PvP and high-Block fights.',
       rows:[['Sword','ATK ≥ Elemental Mastery > SPD'],['Gauntlets','ATK ≥ Elemental Mastery > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','ATK ≥ Elemental Mastery > SPD']],
-      substats:'PvE: Crit Rate + Crit DMG > Crit Rate + Accuracy. PvP/high-Block: Crit Rate + Accuracy can be equal or better. Then Elemental Mastery / Accuracy > SPD / useful HP-or-SPD-to-ATK conversions. ATK/ATK% affixes are lower priority than the premium Crit packages.'
+      substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD > ATK.'
     },
     Guardian:{
       rule:'Block is Guardian’s defining stat. Stack Block Rate first; after that, DEF/DMG RES drive survival while SPD remains the best offensive/support tempo stat.',
       rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
-      substats:'Best tier: Block Rate% / Block Rate + Block Efficiency / PvE-PvP Bonus DMG + DMG RES. Next: flat DEF / SPD / HP / useful Crit. Accuracy and Crit DMG are situational damage stats.'
+      substats:'Block Rate > DEF > SPD > HP.'
     },
     Destroyer:{
-      rule:'T4 Destroyer is Elemental Mastery-first on Staff/Codex/Boots, with Crit as the next major damage check. ATK still matters and Formation Breaker scales from it, but that does not make ATK the universal first gearing stat.',
-      rows:[['Staff','Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate'],['Codex','Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','Elemental Mastery > SPD > ATK']],
-      substats:'Crit Rate + Accuracy / Crit Rate + Crit DMG / PvP Bonus DMG + PvP DMG RES > Elemental Mastery / Crit Rate% / Accuracy% / Crit DMG% > ATK / SPD.'
+      rule:'S2 Destroyer is balance-sensitive, not permanently EM-first. Keep a healthy Elemental Mastery floor, then flat ATK can match or beat more EM on developed accounts. Crit remains premium; dummy-test close swaps.',
+      rows:[['Staff','ATK ≈ Elemental Mastery > Crit > SPD'],['Codex','ATK ≈ Elemental Mastery > Crit > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','ATK ≈ Elemental Mastery > SPD']],
+      substats:'Crit Rate / Crit DMG > ATK ≈ Elemental Mastery > Accuracy > SPD.'
     },
     Dominator:{
       dps:{
         rule:'Effect Hit Rate is a threshold stat: get enough to land Erosion reliably, then favor damage-quality affixes instead of blindly stacking more EHR. If Erosion is unreliable, hybrid/direct damage is safer.',
         rows:[['Staff','Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD'],['Orb','Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','Elemental Mastery > ATK > SPD']],
-        substats:'Best: Crit Rate + Accuracy / Crit Rate + Crit DMG / ailment DMG / Block Rate + Block Resistance. Then Effect Hit Rate until reliable, damage-vs-monster/player packages, Crit, and Elemental Mastery. ATK/ATK% are only average affixes.'
+        substats:'Effect Hit Rate > Crit Rate / Crit DMG > Elemental Mastery > ATK > SPD.'
       },
       heals:{
         rule:'Healer Dominator is SPD-first on Staff/Orb/Boots and HP-first on Helmet/Chest. Effect Hit Rate is the second main-secondary target on Staff/Orb, but only an average healer affix when rerolling substats.',
         rows:[['Staff','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Orb','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Helmet','HP > DEF ≥ Physical RES = Elemental RES > Effect RES'],['Chest','HP > DEF ≥ Physical RES = Elemental RES'],['Boots','SPD > Elemental Mastery > ATK']],
-        substats:'Best tier: DMG RES + Healing / Block Rate + Block Resistance / Healing Boost. Next: evade-on-hit / Crit RES + Block / SPD / HP. Effect Hit Rate is only average as a healer reroll affix.'
+        substats:'Healing Boost > SPD > HP > DMG RES.'
       }
     }
   };
