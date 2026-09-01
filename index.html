@@ -8097,65 +8097,92 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 
 
 <style id="build-roll-guide-v1">
-/* BUILD_ROLL_GUIDE_V1
-   Compact early-S2 refine roll reference under Builds > Substats. */
+/* BUILD_ROLL_GUIDE_V2
+   Compact, class-specific early-S2 refine roll reference under Builds > Substats. */
 .rollGuide{border-top:1px solid color-mix(in srgb,var(--line) 72%,transparent);padding-top:7px;margin-top:0}
-.rollGuide>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--body-text);font-size:9px;font-weight:850;letter-spacing:.04em;user-select:none}
+.rollGuide>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;color:var(--body-text);font-size:9px;font-weight:850;letter-spacing:.04em;user-select:none}
 .rollGuide>summary::-webkit-details-marker{display:none}
+.rollGuide>summary small{color:var(--muted);font-size:8px;font-weight:750;letter-spacing:0;margin-left:auto}
 .rollGuide>summary:after{content:'+';color:var(--green);font-size:13px;font-weight:900;line-height:1}
 .rollGuide[open]>summary:after{content:'−'}
-.rollGuide>summary small{color:var(--muted);font-size:8px;font-weight:750;letter-spacing:0}
-.rollGuideBody{margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:visible;background:var(--bg)}
-.rollGuideNote{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--muted);font-size:8px;line-height:1.45}
-.rollGuideGrid{display:grid;grid-template-columns:minmax(145px,1fr) minmax(115px,.72fr)}
-.rollGuideRow{display:contents}
-.rollGuideRow>span{min-width:0;padding:7px 9px;border-bottom:1px solid color-mix(in srgb,var(--line) 72%,transparent);font-size:8px;line-height:1.35}
-.rollGuideRow>span:first-child{color:var(--body-text);font-weight:750}
-.rollGuideRow>span:last-child{color:var(--ink);font-weight:850;text-align:right;border-left:1px solid color-mix(in srgb,var(--line) 72%,transparent)}
-.rollGuideRow:last-child>span{border-bottom:0}
-.rollHelp{position:relative;display:inline-grid;place-items:center;width:14px;height:14px;margin-left:4px;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font-size:8px;font-weight:900;line-height:1;vertical-align:middle;cursor:help;outline:0}
-.rollHelp:hover:after,.rollHelp:focus:after{content:attr(data-tip);position:absolute;z-index:100;right:-2px;bottom:calc(100% + 7px);width:min(255px,72vw);padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--body-text);font-size:9px;font-weight:650;line-height:1.4;text-align:left;white-space:normal;box-shadow:0 8px 22px #0004}
-.rollGuideSources{padding:8px 10px;color:var(--muted);font-size:8px;line-height:1.4;border-top:1px solid var(--line)}
-@media(max-width:620px){.rollGuideGrid{grid-template-columns:minmax(0,1fr) minmax(105px,.72fr)}.rollGuideRow>span{font-size:9px;padding:8px}.rollHelp:hover:after,.rollHelp:focus:after{right:-8px}}
+.rollGuideBody{margin-top:7px;border:1px solid var(--line);border-radius:9px;background:var(--bg);overflow:visible}
+.rollGuideNote{padding:5px 7px;border-bottom:1px solid var(--line);color:var(--muted);font-size:7.5px;line-height:1.3}
+.rollGuideGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:6px}
+.rollGuideRow{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:7px;padding:5px 6px;border:1px solid color-mix(in srgb,var(--line) 76%,transparent);border-radius:6px;background:var(--surface)}
+.rollGuideName{min-width:0;color:var(--body-text);font-size:8px;font-weight:760;line-height:1.2}
+.rollGuideValue{color:var(--ink);font-size:8.5px;font-weight:850;line-height:1.15;text-align:right;white-space:nowrap}
+.rollGuideValue.rollScaling{color:var(--secondary-text);font-size:7.5px}
+.rollHelp{appearance:none;border:0;background:none;padding:0;margin:0 0 0 3px;color:var(--green);font:inherit;font-size:8.5px;font-weight:900;line-height:1;cursor:help;text-decoration:underline;text-underline-offset:2px;position:relative;display:inline;vertical-align:baseline;outline:none}
+.rollHelp:hover,.rollHelp:focus{color:var(--ink)}
+.rollHelp:hover:after,.rollHelp:focus:after{content:attr(data-tip);position:absolute;z-index:100;left:0;bottom:calc(100% + 6px);width:min(245px,72vw);padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--body-text);font-size:8.5px;font-weight:650;line-height:1.35;text-align:left;white-space:normal;box-shadow:0 8px 22px #0004;text-decoration:none}
+.rollGuideSources{padding:5px 7px;color:var(--muted);font-size:7px;line-height:1.3;border-top:1px solid var(--line)}
+@media(max-width:620px){
+  .rollGuideGrid{grid-template-columns:1fr;gap:4px;padding:5px}
+  .rollGuideRow{padding:6px 7px}
+  .rollGuideName{font-size:8.5px}.rollGuideValue{font-size:9px}
+  .rollHelp:hover:after,.rollHelp:focus:after{left:-6px;width:min(235px,78vw)}
+}
 </style>
 <script id="build-roll-guide-v1-script">
 (()=>{
-  const MARK='BUILD_ROLL_GUIDE_V1';
-  const rows=[
-    ['ATK','Scales with gear level',1,'No single season-wide cap. Flat ATK affixes scale with the receiving gear level; current English-client early-S2 maximum still needs a direct Affix Preview capture.'],
-    ['DEF','Scales with gear level',1,'No single season-wide cap. Flat DEF affixes scale with gear level; exact current early-S2 maximum has not been directly confirmed on the English client.'],
-    ['HP','Scales with gear level',1,'No single season-wide cap. Flat HP affixes scale with gear level; exact current early-S2 maximum has not been directly confirmed on the English client.'],
-    ['SPD','Scales with gear level',1,'No single season-wide cap. Flat SPD affixes scale with gear level; exact current early-S2 maximum has not been directly confirmed on the English client.'],
-    ['Crit Rate','5.00%',0,''],
-    ['Block Rate','≈ 5.00%',1,'Approximate early-S2 single-stat cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.'],
-    ['Crit RES','≈ 5.00%',1,'Approximate early-S2 single-stat cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.'],
-    ['Accuracy','≈ 5.00%',1,'Approximate early-S2 single-stat cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.'],
-    ['Crit Rate + Crit DMG','5.12% + 7.68%',0,''],
-    ['Block Rate + Block Efficiency','5.12% + 7.68%',0,''],
-    ['Crit Rate + Accuracy','5.12% + 5.12%',0,''],
-    ['Crit RES + Block Rate','5.12% + 5.12%',0,''],
-    ['DMG RES + Healing Boost','2.56% + 10.24%',0,''],
-    ['PvP Bonus DMG + PvP DMG RES','5.12% + 5.12%',0,''],
-    ['PvE Bonus DMG + PvE DMG RES','5.12% + 5.12%',0,''],
-    ['Crit DMG (single)','≈ 7.50%',1,'Approximate only. Current gamefile tables clearly expose Crit DMG in the paired Crit Rate + Crit DMG affix; a standalone early-S2 Crit DMG cap has not been directly confirmed.'],
-    ['Healing Boost (single)','≈ 10.00%',1,'Approximate only. Current gamefile tables clearly expose Healing Boost in the paired DMG RES + Healing Boost affix; a standalone early-S2 Healing Boost cap has not been directly confirmed.']
-  ];
+  const R={
+    atk:['ATK','Gear-level scaling',1,'No single season-wide cap. Flat ATK scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    def:['DEF','Gear-level scaling',1,'No single season-wide cap. Flat DEF scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    hp:['HP','Gear-level scaling',1,'No single season-wide cap. Flat HP scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    spd:['SPD','Gear-level scaling',1,'No single season-wide cap. Flat SPD scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    crit:['Crit Rate','5.00%',0,'',0],
+    critdmg:['Crit DMG','≈ 7.50%',1,'Approximate standalone early-S2 Crit DMG cap. The paired Crit Rate + Crit DMG affix is confirmed, but this standalone maximum has not been directly confirmed on the English client.',0],
+    block:['Block Rate','≈ 5.00%',1,'Approximate early-S2 standalone Block Rate cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.',0],
+    acc:['Accuracy','≈ 5.00%',1,'Approximate early-S2 standalone Accuracy cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.',0],
+    em:['Elemental Mastery','?',1,'The affix is recommended for this class, but I could not confirm a trustworthy current pre-160 English-client maximum yet.',0],
+    ehr:['Effect Hit Rate','?',1,'The affix is recommended for DPS Dominator, but I could not confirm a trustworthy current pre-160 English-client maximum yet.',0],
+    dmgres:['DMG RES','?',1,'The affix is recommended for healer Dominator, but I could not confirm a trustworthy current pre-160 standalone maximum yet.',0],
+    heal:['Healing Boost','≈ 10.00%',1,'Approximate standalone early-S2 Healing Boost cap. The paired DMG RES + Healing Boost affix is confirmed, but this standalone maximum has not been directly confirmed.',0],
+    critpair:['Crit Rate + Crit DMG','5.12% + 7.68%',0,'',0],
+    critacc:['Crit Rate + Accuracy','5.12% + 5.12%',0,'',0],
+    blockpair:['Block Rate + Block Efficiency','5.12% + 7.68%',0,'',0],
+    healpair:['DMG RES + Healing Boost','2.56% + 10.24%',0,'',0]
+  };
+  const PROFILES={
+    Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','atk'],
+    Guardian:['block','blockpair','def','spd','hp'],
+    Destroyer:['crit','critdmg','critpair','atk','em','acc','critacc','spd'],
+    Dominator:{
+      dps:['ehr','crit','critdmg','critpair','em','atk','spd'],
+      heals:['heal','healpair','spd','hp','dmgres']
+    }
+  };
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const help=tip=>`<span class="rollHelp" tabindex="0" role="note" aria-label="Approximate; not confirmed" title="Approximate; not confirmed" data-tip="${esc(tip)}">?</span>`;
-  const html=()=>`<details class="rollGuide"><summary><span>Roll guide</span><small>Early S2 · gear &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Current pre-160 refine caps. <b>?</b> means approximate or not yet directly confirmed on the English client.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip])=>`<div class="rollGuideRow"><span>${esc(name)}${approx?help(tip):''}</span><span>${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Special dual-stat caps use older-server S2 scaling cross-checked against the current refine affix pool. Lv160+ inheritance changes these values, so this table is intentionally early-S2 only.</div></div></details>`;
+  const activeClass=()=>document.querySelector('#classTabs button.active')?.dataset.class||'Conqueror';
+  const role=()=>{try{return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps'}catch(_){return 'dps'}};
+  const rowsFor=(cls,mode)=>{
+    const keys=cls==='Dominator'?PROFILES.Dominator[mode]:PROFILES[cls];
+    return (keys||PROFILES.Conqueror).map(k=>R[k]);
+  };
+  const help=tip=>`<button type="button" class="rollHelp" aria-label="Approximate or unconfirmed value" data-tip="${esc(tip)}">?</button>`;
+  const guideHtml=(cls,mode)=>{
+    const rows=rowsFor(cls,mode);
+    const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls;
+    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Early S2 &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate/unconfirmed.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Pre-160 S2 reference. Confirmed special dual-stat caps use older-server S2 scaling cross-checked against the current refine pool; Lv160+ changes these values.</div></div></details>`;
+  };
   let queued=false;
   function apply(){
     queued=false;
+    const cls=activeClass(),mode=cls==='Dominator'?role():'dps',sig=cls+'|'+mode;
     document.querySelectorAll('#buildContent .buildQuickStats').forEach(quick=>{
-      if(quick.querySelector(':scope > .rollGuide')) return;
-      const sub=quick.querySelector(':scope > .quickSubstats');
-      if(sub) sub.insertAdjacentHTML('afterend',html());
+      const existing=quick.querySelector(':scope > .rollGuide');
+      if(existing?.dataset.rollSig===sig) return;
+      const html=guideHtml(cls,mode);
+      if(existing) existing.outerHTML=html;
+      else quick.querySelector(':scope > .quickSubstats')?.insertAdjacentHTML('afterend',html);
     });
   }
-  function queue(){if(queued)return;queued=true;requestAnimationFrame(apply)}
+  function queue(){if(queued)return;queued=true;requestAnimationFrame(()=>setTimeout(apply,0))}
   document.addEventListener('DOMContentLoaded',()=>{
     const host=document.getElementById('buildContent');
     if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
+    document.getElementById('classTabs')?.addEventListener('click',queue);
+    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]'))setTimeout(queue,0)});
     queue();
   });
   window.addEventListener('load',queue);
