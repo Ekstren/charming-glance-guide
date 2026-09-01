@@ -1,6 +1,75 @@
 {
   "schema_version": 1,
-  "channel": {},
-  "last_message_id": null,
-  "messages": []
+  "channel": {
+    "id": "1544367391994024079",
+    "name": "sxs-official-feed",
+    "guild_id": "1544197238031515710",
+    "purpose": null
+  },
+  "last_message_id": "1544367488223940650",
+  "messages": [
+    {
+      "id": "1544367433169764372",
+      "timestamp": "2026-09-01T15:24:49.027000+00:00",
+      "edited_timestamp": null,
+      "type": 12,
+      "content": "Sword x Staff #🔔｜announcements",
+      "author": {
+        "id": "174260332133351424",
+        "username": "ekstren",
+        "global_name": "ekstren"
+      },
+      "webhook_id": null,
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1544367433169764372"
+    },
+    {
+      "id": "1544367460604715009",
+      "timestamp": "2026-09-01T15:24:55.568000+00:00",
+      "edited_timestamp": null,
+      "type": 12,
+      "content": "Sword x Staff #🎁｜gift-code",
+      "author": {
+        "id": "174260332133351424",
+        "username": "ekstren",
+        "global_name": "ekstren"
+      },
+      "webhook_id": null,
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "channel_id": "1427172717718929458",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1544367460604715009"
+    },
+    {
+      "id": "1544367488223940650",
+      "timestamp": "2026-09-01T15:25:02.153000+00:00",
+      "edited_timestamp": null,
+      "type": 12,
+      "content": "Sword x Staff #🔔｜announcements",
+      "author": {
+        "id": "174260332133351424",
+        "username": "ekstren",
+        "global_name": "ekstren"
+      },
+      "webhook_id": null,
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1544367488223940650"
+    }
+  ]
 }
