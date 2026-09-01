@@ -86,9 +86,9 @@ rich = r'''
       substats:'Block Rate% > Block Efficiency > PvE/PvP DMG + DMG RES > DEF / SPD / HP / useful Crit'
     },
     Destroyer:{
-      rule:'T4 Destroyer values flat ATK much more than older EM-first advice suggests. Formation Breaker scales from ATK; EM is still strong, especially in PvP/equal-level content.',
-      rows:[['Staff','Flat ATK ≥ Elemental Mastery > Crit > SPD'],['Codex','Flat ATK ≥ Elemental Mastery > Crit > SPD'],['Helmet','DEF / RES > HP'],['Chest','DEF / RES > HP'],['Boots','Elemental Mastery / Flat ATK > SPD']],
-      substats:'Crit Rate + Crit DMG / Crit Rate + Accuracy > Flat ATK / Elemental Mastery > Accuracy / SPD. Do not value ATK% like flat ATK.'
+      rule:'T4 Destroyer values ATK much more than older EM-first advice suggests. Formation Breaker scales from ATK; EM is still strong, especially in PvP/equal-level content.',
+      rows:[['Staff','ATK ≥ Elemental Mastery > Crit > SPD'],['Codex','ATK ≥ Elemental Mastery > Crit > SPD'],['Helmet','DEF / RES > HP'],['Chest','DEF / RES > HP'],['Boots','Elemental Mastery / ATK > SPD']],
+      substats:'Crit Rate + Crit DMG / Crit Rate + Accuracy > ATK / Elemental Mastery > Accuracy / SPD.'
     },
     Dominator:{
       dps:{
