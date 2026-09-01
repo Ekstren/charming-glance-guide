@@ -1,0 +1,50 @@
+name: Hide unconfirmed timeline pills
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-hide-unconfirmed-pills-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply visual cleanup
+        run: python .github/patch-hide-unconfirmed-pills-v1.py
+      - name: Verify visible pills are gone
+        run: |
+          if grep -q "unconfirmedPill.*UNCONFIRMED" index.html; then
+            echo 'Visible UNCONFIRMED pill renderer still present'
+            exit 1
+          fi
+          grep -q "e\[7\]==='unconfirmed'" index.html && echo 'Unconfirmed metadata is still present in data/logic where expected' || true
+      - name: Validate inline JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script[^>]*>(.*?)</script>',s,re.S)
+          code='\n'.join(scripts)
+          with tempfile.NamedTemporaryFile('w',suffix='.js',delete=False,encoding='utf-8') as f:
+              f.write(code)
+              name=f.name
+          subprocess.run(['node','--check',name],check=True)
+          PY
+      - name: Commit generated cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Hide unconfirmed timeline tags'
+          git push
