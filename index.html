@@ -873,133 +873,6 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 
 
 
-/* MOBILE_TIMELINE_LAYOUT_V1 */
-@media (max-width:720px){
-  html,body{max-width:100%;overflow-x:hidden}
-
-  .topbar{
-    align-items:center;
-    gap:14px;
-    min-height:72px;
-    padding:10px 16px;
-  }
-  .logoButton{min-width:0;flex:1}
-  .logoButton>span:last-child{min-width:0}
-  .logoButton strong{font-size:15px;line-height:1.2}
-  .logoButton small{font-size:10px;line-height:1.35}
-  .themeToggle{flex:0 0 auto}
-
-  .sectionSwitch{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    width:auto;
-    max-width:none;
-    height:auto;
-    margin:12px 16px 0;
-    padding:6px;
-    gap:6px;
-    position:relative;
-  }
-  .sectionSwitch button{
-    width:100%;
-    min-width:0;
-    min-height:42px;
-    padding:8px 6px;
-    line-height:1.2;
-    white-space:normal;
-  }
-
-  .summary{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:10px;
-    width:auto;
-    max-width:none;
-    margin:16px 16px 0;
-    padding:0;
-  }
-  .summary div,
-  .summary div:first-child,
-  .summary div:nth-child(2),
-  .summary div:last-child{
-    grid-column:auto;
-    margin:0;
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:17px 18px;
-  }
-  .summary span{margin-bottom:6px}
-
-  .timelineNow,
-  .timelineIntelWrap,
-  .timeline,
-  .controls{
-    width:100%;
-    max-width:none;
-    padding-left:16px;
-    padding-right:16px;
-  }
-  .timelineNow{margin-top:14px}
-  .timelineIntelWrap{margin-top:12px}
-  .timelineNowHead{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:4px;
-  }
-  .timelineNowHead span{text-align:left;line-height:1.4}
-  .timelineNowGrid{grid-template-columns:1fr}
-  .timelineNowCard{min-width:0;overflow-wrap:anywhere}
-  .timelineIntel>summary{padding:13px 14px}
-  .timelineIntelBody{padding:13px 14px}
-
-  .controls{
-    flex-direction:column;
-    align-items:stretch;
-    gap:10px;
-    margin:18px 0 26px;
-  }
-  .filters{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    width:100%;
-    min-width:0;
-    gap:7px;
-  }
-  .filters button{
-    width:100%;
-    min-width:0;
-    padding:9px 8px;
-    line-height:1.2;
-    white-space:normal;
-    text-align:center;
-  }
-  .pastToggle{width:100%;padding:2px 2px 0}
-
-  .timeline{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
-  .dayGroup{min-width:0}
-  .entryStack,.entry{min-width:0}
-  .entry p{overflow-wrap:anywhere}
-
-  .todayButton{
-    right:14px;
-    bottom:calc(12px + env(safe-area-inset-bottom));
-    max-width:calc(100vw - 28px);
-    min-height:42px;
-    padding:10px 14px;
-    font-size:0;
-    line-height:1;
-  }
-  .todayButton::after{content:'Current';font-size:11px;font-weight:850}
-}
-
-@media (max-width:430px){
-  .topbar{padding-left:14px;padding-right:14px}
-  .sectionSwitch{margin-left:14px;margin-right:14px}
-  .summary{margin-left:14px;margin-right:14px}
-  .timelineNow,.timelineIntelWrap,.timeline,.controls{padding-left:14px;padding-right:14px}
-  .huntPhases,.futureSeasonGrid{grid-template-columns:1fr}
-}
-
 </style>
 
 <style id="v54-mobile-polish">
@@ -3317,6 +3190,127 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 /* TIMELINE_SEASON_DAY_V1 */
 .dayMarker .seasonDayLabel{display:block;margin-top:3px;font-size:12px;font-weight:750;line-height:1.15;color:var(--muted);letter-spacing:.02em}
 @media(max-width:620px){.dayMarker .seasonDayLabel{font-size:11px}}
+</style>
+
+
+<style id="mobile-timeline-layout-final-v2">
+/* MOBILE_TIMELINE_LAYOUT_FINAL_V2
+   Final mobile cascade pass: keep navigation in flow, remove horizontal overflow,
+   make filters fit the viewport, and keep the floating current button out of the way. */
+@media (max-width:720px){
+  html,body{max-width:100%;overflow-x:hidden!important}
+
+  /* A two-row sticky section nav consumed too much of the phone viewport and could
+     visually sit on top of the summary. Keep only the top bar sticky on phones. */
+  .sectionSwitch{
+    position:relative!important;
+    top:auto!important;
+    z-index:auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    margin:10px 12px 0!important;
+    padding:5px!important;
+    gap:5px!important;
+  }
+  .sectionSwitch button{
+    width:100%!important;
+    min-width:0!important;
+    min-height:44px!important;
+    padding:8px 6px!important;
+    line-height:1.15!important;
+    white-space:normal!important;
+  }
+
+  /* Summary cards should be clean standalone cards on a phone, not desktop cells. */
+  .summary{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:9px!important;
+    width:auto!important;
+    max-width:none!important;
+    margin:14px 12px 0!important;
+    padding:0!important;
+  }
+  .summary div,
+  .summary div:first-child,
+  .summary div:nth-child(2),
+  .summary div:last-child{
+    grid-column:auto!important;
+    margin:0!important;
+    border:1px solid var(--line)!important;
+    border-radius:14px!important;
+    padding:15px 16px!important;
+  }
+
+  .timelineNow,.timelineIntelWrap,.timeline,.controls{
+    width:100%!important;
+    max-width:none!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+  .timelineNow{margin-top:12px!important}
+  .timelineIntelWrap{margin-top:12px!important}
+  .timelineNowHead{align-items:flex-start!important;flex-direction:column!important;gap:4px!important}
+  .timelineNowHead span{text-align:left!important;line-height:1.4!important}
+  .timelineNowGrid{grid-template-columns:1fr!important}
+  .timelineNowCard{min-width:0!important;overflow-wrap:anywhere}
+  .timelineNowCard .activePill{display:inline-flex!important;margin-left:6px!important}
+
+  /* The old flex row used intrinsic button widths and could extend off-screen. */
+  .controls{
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    margin:18px 0 26px!important;
+  }
+  .filters{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    gap:7px!important;
+  }
+  .filters button{
+    width:100%!important;
+    min-width:0!important;
+    padding:9px 6px!important;
+    line-height:1.2!important;
+    white-space:normal!important;
+    text-align:center!important;
+  }
+  .pastToggle{width:100%!important;padding:2px 2px 0!important}
+
+  .timeline{padding-bottom:calc(82px + env(safe-area-inset-bottom))!important}
+  .dayGroup,.entryStack,.entry{min-width:0!important}
+  .entry p{overflow-wrap:anywhere}
+
+  /* Keep the shortcut, but make it a compact phone control instead of a large
+     pill that covers the filter row/content. The original text remains in the DOM. */
+  .todayButton{
+    right:12px!important;
+    bottom:calc(10px + env(safe-area-inset-bottom))!important;
+    min-height:40px!important;
+    max-width:calc(100vw - 24px)!important;
+    padding:9px 13px!important;
+    font-size:0!important;
+    line-height:1!important;
+  }
+  .todayButton::after{content:'Current';font-size:11px;font-weight:850}
+}
+
+@media (max-width:520px){
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+@media (max-width:380px){
+  .sectionSwitch{margin-left:8px!important;margin-right:8px!important}
+  .summary{margin-left:8px!important;margin-right:8px!important}
+  .timelineNow,.timelineIntelWrap,.timeline,.controls{padding-left:8px!important;padding-right:8px!important}
+}
 </style>
 
 </head>
