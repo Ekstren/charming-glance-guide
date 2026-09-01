@@ -1,0 +1,48 @@
+name: Apply Nexus 4v4 deep-dive correction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-nexus-4v4-deep-dive-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply Nexus correction
+        run: python .github/patch-nexus-4v4-deep-dive-v2.py
+      - name: Verify
+        run: |
+          grep -q "2026-09-12.*Server Tournament · Nexus qualifier" index.html
+          grep -q "2026-09-13.*Nexus Tournament · 4v4" index.html
+          grep -q "SECOND weekend after Season 2 starts" index.html
+          grep -q "top 32 are reported to receive some medals" index.html
+      - name: Basic inline JavaScript parse check
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert "const timelineData = [" in s
+          assert s.count("['2026-09-13',61,'Event','Nexus Tournament · 4v4'") == 1
+          print('timeline checks passed')
+          PY
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Correct projected Nexus 4v4 cadence'
+          git push
