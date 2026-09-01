@@ -39,18 +39,18 @@ payload = r'''
     def:['DEF','Gear-level scaling',1,'No single season-wide cap. Flat DEF scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
     hp:['HP','Gear-level scaling',1,'No single season-wide cap. Flat HP scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
     spd:['SPD','Gear-level scaling',1,'No single season-wide cap. Flat SPD scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
-    crit:['Crit Rate','5.00%',0,'',0],
-    critdmg:['Crit DMG','≈ 7.50%',1,'Approximate standalone early-S2 Crit DMG cap. The paired Crit Rate + Crit DMG affix is confirmed, but this standalone maximum has not been directly confirmed on the English client.',0],
-    block:['Block Rate','≈ 5.00%',1,'Approximate early-S2 standalone Block Rate cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.',0],
-    acc:['Accuracy','≈ 5.00%',1,'Approximate early-S2 standalone Accuracy cap inferred from the same pre-160 affix tier. Needs direct English-client Affix Preview confirmation.',0],
-    em:['Elemental Mastery','?',1,'The affix is recommended for this class, but I could not confirm a trustworthy current pre-160 English-client maximum yet.',0],
-    ehr:['Effect Hit Rate','?',1,'The affix is recommended for DPS Dominator, but I could not confirm a trustworthy current pre-160 English-client maximum yet.',0],
+    crit:['Crit Rate','≈ 5.00%',1,'Approximate standalone early-S2 Crit Rate cap. Older-server data confirms normal Crit Rate is a variable-range affix that grows later in S2, but I do not have a direct current English-client pre-160 maximum capture yet.',0],
+    critdmg:['Crit DMG','≈ 7.50%',1,'Approximate standalone early-S2 Crit DMG cap. The paired Crit Rate + Crit DMG affix is directly documented, but this standalone maximum has not been directly confirmed on the current English client.',0],
+    block:['Block Rate','≈ 5.00%',1,'Approximate early-S2 standalone Block Rate cap inferred from the same pre-160 normal-affix tier. Needs direct English-client Affix Preview confirmation.',0],
+    acc:['Accuracy','≈ 5.00%',1,'Approximate early-S2 standalone Accuracy cap inferred from the same pre-160 normal-affix tier. Needs direct English-client Affix Preview confirmation.',0],
+    em:['Elemental Mastery','Gear-level scaling',1,'Elemental Mastery is a flat/white-number normal affix, not a fixed percentage roll. Affix values scale with gear/season level; the exact current pre-160 English-client maximum still needs a direct Affix Preview capture.',1],
+    ehr:['Effect Hit Rate','Gear-level scaling',1,'Effect Hit Rate is a flat/white-number normal affix, not a fixed percentage roll. Its exact current pre-160 English-client maximum still needs a direct Affix Preview capture.',1],
     dmgres:['DMG RES','?',1,'The affix is recommended for healer Dominator, but I could not confirm a trustworthy current pre-160 standalone maximum yet.',0],
-    heal:['Healing Boost','≈ 10.00%',1,'Approximate standalone early-S2 Healing Boost cap. The paired DMG RES + Healing Boost affix is confirmed, but this standalone maximum has not been directly confirmed.',0],
+    heal:['Healing Boost','≈ 10.00%',1,'Approximate standalone early-S2 Healing Boost cap. The paired DMG RES + Healing Boost affix is documented at later S2 scaling, but this standalone current maximum has not been directly confirmed.',0],
     critpair:['Crit Rate + Crit DMG','5.12% + 7.68%',0,'',0],
-    critacc:['Crit Rate + Accuracy','5.12% + 5.12%',0,'',0],
-    blockpair:['Block Rate + Block Efficiency','5.12% + 7.68%',0,'',0],
-    healpair:['DMG RES + Healing Boost','2.56% + 10.24%',0,'',0]
+    critacc:['Crit Rate + Accuracy','5.12% + 5.12%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0],
+    blockpair:['Block Rate + Block Efficiency','5.12% + 7.68%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0],
+    healpair:['DMG RES + Healing Boost','2.56% + 10.24%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0]
   };
   const PROFILES={
     Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','atk'],
@@ -72,7 +72,7 @@ payload = r'''
   const guideHtml=(cls,mode)=>{
     const rows=rowsFor(cls,mode);
     const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls;
-    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Early S2 &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate/unconfirmed.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Pre-160 S2 reference. Confirmed special dual-stat caps use older-server S2 scaling cross-checked against the current refine pool; Lv160+ changes these values.</div></div></details>`;
+    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Early S2 &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate/unconfirmed.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Pre-160 S2 reference. Double-Crit is directly documented; other paired values marked <b>?</b> are derived from older-server S2 scaling. Flat/white-number stats such as Mastery scale with gear level.</div></div></details>`;
   };
   let queued=false;
   function apply(){
