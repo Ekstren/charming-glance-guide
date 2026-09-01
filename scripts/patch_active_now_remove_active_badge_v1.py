@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Active-now cards live inside an already-labeled section, so strip any redundant trailing ACTIVE text from their titles.
 p = Path('index.html')
 s = p.read_text(encoding='utf-8')
 
