@@ -3182,6 +3182,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 #timelineSection>.timelineSources a{color:var(--green);font-weight:800;text-decoration:none;white-space:nowrap}
 @media(max-width:720px){#timelineSection>.timelineSources{margin:0 10px 24px;padding:14px;flex-direction:column;gap:10px}}
 </style>
+
+<style id="timeline-season-day-v1">
+/* TIMELINE_SEASON_DAY_V1 */
+.dayMarker .seasonDayLabel{display:block;margin-top:3px;font-size:10px;font-weight:750;line-height:1.15;color:var(--muted);letter-spacing:.02em}
+@media(max-width:620px){.dayMarker .seasonDayLabel{font-size:9px}}
+</style>
+
 </head>
 <body>
 <main>
@@ -6555,7 +6562,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       const month=dt.toLocaleString('en-US',{month:'short',timeZone:'UTC'}); const day=dt.getUTCDate(); const weekday=dt.toLocaleString('en-US',{weekday:'short',timeZone:'UTC'});
       const today=date===boundaryIso;
       const groupActive=entries.some(e=>eventIsActive(e,boundaryIso));
-      return `<article class="dayGroup${today?' today':''}${groupActive?' activeEvent':''}" data-date="${date}"><div class="dayMarker"><span>Server Day ${first[1]}</span><b>${today?'CURRENT RESET':groupActive?'ACTIVE EVENT':''}</b></div><div class="dateBlock"><span>${month}</span><strong>${day}</strong><small>${weekday}</small></div><div class="entryStack">${entries.map(e=>{const active=eventIsActive(e,boundaryIso);return `<div class="entry${active?' entry-active':''}"><span class="category category-${e[5]}">${e[2]}</span><div><p><b>${e[3]}</b>${active?'<span class="activePill">ACTIVE</span>':''}${e[7]==='unconfirmed'?'<span class="unconfirmedPill">UNCONFIRMED</span>':''}</p>${timelineDetailHtml(e)}</div></div>`;}).join('')}</div></article>`;
+      const entrySeason=TIMELINE_SEASON_WINDOWS.find(x=>Number(first[1])>=x.start&&Number(first[1])<=x.end);
+      const seasonDay=entrySeason?Math.max(1,Number(first[1])-entrySeason.start+1):1;
+      return `<article class="dayGroup${today?' today':''}${groupActive?' activeEvent':''}" data-date="${date}"><div class="dayMarker"><span>Server Day ${first[1]}</span><small class="seasonDayLabel">Season Day ${seasonDay}</small><b>${today?'CURRENT RESET':groupActive?'ACTIVE EVENT':''}</b></div><div class="dateBlock"><span>${month}</span><strong>${day}</strong><small>${weekday}</small></div><div class="entryStack">${entries.map(e=>{const active=eventIsActive(e,boundaryIso);return `<div class="entry${active?' entry-active':''}"><span class="category category-${e[5]}">${e[2]}</span><div><p><b>${e[3]}</b>${active?'<span class="activePill">ACTIVE</span>':''}${e[7]==='unconfirmed'?'<span class="unconfirmedPill">UNCONFIRMED</span>':''}</p>${timelineDetailHtml(e)}</div></div>`;}).join('')}</div></article>`;
     }).join('') || '<div class="emptyBuild">No timeline entries match this filter.</div>';
     dedupeTimelineDetails();
 
