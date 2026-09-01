@@ -1,6 +1,16 @@
 name: Activate Warlord's Rest roll guide
 
 on:
+  # Validate any future edits to the staged trigger/data immediately. The
+  # activation script itself remains date-gated, so these pushes cannot make
+  # the live site switch early.
+  push:
+    branches: [main]
+    paths:
+      - 'data/warlords-rest-roll-guide-v1.json'
+      - 'scripts/activate_warlords_rest_roll_guide_v1.py'
+      - 'scripts/validate_warlords_rest_roll_guide_v1.py'
+      - '.github/workflows/warlords-rest-roll-guide-trigger.yml'
   # Warlord's Rest is expected on Charming Glance at the Sep 12, 2026
   # 6:00 AM PDT reset (13:00 UTC). Run hourly that calendar day so a
   # delayed/failed first run can retry; the activation script is date-gated
@@ -21,10 +31,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate staged activator
+      - name: Validate staged activator and data
         run: |
-          python3 -m py_compile scripts/activate_warlords_rest_roll_guide_v1.py
+          python3 -m py_compile scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py
           python3 -m json.tool data/warlords-rest-roll-guide-v1.json >/dev/null
+          python3 scripts/validate_warlords_rest_roll_guide_v1.py
 
       - name: Activate if release gate is live
         run: python3 scripts/activate_warlords_rest_roll_guide_v1.py
@@ -39,6 +50,9 @@ jobs:
           grep -Fq "Warlord's Rest · Lv162" index.html
           grep -Fq "crit:['Crit Rate','≈ 7.50%',1" index.html
           grep -Fq "critdmg:['Crit DMG','≈ 11.25%',1" index.html
+          grep -Fq "block:['Block Rate','≈ 7.50%',1" index.html
+          grep -Fq "acc:['Accuracy','≈ 7.50%',1" index.html
+          grep -Fq "heal:['Healing Boost','≈ 15.00%',1" index.html
           grep -Fq "critpair:['Crit Rate + Crit DMG','15.3% + 23%',0" index.html
           grep -Fq "critacc:['Crit Rate + Accuracy','15.3% + 15.3%',1" index.html
           grep -Fq "blockpair:['Block Rate + Block Efficiency','15.3% + 23%',1" index.html
