@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "name": "Pandarial build activation prep",
+  "release_gate_utc": "2026-10-14T13:00:00Z",
+  "release_gate_local": "2026-10-14 06:00 America/Los_Angeles",
+  "release_basis": "Charming Glance Server Day 92 / Season 2 Day 46 projection already used by the maintained timeline. This is still a projection until the server unlocks it.",
+  "pandarial": {
+    "rarity": "Rainbow/Mythic",
+    "assist": "At battle start, reduces all Technique cooldowns by 1 turn and grants a battle-long DMG Boost.",
+    "adult": [
+      "Verdant Spikes: AoE Physical damage and Fragility for 1 turn.",
+      "Emerald Dew: heals nearby allies at turn start."
+    ]
+  },
+  "activation_policy": {
+    "date_gated": true,
+    "idempotent": true,
+    "do_not_activate_early": true,
+    "notes": "GitHub validates this prep on every edit, but the live site remains unchanged until the release gate. If Charming Glance's date changes before release, update this JSON and workflow schedule before the gate."
+  },
+  "planned_impacts": {
+    "Conqueror": {
+      "All-Content": ["Nyxarchon", "Pandarial"],
+      "Dragon": ["Nyxarchon", "Pandarial"],
+      "Arena/Tournament": ["Aegiswing", "Pandarial"],
+      "build_change": "No forced Technique/Charm replacement. Nyx remains the stronger long-fight/raw-DPS lead; Pandarial becomes the burst/front-load alternative."
+    },
+    "Guardian": {
+      "Water Offensive": ["Pandarial", "Aegiswing"],
+      "Dungeon Tank": ["Aegiswing", "Pandarial"],
+      "Support/Boss": ["Kels", "Pandarial"],
+      "Arena/Tournament": ["Aegiswing", "Pandarial"],
+      "build_change": "Keep the existing Guardian core bars. Preserve the documented Pandarial aggressive flex: on the secondary/solo block build, Luminous Shield can flex to Light Sword Array when Pandarial supplies the opening cooldown reduction."
+    },
+    "Destroyer": {
+      "change": "No automatic Pandarial recommendation change staged. The current Sep 1 Prydwen Destroyer guide still recommends Nyxarchon as the Mythic damage lead and does not list Pandarial; do not force Panda into this class merely because it releases."
+    },
+    "Dominator": {
+      "AoE DPS": ["Nyxarchon", "Pandarial"],
+      "Single Target DPS": ["Nyxarchon", "Pandarial"],
+      "Healing": ["Pandarial", "Mandragora"],
+      "Arena": ["Nyxarchon", "Pandarial"],
+      "Tournament": ["Pandarial", "Nyxarchon"],
+      "build_change": "Pandarial becomes the main healer/hybrid lead because the opening cooldown reduction enables Turn-1 healing and Adult Pandarial adds AoE healing. Nyx remains the main pure-DPS lead."
+    }
+  },
+  "sources": [
+    {
+      "name": "Prydwen Fantomon database",
+      "url": "https://www.prydwen.gg/sword-x-staff/fantomons",
+      "use": "Pandarial skill text"
+    },
+    {
+      "name": "Prydwen Conqueror guide",
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-conqueror",
+      "use": "Nyx remains BIS; Pandarial is the generic-content/front-load alternative; Aegiswing remains PvP-focused"
+    },
+    {
+      "name": "Prydwen Guardian guide",
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-guardian",
+      "use": "Pandarial materially changes the aggressive secondary PvE option; Aegiswing remains Guardian's priority Mythic and Kels remains boss-support utility"
+    },
+    {
+      "name": "Prydwen Destroyer guide",
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer",
+      "use": "As of Sep 1, 2026 the guide still names Nyxarchon as the Mythic lead and does not recommend Pandarial"
+    },
+    {
+      "name": "Prydwen Dominator guide",
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-dominator",
+      "use": "Nyx remains DPS BIS; Pandarial is the best support/hybrid option and enables Turn-1 healing"
+    }
+  ]
+}
