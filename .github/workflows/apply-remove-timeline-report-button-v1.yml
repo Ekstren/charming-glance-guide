@@ -1,0 +1,47 @@
+name: Remove timeline report button
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-remove-timeline-report-button-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove timeline report button
+        run: python .github/patch-remove-timeline-report-button-v1.py
+      - name: Verify report button is gone
+        run: |
+          ! grep -q 'timelineReportHtml' index.html
+          ! grep -q 'timelineReportLink' index.html
+          ! grep -q 'TIMELINE_REPORT_BUTTON_V1' index.html
+      - name: Validate inline JavaScript syntax
+        run: |
+          python - <<'PY'
+          import re, pathlib, subprocess, tempfile
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S|re.I)
+          for i, script in enumerate(scripts):
+              if not script.strip():
+                  continue
+              p = pathlib.Path(tempfile.gettempdir()) / f'inline-{i}.js'
+              p.write_text(script, encoding='utf-8')
+              subprocess.run(['node', '--check', str(p)], check=True)
+          print(f'Validated {len(scripts)} inline script block(s)')
+          PY
+      - name: Commit generated timeline cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No generated change needed.'
+            exit 0
+          fi
+          git commit -m 'Remove timeline report button'
+          git push
