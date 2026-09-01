@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# One-off timeline cleanup: Active now cards do not need their own ACTIVE badge.
 p = Path('index.html')
 s = p.read_text(encoding='utf-8')
 
