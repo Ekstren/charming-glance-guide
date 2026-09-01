@@ -3313,10 +3313,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+
 <style id="nav-tab-interactions-v1">
 /* NAV_TAB_INTERACTIONS_V1
-   Active tabs always own the rose highlight. Hover is desktop-pointer-only so
-   touch taps cannot leave a second tab visually highlighted. */
+   Exactly one tab looks selected. Active owns the rose fill; non-active hover
+   never gets a filled background, and touch devices do not keep sticky hover. */
 .sectionSwitch button.active,
 .classTabs button.active,
 .companionClassTabs button.active{
@@ -3330,9 +3331,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   .sectionSwitch button:not(.active):hover,
   .classTabs button:not(.active):hover,
   .companionClassTabs button:not(.active):hover{
-    background:var(--ui-hover)!important;
+    background:transparent!important;
     color:var(--green)!important;
-    border-color:var(--ui-accent-border)!important;
+    border-color:transparent!important;
   }
   .sectionSwitch button.active:hover,
   .classTabs button.active:hover,
@@ -3359,52 +3360,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     border-color:var(--accent-strong)!important;
   }
 }
-</style>
-<style id="nav-tab-interactions-v1">
-/* NAV_TAB_INTERACTIONS_V1
-   Active tabs always own the rose highlight. Hover is desktop-pointer-only so
-   touch taps cannot leave a second tab visually highlighted. */
-.sectionSwitch button.active,
-.classTabs button.active,
-.companionClassTabs button.active{
-  background:var(--accent-strong)!important;
-  border-color:var(--accent-strong)!important;
-  color:#fffaf3!important;
-  box-shadow:none!important;
-}
 
-@media (hover:hover) and (pointer:fine){
-  .sectionSwitch button:not(.active):hover,
-  .classTabs button:not(.active):hover,
-  .companionClassTabs button:not(.active):hover{
-    background:var(--ui-hover)!important;
-    color:var(--green)!important;
-    border-color:var(--ui-accent-border)!important;
-  }
-  .sectionSwitch button.active:hover,
-  .classTabs button.active:hover,
-  .companionClassTabs button.active:hover{
-    background:var(--accent-strong)!important;
-    color:#fffaf3!important;
-    border-color:var(--accent-strong)!important;
-  }
-}
-
-@media (hover:none), (pointer:coarse){
-  .sectionSwitch button:not(.active):hover,
-  .classTabs button:not(.active):hover,
-  .companionClassTabs button:not(.active):hover{
-    background:transparent!important;
-    color:var(--muted)!important;
-    border-color:transparent!important;
-  }
-  .sectionSwitch button.active:hover,
-  .classTabs button.active:hover,
-  .companionClassTabs button.active:hover{
-    background:var(--accent-strong)!important;
-    color:#fffaf3!important;
-    border-color:var(--accent-strong)!important;
-  }
+.sectionSwitch button:focus-visible,
+.classTabs button:focus-visible,
+.companionClassTabs button:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:2px;
 }
 </style>
 </head>
