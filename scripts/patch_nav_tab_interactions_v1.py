@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 p = Path('index.html')
 s = p.read_text(encoding='utf-8')
@@ -27,13 +28,14 @@ if old_comp in s:
 elif new_comp not in s:
     raise SystemExit('companion class handler anchor not found')
 
-# 3) Touch browsers can leave :hover stuck after taps. Keep active state authoritative,
-#    and only apply hover styling on devices that actually have a fine hover pointer.
-marker = '/* NAV_TAB_INTERACTIONS_V1 */'
+# 3) Keep exactly one final interaction-style block. Touch browsers can leave
+#    :hover stuck after taps, and filled hover backgrounds make two tabs look
+#    selected at once. Only the active tab gets a filled highlight.
+s = re.sub(r'\n?<style id="nav-tab-interactions-v1">.*?</style>\n?', '\n', s, flags=re.S)
 css = r'''<style id="nav-tab-interactions-v1">
 /* NAV_TAB_INTERACTIONS_V1
-   Active tabs always own the rose highlight. Hover is desktop-pointer-only so
-   touch taps cannot leave a second tab visually highlighted. */
+   Exactly one tab looks selected. Active owns the rose fill; non-active hover
+   never gets a filled background, and touch devices do not keep sticky hover. */
 .sectionSwitch button.active,
 .classTabs button.active,
 .companionClassTabs button.active{
@@ -47,9 +49,9 @@ css = r'''<style id="nav-tab-interactions-v1">
   .sectionSwitch button:not(.active):hover,
   .classTabs button:not(.active):hover,
   .companionClassTabs button:not(.active):hover{
-    background:var(--ui-hover)!important;
+    background:transparent!important;
     color:var(--green)!important;
-    border-color:var(--ui-accent-border)!important;
+    border-color:transparent!important;
   }
   .sectionSwitch button.active:hover,
   .classTabs button.active:hover,
@@ -76,13 +78,18 @@ css = r'''<style id="nav-tab-interactions-v1">
     border-color:var(--accent-strong)!important;
   }
 }
+
+.sectionSwitch button:focus-visible,
+.classTabs button:focus-visible,
+.companionClassTabs button:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:2px;
+}
 </style>
 '''
-if marker not in s:
-    if '</head>' not in s:
-        raise SystemExit('</head> anchor not found')
-    s = s.replace('</head>', css + '</head>', 1)
+if '</head>' not in s:
+    raise SystemExit('</head> anchor not found')
+s = s.replace('</head>', css + '</head>', 1)
 
 p.write_text(s, encoding='utf-8')
-print('Stabilized section/class tab interactions')
-# workflow trigger/update marker
+print('Stabilized section/class tab interactions and removed duplicate style blocks')
