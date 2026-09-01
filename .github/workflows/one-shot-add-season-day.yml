@@ -1,0 +1,67 @@
+name: One-shot add Season Day summary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-shot-add-season-day.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Add Season Day to timeline summary
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          css_anchor = '.summary div:first-child strong{color:var(--green);font-size:30px;line-height:1}'
+          css_rule = '.summary .summarySeasonDay{color:var(--green);margin-top:5px;font-size:11px;font-weight:800;display:block}'
+          if css_rule not in text:
+              if css_anchor not in text:
+                  raise SystemExit('Summary CSS anchor not found')
+              text = text.replace(css_anchor, css_anchor + css_rule, 1)
+
+          old = "$('timelineSummary').innerHTML=`<div><span>Server day</span><strong>${serverDay}</strong></div><div><span>Current season</span><strong>${scope.current.label}</strong></div><div><span>Next fixed milestone</span><strong>${nextMilestone}</strong></div>`;"
+          new = "const seasonDay=Math.max(1,serverDay-scope.current.start+1);\n    $('timelineSummary').innerHTML=`<div><span>Server day</span><strong>${serverDay}</strong></div><div><span>Current season</span><strong>${scope.current.label}</strong><small class=\"summarySeasonDay\">Season Day ${seasonDay}</small></div><div><span>Next fixed milestone</span><strong>${nextMilestone}</strong></div>`;"
+          if 'summarySeasonDay' not in text[text.find("$('timelineSummary')")-300:text.find("$('timelineSummary')")+800]:
+              if old not in text:
+                  raise SystemExit('Timeline summary render anchor not found')
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S|re.I)
+          Path('/tmp/charming-inline.js').write_text('\n;\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
+
+      - name: Commit patch and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/one-shot-add-season-day.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/one-shot-add-season-day.yml
+          git commit -m 'Show current Season Day in timeline summary'
+          git pull --rebase origin main
+          git push origin HEAD:main
