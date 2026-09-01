@@ -1,0 +1,37 @@
+name: Timeline season number label
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_timeline_season_number_label_v1.py'
+      - '.github/workflows/apply-timeline-season-number-label-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply timeline season number label
+        run: python scripts/patch_timeline_season_number_label_v1.py
+      - name: Verify timeline marker
+        shell: bash
+        run: |
+          grep -q 'Season ${seasonNumber} Day ${seasonDay}' index.html
+          grep -q 'Server Day ${first\[1\]}' index.html
+      - name: Commit generated update
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Show season number under server day'
+          git push origin HEAD:main
