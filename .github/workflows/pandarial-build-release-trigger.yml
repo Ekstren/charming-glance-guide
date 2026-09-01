@@ -1,0 +1,66 @@
+name: Activate Pandarial build prep
+
+on:
+  # Any edits to the staged recommendation matrix are validated immediately,
+  # but the activator itself refuses to touch the live site before the gate.
+  push:
+    branches: [main]
+    paths:
+      - 'data/pandarial-build-prep-v1.json'
+      - 'scripts/activate_pandarial_build_prep_v1.py'
+      - 'scripts/validate_pandarial_build_prep_v1.py'
+      - '.github/workflows/pandarial-build-release-trigger.yml'
+  # Charming Glance projection: Server Day 92 / S2 Day 46 = Oct 14, 2026
+  # at the 6:00 AM PDT reset (13:00 UTC). Run hourly Oct 14-16 so delayed
+  # Actions executions can retry. The Python gate is the authoritative guard.
+  schedule:
+    - cron: '10 * 14-16 10 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate staged Pandarial prep
+        run: |
+          python3 -m py_compile scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py
+          python3 -m json.tool data/pandarial-build-prep-v1.json >/dev/null
+          python3 scripts/validate_pandarial_build_prep_v1.py
+
+      - name: Activate if Pandarial release gate is live
+        run: python3 scripts/activate_pandarial_build_prep_v1.py
+
+      - name: Verify activation when changed
+        run: |
+          if git diff --quiet -- index.html .github/build-fantomons-inject.html; then
+            echo 'Pandarial is not due yet or the staged update is already active.'
+            exit 0
+          fi
+          grep -Fq 'PANDARIAL_RELEASE_V1' index.html
+          grep -Fq 'PANDARIAL_RELEASE_V1' .github/build-fantomons-inject.html
+          grep -Fq "pick('Pandarial','Burst/front-load alt" index.html
+          grep -Fq "pick('Pandarial','Main aggressive Guardian lead" index.html
+          grep -Fq "pick('Pandarial','Main healer/hybrid lead" index.html
+          grep -Fq "Destroyer:{" index.html
+          grep -Fq "Solo:[pick('Nyxarchon','Main premium choice: DEF shred plus strong damage suits a glass-cannon Destroyer.'" index.html
+          grep -Fq 'With Pandarial, Luminous Shield → Light Sword Array' index.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html .github/build-fantomons-inject.html; then
+            echo 'No Pandarial activation changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-fantomons-inject.html
+          git commit -m 'Activate Pandarial build recommendations'
+          git push
