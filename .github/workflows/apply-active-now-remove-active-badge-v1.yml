@@ -1,0 +1,40 @@
+name: Apply Active now badge cleanup v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_active_now_remove_active_badge_v1.py'
+      - '.github/workflows/apply-active-now-remove-active-badge-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove redundant ACTIVE badge
+        run: python3 scripts/patch_active_now_remove_active_badge_v1.py
+
+      - name: Verify render
+        run: |
+          grep -q 'timelineNowCard"><strong>${e\[3\]}</strong>' index.html
+          ! grep -q 'timelineNowCard"><strong>${e\[3\]}<span class="activePill">ACTIVE</span>' index.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove redundant Active now badges'
+          git push
