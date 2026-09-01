@@ -1,0 +1,42 @@
+name: Apply nav tab interactions v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_nav_tab_interactions_v1.py'
+      - '.github/workflows/apply-nav-tab-interactions-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch nav interactions
+        run: python3 scripts/patch_nav_tab_interactions_v1.py
+
+      - name: Verify guards and stable active styling
+        run: |
+          grep -Fq "if(activeSection===name && !\$(map[name]).hidden) return;" index.html
+          grep -Fq "if(b.dataset.companionClass===currentClass)return;" index.html
+          grep -Fq "NAV_TAB_INTERACTIONS_V1" index.html
+          grep -Fq "@media (hover:hover) and (pointer:fine)" index.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index.html changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Stabilize section and class tab highlights'
+          git push
