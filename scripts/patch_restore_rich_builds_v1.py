@@ -78,28 +78,28 @@ rich = r'''
     Conqueror:{
       rule:'Current T4 evidence supports ATK ≥ Elemental Mastery on main secondaries. Crit Rate/Crit DMG are the premium reroll stats; Accuracy matters more in PvP and high-Block fights.',
       rows:[['Sword','ATK ≥ Elemental Mastery > SPD'],['Gauntlets','ATK ≥ Elemental Mastery > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','ATK ≥ Elemental Mastery > SPD']],
-      substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD > ATK.'
+      substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD > ATK'
     },
     Guardian:{
       rule:'Block is Guardian’s defining stat. Stack Block Rate first; after that, DEF/DMG RES drive survival while SPD remains the best offensive/support tempo stat.',
       rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
-      substats:'Block Rate > DEF > SPD > HP.'
+      substats:'Block Rate > DEF > SPD > HP'
     },
     Destroyer:{
       rule:'S2 Destroyer is balance-sensitive, not permanently EM-first. Keep a healthy Elemental Mastery floor, then flat ATK can match or beat more EM on developed accounts. Crit remains premium; dummy-test close swaps.',
       rows:[['Staff','ATK ≈ Elemental Mastery > Crit > SPD'],['Codex','ATK ≈ Elemental Mastery > Crit > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','ATK ≈ Elemental Mastery > SPD']],
-      substats:'Crit Rate / Crit DMG > ATK ≈ Elemental Mastery > Accuracy > SPD.'
+      substats:'Crit Rate / Crit DMG > ATK ≈ Elemental Mastery > Accuracy > SPD'
     },
     Dominator:{
       dps:{
         rule:'Effect Hit Rate is a threshold stat: get enough to land Erosion reliably, then favor damage-quality affixes instead of blindly stacking more EHR. If Erosion is unreliable, hybrid/direct damage is safer.',
         rows:[['Staff','Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD'],['Orb','Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','Elemental Mastery > ATK > SPD']],
-        substats:'Effect Hit Rate > Crit Rate / Crit DMG > Elemental Mastery > ATK > SPD.'
+        substats:'Effect Hit Rate > Crit Rate / Crit DMG > Elemental Mastery > ATK > SPD'
       },
       heals:{
         rule:'Healer Dominator is SPD-first on Staff/Orb/Boots and HP-first on Helmet/Chest. Effect Hit Rate is the second main-secondary target on Staff/Orb, but only an average healer affix when rerolling substats.',
         rows:[['Staff','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Orb','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Helmet','HP > DEF ≥ Physical RES = Elemental RES > Effect RES'],['Chest','HP > DEF ≥ Physical RES = Elemental RES'],['Boots','SPD > Elemental Mastery > ATK']],
-        substats:'Healing Boost > SPD > HP > DMG RES.'
+        substats:'Healing Boost > SPD > HP > DMG RES'
       }
     }
   };
