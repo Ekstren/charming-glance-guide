@@ -58,20 +58,14 @@ index_replacements = [
         '<div class="gearPanel"><div class="gearIntro"><span>Season 2 gearing</span><strong>Gear & stat priorities</strong><p>Destroyer wants a balanced damage profile. EM supplies the elemental multiplier, but flat ATK keeps scaling every damaging Technique and becomes increasingly competitive once your EM pool is already strong.</p></div><div class="gearGrid"><div class="gearItem"><span>Main lines</span><p>Staff/Codex: ATK ≈ Elemental Mastery &gt; Crit &gt; SPD. Helmet/Chest: DEF/RES &gt; HP. Boots: ATK ≈ Elemental Mastery &gt; SPD. If two pieces are close, use the 50-round dummy test.</p></div><div class="gearItem"><span>Best substats</span><p>Crit Rate / Crit DMG &gt; ATK ≈ Elemental Mastery &gt; Accuracy &gt; SPD.</p></div><div class="gearItem"><span>Gem plan</span><p>Weapon &amp; Off-hand: Obsidian / Amethyst. Boots: Amethyst. Armor: Moonstone. Helm: Citrine; use Beryl/Sapphire mainly for conversion or power padding.</p></div><div class="gearItem"><span>Relic elements</span><p>Light is the safest general priority, Fire is excellent for horde content, and Wind is especially strong for PvP/control. Favor Affinity over Aegis on offensive relic slots.</p></div></div></div>'
     ),
     (
-        '<li><b>Small bosses:</b> Divine Wrath can be replaced by Meteoric Flames</li>',
+        '<li>Small bosses: Divine Wrath can be replaced by Meteoric Flames</li>',
         '<li><b>Test slot:</b> Wind Blade Spiral, Meteoric Flames, or Wind\'s Delight can win depending on ranks and Radiant Sear proc rate; use a long dummy test</li>'
     ),
     (
-        '<div class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus Sorcerer/Destroyer ↗</a></p>',
-        '<div class="buildSource">Research snapshot Aug 31, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://www.reddit.com/r/SwordxStaff_Official/comments/1vdjbo4/better_destroyer_builds/" rel="noreferrer" target="_blank">S2 community testing ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus ↗</a></p>'
+        '<p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus Sorcerer/Destroyer ↗</a></p>',
+        '<p class="buildSource">Research snapshot Aug 31, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://www.reddit.com/r/SwordxStaff_Official/comments/1vdjbo4/better_destroyer_builds/" rel="noreferrer" target="_blank">S2 community testing ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus ↗</a></p>'
     ),
 ]
-
-# The source tag is a <p>, not a <div>, in the current template. Keep a second exact replacement for it.
-index_replacements[-1] = (
-    '<p class="buildSource">Research snapshot Aug 21, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus Sorcerer/Destroyer ↗</a></p>',
-    '<p class="buildSource">Research snapshot Aug 31, 2026 · <a href="https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer" rel="noreferrer" target="_blank">Prydwen Destroyer ↗</a> · <a href="https://www.reddit.com/r/SwordxStaff_Official/comments/1vdjbo4/better_destroyer_builds/" rel="noreferrer" target="_blank">S2 community testing ↗</a> · <a href="https://lootandwaifus.com/guides/sword-x-staff-how-to-play-sorcerer/" rel="noreferrer" target="_blank">Loot &amp; Waifus ↗</a></p>'
-)
 
 for old, new in index_replacements:
     count = text.count(old)
