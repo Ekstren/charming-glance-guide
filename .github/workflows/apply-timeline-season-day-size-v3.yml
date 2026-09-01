@@ -1,0 +1,35 @@
+name: Increase timeline season day size again
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_timeline_season_day_size_v3.py'
+      - '.github/workflows/apply-timeline-season-day-size-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply larger season day label
+        run: python scripts/patch_timeline_season_day_size_v3.py
+      - name: Verify patch
+        run: |
+          grep -q 'font-size:12px;font-weight:750' index.html
+          grep -q '@media(max-width:620px){.dayMarker .seasonDayLabel{font-size:11px}}' index.html
+      - name: Commit generated page
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Increase timeline season day label size again'
+          git push
