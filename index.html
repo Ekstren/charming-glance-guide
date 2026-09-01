@@ -6459,6 +6459,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const [y,m,d]=iso.split('-').map(Number);
     return new Date(Date.UTC(y,m-1,d,12));
   }
+  /* TIMELINE_VEGGIE_CODE_V1
+     Sep 1, 2026 code reported by GamesRadar; exact expiry time was not published,
+     so the timeline uses the reported Sep 8 expiry date conservatively. */
+  if(!timelineData.some(e=>e && e[3]==='Gift code · VEGGIE')){
+    timelineData.push([
+      '2026-09-01',49,'GIFT CODE','Gift code · VEGGIE',
+      'New code: VEGGIE gives 10 Rare Auroral Badges + 80 Dawnium. GamesRadar reported it on Sep 1 with a Sep 8 expiration; exact cutoff time was not published, so redeem promptly.',
+      'event','2026-09-08'
+    ]);
+    timelineData.sort((a,b)=>a[0].localeCompare(b[0]) || Number(a[1])-Number(b[1]));
+  }
+
   function pacificClockParts(date=new Date()){
     const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:PACIFIC_TZ,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
     return {year:Number(parts.year),month:Number(parts.month),day:Number(parts.day),hour:Number(parts.hour)};
@@ -6491,6 +6503,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(title.startsWith('Lucky Scratch')) return 'Aug 26–Sep 2. Spend saved Material Realm tools to generate scratch cards; through Aug 31, Realm activity also overlaps Oceanic Beach Shovel objectives.';
     if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';
     if(title==='Gift code · Summer') return 'UNCONFIRMED cutoff: Summer gives 160 Dawnium and is reported valid through Sep 1; redeem promptly.';
+    if(title==='Gift code · VEGGIE') return 'VEGGIE: 10 Rare Auroral Badges + 80 Dawnium. Reported Sep 1 with a Sep 8 expiry; redeem promptly.';
     if(title.startsWith('Grand Treasure Hunt')){
       const reward=(text.match(/Lv\.5:\s*([^·.]+)/)||[])[1];
       return reward ? `Lv.5 reward: ${reward.trim()}. Auroradrasil Energy carries over.` : 'Check the Lv.5 reward before spending saved Auroradrasil Energy; unused Energy carries over.';
