@@ -7,7 +7,7 @@ if marker in s:
     print('already applied')
     raise SystemExit(0)
 
-css='''\n<style id="timeline-season-day-v1">\n/* TIMELINE_SEASON_DAY_V1 */\n.dayMarker .seasonDayLabel{display:block;margin-top:3px;font-size:10px;font-weight:750;line-height:1.15;color:var(--muted);letter-spacing:.02em}\n@media(max-width:620px){.dayMarker .seasonDayLabel{font-size:9px}}\n</style>\n'''
+css='''\n<style id="timeline-season-day-v1">\n/* TIMELINE_SEASON_DAY_V1 */\n.dayMarker .seasonDayLabel{display:block;margin-top:3px;font-size:11px;font-weight:750;line-height:1.15;color:var(--muted);letter-spacing:.02em}\n@media(max-width:620px){.dayMarker .seasonDayLabel{font-size:10px}}\n</style>\n'''
 if '</head>' not in s:
     raise SystemExit('missing </head>')
 s=s.replace('</head>',css+'\n</head>',1)
