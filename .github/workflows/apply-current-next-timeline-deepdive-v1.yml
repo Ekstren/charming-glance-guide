@@ -1,0 +1,49 @@
+name: Apply current + next season timeline deep dive
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-current-next-timeline-deepdive-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply timeline deep-dive patch
+        run: python .github/patch-current-next-timeline-deepdive-v1.py
+      - name: Verify timeline markers
+        run: |
+          grep -F "Grand Treasure Hunt (7) · Feneck’s Puzzle (2)" index.html
+          grep -F "Tier 5 class advancement" index.html
+          grep -F "Order Temple" index.html
+          grep -F "Harpadia / Season 4 boundary" index.html
+      - name: Validate inline JavaScript syntax
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('index.html','utf8');
+          const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
+          if (!scripts.length) throw new Error('No inline scripts found');
+          scripts.forEach((src,i)=>{
+            try { new Function(src); }
+            catch (e) { console.error(`Inline script ${i+1} failed:`, e.message); process.exit(1); }
+          });
+          console.log(`Validated ${scripts.length} inline script(s)`);
+          NODE
+      - name: Commit generated timeline update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit"
+            exit 0
+          fi
+          git commit -m "Expand current and next season timeline"
+          git push origin HEAD:main
