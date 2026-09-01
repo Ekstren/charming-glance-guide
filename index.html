@@ -6889,6 +6889,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     $('classTabs').addEventListener('click',e=>{
       const b=e.target.closest('button[data-class]');
       if(!b)return;
+      if(b.dataset.class===currentClass)return;
       currentClass=b.dataset.class;
       try{localStorage.setItem(BUILD_CLASS_STORAGE_KEYS[currentBuildSeason],currentClass);}catch(_){}
       renderBuilds();
@@ -6973,6 +6974,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     $('classTabs').addEventListener('click',e=>{
       const b=e.target.closest('button[data-class]');
       if(!b)return;
+      if(b.dataset.class===currentClass)return;
       currentClass=b.dataset.class;
       try{localStorage.setItem(liveBuildStorageKey(),currentClass);}catch(_){}
       renderBuilds();
