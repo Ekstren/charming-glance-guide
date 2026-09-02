@@ -1,0 +1,43 @@
+name: Apply Guardian Sep 2 build pass
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_guardian_build_pass_sep2_v1.py'
+      - '.github/workflows/apply-guardian-build-pass-sep2-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch Guardian builds
+        run: python3 scripts/patch_guardian_build_pass_sep2_v1.py
+
+      - name: Verify
+        run: |
+          grep -Fq '<strong>Swirling Blade first</strong>' index.html
+          grep -Fq '<strong>Soul Protection first</strong>' index.html
+          grep -Fq '<strong>1</strong><p>The best T4 Guardian investment' index.html || grep -Fq '<strong>Soul Protection</strong><p>The best T4 Guardian investment' index.html
+          grep -Fq 'Research snapshot Sep 2, 2026' index.html
+          grep -Fq 'Block Awareness → Soul Protection' .github/build-fantomons-inject.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html .github/build-fantomons-inject.html; then
+            echo 'No Guardian build changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-fantomons-inject.html
+          git commit -m 'Refresh Guardian S2 build priorities'
+          git push
