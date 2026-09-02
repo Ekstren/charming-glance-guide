@@ -1,0 +1,42 @@
+name: Apply Guardian PvP Soul Protection
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_guardian_pvp_soul_protection_v1.py'
+      - '.github/workflows/apply-guardian-pvp-soul-protection-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch Guardian PvP builds
+        run: python3 scripts/patch_guardian_pvp_soul_protection_v1.py
+
+      - name: Verify
+        run: |
+          grep -Fq "role('Arena','Solo block / reflect wall',['Luminous Shield','Forceful Charge','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Soul Protection']" index.html
+          grep -Fq "role('Tournament','Taunt / ally protection',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Soul Protection','Iron Fortress','Oath of Vigil']" index.html
+          grep -Fq "['Rebound','Holy Aegis','Block Mastery','Soul Protection']" .github/build-fantomons-inject.html
+          grep -Fq "['Iron Will','Soul Protection','Iron Fortress','Oath of Vigil']" .github/build-fantomons-inject.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html .github/build-fantomons-inject.html; then
+            echo 'No Guardian PvP changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-fantomons-inject.html
+          git commit -m 'Use Soul Protection in Guardian PvP builds'
+          git push
