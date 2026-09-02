@@ -1,0 +1,61 @@
+name: Match timeline summary sizing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/match-summary-sizing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Match summary sizing
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          a='.summary{grid-template-columns:210px 1fr 1.5fr;max-width:1560px;margin-top:38px;padding:0 28px}'
+          b='.summary{grid-template-columns:210px 210px 1fr;max-width:1560px;margin-top:38px;padding:0 28px}'
+          if a not in s:
+              raise SystemExit('Wide summary grid override not found')
+          s=s.replace(a,b,1)
+          a2='.summary div{padding:23px 28px}.summary span{font-size:11px}.summary strong{font-size:18px}\n  .summary div:first-child strong{font-size:36px}'
+          b2='.summary div{padding:23px 28px}.summary span{font-size:11px}.summary strong{font-size:18px}\n  .summary .summaryNumber{font-size:36px}'
+          if a2 not in s:
+              raise SystemExit('Wide summary number override not found')
+          s=s.replace(a2,b2,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          Path('/tmp/charming-inline.js').write_text('\n;\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
+
+      - name: Commit patch and cleanup
+        shell: bash
+        run: |
+          rm .github/workflows/match-summary-sizing.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/match-summary-sizing.yml
+          git commit -m 'Match timeline summary sizing'
+          git pull --rebase origin main
+          git push origin HEAD:main
