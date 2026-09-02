@@ -1,0 +1,50 @@
+name: Add collab emoticon prelaunch timeline row
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-collab-emoticon-prelaunch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Add official Sep 1 collab emoticon announcement
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker="    ['2026-09-07',55,'Collab','Vegetables Fairy Part Two · Cabbage Dog'"
+          row="    ['2026-09-01',49,'Collab','Vegetables Fairy Pt. 2 · free emoticons','CONFIRMED by the official Sword x Staff Global announcements channel on Sep. 1: 8 limited-time collaboration Emoticons are free. The notice says 4 come from sign-in, 4 from Shop exchange, and the remaining 4 can be obtained from the prize wheel. This is a pre-launch/reward announcement only; it does not confirm the full Vegetables Fairy Part Two collab is live or provide an exact collab start/end date.','event'],\n"
+          if "Vegetables Fairy Pt. 2 · free emoticons" not in s:
+              if marker not in s:
+                  raise SystemExit('collab marker not found')
+              s=s.replace(marker,row+marker,1)
+          p.write_text(s)
+          PY
+      - name: Validate inline JavaScript
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const html=fs.readFileSync('index.html','utf8');
+          const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).filter(Boolean);
+          for (const [i,s] of scripts.entries()) new vm.Script(s,{filename:`inline-${i}.js`});
+          console.log(`Validated ${scripts.length} inline scripts`);
+          NODE
+      - name: Commit patch and cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+Ekstren@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/add-collab-emoticon-prelaunch.yml
+          git commit -m "Add official collab emoticon prelaunch notice"
+          git pull --rebase origin main
+          git push origin HEAD:main
