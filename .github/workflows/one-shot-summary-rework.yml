@@ -2,6 +2,7 @@ name: One-shot timeline summary rework
 
 on:
   push:
+    branches: [main]
     paths:
       - '.github/workflows/one-shot-summary-rework.yml'
 
@@ -18,8 +19,8 @@ jobs:
           fetch-depth: 0
 
       - name: Rework timeline summary
-        shell: python
         run: |
+          python3 - <<'PY'
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
@@ -58,11 +59,11 @@ jobs:
               raise SystemExit('Could not find timeline summary JS')
 
           p.write_text(s,encoding='utf-8')
+          PY
 
       - name: Validate inline JavaScript
-        shell: bash
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
           import re
           text=Path('index.html').read_text(encoding='utf-8')
@@ -74,7 +75,6 @@ jobs:
           node --check /tmp/charming-inline.js
 
       - name: Commit patch and remove one-shot workflow
-        shell: bash
         run: |
           rm .github/workflows/one-shot-summary-rework.yml
           git config user.name 'github-actions[bot]'
