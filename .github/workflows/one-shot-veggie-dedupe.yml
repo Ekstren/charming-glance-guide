@@ -1,0 +1,66 @@
+name: One-shot VEGGIE timeline dedupe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/one-shot-veggie-dedupe.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Deduplicate VEGGIE timeline entry
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old="""    ['2026-09-08',56,'Event','Gift code · VEGGIE','Community-reported weekly gift code: 10 Rare Auroral Badges + 80 Dawnium. Multiple current code trackers report a Sep. 8, 2026 expiry; redeem promptly. Exact cutoff time is not yet confirmed by the mirrored official Global feed.','event'],"""
+          new="""    ['2026-09-08',56,'Event','Gift code · VEGGIE','Community-reported weekly gift code: 10 Rare Auroral Badges + 80 Dawnium. Current trackers agree on a Sep. 8 expiry; one reports a 00:00 UTC-5 cutoff (Sep. 7, 10:00 PM PDT), but the mirrored official Global feed has not independently confirmed the cutoff time. Redeem before then.','event'],"""
+          if old in s:
+              s=s.replace(old,new,1)
+          start=s.find("  /* TIMELINE_VEGGIE_CODE_V1")
+          if start!=-1:
+              end=s.find("\n  }\n", start)
+              if end==-1:
+                  raise SystemExit('VEGGIE injection block end not found')
+              end += len("\n  }\n")
+              s=s[:start]+s[end:]
+          else:
+              raise SystemExit('VEGGIE injection block not found')
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Validate inline JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,re.S|re.I)
+          if not scripts:
+              raise SystemExit('No inline scripts found')
+          Path('/tmp/charming-inline.js').write_text('\n;\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/charming-inline.js
+
+      - name: Commit patch and cleanup
+        shell: bash
+        run: |
+          rm .github/workflows/one-shot-veggie-dedupe.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/one-shot-veggie-dedupe.yml
+          git commit -m 'Deduplicate VEGGIE timeline entry'
+          git pull --rebase origin main
+          git push origin HEAD:main
