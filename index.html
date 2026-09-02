@@ -6516,7 +6516,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     ['2026-08-30',47,'Fantomon','Fantomon Adult / Materialization unlock','Season 2 gate: Player Lv.108 + Numbuville unlocked + Mythic rarity; Mythic evolution requires a duplicate copy. Date is shown at S2 start only as a timeline reference; the unlock occurs when all requirements are met.','fantomon'],
     ['2026-08-30',47,'Feature','Demonbind Tower unlock','Level-gated in Season 2 at Player Lv.116 · Gem Tower / gem-harvest feature. Date is shown at the S2 start only as a timeline reference; actual unlock happens when Lv.116 is reached.','feature'],
     ['2026-08-30',47,'Dungeon','Demonseal Gorge','Season 2 Day 1 · Normal · Hard 2.35M · Global-first/QY English name','dungeon'],
-    ['2026-09-08',56,'Event','Gift code · VEGGIE','Community-reported weekly gift code: 10 Rare Auroral Badges + 80 Dawnium. Current trackers agree on a Sep. 8 expiry; one reports a 00:00 UTC-5 cutoff (Sep. 7, 10:00 PM PDT), but the mirrored official Global feed has not independently confirmed the cutoff time. Redeem before then.','event'],
+    ['2026-09-07',55,'Event','Gift code · VEGGIE','Confirmed by the official Sword x Staff Global Discord gift-code announcement: 10 Rare Auroral Badges + 80 Dawnium. Official validity ends Sep. 8 at 00:00 (UTC-5), which is Sep. 7 at 10:00 PM PDT for Charming Glance. Redeem before 10:00 PM PDT Sep. 7.','event'],
     ['2026-09-12',60,'Dungeon','Warlord’s Rest','Normal 3.55M + Player Lv.130 · Hard 5M · Nightmare 6M','dungeon'],
     ['2026-09-12',60,'Feature','Season Power unlock','Player Lv.130','feature'],
     ['2026-09-13',61,'Seasonal Map','Acme Nexus','UNCONFIRMED TIMING. QY-derived Season 2 scheduling places this Loong Haven seasonal map on S2 Day 15 / Server Day 61, which maps to Sep. 13 for Charming Glance. A separate older-server calendar instead lists the equivalent seasonal-map milestone as “Sky Tower” on Server Day 71, which would map to Sep. 23. Keep Sep. 13 as the current lead projection, but treat the date and Global-English name as unresolved until Charming Glance’s in-game unlock/telescope confirms which cadence applies.','seasonal-map',null,'unconfirmed'],
@@ -6671,7 +6671,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(title.startsWith('Lucky Scratch')) return 'Aug 26–Sep 2. Spend saved Material Realm tools to generate scratch cards; through Aug 31, Realm activity also overlaps Oceanic Beach Shovel objectives.';
     if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';
     if(title==='Gift code · Summer') return 'UNCONFIRMED cutoff: Summer gives 160 Dawnium and is reported valid through Sep 1; redeem promptly.';
-    if(title==='Gift code · VEGGIE') return 'VEGGIE: 10 Rare Auroral Badges + 80 Dawnium. Reported Sep 1 with a Sep 8 expiry; redeem promptly.';
+    if(title==='Gift code · VEGGIE') return 'Official Global Discord: 10 Rare Auroral Badges + 80 Dawnium. Expires Sep 8 at 00:00 UTC-5 = Sep 7 at 10:00 PM PDT; redeem before then.';
     if(title.startsWith('Grand Treasure Hunt')){
       const reward=(text.match(/Lv\.5:\s*([^·.]+)/)||[])[1];
       return reward ? `Lv.5 reward: ${reward.trim()}. Auroradrasil Energy carries over.` : 'Check the Lv.5 reward before spending saved Auroradrasil Energy; unused Energy carries over.';
