@@ -6772,12 +6772,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const serverDay=scope.serverDay;
     const fixedUpcoming=scopedTimelineData.find(e=>e[0]>=boundaryIso && e[5]!=='event') || scopedTimelineData.filter(e=>e[5]!=='event').at(-1) || null;
     const seasonDay=Math.max(1,serverDay-scope.current.start+1);
-    const seasonNumber=Math.max(1,TIMELINE_SEASON_WINDOWS.indexOf(scope.current)+1);
     const milestoneName=fixedUpcoming?String(fixedUpcoming[3]):'No fixed milestone loaded';
-    const milestoneDate=fixedUpcoming?displayDate(fixedUpcoming[0]).toLocaleString('en-US',{month:'short',day:'numeric',timeZone:'UTC'}):'';
     const milestoneDays=fixedUpcoming?Math.max(0,isoDayDiff(boundaryIso,fixedUpcoming[0])):null;
-    const milestoneWhen=milestoneDays===null?'':milestoneDays===0?'today':milestoneDays===1?'in 1 day':`in ${milestoneDays} days`;
-    $('timelineSummary').innerHTML=`<div><span>Server day</span><strong class="summaryNumber">${serverDay}</strong></div><div><span>Season day</span><strong class="summaryNumber">${seasonDay}</strong><small class="summaryMeta">Season ${seasonNumber} · ${scope.current.label.replace(/^Season \d+ · /,'')}</small></div><div><span>Next milestone</span><strong>${milestoneName}${milestoneWhen?` · ${milestoneWhen}`:''}</strong>${milestoneDate?`<small class="summaryMeta">${milestoneDate}</small>`:''}</div>`;
+    const milestoneWhen=milestoneDays===null?'':milestoneDays===0?'today':milestoneDays===1?'1 day to go':`${milestoneDays} days to go`;
+    $('timelineSummary').innerHTML=`<div><span>Server day</span><strong class="summaryNumber">${serverDay}</strong></div><div><span>Season day</span><strong class="summaryNumber">${seasonDay}</strong></div><div><span>Next milestone</span><strong>${milestoneName}</strong>${milestoneWhen?`<small class="summaryMeta">${milestoneWhen}</small>`:''}</div>`;
 
     const activeEvents=timelineData.filter(e=>eventIsActive(e,boundaryIso));
     const live=$('timelineNow');
