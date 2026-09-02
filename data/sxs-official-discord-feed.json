@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1544367488223940650",
+  "last_message_id": "1544659298569953361",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -70,6 +70,69 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1544367488223940650"
+    },
+    {
+      "id": "1544659298569953361",
+      "timestamp": "2026-09-02T10:44:35.161000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# Collab News | Eggplant, Chili... Are We Making a Dish?\n \nGreat news, Adventurers!\nThose hard-earned potatoes are finally ready for the kitchen!\nThrow in some eggplant and chili, and voilà—a delicious dish!\nWait... where did the eggplant and chili come from?\nThey're none other than the limited Visages from Vegetables Fairy Collab Pt. 2!\n \n>> Spicy Chick Plush Outfit Set\nA fiery little Spicy Chick! Take a bite... whoa, that's hot!\n \n>> Rose Dog Plush Outfit Set\nSoft pink petals and a chubby little body—too cute to handle!\n \n>> Violet Kitty Suit Set\nAn eggplant or a cat? Hmm... that is the question...\n \n>> Chili, Eggplant & Rose Weapon Set\nBright red chili, giant eggplants, and elegant thorny roses!\nThey'd definitely make some cool weapons!\n \n>> Weird and Wonderful Headwear Set\nCarrot Crab! Lemon Whale! Mushroom Ferret!\nThey're all joining the party in Kanstein!\nAnd there's even a huge mushroom, perfect to use as an umbrella!\n \nThat's all for the collab-exclusive Visage showcase!\nDo you still have enough potatoes in your warehouse?\nShare your potato stash in the comments below now!",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1544657873936580698",
+          "filename": "-.jpg",
+          "content_type": "image/jpeg",
+          "size": 483249,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657873936580698/-.jpg?ex=6a994e3f&is=6a97fcbf&hm=57b51c0f550c5762c5f54e015c8924828f804c0b7dd1a8af9a1662f7644ce7db&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657873936580698/-.jpg?ex=6a994e3f&is=6a97fcbf&hm=57b51c0f550c5762c5f54e015c8924828f804c0b7dd1a8af9a1662f7644ce7db&",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "id": "1544657874406477956",
+          "filename": "-.gif",
+          "content_type": "image/gif",
+          "size": 5430137,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657874406477956/-.gif?ex=6a994e3f&is=6a97fcbf&hm=d47c381eb04c6e5859e5a38072e20e84c1a66f07cfd0c365ff79f90c7f151108&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657874406477956/-.gif?ex=6a994e3f&is=6a97fcbf&hm=d47c381eb04c6e5859e5a38072e20e84c1a66f07cfd0c365ff79f90c7f151108&",
+          "width": 500,
+          "height": 700
+        },
+        {
+          "id": "1544657874834169917",
+          "filename": "-.gif",
+          "content_type": "image/gif",
+          "size": 3859314,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657874834169917/-.gif?ex=6a994e3f&is=6a97fcbf&hm=f39fb4197498a20f87b751bff82be33754b2d2d6d10a5a157d050e4d21467fc2&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657874834169917/-.gif?ex=6a994e3f&is=6a97fcbf&hm=f39fb4197498a20f87b751bff82be33754b2d2d6d10a5a157d050e4d21467fc2&",
+          "width": 500,
+          "height": 700
+        },
+        {
+          "id": "1544657875291603035",
+          "filename": "-.gif",
+          "content_type": "image/gif",
+          "size": 3896536,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657875291603035/-.gif?ex=6a994e3f&is=6a97fcbf&hm=0f913bc5e4b63cf892556ac4c2133331a5ef1fd42692d94516caaa419944ba41&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657875291603035/-.gif?ex=6a994e3f&is=6a97fcbf&hm=0f913bc5e4b63cf892556ac4c2133331a5ef1fd42692d94516caaa419944ba41&",
+          "width": 500,
+          "height": 700
+        }
+      ],
+      "message_reference": {
+        "message_id": "1544657875501060197",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1544659298569953361"
     }
   ]
 }
