@@ -7892,8 +7892,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       box=document.createElement('div');
       box.className='metaBuildControls';
       box.innerHTML='<div class="metaBuildTabs">'+META_MODES.map(m=>'<button type="button" data-meta-mode="'+esc(m)+'">'+esc(m)+'</button>').join('')+'</div><div class="metaTournamentTabs"><button type="button" data-tournament-size="2v2">2v2</button><button type="button" data-tournament-size="4v4">4v4</button></div>';
-      grid.before(box);
     }
+    // Keep the scenario selector immediately above the activity build card. Rich
+    // role-specific investment panels (Guardian/Dominator) may be inserted later,
+    // so re-anchor the selector after those panels instead of leaving it above them.
+    if(box.nextElementSibling!==grid) grid.before(box);
     grid.classList.add('metaModeGrid');
   }
   function applyMetaVisibility(cls){
