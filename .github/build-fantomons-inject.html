@@ -7,14 +7,15 @@
 /* ARENA_TOURNAMENT_RESTORE_V2 */
 /* META_BUILD_MODES_V1 */
 .builds .buildRoleTabs{display:none!important}
-.buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
-.buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;font-size:9px;font-weight:850;display:block}
+.buildCard .buildLoadoutColumn{min-width:0;display:grid;grid-template-columns:1fr;gap:13px;align-content:start}
+.buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px;min-width:0}
+.buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-size:9px;font-weight:850;display:block}
 .buildCard .fantomonPairNote{color:var(--muted);font-size:8px;line-height:1.35;margin:-2px 0 7px}
-.buildCard .fantomonRankList{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.buildCard .fantomonPick{border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,var(--accent-strong) 12%);border-radius:9px;padding:8px 9px;min-width:0}
-.buildCard .fantomonPick small{color:var(--muted);display:block;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.buildCard .fantomonRankList{display:grid;grid-template-columns:1fr;gap:7px}
+.buildCard .fantomonPick{border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,var(--accent-strong) 12%);border-radius:9px;padding:9px 10px;min-width:0}
+.buildCard .fantomonPick small{color:var(--muted);display:block;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
 .buildCard .fantomonPick b{color:var(--ink);display:block;font-size:10px;line-height:1.3}
-.buildCard .fantomonPick p{color:var(--muted);font-size:9px;line-height:1.35;margin:4px 0 0}
+.buildCard .fantomonPick p{color:var(--muted);font-size:9.5px;line-height:1.4;margin:4px 0 0}
 .buildCard .fantomonPick.main{border-color:color-mix(in srgb,var(--accent-strong) 48%,var(--line))}
 .buildCard .roleBadge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 6px;margin-left:6px;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
 .buildCard .buildSwapRows{grid-column:1/-1;border-top:1px solid var(--line);padding:11px 0 2px;margin-top:9px;display:grid;gap:7px;min-width:0}
@@ -43,9 +44,15 @@
 .builds .buildGrid.metaModeGrid{grid-template-columns:1fr!important;margin-top:0}
 .builds .buildGrid.metaModeGrid>.buildCard[hidden]{display:none!important}
 @media(min-width:761px){
-  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:18px;align-items:start}
-  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>header,
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden]){display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);column-gap:18px;row-gap:0;align-items:start}
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>header{grid-column:1/-1}
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.buildLoadoutColumn{grid-column:1;grid-row:2}
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.fantomonPair{grid-column:2;grid-row:2;border-top:0;border-left:1px solid var(--line);margin-top:0;padding:0 0 0 18px;align-self:start}
+}
+@media(max-width:760px){
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.buildLoadoutColumn,
   .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.fantomonPair{grid-column:1/-1}
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.fantomonPair{border-left:0;border-top:1px solid var(--line);margin-top:14px;padding:12px 0 0}
 }
 @media(max-width:620px){
   .builds .metaBuildControls{display:block}
@@ -275,7 +282,7 @@
       PvP:[pick('Aegiswing','Main PvP survival pick: cheat-death style utility is more valuable than another pure damage pet here.'),pick('Nyxarchon','Greedy damage/DEF-shred option.'),pick('Armopi','DEF + shield gives a fragile caster another way to survive focus.'),pick('Sylvaerie','SPD helps contest turn order and still adds ATK.')]
     },
     Dominator:{
-      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: adds real damage and DEF shred while the Dominator handles buffs and utility.'),pick('Terragon','Alt team-utility pick when reducing enemy ATK/pressure matters more than personal damage.')],
+      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: adds real damage and DEF shred while the Dominator handles buffs and utility.'),pick('Terragon','Alt team-utility pick when reducing enemy ATK/pressure matters more than personal damage.'),pick('Sylvaerie','No-shop alternative: ATK + SPD improves both pressure and support tempo.')],
       Solo:[pick('Nyxarchon','Main DPS choice: Prydwen calls Nyx Dominator’s BIS thanks to Dark AoE damage and its supportive effect.'),pick('Zeioletus','Best straightforward F2P damage stopgap.'),pick('Sylvaerie','ATK + SPD can outperform Zei on some accounts.'),pick('Aegiswing','Use when surviving solo progression is more important than max damage.')],
       Dungeon:[pick('Mandragora','Main pure-healing pick: directly adds healing whenever you use ally-targeted Techniques.'),pick('Herbote','Strong S2 healing alternative once Materialized because it can extend its healing to allies.'),pick('Sylvaerie','SPD gives you more actions to heal/support.'),pick('Terragon','Support alternative when reducing enemy ATK/DMG helps the whole party more than extra healing.')],
       Boss:[pick('Nyxarchon','Main DPS lead for single-target Dark builds and team damage support.'),pick('Zeioletus','Direct damage alternative before or instead of Nyx.'),pick('Sylvaerie','Permanent SPD + ATK scales the whole boss rotation.'),pick('Terragon','Useful support option when lowering the boss’s ATK matters.')],
@@ -387,12 +394,14 @@
     const charmSwaps=CHARM_SWAP_SCENARIOS[r.name+'|'+r.charms.join('|')]||[];
     return '<article class="buildCard" data-role="'+esc(displayName)+'"'+roleAttr+'>'
       +'<header><div><h3>'+esc(displayName)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
-      +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
-      +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
-      +((techniqueSwaps.length||charmSwaps.length)?'<div class="buildSwapRows">'
-        +techniqueSwaps.map(s=>'<p><strong>Technique Swap:</strong><span class="swapText">'+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></span></p>').join('')
-        +charmSwaps.map(s=>'<p><strong>Charm Swap:</strong><span class="swapText">'+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></span></p>').join('')
-        +'</div>':'')
+      +'<div class="buildLoadoutColumn">'
+        +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
+        +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
+        +((techniqueSwaps.length||charmSwaps.length)?'<div class="buildSwapRows">'
+          +techniqueSwaps.map(s=>'<p><strong>Technique Swap:</strong><span class="swapText">'+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></span></p>').join('')
+          +charmSwaps.map(s=>'<p><strong>Charm Swap:</strong><span class="swapText">'+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></span></p>').join('')
+          +'</div>':'')
+      +'</div>'
       +'</article>';
   }
   function applyRoleLoadouts(cls){
@@ -420,6 +429,15 @@
     }
     return base;
   }
+  // Current S2 direct shop Fantomons. Keep F2P / No Shop eligible for every other acquisition source.
+  const SHOP_SOURCE_FANTOMONS=new Set(['Aegiswing','Nyxarchon']);
+  function f2pFantomon(picks,pair){
+    const used=new Set(pair.map(p=>p.name));
+    return picks.find(p=>!SHOP_SOURCE_FANTOMONS.has(p.name)&&!used.has(p.name))
+      ||picks.find(p=>!SHOP_SOURCE_FANTOMONS.has(p.name))
+      ||null;
+  }
+
   function applyFantos(cls){
     document.querySelectorAll('.builds .buildCard').forEach(card=>{
       const h3=card.querySelector('h3');
@@ -436,9 +454,12 @@
       if(box.dataset.sig===sig) return;
       box.dataset.sig=sig;
       const pair=picks.slice(0,2);
+      const noShop=f2pFantomon(picks,pair);
+      const shown=noShop?[...pair,noShop]:pair;
+      const labels=['Main','Alt','F2P / No Shop'];
       box.innerHTML='<span>Combat Fantomons</span>'
         +'<div class="fantomonRankList">'
-        +pair.map((p,i)=>'<div class="fantomonPick'+(i===0?' main':'')+'"><small>'+(i===0?'Main':'Alt')+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
+        +shown.map((p,i)=>'<div class="fantomonPick'+(i===0?' main':'')+'"><small>'+labels[i]+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
         +'</div>';
     });
   }

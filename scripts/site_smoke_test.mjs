@@ -38,7 +38,7 @@ assert(Math.max(...widths)-Math.min(...widths) < 2, `top nav buttons are not equ
 
 // The maintained Builds presentation is deliberately rich: per-slot stat priorities,
 // full substat priority, Techniques on the LEFT, Charms on the RIGHT, Arena/Tournament
-// loadouts, and Main+Alt Fantomon cards. Lock all of that in so it cannot silently
+// loadouts, and Main+Alt+F2P Fantomon cards. Lock all of that in so it cannot silently
 // regress to the older stacked/generic build template again.
 await page.locator('.sectionSwitch button[data-section="builds"]').click();
 await page.waitForTimeout(60);
@@ -61,9 +61,15 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
 
   const visibleCards=page.locator('#buildContent .buildGrid .buildCard:visible');
   assert(await visibleCards.count()===1, `${cls} should show exactly one activity build at a time`);
-  assert(await visibleCards.locator('.fantomonPair').count()===1, `${cls} visible build is missing its Fantomon pair`);
-  const badFanto=await visibleCards.locator('.fantomonPair').evaluateAll(xs=>xs.filter(x=>x.querySelectorAll('.fantomonPick').length!==2).length);
-  assert(badFanto===0, `${cls} visible build does not have exactly Main + Alt Fantomons`);
+  assert(await visibleCards.locator('.fantomonPair').count()===1, `${cls} visible build is missing its Fantomon choices`);
+  const badFanto=await visibleCards.locator('.fantomonPair').evaluateAll(xs=>xs.filter(x=>x.querySelectorAll('.fantomonPick').length!==3).length);
+  assert(badFanto===0, `${cls} visible build does not have exactly Main + Alt + F2P Fantomons`);
+  const f2pLabels=await visibleCards.locator('.fantomonPick small').allTextContents();
+  assert(f2pLabels.some(x=>/F2P \/ No Shop/i.test(x)), `${cls} visible build is missing the F2P / No Shop Fantomon label`);
+  const f2pName=await visibleCards.locator('.fantomonPick').nth(2).locator('b').innerText();
+  assert(!['Nyxarchon','Aegiswing'].includes(f2pName.trim()), `${cls} F2P / No Shop pick incorrectly uses shop Fantomon ${f2pName}`);
+  const cardCols=await visibleCards.evaluate(el=>{const left=el.querySelector('.buildLoadoutColumn')?.getBoundingClientRect();const right=el.querySelector('.fantomonPair')?.getBoundingClientRect();return left&&right?{lx:left.x,ly:left.y,rx:right.x,ry:right.y}:null;});
+  assert(cardCols && cardCols.rx>cardCols.lx+20 && Math.abs(cardCols.ry-cardCols.ly)<30, `${cls} desktop loadout/Fantomon columns are not side-by-side`);
 
   // Recommendations must come from Techniques/Charms equipped in at least one
   // available loadout for the class, not from unrelated wishlist/swap-only pieces.
@@ -140,6 +146,9 @@ assert(mobileBoxes[1].y > mobileBoxes[0].y, 'mobile Technique/Charm panels did n
 assert(Math.abs(mobileBoxes[1].x-mobileBoxes[0].x)<3, 'mobile Technique/Charm panels do not align after stacking');
 const quickCols=await page.locator('#buildContent .quickGearGrid').evaluate(el=>getComputedStyle(el).gridTemplateColumns);
 assert(!quickCols.includes(' '), `mobile stat priorities did not collapse to one column: ${quickCols}`);
+const mobileBuild=page.locator('#buildContent .buildGrid .buildCard:visible').first();
+const mobileBuildCols=await mobileBuild.evaluate(el=>{const left=el.querySelector('.buildLoadoutColumn')?.getBoundingClientRect();const right=el.querySelector('.fantomonPair')?.getBoundingClientRect();return left&&right?{lx:left.x,ly:left.y,rx:right.x,ry:right.y}:null;});
+assert(mobileBuildCols && mobileBuildCols.ry>mobileBuildCols.ly && Math.abs(mobileBuildCols.rx-mobileBuildCols.lx)<5, 'mobile Fantomon column did not stack below loadout column');
 const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
 assert(overflow<=3, `mobile page has ${overflow}px horizontal overflow`);
 
@@ -147,5 +156,5 @@ if(pageErrors.length){
   throw new Error('page runtime errors:\n' + pageErrors.join('\n---\n'));
 }
 
-console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + slot stats + Technique/Charm pair + Fantomon pairs + Dominator roles/PvP refs + mobile stack, calculator yielded in ${calcYieldMs}ms`);
+console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + slot stats + Technique/Charm pair + Main/Alt/F2P Fantomons + Dominator roles/PvP refs + mobile stack, calculator yielded in ${calcYieldMs}ms`);
 await browser.close();
