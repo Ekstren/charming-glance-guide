@@ -3,6 +3,7 @@
    BUILD_HERO_LAYOUT_V2 reflows the existing generated build summary only. */
 (()=>{
   const ICON_SELECTOR='.buildGearIcon,.rollStatIcon,.buildSubstatIcon';
+  const DESKTOP_ROLL=window.matchMedia('(min-width:861px)');
 
   function removeLegacyIcons(root){
     root?.querySelectorAll?.(ICON_SELECTOR).forEach(el=>el.remove());
@@ -13,6 +14,20 @@
     removeLegacyIcons(quick);
     const title=quick.querySelector(':scope > .quickTitle');
     if(title&&title.textContent.trim()!=='Gear & stat priorities') title.textContent='Gear & stat priorities';
+  }
+
+  function setRollMode(roll,{resetMobile=false}={}){
+    if(!roll) return;
+    const summary=roll.querySelector(':scope > summary');
+    if(DESKTOP_ROLL.matches){
+      roll.open=true;
+      summary?.setAttribute('aria-disabled','true');
+      if(summary) summary.tabIndex=-1;
+    }else{
+      summary?.removeAttribute('aria-disabled');
+      summary?.removeAttribute('tabindex');
+      if(resetMobile) roll.open=false;
+    }
   }
 
   function syncRoll(quick,right){
@@ -27,10 +42,11 @@
       const clone=source.cloneNode(true);
       clone.classList.add('rollGuideHero');
       clone.__buildSourceHtml=sourceHtml;
-      clone.open=sameSig?preserveOpen:window.matchMedia('(min-width:861px)').matches;
+      clone.open=DESKTOP_ROLL.matches?true:(sameSig?preserveOpen:false);
       right.replaceChildren(clone);
       roll=clone;
     }
+    setRollMode(roll);
     removeLegacyIcons(roll);
   }
 
@@ -75,6 +91,9 @@
     queued=true;
     requestAnimationFrame(()=>setTimeout(apply,0));
   }
+  function syncResponsiveRolls(){
+    document.querySelectorAll('#buildContent .buildHeroRoll > .rollGuide').forEach(roll=>setRollMode(roll,{resetMobile:!DESKTOP_ROLL.matches}));
+  }
   function init(){
     const host=document.getElementById('buildContent');
     if(!host) return;
@@ -82,6 +101,10 @@
     new MutationObserver(queue).observe(host,{subtree:true,childList:true});
     document.getElementById('classTabs')?.addEventListener('click',queue);
     host.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]')) setTimeout(queue,0)});
+    DESKTOP_ROLL.addEventListener?.('change',()=>{
+      syncResponsiveRolls();
+      queue();
+    });
     queue();
   }
 
