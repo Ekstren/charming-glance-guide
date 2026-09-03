@@ -45,7 +45,7 @@ payload = r'''
     acc:['Accuracy','≈ 5.00%',1,'Approximate early-S2 standalone Accuracy cap inferred from the same pre-160 normal-affix tier. Needs direct English-client Affix Preview confirmation.',0],
     em:['Elemental Mastery','Gear-level scaling',1,'Elemental Mastery is a flat/white-number normal affix, not a fixed percentage roll. Affix values scale with gear/season level; the exact current pre-160 English-client maximum still needs a direct Affix Preview capture.',1],
     ehr:['Effect Hit Rate','Gear-level scaling',1,'Effect Hit Rate is a flat/white-number normal affix, not a fixed percentage roll. Its exact current pre-160 English-client maximum still needs a direct Affix Preview capture.',1],
-    dmgres:['DMG RES','?',1,'The affix is recommended for healer Dominator, but I could not confirm a trustworthy current pre-160 standalone maximum yet.',0],
+    dmgres:['DMG RES','≈ 2.50%',1,'Derived early-S2 standalone DMG RES cap. The documented paired DMG RES + Healing Boost roll is 2.56% + 10.24%; the paired affix uses the same 1.024× uplift seen on other documented pairs, which implies a 2.50% standalone DMG RES base. No direct current English-client standalone Affix Preview capture yet.',0],
     heal:['Healing Boost','≈ 10.00%',1,'Approximate standalone early-S2 Healing Boost cap. The paired DMG RES + Healing Boost affix is documented at later S2 scaling, but this standalone current maximum has not been directly confirmed.',0],
     critpair:['Crit Rate + Crit DMG','5.12% + 7.68%',0,'',0],
     critacc:['Crit Rate + Accuracy','5.12% + 5.12%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0],
