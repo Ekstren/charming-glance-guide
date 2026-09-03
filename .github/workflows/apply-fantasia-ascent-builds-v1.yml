@@ -17,19 +17,26 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Apply Fantasia Ascent builds
-        run: python .github/patch-fantasia-ascent-builds-v3.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply scenario control fix
+        run: python .github/patch-fantasia-order-tournament-controls-v1.py
       - name: Validate diff
         run: |
           git diff --check
-          grep -q "const META_MODES=\['Dungeon','Crucible / Conquest','Arena','Fantasia Ascent','Tournament'\]" .github/build-fantomons-inject.html
-          grep -q "role('Fantasia Ascent','Solo push: high-DEF floors and mixed packs'" .github/build-fantomons-inject.html
-          grep -q "role('Fantasia Ascent · Tank'" .github/build-fantomons-inject.html
-          grep -q "role('Fantasia Ascent · DPS'" .github/build-fantomons-inject.html
-          grep -q "role('Fantasia Ascent · Heals'" .github/build-fantomons-inject.html
-          grep -q "if(t==='fantasia ascent') return 'Solo'" .github/build-fantomons-inject.html
-          grep -q "role==='Solo'.*cls==='Dominator'.*dominatorBuildMode()==='heals'" .github/build-fantomons-inject.html
-          grep -q "grid.querySelectorAll('.metaTournamentTabs').forEach(x=>x.remove())" .github/build-fantomons-inject.html
+          grep -q "const META_MODES=\['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena','Tournament'\]" .github/build-fantomons-inject.html
+          grep -q 'class=\"metaTournamentScenario\"' .github/build-fantomons-inject.html
+          grep -q 'data-tournament-size=\"2v2\"' .github/build-fantomons-inject.html
+          grep -q 'data-tournament-size=\"4v4\"' .github/build-fantomons-inject.html
+          ! grep -q "grid.querySelectorAll('.metaTournamentTabs').forEach(x=>x.remove())" .github/build-fantomons-inject.html
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install chromium
+      - name: Run full browser smoke
+        run: node scripts/site_smoke_test.mjs
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
@@ -39,5 +46,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Add Fantasia Ascent builds and nest Tournament size controls"
+          git commit -m "Fix Fantasia order and Tournament scenario controls"
           git push origin HEAD:main
