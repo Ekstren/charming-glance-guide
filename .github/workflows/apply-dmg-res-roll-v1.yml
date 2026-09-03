@@ -1,0 +1,52 @@
+name: Apply Dominator DMG RES roll value
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_build_roll_guide_v2.py'
+      - '.github/workflows/apply-dmg-res-roll-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply roll-guide source
+        run: |
+          python3 -m py_compile scripts/patch_build_roll_guide_v2.py
+          python3 scripts/patch_build_roll_guide_v2.py
+
+      - name: Verify DMG RES value
+        run: |
+          grep -Fq "dmgres:['DMG RES','≈ 2.50%'" index.html
+          grep -Fq '2.56% + 10.24%' index.html
+
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'DMG RES roll value already applied.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Show derived 2.50% DMG RES roll'
+          git push
