@@ -11,6 +11,7 @@
 - **Do not force every class into Solo / Dungeon / Boss / PvP cards.** Show only materially distinct loadouts supported by current guides, skill mechanics, or repeated community testing.
 - If one general build is best for multiple activities, keep one card and explain useful swaps instead of duplicating artificial mode cards.
 - Each loadout must show exactly 4 Techniques and 4 Charms actually equipped, plus concise swaps/conditions where useful.
+- **Build-card notes must read as standalone player guidance.** Describe why the equipped loadout works and give only useful optional swaps; do not narrate a previous version of the build (for example, “drop X,” “use Y instead,” “this card,” or other change-log/editorial commentary).
 - **Investment recommendations must come from Techniques/Charms actually equipped in the displayed loadouts.** Do not rank wishlist, swap-only, or unrelated pieces as core investments. If an item is only a situational swap, keep it in the build note instead of the ranked investment panel.
 - **Desktop investment layout is fixed:** Technique investment on the **left**, Charm investment on the **right**. On phone widths these two panels may stack vertically, Technique first then Charm.
 - **Keep the compact stat-priority panel:** show the priority for each individual gear slot, then show the complete prioritized substat line underneath. Do not replace this with generic grouped cards such as “Main lines / Best substats / Gem plan.”
