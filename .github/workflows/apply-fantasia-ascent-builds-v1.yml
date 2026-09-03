@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '22'
       - name: Apply Fantasia Ascent builds
-        run: python .github/patch-fantasia-ascent-builds-v2.py
+        run: python .github/patch-fantasia-ascent-builds-v3.py
       - name: Validate diff
         run: |
           git diff --check
