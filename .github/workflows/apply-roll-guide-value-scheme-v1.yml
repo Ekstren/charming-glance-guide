@@ -1,0 +1,42 @@
+name: Apply roll guide value color alignment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_roll_guide_value_scheme_v1.py'
+      - '.github/workflows/apply-roll-guide-value-scheme-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch Roll guide colors
+        run: python3 scripts/patch_roll_guide_value_scheme_v1.py
+
+      - name: Verify
+        run: |
+          grep -Fq '.rollGuideRow .rollGuideName{min-width:0;color:var(--green)' index.html
+          grep -Fq '.rollGuideRow .rollGuideValue{color:var(--body-text)' index.html
+          grep -Fq '.rollGuideRow .rollGuideValue.rollScaling{color:var(--body-text)' index.html
+          grep -Fq '.rollGuideRow .rollGuideValue{color:var(--body-text)' scripts/patch_build_roll_guide_v2.py
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html scripts/patch_build_roll_guide_v2.py; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html scripts/patch_build_roll_guide_v2.py
+          git commit -m 'Match roll guide values to stat scheme'
+          git push
