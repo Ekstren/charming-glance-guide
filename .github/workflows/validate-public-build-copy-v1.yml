@@ -1,0 +1,35 @@
+name: Validate public build copy cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/public-build-copy-validate.trigger'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate public build copy
+        run: |
+          ! grep -qi "shell" .github/build-fantomons-inject.html
+          ! grep -qi "synthesis" .github/build-fantomons-inject.html
+          ! grep -q "not this Tank card" .github/build-fantomons-inject.html
+          grep -q "Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil" .github/build-fantomons-inject.html
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+      - name: Run responsive Roll Guide smoke
+        run: node scripts/build_roll_responsive_smoke.mjs
+      - name: Run topbar scroll smoke
+        run: node scripts/topbar_scroll_smoke.mjs
