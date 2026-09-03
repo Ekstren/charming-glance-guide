@@ -15,6 +15,7 @@ inject = INJECT.read_text(encoding='utf-8')
 required = [
     START, END,
     'META_BUILD_MODES_V1',
+    'BUILD_SKILL_TOOLTIPS_V1',
     'GUARDIAN_ROLE_TOGGLE_V1',
     "role('Arena'",
     "role('Tournament · 2v2'",
