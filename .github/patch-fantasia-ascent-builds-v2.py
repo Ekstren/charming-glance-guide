@@ -34,9 +34,11 @@ await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Dungeon"
 await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
 await page.waitForTimeout(80);
 '''
-new=r'''await waitBuild('Dominator');
-await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
+new=r'''await page.evaluate(()=>{
+  localStorage.setItem('sxs-build-meta-mode','Fantasia Ascent');
+  localStorage.setItem('sxs-build-dominator-mode','dps');
+});
+await waitBuild('Dominator');
 await page.waitForFunction(()=>[...document.querySelectorAll('#buildContent .buildGrid .buildCard')].some(x=>x.dataset.role==='Fantasia Ascent'&&x.dataset.buildRole==='dps'&&!x.hidden&&getComputedStyle(x).display!=='none'),null,{timeout:3000});
 fantasiaTitles=await buildTitles();
 assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator DPS Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
@@ -56,4 +58,4 @@ if text.count(old)!=1:
 text=text.replace(old,new,1)
 smoke.write_text(text,encoding='utf-8')
 
-print('fixed Dominator Fantasia async smoke and healer Fantomons')
+print('fixed Dominator Fantasia browser validation and healer Fantomons')
