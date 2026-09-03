@@ -1,0 +1,40 @@
+name: Apply mobile summary row
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_mobile_summary_row_v1.py'
+      - '.github/workflows/apply-mobile-summary-row-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch mobile summary
+        run: python3 scripts/patch_mobile_summary_row_v1.py
+
+      - name: Verify
+        run: |
+          grep -Fq 'MOBILE_SUMMARY_ROW_V1' index.html
+          grep -Fq 'grid-template-columns:repeat(3,minmax(0,1fr))!important' index.html
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Put timeline summary cards on one mobile row'
+          git push
