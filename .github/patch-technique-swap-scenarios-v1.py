@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 paths = [Path('index.html'), Path('.github/build-fantomons-inject.html')]
 
@@ -49,24 +50,27 @@ data_add = r'''  const TECHNIQUE_SWAP_SCENARIOS={
 
 ''' + data_anchor
 
-fn_anchor = """  function buildCardHtml(r){\n    const rm=String(r.name||'').match(/^(.*?) · (Tank|DPS|Heals)$/);\n    const displayName=rm?rm[1]:r.name;\n    const roleAttr=rm?' data-build-role=\\\"'+rm[2].toLowerCase()+'\\\"':'';\n"""
-fn_add = """  function buildCardHtml(r){\n    const rm=String(r.name||'').match(/^(.*?) · (Tank|DPS|Heals)$/);\n    const displayName=rm?rm[1]:r.name;\n    const roleAttr=rm?' data-build-role=\\\"'+rm[2].toLowerCase()+'\\\"':'';\n    const techniqueSwaps=TECHNIQUE_SWAP_SCENARIOS[r.techniques.join('|')]||[];\n"""
-
 render_anchor = "      +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'\n      +'</article>';"
-render_add = "      +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'\n      +(techniqueSwaps.length?'<div class=\\\"techniqueSwapScenarios\\\"><span>Technique swaps</span><div>'+techniqueSwaps.map(s=>'<p><b>'+esc(s[0])+':</b> '+esc(s[1])+' → '+esc(s[2])+'</p>').join('')+'</div></div>':'')\n      +'</article>';"
+render_add = "      +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'\n      +(techniqueSwaps.length?'<div class=\"techniqueSwapScenarios\"><span>Technique swaps</span><div>'+techniqueSwaps.map(s=>'<p><b>'+esc(s[0])+':</b> '+esc(s[1])+' → '+esc(s[2])+'</p>').join('')+'</div></div>':'')\n      +'</article>';"
 
 for path in paths:
     text = path.read_text(encoding='utf-8')
+
     for old, new, label in [
         (css_anchor, css_add, 'swap CSS'),
         (data_anchor, data_add, 'swap data'),
-        (fn_anchor, fn_add, 'renderer setup'),
         (render_anchor, render_add, 'renderer output'),
     ]:
         count = text.count(old)
         if count != 1:
             raise SystemExit(f'{path}: expected one {label} anchor, found {count}')
         text = text.replace(old, new, 1)
+
+    pattern = r"(  function buildCardHtml\(r\)\{\n    const rm=.*\n    const displayName=.*\n    const roleAttr=.*\n)"
+    text, count = re.subn(pattern, r"\1    const techniqueSwaps=TECHNIQUE_SWAP_SCENARIOS[r.techniques.join('|')]||[];\n", text, count=1)
+    if count != 1:
+        raise SystemExit(f'{path}: expected one renderer setup match, found {count}')
+
     path.write_text(text, encoding='utf-8')
 
 print('added conditional Technique swap scenarios to active build cards')
