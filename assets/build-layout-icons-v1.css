@@ -3,6 +3,10 @@
    BUILD_HERO_LAYOUT_V4 keeps the class summary + gear priorities compact on the left,
    lets stat guidance use the full left-column width, and gives Roll Guide the full right pane.
    Desktop Roll Guide stays permanently expanded; mobile keeps a collapsed-by-default accordion. */
+
+/* Site shell: the header should live in normal document flow at every breakpoint. */
+.topbar{position:static!important;top:auto!important}
+
 #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
 #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{
   grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);
