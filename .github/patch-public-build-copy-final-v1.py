@@ -1,6 +1,6 @@
 from pathlib import Path
 
-old = 'Used in the dedicated solo-control shell where surviving and maintaining spacing matter.'
+old = 'Used in the dedicated solo-control setup where surviving and maintaining spacing matter.'
 new = 'Used in the dedicated solo-control setup where surviving and maintaining spacing matter.'
 paths = [Path('index.html'), Path('.github/build-fantomons-inject.html')] + sorted(Path('scripts').glob('*.py')) + sorted(Path('.github').glob('*.py'))
 count = 0
