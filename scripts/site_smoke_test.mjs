@@ -100,7 +100,7 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
 
 // Fantasia Ascent is a first-class solo-push mode for every current S2 class.
 await waitBuild('Conqueror');
-assert(await page.locator('#buildContent .metaBuildTabs button').count()===5, 'build activity selector does not contain five modes');
+assert(await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').count()===5, 'build activity selector does not contain five modes');
 await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
 await page.waitForTimeout(80);
 let fantasiaTitles=await buildTitles();
@@ -133,23 +133,56 @@ await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
 await page.waitForTimeout(80);
 fantasiaTitles=await buildTitles();
 assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator Heals Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-// Tournament size buttons live inside the active Tournament card.
+// Fantasia sits directly after Crucible / Conquest in the activity selector.
 await waitBuild('Conqueror');
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Tournament"]').click();
+const scenarioOrder=await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').evaluateAll(xs=>xs.map(x=>x.dataset.metaMode));
+assert(JSON.stringify(scenarioOrder)===JSON.stringify(['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena','Tournament']), `activity order wrong: ${scenarioOrder.join(' | ')}`);
+
+// Rechecked Ascent Fantomon choices: Destroyer and Dominator use push-specific pools.
+await waitBuild('Destroyer');
+await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Fantasia Ascent"]').click();
 await page.waitForTimeout(80);
-const tournamentTabs=page.locator('#buildContent .buildCard:visible > header > .metaTournamentTabs');
-assert(await tournamentTabs.count()===1, 'Tournament 2v2/4v4 selector is not inside the visible Tournament card');
-assert(await tournamentTabs.locator('button').count()===2, 'Tournament card is missing the 2v2/4v4 buttons');
+let ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
+assert(JSON.stringify(ascentPets)===JSON.stringify(['Nyxarchon','Aegiswing','Armopi']), `Destroyer Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+await waitBuild('Dominator');
+await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Fantasia Ascent"]').click();
+await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
+await page.waitForTimeout(80);
+ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
+assert(JSON.stringify(ascentPets)===JSON.stringify(['Nyxarchon','Aegiswing','Zeioletus']), `Dominator DPS Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
+await page.waitForTimeout(80);
+ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
+assert(JSON.stringify(ascentPets)===JSON.stringify(['Herbote','Aegiswing','Mandragora']), `Dominator Heals Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+
+// Tournament size controls live inside the Tournament scenario tab and are interactive.
+await waitBuild('Conqueror');
+await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Tournament"]').click();
+await page.waitForTimeout(80);
+const tournamentScenario=page.locator('#buildContent .metaTournamentScenario');
+assert(await tournamentScenario.count()===1, 'Tournament scenario wrapper missing');
+const tournamentTabs=tournamentScenario.locator('.metaTournamentTabs');
+assert(await tournamentTabs.locator('button').count()===2, 'Tournament scenario is missing 2v2/4v4 buttons');
+assert(await tournamentTabs.isVisible(), 'Tournament 2v2/4v4 buttons are not visible inside the active Tournament tab');
+assert(await page.locator('#buildContent .buildCard:visible .metaTournamentTabs').count()===0, 'Tournament size controls leaked back into the build card');
+await tournamentTabs.locator('[data-tournament-size="4v4"]').click();
+await page.waitForTimeout(80);
+let tournamentTitle=(await buildTitles())[0]||'';
+assert(/^Tournament · 4v4/i.test(tournamentTitle), `4v4 selector did not switch build: ${tournamentTitle}`);
+await page.locator('#buildContent .metaTournamentScenario [data-tournament-size="2v2"]').click();
+await page.waitForTimeout(80);
+tournamentTitle=(await buildTitles())[0]||'';
+assert(/^Tournament · 2v2/i.test(tournamentTitle), `2v2 selector did not switch build: ${tournamentTitle}`);
 
 // Restore the existing Dominator smoke assumptions.
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Dungeon"]').click();
+await waitBuild('Dominator');
+await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Dungeon"]').click();
 await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
 await page.waitForTimeout(80);
 
 // Dominator keeps its DPS / Heals switch, role-specific slot stats, and a separate
 // Technique-left / Charm-right recommendation pair for each role. The activity tabs
 // still show one matching build at a time.
-await waitBuild('Dominator');
 assert(await page.locator('#buildContent .dominatorModeTabs button').count() === 2, 'Dominator DPS/Heals tabs missing');
 let titles=await buildTitles();
 assert(titles.length===1 && /^Dungeon/i.test(titles[0]||''), `Dominator DPS Dungeon build not visible: ${titles.join(' | ')}`);

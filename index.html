@@ -7715,10 +7715,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 @media(max-width:520px){.builds .guardianHeadingRow{gap:7px}.builds .guardianModeTabs button{min-height:30px;min-width:50px}}
 .builds .metaBuildControls{display:flex;align-items:center;gap:7px;margin:10px 0;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
 .builds .metaBuildTabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;flex:1;min-width:0}
-.builds .metaBuildTabs button,.builds .metaTournamentTabs button{border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850;min-height:36px;padding:8px 10px}
-.builds .metaBuildTabs button.active,.builds .metaTournamentTabs button.active{background:var(--accent-strong);color:#fff}
-.builds .metaTournamentTabs{display:inline-flex;gap:4px;margin-top:8px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
-.builds .metaTournamentTabs[hidden]{display:none!important}
+.builds .metaBuildTabs>button,.builds .metaTournamentMain{border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850;min-height:36px;padding:8px 10px;width:100%}
+.builds .metaBuildTabs>button.active{background:var(--accent-strong);color:#fff}
+.builds .metaTournamentScenario{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;min-width:0;border-radius:9px;overflow:hidden;background:transparent}
+.builds .metaTournamentScenario.active{grid-template-columns:minmax(0,1fr) auto;background:var(--accent-strong)}
+.builds .metaTournamentScenario.active>.metaTournamentMain{background:transparent;color:#fff}
+.builds .metaTournamentTabs{display:none;align-items:center;gap:2px;padding-right:4px}
+.builds .metaTournamentScenario.active>.metaTournamentTabs{display:flex}
+.builds .metaTournamentTabs button{border:0;border-radius:6px;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:9px;font-weight:850;min-height:26px;padding:4px 7px}
+.builds .metaTournamentTabs button:hover{background:rgba(255,255,255,.2)}
+.builds .metaTournamentTabs button.active{background:rgba(255,255,255,.3)}
 .builds .buildGrid.metaModeGrid{grid-template-columns:1fr!important;margin-top:0}
 .builds .buildGrid.metaModeGrid>.buildCard[hidden]{display:none!important}
 @media(min-width:761px){
@@ -7735,8 +7741,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 @media(max-width:620px){
   .builds .metaBuildControls{display:block}
   .builds .metaBuildTabs{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .builds .buildCard>header>.metaTournamentTabs{width:100%;margin-top:8px}
-  .builds .metaTournamentTabs button{flex:1}
+  .builds .metaTournamentScenario.active{grid-template-columns:minmax(0,1fr) auto}
+  .builds .metaTournamentTabs button{min-width:34px;padding:4px 6px}
 }
 
 </style>
@@ -8015,7 +8021,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 
 
   const META_CLASSES=new Set(['Conqueror','Guardian','Destroyer','Dominator']);
-  const META_MODES=['Dungeon','Crucible / Conquest','Arena','Fantasia Ascent','Tournament'];
+  const META_MODES=['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena','Tournament'];
   const metaRead=(key,fallback)=>{try{return localStorage.getItem(key)||fallback}catch(_){return fallback}};
   const metaWrite=(key,val)=>{try{localStorage.setItem(key,val)}catch(_){}};
   const metaMode=()=>META_MODES.includes(metaRead('sxs-build-meta-mode','Dungeon'))?metaRead('sxs-build-meta-mode','Dungeon'):'Dungeon';
@@ -8061,7 +8067,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(!box){
       box=document.createElement('div');
       box.className='metaBuildControls';
-      box.innerHTML='<div class="metaBuildTabs">'+META_MODES.map(m=>'<button type="button" data-meta-mode="'+esc(m)+'">'+esc(m)+'</button>').join('')+'</div>';
+      box.innerHTML='<div class="metaBuildTabs">'+META_MODES.map(m=>m==='Tournament'?'<div class="metaTournamentScenario"><button type="button" class="metaTournamentMain" data-meta-mode="Tournament">Tournament</button><div class="metaTournamentTabs"><button type="button" data-tournament-size="2v2">2v2</button><button type="button" data-tournament-size="4v4">4v4</button></div></div>':'<button type="button" data-meta-mode="'+esc(m)+'">'+esc(m)+'</button>').join('')+'</div>';
     }
     // Keep the scenario selector immediately above the activity build card. Rich
     // role-specific investment panels (Guardian/Dominator) may be inserted later,
@@ -8077,25 +8083,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     document.querySelectorAll('.builds .guardianModeTabs [data-guardian-mode]').forEach(b=>{const on=b.dataset.guardianMode===guardianMode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
     document.querySelectorAll('.builds .dominatorModeTabs [data-dominator-mode]').forEach(b=>{const on=b.dataset.dominatorMode===dominatorMode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
     const wanted=mode==='Tournament'?'Tournament · '+size:mode;
-    document.querySelectorAll('.builds .metaBuildTabs button').forEach(b=>b.classList.toggle('active',b.dataset.metaMode===mode));
+    document.querySelectorAll('.builds .metaBuildTabs [data-meta-mode]').forEach(b=>b.classList.toggle('active',b.dataset.metaMode===mode));
+    document.querySelectorAll('.builds .metaTournamentScenario').forEach(x=>x.classList.toggle('active',mode==='Tournament'));
+    document.querySelectorAll('.builds .metaTournamentTabs [data-tournament-size]').forEach(b=>b.classList.toggle('active',b.dataset.tournamentSize===size));
     grid.querySelectorAll(':scope > .buildCard').forEach(card=>{
       const wrongActivity=card.dataset.role!==wanted;
       const selectedRole=cls==='Guardian'?guardianMode:(cls==='Dominator'?dominatorMode:'');
       const wrongRole=(cls==='Guardian'||cls==='Dominator')&&card.dataset.buildRole!==selectedRole;
       card.hidden=wrongActivity||wrongRole;
     });
-    grid.querySelectorAll('.metaTournamentTabs').forEach(x=>x.remove());
-    if(mode==='Tournament'){
-      const card=[...grid.querySelectorAll(':scope > .buildCard')].find(x=>!x.hidden);
-      const header=card?.querySelector(':scope > header');
-      if(header){
-        const tour=document.createElement('div');
-        tour.className='metaTournamentTabs';
-        tour.innerHTML='<button type="button" data-tournament-size="2v2">2v2</button><button type="button" data-tournament-size="4v4">4v4</button>';
-        tour.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.tournamentSize===size));
-        header.append(tour);
-      }
-    }
   }
 
   function activeClass(){
@@ -8149,6 +8145,28 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const pools=FANTO[cls]||{};
     // Guardian DPS role prefers the offensive pet order; this automatically promotes Pandarial once the staged release patch adds it.
     const guardianDps=cls==='Guardian'&&typeof guardianBuildMode==='function'&&guardianBuildMode()==='dps';
+    const ascent=String(title||'').startsWith('Fantasia Ascent');
+    if(ascent&&cls==='Destroyer') return [
+      pick('Nyxarchon','Best damage-first Ascent lead: strong Dark AoE plus stacking DEF reduction helps beat high-DEF floors.'),
+      pick('Aegiswing','Use when deaths are ending the push before your rotation can finish.'),
+      pick('Armopi','Best no-shop survival option: DEF stacking and shields can buy the extra turn Destroyer needs.'),
+      pick('Zeioletus','No-shop damage alternative when survival is already comfortable.')
+    ];
+    if(ascent&&cls==='Dominator'){
+      const heals=typeof dominatorBuildMode==='function'&&dominatorBuildMode()==='heals';
+      if(heals) return [
+        pick('Herbote','Best S2 solo-sustain lead when evolved: self-healing, cleanse chance, and owner healing directly support long Ascent fights.'),
+        pick('Aegiswing','Safety alternative when burst damage is killing you before the healing loop stabilizes.'),
+        pick('Mandragora','No-shop healing alternative for ally-targeted Technique builds, especially before Herbote is evolved.'),
+        pick('Terragon','Damage-mitigation alternative when lowering enemy ATK/DMG matters more than extra raw healing.')
+      ];
+      return [
+        pick('Nyxarchon','Best DPS Ascent lead: Dark damage matches Dominator and the DEF reduction improves the whole damage loop.'),
+        pick('Aegiswing','Survival alternative when you are losing the floor before Erosion and Dark damage can ramp.'),
+        pick('Zeioletus','Best straightforward no-shop damage alternative.'),
+        pick('Sylvaerie','SPD-focused alternative; test it against Zeioletus if extra actions outperform direct pet damage.')
+      ];
+    }
     if(role==='Arena'){const base=pools.Arena||pools.PvP||[];if(guardianDps){const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];return [...base].sort((a,b)=>(order.indexOf(a.name)<0?99:order.indexOf(a.name))-(order.indexOf(b.name)<0?99:order.indexOf(b.name)));}return base;}
     if(role==='Tournament'){
       const base=pools.Tournament||pools.PvP||pools.Dungeon||[];if(guardianDps){const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];return [...base].sort((a,b)=>(order.indexOf(a.name)<0?99:order.indexOf(a.name))-(order.indexOf(b.name)<0?99:order.indexOf(b.name)));}return base;
