@@ -22,6 +22,19 @@
   flex-direction:column;
   gap:14px;
 }
+
+/* Match the class-card placement: role name stays left while the mode control docks
+   to the far right of the identity row for both Guardian and Dominator. */
+#buildContent .buildHeroLeft .guardianHeadingRow,
+#buildContent .buildHeroLeft .dominatorHeadingRow{
+  width:100%;
+  flex-wrap:nowrap;
+}
+#buildContent .buildHeroLeft .guardianHeadingRow .guardianModeTabs,
+#buildContent .buildHeroLeft .dominatorHeadingRow .dominatorModeTabs{
+  margin-left:auto;
+}
+
 #buildContent .buildHeroLeft>.buildQuickStats{
   width:100%;
   min-width:0;
@@ -223,6 +236,8 @@
   #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){
+  #buildContent .buildHeroLeft .guardianHeadingRow,
+  #buildContent .buildHeroLeft .dominatorHeadingRow{flex-wrap:wrap}
   #buildContent .buildHeroLeft .quickGearGrid{grid-template-columns:1fr}
   #buildContent .buildHeroLeft .quickGearRow{grid-template-columns:minmax(62px,max-content) minmax(0,1fr)}
   #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
