@@ -1,7 +1,10 @@
 /* BUILD_HERO_LAYOUT_ICONS_V1
-   Actionable gear priorities on the left; a dedicated roll-reference column on the right. */
-#buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1{
-  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+   Legacy asset filename/hook; icons are intentionally removed.
+   BUILD_HERO_LAYOUT_V2 keeps the class summary + gear priorities compact on the left
+   and lets the roll guide use the full height on the right. */
+#buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
+#buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{
+  grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);
   gap:0;
   padding:0;
   align-items:stretch;
@@ -9,16 +12,16 @@
 }
 #buildContent .buildHeroLeft{
   min-width:0;
-  padding:20px 22px;
+  padding:18px 20px;
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:14px;
 }
 #buildContent .buildHeroLeft>.buildQuickStats{
   border-left:0;
   border-top:1px solid var(--line);
-  padding:16px 0 0;
-  gap:9px;
+  padding:13px 0 0;
+  gap:7px;
   justify-content:flex-start;
 }
 #buildContent .buildHeroLeft>.buildQuickStats>.rollGuide{display:none!important}
@@ -29,84 +32,88 @@
 }
 #buildContent .buildHeroLeft .quickRule{
   margin:0 0 2px;
-  max-width:52ch;
+  max-width:62ch;
   color:var(--muted);
+  line-height:1.45;
 }
+
+/* Five gear slots pack into two balanced rows on desktop: 3 across, then 2 across. */
 #buildContent .buildHeroLeft .quickGearGrid{
-  grid-template-columns:1fr;
-  gap:0;
-  border:1px solid color-mix(in srgb,var(--line) 82%,transparent);
-  border-radius:10px;
-  overflow:hidden;
-  background:color-mix(in srgb,var(--bg) 34%,var(--surface));
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:6px;
+  border:0;
+  border-radius:0;
+  overflow:visible;
+  background:none;
 }
 #buildContent .buildHeroLeft .quickGearRow{
-  grid-template-columns:20px minmax(66px,max-content) minmax(0,1fr);
-  gap:8px;
-  align-items:center;
-  border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);
-  padding:9px 10px;
+  grid-column:span 2;
+  display:grid;
+  grid-template-columns:max-content minmax(0,1fr);
+  gap:7px;
+  align-items:start;
+  border:1px solid color-mix(in srgb,var(--line) 76%,transparent);
+  border-radius:8px;
+  padding:8px 9px;
+  min-width:0;
+  background:color-mix(in srgb,var(--bg) 30%,var(--surface));
 }
-#buildContent .buildHeroLeft .quickGearRow:first-child{border-top:0}
+#buildContent .buildHeroLeft .quickGearRow:nth-last-child(2),
+#buildContent .buildHeroLeft .quickGearRow:last-child{grid-column:span 3}
 #buildContent .buildHeroLeft .quickGearRow b{
   color:var(--green);
   font-size:9px;
-  line-height:1.2;
+  line-height:1.25;
+  white-space:nowrap;
 }
-#buildContent .buildHeroLeft .quickGearRow>span:not(.buildGearIcon){
+#buildContent .buildHeroLeft .quickGearRow>span{
   color:var(--body-text);
   font-size:9px;
   font-weight:720;
   line-height:1.35;
-}
-#buildContent .buildGearIcon,
-#buildContent .rollStatIcon,
-#buildContent .buildSubstatIcon{
-  width:16px;
-  height:16px;
-  display:inline-grid;
-  place-items:center;
-  color:var(--green);
-  flex:0 0 16px;
-}
-#buildContent .buildGearIcon svg,
-#buildContent .rollStatIcon svg,
-#buildContent .buildSubstatIcon svg{
-  width:16px;
-  height:16px;
-  display:block;
-  overflow:visible;
+  min-width:0;
 }
 #buildContent .buildHeroLeft .quickSubstats{
-  grid-template-columns:16px max-content minmax(0,1fr);
-  gap:8px;
-  align-items:center;
-  padding-top:9px;
+  display:grid;
+  grid-template-columns:max-content minmax(0,1fr);
+  gap:9px;
+  align-items:start;
+  padding-top:7px;
+  border-top:1px solid color-mix(in srgb,var(--line) 68%,transparent);
 }
 #buildContent .buildHeroLeft .quickSubstats b{color:var(--gold)}
 #buildContent .buildHeroLeft .quickSubstats span:last-child{
   color:var(--body-text);
   font-size:9px;
   font-weight:720;
+  line-height:1.4;
 }
+
 #buildContent .buildHeroRoll{
   min-width:0;
   border-left:1px solid var(--line);
-  padding:18px 20px;
+  padding:16px 18px;
   display:flex;
   align-items:stretch;
 }
 #buildContent .buildHeroRoll>.rollGuide{
   width:100%;
+  min-height:100%;
   margin:0;
   padding:0;
   border-top:0;
 }
+#buildContent .buildHeroRoll>.rollGuide[open]{
+  display:flex;
+  flex-direction:column;
+}
 #buildContent .buildHeroRoll>.rollGuide>summary{
-  min-height:28px;
-  padding:0 2px 9px;
+  min-height:27px;
+  padding:0 2px 8px;
   font-size:10px;
   color:var(--green);
+  flex:0 0 auto;
 }
 #buildContent .buildHeroRoll>.rollGuide>summary small{font-size:8px}
 #buildContent .buildHeroRoll .rollGuideBody{
@@ -114,20 +121,30 @@
   border-radius:10px;
   background:color-mix(in srgb,var(--bg) 48%,var(--surface));
 }
+#buildContent .buildHeroRoll>.rollGuide[open] .rollGuideBody{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
 #buildContent .buildHeroRoll .rollGuideNote{
   padding:7px 9px;
   font-size:8px;
+  flex:0 0 auto;
 }
 #buildContent .buildHeroRoll .rollGuideGrid{
   grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-auto-rows:minmax(36px,1fr);
   gap:6px;
   padding:8px;
+  flex:1 1 auto;
+  align-content:stretch;
 }
 #buildContent .buildHeroRoll .rollGuideRow{
-  grid-template-columns:18px minmax(0,1fr) auto;
-  gap:7px;
-  min-height:37px;
-  padding:7px 8px;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  min-height:36px;
+  padding:7px 9px;
   align-items:center;
   border-radius:8px;
   background:color-mix(in srgb,var(--surface) 94%,var(--bg));
@@ -148,31 +165,41 @@
 #buildContent .buildHeroRoll .rollGuideSources{
   padding:7px 9px;
   font-size:7.5px;
+  flex:0 0 auto;
 }
-@media(max-width:900px){
-  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1{
-    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+
+/* Defensive cleanup in case an old cached script injected decorative icons before this CSS loaded. */
+#buildContent .buildGearIcon,
+#buildContent .rollStatIcon,
+#buildContent .buildSubstatIcon{display:none!important}
+
+@media(max-width:1050px){
+  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
+  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{
+    grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
   }
-  #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
+  #buildContent .buildHeroLeft .quickGearGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #buildContent .buildHeroLeft .quickGearRow,
+  #buildContent .buildHeroLeft .quickGearRow:nth-last-child(2),
+  #buildContent .buildHeroLeft .quickGearRow:last-child{grid-column:auto}
 }
-@media(max-width:760px){
-  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1{grid-template-columns:1fr}
-  #buildContent .buildHeroLeft{padding:15px 14px;gap:14px}
-  #buildContent .buildHeroLeft>.buildQuickStats{padding-top:13px}
+@media(max-width:860px){
+  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
+  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{grid-template-columns:1fr}
+  #buildContent .buildHeroLeft{padding:15px 14px;gap:12px}
+  #buildContent .buildHeroLeft>.buildQuickStats{padding-top:12px}
   #buildContent .buildHeroRoll{
     border-left:0;
     border-top:1px solid var(--line);
     padding:14px;
   }
+  #buildContent .buildHeroRoll>.rollGuide{min-height:0}
   #buildContent .buildHeroRoll>.rollGuide>summary{min-height:34px}
-  #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
+  #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media(max-width:480px){
-  #buildContent .buildHeroLeft .quickGearRow{
-    grid-template-columns:18px minmax(62px,max-content) minmax(0,1fr);
-    padding:9px 8px;
-    gap:7px;
-  }
-  #buildContent .buildHeroLeft .quickSubstats{grid-template-columns:16px 1fr}
-  #buildContent .buildHeroLeft .quickSubstats>span:last-child{grid-column:1/-1;padding-left:24px}
+@media(max-width:560px){
+  #buildContent .buildHeroLeft .quickGearGrid{grid-template-columns:1fr}
+  #buildContent .buildHeroLeft .quickGearRow{grid-template-columns:minmax(62px,max-content) minmax(0,1fr)}
+  #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
+  #buildContent .buildHeroLeft .quickSubstats{grid-template-columns:1fr}
 }
