@@ -8,6 +8,9 @@
     helmet:SVG('<path d="M4 13c0-5 3.1-8 8-8s8 3 8 8v3h-5l-1.5-2h-3L9 16H4z"/><path d="M8 16v3M16 16v3M12 5v9"/>'),
     chest:SVG('<path d="m8 5 2 2h4l2-2 4 2-2 4v9H6v-9L4 7z"/><path d="M10 7v3h4V7"/>'),
     boots:SVG('<path d="M8 4h7v8l4 3v3c-4 .8-8.7.8-14 0v-3l3-2z"/><path d="M8 9h7M5 18h14"/>'),
+    staff:SVG('<path d="M8 21 15.5 5.5"/><path d="M14.5 6.5 17 4l3 1-1 3-3.5 1z"/><path d="M7 18l3 1.5"/>'),
+    book:SVG('<path d="M4 5.5c2.7-.8 5.2-.3 8 1.4v13c-2.8-1.7-5.3-2.2-8-1.4z"/><path d="M20 5.5c-2.7-.8-5.2-.3-8 1.4v13c2.8-1.7 5.3-2.2 8-1.4z"/><path d="M12 7v13"/>'),
+    orb:SVG('<circle cx="12" cy="12" r="6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="m5.6 5.6 2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/>'),
     target:SVG('<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>'),
     burst:SVG('<path d="m12 2 1.7 5 4.6-2.4-.9 5.1 5 .3-4 3.4 3.5 3.7-5.1-.1.5 5.2-4.4-2.7L11 22l-1.7-5-4.6 2.4.9-5.1-5-.3 4-3.4L1.1 6.9l5.1.1-.5-5.2 4.4 2.7z"/>'),
     combo:SVG('<circle cx="8.5" cy="12" r="5"/><circle cx="15.5" cy="12" r="5"/><path d="M12 8.5v7M8.5 12h7"/>'),
@@ -21,7 +24,7 @@
     tune:SVG('<path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M8 14v6"/>'),
     effect:SVG('<circle cx="12" cy="12" r="7"/><path d="M12 7v5l3 2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>')
   };
-  const gearMap={Sword:'sword',Gauntlets:'gauntlet',Helmet:'helmet',Chest:'chest',Boots:'boots',Staff:'sword',Orb:'element'};
+  const gearMap={Sword:'sword',Gauntlets:'gauntlet',Helmet:'helmet',Chest:'chest',Boots:'boots',Shield:'shield',Staff:'staff',Codex:'book',Orb:'orb'};
   const statIcon=(name)=>{
     const n=(name||'').replace(/\?/g,'').trim().toLowerCase();
     if(n.includes('crit rate + accuracy')||n.includes('crit rate + crit dmg')) return I.combo;
