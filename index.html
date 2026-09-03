@@ -7691,10 +7691,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .buildCard .fantomonPick p{color:var(--muted);font-size:9px;line-height:1.35;margin:4px 0 0}
 .buildCard .fantomonPick.main{border-color:color-mix(in srgb,var(--accent-strong) 48%,var(--line))}
 .buildCard .roleBadge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 6px;margin-left:6px;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
-.buildCard .buildSwapRows{grid-column:1/-1;border-top:1px solid var(--line);padding:8px 0 1px;margin-top:0;display:grid;gap:5px;min-width:0}
-.buildCard .buildSwapRows p{margin:0;color:var(--muted);font-size:9px;line-height:1.4}
-.buildCard .buildSwapRows p>strong{color:var(--muted);font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
-.buildCard .buildSwapRows .swapNames{color:var(--ink);font-weight:800}
+.buildCard .buildSwapRows{grid-column:1/-1;border-top:1px solid var(--line);padding:11px 0 2px;margin-top:9px;display:grid;gap:7px;min-width:0}
+.buildCard .buildSwapRows p{margin:0;display:grid;grid-template-columns:96px minmax(0,1fr);column-gap:9px;align-items:start;color:var(--muted);font-size:10px;line-height:1.5;min-width:0}
+.buildCard .buildSwapRows p>strong{color:var(--muted);font-size:9px;font-weight:850;letter-spacing:.04em;text-transform:uppercase;line-height:1.5}
+.buildCard .buildSwapRows .swapText{min-width:0;color:var(--muted)}
+.buildCard .buildSwapRows .swapNames{color:var(--ink);font-weight:750}
+@media(max-width:620px){.buildCard .buildSwapRows{margin-top:8px;padding-top:10px;gap:8px}.buildCard .buildSwapRows p{grid-template-columns:1fr;gap:2px;font-size:10px}.buildCard .buildSwapRows p>strong{font-size:9px}}
 @media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
 
 /* META_BUILD_MODES_V1 */
@@ -8062,8 +8064,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +((techniqueSwaps.length||charmSwaps.length)?'<div class="buildSwapRows">'
-        +techniqueSwaps.map(s=>'<p><strong>Technique Swap:</strong> '+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></p>').join('')
-        +charmSwaps.map(s=>'<p><strong>Charm Swap:</strong> '+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></p>').join('')
+        +techniqueSwaps.map(s=>'<p><strong>Technique Swap:</strong><span class="swapText">'+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></span></p>').join('')
+        +charmSwaps.map(s=>'<p><strong>Charm Swap:</strong><span class="swapText">'+esc(s[0])+' — <span class="swapNames">'+esc(s[1])+' → '+esc(s[2])+'</span></span></p>').join('')
         +'</div>':'')
       +'</article>';
   }
