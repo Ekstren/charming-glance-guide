@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 
+# Retry helper: patches the first-pass Guardian installer before it runs.
 p = Path('scripts/patch_guardian_tank_dps_toggle_v1.py')
 s = p.read_text(encoding='utf-8')
 
