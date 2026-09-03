@@ -98,6 +98,54 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
   }
 }
 
+// Fantasia Ascent is a first-class solo-push mode for every current S2 class.
+await waitBuild('Conqueror');
+assert(await page.locator('#buildContent .metaBuildTabs button').count()===5, 'build activity selector does not contain five modes');
+await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
+await page.waitForTimeout(80);
+let fantasiaTitles=await buildTitles();
+assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Conqueror Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
+
+await waitBuild('Guardian');
+await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
+await page.locator('#buildContent button[data-guardian-mode="tank"]').click();
+await page.waitForTimeout(80);
+fantasiaTitles=await buildTitles();
+assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Guardian Tank Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
+await page.locator('#buildContent button[data-guardian-mode="dps"]').click();
+await page.waitForTimeout(80);
+fantasiaTitles=await buildTitles();
+assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Guardian DPS Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
+
+await waitBuild('Destroyer');
+await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
+await page.waitForTimeout(80);
+fantasiaTitles=await buildTitles();
+assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Destroyer Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
+
+await waitBuild('Dominator');
+await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
+await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
+await page.waitForTimeout(80);
+fantasiaTitles=await buildTitles();
+assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator DPS Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
+await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
+await page.waitForTimeout(80);
+fantasiaTitles=await buildTitles();
+assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator Heals Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
+// Tournament size buttons live inside the active Tournament card.
+await waitBuild('Conqueror');
+await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Tournament"]').click();
+await page.waitForTimeout(80);
+const tournamentTabs=page.locator('#buildContent .buildCard:visible > header > .metaTournamentTabs');
+assert(await tournamentTabs.count()===1, 'Tournament 2v2/4v4 selector is not inside the visible Tournament card');
+assert(await tournamentTabs.locator('button').count()===2, 'Tournament card is missing the 2v2/4v4 buttons');
+
+// Restore the existing Dominator smoke assumptions.
+await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Dungeon"]').click();
+await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
+await page.waitForTimeout(80);
+
 // Dominator keeps its DPS / Heals switch, role-specific slot stats, and a separate
 // Technique-left / Charm-right recommendation pair for each role. The activity tabs
 // still show one matching build at a time.
@@ -161,5 +209,5 @@ if(pageErrors.length){
   throw new Error('page runtime errors:\n' + pageErrors.join('\n---\n'));
 }
 
-console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + slot stats + Technique/Charm pair + Main/two-Alt Fantomons + Dominator roles/PvP refs + mobile stack, calculator yielded in ${calcYieldMs}ms`);
+console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + Fantasia Ascent + slot stats + Technique/Charm pair + Main/two-Alt Fantomons + Dominator roles/PvP refs + mobile stack, calculator yielded in ${calcYieldMs}ms`);
 await browser.close();
