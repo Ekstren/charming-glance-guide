@@ -1,0 +1,49 @@
+name: Apply build skill tooltips
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_build_skill_tooltips_v1.py'
+      - '.github/workflows/apply-build-skill-tooltips-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch skill tooltips
+        run: python3 scripts/patch_build_skill_tooltips_v1.py
+
+      - name: Verify
+        run: |
+          grep -Fq 'BUILD_SKILL_TOOLTIPS_V1' index.html
+          grep -Fq 'BUILD_SKILL_TOOLTIPS_V1' .github/build-fantomons-inject.html
+          grep -Fq 'data-skill-tooltip' index.html
+          grep -Fq "'Flickering Blade':I" index.html
+          grep -Fq "'Soul Protection':I" index.html
+          grep -Fq "'Formation Breaker':I" index.html
+          grep -Fq "'Phantom Light':I" index.html
+          grep -Fq "'BUILD_SKILL_TOOLTIPS_V1'" scripts/patch_restore_rich_builds_v1.py
+          python3 -m py_compile scripts/patch_build_skill_tooltips_v1.py scripts/patch_restore_rich_builds_v1.py scripts/patch_meta_build_modes_v1.py scripts/patch_build_roll_guide_v2.py
+          python3 scripts/validate_pandarial_build_prep_v1.py
+          python3 scripts/validate_warlords_rest_roll_guide_v1.py
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-fantomons-inject.html scripts/patch_restore_rich_builds_v1.py
+          git commit -m 'Add interactive skill tooltips to Builds'
+          git push
