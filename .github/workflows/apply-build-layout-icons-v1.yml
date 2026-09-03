@@ -38,6 +38,15 @@ jobs:
           grep -Fq 'assets/build-layout-icons-v1.css' index.html
           grep -Fq 'assets/build-layout-icons-v1.js' index.html
 
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
       - name: Commit and push
         run: |
           if git diff --quiet -- index.html; then
