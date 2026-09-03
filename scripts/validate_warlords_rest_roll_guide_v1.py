@@ -7,6 +7,10 @@ from activate_warlords_rest_roll_guide_v1 import FILES, MARKER, patch_text
 REQUIRED = [
     MARKER,
     "Warlord's Rest · Lv162",
+    "atkpct:['ATK%','Lv162 max unconfirmed',1",
+    "defpct:['DEF%','Lv162 max unconfirmed',1",
+    "hppct:['HP%','Lv162 max unconfirmed',1",
+    "spdpct:['SPD%','Lv162 max unconfirmed',1",
     "crit:['Crit Rate','≈ 7.50%',1",
     "critdmg:['Crit DMG','≈ 11.25%',1",
     "block:['Block Rate','≈ 7.50%',1",

@@ -36,9 +36,13 @@ payload = r'''
 (()=>{
   const R={
     atk:['ATK','Gear-level scaling',1,'No single season-wide cap. Flat ATK scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    atkpct:['ATK%','Max unconfirmed',1,'ATK% is a separate percentage substat from flat ATK. Current Global class guides explicitly list both ATK and ATK%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
     def:['DEF','Gear-level scaling',1,'No single season-wide cap. Flat DEF scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    defpct:['DEF%','Max unconfirmed',1,'DEF% is a separate percentage substat from flat DEF. Current Global class guides explicitly list both DEF and DEF%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
     hp:['HP','Gear-level scaling',1,'No single season-wide cap. Flat HP scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    hppct:['HP%','Max unconfirmed',1,'HP% is a separate percentage substat from flat HP. Current Global class guides explicitly list both HP and HP%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
     spd:['SPD','Gear-level scaling',1,'No single season-wide cap. Flat SPD scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
+    spdpct:['SPD%','Max unconfirmed',1,'SPD% is a separate percentage substat from flat SPD. Current Global class guides explicitly list both SPD and SPD%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
     crit:['Crit Rate','≈ 5.00%',1,'Approximate standalone early-S2 Crit Rate cap. Older-server data confirms normal Crit Rate is a variable-range affix that grows later in S2, but I do not have a direct current English-client pre-160 maximum capture yet.',0],
     critdmg:['Crit DMG','≈ 7.50%',1,'Approximate standalone early-S2 Crit DMG cap. The paired Crit Rate + Crit DMG affix is directly documented, but this standalone maximum has not been directly confirmed on the current English client.',0],
     block:['Block Rate','≈ 5.00%',1,'Approximate early-S2 standalone Block Rate cap inferred from the same pre-160 normal-affix tier. Needs direct English-client Affix Preview confirmation.',0],
@@ -53,12 +57,12 @@ payload = r'''
     healpair:['DMG RES + Healing Boost','2.56% + 10.24%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0]
   };
   const PROFILES={
-    Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','atk'],
-    Guardian:['block','blockpair','def','spd','hp'],
-    Destroyer:['crit','critdmg','critpair','atk','em','acc','critacc','spd'],
+    Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
+    Guardian:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],
+    Destroyer:['crit','critdmg','critpair','atk','atkpct','em','acc','critacc','spd','spdpct'],
     Dominator:{
-      dps:['ehr','crit','critdmg','critpair','em','atk','spd'],
-      heals:['heal','healpair','spd','hp','dmgres']
+      dps:['ehr','crit','critdmg','critpair','em','atk','atkpct','spd','spdpct'],
+      heals:['heal','healpair','spd','spdpct','hp','hppct','dmgres']
     }
   };
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

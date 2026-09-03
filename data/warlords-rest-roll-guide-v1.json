@@ -18,30 +18,141 @@
   },
   "warlord_maxima": {
     "normal_percentage": {
-      "Crit Rate": {"value": "≈ 7.50%", "confirmed": false, "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling; independently consistent with Global community reports of ~7.5% high-end single Crit rolls."},
-      "Crit DMG": {"value": "≈ 11.25%", "confirmed": false, "basis": "Pre-160 ~7.50% max x ~1.5 first post-160 normal-affix scaling."},
-      "Block Rate": {"value": "≈ 7.50%", "confirmed": false, "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling."},
-      "Crit RES": {"value": "≈ 7.50%", "confirmed": false, "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling."},
-      "Accuracy": {"value": "≈ 7.50%", "confirmed": false, "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling."},
-      "Healing Boost": {"value": "≈ 15.00%", "confirmed": false, "basis": "Pre-160 ~10.00% max x ~1.5 first post-160 normal-affix scaling."}
+      "Crit Rate": {
+        "value": "≈ 7.50%",
+        "confirmed": false,
+        "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling; independently consistent with Global community reports of ~7.5% high-end single Crit rolls."
+      },
+      "Crit DMG": {
+        "value": "≈ 11.25%",
+        "confirmed": false,
+        "basis": "Pre-160 ~7.50% max x ~1.5 first post-160 normal-affix scaling."
+      },
+      "Block Rate": {
+        "value": "≈ 7.50%",
+        "confirmed": false,
+        "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling."
+      },
+      "Crit RES": {
+        "value": "≈ 7.50%",
+        "confirmed": false,
+        "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling."
+      },
+      "Accuracy": {
+        "value": "≈ 7.50%",
+        "confirmed": false,
+        "basis": "Pre-160 ~5.00% max x ~1.5 first post-160 normal-affix scaling."
+      },
+      "Healing Boost": {
+        "value": "≈ 15.00%",
+        "confirmed": false,
+        "basis": "Pre-160 ~10.00% max x ~1.5 first post-160 normal-affix scaling."
+      },
+      "ATK%": {
+        "value": "Unverified Lv162 max",
+        "confirmed": false,
+        "basis": "ATK% is a separate percentage core-stat affix from its flat counterpart. Current Global class guides explicitly list the percent variant; no direct Global-English Warlord Affix Preview maximum has been retained, so no numeric cap is invented."
+      },
+      "DEF%": {
+        "value": "Unverified Lv162 max",
+        "confirmed": false,
+        "basis": "DEF% is a separate percentage core-stat affix from its flat counterpart. Current Global class guides explicitly list the percent variant; no direct Global-English Warlord Affix Preview maximum has been retained, so no numeric cap is invented."
+      },
+      "HP%": {
+        "value": "Unverified Lv162 max",
+        "confirmed": false,
+        "basis": "HP% is a separate percentage core-stat affix from its flat counterpart. Current Global class guides explicitly list the percent variant; no direct Global-English Warlord Affix Preview maximum has been retained, so no numeric cap is invented."
+      },
+      "SPD%": {
+        "value": "Unverified Lv162 max",
+        "confirmed": false,
+        "basis": "SPD% is a separate percentage core-stat affix from its flat counterpart. Current Global class guides explicitly list the percent variant; no direct Global-English Warlord Affix Preview maximum has been retained, so no numeric cap is invented."
+      }
     },
     "special_dual_stat": {
-      "Crit Rate + Crit DMG": {"value": "15.3% + 23%", "confirmed": true, "basis": "Direct older-server post-160 tier data plus Global S2 community corroboration of 15% Crit + 23% Crit DMG gear."},
-      "Crit Rate + Accuracy": {"value": "15.3% + 15.3%", "confirmed": false, "basis": "Exact 3x special-affix rule and older-server affix table; Global community also reports ~15% Accuracy paired with Crit, but no direct current English Affix Preview capture retained."},
-      "Crit RES + Block Rate": {"value": "15.3% + 15.3%", "confirmed": false, "basis": "Exact 3x special-affix rule and older-server affix table."},
-      "Block Rate + Block Efficiency": {"value": "15.3% + 23%", "confirmed": false, "basis": "Exact 3x special-affix rule and older-server affix table."},
-      "DMG RES + Healing Boost": {"value": "7.68% + 30.7%", "confirmed": false, "basis": "Exact 3x special-affix rule and older-server affix table."},
-      "PvP Bonus DMG + PvP DMG RES": {"value": "15.3% + 15.3%", "confirmed": false, "basis": "Exact 3x special-affix rule and older-server affix table."},
-      "PvE Bonus DMG + PvE DMG RES": {"value": "15.3% + 15.3%", "confirmed": false, "basis": "Exact 3x special-affix rule and older-server affix table."}
+      "Crit Rate + Crit DMG": {
+        "value": "15.3% + 23%",
+        "confirmed": true,
+        "basis": "Direct older-server post-160 tier data plus Global S2 community corroboration of 15% Crit + 23% Crit DMG gear."
+      },
+      "Crit Rate + Accuracy": {
+        "value": "15.3% + 15.3%",
+        "confirmed": false,
+        "basis": "Exact 3x special-affix rule and older-server affix table; Global community also reports ~15% Accuracy paired with Crit, but no direct current English Affix Preview capture retained."
+      },
+      "Crit RES + Block Rate": {
+        "value": "15.3% + 15.3%",
+        "confirmed": false,
+        "basis": "Exact 3x special-affix rule and older-server affix table."
+      },
+      "Block Rate + Block Efficiency": {
+        "value": "15.3% + 23%",
+        "confirmed": false,
+        "basis": "Exact 3x special-affix rule and older-server affix table."
+      },
+      "DMG RES + Healing Boost": {
+        "value": "7.68% + 30.7%",
+        "confirmed": false,
+        "basis": "Exact 3x special-affix rule and older-server affix table."
+      },
+      "PvP Bonus DMG + PvP DMG RES": {
+        "value": "15.3% + 15.3%",
+        "confirmed": false,
+        "basis": "Exact 3x special-affix rule and older-server affix table."
+      },
+      "PvE Bonus DMG + PvE DMG RES": {
+        "value": "15.3% + 15.3%",
+        "confirmed": false,
+        "basis": "Exact 3x special-affix rule and older-server affix table."
+      }
     },
     "flat_or_level_scaled": {
-      "ATK": {"value": "Lv162 scaling", "confirmed_max": false, "observed": ["2084 -> 3577 when transferred Lv130 -> Lv162", "2622 -> 4501 when transferred Lv130 -> Lv162"], "basis": "Prydwen Global-English Affix Transfer screenshot."},
-      "DEF": {"value": "Lv162 scaling", "confirmed_max": false, "observed": ["2099 -> 3603 when transferred Lv130 -> Lv162"], "basis": "Prydwen Global-English Affix Transfer screenshot."},
-      "HP": {"value": "Lv162 scaling", "confirmed_max": false, "observed": [], "basis": "Same receiving-gear-level scaling rule; exact Warlord Affix Preview maximum not found."},
-      "SPD": {"value": "Lv162 scaling", "confirmed_max": false, "observed": [], "basis": "Same receiving-gear-level scaling rule; exact Warlord Affix Preview maximum not found."},
-      "Elemental Mastery": {"value": "Lv162 scaling", "confirmed_max": false, "observed": [], "basis": "Prydwen confirms flat affixes scale with receiving gear level and shows Elemental Mastery as a refinable line; exact Warlord Affix Preview maximum not found."},
-      "Effect Hit Rate": {"value": "Lv162 scaling", "confirmed_max": false, "observed": [], "basis": "Prydwen shows Effect Hit as a refinable flat-number line; exact Warlord Affix Preview maximum not found."},
-      "DMG RES (standalone)": {"value": "No verified standalone max", "confirmed_max": false, "observed": [], "basis": "Current English gamefile table exposes the DMG RES + Healing Boost paired affix; a standalone refinement maximum was not established."
+      "ATK": {
+        "value": "Lv162 scaling",
+        "confirmed_max": false,
+        "observed": [
+          "2084 -> 3577 when transferred Lv130 -> Lv162",
+          "2622 -> 4501 when transferred Lv130 -> Lv162"
+        ],
+        "basis": "Prydwen Global-English Affix Transfer screenshot."
+      },
+      "DEF": {
+        "value": "Lv162 scaling",
+        "confirmed_max": false,
+        "observed": [
+          "2099 -> 3603 when transferred Lv130 -> Lv162"
+        ],
+        "basis": "Prydwen Global-English Affix Transfer screenshot."
+      },
+      "HP": {
+        "value": "Lv162 scaling",
+        "confirmed_max": false,
+        "observed": [],
+        "basis": "Same receiving-gear-level scaling rule; exact Warlord Affix Preview maximum not found."
+      },
+      "SPD": {
+        "value": "Lv162 scaling",
+        "confirmed_max": false,
+        "observed": [],
+        "basis": "Same receiving-gear-level scaling rule; exact Warlord Affix Preview maximum not found."
+      },
+      "Elemental Mastery": {
+        "value": "Lv162 scaling",
+        "confirmed_max": false,
+        "observed": [],
+        "basis": "Prydwen confirms flat affixes scale with receiving gear level and shows Elemental Mastery as a refinable line; exact Warlord Affix Preview maximum not found."
+      },
+      "Effect Hit Rate": {
+        "value": "Lv162 scaling",
+        "confirmed_max": false,
+        "observed": [],
+        "basis": "Prydwen shows Effect Hit as a refinable flat-number line; exact Warlord Affix Preview maximum not found."
+      },
+      "DMG RES (standalone)": {
+        "value": "No verified standalone max",
+        "confirmed_max": false,
+        "observed": [],
+        "basis": "Current English gamefile table exposes the DMG RES + Healing Boost paired affix; a standalone refinement maximum was not established."
       }
     }
   },
@@ -63,6 +174,8 @@
     "https://www.taptap.cn/moment/696759866252856704",
     "https://www.aitaa.cn/news/171.html",
     "https://lootandwaifus.com/guides/sword-x-staff-substat-table/",
-    "https://www.reddit.com/r/SwordxStaff_Official/comments/1vi0ytl/what_legendary_skill_the_best/"
+    "https://www.reddit.com/r/SwordxStaff_Official/comments/1vi0ytl/what_legendary_skill_the_best/",
+    "https://www.prydwen.gg/sword-x-staff/guides/build-guide-conqueror",
+    "https://www.prydwen.gg/sword-x-staff/guides/build-guide-guardian"
   ]
 }
