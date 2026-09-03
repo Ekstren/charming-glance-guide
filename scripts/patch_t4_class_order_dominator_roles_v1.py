@@ -159,8 +159,10 @@ if a<0 or b<0:raise RuntimeError('Live build injection markers missing')
 b+=len(END)
 index=index[:a]+inject.strip()+index[b:]
 index=index.replace(f"const S2_BUILD_CLASSES={ORDER_OLD};",f"const S2_BUILD_CLASSES={ORDER_NEW};")
+index=index.replace(f"const S2_BUILD_CLASSES_LIVE={ORDER_OLD};",f"const S2_BUILD_CLASSES_LIVE={ORDER_NEW};")
 index=index.replace(f"const S2_CLASSES={ORDER_OLD};",f"const S2_CLASSES={ORDER_NEW};")
 if f"const S2_BUILD_CLASSES={ORDER_NEW};" not in index:raise RuntimeError('Build class order did not land')
+if f"const S2_BUILD_CLASSES_LIVE={ORDER_NEW};" not in index:raise RuntimeError('Live build class order did not land')
 if f"const S2_CLASSES={ORDER_NEW};" not in index:raise RuntimeError('Companion class order did not land')
 INDEX.write_text(index,encoding='utf-8')
 
