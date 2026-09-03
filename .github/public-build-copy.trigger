@@ -1,1 +1,1 @@
-apply public build copy cleanup v1
+apply public build copy cleanup final v1
