@@ -21,12 +21,19 @@ roles={
 
 
 def insert_roles(text,cls,next_marker,lines):
-    start=text.find(f"    {cls}:[")
-    if start<0: raise SystemExit(f'missing {cls} block')
-    end=text.find(next_marker,start)
-    if end<0: raise SystemExit(f'missing end marker for {cls}')
+    presets_start=text.find('  const ROLE_PRESETS={')
+    if presets_start<0: raise SystemExit('missing ROLE_PRESETS')
+    presets_end=text.find('\n  };\n\n\n  const META_CLASSES',presets_start)
+    if presets_end<0: raise SystemExit('missing ROLE_PRESETS end')
+    start=text.find(f'\n    {cls}:[',presets_start,presets_end)
+    if start<0: raise SystemExit(f'missing active {cls} preset block')
+    if next_marker:
+        end=text.find(next_marker,start,presets_end)
+        if end<0: raise SystemExit(f'missing end marker for active {cls}')
+    else:
+        end=presets_end
     close=text.rfind('\n    ]',start,end)
-    if close<0: raise SystemExit(f'missing close for {cls}')
+    if close<0: raise SystemExit(f'missing close for active {cls}')
     if "role('Fantasia Ascent" in text[start:end]:
         raise SystemExit(f'{cls} already has Fantasia Ascent')
     return text[:close]+',\n'+',\n'.join(lines)+text[close:]
@@ -100,7 +107,7 @@ for path in paths:
     text=insert_roles(text,'Conqueror','\n    Guardian:[',roles['Conqueror'])
     text=insert_roles(text,'Guardian','\n    Destroyer:[',roles['Guardian'])
     text=insert_roles(text,'Destroyer','\n    Dominator:[',roles['Destroyer'])
-    text=insert_roles(text,'Dominator','\n  };\n\n\n  const META_CLASSES',roles['Dominator'])
+    text=insert_roles(text,'Dominator',None,roles['Dominator'])
 
     old_rolekey="    if(t==='crucible / conquest') return 'Boss';\n    if(t.startsWith('arena')) return 'Arena';"
     new_rolekey="    if(t==='crucible / conquest') return 'Boss';\n    if(t==='fantasia ascent') return 'Solo';\n    if(t.startsWith('arena')) return 'Arena';"
