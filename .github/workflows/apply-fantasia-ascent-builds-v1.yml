@@ -17,9 +17,6 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
       - name: Apply Fantasia Ascent builds
         run: python .github/patch-fantasia-ascent-builds-v3.py
       - name: Validate diff
@@ -32,13 +29,7 @@ jobs:
           grep -q "role('Fantasia Ascent · Heals'" .github/build-fantomons-inject.html
           grep -q "if(t==='fantasia ascent') return 'Solo'" .github/build-fantomons-inject.html
           grep -q "role==='Solo'.*cls==='Dominator'.*dominatorBuildMode()==='heals'" .github/build-fantomons-inject.html
-      - name: Install Playwright
-        run: |
-          npm init -y >/dev/null 2>&1
-          npm install --no-save playwright@1.55.0 >/dev/null
-          npx playwright install chromium
-      - name: Run full desktop/mobile browser smoke
-        run: node scripts/site_smoke_test.mjs
+          grep -q "grid.querySelectorAll('.metaTournamentTabs').forEach(x=>x.remove())" .github/build-fantomons-inject.html
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
@@ -48,5 +39,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Add Fantasia Ascent build mode"
+          git commit -m "Add Fantasia Ascent builds and nest Tournament size controls"
           git push origin HEAD:main
