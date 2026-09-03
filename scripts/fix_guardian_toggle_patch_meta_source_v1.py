@@ -53,7 +53,7 @@ new_func = r'''def patch_meta_source(text: str) -> str:
 '''
 
 pat = re.compile(r'def patch_meta_source\(text: str\) -> str:\n.*?\n\ndef patch_rich', re.S)
-s, n = pat.subn(new_func + '\n\ndef patch_rich', s, count=1)
+s, n = pat.subn(lambda _: new_func + '\n\ndef patch_rich', s, count=1)
 if n != 1:
     raise SystemExit('Could not replace patch_meta_source in Guardian toggle patch')
 p.write_text(s, encoding='utf-8')
