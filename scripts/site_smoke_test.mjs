@@ -70,6 +70,11 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
   assert(!['Nyxarchon','Aegiswing'].includes(f2pName.trim()), `${cls} F2P / No Shop pick incorrectly uses shop Fantomon ${f2pName}`);
   const cardCols=await visibleCards.evaluate(el=>{const left=el.querySelector('.buildLoadoutColumn')?.getBoundingClientRect();const right=el.querySelector('.fantomonPair')?.getBoundingClientRect();return left&&right?{lx:left.x,ly:left.y,rx:right.x,ry:right.y}:null;});
   assert(cardCols && cardCols.rx>cardCols.lx+20 && Math.abs(cardCols.ry-cardCols.ly)<30, `${cls} desktop loadout/Fantomon columns are not side-by-side`);
+  const fantoLayout=await visibleCards.locator('.fantomonRankList').evaluate(el=>({cols:getComputedStyle(el).gridTemplateColumns,items:[...el.querySelectorAll('.fantomonPick')].map(x=>{const r=x.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width};})}));
+  assert(fantoLayout.items.length===3, `${cls} wide desktop Fantomon list lost a choice`);
+  assert(fantoLayout.cols.split(' ').length===2, `${cls} wide desktop Fantomon list is not two columns: ${fantoLayout.cols}`);
+  assert(Math.abs(fantoLayout.items[1].y-fantoLayout.items[2].y)<3 && fantoLayout.items[2].x>fantoLayout.items[1].x, `${cls} Alt/F2P Fantomons are not side-by-side`);
+  assert(fantoLayout.items[0].w>fantoLayout.items[1].w*1.8, `${cls} Main Fantomon does not span both columns`);
 
   // Recommendations must come from Techniques/Charms equipped in at least one
   // available loadout for the class, not from unrelated wishlist/swap-only pieces.

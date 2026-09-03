@@ -25,6 +25,10 @@
 .buildCard .buildSwapRows .swapNames{color:var(--ink);font-weight:750}
 @media(max-width:620px){.buildCard .buildSwapRows{margin-top:8px;padding-top:10px;gap:8px}.buildCard .buildSwapRows p{grid-template-columns:1fr;gap:2px;font-size:10px}.buildCard .buildSwapRows p>strong{font-size:9px}}
 @media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
+@media(min-width:1180px){
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.fantomonPair .fantomonRankList{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.fantomonPair .fantomonPick.main{grid-column:1/-1}
+}
 
 /* META_BUILD_MODES_V1 */
 /* GUARDIAN_ROLE_TOGGLE_V1 */
