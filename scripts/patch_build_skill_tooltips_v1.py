@@ -57,7 +57,7 @@ PAYLOAD = r'''
     'Seismic Tide':I('Water Technique favored for steadier Cold stacking.','Used when consistency matters more than a situational utility slot.','Water · Cold stacking'),
     'Raging Maelstrom':I('Large Water/AoE payoff for the full offensive shell.','Best when multiple enemies let DPS Guardian spread pressure and exploit Cold setup.','Water · AoE'),
     'Forceful Charge':I('Engage/mobility Technique that helps Guardian stay attached to a target and apply pressure.','Useful in Arena and 2v2 where target access matters more than broad AoE.','Mobility · Pressure'),
-    'Star Shattering Slash':I('Heavy direct-damage Technique used as a finisher in offensive Guardian shells.','Adds real kill pressure to Block/counter PvP builds.','Direct damage'),
+    'Star Shattering Slash':I('Heavy direct-damage Technique inherited from Paladin; it starts as one of the Knight line’s strongest single-target nukes and scales hard with rank.','Use it for Crucible/Conquest and other concentrated targets; it also adds real kill pressure to Block/counter PvP builds.','Single target · Heavy hit'),
     'Leap Attack':I('Mobile attack with a chance to reduce enemy DEF.','Boss-support Guardian uses it to contribute damage amplification while staying active.','Mobility · DEF down'),
     'Holy Purification':I('Purification/Dispel utility Technique for removing problematic enemy buffs or effects.','Excellent in boss support when there is actually something important to remove; otherwise it is a flex slot.','Dispel utility'),
     'Light Sword Array':I('Aggressive Light damage flex used when Guardian can afford to give up part of its shield package.','A later/Pandarial-friendly offensive swap rather than the default Tank choice.','Light · Offense'),
@@ -77,7 +77,7 @@ PAYLOAD = r'''
     'Eye for an Eye':I('Counter-oriented offensive Charm that adds punishment while Guardian absorbs pressure.','PvP DPS flex when you can survive without another pure defensive slot.','Counter offense'),
 
     // Destroyer / Sorcerer line
-    'Formation Breaker':I('Support-damage Technique that buffs from your own ATK and has a 50% chance to accelerate allied actions.','Mandatory in score/team builds because advancing a stronger carry can be worth more than your own hit.','Team acceleration · Support'),
+    'Formation Breaker':I('Core Destroyer Technique that buffs from your own ATK and has a 50% chance to accelerate allied actions.','Long-lived core even in Arena; in team content the ally action advance becomes especially valuable.','ATK buff · Action advance'),
     'Fiery Star Trail':I('Fire AoE setup piece that adds Fire pressure across packs.','Dungeon Fire build uses it to generate more Fire events for the Fiery Burst package.','Fire · AoE'),
     'Fireball':I('Straightforward Fire damage Technique.','In the horde build its main job is reliable Fire triggering for the Crit/Fiery Burst engine.','Fire'),
     'Meteoric Flames':I('Strong Fire/area damage Technique that remains useful in mixed-element setups.','Excellent on packs and can outperform some boss options when target size/resistance favors it.','Fire · AoE'),
