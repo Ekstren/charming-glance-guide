@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/topbar_scroll_smoke.mjs'
       - '.github/workflows/validate-topbar-static-once.yml'
   workflow_dispatch:
 
