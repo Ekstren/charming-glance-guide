@@ -15,13 +15,16 @@ async function check(viewport,label){
   const pos = await bar.evaluate(el=>getComputedStyle(el).position);
   assert(pos!=='sticky' && pos!=='fixed', `${label}: topbar is still ${pos}`);
 
-  // Guarantee enough scroll range so the test checks header behavior rather than
-  // whichever section happens to be visible/default on this build of the site.
-  await page.evaluate(()=>{ document.body.style.minHeight='2500px'; });
-  await page.evaluate(()=>window.scrollTo(0,350));
-  await page.waitForTimeout(80);
+  // Guarantee enough scroll range and disable the site's smooth-scroll animation so
+  // the geometry assertion is deterministic rather than timing-sensitive.
+  await page.evaluate(()=>{
+    document.documentElement.style.scrollBehavior='auto';
+    document.body.style.minHeight='2500px';
+    window.scrollTo(0,350);
+  });
+  await page.waitForTimeout(40);
   const scrollY = await page.evaluate(()=>window.scrollY);
-  assert(scrollY>=300, `${label}: test page did not create enough scroll range (${scrollY}px)`);
+  assert(scrollY>=300, `${label}: test page did not reach the requested scroll position (${scrollY}px)`);
   const box = await bar.boundingBox();
   assert(box && box.y + box.height < 0, `${label}: topbar did not scroll fully out of view (y=${box?.y}, h=${box?.height})`);
   await page.close();
