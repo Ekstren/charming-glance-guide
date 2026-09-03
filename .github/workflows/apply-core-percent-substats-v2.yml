@@ -42,6 +42,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html scripts/patch_build_roll_guide_v2.py scripts/patch_restore_rich_builds_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py data/warlords-rest-roll-guide-v1.json .github/workflows/warlords-rest-roll-guide-trigger.yml
+          git add index.html scripts/patch_build_roll_guide_v2.py scripts/patch_restore_rich_builds_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py data/warlords-rest-roll-guide-v1.json
           git commit -m 'Separate flat and percentage core substats'
           git push
