@@ -9,7 +9,7 @@ on:
     paths:
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/activate_warlords_rest_roll_guide_v1.py'
-      - 'scripts/validate_warlords-rest-roll-guide-v1.py'
+      - 'scripts/validate_warlords_rest_roll_guide_v1.py'
       - '.github/workflows/warlords-rest-roll-guide-trigger.yml'
   # Warlord's Rest is expected on Charming Glance at the Sep 12, 2026
   # 6:00 AM PDT reset (13:00 UTC). Run hourly that calendar day so a
