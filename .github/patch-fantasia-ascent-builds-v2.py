@@ -39,7 +39,10 @@ new=r'''await page.evaluate(()=>{
   localStorage.setItem('sxs-build-dominator-mode','dps');
 });
 await waitBuild('Dominator');
-await page.waitForFunction(()=>[...document.querySelectorAll('#buildContent .buildGrid .buildCard')].some(x=>x.dataset.role==='Fantasia Ascent'&&x.dataset.buildRole==='dps'&&!x.hidden&&getComputedStyle(x).display!=='none'),null,{timeout:3000});
+await page.waitForTimeout(300);
+let domFantasiaState=await page.locator('#buildContent .buildGrid .buildCard').evaluateAll(cards=>cards.map(x=>({role:x.dataset.role||'',buildRole:x.dataset.buildRole||'',hidden:x.hidden,display:getComputedStyle(x).display,title:x.querySelector('h3')?.textContent||''})));
+let domMetaState=await page.evaluate(()=>({mode:localStorage.getItem('sxs-build-meta-mode'),role:localStorage.getItem('sxs-build-dominator-mode'),active:[...document.querySelectorAll('#buildContent .metaBuildTabs button.active')].map(x=>x.dataset.metaMode)}));
+assert(domFantasiaState.some(x=>x.role==='Fantasia Ascent'&&x.buildRole==='dps'&&!x.hidden&&x.display!=='none'), `Dominator DPS Fantasia state missing: cards=${JSON.stringify(domFantasiaState)} meta=${JSON.stringify(domMetaState)}`);
 fantasiaTitles=await buildTitles();
 assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator DPS Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
 await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
@@ -58,4 +61,4 @@ if text.count(old)!=1:
 text=text.replace(old,new,1)
 smoke.write_text(text,encoding='utf-8')
 
-print('fixed Dominator Fantasia browser validation and healer Fantomons')
+print('added Dominator Fantasia validation diagnostics and healer Fantomons')
