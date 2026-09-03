@@ -1,7 +1,8 @@
 /* BUILD_HERO_LAYOUT_ICONS_V1
    Legacy asset filename/hook; icons are intentionally removed.
-   BUILD_HERO_LAYOUT_V3 keeps the class summary + gear priorities compact on the left,
-   lets stat guidance use the full left-column width, and gives Roll Guide the full right pane. */
+   BUILD_HERO_LAYOUT_V4 keeps the class summary + gear priorities compact on the left,
+   lets stat guidance use the full left-column width, and gives Roll Guide the full right pane.
+   Desktop Roll Guide stays permanently expanded; mobile keeps a collapsed-by-default accordion. */
 #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
 #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{
   grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);
@@ -180,6 +181,15 @@
 #buildContent .rollStatIcon,
 #buildContent .buildSubstatIcon{display:none!important}
 
+/* Desktop: this is a permanent reference panel, not an accordion. */
+@media(min-width:861px){
+  #buildContent .buildHeroRoll>.rollGuide>summary{
+    cursor:default;
+    pointer-events:none;
+  }
+  #buildContent .buildHeroRoll>.rollGuide>summary:after{display:none}
+}
+
 @media(max-width:1050px){
   #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
   #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{
@@ -201,7 +211,11 @@
     padding:14px;
   }
   #buildContent .buildHeroRoll>.rollGuide{min-height:0}
-  #buildContent .buildHeroRoll>.rollGuide>summary{min-height:34px}
+  #buildContent .buildHeroRoll>.rollGuide>summary{
+    min-height:34px;
+    cursor:pointer;
+    pointer-events:auto;
+  }
   #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){
