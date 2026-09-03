@@ -1,7 +1,7 @@
 /* BUILD_HERO_LAYOUT_ICONS_V1
    Legacy asset filename/hook; icons are intentionally removed.
-   BUILD_HERO_LAYOUT_V2 keeps the class summary + gear priorities compact on the left
-   and lets the roll guide use the full height on the right. */
+   BUILD_HERO_LAYOUT_V3 keeps the class summary + gear priorities compact on the left,
+   lets stat guidance use the full left-column width, and gives Roll Guide the full right pane. */
 #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1,
 #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV2{
   grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);
@@ -18,6 +18,8 @@
   gap:14px;
 }
 #buildContent .buildHeroLeft>.buildQuickStats{
+  width:100%;
+  min-width:0;
   border-left:0;
   border-top:1px solid var(--line);
   padding:13px 0 0;
@@ -31,14 +33,17 @@
   letter-spacing:.08em;
 }
 #buildContent .buildHeroLeft .quickRule{
+  width:100%;
+  max-width:none;
   margin:0 0 2px;
-  max-width:62ch;
   color:var(--muted);
   line-height:1.45;
 }
 
 /* Five gear slots pack into two balanced rows on desktop: 3 across, then 2 across. */
 #buildContent .buildHeroLeft .quickGearGrid{
+  width:100%;
+  min-width:0;
   display:grid;
   grid-template-columns:repeat(6,minmax(0,1fr));
   gap:6px;
@@ -75,6 +80,8 @@
   min-width:0;
 }
 #buildContent .buildHeroLeft .quickSubstats{
+  width:100%;
+  min-width:0;
   display:grid;
   grid-template-columns:max-content minmax(0,1fr);
   gap:9px;
