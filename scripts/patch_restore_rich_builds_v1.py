@@ -116,13 +116,13 @@ rich = r'''
 
   const GUARDIAN_PRIORITY={
     tank:[
-      ['Tank technique investment','Heart of Challenge first','Rank the Techniques that define the true frontline setup rather than the Water DPS shell.',[
+      ['Tank technique investment','Heart of Challenge first','Prioritize Taunt, team support and reliable survival—the tools that make Guardian valuable in difficult group content.',[
         ['Heart of Challenge','Core group Taunt and one of the most important reasons to bring a Guardian.'],
         ['Valor Surge','Pre-cast team damage buff plus cleanse utility.'],
         ['Luminous Shield','Reliable shield layer across dungeon and PvP tank bars.'],
         ['Desperate Protection / Hamper Strike','Choose survival or more Taunt based on the encounter.']
       ]],
-      ['Tank charm investment','Soul Protection first','Prioritize the universal shield/mitigation package before niche damage charms.',[
+      ['Tank charm investment','Soul Protection first','Start with reliable mitigation and party protection, then add situational damage only when survival is already comfortable.',[
         ['Soul Protection','Massive opening effective HP and the most universal Guardian T4 charm.'],
         ['Iron Will','Excellent damage reduction once Taunt is active.'],
         ['Holy Aegis','DEF plus stronger DEF-scaling shields.'],
@@ -130,7 +130,7 @@ rich = r'''
       ]]
     ],
     dps:[
-      ['DPS technique investment','Swirling Blade first','The offensive role is the Water/counter bruiser package, not a fake glass-cannon tank.',[
+      ['DPS technique investment','Swirling Blade first','Build around Water/Cold pressure while keeping enough Block and durability to stay active.',[
         ['Swirling Blade','Best reusable T4 offensive Technique: Water damage plus a self-shield.'],
         ['Raging Maelstrom','The high-value AoE payoff in the full Water shell.'],
         ['Lunarwater Threads','Reliable Water pressure and Cold setup.'],

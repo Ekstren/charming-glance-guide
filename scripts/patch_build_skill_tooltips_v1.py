@@ -32,7 +32,7 @@ PAYLOAD = r'''
     'Flash Fire':I('Fast elemental attack with useful reach and mobility. It helps Conqueror cross space while still contributing damage.','Preferred in Dungeon and 4v4 when reach and fast target access matter.','Elemental · Mobility'),
     'Flame Aura':I('Repeating Fire damage that performs well into both single targets and groups; one of the strongest inherited elemental engines for the class.','Core PvE damage piece when Dispel or extra mobility is not required.','Fire · Repeating damage'),
     'Flickering Blade':I('Single-target Technique with no cooldown. If the target survives, it has a 60% chance to repeat, up to two extra attacks.','The repeat mechanic gives Conqueror excellent cleanup and boss pressure every turn.','0 CD · Single target · Repeat'),
-    'Blade Storm':I('Hard-hitting line AoE. Positioning matters because its coverage is narrower than broad circular AoE skills.','Reliable damage in every current Conqueror mode, especially when enemies can be lined up.','AoE · Line'),
+    'Blade Storm':I('Hard-hitting line AoE. Positioning matters because its coverage is narrower than broad circular AoE skills.','Reliable damage across current Conqueror content, especially when enemies can be lined up.','AoE · Line'),
     'Darkness Descends':I('Mobility plus buff removal/Dispel, trading some raw PvE damage for control and access.','A premium PvP slot for stripping enemy buffs and staying on priority targets.','Mobility · Dispel'),
     'Doom Blade':I('Aggressive leap/area-pressure Technique used to close distance and add immediate burst.','Arena flex when you want harder pressure instead of the sustain offered by Soul Piercer.','Mobility · AoE pressure'),
     'Soul Piercer':I('Damage Technique with sustain utility, giving the Conqueror a safer way to keep pressure up.','Especially useful in 2v2 where losing one unit is half the team.','Damage · Sustain'),
@@ -52,10 +52,10 @@ PAYLOAD = r'''
     'Luminous Shield':I('Reliable shield Technique that supports Guardian’s DEF/Block survival loop.','Tank staple and a useful defensive anchor in PvP bruiser builds.','Shield'),
     'Desperate Protection':I('Emergency defensive Technique used to keep the Guardian standing through dangerous damage windows.','Tank default; replace it with damage only when the group is already safe.','Defense'),
     'Hamper Strike':I('Direct Taunt option with no pre-cast and a 1-turn cooldown.','Use when the normal Tank bar needs more reliable Taunt uptime.','Taunt · 1 CD'),
-    'Swirling Blade':I('Strong Water damage Technique that also grants a self-shield.','The best reusable offensive T4 Guardian investment and the anchor of DPS mode.','Water · Damage · Shield'),
-    'Lunarwater Threads':I('Water pressure and Cold-setup Technique used in offensive and support shells.','Helps accelerate the Water/Cold loop and remains useful in boss support.','Water · Cold setup'),
+    'Swirling Blade':I('Strong Water damage Technique that also grants a self-shield.','The best reusable offensive T4 Guardian investment and a core offensive Technique.','Water · Damage · Shield'),
+    'Lunarwater Threads':I('Water pressure and Cold-setup Technique used in offensive and support builds.','Helps accelerate the Water/Cold loop and remains useful in boss support.','Water · Cold setup'),
     'Seismic Tide':I('Water Technique favored for steadier Cold stacking.','Used when consistency matters more than a situational utility slot.','Water · Cold stacking'),
-    'Raging Maelstrom':I('Large Water/AoE payoff for the full offensive shell.','Best when multiple enemies let DPS Guardian spread pressure and exploit Cold setup.','Water · AoE'),
+    'Raging Maelstrom':I('Large Water/AoE payoff for the full offensive Water build.','Best when multiple enemies let DPS Guardian spread pressure and exploit Cold setup.','Water · AoE'),
     'Forceful Charge':I('Engage/mobility Technique that helps Guardian stay attached to a target and apply pressure.','Useful in Arena and 2v2 where target access matters more than broad AoE.','Mobility · Pressure'),
     'Star Shattering Slash':I('Heavy direct-damage Technique inherited from Paladin; it starts as one of the Knight line’s strongest single-target nukes and scales hard with rank.','Use it for Crucible/Conquest and other concentrated targets; it also adds real kill pressure to Block/counter PvP builds.','Single target · Heavy hit'),
     'Leap Attack':I('Mobile attack with a chance to reduce enemy DEF.','Boss-support Guardian uses it to contribute damage amplification while staying active.','Mobility · DEF down'),
@@ -68,10 +68,10 @@ PAYLOAD = r'''
     'Iron Fortress':I('Heavy team-mitigation Charm for protecting the party through dangerous windows.','Premium in hard group content and Tournament; less necessary when the team already survives comfortably.','Team mitigation'),
     'Oath of Vigil':I('Protects the lowest-HP ally with Vigil, redirecting part of their incoming damage to Guardian and reducing that redirected damage.','Especially strong in 2v2/4v4 where protecting a carry can decide the round.','Ally protection'),
     'Rebound':I('Counter/reflect-style Charm that punishes enemies for repeatedly hitting a durable Guardian.','Core Arena and small-team PvP pressure without abandoning the Block identity.','Counter · Reflect'),
-    'Block Mastery':I('Turns high Block investment into a stronger defensive/counter package.','Keeps the PvP bruiser shell consistent against repeated-hit attackers.','Block scaling'),
-    'Frigid Aura':I('Core Water/Cold damage amplifier for offensive Guardian.','The first Charm you build around in the Water DPS shell.','Water/Cold amp'),
+    'Block Mastery':I('Turns high Block investment into a stronger defensive/counter package.','Keeps the PvP bruiser build consistent against repeated-hit attackers.','Block scaling'),
+    'Frigid Aura':I('Core Water/Cold damage amplifier for offensive Guardian.','The first Charm you build around in the Water DPS build.','Water/Cold amp'),
     'Defensive Assault':I('Converts Guardian’s defensive investment into offensive pressure.','Lets DPS Guardian remain bruiser-tanky instead of becoming a fragile pseudo-DPS.','Defense → offense'),
-    'Frigid Glint':I('Cold-synergy offensive Charm that rewards the Water stacking loop.','Paired with Frigid Aura in the dedicated Water shell.','Cold synergy'),
+    'Frigid Glint':I('Cold-synergy offensive Charm that rewards the Water stacking loop.','Paired with Frigid Aura in the Water DPS build.','Cold synergy'),
     'Potential Rebirth':I('Second-chance survival Charm.','The safety flex in offensive Guardian; replace it with more damage only when deaths are no longer a concern.','Cheat death'),
     'Pursuit of Victory':I('Greedy offensive Charm for situations where survival is already solved.','Used in boss-score or overgeared PvE versions of DPS Guardian.','Offense'),
     'Eye for an Eye':I('Counter-oriented offensive Charm that adds punishment while Guardian absorbs pressure.','PvP DPS flex when you can survive without another pure defensive slot.','Counter offense'),
@@ -106,21 +106,21 @@ PAYLOAD = r'''
     'Healing Touch':I('Additional direct-healing Technique.','Swap it in when the default healer bar needs more raw healing than Frenzy Totem provides.','Healing'),
     'Phantom Light':I('Improves healing and converts overhealing into shields.','Mandatory core Charm for a dedicated T4 healer.','Healing amp · Overheal shield'),
     'Healing Mastery':I('Universal healing-throughput Charm.','Straightforward core scaling for the healer profile.','Healing boost'),
-    'Overhealing':I('Healer safety/value Charm that rewards excess healing rather than letting it go to waste.','Part of the standard sustain shell in Dungeon and carry-support setups.','Healing utility'),
+    'Overhealing':I('Healer safety/value Charm that rewards excess healing rather than letting it go to waste.','Part of the standard sustain build in Dungeon and carry-support setups.','Healing utility'),
     'Resurrection':I('Revives a fallen ally.','Massive round-swing utility in 2v2/4v4 and valuable insurance in difficult PvE.','Revive'),
     'Mantra of Blessings':I('Strong damage buff for a carry or for yourself in solo content.','Excellent in scoring teams; in hard dungeons it loses priority to survival tools.','Damage buff'),
     'Decoy Clone':I('Position-dependent support Technique that can amplify a hypercarry’s damage.','One of the best score-support tools when your team can exploit the clone connection.','Carry amp · Positioning'),
     'Mana Blast':I('Dark/Erosion attack used to build the higher-ceiling damage-over-time plan.','Core in AoE and becomes the high-Effect-Hit-Rate single-target flex over Chaos Rune.','Dark · Erosion'),
-    'Chaos Rune':I('Direct-damage Dark Technique used in the published T4 single-target hybrid so damage is less dependent on Erosion landing.','Best when Effect Hit Rate is not high enough to justify going all-in on Erosion; high EHR can flex it to Mana Blast.','Dark · Direct damage · ST'),
-    'Shadow Impact':I('Broad Dark AoE payoff carried forward for T4 because Dominator receives no new dedicated AoE replacement.','The fourth Technique in the published Dungeon/4v4 AoE shell where multiple targets justify its coverage.','Dark · AoE'),
+    'Chaos Rune':I('Direct-damage Dark Technique used in the single-target hybrid so damage is less dependent on Erosion landing.','Best when Effect Hit Rate is not high enough to justify going all-in on Erosion; high EHR can flex it to Mana Blast.','Dark · Direct damage · ST'),
+    'Shadow Impact':I('Broad Dark AoE payoff carried forward for T4 because Dominator receives no new dedicated AoE replacement.','The fourth Technique in the Dungeon/4v4 AoE setup where multiple targets justify its coverage.','Dark · AoE'),
     'Dark Bullet':I('Reliable Dark attack used to apply/maintain Erosion pressure.','Cheap, consistent glue for both DPS and support bars that still want debuff value.','Dark · Erosion'),
     'Dark Starburst':I('Reliable multi-hit direct Dark damage that does not require Erosion stacks to deal good damage.','Keeps Dominator functional when Effect Hit Rate or Erosion RNG is not perfect.','Dark · Multi-hit · Direct damage'),
     'Abyssal Hand':I('Dark AoE/control Technique used to spread pressure and debuffs across multiple targets.','Excellent in Arena/Tournament hybrids where broad Erosion/Slow pressure matters.','Dark · AoE · Debuff'),
     'Shadow of Termination':I('Single-target Dark finisher that cashes out the Erosion-oriented damage plan.','The kill-pressure payoff in Arena and 2v2.','Dark · Finisher'),
     'Shadow Erosion':I('Core Charm for the Erosion damage engine.','Mandatory whenever the bar is actually trying to win through Erosion rather than pure support.','Erosion'),
-    'Linked Misfortune':I('Accelerates Erosion/debuff stack generation.','Pairs with Shadow Erosion to raise the ceiling of the Dark DPS shell.','Erosion support'),
+    'Linked Misfortune':I('Accelerates Erosion/debuff stack generation.','Pairs with Shadow Erosion to raise the ceiling of the Dark DPS build.','Erosion support'),
     'Shadow Vengeance':I('Defensive/offensive safety-window Charm that helps Dominator survive long enough to finish a damage cycle.','Very valuable in PvP where fragile Sage builds otherwise die before their setup pays off.','Survival · Damage window'),
-    "Night's Blessing":I('General Dark-damage scaling Charm.','A standard selfish DPS slot in the Erosion/direct-damage shell.','Dark damage'),
+    "Night's Blessing":I('General Dark-damage scaling Charm.','A standard selfish DPS slot in the Erosion/direct-damage build.','Dark damage'),
     'Aberrancy':I('Broad debuff-oriented Charm whose value rises when several enemies/effects are in play.','More attractive in 4v4 than solo Arena because team fights provide more debuff interactions.','Debuff utility')
   };
 
@@ -139,7 +139,7 @@ PAYLOAD = r'''
   function dataFor(el){
     const name=el.textContent.trim();
     const kind=el.closest('.skillGroup')?.querySelector(':scope > span')?.textContent.trim()?.replace(/s$/,'')||'Skill';
-    const info=INFO[name]||I('This skill is part of the selected loadout. Exact values and scaling depend on its rarity, level and ascension.','See the build card’s offensive/defensive notes for the mode-specific reason it is equipped.');
+    const info=INFO[name]||I('This skill is part of the selected loadout. Exact values and scaling depend on its rarity, level and ascension.','See the build notes for why it is equipped in this setup.');
     return {name,kind,...info};
   }
   function position(){

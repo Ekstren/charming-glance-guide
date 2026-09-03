@@ -59,18 +59,15 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
   assert(/technique/i.test(panelKinds[0]||''), `${cls} left investment panel is not Techniques: ${panelKinds.join(' | ')}`);
   assert(/charm/i.test(panelKinds[1]||''), `${cls} right investment panel is not Charms: ${panelKinds.join(' | ')}`);
 
-  const titles=await buildTitles();
-  assert(titles.some(x=>/^Arena/i.test(x)), `${cls} Arena loadout was lost: ${titles.join(' | ')}`);
-  assert(titles.some(x=>/^Tournament/i.test(x)), `${cls} Tournament loadout was lost: ${titles.join(' | ')}`);
   const visibleCards=page.locator('#buildContent .buildGrid .buildCard:visible');
-  assert(await visibleCards.count()>=4, `${cls} rich loadout set was reduced unexpectedly`);
-  assert(await visibleCards.locator('.fantomonPair').count()===await visibleCards.count(), `${cls} does not show a Fantomon pair on every visible loadout`);
+  assert(await visibleCards.count()===1, `${cls} should show exactly one activity build at a time`);
+  assert(await visibleCards.locator('.fantomonPair').count()===1, `${cls} visible build is missing its Fantomon pair`);
   const badFanto=await visibleCards.locator('.fantomonPair').evaluateAll(xs=>xs.filter(x=>x.querySelectorAll('.fantomonPick').length!==2).length);
-  assert(badFanto===0, `${cls} has a loadout without exactly Main + Alt Fantomons`);
+  assert(badFanto===0, `${cls} visible build does not have exactly Main + Alt Fantomons`);
 
-  // Recommendations must come from Techniques/Charms actually equipped somewhere in
-  // the displayed loadouts, not from unrelated wishlist/swap-only pieces.
-  const equipped=await visibleCards.evaluateAll(cards=>{
+  // Recommendations must come from Techniques/Charms equipped in at least one
+  // available loadout for the class, not from unrelated wishlist/swap-only pieces.
+  const equipped=await page.locator('#buildContent .buildGrid .buildCard').evaluateAll(cards=>{
     const out={techniques:[],charms:[]};
     cards.forEach(card=>card.querySelectorAll('.skillGroup').forEach(group=>{
       const label=(group.querySelector(':scope > span')?.textContent||'').toLowerCase();
@@ -91,14 +88,12 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
 }
 
 // Dominator keeps its DPS / Heals switch, role-specific slot stats, and a separate
-// Technique-left / Charm-right recommendation pair for each role. Arena/Tournament
-// remain visible reference cards in BOTH modes; only role-specific PvE cards filter.
+// Technique-left / Charm-right recommendation pair for each role. The activity tabs
+// still show one matching build at a time.
 await waitBuild('Dominator');
 assert(await page.locator('#buildContent .dominatorModeTabs button').count() === 2, 'Dominator DPS/Heals tabs missing');
 let titles=await buildTitles();
-assert(titles.some(x=>/Single Target DPS/i.test(x)) && titles.some(x=>/AoE DPS/i.test(x)), `Dominator DPS cards not visible: ${titles.join(' | ')}`);
-assert(titles.some(x=>/^Arena/i.test(x)) && titles.some(x=>/^Tournament/i.test(x)), `Dominator PvP cards missing in DPS mode: ${titles.join(' | ')}`);
-assert(!titles.some(x=>/^Healing/i.test(x)), 'Dominator Healing card visible in DPS mode');
+assert(titles.length===1 && /^Dungeon/i.test(titles[0]||''), `Dominator DPS Dungeon build not visible: ${titles.join(' | ')}`);
 let domPair=page.locator('#buildContent > .priorityPair[data-dominator-role="dps"]:visible');
 assert(await domPair.count()===1 && await domPair.locator(':scope > .priorityPanel').count()===2, 'Dominator DPS Technique/Charm pair missing');
 let domKinds=await domPair.locator('.priorityIntro span').allTextContents();
@@ -107,12 +102,10 @@ const dpsStatText=await page.locator('#buildContent .buildQuickStats').innerText
 assert(/Dark DPS|Effect Hit Rate/i.test(dpsStatText), 'Dominator DPS stat profile missing');
 
 await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
-await page.waitForFunction(()=>[...document.querySelectorAll('#buildContent .buildGrid .buildCard')].filter(x=>!x.hidden&&getComputedStyle(x).display!=='none').some(x=>/^Healing/i.test(x.querySelector('h3')?.textContent||'')),null,{timeout:3000});
+await page.waitForFunction(()=>[...document.querySelectorAll('#buildContent .buildGrid .buildCard')].filter(x=>!x.hidden&&getComputedStyle(x).display!=='none').some(x=>x.dataset.buildRole==='heals'),null,{timeout:3000});
 await page.waitForTimeout(80);
 titles=await buildTitles();
-assert(titles.some(x=>/^Healing/i.test(x)), `Dominator healer card not visible: ${titles.join(' | ')}`);
-assert(titles.some(x=>/^Arena/i.test(x)) && titles.some(x=>/^Tournament/i.test(x)), `Dominator PvP reference cards disappeared in Heals mode: ${titles.join(' | ')}`);
-assert(!titles.some(x=>/Single Target DPS|AoE DPS/i.test(x)), `Dominator DPS PvE cards remained visible in Heals mode: ${titles.join(' | ')}`);
+assert(titles.length===1 && /^Dungeon/i.test(titles[0]||''), `Dominator healer Dungeon build not visible: ${titles.join(' | ')}`);
 domPair=page.locator('#buildContent > .priorityPair[data-dominator-role="heals"]:visible');
 assert(await domPair.count()===1 && await domPair.locator(':scope > .priorityPanel').count()===2, 'Dominator Heals Technique/Charm pair missing');
 domKinds=await domPair.locator('.priorityIntro span').allTextContents();

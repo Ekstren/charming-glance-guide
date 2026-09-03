@@ -19,6 +19,14 @@
 - Prefer reputable build-guide presets when available and cross-check major recommendations against another credible source/community consensus when possible.
 - Avoid weaker novelty builds, including Destroyer's Water/Frozen branch, merely to increase card count.
 
+
+## Public build copy
+
+- Build notes are player-facing. Describe what to equip, why it works, and when to swap it.
+- Avoid implementation/editorial language in visible copy such as “this card,” “shell,” “mode/toggle,” “published core,” or “synthesis” when a direct gameplay description works better.
+- When comparing alternatives, name the actual activity or setup (for example “Tank setup” or “boss support”) rather than referring to UI controls or hidden build variants.
+- Source/evidence labels may identify a guide or testing basis, but should still read naturally to a player.
+
 ## Current intended loadout structure
 
 - **Berserker (S1/T3):** Generic PvE, Dragon, Arena, Tournament.
