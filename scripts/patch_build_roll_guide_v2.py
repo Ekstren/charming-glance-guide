@@ -58,7 +58,10 @@ payload = r'''
   };
   const PROFILES={
     Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
-    Guardian:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],
+    Guardian:{
+      tank:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],
+      dps:['block','blockpair','crit','critdmg','spd','spdpct','atk','atkpct','em']
+    },
     Destroyer:['crit','critdmg','critpair','atk','atkpct','em','acc','critacc','spd','spdpct'],
     Dominator:{
       dps:['ehr','crit','critdmg','critpair','em','atk','atkpct','spd','spdpct'],
@@ -67,21 +70,22 @@ payload = r'''
   };
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const activeClass=()=>document.querySelector('#classTabs button.active')?.dataset.class||'Conqueror';
-  const role=()=>{try{return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps'}catch(_){return 'dps'}};
+  const role=cls=>{try{if(cls==='Guardian')return localStorage.getItem('sxs-build-guardian-mode')==='dps'?'dps':'tank';return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps'}catch(_){return cls==='Guardian'?'tank':'dps'}};
   const rowsFor=(cls,mode)=>{
-    const keys=cls==='Dominator'?PROFILES.Dominator[mode]:PROFILES[cls];
+    const profile=PROFILES[cls];
+    const keys=Array.isArray(profile)?profile:profile?.[mode];
     return (keys||PROFILES.Conqueror).map(k=>R[k]);
   };
   const help=tip=>`<button type="button" class="rollHelp" aria-label="Approximate or unconfirmed value" data-tip="${esc(tip)}">?</button>`;
   const guideHtml=(cls,mode)=>{
     const rows=rowsFor(cls,mode);
-    const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls;
+    const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls==='Guardian'?`${cls} · ${mode==='dps'?'DPS':'Tank'}`:cls;
     return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Early S2 &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate/unconfirmed.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Pre-160 S2 reference. Double-Crit is directly documented; other paired values marked <b>?</b> are derived from older-server S2 scaling. Flat/white-number stats such as Mastery scale with gear level.</div></div></details>`;
   };
   let queued=false;
   function apply(){
     queued=false;
-    const cls=activeClass(),mode=cls==='Dominator'?role():'dps',sig=cls+'|'+mode;
+    const cls=activeClass(),mode=(cls==='Dominator'||cls==='Guardian')?role(cls):'dps',sig=cls+'|'+mode;
     document.querySelectorAll('#buildContent .buildQuickStats').forEach(quick=>{
       const existing=quick.querySelector(':scope > .rollGuide');
       if(existing?.dataset.rollSig===sig) return;
@@ -95,7 +99,7 @@ payload = r'''
     const host=document.getElementById('buildContent');
     if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
     document.getElementById('classTabs')?.addEventListener('click',queue);
-    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]'))setTimeout(queue,0)});
+    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode],[data-guardian-mode]'))setTimeout(queue,0)});
     queue();
   });
   window.addEventListener('load',queue);

@@ -15,6 +15,7 @@ inject = INJECT.read_text(encoding='utf-8')
 required = [
     START, END,
     'META_BUILD_MODES_V1',
+    'GUARDIAN_ROLE_TOGGLE_V1',
     "role('Arena'",
     "role('Tournament · 2v2'",
     "role('Tournament · 4v4'",
@@ -82,9 +83,16 @@ rich = r'''
       substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD / SPD% > ATK / ATK%'
     },
     Guardian:{
-      rule:'Block is Guardian’s defining stat. Stack Block Rate first; after that, DEF/DMG RES drive survival while SPD remains the best offensive/support tempo stat.',
-      rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
-      substats:'Block Rate > DEF > SPD > HP > DEF% > SPD% > HP%'
+      tank:{
+        rule:'Tank Guardian is built around Block first. After that, DEF/DMG RES drive survival while SPD keeps Taunt, shields and buffs cycling before the enemy can act.',
+        rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
+        substats:'Block Rate > DEF > SPD > HP > DEF% > SPD% > HP%'
+      },
+      dps:{
+        rule:'DPS Guardian uses the offensive Water/counter shell, but Block still matters because the class gains damage by staying active. After a healthy Block floor, Crit Rate, SPD and ATK/Mastery are the damage-quality rolls.',
+        rows:[['Sword','SPD > ATK > Elemental Mastery > Physical Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
+        substats:'Block Rate > Crit Rate > SPD / SPD% > ATK / ATK% > Elemental Mastery > Crit DMG'
+      }
     },
     Destroyer:{
       rule:'S2 Destroyer is balance-sensitive, not permanently EM-first. Keep a healthy Elemental Mastery floor, then flat ATK can match or beat more EM on developed accounts. Crit remains premium; dummy-test close swaps.',
@@ -103,6 +111,37 @@ rich = r'''
         substats:'Healing Boost > SPD / SPD% > HP / HP% > DMG RES'
       }
     }
+  };
+
+  const GUARDIAN_PRIORITY={
+    tank:[
+      ['Tank technique investment','Heart of Challenge first','Rank the Techniques that define the true frontline setup rather than the Water DPS shell.',[
+        ['Heart of Challenge','Core group Taunt and one of the most important reasons to bring a Guardian.'],
+        ['Valor Surge','Pre-cast team damage buff plus cleanse utility.'],
+        ['Luminous Shield','Reliable shield layer across dungeon and PvP tank bars.'],
+        ['Desperate Protection / Hamper Strike','Choose survival or more Taunt based on the encounter.']
+      ]],
+      ['Tank charm investment','Soul Protection first','Prioritize the universal shield/mitigation package before niche damage charms.',[
+        ['Soul Protection','Massive opening effective HP and the most universal Guardian T4 charm.'],
+        ['Iron Will','Excellent damage reduction once Taunt is active.'],
+        ['Holy Aegis','DEF plus stronger DEF-scaling shields.'],
+        ['Iron Fortress / Oath of Vigil','Team mitigation and ally protection become premium in Tournament.']
+      ]]
+    ],
+    dps:[
+      ['DPS technique investment','Swirling Blade first','The offensive role is the Water/counter bruiser package, not a fake glass-cannon tank.',[
+        ['Swirling Blade','Best reusable T4 offensive Technique: Water damage plus a self-shield.'],
+        ['Raging Maelstrom','The high-value AoE payoff in the full Water shell.'],
+        ['Lunarwater Threads','Reliable Water pressure and Cold setup.'],
+        ['Seismic Tide','Keeps Cold stacking consistent in both AoE and boss variants.']
+      ]],
+      ['DPS charm investment','Frigid Aura first','Build around the actual Water shell, then keep one survival flex when content can punish you.',[
+        ['Frigid Aura','Core Water/Cold damage amplifier.'],
+        ['Frigid Glint','Directly supports the Cold-based offensive loop.'],
+        ['Defensive Assault','Turns Guardian durability into useful offensive pressure.'],
+        ['Potential Rebirth / Pursuit of Victory','Safety for hard content; swap to Pursuit when survival is already solved.']
+      ]]
+    ]
   };
 
   const DOMINATOR_PRIORITY={
@@ -139,8 +178,11 @@ rich = r'''
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const root=()=>document.getElementById('buildContent');
   const activeClass=()=>document.querySelector('#classTabs button.active')?.dataset.class||'';
-  const roleMode=()=>{
-    try{return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps';}catch(_){return 'dps';}
+  const roleMode=cls=>{
+    try{
+      if(cls==='Guardian') return localStorage.getItem('sxs-build-guardian-mode')==='dps'?'dps':'tank';
+      return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps';
+    }catch(_){return cls==='Guardian'?'tank':'dps';}
   };
   const profileFor=(cls,mode)=>{
     const p=BUILD_STAT_PROFILES[cls];
@@ -169,6 +211,23 @@ rich = r'''
     return panel;
   }
   function ensurePriorityPair(host,cls,mode){
+    if(cls==='Guardian'){
+      [...host.children].filter(el=>el.classList?.contains('priorityPanel')).forEach(el=>el.remove());
+      let pair=host.querySelector(':scope > .priorityPair');
+      if(!pair){
+        pair=document.createElement('div');
+        pair.className='priorityPair';
+        const grid=host.querySelector(':scope > .buildGrid');
+        if(grid) grid.before(pair); else host.append(pair);
+      }
+      if(pair.dataset.guardianMode!==mode){
+        pair.innerHTML='';
+        const data=GUARDIAN_PRIORITY[mode]||GUARDIAN_PRIORITY.tank;
+        pair.append(makePanel(data[0]),makePanel(data[1]));
+        pair.dataset.guardianMode=mode;
+      }
+      return;
+    }
     if(cls==='Dominator'){
       // The temporary regressed template mixed Techniques and Charms into one panel.
       // Replace those direct panels with one true Technique-left / Charm-right pair per role.
@@ -214,7 +273,7 @@ rich = r'''
     queued=false;
     const host=root(),cls=activeClass();
     if(!host||!cls||!BUILD_STAT_PROFILES[cls]) return;
-    const mode=cls==='Dominator'?roleMode():'dps';
+    const mode=(cls==='Dominator'||cls==='Guardian')?roleMode(cls):'dps';
     const sig=signature(host,cls,mode);
     const complete=host.querySelector('.buildQuickStats')&&host.querySelector(':scope > .priorityPair');
     if(host.dataset.richBuildSig===sig&&complete) return;
@@ -232,7 +291,7 @@ rich = r'''
     const host=root();
     if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','aria-pressed']});
     document.getElementById('classTabs')?.addEventListener('click',queue);
-    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]')) setTimeout(()=>{if(host) host.dataset.richBuildSig='';queue();},0);});
+    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode],[data-guardian-mode]')) setTimeout(()=>{if(host) host.dataset.richBuildSig='';queue();},0);});
     queue();
   });
   window.addEventListener('load',queue);

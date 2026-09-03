@@ -7694,6 +7694,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 @media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
 
 /* META_BUILD_MODES_V1 */
+/* GUARDIAN_ROLE_TOGGLE_V1 */
+.builds .guardianHeadingRow{display:flex;align-items:center;gap:9px;margin-top:3px;min-width:0;flex-wrap:wrap}
+.builds .guardianHeadingRow>strong{margin-top:0;flex:0 0 auto}
+.builds .guardianModeTabs{display:inline-flex;align-items:center;gap:3px;margin:0;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--surface);flex:0 0 auto}
+.builds .guardianModeTabs button{min-height:30px;min-width:52px;padding:4px 9px;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850}
+.builds .guardianModeTabs button:hover{color:var(--green)}
+.builds .guardianModeTabs button.active{background:var(--accent-strong);color:#fff}
+@media(max-width:520px){.builds .guardianHeadingRow{gap:7px}.builds .guardianModeTabs button{min-height:30px;min-width:50px}}
 .builds .metaBuildControls{display:flex;align-items:center;gap:7px;margin:10px 0;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
 .builds .metaBuildTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;flex:1;min-width:0}
 .builds .metaBuildTabs button,.builds .metaTournamentTabs button{border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850;min-height:36px;padding:8px 10px}
@@ -7756,11 +7764,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       role('Tournament · 4v4','Team PvP: reach, Dispel and coordinated tempo',['Flash Fire','Darkness Descends','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'High Crit: Insightful Eye → Soul Breaker. With two Conquerors, the higher-rank Gale Dance user can flex it in for the team SPD boost while the other keeps the full damage bar.','Flash Fire keeps reach in a spread-out fight; Darkness is retained for buff removal. Indomitable stays mandatory under focus fire.','Current Global PvP')
     ],
     Guardian:[
-      role('Dungeon','Primary S2 party-tank meta',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Need more Taunt: Valor Surge → Hamper Strike. If the group is already safe, Desperate Protection → Swirling Blade or Star Shattering Slash for faster clears.','If the team still dies, Iron Fortress is the first extra defensive flex. Aegiswing is the default lead.','Prydwen dungeon core'),
-      role('Crucible / Conquest','Carry-support / boss-score meta',['Valor Surge','Leap Attack','Holy Purification','Lunarwater Threads'],['Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil'],'This bar exists to make the strongest carry better. If there is no buff worth dispelling, Holy Purification → damage. Lunarwater Threads → Seismic Tide for steadier Cold stacking.','Kels is the default boss-support Fantomon when Dispel/DEF Down matters; Nyxarchon is the greedier damage-amplification option.','Prydwen support core'),
-      role('Arena','Solo block / reflect wall',['Luminous Shield','Forceful Charge','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Soul Protection'],'If your natural Block is not high enough, Soul Protection → Block Awareness. The goal is to survive the opening burst and punish repeated hits rather than imitate a DPS class.','Aegiswing is the safest Arena lead. Against weak pressure, one defensive slot can flex to offense.','Meta reflect synthesis'),
-      role('Tournament · 2v2','Duo frontline: protect one carry and still threaten',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Rebound','Iron Fortress','Oath of Vigil'],'Oath of Vigil is much stronger here than in Arena because there is exactly one partner to protect. Rebound gives the smaller fight real punishment while Hamper Strike + Heart control targeting.','If focus fire is overwhelming, Rebound → Soul Protection. If your partner is the tankier unit, Holy Aegis is a valid self-survival flex.','Team-PvP synthesis'),
-      role('Tournament · 4v4','Full-team tank: Taunt + ally protection',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Soul Protection','Iron Fortress','Oath of Vigil'],'This is the maximum team-protection shell: reliable Taunt, opening effective HP, group mitigation and Oath protection on the ally most likely to be bursted.','Do not swap into the Water damage bar unless your team already has another real frontline.','Prydwen + Global PvP')
+      role('Dungeon · Tank','Primary S2 party-tank meta',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Need more Taunt: Valor Surge → Hamper Strike. If the group is already safe, Desperate Protection → Swirling Blade or Star Shattering Slash for faster clears.','If the team still dies, Iron Fortress is the first extra defensive flex. Aegiswing is the default lead.','Prydwen dungeon core'),
+      role('Crucible / Conquest · Tank','Carry-support / boss-score meta',['Valor Surge','Leap Attack','Holy Purification','Lunarwater Threads'],['Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil'],'This bar exists to make the strongest carry better. If there is no buff worth dispelling, Holy Purification → damage. Lunarwater Threads → Seismic Tide for steadier Cold stacking.','Kels is the default boss-support Fantomon when Dispel/DEF Down matters; Nyxarchon is the greedier damage-amplification option.','Prydwen support core'),
+      role('Arena · Tank','Solo block / reflect wall',['Luminous Shield','Forceful Charge','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Soul Protection'],'If your natural Block is not high enough, Soul Protection → Block Awareness. The goal is to survive the opening burst and punish repeated hits rather than imitate a DPS class.','Aegiswing is the safest Arena lead. Against weak pressure, one defensive slot can flex to offense.','Meta reflect synthesis'),
+      role('Tournament · 2v2 · Tank','Duo frontline: protect one carry and still threaten',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Rebound','Iron Fortress','Oath of Vigil'],'Oath of Vigil is much stronger here than in Arena because there is exactly one partner to protect. Rebound gives the smaller fight real punishment while Hamper Strike + Heart control targeting.','If focus fire is overwhelming, Rebound → Soul Protection. If your partner is the tankier unit, Holy Aegis is a valid self-survival flex.','Team-PvP synthesis'),
+      role('Tournament · 4v4 · Tank','Full-team tank: Taunt + ally protection',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Soul Protection','Iron Fortress','Oath of Vigil'],'This is the maximum team-protection shell: reliable Taunt, opening effective HP, group mitigation and Oath protection on the ally most likely to be bursted.','Do not swap into the Water damage bar unless your team already has another real frontline.','Prydwen + Global PvP'),
+      role('Dungeon · DPS','Water AoE / fast-clear bruiser',['Swirling Blade','Lunarwater Threads','Seismic Tide','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Potential Rebirth'],'This is the published offensive Water Guardian shell: fast Cold stacking, strong AoE and enough single-target damage to stay useful on elites. If you completely outgear the room, Potential Rebirth → Pursuit of Victory or another damage charm.','Keep enough Block/DEF to stay active. DPS Guardian is a bruiser conversion, not a glass cannon.','Prydwen Water core'),
+      role('Crucible / Conquest · DPS','Personal-damage Water score build',['Swirling Blade','Lunarwater Threads','Seismic Tide','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Pursuit of Victory'],'Use the Water shell when Guardian itself is the damage slot: drop the safety charm for Pursuit of Victory and lean into repeated Cold/Water pressure. If your team has a much stronger carry, Tank mode’s support bar will usually produce the better team score.','On bosses where Raging Maelstrom loses value, test a high-rank Star Shattering Slash in that flex slot rather than forcing AoE.','Prydwen Water + score logic'),
+      role('Arena · DPS','Offensive block / counter bruiser',['Swirling Blade','Luminous Shield','Forceful Charge','Star Shattering Slash'],['Rebound','Holy Aegis','Block Mastery','Eye for an Eye'],'This keeps the proven Block/Rebound PvP shell but spends the flex slots on actual kill pressure. If Pandarial and your ranks support it, Luminous Shield → Light Sword Array is the aggressive flex; keep Block stats high.','If the opponent can burst through you, Eye for an Eye → Soul Protection or Potential Rebirth before changing the whole bar.','Prydwen secondary + PvP synthesis'),
+      role('Tournament · 2v2 · DPS','Duo bruiser: survive focus while threatening kills',['Swirling Blade','Luminous Shield','Forceful Charge','Star Shattering Slash'],['Rebound','Holy Aegis','Block Mastery','Eye for an Eye'],'2v2 still rewards the counter/bruiser shell because you cannot afford to be deleted, but DPS mode keeps the fourth charm offensive instead of protecting the partner with Oath.','If you become the enemy team’s obvious first target, Eye for an Eye → Soul Protection; otherwise keep the pressure.','Current Guardian PvP synthesis'),
+      role('Tournament · 4v4 · DPS','Water AoE team-pressure build',['Swirling Blade','Lunarwater Threads','Seismic Tide','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Potential Rebirth'],'Four enemy bodies give the Water shell its best chance to stack Cold and spread pressure. If your team already has a real frontline and you are not being focused, Potential Rebirth → Pursuit of Victory for the greedier version.','If your team lacks a tank, switch the role toggle back to Tank rather than trying to make this bar absorb coordinated focus.','Prydwen Water + team-PvP logic')
     ],
     Destroyer:[
       role('Dungeon','Fire AoE horde-clear meta',['Formation Breaker','Fiery Star Trail','Fireball','Meteoric Flames'],['Rapid Cast','Void Bubble','Explosive Spirit','Fiery Burst'],'Fire is the dedicated dungeon/horde build because Fiery Burst scales off repeated Fire triggers across packs. If the room is boss-heavy and packs survive poorly, swap to the mixed AoE core instead.','Strong accounts can drop Void Bubble for offense, but a dead Destroyer loses more time than the greed gains.','Prydwen + Global testing'),
@@ -7838,9 +7851,36 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   const metaWrite=(key,val)=>{try{localStorage.setItem(key,val)}catch(_){}};
   const metaMode=()=>META_MODES.includes(metaRead('sxs-build-meta-mode','Dungeon'))?metaRead('sxs-build-meta-mode','Dungeon'):'Dungeon';
   const metaTournamentSize=()=>metaRead('sxs-build-tournament-size','4v4')==='2v2'?'2v2':'4v4';
+  const guardianBuildMode=()=>metaRead('sxs-build-guardian-mode','tank')==='dps'?'dps':'tank';
+  function ensureGuardianRoleControl(cls){
+    if(cls!=='Guardian') return;
+    const guide=document.querySelector('.builds .guideSummary');
+    const strong=guide?.querySelector(':scope > div > strong');
+    if(!guide||!strong) return;
+    let row=guide.querySelector('.guardianHeadingRow');
+    if(!row){
+      row=document.createElement('div');
+      row.className='guardianHeadingRow';
+      strong.before(row);
+      row.append(strong);
+      const tabs=document.createElement('div');
+      tabs.className='guardianModeTabs';
+      tabs.setAttribute('role','group');
+      tabs.setAttribute('aria-label','Guardian build role');
+      tabs.innerHTML='<button type="button" data-guardian-mode="tank">Tank</button><button type="button" data-guardian-mode="dps">DPS</button>';
+      row.append(tabs);
+    }
+    const active=guardianBuildMode();
+    row.querySelectorAll('[data-guardian-mode]').forEach(btn=>{
+      const on=btn.dataset.guardianMode===active;
+      btn.classList.toggle('active',on);
+      btn.setAttribute('aria-pressed',String(on));
+    });
+  }
   function ensureMetaControls(cls){
     const grid=document.querySelector('.builds .buildGrid');
     if(!grid) return;
+    ensureGuardianRoleControl(cls);
     let box=document.querySelector('.builds .metaBuildControls');
     if(!META_CLASSES.has(cls)){
       box?.remove();
@@ -7860,7 +7900,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const grid=document.querySelector('.builds .buildGrid');
     if(!grid||!META_CLASSES.has(cls)) return;
     ensureMetaControls(cls);
-    const mode=metaMode(), size=metaTournamentSize();
+    const mode=metaMode(), size=metaTournamentSize(), guardianMode=guardianBuildMode();
+    document.querySelectorAll('.builds .guardianModeTabs [data-guardian-mode]').forEach(b=>{const on=b.dataset.guardianMode===guardianMode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
     const wanted=mode==='Tournament'?'Tournament · '+size:mode;
     document.querySelectorAll('.builds .metaBuildTabs button').forEach(b=>b.classList.toggle('active',b.dataset.metaMode===mode));
     const tour=document.querySelector('.builds .metaTournamentTabs');
@@ -7868,7 +7909,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       tour.hidden=mode!=='Tournament';
       tour.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.tournamentSize===size));
     }
-    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{card.hidden=card.dataset.role!==wanted;});
+    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{
+      const wrongActivity=card.dataset.role!==wanted;
+      const wrongGuardianRole=cls==='Guardian'&&card.dataset.guardianRole!==guardianMode;
+      card.hidden=wrongActivity||wrongGuardianRole;
+    });
   }
 
   function activeClass(){
@@ -7880,6 +7925,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
   function roleKey(title){
     const t=(title||'').toLowerCase();
+    if(t==='dungeon') return 'Dungeon';
+    if(t==='crucible / conquest') return 'Boss';
     if(t.startsWith('arena')) return 'Arena';
     if(t.startsWith('tournament')) return 'Tournament';
     if(t.startsWith('pvp')) return 'PvP';
@@ -7888,8 +7935,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return 'Solo';
   }
   function buildCardHtml(r){
-    return '<article class="buildCard" data-role="'+esc(r.name)+'">'
-      +'<header><div><h3>'+esc(r.name)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
+    const gm=String(r.name||'').match(/^(.*?) · (Tank|DPS)$/);
+    const displayName=gm?gm[1]:r.name;
+    const guardianAttr=gm?' data-guardian-role="'+gm[2].toLowerCase()+'"':'';
+    return '<article class="buildCard" data-role="'+esc(displayName)+'"'+guardianAttr+'>'
+      +'<header><div><h3>'+esc(displayName)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
       +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'
@@ -7907,11 +7957,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function picksFor(cls,title){
     const role=roleKey(title);
     const pools=FANTO[cls]||{};
-    if(role==='Arena') return pools.Arena||pools.PvP||[];
+    // Guardian DPS role prefers the offensive pet order; this automatically promotes Pandarial once the staged release patch adds it.
+    const guardianDps=cls==='Guardian'&&typeof guardianBuildMode==='function'&&guardianBuildMode()==='dps';
+    if(role==='Arena'){const base=pools.Arena||pools.PvP||[];if(guardianDps){const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];return [...base].sort((a,b)=>(order.indexOf(a.name)<0?99:order.indexOf(a.name))-(order.indexOf(b.name)<0?99:order.indexOf(b.name)));}return base;}
     if(role==='Tournament'){
-      return pools.Tournament||pools.PvP||pools.Dungeon||[];
+      const base=pools.Tournament||pools.PvP||pools.Dungeon||[];if(guardianDps){const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];return [...base].sort((a,b)=>(order.indexOf(a.name)<0?99:order.indexOf(a.name))-(order.indexOf(b.name)<0?99:order.indexOf(b.name)));}return base;
     }
-    return pools[role]||[];
+    const base=pools[role]||[];
+    if(guardianDps){
+      const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];
+      return [...base].sort((a,b)=>{const ai=order.indexOf(a.name),bi=order.indexOf(b.name);return (ai<0?99:ai)-(bi<0?99:bi);});
+    }
+    return base;
   }
   function applyFantos(cls){
     document.querySelectorAll('.builds .buildCard').forEach(card=>{
@@ -7955,6 +8012,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const root=document.querySelector('.builds');
     if(root) new MutationObserver(queueApply).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','aria-pressed']});
     root?.addEventListener('click',e=>{
+      const guardianBtn=e.target.closest?.('[data-guardian-mode]');
+      if(guardianBtn&&activeClass()==='Guardian'){metaWrite('sxs-build-guardian-mode',guardianBtn.dataset.guardianMode==='dps'?'dps':'tank');applyMetaVisibility('Guardian');queueApply();return;}
       const modeBtn=e.target.closest?.('[data-meta-mode]');
       if(modeBtn){metaWrite('sxs-build-meta-mode',modeBtn.dataset.metaMode);applyMetaVisibility(activeClass());return;}
       const sizeBtn=e.target.closest?.('[data-tournament-size]');
@@ -8013,9 +8072,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD / SPD% > ATK / ATK%'
     },
     Guardian:{
-      rule:'Block is Guardian’s defining stat. Stack Block Rate first; after that, DEF/DMG RES drive survival while SPD remains the best offensive/support tempo stat.',
-      rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
-      substats:'Block Rate > DEF > SPD > HP > DEF% > SPD% > HP%'
+      tank:{
+        rule:'Tank Guardian is built around Block first. After that, DEF/DMG RES drive survival while SPD keeps Taunt, shields and buffs cycling before the enemy can act.',
+        rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
+        substats:'Block Rate > DEF > SPD > HP > DEF% > SPD% > HP%'
+      },
+      dps:{
+        rule:'DPS Guardian uses the offensive Water/counter shell, but Block still matters because the class gains damage by staying active. After a healthy Block floor, Crit Rate, SPD and ATK/Mastery are the damage-quality rolls.',
+        rows:[['Sword','SPD > ATK > Elemental Mastery > Physical Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
+        substats:'Block Rate > Crit Rate > SPD / SPD% > ATK / ATK% > Elemental Mastery > Crit DMG'
+      }
     },
     Destroyer:{
       rule:'S2 Destroyer is balance-sensitive, not permanently EM-first. Keep a healthy Elemental Mastery floor, then flat ATK can match or beat more EM on developed accounts. Crit remains premium; dummy-test close swaps.',
@@ -8034,6 +8100,37 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         substats:'Healing Boost > SPD / SPD% > HP / HP% > DMG RES'
       }
     }
+  };
+
+  const GUARDIAN_PRIORITY={
+    tank:[
+      ['Tank technique investment','Heart of Challenge first','Rank the Techniques that define the true frontline setup rather than the Water DPS shell.',[
+        ['Heart of Challenge','Core group Taunt and one of the most important reasons to bring a Guardian.'],
+        ['Valor Surge','Pre-cast team damage buff plus cleanse utility.'],
+        ['Luminous Shield','Reliable shield layer across dungeon and PvP tank bars.'],
+        ['Desperate Protection / Hamper Strike','Choose survival or more Taunt based on the encounter.']
+      ]],
+      ['Tank charm investment','Soul Protection first','Prioritize the universal shield/mitigation package before niche damage charms.',[
+        ['Soul Protection','Massive opening effective HP and the most universal Guardian T4 charm.'],
+        ['Iron Will','Excellent damage reduction once Taunt is active.'],
+        ['Holy Aegis','DEF plus stronger DEF-scaling shields.'],
+        ['Iron Fortress / Oath of Vigil','Team mitigation and ally protection become premium in Tournament.']
+      ]]
+    ],
+    dps:[
+      ['DPS technique investment','Swirling Blade first','The offensive role is the Water/counter bruiser package, not a fake glass-cannon tank.',[
+        ['Swirling Blade','Best reusable T4 offensive Technique: Water damage plus a self-shield.'],
+        ['Raging Maelstrom','The high-value AoE payoff in the full Water shell.'],
+        ['Lunarwater Threads','Reliable Water pressure and Cold setup.'],
+        ['Seismic Tide','Keeps Cold stacking consistent in both AoE and boss variants.']
+      ]],
+      ['DPS charm investment','Frigid Aura first','Build around the actual Water shell, then keep one survival flex when content can punish you.',[
+        ['Frigid Aura','Core Water/Cold damage amplifier.'],
+        ['Frigid Glint','Directly supports the Cold-based offensive loop.'],
+        ['Defensive Assault','Turns Guardian durability into useful offensive pressure.'],
+        ['Potential Rebirth / Pursuit of Victory','Safety for hard content; swap to Pursuit when survival is already solved.']
+      ]]
+    ]
   };
 
   const DOMINATOR_PRIORITY={
@@ -8070,8 +8167,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const root=()=>document.getElementById('buildContent');
   const activeClass=()=>document.querySelector('#classTabs button.active')?.dataset.class||'';
-  const roleMode=()=>{
-    try{return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps';}catch(_){return 'dps';}
+  const roleMode=cls=>{
+    try{
+      if(cls==='Guardian') return localStorage.getItem('sxs-build-guardian-mode')==='dps'?'dps':'tank';
+      return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps';
+    }catch(_){return cls==='Guardian'?'tank':'dps';}
   };
   const profileFor=(cls,mode)=>{
     const p=BUILD_STAT_PROFILES[cls];
@@ -8100,6 +8200,23 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return panel;
   }
   function ensurePriorityPair(host,cls,mode){
+    if(cls==='Guardian'){
+      [...host.children].filter(el=>el.classList?.contains('priorityPanel')).forEach(el=>el.remove());
+      let pair=host.querySelector(':scope > .priorityPair');
+      if(!pair){
+        pair=document.createElement('div');
+        pair.className='priorityPair';
+        const grid=host.querySelector(':scope > .buildGrid');
+        if(grid) grid.before(pair); else host.append(pair);
+      }
+      if(pair.dataset.guardianMode!==mode){
+        pair.innerHTML='';
+        const data=GUARDIAN_PRIORITY[mode]||GUARDIAN_PRIORITY.tank;
+        pair.append(makePanel(data[0]),makePanel(data[1]));
+        pair.dataset.guardianMode=mode;
+      }
+      return;
+    }
     if(cls==='Dominator'){
       // The temporary regressed template mixed Techniques and Charms into one panel.
       // Replace those direct panels with one true Technique-left / Charm-right pair per role.
@@ -8147,7 +8264,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     queued=false;
     const host=root(),cls=activeClass();
     if(!host||!cls||!BUILD_STAT_PROFILES[cls]) return;
-    const mode=cls==='Dominator'?roleMode():'dps';
+    const mode=(cls==='Dominator'||cls==='Guardian')?roleMode(cls):'dps';
     const sig=signature(host,cls,mode);
     const complete=host.querySelector('.buildQuickStats')&&host.querySelector(':scope > .priorityPair');
     if(host.dataset.richBuildSig===sig&&complete) return;
@@ -8165,7 +8282,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const host=root();
     if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
     document.getElementById('classTabs')?.addEventListener('click',queue);
-    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]')) setTimeout(()=>{if(host) host.dataset.richBuildSig='';queue();},0);});
+    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode],[data-guardian-mode]')) setTimeout(()=>{if(host) host.dataset.richBuildSig='';queue();},0);});
     queue();
   });
   window.addEventListener('load',queue);
@@ -8250,7 +8367,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   };
   const PROFILES={
     Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
-    Guardian:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],
+    Guardian:{
+      tank:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],
+      dps:['block','blockpair','crit','critdmg','spd','spdpct','atk','atkpct','em']
+    },
     Destroyer:['crit','critdmg','critpair','atk','atkpct','em','acc','critacc','spd','spdpct'],
     Dominator:{
       dps:['ehr','crit','critdmg','critpair','em','atk','atkpct','spd','spdpct'],
@@ -8259,21 +8379,22 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   };
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const activeClass=()=>document.querySelector('#classTabs button.active')?.dataset.class||'Conqueror';
-  const role=()=>{try{return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps'}catch(_){return 'dps'}};
+  const role=cls=>{try{if(cls==='Guardian')return localStorage.getItem('sxs-build-guardian-mode')==='dps'?'dps':'tank';return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps'}catch(_){return cls==='Guardian'?'tank':'dps'}};
   const rowsFor=(cls,mode)=>{
-    const keys=cls==='Dominator'?PROFILES.Dominator[mode]:PROFILES[cls];
+    const profile=PROFILES[cls];
+    const keys=Array.isArray(profile)?profile:profile?.[mode];
     return (keys||PROFILES.Conqueror).map(k=>R[k]);
   };
   const help=tip=>`<button type="button" class="rollHelp" aria-label="Approximate or unconfirmed value" data-tip="${esc(tip)}">?</button>`;
   const guideHtml=(cls,mode)=>{
     const rows=rowsFor(cls,mode);
-    const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls;
+    const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls==='Guardian'?`${cls} · ${mode==='dps'?'DPS':'Tank'}`:cls;
     return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Early S2 &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate/unconfirmed.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Pre-160 S2 reference. Double-Crit is directly documented; other paired values marked <b>?</b> are derived from older-server S2 scaling. Flat/white-number stats such as Mastery scale with gear level.</div></div></details>`;
   };
   let queued=false;
   function apply(){
     queued=false;
-    const cls=activeClass(),mode=cls==='Dominator'?role():'dps',sig=cls+'|'+mode;
+    const cls=activeClass(),mode=(cls==='Dominator'||cls==='Guardian')?role(cls):'dps',sig=cls+'|'+mode;
     document.querySelectorAll('#buildContent .buildQuickStats').forEach(quick=>{
       const existing=quick.querySelector(':scope > .rollGuide');
       if(existing?.dataset.rollSig===sig) return;
@@ -8287,7 +8408,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const host=document.getElementById('buildContent');
     if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
     document.getElementById('classTabs')?.addEventListener('click',queue);
-    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode]'))setTimeout(queue,0)});
+    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode],[data-guardian-mode]'))setTimeout(queue,0)});
     queue();
   });
   window.addEventListener('load',queue);
