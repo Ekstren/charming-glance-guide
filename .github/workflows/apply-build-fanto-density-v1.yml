@@ -1,0 +1,47 @@
+name: Apply build Fantomon density
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/build-fanto-density-v1.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply Fantomon density patch
+        run: python .github/patch-build-fanto-density-v1.py
+      - name: Validate diff
+        run: |
+          git diff --check
+          grep -q "@media(min-width:1180px)" .github/build-fantomons-inject.html
+          grep -q "fantomonPick.main{grid-column:1/-1}" .github/build-fantomons-inject.html
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install chromium
+      - name: Run full browser smoke
+        run: node scripts/site_smoke_test.mjs
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/build-fantomons-inject.html scripts/site_smoke_test.mjs
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Reduce dead space in build Fantomon column"
+          git push origin HEAD:main
