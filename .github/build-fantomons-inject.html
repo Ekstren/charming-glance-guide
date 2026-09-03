@@ -17,6 +17,12 @@
 .buildCard .fantomonPick p{color:var(--muted);font-size:9px;line-height:1.35;margin:4px 0 0}
 .buildCard .fantomonPick.main{border-color:color-mix(in srgb,var(--accent-strong) 48%,var(--line))}
 .buildCard .roleBadge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 6px;margin-left:6px;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+.buildCard .techniqueSwapScenarios{grid-column:1/-1;border-top:1px solid var(--line);padding:9px 0 1px;margin-top:0;display:flex;align-items:flex-start;gap:10px;min-width:0}
+.buildCard .techniqueSwapScenarios>span{flex:0 0 auto;color:var(--muted);font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
+.buildCard .techniqueSwapScenarios>div{display:flex;flex-wrap:wrap;gap:5px 12px;min-width:0}
+.buildCard .techniqueSwapScenarios p{margin:0;color:var(--muted);font-size:9px;line-height:1.4}
+.buildCard .techniqueSwapScenarios p b{color:var(--ink);font-weight:800}
+@media(max-width:620px){.buildCard .techniqueSwapScenarios{display:block}.buildCard .techniqueSwapScenarios>span{display:block;margin-bottom:5px}.buildCard .techniqueSwapScenarios>div{display:grid;grid-template-columns:1fr;gap:5px}}
 @media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
 
 /* META_BUILD_MODES_V1 */
@@ -119,6 +125,47 @@
       role('Arena · Heals','Specialist sustain hybrid',['Rejuvenating Rain','Radiant Restoration','Dark Bullet','Shadow of Termination'],['Phantom Light','Healing Mastery','Shadow Vengeance','Mantra of Blessings'],'Rejuvenating Rain and Radiant Restoration provide sustain while Dark Bullet and Shadow of Termination keep kill pressure.','Phantom Light and Healing Mastery scale sustain; Shadow Vengeance and Mantra of Blessings preserve tempo and damage. This role works best with strong Healing Boost/SPD gear.','PvP specialist'),
       role('Tournament · 2v2 · Heals','Duo sustain / carry support',['Rejuvenating Rain','Radiant Restoration','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Resurrection','Shadow Vengeance'],'Rejuvenating Rain and Radiant Restoration keep your partner stable while Frenzy Totem boosts output and Dark Bullet maintains pressure.','Resurrection is the key swing utility; Phantom Light and Healing Mastery raise sustain while Shadow Vengeance protects your own damage window.','PvP support'),
       role('Tournament · 4v4 · Heals','Hybrid team support',['Radiant Restoration','Decoy Clone','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Resurrection','Mantra of Blessings'],'Radiant Restoration, Decoy Clone, and Frenzy Totem support the team while Dark Bullet maintains debuff pressure.','Phantom Light, Healing Mastery, Resurrection, and Mantra of Blessings balance healing, revive utility, and team damage.','Team PvP')
+    ]
+  };
+
+  const TECHNIQUE_SWAP_SCENARIOS={
+    'Flash Fire|Flame Aura|Flickering Blade|Blade Storm':[
+      ['Need Dispel or extra mobility','Flame Aura','Darkness Descends']
+    ],
+    'Darkness Descends|Doom Blade|Flickering Blade|Blade Storm':[
+      ['Need more sustain','Doom Blade','Soul Piercer']
+    ],
+    'Darkness Descends|Soul Piercer|Flickering Blade|Blade Storm':[
+      ['Partner already supplies enough control; want harder burst','Soul Piercer','Doom Blade']
+    ],
+    'Valor Surge|Heart of Challenge|Luminous Shield|Desperate Protection':[
+      ['Need more repeatable Taunt','Valor Surge','Hamper Strike'],
+      ['Easy clear; want more damage','Desperate Protection','Swirling Blade or Star Shattering Slash']
+    ],
+    'Luminous Shield|Forceful Charge|Star Shattering Slash|Desperate Protection':[
+      ['Need cleanse + self damage buff more than gap-closing','Forceful Charge','Valor Surge']
+    ],
+    'Valor Surge|Hamper Strike|Luminous Shield|Desperate Protection':[
+      ['Need a broader opening Taunt','Hamper Strike','Heart of Challenge']
+    ],
+    'Swirling Blade|Lunarwater Threads|Seismic Tide|Raging Maelstrom':[
+      ['Boss or elite focus','Raging Maelstrom','Star Shattering Slash']
+    ],
+    'Swirling Blade|Lunarwater Threads|Seismic Tide|Star Shattering Slash':[
+      ['Star Shattering Slash is badly under-ranked','Star Shattering Slash','Raging Maelstrom']
+    ],
+    'Swirling Blade|Luminous Shield|Forceful Charge|Star Shattering Slash':[
+      ['Need cleanse + self damage buff; can stay on target without the extra gap-close','Forceful Charge','Valor Surge']
+    ],
+    'Formation Breaker|Divine Wrath|Wind Blade Spiral|Thunder of Judgment':[
+      ['Small boss or Divine Wrath is landing poorly','Divine Wrath','Meteoric Flames'],
+      ['A better-ranked Wind option wins on your account','Wind Blade Spiral',"Wind's Delight or Tempest Sphere"]
+    ],
+    'Dark Bullet|Dark Starburst|Chaos Rune|Shadow of Termination':[
+      ['High Effect Hit Rate','Chaos Rune','Mana Blast']
+    ],
+    'Waterling Summon|Rejuvenating Rain|Radiant Restoration|Frenzy Totem':[
+      ['Need more raw healing','Frenzy Totem','Healing Touch']
     ]
   };
 
@@ -275,11 +322,13 @@
     const rm=String(r.name||'').match(/^(.*?) · (Tank|DPS|Heals)$/);
     const displayName=rm?rm[1]:r.name;
     const roleAttr=rm?' data-build-role="'+rm[2].toLowerCase()+'"':'';
+    const techniqueSwaps=TECHNIQUE_SWAP_SCENARIOS[r.techniques.join('|')]||[];
     return '<article class="buildCard" data-role="'+esc(displayName)+'"'+roleAttr+'>'
       +'<header><div><h3>'+esc(displayName)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
       +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +'<ul><li><b>Offensive:</b> '+esc(r.offensive)+'</li><li><b>Defensive:</b> '+esc(r.defensive)+'</li></ul>'
+      +(techniqueSwaps.length?'<div class="techniqueSwapScenarios"><span>Technique swaps</span><div>'+techniqueSwaps.map(s=>'<p><b>'+esc(s[0])+':</b> '+esc(s[1])+' → '+esc(s[2])+'</p>').join('')+'</div></div>':'')
       +'</article>';
   }
   function applyRoleLoadouts(cls){
