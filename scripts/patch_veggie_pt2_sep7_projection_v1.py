@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Maintained projection correction: official posts confirm Pt. 2 is coming, while Sep. 7 remains projected.
 p = Path('index.html')
 s = p.read_text(encoding='utf-8')
 
