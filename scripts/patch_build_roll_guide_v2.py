@@ -18,9 +18,9 @@ payload = r'''
 .rollGuideNote{padding:5px 7px;border-bottom:1px solid var(--line);color:var(--muted);font-size:7.5px;line-height:1.3}
 .rollGuideGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:6px}
 .rollGuideRow{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:7px;padding:5px 6px;border:1px solid color-mix(in srgb,var(--line) 76%,transparent);border-radius:6px;background:var(--surface)}
-.rollGuideName{min-width:0;color:var(--body-text);font-size:8px;font-weight:760;line-height:1.2}
-.rollGuideValue{color:var(--ink);font-size:8.5px;font-weight:850;line-height:1.15;text-align:right;white-space:nowrap}
-.rollGuideValue.rollScaling{color:var(--secondary-text);font-size:7.5px}
+.rollGuideRow .rollGuideName{min-width:0;color:var(--green);font-size:8px;font-weight:760;line-height:1.2}
+.rollGuideRow .rollGuideValue{color:var(--body-text);font-size:8.5px;font-weight:850;line-height:1.15;text-align:right;white-space:nowrap}
+.rollGuideRow .rollGuideValue.rollScaling{color:var(--body-text);font-size:7.5px}
 .rollHelp{appearance:none;border:0;background:none;padding:0;margin:0 0 0 3px;color:var(--green);font:inherit;font-size:8.5px;font-weight:900;line-height:1;cursor:help;text-decoration:underline;text-underline-offset:2px;position:relative;display:inline;vertical-align:baseline;outline:none}
 .rollHelp:hover,.rollHelp:focus{color:var(--ink)}
 .rollHelp:hover:after,.rollHelp:focus:after{content:attr(data-tip);position:absolute;z-index:100;left:0;bottom:calc(100% + 6px);width:min(245px,72vw);padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--body-text);font-size:8.5px;font-weight:650;line-height:1.35;text-align:left;white-space:normal;box-shadow:0 8px 22px #0004;text-decoration:none}
