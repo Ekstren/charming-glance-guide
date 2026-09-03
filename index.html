@@ -8134,7 +8134,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       const pair=picks.slice(0,2);
       const noShop=f2pFantomon(picks,pair);
       const shown=noShop?[...pair,noShop]:pair;
-      const labels=['Main','Alt','F2P / No Shop'];
+      const labels=['Main','Alt','Alt'];
       box.innerHTML='<span>Combat Fantomons</span>'
         +'<div class="fantomonRankList">'
         +shown.map((p,i)=>'<div class="fantomonPick'+(i===0?' main':'')+'"><small>'+labels[i]+'</small><b>'+esc(p.name)+'</b><p>'+esc(p.why)+'</p></div>').join('')
