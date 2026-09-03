@@ -129,42 +129,51 @@
   };
 
   const TECHNIQUE_SWAP_SCENARIOS={
-    'Flash Fire|Flame Aura|Flickering Blade|Blade Storm':[
+    'Dungeon|Flash Fire|Flame Aura|Flickering Blade|Blade Storm':[
       ['Need Dispel or extra mobility','Flame Aura','Darkness Descends']
     ],
-    'Darkness Descends|Doom Blade|Flickering Blade|Blade Storm':[
+    'Arena|Darkness Descends|Doom Blade|Flickering Blade|Blade Storm':[
       ['Need more sustain','Doom Blade','Soul Piercer']
     ],
-    'Darkness Descends|Soul Piercer|Flickering Blade|Blade Storm':[
+    'Tournament · 2v2|Darkness Descends|Soul Piercer|Flickering Blade|Blade Storm':[
       ['Partner already supplies enough control; want harder burst','Soul Piercer','Doom Blade']
     ],
-    'Valor Surge|Heart of Challenge|Luminous Shield|Desperate Protection':[
+    'Dungeon · Tank|Valor Surge|Heart of Challenge|Luminous Shield|Desperate Protection':[
       ['Need more repeatable Taunt','Valor Surge','Hamper Strike'],
       ['Easy clear; want more damage','Desperate Protection','Swirling Blade or Star Shattering Slash']
     ],
-    'Luminous Shield|Forceful Charge|Star Shattering Slash|Desperate Protection':[
-      ['Need cleanse + self damage buff more than gap-closing','Forceful Charge','Valor Surge']
+    'Arena · Tank|Luminous Shield|Forceful Charge|Star Shattering Slash|Desperate Protection':[
+      ['Need cleanse + self damage buff more than the extra gap-close','Forceful Charge','Valor Surge']
     ],
-    'Valor Surge|Hamper Strike|Luminous Shield|Desperate Protection':[
+    'Tournament · 2v2 · Tank|Valor Surge|Hamper Strike|Luminous Shield|Desperate Protection':[
       ['Need a broader opening Taunt','Hamper Strike','Heart of Challenge']
     ],
-    'Swirling Blade|Lunarwater Threads|Seismic Tide|Raging Maelstrom':[
+    'Tournament · 4v4 · Tank|Valor Surge|Heart of Challenge|Luminous Shield|Desperate Protection':[
+      ['Need repeatable Taunt after the opener','Heart of Challenge','Hamper Strike']
+    ],
+    'Dungeon · DPS|Swirling Blade|Lunarwater Threads|Seismic Tide|Raging Maelstrom':[
       ['Boss or elite focus','Raging Maelstrom','Star Shattering Slash']
     ],
-    'Swirling Blade|Lunarwater Threads|Seismic Tide|Star Shattering Slash':[
+    'Crucible / Conquest · DPS|Swirling Blade|Lunarwater Threads|Seismic Tide|Star Shattering Slash':[
       ['Star Shattering Slash is badly under-ranked','Star Shattering Slash','Raging Maelstrom']
     ],
-    'Swirling Blade|Luminous Shield|Forceful Charge|Star Shattering Slash':[
+    'Arena · DPS|Swirling Blade|Luminous Shield|Forceful Charge|Star Shattering Slash':[
       ['Need cleanse + self damage buff; can stay on target without the extra gap-close','Forceful Charge','Valor Surge']
     ],
-    'Formation Breaker|Divine Wrath|Wind Blade Spiral|Thunder of Judgment':[
+    'Tournament · 2v2 · DPS|Swirling Blade|Luminous Shield|Forceful Charge|Star Shattering Slash':[
+      ['Need cleanse + duo damage buff; can stay on target without the extra gap-close','Forceful Charge','Valor Surge']
+    ],
+    'Crucible / Conquest|Formation Breaker|Divine Wrath|Wind Blade Spiral|Thunder of Judgment':[
       ['Small boss or Divine Wrath is landing poorly','Divine Wrath','Meteoric Flames'],
       ['A better-ranked Wind option wins on your account','Wind Blade Spiral',"Wind's Delight or Tempest Sphere"]
     ],
-    'Dark Bullet|Dark Starburst|Chaos Rune|Shadow of Termination':[
+    'Crucible / Conquest · DPS|Dark Bullet|Dark Starburst|Chaos Rune|Shadow of Termination':[
       ['High Effect Hit Rate','Chaos Rune','Mana Blast']
     ],
-    'Waterling Summon|Rejuvenating Rain|Radiant Restoration|Frenzy Totem':[
+    'Arena · DPS|Dark Bullet|Dark Starburst|Chaos Rune|Shadow of Termination':[
+      ['High Effect Hit Rate','Chaos Rune','Mana Blast']
+    ],
+    'Dungeon · Heals|Waterling Summon|Rejuvenating Rain|Radiant Restoration|Frenzy Totem':[
       ['Need more raw healing','Frenzy Totem','Healing Touch']
     ]
   };
@@ -322,7 +331,7 @@
     const rm=String(r.name||'').match(/^(.*?) · (Tank|DPS|Heals)$/);
     const displayName=rm?rm[1]:r.name;
     const roleAttr=rm?' data-build-role="'+rm[2].toLowerCase()+'"':'';
-    const techniqueSwaps=TECHNIQUE_SWAP_SCENARIOS[r.techniques.join('|')]||[];
+    const techniqueSwaps=TECHNIQUE_SWAP_SCENARIOS[r.name+'|'+r.techniques.join('|')]||[];
     return '<article class="buildCard" data-role="'+esc(displayName)+'"'+roleAttr+'>'
       +'<header><div><h3>'+esc(displayName)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
       +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
