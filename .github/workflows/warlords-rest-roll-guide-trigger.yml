@@ -9,7 +9,7 @@ on:
     paths:
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/activate_warlords_rest_roll_guide_v1.py'
-      - 'scripts/validate_warlords_rest_roll_guide_v1.py'
+      - 'scripts/validate_warlords-rest-roll-guide-v1.py'
       - '.github/workflows/warlords-rest-roll-guide-trigger.yml'
   # Warlord's Rest is expected on Charming Glance at the Sep 12, 2026
   # 6:00 AM PDT reset (13:00 UTC). Run hourly that calendar day so a
@@ -48,6 +48,10 @@ jobs:
           fi
           grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' index.html
           grep -Fq "Warlord's Rest · Lv162" index.html
+          grep -Fq "atkpct:['ATK%','Lv162 max unconfirmed',1" index.html
+          grep -Fq "defpct:['DEF%','Lv162 max unconfirmed',1" index.html
+          grep -Fq "hppct:['HP%','Lv162 max unconfirmed',1" index.html
+          grep -Fq "spdpct:['SPD%','Lv162 max unconfirmed',1" index.html
           grep -Fq "crit:['Crit Rate','≈ 7.50%',1" index.html
           grep -Fq "critdmg:['Crit DMG','≈ 11.25%',1" index.html
           grep -Fq "block:['Block Rate','≈ 7.50%',1" index.html
