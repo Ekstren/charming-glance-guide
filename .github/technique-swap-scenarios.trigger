@@ -1,1 +1,1 @@
-technique swap scenarios v1
+technique swap scenarios v2
