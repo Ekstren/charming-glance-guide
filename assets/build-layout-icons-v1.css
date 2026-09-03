@@ -1,0 +1,178 @@
+/* BUILD_HERO_LAYOUT_ICONS_V1
+   Actionable gear priorities on the left; a dedicated roll-reference column on the right. */
+#buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1{
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:0;
+  padding:0;
+  align-items:stretch;
+  overflow:visible;
+}
+#buildContent .buildHeroLeft{
+  min-width:0;
+  padding:20px 22px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+#buildContent .buildHeroLeft>.buildQuickStats{
+  border-left:0;
+  border-top:1px solid var(--line);
+  padding:16px 0 0;
+  gap:9px;
+  justify-content:flex-start;
+}
+#buildContent .buildHeroLeft>.buildQuickStats>.rollGuide{display:none!important}
+#buildContent .buildHeroLeft .quickTitle{
+  color:var(--green);
+  font-size:10px;
+  letter-spacing:.08em;
+}
+#buildContent .buildHeroLeft .quickRule{
+  margin:0 0 2px;
+  max-width:52ch;
+  color:var(--muted);
+}
+#buildContent .buildHeroLeft .quickGearGrid{
+  grid-template-columns:1fr;
+  gap:0;
+  border:1px solid color-mix(in srgb,var(--line) 82%,transparent);
+  border-radius:10px;
+  overflow:hidden;
+  background:color-mix(in srgb,var(--bg) 34%,var(--surface));
+}
+#buildContent .buildHeroLeft .quickGearRow{
+  grid-template-columns:20px minmax(66px,max-content) minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);
+  padding:9px 10px;
+}
+#buildContent .buildHeroLeft .quickGearRow:first-child{border-top:0}
+#buildContent .buildHeroLeft .quickGearRow b{
+  color:var(--green);
+  font-size:9px;
+  line-height:1.2;
+}
+#buildContent .buildHeroLeft .quickGearRow>span:not(.buildGearIcon){
+  color:var(--body-text);
+  font-size:9px;
+  font-weight:720;
+  line-height:1.35;
+}
+#buildContent .buildGearIcon,
+#buildContent .rollStatIcon,
+#buildContent .buildSubstatIcon{
+  width:16px;
+  height:16px;
+  display:inline-grid;
+  place-items:center;
+  color:var(--green);
+  flex:0 0 16px;
+}
+#buildContent .buildGearIcon svg,
+#buildContent .rollStatIcon svg,
+#buildContent .buildSubstatIcon svg{
+  width:16px;
+  height:16px;
+  display:block;
+  overflow:visible;
+}
+#buildContent .buildHeroLeft .quickSubstats{
+  grid-template-columns:16px max-content minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  padding-top:9px;
+}
+#buildContent .buildHeroLeft .quickSubstats b{color:var(--gold)}
+#buildContent .buildHeroLeft .quickSubstats span:last-child{
+  color:var(--body-text);
+  font-size:9px;
+  font-weight:720;
+}
+#buildContent .buildHeroRoll{
+  min-width:0;
+  border-left:1px solid var(--line);
+  padding:18px 20px;
+  display:flex;
+  align-items:stretch;
+}
+#buildContent .buildHeroRoll>.rollGuide{
+  width:100%;
+  margin:0;
+  padding:0;
+  border-top:0;
+}
+#buildContent .buildHeroRoll>.rollGuide>summary{
+  min-height:28px;
+  padding:0 2px 9px;
+  font-size:10px;
+  color:var(--green);
+}
+#buildContent .buildHeroRoll>.rollGuide>summary small{font-size:8px}
+#buildContent .buildHeroRoll .rollGuideBody{
+  margin-top:0;
+  border-radius:10px;
+  background:color-mix(in srgb,var(--bg) 48%,var(--surface));
+}
+#buildContent .buildHeroRoll .rollGuideNote{
+  padding:7px 9px;
+  font-size:8px;
+}
+#buildContent .buildHeroRoll .rollGuideGrid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;
+  padding:8px;
+}
+#buildContent .buildHeroRoll .rollGuideRow{
+  grid-template-columns:18px minmax(0,1fr) auto;
+  gap:7px;
+  min-height:37px;
+  padding:7px 8px;
+  align-items:center;
+  border-radius:8px;
+  background:color-mix(in srgb,var(--surface) 94%,var(--bg));
+}
+#buildContent .buildHeroRoll .rollGuideName{
+  font-size:8.5px;
+  font-weight:800;
+}
+#buildContent .buildHeroRoll .rollGuideValue{
+  color:var(--green);
+  font-size:9px;
+  font-weight:900;
+}
+#buildContent .buildHeroRoll .rollGuideValue.rollScaling{
+  color:var(--secondary-text);
+  font-size:8px;
+}
+#buildContent .buildHeroRoll .rollGuideSources{
+  padding:7px 9px;
+  font-size:7.5px;
+}
+@media(max-width:900px){
+  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1{
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  }
+  #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  #buildContent .guideSummary.buildSummaryCompact.buildHeroLayoutV1{grid-template-columns:1fr}
+  #buildContent .buildHeroLeft{padding:15px 14px;gap:14px}
+  #buildContent .buildHeroLeft>.buildQuickStats{padding-top:13px}
+  #buildContent .buildHeroRoll{
+    border-left:0;
+    border-top:1px solid var(--line);
+    padding:14px;
+  }
+  #buildContent .buildHeroRoll>.rollGuide>summary{min-height:34px}
+  #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  #buildContent .buildHeroLeft .quickGearRow{
+    grid-template-columns:18px minmax(62px,max-content) minmax(0,1fr);
+    padding:9px 8px;
+    gap:7px;
+  }
+  #buildContent .buildHeroLeft .quickSubstats{grid-template-columns:16px 1fr}
+  #buildContent .buildHeroLeft .quickSubstats>span:last-child{grid-column:1/-1;padding-left:24px}
+}
