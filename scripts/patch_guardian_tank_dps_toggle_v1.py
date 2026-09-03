@@ -132,13 +132,13 @@ def replace_guardian_block_meta_source(text: str) -> str:
 
 def patch_build_helpers(text: str) -> str:
     # Display the activity name only; the Tank/DPS suffix is metadata for Guardian filtering.
-    if 'data-guardian-role' not in text:
+    if 'data-build-role' not in text:
         pat = re.compile(r"  function buildCardHtml\(r\)\{.*?\n  \}\n  function applyRoleLoadouts", re.S)
         repl = r'''  function buildCardHtml(r){
-    const gm=String(r.name||'').match(/^(.*?) · (Tank|DPS)$/);
+    const gm=String(r.name||'').match(/^(.*?) · (Tank|DPS|Heals)$/);
     const displayName=gm?gm[1]:r.name;
-    const guardianAttr=gm?' data-guardian-role="'+gm[2].toLowerCase()+'"':'';
-    return '<article class="buildCard" data-role="'+esc(displayName)+'"'+guardianAttr+'>'
+    const roleAttr=gm?' data-build-role="'+gm[2].toLowerCase()+'"':'';
+    return '<article class="buildCard" data-role="'+esc(displayName)+'"'+roleAttr+'>'
       +'<header><div><h3>'+esc(displayName)+'<span class="roleBadge">'+esc(r.confidence)+'</span></h3><p>'+esc(r.subtitle)+'</p></div></header>'
       +'<div class="skillGroup"><span>Techniques</span><div>'+r.techniques.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
       +'<div class="skillGroup"><span>Charms</span><div>'+r.charms.map(x=>'<b>'+esc(x)+'</b>').join('')+'</div></div>'
@@ -201,7 +201,7 @@ def patch_meta_runtime(text: str) -> str:
         text = text.replace(old, new, 1)
 
     old = "    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{card.hidden=card.dataset.role!==wanted;});\n"
-    new = "    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{\n      const wrongActivity=card.dataset.role!==wanted;\n      const wrongGuardianRole=cls==='Guardian'&&card.dataset.guardianRole!==guardianMode;\n      card.hidden=wrongActivity||wrongGuardianRole;\n    });\n"
+    new = "    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{\n      const wrongActivity=card.dataset.role!==wanted;\n      const wrongGuardianRole=cls==='Guardian'&&card.dataset.buildRole!==guardianMode;\n      card.hidden=wrongActivity||wrongGuardianRole;\n    });\n"
     if old in text:
         text = text.replace(old, new, 1)
 
@@ -244,7 +244,7 @@ def patch_meta_source(text: str) -> str:
         text = text.replace(old, new, 1)
 
     old = "    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{card.hidden=card.dataset.role!==wanted;});\n"
-    new = "    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{\n      const wrongActivity=card.dataset.role!==wanted;\n      const wrongGuardianRole=cls==='Guardian'&&card.dataset.guardianRole!==guardianMode;\n      card.hidden=wrongActivity||wrongGuardianRole;\n    });\n"
+    new = "    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{\n      const wrongActivity=card.dataset.role!==wanted;\n      const wrongGuardianRole=cls==='Guardian'&&card.dataset.buildRole!==guardianMode;\n      card.hidden=wrongActivity||wrongGuardianRole;\n    });\n"
     if old in text:
         text = text.replace(old, new, 1)
 
@@ -357,7 +357,7 @@ ROLL_SRC.write_text(text, encoding='utf-8')
 # Final marker validation.
 for path in (INDEX, INJECT):
     text = path.read_text(encoding='utf-8')
-    required = [MARK, "role('Dungeon · Tank'", "role('Dungeon · DPS'", 'data-guardian-mode', 'data-guardian-role']
+    required = [MARK, "role('Dungeon · Tank'", "role('Dungeon · DPS'", 'data-guardian-mode', 'data-build-role']
     for token in required:
         if token not in text:
             raise RuntimeError(f'{path}: missing Guardian toggle token {token}')

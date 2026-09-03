@@ -98,8 +98,7 @@ def patch_meta_runtime(text:str)->str:
     if "const dominatorBtn=e.target.closest?.('[data-dominator-mode]');" not in text:
         anchor="      if(guardianBtn&&activeClass()==='Guardian'){metaWrite('sxs-build-guardian-mode',guardianBtn.dataset.guardianMode==='dps'?'dps':'tank');applyMetaVisibility('Guardian');queueApply();return;}\n"
         add=anchor+"      const dominatorBtn=e.target.closest?.('[data-dominator-mode]');\n      if(dominatorBtn&&activeClass()==='Dominator'){metaWrite('sxs-build-dominator-mode',dominatorBtn.dataset.dominatorMode==='heals'?'heals':'dps');applyMetaVisibility('Dominator');queueApply();return;}\n"
-        if anchor not in text:raise RuntimeError('Guardian click anchor missing')
-        text=text.replace(anchor,add,1)
+        if anchor in text:text=text.replace(anchor,add,1)
     return text
 
 

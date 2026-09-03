@@ -3,6 +3,7 @@ import re
 
 p=Path('index.html')
 text=p.read_text(encoding='utf-8')
+text=text.replace("  const S2_CLASSES=['Conqueror','Guardian','Destroyer','Dominator'];","  const S2_CLASSES=['Destroyer','Dominator','Conqueror','Guardian'];")
 
 # Remove any prior cleanup override so this stays idempotent.
 text=re.sub(r'\n?<!-- COMPANION_CURRENT_SEASON_CSS_START -->.*?<!-- COMPANION_CURRENT_SEASON_CSS_END -->\n?', '\n', text, flags=re.S)

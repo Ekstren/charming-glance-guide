@@ -43,11 +43,16 @@ T4_BLOCKS = {
       role('Tournament · 4v4','Team AoE + Formation Breaker acceleration',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Formation Breaker is the centerpiece in 4v4: buff/advance allies, then layer broad AoE and Laceration pressure across the enemy team.','Keep Void Bubble under coordinated focus. If another source already covers team tempo, the fourth Technique is the first flex slot.','Prydwen team core')
     ]''',
 'Dominator': r'''    Dominator:[
-      role('Dungeon','Hard-dungeon healer/support meta',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'Need more raw healing: Frenzy Totem → Healing Touch. If nobody is dying, Resurrection → Mantra of Blessings. Phantom Light is mandatory for the T4 healer shell.','Use the Heals stat profile for this card. Mandragora is the pure-heal lead until Pandarial becomes live and validated.','Prydwen healer core'),
-      role('Crucible / Conquest','Booster support for a stronger carry',['Radiant Restoration','Decoy Clone','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Overhealing','Mantra of Blessings'],'This is team-score optimization, not personal recount chasing: Decoy + Totem + Mantra amplify the carry while Dark Bullet still contributes Erosion/debuff value. Coordinate duplicates—multiple Decoy/Mantra effects may not stack efficiently.','If you are actually the damage carry or playing solo, use the high-EHR ST Dark bar instead of this booster setup.','Loot & Waifus + Global testing'),
-      role('Arena','Solo Dark burst / Erosion cash-out',['Abyssal Hand','Dark Starburst','Dark Bullet','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Mantra of Blessings','Shadow Vengeance'],'This is the simple current solo-PvP burst shell: apply Erosion, keep reliable direct Dark damage, then Termination cashes out. Mantra buffs you in solo play; Shadow Vengeance buys the finishing turn.','Do not force a pure-healer Arena bar unless your Healing Boost/SPD gear is unusually optimized; PvP healing is reduced.','Loot & Waifus Arena'),
-      role('Tournament · 2v2','Duo anti-tank pressure + revive utility',['Dark Bullet','Dark Starburst','Abyssal Hand','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Resurrection','Shadow Vengeance'],'2v2 needs more kill pressure than 4v4. Keep the Erosion/Termination threat, but trade the selfish Arena buff slot for Resurrection because restoring your only teammate can flip the match.','If your partner is a much stronger carry, Linked Misfortune or Abyssal Hand can flex to Mantra/Frenzy support instead.','PvP synthesis'),
-      role('Tournament · 4v4','Hybrid support / anti-tank utility',['Decoy Clone','Frenzy Totem','Dark Starburst','Abyssal Hand'],['Mantra of Blessings','Resurrection','Shadow Vengeance','Aberrancy'],'Do not default to full healing: Decoy pressures shield-heavy tanks, Totem + Mantra amplify the carry, Resurrection steals rounds, and Aberrancy is much better in broad debuff-heavy team fights than Arena.','If your team truly lacks sustain, Abyssal Hand → Radiant Restoration. Full-heal Tournament only makes sense on dedicated Healing Boost/SPD gear.','Community + guide PvP')
+      role('Dungeon · DPS','AoE Dark / Erosion clear',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Use the published T4 AoE core for dungeon packs. It keeps all four slots contributing damage instead of dragging the healer bar into a DPS role.','If Erosion is landing poorly, improve Effect Hit Rate before replacing the whole shell. Nyxarchon is the damage lead.','Prydwen AoE core'),
+      role('Crucible / Conquest · DPS','Single-target direct / Erosion hybrid',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'This is the published T4 single-target core: Starburst + Chaos Rune give reliable direct damage while Termination preserves Erosion payoff. With high Effect Hit Rate, Chaos Rune → Mana Blast raises the Erosion ceiling.','If a much stronger carry is in the party, Heals mode’s Decoy + Frenzy + Mantra support setup can produce more team score than selfish DPS.','Prydwen ST core'),
+      role('Arena · DPS','Single-target Dark pressure',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Arena is one target, so use the actual single-target shell instead of spending a slot on broad Abyssal Hand AoE. High Effect Hit Rate: Chaos Rune → Mana Blast.','If your current Chaos Rune is badly under-ranked or unreliable, test a direct-damage flex rather than forcing it. PvP healing is heavily reduced, so DPS is the normal Arena default.','Prydwen ST + PvP logic'),
+      role('Tournament · 2v2 · DPS','Duo kill pressure + revive',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance','Shadow Erosion','Linked Misfortune','Resurrection'],'Keep the compact single-target damage shell but reserve one Charm slot for Resurrection; reviving your only teammate can swing an entire 2v2 round.','If your partner is the true carry, switch to Heals mode for the support variant rather than weakening this DPS bar with half a support kit.','ST core + PvP synthesis'),
+      role('Tournament · 4v4 · DPS','AoE Dark pressure + revive',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance','Shadow Erosion','Linked Misfortune','Resurrection'],'Four enemy bodies finally justify the full AoE/Erosion shell. Resurrection replaces the selfish fourth damage Charm because its team-fight swing is unusually high.','If your comp is built around a hypercarry, Heals mode’s Decoy/Frenzy/Mantra support bar can be more valuable than personal damage.','Prydwen AoE + PvP synthesis'),
+      role('Dungeon · Heals','Hard-dungeon healer',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'This is the published T4 healer core. Need more raw healing: Frenzy Totem → Healing Touch. If nobody is dying, Resurrection → Mantra of Blessings.','Phantom Light is mandatory for the dedicated healer shell. Mandragora is the pure-healing lead until Pandarial is live and validated.','Prydwen healer core'),
+      role('Crucible / Conquest · Heals','Hypercarry support / boss score',['Radiant Restoration','Decoy Clone','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Overhealing','Mantra of Blessings'],'Large-group boss content is where Dominator should often stop chasing its own recount: Decoy + Frenzy + Mantra amplify the strongest carry while Radiant Restoration keeps one efficient heal available.','Only one Decoy can attach effectively and positioning matters. If your team already massively overkills the boss, DPS mode can be better; otherwise this is the support-first score bar.','Prydwen + Global support testing'),
+      role('Arena · Heals','Specialist sustain hybrid',['Rejuvenating Rain','Radiant Restoration','Dark Bullet','Shadow of Termination'],['Phantom Light','Healing Mastery','Shadow Vengeance','Mantra of Blessings'],'Healing is reduced in PvP, so this is intentionally a hybrid rather than a full four-heal bar: enough sustain to exploit a real Healing Boost/SPD set while retaining kill pressure.','Only use Heals mode in Arena when your healing gear is genuinely optimized. Otherwise the DPS Arena card is the stronger default.','PvP specialist synthesis'),
+      role('Tournament · 2v2 · Heals','Duo sustain / carry support',['Rejuvenating Rain','Radiant Restoration','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Resurrection','Shadow Vengeance'],'Keep the partner alive, buff their output, and retain Resurrection as the highest-impact team utility. One Dark attack prevents the bar from becoming dead weight between heals.','PvP healing is reduced; if your Healing Boost/SPD cannot overcome that penalty, use DPS mode and keep Resurrection there instead.','PvP support synthesis'),
+      role('Tournament · 4v4 · Heals','Hybrid team support',['Radiant Restoration','Decoy Clone','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Resurrection','Mantra of Blessings'],'4v4 rewards buffs, Decoy pressure and Resurrection more than raw healing spam. This is the support-oriented Tournament bar, not a pure healer.','If your gear is exceptionally healing-focused, Mantra can flex to Overhealing. Otherwise keep the team-damage support because PvP healing is reduced.','Global team-PvP synthesis')
     ]'''
 }
 
@@ -91,6 +96,7 @@ META_JS = r'''
   const metaMode=()=>META_MODES.includes(metaRead('sxs-build-meta-mode','Dungeon'))?metaRead('sxs-build-meta-mode','Dungeon'):'Dungeon';
   const metaTournamentSize=()=>metaRead('sxs-build-tournament-size','4v4')==='2v2'?'2v2':'4v4';
   const guardianBuildMode=()=>metaRead('sxs-build-guardian-mode','tank')==='dps'?'dps':'tank';
+  const dominatorBuildMode=()=>metaRead('sxs-build-dominator-mode','dps')==='heals'?'heals':'dps';
   function ensureGuardianRoleControl(cls){
     if(cls!=='Guardian') return;
     const guide=document.querySelector('.builds .guideSummary');
@@ -142,8 +148,9 @@ META_JS = r'''
     const grid=document.querySelector('.builds .buildGrid');
     if(!grid||!META_CLASSES.has(cls)) return;
     ensureMetaControls(cls);
-    const mode=metaMode(), size=metaTournamentSize(), guardianMode=guardianBuildMode();
+    const mode=metaMode(), size=metaTournamentSize(), guardianMode=guardianBuildMode(), dominatorMode=dominatorBuildMode();
     document.querySelectorAll('.builds .guardianModeTabs [data-guardian-mode]').forEach(b=>{const on=b.dataset.guardianMode===guardianMode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+    document.querySelectorAll('.builds .dominatorModeTabs [data-dominator-mode]').forEach(b=>{const on=b.dataset.dominatorMode===dominatorMode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
     const wanted=mode==='Tournament'?'Tournament · '+size:mode;
     document.querySelectorAll('.builds .metaBuildTabs button').forEach(b=>b.classList.toggle('active',b.dataset.metaMode===mode));
     const tour=document.querySelector('.builds .metaTournamentTabs');
@@ -153,8 +160,9 @@ META_JS = r'''
     }
     grid.querySelectorAll(':scope > .buildCard').forEach(card=>{
       const wrongActivity=card.dataset.role!==wanted;
-      const wrongGuardianRole=cls==='Guardian'&&card.dataset.guardianRole!==guardianMode;
-      card.hidden=wrongActivity||wrongGuardianRole;
+      const selectedRole=cls==='Guardian'?guardianMode:(cls==='Dominator'?dominatorMode:'');
+      const wrongRole=(cls==='Guardian'||cls==='Dominator')&&card.dataset.buildRole!==selectedRole;
+      card.hidden=wrongActivity||wrongRole;
     });
   }
 '''
@@ -194,7 +202,7 @@ def patch_inject(text: str) -> str:
 
     # Click behavior for the new primary and Tournament-size toggles.
     old = "    if(root) new MutationObserver(queueApply).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','aria-pressed']});"
-    new = old + "\n    root?.addEventListener('click',e=>{\n      const guardianBtn=e.target.closest?.('[data-guardian-mode]');\n      if(guardianBtn&&activeClass()==='Guardian'){metaWrite('sxs-build-guardian-mode',guardianBtn.dataset.guardianMode==='dps'?'dps':'tank');applyMetaVisibility('Guardian');queueApply();return;}\n      const modeBtn=e.target.closest?.('[data-meta-mode]');\n      if(modeBtn){metaWrite('sxs-build-meta-mode',modeBtn.dataset.metaMode);applyMetaVisibility(activeClass());return;}\n      const sizeBtn=e.target.closest?.('[data-tournament-size]');\n      if(sizeBtn){metaWrite('sxs-build-tournament-size',sizeBtn.dataset.tournamentSize);applyMetaVisibility(activeClass());}\n    });"
+    new = old + "\n    root?.addEventListener('click',e=>{\n      const guardianBtn=e.target.closest?.('[data-guardian-mode]');\n      if(guardianBtn&&activeClass()==='Guardian'){metaWrite('sxs-build-guardian-mode',guardianBtn.dataset.guardianMode==='dps'?'dps':'tank');applyMetaVisibility('Guardian');queueApply();return;}\n      const dominatorBtn=e.target.closest?.('[data-dominator-mode]');\n      if(dominatorBtn&&activeClass()==='Dominator'){metaWrite('sxs-build-dominator-mode',dominatorBtn.dataset.dominatorMode==='heals'?'heals':'dps');applyMetaVisibility('Dominator');queueApply();return;}\n      const modeBtn=e.target.closest?.('[data-meta-mode]');\n      if(modeBtn){metaWrite('sxs-build-meta-mode',modeBtn.dataset.metaMode);applyMetaVisibility(activeClass());return;}\n      const sizeBtn=e.target.closest?.('[data-tournament-size]');\n      if(sizeBtn){metaWrite('sxs-build-tournament-size',sizeBtn.dataset.tournamentSize);applyMetaVisibility(activeClass());}\n    });"
     if old not in text:
         raise RuntimeError('DOMContentLoaded observer anchor missing')
     text = text.replace(old, new, 1)
@@ -208,10 +216,10 @@ def patch_inject(text: str) -> str:
 
 
 def disable_dominator_card_filter(text: str) -> str:
-    # The old Dominator DPS/Heals toggle should continue to control stat/priority
-    # panels, but activity-driven loadout cards must not be hidden by that role toggle.
+    # The old detached Dominator card filter stays disabled; META_BUILD_MODES_V1 now
+    # owns both activity and DPS/Heals card visibility while the base toggle owns stats.
     pat = re.compile(r"\n    host\.querySelectorAll\('\.buildGrid \.buildCard'\)\.forEach\(card=>\{.*?\n    \}\);", re.S)
-    replacement = "\n    // Loadout cards are activity-driven by META_BUILD_MODES_V1; the Dominator DPS/Heals toggle only changes stat/priority panels."
+    replacement = "\n    // Dominator loadout cards are role/activity-driven by META_BUILD_MODES_V1; legacy detached card filtering stays disabled."
     out, n = pat.subn(replacement, text, count=1)
     if n != 1 and 'activity-driven by META_BUILD_MODES_V1' not in text:
         raise RuntimeError('Could not disable old Dominator card-role filter')
