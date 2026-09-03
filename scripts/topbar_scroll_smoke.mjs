@@ -14,8 +14,14 @@ async function check(viewport,label){
   assert(await bar.count()===1, `${label}: .topbar missing`);
   const pos = await bar.evaluate(el=>getComputedStyle(el).position);
   assert(pos!=='sticky' && pos!=='fixed', `${label}: topbar is still ${pos}`);
+
+  // Guarantee enough scroll range so the test checks header behavior rather than
+  // whichever section happens to be visible/default on this build of the site.
+  await page.evaluate(()=>{ document.body.style.minHeight='2500px'; });
   await page.evaluate(()=>window.scrollTo(0,350));
   await page.waitForTimeout(80);
+  const scrollY = await page.evaluate(()=>window.scrollY);
+  assert(scrollY>=300, `${label}: test page did not create enough scroll range (${scrollY}px)`);
   const box = await bar.boundingBox();
   assert(box && box.y + box.height < 0, `${label}: topbar did not scroll fully out of view (y=${box?.y}, h=${box?.height})`);
   await page.close();
