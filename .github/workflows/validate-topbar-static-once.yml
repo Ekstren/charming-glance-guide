@@ -1,0 +1,21 @@
+name: Validate non-sticky topbar once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/validate-topbar-static-once.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Check desktop and mobile header scrolling
+        run: node scripts/topbar_scroll_smoke.mjs
