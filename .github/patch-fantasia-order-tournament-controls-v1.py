@@ -59,6 +59,33 @@ new_visibility="""    const wanted=mode==='Tournament'?'Tournament · '+size:mod
       card.hidden=wrongActivity||wrongRole;
     });"""
 
+old_fanto="""    const guardianDps=cls==='Guardian'&&typeof guardianBuildMode==='function'&&guardianBuildMode()==='dps';
+    if(role==='Arena'){"""
+new_fanto="""    const guardianDps=cls==='Guardian'&&typeof guardianBuildMode==='function'&&guardianBuildMode()==='dps';
+    const ascent=String(title||'').startsWith('Fantasia Ascent');
+    if(ascent&&cls==='Destroyer') return [
+      pick('Nyxarchon','Best damage-first Ascent lead: strong Dark AoE plus stacking DEF reduction helps beat high-DEF floors.'),
+      pick('Aegiswing','Use when deaths are ending the push before your rotation can finish.'),
+      pick('Armopi','Best no-shop survival option: DEF stacking and shields can buy the extra turn Destroyer needs.'),
+      pick('Zeioletus','No-shop damage alternative when survival is already comfortable.')
+    ];
+    if(ascent&&cls==='Dominator'){
+      const heals=typeof dominatorBuildMode==='function'&&dominatorBuildMode()==='heals';
+      if(heals) return [
+        pick('Herbote','Best S2 solo-sustain lead when evolved: self-healing, cleanse chance, and owner healing directly support long Ascent fights.'),
+        pick('Aegiswing','Safety alternative when burst damage is killing you before the healing loop stabilizes.'),
+        pick('Mandragora','No-shop healing alternative for ally-targeted Technique builds, especially before Herbote is evolved.'),
+        pick('Terragon','Damage-mitigation alternative when lowering enemy ATK/DMG matters more than extra raw healing.')
+      ];
+      return [
+        pick('Nyxarchon','Best DPS Ascent lead: Dark damage matches Dominator and the DEF reduction improves the whole damage loop.'),
+        pick('Aegiswing','Survival alternative when you are losing the floor before Erosion and Dark damage can ramp.'),
+        pick('Zeioletus','Best straightforward no-shop damage alternative.'),
+        pick('Sylvaerie','SPD-focused alternative; test it against Zeioletus if extra actions outperform direct pet damage.')
+      ];
+    }
+    if(role==='Arena'){"""
+
 for path in TARGETS:
     text=path.read_text(encoding='utf-8')
     for old,new,label in [
@@ -67,16 +94,19 @@ for path in TARGETS:
         (old_css,new_css,'Tournament scenario CSS'),
         (old_mobile,new_mobile,'mobile Tournament CSS'),
         (old_visibility,new_visibility,'Tournament visibility logic'),
+        (old_fanto,new_fanto,'Fantasia Fantomon override'),
     ]:
         count=text.count(old)
         if count<1:
             raise SystemExit(f'{path}: missing {label} anchor')
         text=text.replace(old,new)
     path.write_text(text,encoding='utf-8')
-    print(f'{path}: moved Fantasia and nested Tournament size controls in scenario tab')
+    print(f'{path}: moved Fantasia, fixed Tournament scenario controls, and added Ascent Fantomon picks')
 
 smoke=Path('scripts/site_smoke_test.mjs')
 text=smoke.read_text(encoding='utf-8')
+text=text.replace("assert(await page.locator('#buildContent .metaBuildTabs button').count()===5, 'build activity selector does not contain five modes');",
+                  "assert(await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').count()===5, 'build activity selector does not contain five modes');")
 old_test="""// Tournament size buttons live inside the active Tournament card.
 await waitBuild('Conqueror');
 await page.locator('#buildContent .metaBuildTabs button[data-meta-mode=\"Tournament\"]').click();
@@ -99,7 +129,25 @@ await waitBuild('Conqueror');
 const scenarioOrder=await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').evaluateAll(xs=>xs.map(x=>x.dataset.metaMode));
 assert(JSON.stringify(scenarioOrder)===JSON.stringify(['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena','Tournament']), `activity order wrong: ${scenarioOrder.join(' | ')}`);
 
+// Rechecked Ascent Fantomon choices: Destroyer and Dominator use push-specific pools.
+await waitBuild('Destroyer');
+await page.locator('#buildContent .metaBuildTabs [data-meta-mode=\"Fantasia Ascent\"]').click();
+await page.waitForTimeout(80);
+let ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
+assert(JSON.stringify(ascentPets)===JSON.stringify(['Nyxarchon','Aegiswing','Armopi']), `Destroyer Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+await waitBuild('Dominator');
+await page.locator('#buildContent .metaBuildTabs [data-meta-mode=\"Fantasia Ascent\"]').click();
+await page.locator('#buildContent button[data-dominator-mode=\"dps\"]').click();
+await page.waitForTimeout(80);
+ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
+assert(JSON.stringify(ascentPets)===JSON.stringify(['Nyxarchon','Aegiswing','Zeioletus']), `Dominator DPS Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+await page.locator('#buildContent button[data-dominator-mode=\"heals\"]').click();
+await page.waitForTimeout(80);
+ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
+assert(JSON.stringify(ascentPets)===JSON.stringify(['Herbote','Aegiswing','Mandragora']), `Dominator Heals Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+
 // Tournament size controls live inside the Tournament scenario tab and are interactive.
+await waitBuild('Conqueror');
 await page.locator('#buildContent .metaBuildTabs [data-meta-mode=\"Tournament\"]').click();
 await page.waitForTimeout(80);
 const tournamentScenario=page.locator('#buildContent .metaTournamentScenario');
@@ -112,7 +160,7 @@ await tournamentTabs.locator('[data-tournament-size=\"4v4\"]').click();
 await page.waitForTimeout(80);
 let tournamentTitle=(await buildTitles())[0]||'';
 assert(/^Tournament · 4v4/i.test(tournamentTitle), `4v4 selector did not switch build: ${tournamentTitle}`);
-await tournamentTabs.locator('[data-tournament-size=\"2v2\"]').click();
+await page.locator('#buildContent .metaTournamentScenario [data-tournament-size=\"2v2\"]').click();
 await page.waitForTimeout(80);
 tournamentTitle=(await buildTitles())[0]||'';
 assert(/^Tournament · 2v2/i.test(tournamentTitle), `2v2 selector did not switch build: ${tournamentTitle}`);
@@ -130,4 +178,4 @@ if old_test not in text:
     raise SystemExit('smoke: old Tournament placement block missing')
 text=text.replace(old_test,new_test,1)
 smoke.write_text(text,encoding='utf-8')
-print('scripts/site_smoke_test.mjs: added order + interactive nested Tournament regression coverage')
+print('scripts/site_smoke_test.mjs: added scenario interaction and Ascent Fantomon regression coverage')
