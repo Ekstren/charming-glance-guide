@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '22'
       - name: Apply Fantasia Ascent builds
-        run: python .github/patch-fantasia-ascent-builds-v1.py
+        run: python .github/patch-fantasia-ascent-builds-v2.py
       - name: Validate diff
         run: |
           git diff --check
@@ -31,6 +31,7 @@ jobs:
           grep -q "role('Fantasia Ascent · DPS'" .github/build-fantomons-inject.html
           grep -q "role('Fantasia Ascent · Heals'" .github/build-fantomons-inject.html
           grep -q "if(t==='fantasia ascent') return 'Solo'" .github/build-fantomons-inject.html
+          grep -q "role==='Solo'.*cls==='Dominator'.*dominatorBuildMode()==='heals'" .github/build-fantomons-inject.html
       - name: Install Playwright
         run: |
           npm init -y >/dev/null 2>&1
