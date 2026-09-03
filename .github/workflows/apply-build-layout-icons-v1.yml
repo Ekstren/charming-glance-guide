@@ -7,6 +7,7 @@ on:
       - 'assets/build-layout-icons-v1.css'
       - 'assets/build-layout-icons-v1.js'
       - 'scripts/apply_build_layout_icons_v1.py'
+      - 'scripts/build_roll_responsive_smoke.mjs'
       - '.github/workflows/apply-build-layout-icons-v1.yml'
   workflow_dispatch:
 
@@ -26,6 +27,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/apply_build_layout_icons_v1.py
           node --check assets/build-layout-icons-v1.js
+          node --check scripts/build_roll_responsive_smoke.mjs
           grep -Fq 'BUILD_HERO_LAYOUT_ICONS_V1' assets/build-layout-icons-v1.css
           grep -Fq 'BUILD_HERO_LAYOUT_ICONS_V1' assets/build-layout-icons-v1.js
 
@@ -47,14 +49,17 @@ jobs:
       - name: Run full site browser smoke
         run: node scripts/site_smoke_test.mjs
 
+      - name: Run responsive Roll Guide smoke
+        run: node scripts/build_roll_responsive_smoke.mjs
+
       - name: Commit and push
         run: |
           if git diff --quiet -- index.html; then
-            echo 'Layout/icon assets are already linked.'
+            echo 'Layout assets are already linked.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Apply build layout and icons'
+          git commit -m 'Apply build layout assets'
           git push
