@@ -5,6 +5,7 @@
 /* BUILD_ARENA_TOURNAMENT_SPLIT_V1 */
 /* SAGE_TOURNAMENT_HYBRID_V1 */
 /* ARENA_TOURNAMENT_RESTORE_V2 */
+/* META_BUILD_MODES_V1 */
 .builds .buildRoleTabs{display:none!important}
 .buildCard .fantomonPair{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
 .buildCard .fantomonPair>span{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;font-size:9px;font-weight:850;display:block}
@@ -17,6 +18,29 @@
 .buildCard .fantomonPick.main{border-color:color-mix(in srgb,var(--accent-strong) 48%,var(--line))}
 .buildCard .roleBadge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 6px;margin-left:6px;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
 @media(max-width:620px){.buildCard .fantomonRankList{grid-template-columns:1fr}}
+
+/* META_BUILD_MODES_V1 */
+.builds .metaBuildControls{display:flex;align-items:center;gap:7px;margin:10px 0;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.builds .metaBuildTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;flex:1;min-width:0}
+.builds .metaBuildTabs button,.builds .metaTournamentTabs button{border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850;min-height:36px;padding:8px 10px}
+.builds .metaBuildTabs button.active,.builds .metaTournamentTabs button.active{background:var(--accent-strong);color:#fff}
+.builds .metaTournamentTabs{display:flex;gap:4px;padding-left:7px;border-left:1px solid var(--line)}
+.builds .metaTournamentTabs[hidden]{display:none!important}
+.builds .buildGrid.metaModeGrid{grid-template-columns:1fr!important;margin-top:0}
+.builds .buildGrid.metaModeGrid>.buildCard[hidden]{display:none!important}
+@media(min-width:761px){
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:18px;align-items:start}
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>header,
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>ul,
+  .builds .buildGrid.metaModeGrid>.buildCard:not([hidden])>.fantomonPair{grid-column:1/-1}
+}
+@media(max-width:620px){
+  .builds .metaBuildControls{display:block}
+  .builds .metaBuildTabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .builds .metaTournamentTabs{border-left:0;border-top:1px solid var(--line);padding:5px 0 0;margin-top:5px}
+  .builds .metaTournamentTabs button{flex:1}
+}
+
 </style>
 <script>
 (function(){
@@ -51,31 +75,32 @@
       role('Tournament','Hybrid team pressure / revive utility',['Mana Blast','Abyssal Hand','Radiant Restoration','Frenzy Totem'],['Resurrection','Shadow Vengeance','Shadow Erosion','Linked Misfortune'],'Tournament should not default to full healing: Mana Blast + Abyssal Hand provide Dark pressure, Erosion and Slow while Frenzy Totem buffs the team and Radiant Restoration gives one efficient group-heal slot.','PvP healing is heavily reduced. Only move toward the dedicated Healing card when your Healing Boost/SPD are genuinely built for it; otherwise keep Resurrection + damage/debuff utility.','Community hybrid PvP')
     ],
     Conqueror:[
-      role('All-Content','Default S2 build for almost everything',['Flash Fire','Flame Aura','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'High Crit: Insightful Eye → Soul Breaker. If you are safe in PvE, Indomitable Will → Soul Splash. Flame Aura → Darkness Descends for mobility/dispel and PvP.','Always keep Indomitable Will for PvP.','Guide consensus'),
-      role('Dragon','Dedicated sustained boss damage',['Flame Aura','Blade Storm','Flash Fire','Flickering Blade'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Blazing Clash'],'Once Crit is high enough, Insightful Eye → Crit Mastery.','If surviving is the real damage loss, Blazing Clash → Indomitable Will.','Guide consensus'),
-      role('Arena','Solo PvP / anti-Guardian pressure',['Darkness Descends','Doom Blade','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Breaker','Indomitable Will'],'Current community Arena testing leans into Dispel, DEF reduction and fewer reflection-triggering hits against Guardians. If Crit is still low, Soul Breaker → Insightful Eye.','Accuracy is a premium PvP roll into high-Block Guardians; keep Indomitable Will even when you outpower the opponent.','Community Arena'),
-      role('Tournament','Team PvP mobility / reach',['Flash Fire','Darkness Descends','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'Use the safer Prydwen PvP core for team fights: Flash Fire keeps reach while Darkness Descends gives mobility and Dispel. High Crit: Insightful Eye → Soul Breaker.','Keep Indomitable Will; coordinated team focus punishes greedier Dragon-style charm bars.','Prydwen team PvP')
+      role('Dungeon','Fast-clear S2 dungeon meta',['Flash Fire','Flame Aura','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Splash','Insightful Eye'],'High Crit: Insightful Eye → Soul Breaker. If a room is too dangerous, Soul Splash → Indomitable Will. Darkness Descends can replace Flame Aura when Dispel or extra movement matters.','Nyxarchon is the damage default; use Aegiswing only when dying is the real limiter.','Current Global meta'),
+      role('Crucible / Conquest','Single-target score / raid-boss meta',['Flame Aura','Blade Storm','Flash Fire','Flickering Blade'],['Piercing Assault','Tactical Adaptation','Blazing Clash','Insightful Eye'],'At high enough Crit, Insightful Eye → Crit Mastery. This is the greedier Dragon-style score bar: no Indomitable unless survival is actually costing attempts.','Keep the four-Technique rotation intact; rank/ascension can matter more than tiny theoretical swaps.','Prydwen score core'),
+      role('Arena','Solo PvP / anti-Guardian pressure',['Darkness Descends','Doom Blade','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Breaker','Indomitable Will'],'Darkness Descends is the key Dispel/mobility slot. If you need sustain more than Doom Blade pressure, Doom Blade → Soul Piercer. Low Crit: Soul Breaker → Insightful Eye.','Accuracy is premium into high-Block Guardians. Keep Indomitable Will even when you outpower the target.','Current PvP synthesis'),
+      role('Tournament · 2v2','Duo PvP: sustain + kill pressure',['Darkness Descends','Soul Piercer','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Breaker','Indomitable Will'],'Soul Piercer gives the duo bar more self-sustain while Darkness keeps Dispel. Low Crit: Soul Breaker → Insightful Eye. If your partner already supplies enough control, Soul Piercer can flex back to Doom Blade for harder burst.','Do not greed away Indomitable in 2v2; one death is half the team.','Current Global PvP'),
+      role('Tournament · 4v4','Team PvP: reach, Dispel and coordinated tempo',['Flash Fire','Darkness Descends','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'High Crit: Insightful Eye → Soul Breaker. With two Conquerors, the higher-rank Gale Dance user can flex it in for the team SPD boost while the other keeps the full damage bar.','Flash Fire keeps reach in a spread-out fight; Darkness is retained for buff removal. Indomitable stays mandatory under focus fire.','Current Global PvP')
     ],
     Guardian:[
-      role('Dungeon Tank','Primary S2 party tank',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Need more Taunt: Valor Surge → Hamper Strike. Need more damage: Desperate Protection → Swirling Blade or Star Shattering Slash.','If the team still dies, Iron Fortress is the first extra defensive flex.','Prydwen core'),
-      role('Water Offensive','Cold-stacking offensive Guardian',['Swirling Blade','Lunarwater Threads','Seismic Tide','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Potential Rebirth'],'Use for AoE and content where Guardian needs to contribute meaningful personal damage.','Potential Rebirth is the safety slot; other damage/sustain charms can replace it when appropriate.','Prydwen core'),
-      role('Support / Boss','Boss, Chaos and group support',['Valor Surge','Leap Attack','Holy Purification','Lunarwater Threads'],['Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil'],'If there is nothing worth dispelling, Holy Purification → damage. Lunarwater Threads → Seismic Tide for steadier Cold stacking.','This is the support setup both Prydwen and AllClash point toward for boss/group content.','Guide consensus'),
-      role('Arena','Solo block / reflect wall',['Luminous Shield','Forceful Charge','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Soul Protection'],'Solo Arena does not benefit from ally-protection charms, so stay self-focused: Block, shields, Rebound and enough threat to punish attackers.','Soul Protection is the default fourth charm. If your natural Block is still low, Soul Protection → Block Awareness. If Pandarial and your ranks support it, Luminous Shield → Light Sword Array is the aggressive Technique flex.','Guide-derived Arena'),
-      role('Tournament','Taunt / ally protection',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Soul Protection','Iron Fortress','Oath of Vigil'],'This is where Oath of Vigil belongs: Hamper Strike and Heart of Challenge control targeting while Oath protects the ally most likely to be bursted. Soul Protection adds the strongest general opening survival layer.','Iron Fortress and Oath of Vigil remain the team-PvP core; Soul Protection replaces Holy Aegis here for stronger immediate effective HP under coordinated focus.','Prydwen + current Guardian PvP')
+      role('Dungeon','Primary S2 party-tank meta',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Need more Taunt: Valor Surge → Hamper Strike. If the group is already safe, Desperate Protection → Swirling Blade or Star Shattering Slash for faster clears.','If the team still dies, Iron Fortress is the first extra defensive flex. Aegiswing is the default lead.','Prydwen dungeon core'),
+      role('Crucible / Conquest','Carry-support / boss-score meta',['Valor Surge','Leap Attack','Holy Purification','Lunarwater Threads'],['Frigid Aura','Frigid Glint','Iron Fortress','Oath of Vigil'],'This bar exists to make the strongest carry better. If there is no buff worth dispelling, Holy Purification → damage. Lunarwater Threads → Seismic Tide for steadier Cold stacking.','Kels is the default boss-support Fantomon when Dispel/DEF Down matters; Nyxarchon is the greedier damage-amplification option.','Prydwen support core'),
+      role('Arena','Solo block / reflect wall',['Luminous Shield','Forceful Charge','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Soul Protection'],'If your natural Block is not high enough, Soul Protection → Block Awareness. The goal is to survive the opening burst and punish repeated hits rather than imitate a DPS class.','Aegiswing is the safest Arena lead. Against weak pressure, one defensive slot can flex to offense.','Meta reflect synthesis'),
+      role('Tournament · 2v2','Duo frontline: protect one carry and still threaten',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Rebound','Iron Fortress','Oath of Vigil'],'Oath of Vigil is much stronger here than in Arena because there is exactly one partner to protect. Rebound gives the smaller fight real punishment while Hamper Strike + Heart control targeting.','If focus fire is overwhelming, Rebound → Soul Protection. If your partner is the tankier unit, Holy Aegis is a valid self-survival flex.','Team-PvP synthesis'),
+      role('Tournament · 4v4','Full-team tank: Taunt + ally protection',['Hamper Strike','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Soul Protection','Iron Fortress','Oath of Vigil'],'This is the maximum team-protection shell: reliable Taunt, opening effective HP, group mitigation and Oath protection on the ally most likely to be bursted.','Do not swap into the Water damage bar unless your team already has another real frontline.','Prydwen + Global PvP')
     ],
     Destroyer:[
-      role('AoE','Default S2 mixed-wave damage',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Best general setup for mixed packs and boss+mob encounters.','Strong accounts can replace Void Bubble with more offense.','Guide consensus'),
-      role('Single Target','Boss-focused Destroyer',['Formation Breaker','Divine Wrath','Wind Blade Spiral','Thunder of Judgment'],['Rapid Cast','Void Bubble','Mana Surge','Radiant Sear'],'Wind Blade Spiral → Tempest Sphere if it tests better; on small bosses Divine Wrath → Meteoric Flames.','Mana Surge → Overload Protection when a little extra survival is enough to stabilize the fight.','Guide consensus'),
-      role('Fire AoE','Dedicated horde-clear setup',['Formation Breaker','Fiery Star Trail','Fireball','Meteoric Flames'],['Rapid Cast','Void Bubble','Explosive Spirit','Fiery Burst'],'Use specifically for dense mob waves; Fiery Burst is the engine of the build.','Do not default to this against bosses or small packs just because it is a distinct element build.','Guide consensus'),
-      role('Arena','Wind control / solo tempo',['Tempest Sphere','Wind Blade Spiral',"Wind's Delight",'Howling Hurricane'],['Cyclone Lament','Repelling Wind',"Wind's Shadow",'Void Bubble'],'Wind is the cleanest solo-PvP identity: movement pressure, knockback/delay and Laceration while Void Bubble buys the extra turn a squishy Destroyer needs.','Repelling Wind is specifically valuable in PvP; keep enough Effect Hit Rate for the control/debuff package to matter.','Guide + community Arena'),
-      role('Tournament','Team AoE / Formation Breaker',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Formation Breaker matters much more in team PvP because it can buff and advance allies; the rest of the bar keeps broad AoE pressure.','Keep Void Bubble. If your team already supplies tempo buffs, Formation Breaker can flex to another damaging/control Technique.','Guide-derived team PvP')
+      role('Dungeon','Fire AoE horde-clear meta',['Formation Breaker','Fiery Star Trail','Fireball','Meteoric Flames'],['Rapid Cast','Void Bubble','Explosive Spirit','Fiery Burst'],'Fire is the dedicated dungeon/horde build because Fiery Burst scales off repeated Fire triggers across packs. If the room is boss-heavy and packs survive poorly, swap to the mixed AoE core instead.','Strong accounts can drop Void Bubble for offense, but a dead Destroyer loses more time than the greed gains.','Prydwen + Global testing'),
+      role('Crucible / Conquest','Single-target score meta',['Formation Breaker','Divine Wrath','Wind Blade Spiral','Thunder of Judgment'],['Rapid Cast','Mana Surge','Radiant Sear','Incarnation of Light'],'Formation Breaker is non-negotiable and also accelerates a stronger carry. Wind Blade Spiral → Wind\'s Delight or Tempest Sphere if your ranks/dummy tests win; high-hit Wind\'s Delight can overperform through Radiant Sear procs.','If survival matters, Incarnation of Light → Void Bubble. On small bosses, Divine Wrath → Meteoric Flames can test better.','Guide + score testing'),
+      role('Arena','Wind control / solo tempo',['Tempest Sphere','Wind Blade Spiral',"Wind's Delight",'Howling Hurricane'],['Cyclone Lament','Repelling Wind',"Wind's Shadow",'Void Bubble'],'Mono-Wind gives the cleanest solo-PvP identity: movement pressure, Laceration, knockback/delay and enough repeated hits to keep pressure on one target.','Keep Void Bubble unless you massively outgear the opponent; fragile casters usually need the extra turn.','Guide + community PvP'),
+      role('Tournament · 2v2','Duo control + Formation Breaker tempo',['Formation Breaker','Tempest Sphere','Wind Blade Spiral',"Wind's Delight"],['Rapid Cast','Void Bubble','Repelling Wind','Cyclone Lament'],'Formation Breaker gains value because its action acceleration can swing your partner\'s turn order, while the rest of the bar keeps reliable player-sized Wind pressure.','If your teammate already supplies control, Repelling Wind can flex to Radiant Sear for more kill pressure.','Meta synthesis'),
+      role('Tournament · 4v4','Team AoE + Formation Breaker acceleration',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Formation Breaker is the centerpiece in 4v4: buff/advance allies, then layer broad AoE and Laceration pressure across the enemy team.','Keep Void Bubble under coordinated focus. If another source already covers team tempo, the fourth Technique is the first flex slot.','Prydwen team core')
     ],
     Dominator:[
-      role('AoE DPS','Legacy T3 Erosion remains the T4 AoE build',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Dominator gains no better T4 AoE package, so the Arcanist AoE core remains correct.','Effect Hit Rate remains essential for reliable Erosion.','Guide consensus'),
-      role('Single Target DPS','T4 boss / direct-damage hybrid',['Dark Bullet','Dark Starburst','Chaos Rune','Shadow of Termination'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'High EHR: Chaos Rune → Mana Blast for the higher Erosion ceiling. Frenzy Totem + Soul Pact Resonance is another viable hybrid depending on ranks/stats.','The listed direct-damage hybrid is safer when Erosion landing is inconsistent.','Guide consensus'),
-      role('Healing','Primary T4 healer/support',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'Need more raw healing: Frenzy Totem → Healing Touch. If nobody needs Resurrection, use Mantra of Blessings; if you personally die early, use Shadow Vengeance.','Phantom Light is mandatory for the T4 healer identity.','Guide consensus'),
-      role('Arena','Solo Arena burst / utility',['Abyssal Hand','Dark Starburst','Dark Bullet','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Mantra of Blessings','Shadow Vengeance'],'This follows the published Loot & Waifus Solo PvP shell: reliable Dark pressure plus Mantra utility instead of forcing a full healer bar.','A healing hybrid is possible, but pure sustain has a much higher gear requirement in solo PvP.','Loot & Waifus Arena'),
-      role('Tournament','Hybrid support / anti-tank pressure',['Decoy Clone','Frenzy Totem','Dark Starburst','Abyssal Hand'],['Mantra of Blessings','Resurrection','Shadow Vengeance',"Night's Blessing"],'Use Dominator as a support/sub-DPS, not a pure healer: Decoy Clone pressures shield-heavy tanks, Frenzy Totem + Mantra amplify the carry, and Dark Starburst/Abyssal Hand keep meaningful direct pressure and Slow utility.','If your team truly needs healing, Abyssal Hand → Radiant Restoration. Full healing should be reserved for unusually high Healing Boost/SPD setups because PvP cuts healing effectiveness.','Community hybrid PvP')
+      role('Dungeon','Hard-dungeon healer/support meta',['Waterling Summon','Rejuvenating Rain','Radiant Restoration','Frenzy Totem'],['Phantom Light','Healing Mastery','Overhealing','Resurrection'],'Need more raw healing: Frenzy Totem → Healing Touch. If nobody is dying, Resurrection → Mantra of Blessings. Phantom Light is mandatory for the T4 healer shell.','Use the Heals stat profile for this card. Mandragora is the pure-heal lead until Pandarial becomes live and validated.','Prydwen healer core'),
+      role('Crucible / Conquest','Booster support for a stronger carry',['Radiant Restoration','Decoy Clone','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Overhealing','Mantra of Blessings'],'This is team-score optimization, not personal recount chasing: Decoy + Totem + Mantra amplify the carry while Dark Bullet still contributes Erosion/debuff value. Coordinate duplicates—multiple Decoy/Mantra effects may not stack efficiently.','If you are actually the damage carry or playing solo, use the high-EHR ST Dark bar instead of this booster setup.','Loot & Waifus + Global testing'),
+      role('Arena','Solo Dark burst / Erosion cash-out',['Abyssal Hand','Dark Starburst','Dark Bullet','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Mantra of Blessings','Shadow Vengeance'],'This is the simple current solo-PvP burst shell: apply Erosion, keep reliable direct Dark damage, then Termination cashes out. Mantra buffs you in solo play; Shadow Vengeance buys the finishing turn.','Do not force a pure-healer Arena bar unless your Healing Boost/SPD gear is unusually optimized; PvP healing is reduced.','Loot & Waifus Arena'),
+      role('Tournament · 2v2','Duo anti-tank pressure + revive utility',['Dark Bullet','Dark Starburst','Abyssal Hand','Shadow of Termination'],['Linked Misfortune','Shadow Erosion','Resurrection','Shadow Vengeance'],'2v2 needs more kill pressure than 4v4. Keep the Erosion/Termination threat, but trade the selfish Arena buff slot for Resurrection because restoring your only teammate can flip the match.','If your partner is a much stronger carry, Linked Misfortune or Abyssal Hand can flex to Mantra/Frenzy support instead.','PvP synthesis'),
+      role('Tournament · 4v4','Hybrid support / anti-tank utility',['Decoy Clone','Frenzy Totem','Dark Starburst','Abyssal Hand'],['Mantra of Blessings','Resurrection','Shadow Vengeance','Aberrancy'],'Do not default to full healing: Decoy pressures shield-heavy tanks, Totem + Mantra amplify the carry, Resurrection steals rounds, and Aberrancy is much better in broad debuff-heavy team fights than Arena.','If your team truly lacks sustain, Abyssal Hand → Radiant Restoration. Full-heal Tournament only makes sense on dedicated Healing Boost/SPD gear.','Community + guide PvP')
     ]
   };
 
@@ -131,6 +156,46 @@
       PvP:[pick('Mandragora','Main support/healing pick when your job is keeping teammates alive.'),pick('Aegiswing','Survival-first alternative when you are being focused.'),pick('Terragon','Debuffing option that can reduce enemy pressure while you support.'),pick('Sylvaerie','SPD improves support tempo when raw healing is already sufficient.')]
     }
   };
+
+
+  const META_CLASSES=new Set(['Conqueror','Guardian','Destroyer','Dominator']);
+  const META_MODES=['Dungeon','Crucible / Conquest','Arena','Tournament'];
+  const metaRead=(key,fallback)=>{try{return localStorage.getItem(key)||fallback}catch(_){return fallback}};
+  const metaWrite=(key,val)=>{try{localStorage.setItem(key,val)}catch(_){}};
+  const metaMode=()=>META_MODES.includes(metaRead('sxs-build-meta-mode','Dungeon'))?metaRead('sxs-build-meta-mode','Dungeon'):'Dungeon';
+  const metaTournamentSize=()=>metaRead('sxs-build-tournament-size','4v4')==='2v2'?'2v2':'4v4';
+  function ensureMetaControls(cls){
+    const grid=document.querySelector('.builds .buildGrid');
+    if(!grid) return;
+    let box=document.querySelector('.builds .metaBuildControls');
+    if(!META_CLASSES.has(cls)){
+      box?.remove();
+      grid.classList.remove('metaModeGrid');
+      grid.querySelectorAll('.buildCard[hidden]').forEach(c=>c.hidden=false);
+      return;
+    }
+    if(!box){
+      box=document.createElement('div');
+      box.className='metaBuildControls';
+      box.innerHTML='<div class="metaBuildTabs">'+META_MODES.map(m=>'<button type="button" data-meta-mode="'+esc(m)+'">'+esc(m)+'</button>').join('')+'</div><div class="metaTournamentTabs"><button type="button" data-tournament-size="2v2">2v2</button><button type="button" data-tournament-size="4v4">4v4</button></div>';
+      grid.before(box);
+    }
+    grid.classList.add('metaModeGrid');
+  }
+  function applyMetaVisibility(cls){
+    const grid=document.querySelector('.builds .buildGrid');
+    if(!grid||!META_CLASSES.has(cls)) return;
+    ensureMetaControls(cls);
+    const mode=metaMode(), size=metaTournamentSize();
+    const wanted=mode==='Tournament'?'Tournament · '+size:mode;
+    document.querySelectorAll('.builds .metaBuildTabs button').forEach(b=>b.classList.toggle('active',b.dataset.metaMode===mode));
+    const tour=document.querySelector('.builds .metaTournamentTabs');
+    if(tour){
+      tour.hidden=mode!=='Tournament';
+      tour.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.tournamentSize===size));
+    }
+    grid.querySelectorAll(':scope > .buildCard').forEach(card=>{card.hidden=card.dataset.role!==wanted;});
+  }
 
   function activeClass(){
     const b=document.querySelector('.builds .classTabs button.active');
@@ -202,6 +267,8 @@
     document.querySelectorAll('.builds .buildRoleTabs').forEach(x=>x.remove());
     applyRoleLoadouts(cls);
     applyFantos(cls);
+    ensureMetaControls(cls);
+    applyMetaVisibility(cls);
   }
   let queued=false;
   function queueApply(){
@@ -213,6 +280,12 @@
     queueApply();
     const root=document.querySelector('.builds');
     if(root) new MutationObserver(queueApply).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','aria-pressed']});
+    root?.addEventListener('click',e=>{
+      const modeBtn=e.target.closest?.('[data-meta-mode]');
+      if(modeBtn){metaWrite('sxs-build-meta-mode',modeBtn.dataset.metaMode);applyMetaVisibility(activeClass());return;}
+      const sizeBtn=e.target.closest?.('[data-tournament-size]');
+      if(sizeBtn){metaWrite('sxs-build-tournament-size',sizeBtn.dataset.tournamentSize);applyMetaVisibility(activeClass());}
+    });
   });
   window.addEventListener('load',queueApply);
 })();

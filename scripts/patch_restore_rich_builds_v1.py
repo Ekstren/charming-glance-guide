@@ -14,9 +14,10 @@ if MARK in s:
 inject = INJECT.read_text(encoding='utf-8')
 required = [
     START, END,
-    'BUILD_ARENA_TOURNAMENT_SPLIT_V1',
+    'META_BUILD_MODES_V1',
     "role('Arena'",
-    "role('Tournament'",
+    "role('Tournament · 2v2'",
+    "role('Tournament · 4v4'",
     'fantomonPair',
 ]
 for token in required:
@@ -202,13 +203,7 @@ rich = r'''
     host.querySelectorAll(':scope > .priorityPair[data-dominator-role]').forEach(el=>{
       el.hidden=el.dataset.dominatorRole!==mode;
     });
-    host.querySelectorAll('.buildGrid .buildCard').forEach(card=>{
-      const title=card.querySelector('h3')?.childNodes?.[0]?.textContent?.trim()||card.querySelector('h3')?.textContent?.trim()||'';
-      const healing=/^Healing/i.test(title);
-      const role=healing?'heals':'dps';
-      card.dataset.dominatorRole=role;
-      card.hidden=role!==mode;
-    });
+    // Loadout cards are activity-driven by META_BUILD_MODES_V1; the Dominator DPS/Heals toggle only changes stat/priority panels.
   }
   function signature(host,cls,mode){
     const cards=[...host.querySelectorAll('.buildGrid .buildCard h3')].map(x=>x.textContent.trim()).join('|');
