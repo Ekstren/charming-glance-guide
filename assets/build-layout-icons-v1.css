@@ -1,8 +1,9 @@
 /* BUILD_HERO_LAYOUT_ICONS_V1
    Legacy asset filename/hook; icons are intentionally removed.
-   BUILD_HERO_LAYOUT_V4 keeps the class summary + gear priorities compact on the left,
-   lets stat guidance use the full left-column width, and gives Roll Guide the full right pane.
-   Desktop Roll Guide stays permanently expanded; mobile keeps a collapsed-by-default accordion. */
+   BUILD_HERO_LAYOUT_V5 keeps the class summary + gear priorities compact on the left,
+   adds per-slot S2 gem priorities, lets stat guidance use the full left-column width,
+   and gives Roll Guide the full right pane. Desktop Roll Guide stays permanently
+   expanded; mobile keeps a collapsed-by-default accordion. */
 
 /* Site shell: the header should live in normal document flow at every breakpoint. */
 .topbar{position:static!important;top:auto!important}
@@ -74,7 +75,7 @@
   grid-column:span 2;
   display:grid;
   grid-template-columns:max-content minmax(0,1fr);
-  gap:7px;
+  gap:5px 7px;
   align-items:start;
   border:1px solid color-mix(in srgb,var(--line) 76%,transparent);
   border-radius:8px;
@@ -96,6 +97,44 @@
   font-weight:720;
   line-height:1.35;
   min-width:0;
+}
+#buildContent .buildHeroLeft .quickGemLine{
+  grid-column:2;
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:3px 6px;
+  min-width:0;
+  padding-top:4px;
+  border-top:1px dashed color-mix(in srgb,var(--line) 56%,transparent);
+}
+#buildContent .buildHeroLeft .quickGemLine span{
+  display:inline;
+  min-width:0;
+  margin:0;
+  text-transform:none;
+  letter-spacing:0;
+  line-height:1.3;
+}
+#buildContent .buildHeroLeft .quickGemLabel{
+  color:var(--gold);
+  font-size:7.5px;
+  font-weight:900;
+  white-space:nowrap;
+}
+#buildContent .buildHeroLeft .quickGemText{
+  color:var(--secondary-text);
+  font-size:8px;
+  font-weight:760;
+  overflow-wrap:anywhere;
+}
+#buildContent .buildHeroLeft .quickGemNote{
+  width:100%;
+  color:var(--muted);
+  font-size:7.5px;
+  font-weight:700;
+  line-height:1.35;
+  padding:1px 1px 0;
 }
 #buildContent .buildHeroLeft .quickSubstats{
   width:100%;
@@ -240,6 +279,7 @@
   #buildContent .buildHeroLeft .dominatorHeadingRow{flex-wrap:wrap}
   #buildContent .buildHeroLeft .quickGearGrid{grid-template-columns:1fr}
   #buildContent .buildHeroLeft .quickGearRow{grid-template-columns:minmax(62px,max-content) minmax(0,1fr)}
+  #buildContent .buildHeroLeft .quickGemLine{grid-column:2}
   #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
   #buildContent .buildHeroLeft .quickSubstats{grid-template-columns:1fr}
 }
