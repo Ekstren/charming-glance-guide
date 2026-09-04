@@ -1,0 +1,63 @@
+name: Apply T5 longevity investment priorities
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-t5-longevity-investment-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply longevity patch
+        run: python3 scripts/patch_t5_longevity_investment_v1.py
+      - name: Validate patch
+        run: |
+          python3 -m py_compile scripts/patch_t5_longevity_investment_v1.py
+          node --check scripts/site_smoke_test.mjs
+          node --check scripts/guardian_valor_smoke.mjs
+          node --check scripts/build_swap_smoke.mjs
+          node --check scripts/build_investment_longevity_smoke.mjs
+          git diff --check
+          grep -q "Piercing Assault is the long-term spend" index.html
+          grep -q "Formation Breaker has real T5 longevity" index.html
+          grep -q "Valor Surge before Water ranks" index.html
+          grep -q "Carryovers first; then save" index.html
+          grep -q "Weight investment ranks by longevity" .github/build-maintenance.md
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Run full site smoke
+        run: node scripts/site_smoke_test.mjs
+      - name: Run Guardian smoke
+        run: node scripts/guardian_valor_smoke.mjs
+      - name: Run all-build swap smoke
+        run: node scripts/build_swap_smoke.mjs
+      - name: Run investment longevity smoke
+        run: node scripts/build_investment_longevity_smoke.mjs
+      - name: Commit and push
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/build-maintenance.md scripts/build_investment_longevity_smoke.mjs
+          if git diff --cached --quiet; then
+            echo 'T5 longevity priorities already applied.'
+            exit 0
+          fi
+          git commit -m 'Reprioritize build investments for T5 longevity'
+          git pull --rebase origin main
+          git push origin main
