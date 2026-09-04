@@ -35,8 +35,9 @@ async function assertVisibleGuardianBuild(label){
 
 let checked=0;
 for(const role of ['tank','dps']){
-  await page.locator(`#buildContent button[data-guardian-mode="${role}"]`).click();
-  await page.waitForFunction(r=>localStorage.getItem('sxs-build-guardian-mode')===r,role);
+  const roleButton=page.locator(`#buildContent button[data-guardian-mode="${role}"]`);
+  await roleButton.click();
+  await page.waitForFunction(r=>document.querySelector(`#buildContent button[data-guardian-mode="${r}"]`)?.classList.contains('active'),role);
   for(const mode of ['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena']){
     await page.locator(`#buildContent .metaBuildTabs [data-meta-mode="${mode}"]`).click();
     await page.waitForTimeout(70);
