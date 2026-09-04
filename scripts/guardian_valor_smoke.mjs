@@ -50,7 +50,7 @@ for(const role of ['tank','dps']){
   const roleButton=page.locator(`#buildContent button[data-guardian-mode="${role}"]`);
   await roleButton.click();
   await page.waitForFunction(r=>document.querySelector(`#buildContent button[data-guardian-mode="${r}"]`)?.classList.contains('active'),role);
-  for(const mode of ['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena']){
+  for(const mode of ['Dungeon','Crucible / Conquest','Arena']){
     await page.locator(`#buildContent .metaBuildTabs [data-meta-mode="${mode}"]`).click();
     await page.waitForTimeout(70);
     await assertVisibleGuardianBuild(`Guardian ${role} ${mode}`);
@@ -66,7 +66,7 @@ for(const role of ['tank','dps']){
   }
 }
 
-assert(checked===12, `expected to validate 12 Guardian builds, checked ${checked}`);
+assert(checked===10, `expected to validate 10 Guardian builds, checked ${checked}`);
 assert(pageErrors.length===0, `runtime errors: ${pageErrors.join('\n')}`);
-console.log('guardian valor smoke passed: Valor Surge present and swap sources valid in all 12 Tank/DPS Guardian builds');
+console.log('guardian valor smoke passed: Valor Surge present and swap sources valid in all 10 current Tank/DPS Guardian builds');
 await browser.close();
