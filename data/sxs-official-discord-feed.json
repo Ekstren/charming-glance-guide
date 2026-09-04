@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1544659298569953361",
+  "last_message_id": "1545315036245786625",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -133,6 +133,39 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1544659298569953361"
+    },
+    {
+      "id": "1545315036245786625",
+      "timestamp": "2026-09-04T06:10:15.206000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# ✨Adventurers! Exclusive Events Coming Soon to the Official Top-up Platform\n\nTop up through the Official Top-Up Platform and unlock chances to win Vouchers and other in-game rewards! 🎁\n✦ Event 1: Cumulative Top-up Lottery✦ \n⏰ [Event Schedule] \nSep 7, 2026, 00:00:00 – Oct 4, 2026, 23:59:59 \n\n📝 [Event Details] \n-You will earn 1 draw attempt for every 9,999 Vouchers topped up through the official top-up platform (excluding bonus Vouchers from rebates). There is no limit to the number of draw attempts you can earn.\n-Top-ups are tracked per character. Top-ups made on different characters cannot be combined to earn draw attempts.\n-Top-up Tracking Period: Sep 7, 2026, 00:00:00 – Oct 4, 2026, 23:59:59 (UTC-5)\n🎁Prize Pool: You have a chance to win prizes such as Voucher ×29,999, Voucher ×9,999, Voucher ×4,999, Voucher ×999 and so on.\n\n💡[Reward Distribution] \n-In-game items will be sent to the mailbox of the character selected on the event page.\n-Limited-quantity rewards are available while supplies last.\n\n✦－－－－－－－－－－－－－－－－－✦\n\n✦ Event 2: Daily Top-up Sign-in✦ \n⏰ [Event Schedule] \nSep 7, 2026, 00:00:00 – Sep 6, 2027, 23:59:59 (UTC-5)\n\n📝 [Event Details] \n-You will earn 1 draw attempt each day by topping up any amount through the official top-up platform during the event.\n-Eligibility to earn draw attempts resets daily at 00:00 (UTC-5). You can earn up to 1 draw attempt per day. Any unused draw attempt from the previous day will be cleared, so be sure to use it before the daily reset.\n\n🎁Prize Pool: You have a chance to win prizes such as Voucher ×9,999,Voucher ×999, Bond Trinket ×1, Covenite ×1 and so on.\n\n 💡[Reward Distribution] \n-In-game items will be sent to the mailbox of the character selected on the event page.\n-If you have any questions, feel free to contact Customer Support.\n\n🔗 After offical launch, tap the link below to visit the Official Top-Up Platform and join the event! https://gamepay.boltray.com/addCredit?cur_game=8039&media=A803903",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1545313996524228608",
+          "filename": "img_v3_02157_e2eaca81-b8f3-4398-9432-e4c0a0247f1g.jpg",
+          "content_type": "image/jpeg",
+          "size": 137503,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1545313996524228608/img_v3_02157_e2eaca81-b8f3-4398-9432-e4c0a0247f1g.jpg?ex=6a9bb14f&is=6a9a5fcf&hm=73d02830761153485e4d369e21e90e540e6cadc048a680efcade7db52b0e15ee&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1545313996524228608/img_v3_02157_e2eaca81-b8f3-4398-9432-e4c0a0247f1g.jpg?ex=6a9bb14f&is=6a9a5fcf&hm=73d02830761153485e4d369e21e90e540e6cadc048a680efcade7db52b0e15ee&",
+          "width": 686,
+          "height": 240
+        }
+      ],
+      "message_reference": {
+        "message_id": "1545313996683477025",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1545315036245786625"
     }
   ]
 }
