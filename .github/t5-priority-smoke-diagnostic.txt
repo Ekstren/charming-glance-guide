@@ -10,21 +10,33 @@ page.waitForFunction: Timeout 3000ms exceeded.
 
 Node.js v22.23.2
 
---- RUNTIME PROBE ---
-node:internal/modules/package_json_reader:314
-  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
-        ^
+--- INLINE SYNTAX ---
+inline scripts: 8
+FAIL script 4
 
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'playwright' imported from /tmp/t5-probe.mjs
-    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)
-    at packageResolve (node:internal/modules/esm/resolve:768:81)
-    at moduleResolve (node:internal/modules/esm/resolve:855:18)
-    at defaultResolve (node:internal/modules/esm/resolve:985:11)
-    at #cachedDefaultResolve (node:internal/modules/esm/loader:747:20)
-    at ModuleLoader.resolve (node:internal/modules/esm/loader:724:38)
-    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:320:38)
-    at ModuleJob._link (node:internal/modules/esm/module_job:182:49) {
-  code: 'ERR_MODULE_NOT_FOUND'
-}
+/home/runner/work/charming-glance-guide/charming-glance-guide/t5-inline-4.js:42
+      ['Tank technique investment','Valor Surge first','Prydwen says Guardian's long-run value is mostly in its supporting options. Favor the party-wide utility first, then the T4 Taunt and survival tools that solve current content.',[
+                                                                              ^
+
+SyntaxError: Unexpected identifier 's'
+    at wrapSafe (node:internal/modules/cjs/loader:1713:18)
+    at checkSyntax (node:internal/main/check_syntax:78:3)
 
 Node.js v22.23.2
+
+
+--- RUNTIME PROBE ---
+PAGEERROR: SyntaxError: Unexpected identifier 's'
+BEFORE { active: 'Conqueror', quick: false, pair: false }
+AFTER {
+  active: 'Conqueror',
+  quick: false,
+  pair: false,
+  html: 'ELEMENTAL MELEE DPS\n' +
+    'Conqueror\n' +
+    '\n' +
+    'T4 pivots from the old Physical-first Berserker plan into Elemental damage, DEF ignore and repeatable attacks. Excellent in both bosses and dungeons.\n' +
+    '\n' +
+    'STAT PRIORITY\n' +
+    'ATK ≥ Elemental Mastery > SPD on offensive main lines. Crit Rate → Crit DMG are the premium substats. Ai'
+}
