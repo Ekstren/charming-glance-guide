@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1545315036245786625",
+  "last_message_id": "1545395836014432306",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -90,8 +90,8 @@
           "filename": "-.jpg",
           "content_type": "image/jpeg",
           "size": 483249,
-          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657873936580698/-.jpg?ex=6a9b487f&is=6a99f6ff&hm=969799bdd9d71b8eec241cf69a3cbe208b208b1e55867d89dde67a0cb3ae8b15&",
-          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657873936580698/-.jpg?ex=6a9b487f&is=6a99f6ff&hm=969799bdd9d71b8eec241cf69a3cbe208b208b1e55867d89dde67a0cb3ae8b15&",
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657873936580698/-.jpg?ex=6a9bf13f&is=6a9a9fbf&hm=d4dbd716a4c7c171e3a349505e5ce7993ca598bb0a278979351122200041b87d&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657873936580698/-.jpg?ex=6a9bf13f&is=6a9a9fbf&hm=d4dbd716a4c7c171e3a349505e5ce7993ca598bb0a278979351122200041b87d&",
           "width": 1920,
           "height": 1080
         },
@@ -100,8 +100,8 @@
           "filename": "-.gif",
           "content_type": "image/gif",
           "size": 5430137,
-          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657874406477956/-.gif?ex=6a9b487f&is=6a99f6ff&hm=2e4badfd6260d8c1169361175c6840ac17136a10569aa9f7803508fc368f8f68&",
-          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657874406477956/-.gif?ex=6a9b487f&is=6a99f6ff&hm=2e4badfd6260d8c1169361175c6840ac17136a10569aa9f7803508fc368f8f68&",
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657874406477956/-.gif?ex=6a9bf13f&is=6a9a9fbf&hm=376e2231e6bacf30311bbea9f640e618aca36d3efd3c7173a5277e2c6900c4e0&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657874406477956/-.gif?ex=6a9bf13f&is=6a9a9fbf&hm=376e2231e6bacf30311bbea9f640e618aca36d3efd3c7173a5277e2c6900c4e0&",
           "width": 500,
           "height": 700
         },
@@ -110,8 +110,8 @@
           "filename": "-.gif",
           "content_type": "image/gif",
           "size": 3859314,
-          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657874834169917/-.gif?ex=6a9b487f&is=6a99f6ff&hm=128ab44d4e786f83c00e1b9acb9db7875b0deffb42d52d3bb87225ad82ab88b2&",
-          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657874834169917/-.gif?ex=6a9b487f&is=6a99f6ff&hm=128ab44d4e786f83c00e1b9acb9db7875b0deffb42d52d3bb87225ad82ab88b2&",
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657874834169917/-.gif?ex=6a9bf13f&is=6a9a9fbf&hm=b26c53c19dcbd70ea164b6b2e23e6bcce81e226e7256bc250ee4431bcaac2f1b&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657874834169917/-.gif?ex=6a9bf13f&is=6a9a9fbf&hm=b26c53c19dcbd70ea164b6b2e23e6bcce81e226e7256bc250ee4431bcaac2f1b&",
           "width": 500,
           "height": 700
         },
@@ -120,8 +120,8 @@
           "filename": "-.gif",
           "content_type": "image/gif",
           "size": 3896536,
-          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657875291603035/-.gif?ex=6a9b487f&is=6a99f6ff&hm=9f41c01a6d7f09254e5e05c5d4a9a97fbd18d38fc583261d5769d5661308ce9e&",
-          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657875291603035/-.gif?ex=6a9b487f&is=6a99f6ff&hm=9f41c01a6d7f09254e5e05c5d4a9a97fbd18d38fc583261d5769d5661308ce9e&",
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1544657875291603035/-.gif?ex=6a9bf13f&is=6a9a9fbf&hm=d2ddfccc6b27fe4584b8d058c9e9ab68361c2304178614e212d85ffa72bb83c0&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1544657875291603035/-.gif?ex=6a9bf13f&is=6a9a9fbf&hm=d2ddfccc6b27fe4584b8d058c9e9ab68361c2304178614e212d85ffa72bb83c0&",
           "width": 500,
           "height": 700
         }
@@ -166,6 +166,69 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1545315036245786625"
+    },
+    {
+      "id": "1545395836014432306",
+      "timestamp": "2026-09-04T11:31:19.372000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# Collab News | Vegetables Fairy Collab Arrives Soon! Sneak Peek at the Rewards!\n \nHello, Adventurers! Naira here!\nThe Vegetables Fairy collab is almost here!\nToday, Naira's giving you an early look at all the rewards coming in the Sword x Staff × Vegetables Fairy collab!\n✦－－－－－－－－－－－－－－－－－－－－－－－✦\n \n>> Sign In Daily for Rewards!\nGet the Eggplant Mallet and Vegetable Cuddle Hairpin for free just by signing in!\nPlus, score Wheel Tickets and collab Emoticons!\n \n>> Fresh Shop Rewards Every Day!\nDuring the event, complete event quests to earn Golden Veggie Coins!\nExchange them at the Veggie Shop for collab-exclusive accessories, Wheel Tickets, and Mystery Coins!\n \n>> Violet Kitty, You're Mine!\nClear Veggie Shuffle stages every day to get the Violet Kitty Suit!\nPlus, plenty of Wheel Tickets and Golden Veggie Coins await you!\n \n>> Purify the Lemon Whale for Rewards!\nJoin the Lemon Whale purification 3 times\nto get the collab-exclusive accessory, Lemon Whale Plushie!\n \nOnly 3 days until the collab begins!\nNaira is already itching to jump into Veggie Shuffle!\nOh, and one more thing! Whenever an Adventurer reaches a designated score milestone in Time Attack, all Adventurers will get bonus Golden Veggie Coins!\nReady to race for the Veggie Shuffle crown?!",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1545395327865987082",
+          "filename": "5c3cc354-f857-462c-b0b5-d67c5abfe0b6.png",
+          "content_type": "image/png",
+          "size": 1659122,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1545395327865987082/5c3cc354-f857-462c-b0b5-d67c5abfe0b6.png?ex=6a9bfd0e&is=6a9aab8e&hm=702b9d2f3359a0c9fbc22ae38911965e43cc421d32d9b62afb0194ef2c48f3ad&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1545395327865987082/5c3cc354-f857-462c-b0b5-d67c5abfe0b6.png?ex=6a9bfd0e&is=6a9aab8e&hm=702b9d2f3359a0c9fbc22ae38911965e43cc421d32d9b62afb0194ef2c48f3ad&",
+          "width": 959,
+          "height": 1280
+        },
+        {
+          "id": "1545395328310706309",
+          "filename": "space_api_box_stream_download_preview_NpaRbSbNNoA5JrxXqHlcBcpwnIe_.png",
+          "content_type": "image/png",
+          "size": 3169334,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1545395328310706309/space_api_box_stream_download_preview_NpaRbSbNNoA5JrxXqHlcBcpwnIe_.png?ex=6a9bfd0e&is=6a9aab8e&hm=39bb13cbff8f53d5546171d4952f4822715b04c3e22f8950ede73054ce7287f1&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1545395328310706309/space_api_box_stream_download_preview_NpaRbSbNNoA5JrxXqHlcBcpwnIe_.png?ex=6a9bfd0e&is=6a9aab8e&hm=39bb13cbff8f53d5546171d4952f4822715b04c3e22f8950ede73054ce7287f1&",
+          "width": 1500,
+          "height": 2000
+        },
+        {
+          "id": "1545395328688201758",
+          "filename": "3e387afe-009f-4b57-ab8d-26b9be8a20fa.png",
+          "content_type": "image/png",
+          "size": 1835879,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1545395328688201758/3e387afe-009f-4b57-ab8d-26b9be8a20fa.png?ex=6a9bfd0e&is=6a9aab8e&hm=ffd7b68c87db36ab2ed25ec73721fe33bd340660359bd894e1aeef59c2ba289c&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1545395328688201758/3e387afe-009f-4b57-ab8d-26b9be8a20fa.png?ex=6a9bfd0e&is=6a9aab8e&hm=ffd7b68c87db36ab2ed25ec73721fe33bd340660359bd894e1aeef59c2ba289c&",
+          "width": 959,
+          "height": 1280
+        },
+        {
+          "id": "1545395329069748254",
+          "filename": "61e9de54-0c56-42aa-ac9f-a1d320bfe76b.png",
+          "content_type": "image/png",
+          "size": 1756293,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1545395329069748254/61e9de54-0c56-42aa-ac9f-a1d320bfe76b.png?ex=6a9bfd0e&is=6a9aab8e&hm=f7917523372fc01e1358ab4a3c1a54da608c71874ccdb1b4d1eade7dd75e0574&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1545395329069748254/61e9de54-0c56-42aa-ac9f-a1d320bfe76b.png?ex=6a9bfd0e&is=6a9aab8e&hm=f7917523372fc01e1358ab4a3c1a54da608c71874ccdb1b4d1eade7dd75e0574&",
+          "width": 959,
+          "height": 1280
+        }
+      ],
+      "message_reference": {
+        "message_id": "1545395329338187836",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1545395836014432306"
     }
   ]
 }
