@@ -22,10 +22,12 @@ jobs:
         with:
           node-version: '22'
       - name: Apply longevity patch
-        run: python3 scripts/patch_t5_longevity_investment_v1.py
+        run: |
+          python3 scripts/patch_t5_longevity_investment_v1.py
+          python3 scripts/fix_t5_longevity_patch_quotes.py
       - name: Validate patch
         run: |
-          python3 -m py_compile scripts/patch_t5_longevity_investment_v1.py
+          python3 -m py_compile scripts/patch_t5_longevity_investment_v1.py scripts/fix_t5_longevity_patch_quotes.py
           node --check scripts/site_smoke_test.mjs
           node --check scripts/guardian_valor_smoke.mjs
           node --check scripts/build_swap_smoke.mjs
@@ -36,61 +38,28 @@ jobs:
           grep -q "Valor Surge before Water ranks" index.html
           grep -q "Carryovers first; then save" index.html
           grep -q "Weight investment ranks by longevity" .github/build-maintenance.md
+          python3 - <<'PY'
+          import re, subprocess, pathlib, sys
+          html=pathlib.Path('index.html').read_text(encoding='utf-8')
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S|re.I)
+          bad=[]
+          for i,code in enumerate(blocks):
+              f=pathlib.Path(f'/tmp/t5-inline-{i}.js')
+              f.write_text(code,encoding='utf-8')
+              r=subprocess.run(['node','--check',str(f)],capture_output=True,text=True)
+              if r.returncode: bad.append((i,r.stderr))
+          if bad:
+              for i,err in bad: print(f'inline script {i} failed:\n{err}')
+              sys.exit(1)
+          print(f'inline JS syntax ok: {len(blocks)} script blocks')
+          PY
       - name: Install Playwright
         run: |
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0 >/dev/null
           npx playwright install --with-deps chromium >/dev/null
       - name: Run full site smoke
-        id: full_smoke
-        continue-on-error: true
-        run: node scripts/site_smoke_test.mjs > /tmp/full-smoke.log 2>&1
-      - name: Probe runtime on smoke failure
-        if: steps.full_smoke.outcome == 'failure'
-        run: |
-          python3 - <<'PY' > /tmp/inline-syntax.log 2>&1
-          import re, subprocess, pathlib
-          html=pathlib.Path('index.html').read_text(encoding='utf-8')
-          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S|re.I)
-          print('inline scripts:',len(blocks))
-          for i,code in enumerate(blocks):
-              f=pathlib.Path(f't5-inline-{i}.js')
-              f.write_text(code,encoding='utf-8')
-              r=subprocess.run(['node','--check',str(f)],capture_output=True,text=True)
-              if r.returncode:
-                  print(f'FAIL script {i}')
-                  print(r.stdout)
-                  print(r.stderr)
-          PY
-          cat > t5-probe.mjs <<'EOF'
-          import { chromium } from 'playwright';
-          import path from 'node:path';
-          import { pathToFileURL } from 'node:url';
-          const browser=await chromium.launch({headless:true});
-          const page=await browser.newPage({viewport:{width:1440,height:1000}});
-          page.on('pageerror',e=>console.log('PAGEERROR:',String(e?.stack||e)));
-          page.on('console',m=>console.log('CONSOLE:',m.type(),m.text()));
-          await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
-          await page.waitForTimeout(700);
-          console.log('BEFORE',await page.evaluate(()=>({active:document.querySelector('#classTabs button.active')?.dataset.class,quick:!!document.querySelector('#buildContent .buildQuickStats'),pair:!!document.querySelector('#buildContent > .priorityPair')})));
-          await page.locator('.sectionSwitch button[data-section="builds"]').click();
-          await page.locator('#classTabs button[data-class="Conqueror"]').click();
-          await page.waitForTimeout(700);
-          console.log('AFTER',await page.evaluate(()=>({active:document.querySelector('#classTabs button.active')?.dataset.class,quick:!!document.querySelector('#buildContent .buildQuickStats'),pair:!!document.querySelector('#buildContent > .priorityPair'),html:document.querySelector('#buildContent')?.innerText?.slice(0,300)})));
-          await browser.close();
-          EOF
-          node t5-probe.mjs > /tmp/t5-probe.log 2>&1 || true
-          rm -f t5-probe.mjs t5-inline-*.js
-      - name: Save full-smoke diagnostic
-        if: steps.full_smoke.outcome == 'failure'
-        run: |
-          { cat /tmp/full-smoke.log; echo; echo '--- INLINE SYNTAX ---'; cat /tmp/inline-syntax.log; echo; echo '--- RUNTIME PROBE ---'; cat /tmp/t5-probe.log; } > .github/t5-priority-smoke-diagnostic.txt
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .github/t5-priority-smoke-diagnostic.txt
-          git commit -m 'Capture T5 priority smoke failure'
-          git push origin HEAD:main
-          exit 1
+        run: node scripts/site_smoke_test.mjs
       - name: Run Guardian smoke
         run: node scripts/guardian_valor_smoke.mjs
       - name: Run all-build swap smoke
