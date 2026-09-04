@@ -1,0 +1,66 @@
+name: Apply official Sep 7 top-up events timeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_official_topup_events_sep7_v1.py'
+      - '.github/workflows/apply-official-topup-events-sep7-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply timeline patch
+        run: python3 scripts/patch_official_topup_events_sep7_v1.py
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js')
+          out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Verify intended timeline change
+        run: |
+          grep -Fq "['2026-09-06',54,'Event','Official Top-Up Platform events open'" index.html
+          grep -Fq 'Cumulative Top-up Lottery runs through Oct. 4' index.html
+          grep -Fq 'Daily Top-up Sign-in runs through Sep. 6, 2027' index.html
+
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Official top-up timeline row is already current.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Add official Sep 7 top-up events to timeline'
+            git push
+          fi
