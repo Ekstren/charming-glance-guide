@@ -48,7 +48,21 @@ jobs:
       - name: Probe runtime on smoke failure
         if: steps.full_smoke.outcome == 'failure'
         run: |
-          cat > /tmp/t5-probe.mjs <<'EOF'
+          python3 - <<'PY' > /tmp/inline-syntax.log 2>&1
+          import re, subprocess, pathlib
+          html=pathlib.Path('index.html').read_text(encoding='utf-8')
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S|re.I)
+          print('inline scripts:',len(blocks))
+          for i,code in enumerate(blocks):
+              f=pathlib.Path(f't5-inline-{i}.js')
+              f.write_text(code,encoding='utf-8')
+              r=subprocess.run(['node','--check',str(f)],capture_output=True,text=True)
+              if r.returncode:
+                  print(f'FAIL script {i}')
+                  print(r.stdout)
+                  print(r.stderr)
+          PY
+          cat > t5-probe.mjs <<'EOF'
           import { chromium } from 'playwright';
           import path from 'node:path';
           import { pathToFileURL } from 'node:url';
@@ -65,11 +79,12 @@ jobs:
           console.log('AFTER',await page.evaluate(()=>({active:document.querySelector('#classTabs button.active')?.dataset.class,quick:!!document.querySelector('#buildContent .buildQuickStats'),pair:!!document.querySelector('#buildContent > .priorityPair'),html:document.querySelector('#buildContent')?.innerText?.slice(0,300)})));
           await browser.close();
           EOF
-          node /tmp/t5-probe.mjs > /tmp/t5-probe.log 2>&1 || true
+          node t5-probe.mjs > /tmp/t5-probe.log 2>&1 || true
+          rm -f t5-probe.mjs t5-inline-*.js
       - name: Save full-smoke diagnostic
         if: steps.full_smoke.outcome == 'failure'
         run: |
-          { cat /tmp/full-smoke.log; echo; echo '--- RUNTIME PROBE ---'; cat /tmp/t5-probe.log; } > .github/t5-priority-smoke-diagnostic.txt
+          { cat /tmp/full-smoke.log; echo; echo '--- INLINE SYNTAX ---'; cat /tmp/inline-syntax.log; echo; echo '--- RUNTIME PROBE ---'; cat /tmp/t5-probe.log; } > .github/t5-priority-smoke-diagnostic.txt
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .github/t5-priority-smoke-diagnostic.txt
