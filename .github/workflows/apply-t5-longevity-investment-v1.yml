@@ -42,7 +42,20 @@ jobs:
           npm install --no-save playwright@1.55.0 >/dev/null
           npx playwright install --with-deps chromium >/dev/null
       - name: Run full site smoke
-        run: node scripts/site_smoke_test.mjs
+        id: full_smoke
+        continue-on-error: true
+        run: node scripts/site_smoke_test.mjs > /tmp/full-smoke.log 2>&1
+      - name: Save full-smoke diagnostic
+        if: steps.full_smoke.outcome == 'failure'
+        run: |
+          cp /tmp/full-smoke.log .github/t5-priority-smoke-diagnostic.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/t5-priority-smoke-diagnostic.txt
+          git commit -m 'Capture T5 priority smoke failure'
+          git pull --rebase origin main
+          git push origin main
+          exit 1
       - name: Run Guardian smoke
         run: node scripts/guardian_valor_smoke.mjs
       - name: Run all-build swap smoke
