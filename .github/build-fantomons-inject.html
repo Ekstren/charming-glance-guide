@@ -40,7 +40,7 @@
 .builds .guardianModeTabs button.active{background:var(--accent-strong);color:#fff}
 @media(max-width:520px){.builds .guardianHeadingRow{gap:7px}.builds .guardianModeTabs button{min-height:30px;min-width:50px}}
 .builds .metaBuildControls{display:flex;align-items:center;gap:7px;margin:10px 0;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
-.builds .metaBuildTabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;flex:1;min-width:0}
+.builds .metaBuildTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;flex:1;min-width:0}
 .builds .metaBuildTabs>button,.builds .metaTournamentMain{border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-size:10px;font-weight:850;min-height:36px;padding:8px 10px;width:100%}
 .builds .metaBuildTabs>button.active{background:var(--accent-strong);color:#fff}
 .builds .metaTournamentScenario{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;min-width:0;border-radius:9px;overflow:hidden;background:transparent}
@@ -110,7 +110,6 @@
       role('Arena','Solo PvP / anti-Guardian pressure',['Darkness Descends','Doom Blade','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Breaker','Indomitable Will'],'Darkness Descends supplies mobility and Dispel, while Doom Blade, Flickering Blade, and Blade Storm keep pressure high. Low Crit: Soul Breaker → Insightful Eye.','Accuracy is especially valuable against high-Block Guardians. Indomitable Will protects against opening burst.','Current PvP'),
       role('Tournament · 2v2','Duo PvP: sustain + kill pressure',['Darkness Descends','Soul Piercer','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Breaker','Indomitable Will'],'Soul Piercer adds sustain, Darkness Descends handles mobility and Dispel, and Flickering Blade + Blade Storm provide kill pressure. Low Crit: Soul Breaker → Insightful Eye.','Indomitable Will is core insurance in 2v2. Doom Blade is an offensive flex when your partner already provides enough control.','Current Global PvP'),
       role('Tournament · 4v4','Team PvP: reach, Dispel and coordinated tempo',['Flash Fire','Darkness Descends','Flickering Blade','Blade Storm'],['Insightful Eye','Piercing Assault','Tactical Adaptation','Indomitable Will'],'Flash Fire gives reach, Darkness Descends removes buffs, and Flickering Blade + Blade Storm provide coordinated pressure. With two Conquerors, the higher-rank Gale Dance user can bring it for team SPD.','Indomitable Will protects against focus fire. Insightful Eye → Soul Breaker at high Crit.','Current Global PvP'),
-      role('Fantasia Ascent','Solo push: high-DEF floors and mixed packs',['Gale Dance','Flash Fire','Flickering Blade','Blade Storm'],['Piercing Assault','Tactical Adaptation','Soul Splash','Indomitable Will'],'Gale Dance improves opening tempo while the T4 damage core handles mixed floors.','Soul Splash + Indomitable Will give the push setup enough sustain for above-power stages.','Community Ascent')
     ],
     Guardian:[
       role('Dungeon · Tank','Primary S2 party-tank meta',['Valor Surge','Heart of Challenge','Luminous Shield','Desperate Protection'],['Iron Will','Holy Aegis','Block Awareness','Soul Protection'],'Valor Surge buffs the party, Heart of Challenge controls aggro, and Luminous Shield + Desperate Protection stabilize heavy damage. Need more Taunt: Desperate Protection → Hamper Strike when survival is already stable.','Iron Will, Holy Aegis, Block Awareness, and Soul Protection form the default survival package. Iron Fortress is the first flex when the whole team needs more mitigation.','Prydwen dungeon core'),
@@ -123,8 +122,6 @@
       role('Arena · DPS','Offensive block / counter bruiser',['Valor Surge','Swirling Blade','Luminous Shield','Star Shattering Slash'],['Rebound','Holy Aegis','Block Mastery','Eye for an Eye'],'Valor Surge keeps its buff and cleanse active while Swirling Blade + Star Shattering Slash supply kill pressure and Luminous Shield preserves bruiser durability.','Rebound, Holy Aegis, Block Mastery, and Eye for an Eye turn Block into counter pressure. Eye for an Eye → Soul Protection or Potential Rebirth if burst is too high.','Prydwen + PvP'),
       role('Tournament · 2v2 · DPS','Duo bruiser: survive focus while threatening kills',['Valor Surge','Swirling Blade','Luminous Shield','Star Shattering Slash'],['Rebound','Holy Aegis','Block Mastery','Eye for an Eye'],'Valor Surge buffs and cleanses the duo while Swirling Blade + Star Shattering Slash create kill pressure and Luminous Shield helps survive focus.','Rebound, Holy Aegis, and Block Mastery support the bruiser core. Eye for an Eye → Soul Protection when you are the primary focus target.','Current PvP'),
       role('Tournament · 4v4 · DPS','Water AoE team-pressure build',['Valor Surge','Swirling Blade','Lunarwater Threads','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Potential Rebirth'],'Valor Surge buffs and cleanses the team while Swirling Blade, Lunarwater Threads, and Raging Maelstrom spread Water/Cold pressure across the enemy team.','Potential Rebirth is the safety slot. Pursuit of Victory is the damage flex when another frontline is reliably absorbing focus.','Prydwen Water + PvP'),
-      role('Fantasia Ascent · Tank','Solo push: Block / reflect survival',['Valor Surge','Luminous Shield','Star Shattering Slash','Desperate Protection'],['Rebound','Holy Aegis','Block Mastery','Soul Protection'],'Luminous Shield and Desperate Protection stabilize hard floors while Rebound turns repeated hits into damage.','Valor Surge keeps the buff/cleanse online and Star Shattering Slash gives the tank setup a real finisher.','Community Ascent'),
-      role('Fantasia Ascent · DPS','Solo push: Water AoE with a safety slot',['Valor Surge','Swirling Blade','Lunarwater Threads','Raging Maelstrom'],['Frigid Aura','Defensive Assault','Frigid Glint','Potential Rebirth'],'Valor Surge stays locked in for the buff/cleanse while Swirling Blade, Lunarwater Threads, and Raging Maelstrom clear dense Water/Cold floors.','Potential Rebirth keeps the damage setup from folding to a bad burst window.','Prydwen + Ascent')
     ],
     Destroyer:[
       role('Dungeon','Fire AoE horde-clear meta',['Formation Breaker','Fiery Star Trail','Fireball','Meteoric Flames'],['Rapid Cast','Void Bubble','Explosive Spirit','Fiery Burst'],'Fiery Star Trail, Fireball, and Meteoric Flames repeatedly trigger Fiery Burst across dense packs, with Formation Breaker improving tempo.','Void Bubble is the default safety slot; an offensive Charm can take its place when survivability is comfortable.','Prydwen + Global testing'),
@@ -132,7 +129,6 @@
       role('Arena','Wind control / solo tempo',['Formation Breaker','Tempest Sphere','Wind Blade Spiral',"Wind's Delight"],['Cyclone Lament','Repelling Wind',"Wind's Shadow",'Void Bubble'],'Formation Breaker accelerates actions while Tempest Sphere, Wind Blade Spiral, and Wind\'s Delight concentrate Wind pressure on a single target.','Void Bubble provides the safety layer; Repelling Wind helps keep melee opponents off you.','Prydwen + Global PvP'),
       role('Tournament · 2v2','Duo control + Formation Breaker tempo',['Formation Breaker','Tempest Sphere','Wind Blade Spiral',"Wind's Delight"],['Rapid Cast','Void Bubble','Repelling Wind','Cyclone Lament'],'Formation Breaker improves duo tempo while Tempest Sphere, Wind Blade Spiral, and Wind\'s Delight apply focused Wind pressure.','Void Bubble provides safety, Repelling Wind controls melee pressure, and Cyclone Lament rewards repeated Wind attacks. Radiant Sear is the damage flex when your teammate already supplies control.','Current PvP'),
       role('Tournament · 4v4','Team AoE + Formation Breaker acceleration',['Formation Breaker','Howling Hurricane','Meteoric Flames','Wind Blade Spiral'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Formation Breaker accelerates the team while Howling Hurricane, Meteoric Flames, and Wind Blade Spiral spread AoE and Laceration pressure.','Void Bubble protects against coordinated focus; Cyclone Lament and Radiant Sear turn repeated hits into additional pressure.','Prydwen team core'),
-      role('Fantasia Ascent','Solo push: mixed damage with Void Bubble safety',['Formation Breaker','Meteoric Flames','Wind Blade Spiral','Thunder of Judgment'],['Rapid Cast','Void Bubble','Cyclone Lament','Radiant Sear'],'Formation Breaker keeps tempo high while Fire, Wind, and Light coverage handles varied floors.','Void Bubble is the default safety slot for pushing above listed power.','Guide-derived Ascent')
     ],
     Dominator:[
       role('Dungeon · DPS','AoE Dark / Erosion clear',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'Mana Blast, Dark Bullet, Abyssal Hand, and Shadow Impact spread Erosion and direct damage across dungeon packs.','Effect Hit Rate is the key consistency stat for Erosion. Nyxarchon is the default damage Fantomon.','Prydwen AoE core'),
@@ -145,8 +141,6 @@
       role('Arena · Heals','Specialist sustain hybrid',['Rejuvenating Rain','Radiant Restoration','Dark Bullet','Shadow of Termination'],['Phantom Light','Healing Mastery','Shadow Vengeance','Mantra of Blessings'],'Rejuvenating Rain and Radiant Restoration provide sustain while Dark Bullet and Shadow of Termination keep kill pressure.','Phantom Light and Healing Mastery scale sustain; Shadow Vengeance and Mantra of Blessings preserve tempo and damage. This role works best with strong Healing Boost/SPD gear.','PvP specialist'),
       role('Tournament · 2v2 · Heals','Duo sustain / carry support',['Rejuvenating Rain','Radiant Restoration','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Resurrection','Shadow Vengeance'],'Rejuvenating Rain and Radiant Restoration keep your partner stable while Frenzy Totem boosts output and Dark Bullet maintains pressure.','Resurrection is the key swing utility; Phantom Light and Healing Mastery raise sustain while Shadow Vengeance protects your own damage window.','PvP support'),
       role('Tournament · 4v4 · Heals','Hybrid team support',['Radiant Restoration','Decoy Clone','Frenzy Totem','Dark Bullet'],['Phantom Light','Healing Mastery','Resurrection','Mantra of Blessings'],'Radiant Restoration, Decoy Clone, and Frenzy Totem support the team while Dark Bullet maintains debuff pressure.','Phantom Light, Healing Mastery, Resurrection, and Mantra of Blessings balance healing, revive utility, and team damage.','Team PvP'),
-      role('Fantasia Ascent · DPS','Solo push: Erosion AoE with Shadow Vengeance safety',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'The AoE Erosion package handles mixed floors and Shadow Vengeance buys time to finish dangerous waves.','Effect Hit Rate still matters whenever the floor depends on Erosion sticking.','Community Ascent'),
-      role('Fantasia Ascent · Heals','Solo push: sustain hybrid for Healing Boost builds',['Rejuvenating Rain','Radiant Restoration','Dark Bullet','Shadow of Termination'],['Phantom Light','Healing Mastery','Shadow Vengeance','Mantra of Blessings'],'Rejuvenating Rain + Radiant Restoration sustain the run while Dark Bullet and Shadow of Termination preserve kill pressure.','Best for accounts already invested into Healing Boost and SPD.','Ascent sustain')
     ]
   };
 
@@ -197,28 +191,6 @@
     'Dungeon · Heals|Waterling Summon|Rejuvenating Rain|Radiant Restoration|Frenzy Totem':[
       ['Need more healing','Frenzy Totem','Healing Touch']
     ],
-    'Fantasia Ascent|Gale Dance|Flash Fire|Flickering Blade|Blade Storm':[
-      ['Need more wave damage','Gale Dance','Flame Aura'],
-      ['Need Dispel / repositioning','Flash Fire','Darkness Descends']
-    ],
-    'Fantasia Ascent · Tank|Valor Surge|Luminous Shield|Star Shattering Slash|Desperate Protection':[
-      ['Need more damage','Desperate Protection','Swirling Blade'],
-      ['Dense mob floor','Star Shattering Slash','Lunarwater Threads']
-    ],
-    'Fantasia Ascent · DPS|Valor Surge|Swirling Blade|Lunarwater Threads|Raging Maelstrom':[
-      ['Boss floor','Raging Maelstrom','Star Shattering Slash']
-    ],
-    'Fantasia Ascent|Formation Breaker|Meteoric Flames|Wind Blade Spiral|Thunder of Judgment':[
-      ['Dense mob floor','Thunder of Judgment','Howling Hurricane'],
-      ['Boss floor','Meteoric Flames','Divine Wrath']
-    ],
-    'Fantasia Ascent · DPS|Mana Blast|Dark Bullet|Abyssal Hand|Shadow Impact':[
-      ['Boss floor','Shadow Impact','Shadow of Termination']
-    ],
-    'Fantasia Ascent · Heals|Rejuvenating Rain|Radiant Restoration|Dark Bullet|Shadow of Termination':[
-      ['Dense mob floor','Shadow of Termination','Abyssal Hand'],
-      ['Need more healing','Dark Bullet','Healing Touch']
-    ]
   };
 
   const CHARM_SWAP_SCENARIOS={
@@ -272,24 +244,7 @@
     ],
     'Dungeon · Heals|Phantom Light|Healing Mastery|Overhealing|Resurrection':[
       ['Nobody is dying','Resurrection','Mantra of Blessings'],
-      role('Fantasia Ascent · DPS','Solo push: Erosion AoE with Shadow Vengeance safety',['Mana Blast','Dark Bullet','Abyssal Hand','Shadow Impact'],['Shadow Vengeance',"Night's Blessing",'Shadow Erosion','Linked Misfortune'],'The AoE Erosion package handles mixed floors and Shadow Vengeance buys time to finish dangerous waves.','Effect Hit Rate still matters whenever the floor depends on Erosion sticking.','Community Ascent'),
-      role('Fantasia Ascent · Heals','Solo push: sustain hybrid for Healing Boost builds',['Rejuvenating Rain','Radiant Restoration','Dark Bullet','Shadow of Termination'],['Phantom Light','Healing Mastery','Shadow Vengeance','Mantra of Blessings'],'Rejuvenating Rain + Radiant Restoration sustain the run while Dark Bullet and Shadow of Termination preserve kill pressure.','Best for accounts already invested into Healing Boost and SPD.','Ascent sustain')
     ],
-    'Fantasia Ascent|Piercing Assault|Tactical Adaptation|Soul Splash|Indomitable Will':[
-      ['High Crit + survival is comfortable','Indomitable Will','Soul Breaker']
-    ],
-    'Fantasia Ascent · Tank|Rebound|Holy Aegis|Block Mastery|Soul Protection':[
-      ['Low Block','Soul Protection','Block Awareness']
-    ],
-    'Fantasia Ascent · DPS|Frigid Aura|Defensive Assault|Frigid Glint|Potential Rebirth':[
-      ['Survival is comfortable','Potential Rebirth','Pursuit of Victory']
-    ],
-    'Fantasia Ascent|Rapid Cast|Void Bubble|Cyclone Lament|Radiant Sear':[
-      ['Survival is comfortable','Void Bubble','Mana Surge']
-    ],
-    'Fantasia Ascent · Heals|Phantom Light|Healing Mastery|Shadow Vengeance|Mantra of Blessings':[
-      ['Need more raw sustain','Mantra of Blessings','Overhealing']
-    ]
   };
 
   const FANTO={
@@ -347,7 +302,7 @@
 
 
   const META_CLASSES=new Set(['Conqueror','Guardian','Destroyer','Dominator']);
-  const META_MODES=['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena','Tournament'];
+  const META_MODES=['Dungeon','Crucible / Conquest','Arena','Tournament'];
   const metaRead=(key,fallback)=>{try{return localStorage.getItem(key)||fallback}catch(_){return fallback}};
   const metaWrite=(key,val)=>{try{localStorage.setItem(key,val)}catch(_){}};
   const metaMode=()=>META_MODES.includes(metaRead('sxs-build-meta-mode','Dungeon'))?metaRead('sxs-build-meta-mode','Dungeon'):'Dungeon';
@@ -471,28 +426,6 @@
     const pools=FANTO[cls]||{};
     // Guardian DPS role prefers the offensive pet order; this automatically promotes Pandarial once the staged release patch adds it.
     const guardianDps=cls==='Guardian'&&typeof guardianBuildMode==='function'&&guardianBuildMode()==='dps';
-    const ascent=String(title||'').startsWith('Fantasia Ascent');
-    if(ascent&&cls==='Destroyer') return [
-      pick('Nyxarchon','Best damage-first Ascent lead: strong Dark AoE plus stacking DEF reduction helps beat high-DEF floors.'),
-      pick('Aegiswing','Use when deaths are ending the push before your rotation can finish.'),
-      pick('Armopi','Best no-shop survival option: DEF stacking and shields can buy the extra turn Destroyer needs.'),
-      pick('Zeioletus','No-shop damage alternative when survival is already comfortable.')
-    ];
-    if(ascent&&cls==='Dominator'){
-      const heals=typeof dominatorBuildMode==='function'&&dominatorBuildMode()==='heals';
-      if(heals) return [
-        pick('Herbote','Best S2 solo-sustain lead when evolved: self-healing, cleanse chance, and owner healing directly support long Ascent fights.'),
-        pick('Aegiswing','Safety alternative when burst damage is killing you before the healing loop stabilizes.'),
-        pick('Mandragora','No-shop healing alternative for ally-targeted Technique builds, especially before Herbote is evolved.'),
-        pick('Terragon','Damage-mitigation alternative when lowering enemy ATK/DMG matters more than extra raw healing.')
-      ];
-      return [
-        pick('Nyxarchon','Best DPS Ascent lead: Dark damage matches Dominator and the DEF reduction improves the whole damage loop.'),
-        pick('Aegiswing','Survival alternative when you are losing the floor before Erosion and Dark damage can ramp.'),
-        pick('Zeioletus','Best straightforward no-shop damage alternative.'),
-        pick('Sylvaerie','SPD-focused alternative; test it against Zeioletus if extra actions outperform direct pet damage.')
-      ];
-    }
     if(role==='Arena'){const base=pools.Arena||pools.PvP||[];if(guardianDps){const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];return [...base].sort((a,b)=>(order.indexOf(a.name)<0?99:order.indexOf(a.name))-(order.indexOf(b.name)<0?99:order.indexOf(b.name)));}return base;}
     if(role==='Tournament'){
       const base=pools.Tournament||pools.PvP||pools.Dungeon||[];if(guardianDps){const order=['Pandarial','Nyxarchon','Kels','Aegiswing','Terragon','Boaro'];return [...base].sort((a,b)=>(order.indexOf(a.name)<0?99:order.indexOf(a.name))-(order.indexOf(b.name)<0?99:order.indexOf(b.name)));}return base;

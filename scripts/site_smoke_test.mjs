@@ -98,62 +98,12 @@ for (const cls of ['Conqueror','Guardian','Destroyer']) {
   }
 }
 
-// Fantasia Ascent is a first-class solo-push mode for every current S2 class.
-await waitBuild('Conqueror');
-assert(await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').count()===5, 'build activity selector does not contain five modes');
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
-await page.waitForTimeout(80);
-let fantasiaTitles=await buildTitles();
-assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Conqueror Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-
-await waitBuild('Guardian');
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
-await page.locator('#buildContent button[data-guardian-mode="tank"]').click();
-await page.waitForTimeout(80);
-fantasiaTitles=await buildTitles();
-assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Guardian Tank Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-await page.locator('#buildContent button[data-guardian-mode="dps"]').click();
-await page.waitForTimeout(80);
-fantasiaTitles=await buildTitles();
-assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Guardian DPS Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-
-await waitBuild('Destroyer');
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
-await page.waitForTimeout(80);
-fantasiaTitles=await buildTitles();
-assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Destroyer Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-
-await waitBuild('Dominator');
-await page.locator('#buildContent .metaBuildTabs button[data-meta-mode="Fantasia Ascent"]').click();
-await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
-await page.waitForTimeout(80);
-fantasiaTitles=await buildTitles();
-assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator DPS Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
-await page.waitForTimeout(80);
-fantasiaTitles=await buildTitles();
-assert(fantasiaTitles.length===1 && /^Fantasia Ascent/i.test(fantasiaTitles[0]||''), `Dominator Heals Fantasia build missing: ${fantasiaTitles.join(' | ')}`);
-// Fantasia sits directly after Crucible / Conquest in the activity selector.
+// Builds intentionally expose only the four scenarios with stable recommendations.
 await waitBuild('Conqueror');
 const scenarioOrder=await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').evaluateAll(xs=>xs.map(x=>x.dataset.metaMode));
-assert(JSON.stringify(scenarioOrder)===JSON.stringify(['Dungeon','Crucible / Conquest','Fantasia Ascent','Arena','Tournament']), `activity order wrong: ${scenarioOrder.join(' | ')}`);
-
-// Rechecked Ascent Fantomon choices: Destroyer and Dominator use push-specific pools.
-await waitBuild('Destroyer');
-await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Fantasia Ascent"]').click();
-await page.waitForTimeout(80);
-let ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
-assert(JSON.stringify(ascentPets)===JSON.stringify(['Nyxarchon','Aegiswing','Armopi']), `Destroyer Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
-await waitBuild('Dominator');
-await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Fantasia Ascent"]').click();
-await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
-await page.waitForTimeout(80);
-ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
-assert(JSON.stringify(ascentPets)===JSON.stringify(['Nyxarchon','Aegiswing','Zeioletus']), `Dominator DPS Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
-await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
-await page.waitForTimeout(80);
-ascentPets=await page.locator('#buildContent .buildCard:visible .fantomonPick b').allTextContents();
-assert(JSON.stringify(ascentPets)===JSON.stringify(['Herbote','Aegiswing','Mandragora']), `Dominator Heals Ascent Fantomons wrong: ${ascentPets.join(' | ')}`);
+assert(JSON.stringify(scenarioOrder)===JSON.stringify(['Dungeon','Crucible / Conquest','Arena','Tournament']), `activity order wrong: ${scenarioOrder.join(' | ')}`);
+assert(await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Fantasia Ascent"]').count()===0, 'Fantasia Ascent still appears in Builds');
+assert(await page.locator('#buildContent .buildCard[data-role^="Fantasia Ascent"]').count()===0, 'Fantasia Ascent build cards still render');
 
 // Tournament size controls live inside the Tournament scenario tab and are interactive.
 await waitBuild('Conqueror');
