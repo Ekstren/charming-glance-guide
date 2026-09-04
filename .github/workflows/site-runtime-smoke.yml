@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'scripts/site_smoke_test.mjs'
+      - 'scripts/guardian_valor_smoke.mjs'
       - '.github/workflows/site-runtime-smoke.yml'
   workflow_dispatch:
 
@@ -23,3 +24,5 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Run browser smoke test
         run: node scripts/site_smoke_test.mjs
+      - name: Run Guardian Valor smoke
+        run: node scripts/guardian_valor_smoke.mjs
