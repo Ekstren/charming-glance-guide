@@ -8,6 +8,7 @@ on:
       - 'assets/build-layout-icons-v1.js'
       - 'scripts/apply_build_layout_icons_v1.py'
       - 'scripts/build_roll_responsive_smoke.mjs'
+      - 'scripts/build_gem_priority_smoke.mjs'
       - 'scripts/topbar_scroll_smoke.mjs'
       - '.github/workflows/apply-build-layout-icons-v1.yml'
   workflow_dispatch:
@@ -29,6 +30,7 @@ jobs:
           python3 -m py_compile scripts/apply_build_layout_icons_v1.py
           node --check assets/build-layout-icons-v1.js
           node --check scripts/build_roll_responsive_smoke.mjs
+          node --check scripts/build_gem_priority_smoke.mjs
           node --check scripts/topbar_scroll_smoke.mjs
           grep -Fq 'BUILD_HERO_LAYOUT_ICONS_V1' assets/build-layout-icons-v1.css
           grep -Fq 'BUILD_HERO_LAYOUT_ICONS_V1' assets/build-layout-icons-v1.js
@@ -53,6 +55,9 @@ jobs:
 
       - name: Run responsive Roll Guide smoke
         run: node scripts/build_roll_responsive_smoke.mjs
+
+      - name: Run gem priority smoke
+        run: node scripts/build_gem_priority_smoke.mjs
 
       - name: Run topbar scroll smoke
         run: node scripts/topbar_scroll_smoke.mjs
