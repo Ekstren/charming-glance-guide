@@ -21,16 +21,28 @@ async function assertVisibleGuardianBuild(label){
   assert(await card.count()===1, `${label}: expected one visible Guardian build, found ${await card.count()}`);
   const groups=card.locator('.skillGroup');
   let techniques=[];
+  let charms=[];
   for(let i=0;i<await groups.count();i++){
     const g=groups.nth(i);
     const heading=(await g.locator(':scope > span').innerText()).trim().toLowerCase();
-    if(heading.includes('technique')){
-      techniques=(await g.locator(':scope > div > b').allTextContents()).map(x=>x.trim());
-      break;
-    }
+    const names=(await g.locator(':scope > div > b').allTextContents()).map(x=>x.trim());
+    if(heading.includes('technique')) techniques=names;
+    if(heading.includes('charm')) charms=names;
   }
   assert(techniques.length===4, `${label}: expected four Techniques, got ${techniques.join(' | ')}`);
   assert(techniques.includes('Valor Surge'), `${label}: Valor Surge missing: ${techniques.join(' | ')}`);
+
+  const swaps=card.locator('.buildSwapRows p');
+  for(let i=0;i<await swaps.count();i++){
+    const row=swaps.nth(i);
+    const kind=(await row.locator(':scope > strong').innerText()).trim().toLowerCase();
+    const names=(await row.locator('.swapNames').innerText()).split('→').map(x=>x.trim());
+    assert(names.length===2, `${label}: malformed swap row: ${await row.innerText()}`);
+    const [from,to]=names;
+    const equipped=kind.includes('technique')?techniques:charms;
+    assert(equipped.includes(from), `${label}: ${kind} source "${from}" is not equipped; equipped: ${equipped.join(' | ')}`);
+    assert(!equipped.includes(to), `${label}: ${kind} target "${to}" is already equipped; equipped: ${equipped.join(' | ')}`);
+  }
 }
 
 let checked=0;
@@ -56,5 +68,5 @@ for(const role of ['tank','dps']){
 
 assert(checked===12, `expected to validate 12 Guardian builds, checked ${checked}`);
 assert(pageErrors.length===0, `runtime errors: ${pageErrors.join('\n')}`);
-console.log('guardian valor smoke passed: Valor Surge present in all 12 Tank/DPS Guardian builds');
+console.log('guardian valor smoke passed: Valor Surge present and swap sources valid in all 12 Tank/DPS Guardian builds');
 await browser.close();
