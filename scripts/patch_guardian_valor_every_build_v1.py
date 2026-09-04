@@ -3,6 +3,7 @@ import re
 
 TARGETS = [
     Path('index.html'),
+    Path('.github/build-fantomons-inject.html'),
     Path('scripts/patch_meta_build_modes_v1.py'),
     Path('scripts/patch_guardian_tank_dps_toggle_v1.py'),
 ]
@@ -38,7 +39,7 @@ TEXT_REPLACEMENTS = {
         "Valor Surge stays locked in for the buff/cleanse while Swirling Blade, Lunarwater Threads, and Raging Maelstrom clear dense Water/Cold floors.",
     "Forceful Charge keeps contact and Star Shattering Slash gives the tank setup a real finisher.":
         "Valor Surge keeps the buff/cleanse online and Star Shattering Slash gives the tank setup a real finisher.",
-    # Conditional swaps must not recommend removing Valor.
+    # Conditional swaps must not recommend removing Valor or swapping out a Technique that is no longer equipped.
     "['Need more Taunt','Valor Surge','Hamper Strike']":
         "['Need more Taunt','Desperate Protection','Hamper Strike']",
     "'Arena · Tank|Luminous Shield|Forceful Charge|Star Shattering Slash|Desperate Protection'":
@@ -51,8 +52,6 @@ TEXT_REPLACEMENTS = {
         "'Crucible / Conquest · DPS|Valor Surge|Swirling Blade|Lunarwater Threads|Star Shattering Slash'",
     "'Arena · DPS|Swirling Blade|Luminous Shield|Forceful Charge|Star Shattering Slash'":
         "'Arena · DPS|Valor Surge|Swirling Blade|Luminous Shield|Star Shattering Slash'",
-    "['Need cleanse + damage buff','Forceful Charge','Valor Surge']":
-        "['Need more mobility','Star Shattering Slash','Forceful Charge']",
     "'Tournament · 2v2 · DPS|Swirling Blade|Luminous Shield|Forceful Charge|Star Shattering Slash'":
         "'Tournament · 2v2 · DPS|Valor Surge|Swirling Blade|Luminous Shield|Star Shattering Slash'",
     "['Need cleanse + duo buff','Forceful Charge','Valor Surge']":
@@ -61,6 +60,8 @@ TEXT_REPLACEMENTS = {
         "'Fantasia Ascent · Tank|Valor Surge|Luminous Shield|Star Shattering Slash|Desperate Protection'",
     "'Fantasia Ascent · DPS|Swirling Blade|Lunarwater Threads|Seismic Tide|Raging Maelstrom'":
         "'Fantasia Ascent · DPS|Valor Surge|Swirling Blade|Lunarwater Threads|Raging Maelstrom'",
+    "'Fantasia Ascent · Tank|Valor Surge|Luminous Shield|Star Shattering Slash|Desperate Protection':[\n      ['Need more damage','Forceful Charge','Swirling Blade']":
+        "'Fantasia Ascent · Tank|Valor Surge|Luminous Shield|Star Shattering Slash|Desperate Protection':[\n      ['Need more damage','Desperate Protection','Swirling Blade']",
     # Tooltip policy: Valor is no longer the flex-out slot.
     "'Pre-cast support for Dungeon and boss teams; flex it out when you need more Taunt.'":
         "'Universal Guardian slot: keep it equipped for the team damage buff and cleanse; flex another Technique when you need more Taunt.'",
@@ -103,6 +104,9 @@ def validate_index(text: str) -> None:
         raise RuntimeError('A Guardian conditional swap still removes Valor Surge')
     if "['Need cleanse + damage buff','Forceful Charge','Valor Surge']" in text or "['Need cleanse + duo buff','Forceful Charge','Valor Surge']" in text:
         raise RuntimeError('A Guardian conditional swap still treats Valor Surge as an optional add-in')
+    stale_ascent = "'Fantasia Ascent · Tank|Valor Surge|Luminous Shield|Star Shattering Slash|Desperate Protection':[\n      ['Need more damage','Forceful Charge','Swirling Blade']"
+    if stale_ascent in text:
+        raise RuntimeError('Fantasia Ascent Tank still swaps from unequipped Forceful Charge')
 
 
 changed = []
