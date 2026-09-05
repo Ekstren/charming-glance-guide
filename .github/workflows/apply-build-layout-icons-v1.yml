@@ -12,6 +12,7 @@ on:
       - 'scripts/topbar_scroll_smoke.mjs'
       - 'scripts/patch_s2_late_event_rotation_v1.py'
       - 'scripts/patch_conqueror_4v4_gale_swap_v1.py'
+      - 'scripts/patch_guardian_4v4_control_tank_v1.py'
       - '.github/workflows/apply-build-layout-icons-v1.yml'
   workflow_dispatch:
 
@@ -32,6 +33,7 @@ jobs:
           python3 -m py_compile scripts/apply_build_layout_icons_v1.py
           python3 -m py_compile scripts/patch_s2_late_event_rotation_v1.py
           python3 -m py_compile scripts/patch_conqueror_4v4_gale_swap_v1.py
+          python3 -m py_compile scripts/patch_guardian_4v4_control_tank_v1.py
           node --check assets/build-layout-icons-v1.js
           node --check scripts/build_roll_responsive_smoke.mjs
           node --check scripts/build_gem_priority_smoke.mjs
@@ -48,6 +50,9 @@ jobs:
       - name: Apply Conqueror 4v4 Gale swap guidance
         run: python3 scripts/patch_conqueror_4v4_gale_swap_v1.py
 
+      - name: Apply Guardian 4v4 control tank guidance
+        run: python3 scripts/patch_guardian_4v4_control_tank_v1.py
+
       - name: Verify site wiring
         run: |
           grep -Fq 'BUILD_HERO_LAYOUT_ICONS_V1_ASSETS' index.html
@@ -56,6 +61,9 @@ jobs:
           grep -Fq 'Treasure Hunt 16 + Feneck' index.html
           grep -Fq 'swap Flash Fire → Gale Dance' index.html
           grep -Fq "['Team SPD / Gale Dance','Flash Fire','Gale Dance']" index.html
+          grep -Fq "['Valor Surge','Heart of Challenge','Lunarwater Threads','Luminous Shield']" index.html
+          grep -Fq 'Full-team control tank: pull + Taunt + self-survival' index.html
+          grep -Fq 'Water · Pull · Control · Cold setup' index.html
 
       - name: Install browser smoke dependencies
         run: |
