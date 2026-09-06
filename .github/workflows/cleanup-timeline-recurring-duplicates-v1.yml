@@ -1,0 +1,74 @@
+name: Cleanup recurring timeline duplicates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/cleanup_timeline_recurring_duplicates_v1.py'
+      - '.github/workflows/cleanup-timeline-recurring-duplicates-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cleanup recurring timeline rows
+        run: python3 scripts/cleanup_timeline_recurring_duplicates_v1.py
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js')
+          out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Verify recurring timeline cleanup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert 'function addRecurringEvents()' in s
+          assert not re.search(r"'Treasure Hunt \d+ \+ (?:Bingo Draw|Lucky Scratch|Feneck\\?'s Puzzle) \d+'", s)
+          rows=[ln.strip() for ln in s.splitlines() if re.match(r"^\s*\['\d{4}-\d{2}-\d{2}',\d+,",ln)]
+          dupes=sorted({r for r in rows if rows.count(r)>1})
+          assert not dupes, f'exact duplicate timeline rows remain: {dupes[:5]}'
+          print(f'validated {len(rows)} literal timeline rows with no exact duplicates')
+          PY
+
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Timeline recurring rows are already clean.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Clean duplicate recurring timeline events'
+            git push
+          fi
