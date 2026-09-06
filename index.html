@@ -3562,10 +3562,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           </div>
           <!-- DAILY_SHOP_ESTIMATE_V4 -->
           <div class="realmInventory shopEstimatePanel">
-            <div class="realmInventoryTop"><strong>Daily Shop material estimate</strong><small>Extremely conservative estimate · materials only</small></div>
+            <div class="realmInventoryTop"><strong>Shop Buyouts</strong><small>Extremely conservative estimate · materials only</small></div>
             <div class="shopEstimateCompact">
               <div class="shopRefreshControl">
-                <label>Shop restocks / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>Planner default: 0/day</small></label>
+                <label>Full-page buyouts / day<input id="shopRefreshesDaily" type="number" min="0" max="20" step="1" value="0"><small>0 = off · 1 = base page · 2 = base page + 1 restock</small></label>
               </div>
               <div class="shopGainSummary" aria-label="Estimated shop material gain per day">
                 <div><span>Raw Ore</span><b id="shopGainOre">—</b></div>
@@ -3574,7 +3574,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
                 <div><span>Basic Treats</span><b id="shopGainTreat">—</b></div>
               </div>
             </div>
-            <small id="shopRefreshEstimateNote" class="shopEstimateNote">Today excluded to avoid double-counting Saved materials.</small>
+            <small id="shopRefreshEstimateNote" class="shopEstimateNote">0 = no shop stats · 1 = buy out the base page with no refresh · 2 = buy out the base page, restock once, then buy out the full page again.</small>
             <span id="shopRefreshEstimate" hidden>—</span>
           </div>
           <input id="refinedOreCurrent" type="hidden" value="">
@@ -3621,7 +3621,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 progression gates:</b> the prepared calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, Lv.120 maximum S2 Realm/open-map material bracket and Lv.130 Season Power scoring/second-dungeon milestone. These gates are informational; they do not override the calculator's conservative upgrade-cap logic.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. Season 2 uses live inventory directly; Realm tools and paid purchases are treated as sourcing options rather than a separate optimizer mode.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
-<p><b>Daily Shop estimate:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b>: each restock counts only <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per restock; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. The default is 0 refreshes/day; users opt in to the number they actually buy. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
+<p><b>Shop Buyouts:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b> for each full-page buyout: <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per full-page buyout; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. Enter <b>0</b> for no shop stats, <b>1</b> to buy out the base page with no refresh, <b>2</b> to buy out the base page, restock once, then buy out that full page again, and so on. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. Raw materials, saved Realm tools and paid Realm purchases share one acquisition-efficiency ranking; Realm/tool burden is used only to break effectively equal routes.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
@@ -3873,12 +3873,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
   function dailyShopMaterialEstimate(cfg=activeCalcConfig()){
     const active=cfg.key==='s1'||cfg.key==='s2';
-    const refreshes=active?clamp(Math.floor(n('shopRefreshesDaily',0)),0,20):0;
+    // SHOP_BUYOUTS_V1: input counts full shop pages purchased, not refresh presses.
+    // 0 = off; 1 = base page only; 2 = base page + one restock + second full-page buyout.
+    const buyouts=active?clamp(Math.floor(n('shopRefreshesDaily',0)),0,20):0;
     const days=active?Math.max(0,futureRealmPurchaseDays(cfg)):0;
-    const perRefresh=dailyShopMatsPerRefresh(cfg);
-    const perDay=Object.fromEntries(Object.entries(perRefresh).map(([k,v])=>[k,v*refreshes]));
+    const perBuyout=dailyShopMatsPerRefresh(cfg);
+    const perDay=Object.fromEntries(Object.entries(perBuyout).map(([k,v])=>[k,v*buyouts]));
     const total=Object.fromEntries(Object.entries(perDay).map(([k,v])=>[k,v*days]));
-    return {active,refreshes,days,perRefresh,perDay,total};
+    return {active,refreshes:buyouts,buyouts,days,perRefresh:perBuyout,perBuyout,perDay,total};
   }
 
   function applyS2ScoringStartDefaults(){
@@ -6257,7 +6259,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       if($('shopRefreshEstimateNote')){
         $('shopRefreshEstimateNote').textContent=shop.refreshes
           ? `${shop.days} future reset day${shop.days===1?'':'s'} counted · current day excluded to avoid double-counting materials already entered under Saved.`
-          : 'Set restocks/day to include the extremely conservative Daily Shop material estimate.';
+          : 'Set Shop Buyouts/day: 1 counts the base page with no refresh; 2 counts the base page plus one restock and a second full-page buyout.';
       }
     }
 
@@ -6562,12 +6564,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     ['2026-09-12',60,'Dungeon','Warlord’s Rest','Normal 3.55M + Player Lv.130 · Hard 5M · Nightmare 6M','dungeon'],
     ['2026-09-12',60,'Feature','Season Power unlock','Player Lv.130','feature'],
     ['2026-09-13',61,'Seasonal Map','Acme Nexus','UNCONFIRMED TIMING. QY-derived Season 2 scheduling places this Loong Haven seasonal map on S2 Day 15 / Server Day 61, which maps to Sep. 13 for Charming Glance. A separate older-server calendar instead lists the equivalent seasonal-map milestone as “Sky Tower” on Server Day 71, which would map to Sep. 23. Keep Sep. 13 as the current lead projection, but treat the date and Global-English name as unresolved until Charming Glance’s in-game unlock/telescope confirms which cadence applies.','seasonal-map',null,'unconfirmed'],
+    ['2026-09-23',71,'Event','Treasure Hunt 10 + Feneck\'s Puzzle 3','PROJECTED / EXPECTED from the same current Limitless server-age calendar used for the earlier S2 event rows. It places Treasure Hunt 10 on Server Day 71 with Lucky Idol as the highlighted relic, paired with Feneck\'s Puzzle 3. Charming Glance Server Day 71 maps to Sep. 23. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
     ['2026-09-25',73,'Dungeon','Cloudcrest Temple','Normal 6.2M · Hard 7.7M · Nightmare 9.8M','dungeon'],
+    ['2026-09-30',78,'Event','Treasure Hunt 11 + Bingo Draw 4','PROJECTED / EXPECTED from the current Limitless server-age calendar. It places Treasure Hunt 11 on Server Day 78 with a Tier 4 skill-fragment choice, paired with Bingo Draw 4. Charming Glance Server Day 78 maps to Sep. 30. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
     ['2026-09-30',78,'Ancient Relic','Ethereal Oracle','Loong Haven Relic II · second Loong Haven relic gacha','ancient-relic'],
+    ['2026-10-07',85,'Event','Treasure Hunt 12 + Lucky Scratch 4','PROJECTED / EXPECTED from the current Limitless server-age calendar. It places Treasure Hunt 12 on Server Day 85 with Primal Gem as the highlighted relic, paired with Lucky Scratch 4. Charming Glance Server Day 85 maps to Oct. 7. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
     ['2026-10-08',86,'Dungeon','Bladeshire','Normal 10M · Hard 12.5M · Nightmare 15.8M','dungeon'],
+    ['2026-10-14',92,'Event','Treasure Hunt 13 + Feneck\'s Puzzle 4','PROJECTED / EXPECTED from the current Limitless server-age calendar. It places Treasure Hunt 13 on Server Day 92 with a Miracle Relic Box choice, paired with Feneck\'s Puzzle 4. Charming Glance Server Day 92 maps to Oct. 14. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
     ['2026-10-14',92,'Fantomon','Pandarial','Global Fantomon name · older translated calendars may call it Bamboo Immortal. UNCONFIRMED FOR CHARMING GLANCE: recent community reports that say either ‘S2 Day 46’ or ‘Server Day 92’ are describing the same server-age unlock, because Season 2 begins on Server Day 47. For Charming Glance that maps to Oct. 14. General-Global guides also report Pandarial appearing in the wider Summon Crystal exchange from Aug. 18, so do not treat it as usable here until Charming Glance’s in-game exchange confirms it.','fantomon'],
+    ['2026-10-21',99,'Event','Treasure Hunt 14 + Bingo Draw 5','PROJECTED / EXPECTED from the current Limitless server-age calendar. It places Treasure Hunt 14 on Server Day 99 with Lucky Idol as the highlighted relic, paired with Bingo Draw 5. Charming Glance Server Day 99 maps to Oct. 21. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
     ['2026-10-21',99,'Dungeon','Celestship','Normal 16.5M · Hard 20M · Nightmare 24.5M · Purgatory 40M · QY: lasts around three weeks','dungeon'],
 
+
+    ['2026-10-28',106,'Event','Treasure Hunt 15 + Lucky Scratch 5','PROJECTED / EXPECTED from the current Limitless server-age calendar. It places Treasure Hunt 15 on Server Day 106 with a Tier 4 skill-fragment choice, paired with Lucky Scratch 5. Charming Glance Server Day 106 maps to Oct. 28. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
+    ['2026-11-04',113,'Event','Treasure Hunt 16 + Feneck\'s Puzzle 5','PROJECTED / EXPECTED from the current Limitless server-age calendar. It places Treasure Hunt 16 on Server Day 113 with Primal Gem as the highlighted relic, paired with Feneck\'s Puzzle 5. Charming Glance Server Day 113 maps to Nov. 4, the day before the projected S3 rollover. Treat the exact reward/pairing as projected until the in-game event calendar appears.','event'],
 
     // ---- Season 3 · Aethyris ----
     ['2026-11-05',114,'Region','Aethyris opens','STRONGLY SUPPORTED / UNCONFIRMED FOR CHARMING GLANCE. A fixed older-server Global timeline places Aethyris and Tier 5 on Server Day 114; Charming Glance Server Day 114 maps to Nov. 5 at the 6:00 AM PST reset. Keep the date unconfirmed until Charming Glance receives its in-game season countdown/telescope, but this is now a server-day schedule projection rather than a generic season-length estimate.','region',null,'unconfirmed'],
