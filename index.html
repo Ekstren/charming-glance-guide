@@ -3646,7 +3646,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Shop Buyouts:</b> Season 2 shop income now uses a direct Charming Glance sample rather than the old map-yield proxy. The current sample is <b>4 untouched full shop pages</b>: average <b>3,337.5 Raw Ore</b>, <b>1,912.5 Battle Essence</b>, <b>1,200 regular Chrono Sand</b>, <b>217.5 Rare Chrono Sand</b>, and <b>167.5 Basic Treats</b> per page. Rare Chrono Sand remains separate in the sample data and is converted at <b>5 regular Sand per Rare Sand</b> only when the optimizer needs a single Sand-equivalent total, giving <b>2,287.5 Sand-equivalent per page</b> at the current n=4 average. Enter <b>0</b> for no shop stats, <b>1</b> for the base page only, <b>2</b> for the base page plus one restock and a second full-page buyout, and so on. Only future server-reset days are projected; the current day is excluded so materials already entered under Saved are not double-counted. This sample will be expanded as more untouched Charming Glance shop screenshots are collected.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. Raw materials, saved Realm tools and paid Realm purchases share one acquisition-efficiency ranking; Realm/tool burden is used only to break effectively equal routes.</p>
+<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is a minimum goal. The default planner first finds the highest whole-Primostar tier reachable from projected <b>raw materials only</b> (Saved + Cart + Shop + projected Stamina) and recommends the cheapest balanced route to that raw-only tier. If raw materials cannot reach the requested goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan. Only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are still balanced by marginal acquisition efficiency and actual S2 upgrade-cost curves.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
@@ -5402,15 +5402,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function betterFeasibleCandidate(candidate,best){
     if(!best) return true;
 
-    /* GLOBAL_ACQUISITION_PRIORITY_V2
-       Rank every fundable route by acquisition efficiency before considering how it is
-       sourced. Raw inventory, existing Realm tools and paid refreshes are therefore not
-       hard tiers anymore. Realm/tool/Dawnium burden only breaks an acquisition-effort tie,
-       so a paid-refresh route may win when it is genuinely the cheaper progression path. */
-    const effortFirst=compareAcquisitionEffort(candidate,best);
-    if(effortFirst!==null) return effortFirst;
-
-    // Exact acquisition ties fall through to sourcing burden and overscore tie-breakers.
+    /* SMART_BALANCE_RAW_FIRST_V1
+       Strict sourcing priority for the default planner:
+       0 = projected raw materials only;
+       1 = saved + already-planned Realm tools;
+       2 = extra Realm purchases beyond the selected daily plan.
+       Never spend tools just because a tool-assisted route has a nicer acquisition metric. */
     const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
     if(cStage<bStage) return true;
     if(cStage>bStage) return false;
@@ -5553,7 +5550,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
             if(betterFeasibleCandidate(candidate,fastBest)) fastBest=candidate;
           }
         }
-        if(fastBest) return {plan:fastBest,diagnostic:fastBest};
+        if(fastBest && candidateRealmStage(fastBest)===0) return {plan:fastBest,diagnostic:fastBest};
       }
     }
 
@@ -5700,8 +5697,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           if(betterDiagnosticCandidate(diagnostic,fastDiagnostic)) fastDiagnostic=diagnostic;
         }
       }
-      if(fastBest) return {plan:fastBest,diagnostic:fastBest};
-      if(fastDiagnostic) return {plan:null,diagnostic:fastDiagnostic};
+      if(fastBest && candidateRealmStage(fastBest)===0) return {plan:fastBest,diagnostic:fastBest};
+      // Under strict raw-first sourcing, a tool-using fast-path result cannot short-circuit
+      // the general scan because a raw-only route may still exist elsewhere in the search space.
     }
 
     /* AFFORDABLE_TREAT_FEASIBLE_V1
@@ -6237,6 +6235,54 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     },0);
   }
 
+  /* SMART_BALANCE_RAW_CEILING_V1
+     The requested Primostar value is a minimum goal. If projected RAW income alone can
+     reach a higher whole-Primostar breakpoint, recommend that higher breakpoint without
+     touching Realm tools. Tools are only unlocked when raw cannot reach the requested goal. */
+  function smartBalanceHighestAffordable(options,budget,costKey='cost',secondaryBudget=Infinity,secondaryKey=''){
+    let best=Array.isArray(options)&&options.length?options[0]:null;
+    for(const option of (options||[])){
+      const primary=Math.max(0,Number(option?.[costKey])||0);
+      const secondary=secondaryKey?Math.max(0,Number(option?.[secondaryKey])||0):0;
+      if(primary<=budget+0.5 && secondary<=secondaryBudget+0.5) best=option;
+      else if(primary>budget+0.5) break;
+    }
+    return best;
+  }
+  function smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical){
+    // Large structural target only expands Gear options; actual affordability below is
+    // still limited strictly by projected raw resources and verified progression gates.
+    const ctx=createPlanningContext(baseScore,1_000_000,p,cfg);
+    const total=Math.max(0,Math.floor(baseResources?.staminaNodes||0));
+    const empty={ore:0,essence:0,sand:0,rolla:0,unassigned:0};
+    const map=baseResources?.yields?.map||{};
+    const allocations=[];
+    if(total<=0 || !baseResources?.yields?.mapReady){
+      allocations.push({...empty,unassigned:total});
+    }else if(staminaMode()==='auto'){
+      for(const key of ['ore','essence','sand']) if((Number(map[key])||0)>0) allocations.push({...empty,[key]:total});
+      if(!allocations.length) allocations.push({...empty,unassigned:total});
+    }else{
+      allocations.push(allocateStaminaForPlan(null,baseResources,cfg,p));
+    }
+
+    let best=null;
+    for(const allocation of allocations){
+      const resources=applyStaminaAllocation(baseResources,allocation,cfg);
+      const refinedBudget=resources.refinedTracked?Math.max(0,Number(resources.refined)||0):Infinity;
+      const go=smartBalanceHighestAffordable(ctx.gearOptions,Math.max(0,Number(resources.ore)||0),'oreCost',refinedBudget,'refinedCost');
+      const so=smartBalanceHighestAffordable(ctx.cats.skillOptions,Math.max(0,Number(resources.essence)||0));
+      const ro=smartBalanceHighestAffordable(ctx.cats.relicOptions,Math.max(0,Number(resources.sand)||0));
+      const fo=smartBalanceHighestAffordable(ctx.cats.fantoOptions,Math.max(0,Number(resources.treat)||0));
+      if(!go||!so||!ro||!fo) continue;
+      const score=ctx.charScore+go.score+so.score+ro.score+fo.score;
+      const stars=Math.max(0,Math.floor(historical))+cfg.starBase+Math.floor(score/cfg.scorePerStar);
+      const candidate={stars,score,allocation,resources};
+      if(!best || candidate.stars>best.stars || (candidate.stars===best.stars && candidate.score>best.score)) best=candidate;
+    }
+    return best||{stars:Math.max(0,Math.floor(historical))+cfg.starBase+Math.floor(baseScore/cfg.scorePerStar),score:baseScore,allocation:{...empty,unassigned:total},resources:baseResources};
+  }
+
   let lastRequestedTargetStars=null;
   let lastEffectiveTargetStars=null;
 
@@ -6285,17 +6331,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const targetStars=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
     const currentStarsNow=historical+cfg.starBase+Math.floor(currentScoreNow/cfg.scorePerStar);
     const baselineStars=historical+cfg.starBase+Math.floor(baselineScore/cfg.scorePerStar);
-    const desired=Math.max(0,(targetStars-historical-cfg.starBase)*cfg.scorePerStar);
+    const requestedDesired=Math.max(0,(targetStars-historical-cfg.starBase)*cfg.scorePerStar);
+    const rawCeiling=smartBalanceRawCeiling(baselineScore,p,baseResources,cfg,historical);
+    const effectiveTargetStars=Math.max(targetStars,Math.floor(Number(rawCeiling?.stars)||baselineStars));
+    const desired=Math.max(0,(effectiveTargetStars-historical-cfg.starBase)*cfg.scorePerStar);
     const solution=solveTargetWithAutoStamina(baselineScore,desired,p,baseResources,cfg);
     let plan=solution.plan;
     const diagnosticPlan=solution.diagnostic||null;
     let resourceBlocked=false;
     resources=solution.resources;
     const staminaPlan=solution.allocation;
-    // Never step down to a lower Primostar goal. If the requested score is structurally reachable but the
-    // remaining resource/Realm budget cannot fund it, keep that ORIGINAL target and render its shortages.
+    // Never step down below the user's requested Primostar goal. Above-goal Smart Balance
+    // is allowed only when projected RAW resources already fund that higher whole-star tier.
     if(!plan&&diagnosticPlan){plan=diagnosticPlan;resourceBlocked=!diagnosticPlan.realmFeasible;}
-    lastRequestedTargetStars=targetStars; lastEffectiveTargetStars=targetStars;
+    lastRequestedTargetStars=targetStars; lastEffectiveTargetStars=effectiveTargetStars;
 
     $('seasonRemaining').textContent=formatRemaining(p.hours);
     const pc=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
@@ -6351,7 +6400,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 
     $('currentStars').textContent=fmt(baselineStars);
     $('currentScoreNow').textContent=fmt(currentScoreNow);
-    $('desiredScore').textContent=fmt(desired);
+    $('desiredScore').textContent=fmt(requestedDesired);
     $('targetMessage').hidden=true;
     $('targetMessage').classList.remove('warning');
 
@@ -6405,22 +6454,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     $('recommendedBreakCharacter').textContent=fmt(recommendedParts.character); $('recommendedBreakGear').textContent=fmt(recommendedParts.gear); $('recommendedBreakSkills').textContent=fmt(recommendedParts.skills); $('recommendedBreakRelics').textContent=fmt(recommendedParts.relics); $('recommendedBreakFantomons').textContent=fmt(recommendedParts.fantomons);
     $('recommendedCharacterLabel').textContent=`Character · Lv.${p.level} + ${Math.floor(p.pct*100)}%`; $('recommendedGearLabel').textContent=`Gear · ${plan.gear.join(' / ')}`; $('recommendedSkillsLabel').textContent=`Skills · ${formatLevelMix(planSkillLevels)} recommended`; $('recommendedRelicsLabel').textContent=`Relics · ${formatLevelMix(planRelicLevels,{plus:true})} recommended`; $('recommendedFantomonsLabel').textContent=`Fantomons · ${formatLevelMix(planFantoLevels)} recommended`;
     const recommendationDelta=plan.score-baselineScore;
-    $('recommendedBreakdownExplain').textContent=resourceBlocked?`This is the score-capable upgrade route for your ORIGINAL ${fmt(targetStars)}-Primostar target. It is not being downgraded; the resource cards below show what still needs funding.`:`Actual ${cfg.name} season-end score used by the recommendation: projected Character plus every suggested upgrade, adding ${fmt(Math.max(0,recommendationDelta))} progression points over the no-upgrade baseline.`;
+    const planStars=historical+cfg.starBase+Math.floor(plan.score/cfg.scorePerStar);
+    const smartAboveGoal=!resourceBlocked && effectiveTargetStars>targetStars;
+    const projectedAboveGoal=!resourceBlocked && planStars>targetStars;
+    const planSourceStage=candidateRealmStage(plan);
+    $('recommendedBreakdownExplain').textContent=resourceBlocked?`This is the score-capable upgrade route for your ORIGINAL ${fmt(targetStars)}-Primostar target. It is not being downgraded; the resource cards below show what still needs funding.`:smartAboveGoal?`Smart Balance treats ${fmt(targetStars)} Primostars as the minimum goal, then raises the recommendation to the highest whole-Primostar tier funded by projected raw materials alone. Realm tools are not spent just to push above the goal.`:`Actual ${cfg.name} season-end score used by the recommendation: projected Character plus every suggested upgrade, adding ${fmt(Math.max(0,recommendationDelta))} progression points over the no-upgrade baseline.`;
 
     const lockedText=gearLocked?' Gear is locked at the five current levels.':'';
     const previewText=cfg.key==='s2'&&currentCharacter.level<S2_FULL_SEASONAL_PREVIEW_LEVEL
       ? ` Pre-season preview uses Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} upgrade availability; Character score still uses the real projected level.`
       : '';
     const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120.${previewText}`;
-    const planStars=historical+cfg.starBase+Math.floor(plan.score/cfg.scorePerStar);
     const achievableRewardStars=resourceBlocked?baselineStars:planStars;
     renderAstralPact(achievableRewardStars);
     renderPrimostarRewardReference(currentStarsNow,achievableRewardStars);
-    if($('resultEyebrow')) $('resultEyebrow').textContent=resourceBlocked?'Target plan · resource shortfall':'Recommended season-end result';
+    if($('resultEyebrow')) $('resultEyebrow').textContent=resourceBlocked?'Target plan · resource shortfall':projectedAboveGoal?'Smart Balance season-end result':'Recommended season-end result';
     // TARGET_PLAN_HEADER_COMPLETE_V1: reward-reference rendering must never prevent the target-plan score/status from populating.
     $('currentStars').textContent=fmt(resourceBlocked?targetStars:planStars);$('summaryOptimizedScore').textContent=fmt(plan.score);
     if($('targetStatus')){$('targetStatus').textContent=resourceBlocked?'resources':'✓';$('targetStatus').classList.toggle('notMet',resourceBlocked);}
-    $('optimizedScore').textContent=resourceBlocked?`${fmt(plan.score)} / ${fmt(desired)} score · ${fmt(targetStars)} Primostars target plan`:`${fmt(plan.score)} / ${fmt(desired)} score · ${fmt(planStars)} Primostars`;
+    $('optimizedScore').textContent=resourceBlocked?`${fmt(plan.score)} / ${fmt(requestedDesired)} score · ${fmt(targetStars)} Primostars target plan`:projectedAboveGoal?`${fmt(plan.score)} score · Smart Balance ${fmt(planStars)} Primostars · goal ${fmt(targetStars)} ✓`:`${fmt(plan.score)} / ${fmt(requestedDesired)} score · ${fmt(planStars)} Primostars · goal ${fmt(targetStars)} ✓`;
     $('oreCost').textContent=fmt(plan.oreCost);$('essenceCost').textContent=fmt(plan.essenceCost);$('sandCost').textContent=fmt(plan.sandCost);$('treatCost').textContent=fmt(plan.treatCost);
 
     const secondary=$('secondaryCostNote');
@@ -6480,6 +6532,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     }else{
       const brief=[];
       /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
+      if(projectedAboveGoal) brief.push(`Goal ${fmt(targetStars)} ✓ · projected ${fmt(planStars)}`);
+      else brief.push(`Goal ${fmt(targetStars)} ✓`);
+      if(planSourceStage===0) brief.push('raw projected materials only');
+      else if(planSourceStage===1) brief.push('saved/planned Realm tools only as needed');
+      else if(planSourceStage===2) brief.push('extra Realm purchases required');
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
       if(gearLocked) brief.push('Gear locked');
       $('optimizerSummary').textContent=brief.join(' · ');
