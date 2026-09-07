@@ -1,0 +1,87 @@
+name: Apply tool scarcity credit + calculator performance v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_tool_scarcity_perf_v2.py'
+      - '.github/workflows/apply-tool-scarcity-perf-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install browser benchmark dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Benchmark current calculator before patch
+        continue-on-error: true
+        run: |
+          echo '=== BEFORE ==='
+          node scripts/calculator_perf_check.mjs | tee /tmp/calculator-perf-before.txt
+
+      - name: Apply tool scarcity and hot-path patch
+        run: python3 scripts/apply_tool_scarcity_perf_v2.py
+
+      - name: Verify intended economics
+        run: |
+          grep -Fq 'TOOL_SCARCITY_CREDIT_V2' index.html
+          grep -Fq 'const TOOL_SCARCITY_CREDIT=0.80;' index.html
+          grep -Fq 'bankedMaterial*TOOL_SCARCITY_CREDIT' index.html
+          grep -Fq "ore:plannedToolAcquisitionSupply('ore',resources,cfg)" index.html
+          grep -Fq 'ACQUISITION_KERNEL_V2' index.html
+          if grep -Fq 'acquisitionResourcesForRealms(resources,realms' index.html; then
+            echo 'Old per-candidate acquisition rebuild still present' >&2
+            exit 1
+          fi
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js');out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Run scarcity/tool-balance regression
+        run: node scripts/scarcity_adjusted_acquisition_smoke_v1.mjs
+
+      - name: Run raw-first goal-stop regression
+        run: node scripts/smart_balance_goal_stop_smoke_v2.mjs
+
+      - name: Benchmark optimized calculator
+        run: |
+          echo '=== AFTER ==='
+          node scripts/calculator_perf_check.mjs | tee /tmp/calculator-perf-after.txt
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Tool scarcity/performance v2 is already current.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Credit tools at 80% scarcity and speed calculator'
+            git push
+          fi
