@@ -3561,7 +3561,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           <div class="resourceInputs resourceInputsFour resourceCards">
             <div class="resourceCard"><div class="resourceCardHead"><strong>Raw Ore</strong><small id="oreProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="oreCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="oreRate" type="number" value="0"></label></div></div>
             <div class="resourceCard"><div class="resourceCardHead"><strong>Skill Essence</strong><small id="essenceProjected">Projected: —</small></div><div class="resourceCardFields"><label><span>Saved</span><input id="essenceCurrent" type="number" value="0"></label><label><span>Cart / hr</span><input id="essenceRate" type="number" value="0"></label></div></div>
-            <div class="resourceCard sandResourceCard"><div class="resourceCardHead"><strong>Chrono Sand</strong><small id="sandProjected">Projected: —</small></div><div class="resourceCardFields sandResourceFields"><label><span>Saved · Basic</span><input id="sandCurrent" type="number" min="0" value="0"></label><label><span>Saved · Blue</span><input id="sandBlueCurrent" type="number" min="0" step="1" value="0" title="Each Blue Sand counts as 5 Basic Chrono Sand in the planner."></label><label style="grid-column:1/-1"><span>Cart / hr · Basic</span><input id="sandRate" type="number" min="0" value="0"></label></div><small class="treatEquivalent" id="sandEquivalentNow">Saved total: — basic-equivalent</small></div>
+            <div class="resourceCard sandResourceCard"><div class="resourceCardHead"><strong>Chrono Sand</strong><small id="sandProjected">Projected: —</small></div><div class="resourceCardFields sandResourceFields"><label><span>Saved · Basic</span><input id="sandCurrent" type="number" min="0" value="0"></label><label><span>Saved · Rare (Blue)</span><input id="sandBlueCurrent" type="number" min="0" step="1" value="0" title="Each Rare (Blue) Chrono Sand counts as 5 Basic Chrono Sand in the planner."></label><label><span>Saved · Epic (Purple)</span><input id="sandEpicCurrent" type="number" min="0" step="1" value="0" title="Each Epic (Purple) Chrono Sand counts as 25 Basic Chrono Sand in the planner."></label><label><span>Cart / hr · Basic</span><input id="sandRate" type="number" min="0" value="0"></label></div><small class="treatEquivalent" id="sandEquivalentNow">Saved total: — basic-equivalent</small></div>
             <div class="resourceCard treatResourceCard"><div class="resourceCardHead"><strong>Fantomon Treats</strong><small id="treatProjected">Projected: —</small></div><div class="resourceCardFields treatResourceFields"><label><span>Basic · +50 EXP</span><input id="treatCurrent" type="number" min="0" step="1" value="0"></label><label><span>Premium · +400 EXP</span><input id="treatPremiumCurrent" type="number" min="0" step="1" value="0"></label><label><span>Deluxe · +2,000 EXP</span><input id="treatDeluxeCurrent" type="number" min="0" step="1" value="0"></label><label><span>Cart / hr · Basic</span><input id="treatRate" type="number" min="0" value="0"></label></div><small class="treatEquivalent" id="treatEquivalentNow">Saved total: —</small></div>
           </div>
           <div class="realmInventory">
@@ -3741,7 +3741,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     gearWeapon:130,gearOffhand:130,gearHelmet:130,gearArmor:130,gearBoots:130,
     // S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.
     oreCurrent:0,oreRate:1000,essenceCurrent:0,essenceRate:1200,
-    sandCurrent:0,sandBlueCurrent:0,sandRate:800,
+    sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:800,
     treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:80,
     shopRefreshesDaily:0,
     hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,
@@ -3814,7 +3814,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   const GEAR_IDS = ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'];
   const INPUT_IDS = [
     'targetStars','historicalStars','charLevel','charExp','bedExp','skillLevel','relicLevel','fantomonLevel',
-    ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
+    ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
   ];
   const CHECK_IDS = [];
@@ -3876,9 +3876,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   };
   const staminaModeLabel = (mode = staminaMode()) => ({ore:'Ore',auto:'Auto',essence:'Skill Essence',sand:'Chrono Sand'})[mode] || 'Ore';
   /* OPTIMIZER_CLEANUP_V5: one optimizer policy only — raw-first, acquisition-efficient. */
-  const SAND_BLUE_EQ=5;
+  /* EPIC_CHRONO_SAND_SAVED_V1: Rare/Blue = 5 Basic; Epic/Purple = 25 Basic. Shop average stays unchanged until an Epic shop roll is observed. */
+  const SAND_BLUE_EQ=5, SAND_EPIC_EQ=25;
   function savedSandEquivalent(){
-    return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ;
+    return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ + Math.max(0,n('sandEpicCurrent'))*SAND_EPIC_EQ;
   }
   const TREAT_BASIC_EXP=50, TREAT_PREMIUM_EQ=8, TREAT_DELUXE_EQ=40;
   function savedTreatEquivalent(){
@@ -4234,7 +4235,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(snapshotSeason===seasonKeyAt(Date.now())) snapshotAtMs = Date.now();
     if(id==='oreCurrent') snapshotCarry.ore=0;
     if(id==='essenceCurrent') snapshotCarry.essence=0;
-    if(id==='sandCurrent' || id==='sandBlueCurrent') snapshotCarry.sand=0;
+    if(id==='sandCurrent' || id==='sandBlueCurrent' || id==='sandEpicCurrent') snapshotCarry.sand=0;
     if(id==='treatCurrent' || id==='treatPremiumCurrent' || id==='treatDeluxeCurrent') snapshotCarry.treat=0;
     if(id==='charLevel' || id==='charExp') snapshotCarry.exp=0;
   }
