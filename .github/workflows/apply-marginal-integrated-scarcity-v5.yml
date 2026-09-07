@@ -47,31 +47,34 @@ jobs:
       - name: Verify marginal integration numerically
         run: |
           node --input-type=module - <<'NODE'
-          import { chromium } from 'playwright';
-          import path from 'node:path';
-          import { pathToFileURL } from 'node:url';
-          const browser=await chromium.launch({headless:true});
-          const page=await browser.newPage();
-          await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
-          const vals=await page.evaluate(()=>{
-            const resources={
-              acquisitionHeadroomCosts:{ore:200000},
-              acquisitionSupplyEquiv:{ore:100000}
-            };
-            return {
-              c10:marginalWeightedSpend(10000,'ore',resources),
-              c25:marginalWeightedSpend(25000,'ore',resources),
-              c100:marginalWeightedSpend(100000,'ore',resources),
-              c110:marginalWeightedSpend(110000,'ore',resources)
-            };
-          });
+          import fs from 'node:fs';
+          import vm from 'node:vm';
+          const html=fs.readFileSync('index.html','utf8');
+          const cStart=html.indexOf('  const SURPLUS_ACQUISITION_FLOORS=');
+          const cEnd=html.indexOf('\n\n  /* OPTIMIZER_AUDIT_V3',cStart);
+          const fStart=html.indexOf('  function marginalWeightedSpend(amount,key,resources){');
+          const fEnd=html.indexOf('\n\n  function marginalWeightedCosts',fStart);
+          if(cStart<0||cEnd<0||fStart<0||fEnd<0) throw new Error('Could not extract scarcity kernel from index.html');
+          const kernel=html.slice(cStart,cEnd)+'\n'+html.slice(fStart,fEnd)+'\nthis.marginalWeightedSpend=marginalWeightedSpend;';
+          const ctx={};
+          vm.createContext(ctx);
+          vm.runInContext(kernel,ctx);
+          const resources={
+            acquisitionHeadroomCosts:{ore:200000},
+            acquisitionSupplyEquiv:{ore:100000}
+          };
+          const vals={
+            c10:ctx.marginalWeightedSpend(10000,'ore',resources),
+            c25:ctx.marginalWeightedSpend(25000,'ore',resources),
+            c100:ctx.marginalWeightedSpend(100000,'ore',resources),
+            c110:ctx.marginalWeightedSpend(110000,'ore',resources)
+          };
           const near=(a,b,t=0.02)=>Math.abs(a-b)<=t;
           if(!near(vals.c10,2538.0543618911433)) throw new Error('10k integrated scarcity mismatch: '+JSON.stringify(vals));
           if(!near(vals.c25,7107.828504995488)) throw new Error('25k integrated scarcity mismatch: '+JSON.stringify(vals));
           if(!near(vals.c100,120588.23529411765)) throw new Error('100k integrated scarcity mismatch: '+JSON.stringify(vals));
           if(!near(vals.c110,155588.23529411765)) throw new Error('beyond-pool scarcity mismatch: '+JSON.stringify(vals));
           if(!(vals.c25/25000 > vals.c10/10000)) throw new Error('average scarcity did not rise with depletion');
-          await browser.close();
           console.log('Marginal integration numeric check passed.',vals);
           NODE
 
