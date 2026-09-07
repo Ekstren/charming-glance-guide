@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1545395836014432306",
+  "last_message_id": "1546335893869035641",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -229,6 +229,50 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1545395836014432306"
+    },
+    {
+      "id": "1546334310976725044",
+      "timestamp": "2026-09-07T01:40:29.239000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# 📢 Gift Code | Notice for iOS Game Center Users\n\nAdventurers, if you play using Game Center and encounter a login failure when opening the redemption code page, please try the following:\n\n1.Open the game and link your Game Center account to another supported login method, such as Apple, Facebook, or Google.\n2.Return to the redemption code page.\n3.Log in using the newly linked account method to redeem your code.\n\nPlease make sure the account you use is properly linked to your current game account before redeeming.\n\nThank you for your understanding and support! 💙",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "message_id": "1546333228875391007",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1546334310976725044"
+    },
+    {
+      "id": "1546335893869035641",
+      "timestamp": "2026-09-07T01:46:46.630000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# 📢 Notice for iOS Game Center Users\n\nAdventurers, if you play using Game Center and encounter a login failure when opening the redemption code page, please try the following:\n\n1.Open the game and link your Game Center account to another supported login method, such as Apple, Facebook, or Google.\n2.Return to the redemption code page.\n3.Log in using the newly linked account method to redeem your code.\n\nPlease make sure the account you use is properly linked to your current game account before redeeming.\n\nThank you for your understanding and support! 💙",
+      "author": {
+        "id": "1544367459052556423",
+        "username": "Sword x Staff #🎁｜gift-code",
+        "bot": true
+      },
+      "webhook_id": "1544367459052556423",
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "message_id": "1546333029155340288",
+        "channel_id": "1427172717718929458",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1546335893869035641"
     }
   ]
 }
