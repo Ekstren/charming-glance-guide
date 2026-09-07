@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Official Global Discord feed confirmation: Sep. 7, 2026.
 path = Path('index.html')
 s = path.read_text(encoding='utf-8')
 old = "    ['2026-11-05',114,'Dungeon','Crystalline Spiralwood','Normal · Hard 9M · pre-release English/data name until Global reaches S3','dungeon'],"
