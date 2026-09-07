@@ -3661,16 +3661,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Shop Buyouts:</b> Season 2 shop income now uses a direct Charming Glance sample rather than the old map-yield proxy. The current sample is <b>4 untouched full shop pages</b>: average <b>3,337.5 Raw Ore</b>, <b>1,912.5 Battle Essence</b>, <b>1,200 regular Chrono Sand</b>, <b>217.5 Rare Chrono Sand</b>, and <b>167.5 Basic Treats</b> per page. Rare Chrono Sand remains separate in the sample data and is converted at <b>5 regular Sand per Rare Sand</b> only when the optimizer needs a single Sand-equivalent total, giving <b>2,287.5 Sand-equivalent per page</b> at the current n=4 average. Enter <b>0</b> for no shop stats, <b>1</b> for the base page only, <b>2</b> for the base page plus one restock and a second full-page buyout, and so on. Only future server-reset days are projected; the current day is excluded so materials already entered under Saved are not double-counted. This sample will be expanded as more untouched Charming Glance shop screenshots are collected.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. The planner finds the best balanced route to that goal using projected <b>raw materials first</b> (Saved + Cart + Shop + projected Stamina). If raw alone cannot reach the goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan; only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Separately, the result shows the higher <b>projected raw-only potential</b> when surplus raw income could reach more Primostars, but that ceiling is informational and does not raise the recommended spend. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are balanced by <b>post-plan scarcity-adjusted acquisition efficiency</b>: replacement difficulty is still the base cost, but the optimizer now prices each candidate by how much of the projected usable Ore/Hammer, Essence/Knuckle or Sand/Shovel pool it would consume. A plan that leaves a healthy reserve is cheaper; a plan that would scrape a pool toward zero becomes progressively more expensive. Saved + already-planned Realm tools contribute <b>80%</b> of their material-equivalent value to that pool, preserving a 20% option-value premium; extra recommended purchases never count as surplus. Raw feasibility still comes first, so tools remain untouched whenever a raw-only goal plan exists. Actual S2 upgrade-cost curves still determine every marginal step.</p>
+<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. For economic balancing, each progression family is treated as one owned/projected pool: <b>Ore + saved/already-planned Hammers</b>, <b>Essence + saved/already-planned Knuckles</b>, and <b>Sand + saved/already-planned Shovels</b>, with tools valued at their full material equivalent. Smart Balance chooses the Gear / Skill / Relic / Fantomon mix by <b>post-plan scarcity-adjusted acquisition efficiency</b>, so abundant pools are cheaper to consume and near-empty pools become expensive. This pool selection is separate from physical consumption: within a chosen family the calculator always spends projected <b>raw material first</b>, then uses saved/planned Realm tools only for the remainder. Tool preservation is a tie-breaker when two plans are economically equivalent, not a hard rule that can force a worse balance. <b>Extra Realm purchases are never counted as existing abundance and remain the final fallback</b>; they are recommended only when the target cannot be funded from the owned/projected pools. Separately, the result may show a higher <b>projected raw-only potential</b>; that ceiling is informational and never raises the entered goal. Actual S2 upgrade-cost curves determine every marginal step.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Exact S2 upgrade-cost source:</b> scoring-floor-and-above costs are cross-checked against the extracted live-client Season 2 blessing/level tables published by the 0xNobody multi-season calculator. Gear uses the client base/rate with nearest-5 rounding, Rolla is 2× Gear Ore, and every fifth S2 blessing requires 510 Refined Ore; Skills use their extracted base/rate with nearest-5 rounding; Relics use 1,350 Purple Sand at the first +13→+14 blessing and +135 Purple per subsequent S2 blessing; Fantomon feed EXP and Character EXP use the extracted per-level tables. Unknown levels outside the extracted ranges are not extrapolated as exact.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
-<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
+<p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Saved tools and tools already produced by your configured recurring Realm plan count as owned/projected material capacity for Smart Balance. <b>Additional purchases beyond that plan do not count toward abundance and are a separate final-fallback tier.</b> When they are unavoidable, the planner minimizes unknown-price refreshes and verified Dawnium before normal economic tie-breaks. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
 <p><b>S1 EXP accuracy:</b> verified S1 EXP-to-next-level values are built in through current Lv.122, with an additional verified Lv.124→125 value of 1,830,000 EXP. Unknown late-S1 levels use the ~1.83M-per-level plateau estimate until more live values are confirmed; no manual EXP override is required.</p>
 <p><b>Gear lock:</b> when enabled, all five Gear targets are fixed to the current values you entered.</p>
-<p><b>S2 Ore preservation:</b> When Reserve S2 Ore is enabled during S1, Ore carries a 50% soft premium in resource-efficiency comparisons. Existing optimizer stage rules remain stricter, so the preference will not burn Realm tools or Realm purchases merely to save Ore; it only favors comparable non-Ore upgrade routes.</p>
-<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, an enabled rollover reserve is protected before S1 Realm tools become spendable. For Essence and Sand, carried/projected Knuckles or Shovels cover the reserve first; raw material is held only for any reserve amount those tools cannot cover. Treats have no Realm-tool conversion, so an enabled Treat reserve stays raw. After those reserves are protected, the planner first searches every fundable raw-only Gear / Skill / Relic / Fantomon route. Existing unreserved Realm tools unlock only if raw cannot reach the target, and additional paid Realm refreshes are the final fallback. In Auto mode, the planner compares exactly three easy-to-follow Stamina destinations—all Ore, all Essence or all Sand—for each candidate route, then re-solves until the selected destination stabilizes. Once the requested current-season target is funded, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical progression runway. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
+<p><b>S2 Ore preservation:</b> When Reserve S2 Ore is enabled during S1, Ore carries a 50% soft premium in resource-efficiency comparisons. The preference participates inside the same pooled acquisition economics; saved/planned tools may be used when that creates a healthier goal plan, while extra Realm purchases remain the strict final fallback.</p>
+<p><b>S2 Skill reserve / Automatic Stamina:</b> During S1, an enabled rollover reserve is protected before S1 Realm tools become spendable. For Essence and Sand, carried/projected Knuckles or Shovels cover the reserve first; raw material is held only for any reserve amount those tools cannot cover. Treats have no Realm-tool conversion, so an enabled Treat reserve stays raw. After those reserves are protected, projected raw materials plus existing/already-planned Realm tools are valued together as material-equivalent progression pools; actual funding still consumes raw before tools. Additional paid Realm refreshes remain the final fallback and never count toward starting abundance. In Auto mode, the planner compares exactly three easy-to-follow Stamina destinations—all Ore, all Essence or all Sand—for each candidate route, then re-solves until the selected destination stabilizes. Once the requested current-season target is funded, otherwise-unused verified nodes default to Raw Ore because Gear has the broadest practical progression runway. S2 Lv.120+ uses the current community table: 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla per 5-Stamina node. Late-S1 uses 900 Ore/node; Essence/Sand are automatic estimates (~1,475 Essence / ~838 Sand per 5-Stamina node) derived from the verified S1 Ore-to-Realm scaling until direct late-S1 values are independently confirmed.</p></div></details>
 </section>
 
 </main>
@@ -5242,17 +5242,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,headroomCosts,charScore:characterScore(p,cfg)};
   }
 
-  /* SCARCITY_ADJUSTED_ACQUISITION_V1 · TOOL_SCARCITY_CREDIT_V2 · POST_PLAN_SCARCITY_V4
-     Acquisition difficulty and projected scarcity are ONE economic metric, not competing
-     ranking rules. Saved + already-planned Realm tools count toward the pool at 80% of their
-     material-equivalent value, preserving a 20% option-value premium. Extra purchases never
-     count as surplus. The v4 balance pressure is based on how much of that usable pool a
-     CANDIDATE PLAN would leave after spending: abundant pools are cheap to consume, while
-     plans that drain a pool toward zero become progressively expensive instead of all
-     collapsing to the same flat surplus floor. Strict source tiers remain
-     raw -> saved/planned tools -> extra purchases. */
+  /* SCARCITY_ADJUSTED_ACQUISITION_V1 · POST_PLAN_SCARCITY_V4 · TOTAL_POOL_SMART_BALANCE_V1
+     Smart Balance now treats each owned/projected progression family as ONE economic pool:
+       Ore = projected raw Ore + saved/already-planned Hammers at full material value;
+       Essence = projected raw Essence + saved/already-planned Knuckles at full material value;
+       Sand = projected raw Sand + saved/already-planned Shovels at full material value.
+     This pool decides which category mix is healthiest. Actual funding still spends raw material
+     first inside each family and consumes tools only for the remaining shortfall. Tool preservation
+     is a tie-breaker, not a hard preference. Extra Realm purchases are NOT included in starting
+     abundance and remain the last-resort sourcing tier. */
   const SURPLUS_ACQUISITION_FLOORS={ore:0.25,essence:0.25,sand:0.25,treat:0.00};
-  const TOOL_SCARCITY_CREDIT=0.80;
+  const TOOL_SCARCITY_CREDIT=1.00;
   const POST_PLAN_SCARCITY_MAX=2.50;
   const POST_PLAN_SCARCITY_EXPONENT=2.20;
 
@@ -5269,21 +5269,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const inv=realmInventoryFor(key,cfg);
     const perRun=Math.max(0,realmYieldFor(resources,key));
     const bankedMaterial=Math.max(0,Number(inv?.banked)||0)*perRun;
+    // Saved + already-configured future tools are real owned/projected capacity, so they
+    // enter scarcity at full material equivalent. Candidate-invented extra purchases are
+    // intentionally absent from realmInventoryFor() and therefore cannot inflate this pool.
     return rawOnlyAcquisitionSupply(key,resources,cfg)+bankedMaterial*TOOL_SCARCITY_CREDIT;
   }
 
-  /* POST_PLAN_SCARCITY_V4
-     Rank plans by the reserve they LEAVE, not just whether a category was technically
-     funded before spending. For Ore / Essence / Sand, the economic multiplier rises
-     smoothly with the fraction of the projected usable pool consumed by the candidate.
-     This is monotone in spend, so dominated-plan pruning remains valid. Saved/planned Realm
-     tools are already represented in acquisitionSupplyEquiv at 80% credit; when a candidate
-     crosses from raw into those tools, only 80% of that material spend reduces scarcity
-     supply, preserving their option-value premium. Extra purchased tools contribute no
-     starting supply and therefore hit maximum scarcity pressure.
+  /* POST_PLAN_SCARCITY_V4 · TOTAL_POOL_SMART_BALANCE_V1
+     Rank plans by the reserve they leave in the TOTAL owned/projected resource family.
+     Raw and saved/already-planned tools are economically interchangeable for scarcity, while
+     realmTopupFor() still enforces the physical spend order: raw first, then banked/planned tools.
+     Extra candidate purchases never add starting supply, so a paid route cannot make itself look
+     abundant by counting tools it has not bought yet.
 
-     Treats intentionally keep the prior headroom integral because the exact Treat-funded
-     fast path relies on a fully funded Treat cap having zero marginal acquisition cost. */
+     Treats intentionally keep the prior headroom integral because they have no Realm-tool pool. */
   function marginalWeightedSpend(amount,key,resources){
     const amountTotal=Math.max(0,Number(amount)||0);
     if(amountTotal<=0) return 0;
@@ -5312,23 +5311,22 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       return effective;
     }
 
-    const rawAvailable=Math.max(0,Number(resources?.[key])||0);
-    const toolCreditAvailable=Math.max(0,available-rawAvailable);
-    const rawSpend=Math.min(productive,rawAvailable);
-    const toolMaterialSpend=Math.max(0,productive-rawAvailable);
-    const creditedToolSpend=Math.min(toolCreditAvailable,toolMaterialSpend*TOOL_SCARCITY_CREDIT);
-    const creditedSpend=Math.min(available,rawSpend+creditedToolSpend);
-
-    // Fraction of the existing projected usable pool consumed by THIS candidate. Because
-    // creditedSpend is monotone, this multiplier only rises as a plan spends more of a pool.
+    // Scarcity sees the WHOLE existing/projected family. Whether a unit is physically raw
+    // material or a saved/planned tool does not change its economic coverage. Spending order
+    // is handled later by realmTopupFor(), which always drains projected raw first.
+    const poolSpend=Math.min(productive,available);
     const spentFraction=available>1e-9
-      ? Math.max(0,Math.min(1,creditedSpend/available))
+      ? Math.max(0,Math.min(1,poolSpend/available))
       : (productive>0?1:0);
     const multiplier=floor+(POST_PLAN_SCARCITY_MAX-floor)*Math.pow(spentFraction,POST_PLAN_SCARCITY_EXPONENT);
     let effective=productive*multiplier;
 
-    // Any progression beyond productive headroom or beyond the credited existing pool is
-    // intentionally expensive. Source-tier rules still decide whether such a route is legal.
+    // Material beyond the owned/projected pool is maximally scarce. Such a candidate is legal
+    // only if the final fallback can buy extra Realm entries; those purchases never count as surplus.
+    if(productive>available+1e-9){
+      const over=productive-available;
+      effective+=over*(POST_PLAN_SCARCITY_MAX-multiplier);
+    }
     if(amountTotal>productive) effective+=(amountTotal-productive)*POST_PLAN_SCARCITY_MAX;
     return effective;
   }
@@ -5447,12 +5445,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const treatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
     const refinedShare=resources.refinedTracked&&resources.refined>0?go.refinedCost/resources.refined:0;
     const shares=[oreShare,essenceShare,sandShare,treatShare,refinedShare];
-    /* ACQUISITION_KERNEL_V2
-       Scarcity coverage is fixed for one resource snapshot, including the 80% credit for
-       saved/planned tools. Feasibility/source stage is still decided separately by Realm
-       top-up math. Therefore the hot search can reuse its precomputed acquisition result
-       for raw AND tool-backed candidates instead of recalculating logarithms/DOM rates for
-       every candidate combination. */
+    /* ACQUISITION_KERNEL_V2 · TOTAL_POOL_SMART_BALANCE_V1
+       Scarcity coverage is fixed for one resource snapshot using projected raw + saved/planned
+       tools at full material equivalent. Feasibility and the raw-before-tools consumption order
+       are decided separately by Realm top-up math, so the hot search can reuse this kernel. */
     const acquisition=acquisitionResult||acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,activeCalcConfig());
     const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
     return {
@@ -5508,18 +5504,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function betterFeasibleCandidate(candidate,best){
     if(!best) return true;
 
-    /* SMART_BALANCE_RAW_FIRST_V1
-       Strict sourcing priority for the default planner:
-       0 = projected raw materials only;
-       1 = saved + already-planned Realm tools;
-       2 = extra Realm purchases beyond the selected daily plan.
-       Never spend tools just because a tool-assisted route has a nicer acquisition metric. */
+    /* TOTAL_POOL_SMART_BALANCE_V1
+       Raw material and saved/already-planned Realm tools belong to the SAME owned/projected
+       economic tier. Do not force a raw-only candidate to beat a healthier pooled candidate.
+       The only hard sourcing boundary is EXTRA Realm purchases, which remain last resort. */
     const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
-    if(cStage<bStage) return true;
-    if(cStage>bStage) return false;
+    const cPaid=cStage>=2,bPaid=bStage>=2;
+    if(cPaid!==bPaid) return !cPaid;
 
-    // Paid Realm purchases are the final fallback. Inside that stage, Dawnium cost wins.
-    if(cStage===2){
+    // If extra purchases are unavoidable for both routes, minimize unknown-price refreshes
+    // and verified Dawnium before choosing among their economic mixes.
+    if(cPaid&&bPaid){
       const cu=Math.max(0,Number(candidate.unknownPriceRefreshes)||0),bu=Math.max(0,Number(best.unknownPriceRefreshes)||0);
       if(cu<bu) return true;
       if(cu>bu) return false;
@@ -5527,21 +5522,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       if(candidate.dawniumCost>best.dawniumCost+1e-9) return false;
     }
 
-    /* TOOL_MATERIAL_WEIGHTS_V1
-       Once both candidates are in the SAME sourcing tier, value Realm-tool-backed
-       progression with the SAME material acquisition weights used for raw Ore/Essence/Sand.
-       This prevents an unweighted 'fewest tools' rule from exhausting scarce Hammers/Ore
-       while abundant Knuckles/Essence are left idle. Source priority remains strict:
-       raw-only still beats any tool route, and projected tools still beat extra purchases. */
+    // Primary choice inside the owned/projected tier: total-pool scarcity-adjusted acquisition.
     const effortCmp=compareAcquisitionEffort(candidate,best);
     if(effortCmp!==null) return effortCmp;
 
-    // If the weighted material burden is genuinely tied, preserve the route that consumes
-    // fewer actual Realm entries. Reserve-aware topups still enforce protected carry reserve.
-    if(cStage>=1){
-      const toolCmp=betterToolBurden(candidate,best);
-      if(toolCmp!==null) return toolCmp;
-    }
+    // Tool preservation is deliberately ONLY a tie-breaker. realmTopupFor() has already spent
+    // raw first, so this chooses fewer Hammers/Knuckles/Shovels only when economics are tied.
+    const toolCmp=betterToolBurden(candidate,best);
+    if(toolCmp!==null) return toolCmp;
 
     // Do not spend material just for meaningless overscore once strategic cost is tied.
     return candidate.overshoot<best.overshoot-1e-9||
@@ -5558,27 +5546,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(candidate.remainingAfterMax<best.remainingAfterMax-0.5) return true;
     if(Math.abs(candidate.remainingAfterMax-best.remainingAfterMax)>0.5) return false;
 
-    // Diagnostics follow the same acquisition-effort ranking as funded plans.
-    const diagnosticEffortFirst=compareAcquisitionEffort(candidate,best);
-    if(diagnosticEffortFirst!==null) return diagnosticEffortFirst;
-
+    // Diagnostics use the same owned/projected-pool vs extra-purchase boundary as funded plans.
     const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
-    if(cStage<bStage) return true;
-    if(cStage>bStage) return false;
-    if(cStage===2){
+    const cPaid=cStage>=2,bPaid=bStage>=2;
+    if(cPaid!==bPaid) return !cPaid;
+    if(cPaid&&bPaid){
       const cu=Math.max(0,Number(candidate.unknownPriceRefreshes)||0),bu=Math.max(0,Number(best.unknownPriceRefreshes)||0);
       if(cu<bu) return true;
       if(cu>bu) return false;
       if(candidate.dawniumCost<best.dawniumCost-1e-9) return true;
       if(candidate.dawniumCost>best.dawniumCost+1e-9) return false;
     }
-    if(cStage>=1){
-      const toolCmp=betterToolBurden(candidate,best);
-      if(toolCmp!==null) return toolCmp;
-    }
-
     const effortCmp=compareAcquisitionEffort(candidate,best);
     if(effortCmp!==null) return effortCmp;
+    const toolCmp=betterToolBurden(candidate,best);
+    if(toolCmp!==null) return toolCmp;
     return candidate.overshoot<best.overshoot;
   }
 
@@ -5589,10 +5571,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const {baseGear,cats,gearOptions,charScore,headroomCosts}=context;
     const realmDays=Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg);
 
-    // Scarcity RANKING can see saved + already-planned Realm tools at 80% material credit;
-    // Realm FEASIBILITY remains strictly raw-first because realmTopupFor still compares each
-    // candidate cost against the raw projected budget before consuming any tools. Extra tool
-    // purchases are not included here, avoiding circular 'buy it because it is abundant' logic.
+    // TOTAL_POOL_SMART_BALANCE_V1: scarcity/efficiency sees projected raw + saved/already-
+    // planned tools at full material equivalent. realmTopupFor() separately preserves the
+    // physical consumption order (raw first). Extra candidate purchases never enter this pool.
     resources.acquisitionHeadroomCosts=headroomCosts||{};
     resources.acquisitionSupplyEquiv={
       ore:plannedToolAcquisitionSupply('ore',resources,cfg),
@@ -5648,7 +5629,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
             if(betterFeasibleCandidate(candidate,fastBest)) fastBest=candidate;
           }
         }
-        if(fastBest && candidateRealmStage(fastBest)===0) return {plan:fastBest,diagnostic:fastBest};
+        if(fastBest && candidateRealmStage(fastBest)<2) return {plan:fastBest,diagnostic:fastBest};
       }
     }
 
@@ -5656,12 +5637,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const oreFor=go=>{const k=go.oreCost;if(!oreCache.has(k))oreCache.set(k,realmTopupFor('ore',k,resources.ore,resources,cfg,p));return oreCache.get(k);};
     const essFor=so=>{const k=so.cost;if(!essCache.has(k))essCache.set(k,realmTopupFor('essence',k,resources.essence,resources,cfg,p));return essCache.get(k);};
     const sandFor=ro=>{const k=ro.cost;if(!sandCache.has(k))sandCache.set(k,realmTopupFor('sand',k,resources.sand,resources,cfg,p));return sandCache.get(k);};
-    /* ACQUISITION_KERNEL_V2
+    /* ACQUISITION_KERNEL_V2 · TOTAL_POOL_SMART_BALANCE_V1
        This metric is evaluated in the hottest optimizer loop. Precompute each category's
-       scarcity-adjusted spend ONCE per resource snapshot (including 80%-credited saved/
-       planned tools), read Cart/map rates once, and run the joint-reacquisition equation
-       with scalar locals. Tool-backed candidates reuse this same exact kernel instead of
-       rebuilding scarcity objects and rerunning logarithms in makePlanCandidate(). */
+       scarcity-adjusted spend ONCE against the full owned/projected resource-family pool,
+       read Cart/map rates once, and run the joint-reacquisition equation with scalar locals.
+       Raw-funded and tool-backed candidates therefore use the same economic kernel. */
     for(const go of gearOptions) go.__acqOreV1=marginalWeightedSpend(go.oreCost,'ore',resources);
     for(const so of cats.skillOptions) so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
     for(const ro of cats.relicOptions) ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
@@ -5729,12 +5709,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const acquisitionFor=(go,so,ro,fo)=>({hours:jointHoursFast(go.__acqOreV1,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1)});
     let best=null,bestDiagnostic=null;
 
-    /* RAW_IMPOSSIBILITY_FASTPATH_V3
-       Prove whether ANY raw-only plan can reach the target before deciding whether a
-       tool-backed exact fast-path result needs the expensive general scan. Resource pools
-       are independent here, so the maximum raw-only score is simply the sum of the highest
-       individually raw-affordable option in each category (respecting Refined Ore too).
-       If that maximum is below desired, a stage-0 route is mathematically impossible. */
+    /* OWNED_POOL_IMPOSSIBILITY_FASTPATH_V4 · TOTAL_POOL_SMART_BALANCE_V1
+       Prove whether ANY route using projected raw + saved/already-planned tools can reach the
+       target before deciding whether a paid-refresh fast-path result needs the expensive scan.
+       Extra candidate purchases are excluded from these budgets. */
     const highestAffordable=(options,budget,costKey='cost',secondaryBudget=Infinity,secondaryKey='')=>{
       let bestOption=Array.isArray(options)&&options.length?options[0]:null;
       for(const option of (options||[])){
@@ -5745,13 +5723,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       }
       return bestOption;
     };
-    const rawRefinedBudget=resources.refinedTracked?Math.max(0,Number(resources.refined)||0):Infinity;
-    const rawMaxGear=highestAffordable(gearOptions,Math.max(0,Number(resources.ore)||0),'oreCost',rawRefinedBudget,'refinedCost');
-    const rawMaxSkill=highestAffordable(cats.skillOptions,Math.max(0,Number(resources.essence)||0));
-    const rawMaxRelic=highestAffordable(cats.relicOptions,Math.max(0,Number(resources.sand)||0));
-    const rawMaxFanto=highestAffordable(cats.fantoOptions,Math.max(0,Number(resources.treat)||0));
-    const rawOnlyMaxScore=charScore+(rawMaxGear?.score||0)+(rawMaxSkill?.score||0)+(rawMaxRelic?.score||0)+(rawMaxFanto?.score||0);
-    const rawOnlyRoutePossible=rawOnlyMaxScore>=desired-1e-9;
+    const poolRefinedBudget=resources.refinedTracked?Math.max(0,Number(resources.refined)||0):Infinity;
+    const poolMaxGear=highestAffordable(gearOptions,plannedToolAcquisitionSupply('ore',resources,cfg),'oreCost',poolRefinedBudget,'refinedCost');
+    const poolMaxSkill=highestAffordable(cats.skillOptions,plannedToolAcquisitionSupply('essence',resources,cfg));
+    const poolMaxRelic=highestAffordable(cats.relicOptions,plannedToolAcquisitionSupply('sand',resources,cfg));
+    const poolMaxFanto=highestAffordable(cats.fantoOptions,Math.max(0,Number(resources.treat)||0));
+    const ownedPoolMaxScore=charScore+(poolMaxGear?.score||0)+(poolMaxSkill?.score||0)+(poolMaxRelic?.score||0)+(poolMaxFanto?.score||0);
+    const ownedPoolRoutePossible=ownedPoolMaxScore>=desired-1e-9;
 
     /* TREAT_FUNDED_SEARCH_FAST_V1
        Exact dimensional collapse when raw Treats already fund every reachable Fantomon
@@ -5820,9 +5798,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           if(betterDiagnosticCandidate(diagnostic,fastDiagnostic)) fastDiagnostic=diagnostic;
         }
       }
-      if(fastBest && (candidateRealmStage(fastBest)===0 || !rawOnlyRoutePossible)) return {plan:fastBest,diagnostic:fastBest};
-      // If raw-only maximum score can still reach the target, keep scanning because the
-      // hard source hierarchy requires stage 0 to beat this tool-backed fast-path result.
+      if(fastBest && (candidateRealmStage(fastBest)<2 || !ownedPoolRoutePossible)) return {plan:fastBest,diagnostic:fastBest};
+      // If the owned/projected pool can still reach the target without extra purchases, keep
+      // scanning before accepting a paid-refresh route because extra purchases are last resort.
     }
 
     /* AFFORDABLE_TREAT_FEASIBLE_V1
@@ -6584,7 +6562,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const projectedAboveGoal=!resourceBlocked && planStars>targetStars;
     const rawPotentialAboveGoal=!resourceBlocked && projectedRawCeilingStars>targetStars;
     const planSourceStage=candidateRealmStage(plan);
-    $('recommendedBreakdownExplain').textContent=resourceBlocked?`This is the score-capable upgrade route for your ORIGINAL ${fmt(targetStars)}-Primostar target. It is not being downgraded; the resource cards below show what still needs funding.`:rawPotentialAboveGoal?`Smart Balance stops the recommended spend once the ${fmt(targetStars)}-Primostar goal is funded. Projected raw materials could reach about ${fmt(projectedRawCeilingStars)} Primostars if you intentionally spend farther, but that upside is informational and does not consume extra raw materials or Realm tools in this goal plan.`:`Actual ${cfg.name} season-end score used by the recommendation: projected Character plus every suggested upgrade, adding ${fmt(Math.max(0,recommendationDelta))} progression points over the no-upgrade baseline.`;
+    $('recommendedBreakdownExplain').textContent=resourceBlocked?`This is the score-capable upgrade route for your ORIGINAL ${fmt(targetStars)}-Primostar target. It is not being downgraded; the resource cards below show what still needs funding.`:rawPotentialAboveGoal?`Smart Balance stops the recommended spend once the ${fmt(targetStars)}-Primostar goal is funded. Projected raw materials alone could reach about ${fmt(projectedRawCeilingStars)} Primostars if you intentionally spend farther, but that upside is informational and does not raise the recommendation above your entered goal.`:`Actual ${cfg.name} season-end score used by the recommendation: projected Character plus every suggested upgrade, adding ${fmt(Math.max(0,recommendationDelta))} progression points over the no-upgrade baseline.`;
 
     const lockedText=gearLocked?' Gear is locked at the five current levels.':'';
     const previewText=cfg.key==='s2'&&currentCharacter.level<S2_FULL_SEASONAL_PREVIEW_LEVEL
@@ -6660,9 +6638,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       /* TOOL_ONLY_RESOURCE_GAPS_V4: reserve math intentionally hidden from result summary */
       brief.push(`Goal ${fmt(targetStars)} ✓`);
       if(rawPotentialAboveGoal) brief.push(`projected raw-only potential ${fmt(projectedRawCeilingStars)}`);
-      if(planSourceStage===0) brief.push('goal funded with raw projected materials only');
-      else if(planSourceStage===1) brief.push('saved/planned Realm tools used only as needed');
-      else if(planSourceStage===2) brief.push('extra Realm purchases required');
+      if(planSourceStage===0) brief.push('goal plan happened to use raw only');
+      else if(planSourceStage===1) brief.push('raw + saved/planned Realm tools optimized as one pool · raw consumed first');
+      else if(planSourceStage===2) brief.push('extra Realm purchases required as final fallback');
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
       if(gearLocked) brief.push('Gear locked');
       $('optimizerSummary').hidden=false;
