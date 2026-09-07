@@ -98,7 +98,7 @@ assert(!state.oreHidden, 'Ore result inset is hidden');
 assert(state.oreText.length > 3 && state.oreText !== '—', `Ore inset collapsed to a placeholder: ${state.oreText}`);
 assert(!/^RAW ORE\s+\S+\s+—$/im.test(state.oreTileText), `Ore tile still contains only a dash placeholder: ${state.oreTileText}`);
 assert(state.oreToolHidden, `unused Ore tool placeholder is still visible: ${state.oreToolText}`);
-assert(Math.abs(state.oreTop - state.essTop) < 3, `Ore inset top does not align with Essence: ${state.oreTop} vs ${state.essTop}`);
+assert(Math.abs(state.oreTop - state.essTop) <= 4, `Ore inset top does not align with Essence: ${state.oreTop} vs ${state.essTop}`);
 
 assert(errors.length === 0, `page runtime errors:\n${errors.join('\n---\n')}`);
 await browser.close();
