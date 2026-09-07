@@ -120,7 +120,7 @@ new_scarcity="""  /* POST_PLAN_SCARCITY_V4 · TOTAL_POOL_SMART_BALANCE_V1
     return effective;
   }
 
-  function marginalWeightedCosts(costs,resources,cfg=activeCalcConfig()){"
+  function marginalWeightedCosts(costs,resources,cfg=activeCalcConfig()){"""
 s=s[:m.start()]+new_scarcity+s[m.end():]
 
 old_search_supply="""    // Scarcity RANKING can see saved + already-planned Realm tools at 80% material credit;
