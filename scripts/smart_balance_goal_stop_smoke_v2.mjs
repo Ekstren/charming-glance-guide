@@ -50,18 +50,18 @@ const m=summary.match(/projected raw-only potential\s+([\d,]+)/i);
 if(!m) throw new Error(`Projected raw-only potential missing: ${summary}`);
 const potential=Number(m[1].replace(/,/g,''));
 if(!(potential>60)) throw new Error(`Expected informational raw-only potential above 60, got ${potential}`);
-if(!/goal funded with raw projected materials only/i.test(summary)) throw new Error(`Raw-first goal source summary missing: ${summary}`);
+if(!/(goal plan happened to use raw only|raw \+ saved\/planned Realm tools optimized as one pool)/i.test(summary)){
+  throw new Error(`Owned/projected pool source summary missing: ${summary}`);
+}
 
 const optimized=await page.locator('#optimizedScore').innerText();
 if(!/goal\s+60/i.test(optimized)) throw new Error(`Goal result missing from optimized score: ${optimized}`);
 if(/Smart Balance\s+\d+/i.test(optimized)) throw new Error(`Optimized score still promotes the raw ceiling into the recommendation: ${optimized}`);
 
-for(const id of ['oreToolBalance','essenceToolBalance','sandToolBalance']){
-  const uses=await page.locator(`#${id} .toolUseLine`).count();
-  if(uses) throw new Error(`${id} consumed Realm tools even though the goal was raw-fundable`);
-}
-if(await page.locator('.applyRealmRecommendation').count()) throw new Error('Extra Realm purchase recommendation appeared on a raw-funded goal plan');
+// Owned/projected tools may now be selected even when raw alone could reach the goal; what must
+// never happen here is an EXTRA Realm-purchase recommendation, because the existing pool is huge.
+if(await page.locator('.applyRealmRecommendation').count()) throw new Error('Extra Realm purchase recommendation appeared despite a fully funded owned/projected pool');
 if(errors.length) throw new Error('Runtime errors:\n'+errors.join('\n---\n'));
 
-console.log(`Smart Balance goal-stop smoke passed: recommended 60, informational raw-only potential ${potential}, no Realm tools consumed.`);
+console.log(`Smart Balance goal-stop smoke passed: recommended 60, informational raw-only potential ${potential}, source=${summary}.`);
 await browser.close();
