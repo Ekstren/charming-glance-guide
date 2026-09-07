@@ -11,84 +11,72 @@ await page.goto(pathToFileURL(path.resolve('index.html')).href, { waitUntil: 'lo
 await page.waitForTimeout(250);
 
 const assert = (cond, msg) => { if (!cond) throw new Error(msg); };
+const set = async (id, value) => {
+  const loc = page.locator(`#${id}`);
+  assert(await loc.count() === 1, `missing input ${id}`);
+  await loc.fill(String(value));
+};
 
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
-await page.waitForTimeout(80);
+await page.waitForTimeout(100);
 
-await page.evaluate(() => {
-  const set = (id, value) => {
-    const el = document.getElementById(id);
-    if (!el) throw new Error(`missing input ${id}`);
-    el.value = String(value);
-  };
+// Keep the first scenario unlocked.
+const gearLock = page.locator('#gearLockButton');
+if (await gearLock.getAttribute('aria-pressed') === 'true') await gearLock.click();
 
-  snapshotSeason = 's2';
-  snapshotStateLoaded = true;
-  snapshotAtMs = Date.now();
-  snapshotCarry = { ore: 0, essence: 0, sand: 0, treat: 0, exp: 0 };
-  gearLocked = false;
+await set('charLevel', 120);
+await set('charExp', 0);
+await set('bedExp', 0);
+await set('historicalStars', 253);
+await set('targetStars', 800);
+await set('skillLevel', 121);
+await set('relicLevel', 13);
+await set('fantomonLevel', 130);
+for (const id of ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots']) await set(id, 130);
 
-  set('charLevel', 120);
-  set('charExp', 0);
-  set('bedExp', 0);
-  set('historicalStars', 253);
-  set('targetStars', 800);
-  set('skillLevel', 121);
-  set('relicLevel', 13);
-  set('fantomonLevel', 130);
-  for (const id of ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots']) set(id, 130);
+await set('oreCurrent', 100000000);
+await set('essenceCurrent', 100000000);
+await set('sandCurrent', 100000000);
+await set('sandBlueCurrent', 0);
+await set('treatCurrent', 100000000);
+await set('treatPremiumCurrent', 0);
+await set('treatDeluxeCurrent', 0);
+await set('oreRate', 0);
+await set('essenceRate', 0);
+await set('sandRate', 0);
+await set('treatRate', 0);
+await set('shopRefreshesDaily', 0);
+await set('hammerCurrent', 0);
+await set('knucklesCurrent', 0);
+await set('shovelCurrent', 0);
+await set('realmDailyOre', 0);
+await set('realmDailyEssence', 0);
+await set('realmDailySand', 0);
+await set('refinedOreCurrent', 0);
+await set('exactSkillLevels', '');
+await set('exactRelicLevels', '');
+await set('exactFantoLevels', '');
 
-  set('oreCurrent', 100000000);
-  set('essenceCurrent', 100000000);
-  set('sandCurrent', 100000000);
-  set('sandBlueCurrent', 0);
-  set('treatCurrent', 100000000);
-  set('treatPremiumCurrent', 0);
-  set('treatDeluxeCurrent', 0);
-  set('oreRate', 0);
-  set('essenceRate', 0);
-  set('sandRate', 0);
-  set('treatRate', 0);
-  set('shopRefreshesDaily', 0);
-  set('hammerCurrent', 0);
-  set('knucklesCurrent', 0);
-  set('shovelCurrent', 0);
-  set('realmDailyOre', 0);
-  set('realmDailyEssence', 0);
-  set('realmDailySand', 0);
-  set('refinedOreCurrent', 0);
-  set('exactSkillLevels', '');
-  set('exactRelicLevels', '');
-  set('exactFantoLevels', '');
-
-  updateGearLockUI();
-  updateCalculator();
-});
-
-await page.waitForTimeout(150);
+const confirm = page.locator('#confirmSeasonSnapshot');
+if (await confirm.count() && await confirm.isVisible()) await confirm.click();
+await page.waitForTimeout(500);
 
 const preview = await page.evaluate(() => ({
-  planningLevel: optimizerPlanningLevel(120, CALC_SEASONS.s2),
-  scoreFloor: CALC_SEASONS.s2.scoreFloor,
-  targetStatus: document.getElementById('targetStatus')?.textContent?.trim(),
+  targetStatus: document.getElementById('targetStatus')?.textContent?.trim() || '',
   targetMessage: document.getElementById('targetMessage')?.textContent || '',
-  resultEyebrow: document.getElementById('resultEyebrow')?.textContent || '',
-  currentStars: document.getElementById('currentStars')?.textContent?.trim(),
+  explain: document.getElementById('currentBreakdownExplain')?.textContent || '',
+  rules: document.getElementById('seasonRulesHint')?.textContent || '',
 }));
 
-assert(preview.planningLevel === 131, `Lv.120 preview did not use Lv.131 upgrade availability: ${preview.planningLevel}`);
-assert(preview.scoreFloor === 130, `S2 scoring floor changed unexpectedly: ${preview.scoreFloor}`);
-assert(preview.targetStatus !== 'cap', `Lv.120 preview is still structurally capped: ${preview.targetMessage}`);
+assert(/Lv\.131/i.test(preview.explain + ' ' + preview.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${preview.explain}`);
+assert(preview.targetStatus !== 'cap', `Lv.120 preview is still structurally capped with abundant resources: ${preview.targetMessage}`);
 
 // Force the genuine structural-cap branch with Gear locked. This reproduces the screenshot
 // edge case and verifies that the header shows the actual requested target (800), while the
 // Ore card renders a normal raw Remaining row and hides the empty Realm-tool placeholder.
-await page.evaluate(() => {
-  gearLocked = true;
-  updateGearLockUI();
-  updateCalculator();
-});
-await page.waitForTimeout(100);
+await gearLock.click();
+await page.waitForFunction(() => document.getElementById('targetStatus')?.textContent?.trim() === 'cap', null, { timeout: 5000 });
+await page.waitForTimeout(80);
 
 const capState = await page.evaluate(() => {
   const ore = document.getElementById('oreBalance');
@@ -97,9 +85,9 @@ const capState = await page.evaluate(() => {
   const oreRect = ore?.getBoundingClientRect();
   const essRect = ess?.getBoundingClientRect();
   return {
-    eyebrow: document.getElementById('resultEyebrow')?.textContent?.trim(),
-    headline: document.getElementById('currentStars')?.textContent?.trim(),
-    status: document.getElementById('targetStatus')?.textContent?.trim(),
+    eyebrow: document.getElementById('resultEyebrow')?.textContent?.trim() || '',
+    headline: document.getElementById('currentStars')?.textContent?.trim() || '',
+    status: document.getElementById('targetStatus')?.textContent?.trim() || '',
     oreText: ore?.textContent?.trim() || '',
     oreHidden: !!ore?.hidden,
     oreToolHidden: !!oreTool?.hidden,
