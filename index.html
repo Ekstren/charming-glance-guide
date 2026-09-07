@@ -3661,7 +3661,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Shop Buyouts:</b> Season 2 shop income now uses a direct Charming Glance sample rather than the old map-yield proxy. The current sample is <b>4 untouched full shop pages</b>: average <b>3,337.5 Raw Ore</b>, <b>1,912.5 Battle Essence</b>, <b>1,200 regular Chrono Sand</b>, <b>217.5 Rare Chrono Sand</b>, and <b>167.5 Basic Treats</b> per page. Rare Chrono Sand remains separate in the sample data and is converted at <b>5 regular Sand per Rare Sand</b> only when the optimizer needs a single Sand-equivalent total, giving <b>2,287.5 Sand-equivalent per page</b> at the current n=4 average. Enter <b>0</b> for no shop stats, <b>1</b> for the base page only, <b>2</b> for the base page plus one restock and a second full-page buyout, and so on. Only future server-reset days are projected; the current day is excluded so materials already entered under Saved are not double-counted. This sample will be expanded as more untouched Charming Glance shop screenshots are collected.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. The planner finds the best balanced route to that goal using projected <b>raw materials first</b> (Saved + Cart + Shop + projected Stamina). If raw alone cannot reach the goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan; only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Separately, the result shows the higher <b>projected raw-only potential</b> when surplus raw income could reach more Primostars, but that ceiling is informational and does not raise the recommended spend. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are balanced by <b>scarcity-adjusted acquisition efficiency</b>: replacement difficulty is the base cost, then projected coverage makes abundant Ore/Hammers, Essence/Knuckles or Sand/Shovels cheaper to consume while nearly exhausted pools become more valuable. Saved + already-planned Realm tools contribute <b>80%</b> of their material-equivalent value to scarcity coverage, preserving a 20% option-value premium; extra recommended purchases never count as surplus. Raw feasibility still comes first, so tools remain untouched whenever a raw-only goal plan exists. Surplus has a nonzero floor, so excess is cheap rather than literally worthless. Actual S2 upgrade-cost curves still determine every marginal step.</p>
+<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. The planner finds the best balanced route to that goal using projected <b>raw materials first</b> (Saved + Cart + Shop + projected Stamina). If raw alone cannot reach the goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan; only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Separately, the result shows the higher <b>projected raw-only potential</b> when surplus raw income could reach more Primostars, but that ceiling is informational and does not raise the recommended spend. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are balanced by <b>post-plan scarcity-adjusted acquisition efficiency</b>: replacement difficulty is still the base cost, but the optimizer now prices each candidate by how much of the projected usable Ore/Hammer, Essence/Knuckle or Sand/Shovel pool it would consume. A plan that leaves a healthy reserve is cheaper; a plan that would scrape a pool toward zero becomes progressively more expensive. Saved + already-planned Realm tools contribute <b>80%</b> of their material-equivalent value to that pool, preserving a 20% option-value premium; extra recommended purchases never count as surplus. Raw feasibility still comes first, so tools remain untouched whenever a raw-only goal plan exists. Actual S2 upgrade-cost curves still determine every marginal step.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
@@ -5184,18 +5184,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,headroomCosts,charScore:characterScore(p,cfg)};
   }
 
-  /* SCARCITY_ADJUSTED_ACQUISITION_V1 · TOOL_SCARCITY_CREDIT_V2
+  /* SCARCITY_ADJUSTED_ACQUISITION_V1 · TOOL_SCARCITY_CREDIT_V2 · POST_PLAN_SCARCITY_V4
      Acquisition difficulty and projected scarcity are ONE economic metric, not competing
-     ranking rules. Every score material is priced by replacement effort, then discounted
-     continuously when projected usable supply comfortably covers remaining productive
-     upgrade demand. Saved + already-planned Realm tools count toward that COVERAGE at 80%
-     of their material-equivalent value: enough to recognize a healthy bank, but with a 20%
-     preservation premium for their bankable/flexible option value. Extra Realm purchases
-     invented by the optimizer never count as surplus. A 0.25 floor keeps large surpluses
-     cheap-but-not-worthless; Treats retain the existing zero floor because they have no
-     Realm-tool substitute. Strict source tiers remain raw -> saved/planned tools -> extra. */
+     ranking rules. Saved + already-planned Realm tools count toward the pool at 80% of their
+     material-equivalent value, preserving a 20% option-value premium. Extra purchases never
+     count as surplus. The v4 balance pressure is based on how much of that usable pool a
+     CANDIDATE PLAN would leave after spending: abundant pools are cheap to consume, while
+     plans that drain a pool toward zero become progressively expensive instead of all
+     collapsing to the same flat surplus floor. Strict source tiers remain
+     raw -> saved/planned tools -> extra purchases. */
   const SURPLUS_ACQUISITION_FLOORS={ore:0.25,essence:0.25,sand:0.25,treat:0.00};
   const TOOL_SCARCITY_CREDIT=0.80;
+  const POST_PLAN_SCARCITY_MAX=2.50;
+  const POST_PLAN_SCARCITY_EXPONENT=2.20;
 
   /* OPTIMIZER_AUDIT_V3 · TOOLS_FIRST_S2_RESERVES_V1
      Enabled S2 Essence/Sand reserves hold carried/planned Realm tools first. Raw material
@@ -5213,11 +5214,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return rawOnlyAcquisitionSupply(key,resources,cfg)+bankedMaterial*TOOL_SCARCITY_CREDIT;
   }
 
-  /* MARGINAL_HEADROOM_COST_V2
-     Candidate resource cost is priced along the funded-cap curve, not at one static
-     pre-spend weight. When a capped category is already overfunded, the first units are
-     cheap to spend; as spending consumes that cushion and approaches an unfunded safe cap,
-     each additional unit becomes progressively more valuable. */
+  /* POST_PLAN_SCARCITY_V4
+     Rank plans by the reserve they LEAVE, not just whether a category was technically
+     funded before spending. For Ore / Essence / Sand, the economic multiplier rises
+     smoothly with the fraction of the projected usable pool consumed by the candidate.
+     This is monotone in spend, so dominated-plan pruning remains valid. Saved/planned Realm
+     tools are already represented in acquisitionSupplyEquiv at 80% credit; when a candidate
+     crosses from raw into those tools, only 80% of that material spend reduces scarcity
+     supply, preserving their option-value premium. Extra purchased tools contribute no
+     starting supply and therefore hit maximum scarcity pressure.
+
+     Treats intentionally keep the prior headroom integral because the exact Treat-funded
+     fast path relies on a fully funded Treat cap having zero marginal acquisition cost. */
   function marginalWeightedSpend(amount,key,resources){
     const amountTotal=Math.max(0,Number(amount)||0);
     if(amountTotal<=0) return 0;
@@ -5227,29 +5235,43 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const available=Math.max(0,Number(resources?.acquisitionSupplyEquiv?.[key])||0);
     if(usefulNeed<=0) return amountTotal*floor;
 
-    // Candidate costs should never exceed productive headroom, but keep any impossible
-    // excess fully scarce rather than silently discounting it.
     const productive=Math.min(amountTotal,usefulNeed);
-    let effective=0;
 
-    if(available>=usefulNeed-1e-9){
-      // Fully funded cap: as this resource is spent on its OWN upgrades, supply and
-      // remaining demand fall together, so coverage stays full through the useful band.
-      effective+=productive*floor;
-    }else if(available<=1e-9){
-      effective+=productive;
-    }else{
-      // With an initial deficit D=N-A, after spending t on this same category the deficit
-      // remains D while remaining demand becomes N-t. Marginal scarcity is therefore
-      // floor + (1-floor)*D/(N-t). Integrate exactly until usable supply is exhausted.
-      const covered=Math.min(productive,available);
-      const deficit=Math.max(0,usefulNeed-available);
-      const denomEnd=Math.max(1e-12,usefulNeed-covered);
-      effective+=floor*covered+(1-floor)*deficit*Math.log(usefulNeed/denomEnd);
-      if(productive>covered) effective+=productive-covered;
+    if(key==='treat'){
+      let effective=0;
+      if(available>=usefulNeed-1e-9){
+        effective+=productive*floor;
+      }else if(available<=1e-9){
+        effective+=productive;
+      }else{
+        const covered=Math.min(productive,available);
+        const deficit=Math.max(0,usefulNeed-available);
+        const denomEnd=Math.max(1e-12,usefulNeed-covered);
+        effective+=floor*covered+(1-floor)*deficit*Math.log(usefulNeed/denomEnd);
+        if(productive>covered) effective+=productive-covered;
+      }
+      if(amountTotal>productive) effective+=amountTotal-productive;
+      return effective;
     }
 
-    if(amountTotal>productive) effective+=amountTotal-productive;
+    const rawAvailable=Math.max(0,Number(resources?.[key])||0);
+    const toolCreditAvailable=Math.max(0,available-rawAvailable);
+    const rawSpend=Math.min(productive,rawAvailable);
+    const toolMaterialSpend=Math.max(0,productive-rawAvailable);
+    const creditedToolSpend=Math.min(toolCreditAvailable,toolMaterialSpend*TOOL_SCARCITY_CREDIT);
+    const creditedSpend=Math.min(available,rawSpend+creditedToolSpend);
+
+    // Fraction of the existing projected usable pool consumed by THIS candidate. Because
+    // creditedSpend is monotone, this multiplier only rises as a plan spends more of a pool.
+    const spentFraction=available>1e-9
+      ? Math.max(0,Math.min(1,creditedSpend/available))
+      : (productive>0?1:0);
+    const multiplier=floor+(POST_PLAN_SCARCITY_MAX-floor)*Math.pow(spentFraction,POST_PLAN_SCARCITY_EXPONENT);
+    let effective=productive*multiplier;
+
+    // Any progression beyond productive headroom or beyond the credited existing pool is
+    // intentionally expensive. Source-tier rules still decide whether such a route is legal.
+    if(amountTotal>productive) effective+=(amountTotal-productive)*POST_PLAN_SCARCITY_MAX;
     return effective;
   }
 
