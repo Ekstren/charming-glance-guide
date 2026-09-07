@@ -42,9 +42,12 @@ jobs:
           tools=fn.index('const toolCmp=betterToolBurden')
           if not (stage < effort < tools):
               raise SystemExit('Expected strict source stage, then material weighting, then literal tool-count tie-break')
-          target=s[s.index('const targetStars=Math.max'):s.index("$('seasonRemaining').textContent")]
+          marker=s.index('SMART_BALANCE_GOAL_STOP_V2')
+          target=s[marker-800:marker+1800]
           if 'const desired=requestedDesired;' not in target:
               raise SystemExit('Recommendation is still being raised to the raw-only ceiling')
+          if 'lastEffectiveTargetStars=targetStars' not in target:
+              raise SystemExit('Effective target is not pinned to the entered goal')
           print('Verified: target stops at entered goal; source tier -> material weights -> tool-count tie-break.')
           PY
 
