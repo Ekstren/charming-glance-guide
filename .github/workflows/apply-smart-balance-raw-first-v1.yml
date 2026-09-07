@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/apply_smart_balance_raw_first_v1.py'
+      - 'scripts/fix_smart_balance_planstars_v1.py'
       - 'scripts/smart_balance_raw_first_smoke_v1.mjs'
       - '.github/workflows/apply-smart-balance-raw-first-v1.yml'
   workflow_dispatch:
@@ -22,7 +23,9 @@ jobs:
           fetch-depth: 0
 
       - name: Apply Smart Balance patch
-        run: python3 scripts/apply_smart_balance_raw_first_v1.py
+        run: |
+          python3 scripts/apply_smart_balance_raw_first_v1.py
+          python3 scripts/fix_smart_balance_planstars_v1.py
 
       - name: Verify intended changes
         run: |
@@ -40,6 +43,8 @@ jobs:
           effort=fn.index('const effortCmp=compareAcquisitionEffort')
           if stage >= effort:
               raise SystemExit('Realm stage must rank before acquisition effort in betterFeasibleCandidate')
+          if s.count('const planStars=historical+cfg.starBase+Math.floor(plan.score/cfg.scorePerStar);') != 1:
+              raise SystemExit('Smart Balance planStars declaration must be singular')
           print('Strict source ordering verified: raw -> planned tools -> extra purchases.')
           PY
 
