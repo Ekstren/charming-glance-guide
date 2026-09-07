@@ -10,6 +10,10 @@ await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
 await page.waitForTimeout(100);
 
+const materials=page.locator('#materialsDetails');
+if(!(await materials.evaluate(el=>el.open))) await materials.locator(':scope > summary').click();
+await page.waitForTimeout(60);
+
 const basic=page.locator('#sandCurrent');
 const rare=page.locator('#sandBlueCurrent');
 const epic=page.locator('#sandEpicCurrent');
