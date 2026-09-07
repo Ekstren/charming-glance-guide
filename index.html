@@ -3644,7 +3644,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         <span>Chrono Sand<b id="sandCost">0</b><small id="sandBalance">—</small><small id="sandToolBalance" class="toolBalance" hidden>—</small></span>
         <span><!-- FANTOMON_TREAT_CARD_COMPACT_V1 -->Fantomon Treats<b id="treatCost">0</b><small id="treatBalance">—</small></span>
       </div>
-      <div class="secondaryCostNote" id="secondaryCostNote" hidden style="display:none!important"></div>
+      <div class="secondaryCostNote" id="secondaryCostNote" hidden></div>
       <details class="resultDetails"><summary>Bonuses and score breakdown</summary><div><div id="astralBonusReference"><h3>Projected Astral Pact bonuses</h3><div class="rewardTotals" id="astralRewardTotals"></div><p class="rewardCount" id="astralRewardCount">Calculated from projected total Primostars.</p></div><h3>Current score now</h3><p class="breakdownExplain" id="currentBreakdownExplain">Exactly what you have entered right now, including your current EXP progress inside the Character level.</p><dl class="scoreBreakdown"><div><dt id="currentCharacterLabel">Character</dt><dd id="currentBreakCharacter">—</dd></div><div><dt id="currentGearLabel">Gear</dt><dd id="currentBreakGear">—</dd></div><div><dt id="currentSkillsLabel">Skills</dt><dd id="currentBreakSkills">—</dd></div><div><dt id="currentRelicsLabel">Relics</dt><dd id="currentBreakRelics">—</dd></div><div><dt id="currentFantomonsLabel">Fantomons</dt><dd id="currentBreakFantomons">—</dd></div></dl><div id="recommendedBreakdownSection"><h3>After recommended upgrades <span class="mutedInline">· season end</span></h3><p class="breakdownExplain" id="recommendedBreakdownExplain">Your projected season-end Character score plus every upgrade recommended above.</p><dl class="scoreBreakdown"><div><dt id="recommendedCharacterLabel">Character</dt><dd id="recommendedBreakCharacter">—</dd></div><div><dt id="recommendedGearLabel">Gear</dt><dd id="recommendedBreakGear">—</dd></div><div><dt id="recommendedSkillsLabel">Skills</dt><dd id="recommendedBreakSkills">—</dd></div><div><dt id="recommendedRelicsLabel">Relics</dt><dd id="recommendedBreakRelics">—</dd></div><div><dt id="recommendedFantomonsLabel">Fantomons</dt><dd id="recommendedBreakFantomons">—</dd></div></dl></div></div></details>
       <!-- PRIMOSTAR_REWARD_REFERENCE_V1 -->
       <details class="resultDetails primostarRewardsDetails"><summary>Primostar rewards</summary><div class="primostarRewardsBody"><p class="primostarRewardsIntro" id="primostarRewardsIntro">Astral Pact reward thresholds from the same table used by the calculator.</p><div class="primostarRewardSeasons" id="primostarRewardSeasons"></div></div></details>
@@ -3655,7 +3655,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>Season 1 carry-forward:</b> Season 1 / Tier III is retired from the live guide. Only historical values required by Season 2 calculations are retained internally, including carried S1 Primostars and cumulative Astral Pact math.</p>
 <p><b>Season 2:</b> the calculator automatically switches after the Aug 30 reset. Seasonal progression above the old floor resets to Lv.100 / Relics +10; S2 Season Power itself uses the new Lv.130 / Relic +13 scoring floor: Character = 100 points/level + completed percentage progress; Gear = 18 per slot level; Skills = 7 per level across 8 skills; Relics = 33 per level across 20 relics; Fantomons = 8 per level across 4 slots. S2 Primostars use <code>45 + floor(score / 27)</code>, plus the prior-season Primostars you enter. The score system unlocks at Lv.130.</p>
 <p><b>Astral Pact:</b> bonuses are calculated from <b>total cumulative Primostars</b>, not Character level. The calculator uses QY Maple's documented S1 Witching Hours thresholds (5–480) and S2 Crossed Paths continuation (505–1880). For example, 200 Primostars gives ATK +3%, Ascension +9%, Gem +15%, Dungeon double +6% and EXP +6%; 230 additionally reaches ATK +4% and Ascension +12%.</p>
-<p><b>S2 Primostar calculator:</b> Season 2 is the active Charming Glance scoring profile. Season 1 is retained only where carry-forward history is required. <b>Planning now starts at Player Lv.120</b>, because that is the verified maximum S2 Material Realm/open-map economy bracket, while <b>Season Power scoring still starts at the Lv.130 baseline</b>. From Lv.120–130 the calculator can run a <b>Lv.131 full-seasonal unlock preview</b> for upgrade availability, allowing stockpiled resources to be evaluated before the live gate opens; this preview does not award fake Character score below Lv.130. Any Gear/Skill/Fantomon/Relic slot below its score floor can be entered normally, scores zero until it crosses the floor, and keeps its real catch-up resource cost. Normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. S2 cost curves are applied from the actual scoring-start levels you enter: Gear/Ore and Skill Essence use the current S2 tables, Relic Sand uses the known S2 step table, and Fantomon Treats use the S2 level curve. This preserves the cost of catching up a lagging slot after Season Power unlocks instead of granting a free jump to the score floor. Exact data that is not independently confirmed stays conservative rather than fabricated. As a regression check, the formula still reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
+<p><b>S2 Primostar calculator:</b> Season 2 is the active Charming Glance scoring profile. Season 1 is retained only where carry-forward history is required. <b>Planning now starts at Player Lv.120</b>, because that is the verified maximum S2 Material Realm/open-map economy bracket, while <b>Season Power scoring still starts at the Lv.130 baseline</b>. From Lv.120–130 the calculator can run a <b>Lv.131 full-seasonal unlock preview</b> for upgrade availability, allowing stockpiled resources to be evaluated before the live gate opens; this preview does not award fake Character score below Lv.130. Any Gear/Skill/Fantomon/Relic slot below its score floor can be entered normally, scores zero until it crosses the floor, and keeps its real catch-up resource cost. Normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. S2 cost curves are applied from the actual scoring-start levels you enter: from the Lv.130 / +13 scoring floor upward, Gear Ore/Rolla/Refined Ore, Skill Essence, Relic Purple-Sand and Fantomon feed EXP use the extracted live-client Season 2 tables/rules rather than hand-fit extrapolations; pre-floor catch-up costs retain the existing Global curve because the extracted seasonal blessing tables start at the scoring floor. This preserves the cost of catching up a lagging slot after Season Power unlocks instead of granting a free jump to the score floor. Exact data that is not independently confirmed stays conservative rather than fabricated. As a regression check, the formula still reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
 <p><b>S2 progression gates:</b> the calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, <b>Lv.120 maximum S2 Realm/open-map material bracket and planner start</b>, <b>Lv.130 Season Power scoring baseline / second-dungeon milestone</b>, and a <b>Lv.131 full-seasonal unlock preview</b> used only for pre-gate planning. Lv.130 remains the actual scoring floor: exactly-at-floor levels contribute 0 progression points, while progress above the floor scores normally.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. Season 2 uses live inventory directly; Realm tools and paid purchases are treated as sourcing options rather than a separate optimizer mode.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
@@ -3663,6 +3663,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. The planner finds the best balanced route to that goal using projected <b>raw materials first</b> (Saved + Cart + Shop + projected Stamina). If raw alone cannot reach the goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan; only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Separately, the result shows the higher <b>projected raw-only potential</b> when surplus raw income could reach more Primostars, but that ceiling is informational and does not raise the recommended spend. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are balanced by <b>post-plan scarcity-adjusted acquisition efficiency</b>: replacement difficulty is still the base cost, but the optimizer now prices each candidate by how much of the projected usable Ore/Hammer, Essence/Knuckle or Sand/Shovel pool it would consume. A plan that leaves a healthy reserve is cheaper; a plan that would scrape a pool toward zero becomes progressively more expensive. Saved + already-planned Realm tools contribute <b>80%</b> of their material-equivalent value to that pool, preserving a 20% option-value premium; extra recommended purchases never count as surplus. Raw feasibility still comes first, so tools remain untouched whenever a raw-only goal plan exists. Actual S2 upgrade-cost curves still determine every marginal step.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
+<p><b>Exact S2 upgrade-cost source:</b> scoring-floor-and-above costs are cross-checked against the extracted live-client Season 2 blessing/level tables published by the 0xNobody multi-season calculator. Gear uses the client base/rate with nearest-5 rounding, Rolla is 2× Gear Ore, and every fifth S2 blessing requires 510 Refined Ore; Skills use their extracted base/rate with nearest-5 rounding; Relics use 1,350 Purple Sand at the first +13→+14 blessing and +135 Purple per subsequent S2 blessing; Fantomon feed EXP and Character EXP use the extracted per-level tables. Unknown levels outside the extracted ranges are not extrapolated as exact.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
 <p><b>Cost accuracy:</b> S1 Skill Essence, Relic Sand, Fantomon Treat and Refined Ore checkpoint costs use the recovered Global/QY tables. Fantomon costs are normalized to Basic-Treat equivalents: Basic = 1 (+50 EXP), Premium = 8 (+400 EXP), Deluxe = 40 (+2,000 EXP). Late-S1 Gear Ore uses the formula that reproduces the independent Global S1 calculator’s 144→148 benchmark exactly; other public datasets disagree on some earlier Gear levels, so the site labels that Gear curve as a late-S1 estimate rather than pretending the entire historical curve is proven. Gear/Relic upgrades also consume Rolla; Rolla is shown as an advisory until a trustworthy complete late-S1 per-level curve is available.</p>
@@ -4360,6 +4361,23 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     202:13478732,203:13478732,204:13478732,205:13478732,206:13478732,207:13478732,
     208:13478732,209:13478732,210:13478732
   };
+  /* EXACT_S2_UPGRADE_COSTS_V5
+     Season-2 scoring-floor-and-above upgrade economics are sourced from the extracted live-client
+     season tables used by the public multi-season calculator, rather than hand-fit extrapolations.
+     Character EXP is exact from Lv.130 through the extracted table range; Fantomon feed EXP is
+     exact from Lv.130 upward through its extracted range. Gear/Skill use the client season base/rate
+     with game rounding to the nearest 5. S2 Relics use the Purple-Sand blessing table, and every
+     fifth S2 Gear blessing costs a fixed 510 Refined Ore. Existing pre-Lv.130 catch-up curves are
+     intentionally retained because the extracted seasonal table begins at the S2 scoring floor. */
+  const S2_EXACT_CHARACTER_EXP_FROM_130='3ry55.41kpv.4dinh.4p95g.50pfl.5bspk.5oes9.5zok8.6b072.6o2zg.6psa6.6qxxm.6s2sw.6t7o6.6ucjg.6vheq.6wma0.6xr5a.6ybkx.6zgg7.70lbh.715wd.71qc1.72aro.73fmz.74kia.769t8.78jju.79of5.7atag.7by5r.7dnbz.7es7a.7fx2k.7fx2k.7ghi7.7hmdh.7ir8r.7jboe.7kgjo.7lley.7mq5h.7nv0q.7pkbm.7r9mj.7sehs.7tjd1.7uo8b.7v8ny.7wdj7.7xieh.7ymix.7z6yi.7zre3.80btn.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98.80w98'.split('.').map(v=>parseInt(v,36));
+  const S2_EXACT_FANTOMON_EXP_FROM_130='189m.195k.1a18.1ax6.1bt4.1cp2.1dkq.1ego.1fcm.1g8k.1h48.1i06.1iw4.1js2.1knq.1ljo.1mfm.1nbk.1o78.1p36.1pz4.1qv2.1rqq.1smo.1tim.1uek.1va8.1w66.1x24.1xxs.1ytq.1zpo.20lm.21ha.22d8.2396.2454.250s.25wq.26so.27om.28ka.29g8.2ac6.2b84.2c3s.2czq.2dvo.2erm.2fna.2gj8.2hf6.2iau.2j6s.2k2q.2kyo.2luc.2mqa.2nm8.2oi6.2pdu.2q9s.2r5q.2s1o.2sxc.2tta.2up8.2vl6.2wgu.2xcs.2y8q.2z4o.300c.30wa.31s8.32o6.33ju.34fs.35bq.367e.373c.37za.38v8.39qw.3amu.3bis.3ceq.3dae.3e6c.3f2a.3fy8.3gtw.3hpu.3ils.3jhq.3kde.3l9c.3m5a.3n18.3nww.3osu.3pos.3qkg.3rge.3scc.3t8a.3u3y.3uzw.3vvu.3wrs.3xng.3yje.3zfc.40ba.416y.422w.42yu.43us.44qg.45me.46ic.47ea.489y.495w.4a1u.4axs.4btg.4cpe.4dlc.4eh0.4fcy.4g8w.4h4u.4i0i.4iwg.4jse.4koc.4lk0.4mfy.4nbw.4o7u.4p3i.4pzg.4qve.4rrc.4sn0.4tiy.4uew.4vau.4w6i'.split('.').map(v=>parseInt(v,36));
+  const S2_EXACT_UPGRADE_RULES=Object.freeze({
+    floor:130,gearBase:16630,gearRate:166.3,gearBlessingLimit:300,gearScaleCap:150,
+    skillBase:12025,skillRate:120.25,skillBlessingLimit:150,
+    relicBase:13,relicPurpleBase:1350,relicPurpleRate:135,relicBlessingLimit:15,
+    refinedOreEvery5:510,rollaPerOre:2
+  });
+
   // Late-S1 community method: use confirmed checkpoints first, then the nearest accepted late-S1 plateau.
   // 122→123 is confirmed at 1,833,196 and the user's live 124→125 value is 1.83M, so unknown 123+ steps
   // use 1.83M rather than extrapolating an artificial rising curve.
@@ -4371,9 +4389,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function expRequiredForLevel(level,cfg=activeCalcConfig()){
     const l=Math.max(1,Math.floor(Number(level)||1));
     if(cfg.key==='s2'){
-      if(S2_EXP_REQUIREMENTS[l]) return S2_EXP_REQUIREMENTS[l];
-      if(l>210) return 13_478_732;
-      return S1_EXP_REQUIREMENTS[l] || 886_000;
+      if(l>=S2_EXACT_UPGRADE_RULES.floor){
+        const exact=S2_EXACT_CHARACTER_EXP_FROM_130[l-S2_EXACT_UPGRADE_RULES.floor];
+        return Number.isFinite(exact)&&exact>0 ? exact : Infinity;
+      }
+      return S2_EXP_REQUIREMENTS[l] || S1_EXP_REQUIREMENTS[l] || 886_000;
     }
     if(S1_EXP_REQUIREMENTS[l]) return S1_EXP_REQUIREMENTS[l];
     if(l>=123) return S1_LATE_EXP_PLATEAU;
@@ -4599,15 +4619,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function gearStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
     if(cfg.key==='s1') return 90*l + 310;
+    // Pre-floor catch-up costs stay on the existing Global curve. The extracted S2 blessing
+    // table begins at target Lv.131 (first level above the Lv.130 Season-Power floor).
     if(l<=109) return 9520 + 240*(l-100);
     if(l<=119) return 11925 + 245*(l-110);
     if(l<=129) return 14380 + 250*(l-120);
-    if(l===130) return 16630;
-    const d=l-130;
-    return 16630 + 165*d + 5*Math.ceil(d/4);
+    const r=S2_EXACT_UPGRADE_RULES;
+    const blessing=(l+1)-r.floor;
+    if(blessing<1||blessing>r.gearBlessingLimit) return Infinity;
+    const scaled=Math.min(blessing,r.gearScaleCap);
+    return Math.round((r.gearBase+(scaled-1)*r.gearRate)/5)*5;
   }
-  function gearStepRefined(level){
+  function gearStepRefined(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
+    if(cfg.key==='s2' && l>=S2_EXACT_UPGRADE_RULES.floor){
+      const blessing=(l+1)-S2_EXACT_UPGRADE_RULES.floor;
+      return blessing>=1 && blessing<=S2_EXACT_UPGRADE_RULES.gearBlessingLimit && blessing%5===0
+        ? S2_EXACT_UPGRADE_RULES.refinedOreEvery5 : 0;
+    }
+    // Preserve the legacy pre-floor/S1 catch-up model where the S2 extracted blessing table does not apply.
     return ((l+1)%5===0) ? l+381 : 0;
   }
   function gearRefinedCost(fromLevels,toLevels){
@@ -4624,13 +4654,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function skillStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
     if(cfg.key==='s1') return l<=109 ? 60*l+25 : 60*l+30;
+    // Keep the pre-floor catch-up curve; exact seasonal blessing costs begin above Lv.130.
     if(l===100) return 6025;
     if(l===101) return 6205;
     if(l<=109) return 6565 + 180*(l-102);
     if(l<=119) return 8025 + 200*(l-110);
     if(l<=129) return 10045 + 220*(l-120);
-    if(l===130) return 12025;
-    return 12025 + 120*(l-130) + (l>=140?5:0);
+    const r=S2_EXACT_UPGRADE_RULES;
+    const blessing=(l+1)-r.floor;
+    if(blessing<1||blessing>r.skillBlessingLimit) return Infinity;
+    return Math.round((r.skillBase+(blessing-1)*r.skillRate)/5)*5;
   }
   function skillCost(from,to,cfg=activeCalcConfig()){
     let each=0;
@@ -4641,12 +4674,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function relicStepSand(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
     if(cfg.key==='s1'){
-      // White/Chrono-Sand equivalent per Relic slot. Current Global community planner: +10→11 3,200 Blue (=16,000 White), +11→12 3,520 Blue, +12→13 3,840 Blue; +13→14 is 1,350 Purple (=33,750 White).
       const table={10:16000,11:17600,12:19200,13:33750};
       return table[l] ?? Infinity;
     }
-    const table={10:16000,11:17600,12:19200,13:20800,14:37125,15:40500,16:43875,17:47250,18:50625,19:54000,20:57375,21:60750};
-    return table[l] ?? Infinity;
+    // Catch-up to +13 remains Blue/Basic-equivalent. From the S2 +13 floor onward the
+    // extracted blessing table is Purple Sand: 1,350, +135 per step, converted at 25×.
+    const catchup={10:16000,11:17600,12:19200};
+    if(l<S2_EXACT_UPGRADE_RULES.relicBase) return catchup[l] ?? Infinity;
+    const r=S2_EXACT_UPGRADE_RULES;
+    const blessing=(l+1)-r.relicBase;
+    if(blessing<1||blessing>r.relicBlessingLimit) return Infinity;
+    return (r.relicPurpleBase+(blessing-1)*r.relicPurpleRate)*SAND_EPIC_EQ;
   }
   function relicCost(from,to,cfg=activeCalcConfig()){
     if(to<=from) return 0;
@@ -4664,10 +4702,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       if(l>=122 && l<=199) return 962 + 23*(l-122);
       return Infinity;
     }
-    if(l>=100 && l<=114) return 526 + 10*(l-100);
-    if(l>=115 && l<=119) return 678 + 10*(l-115);
-    if(l>=120 && l<=199) return 916 + 23*(l-120);
-    return Infinity;
+    if(l<S2_EXACT_UPGRADE_RULES.floor){
+      if(l>=100 && l<=114) return 526 + 10*(l-100);
+      if(l>=115 && l<=119) return 678 + 10*(l-115);
+      if(l>=120 && l<=129) return 916 + 23*(l-120);
+      return Infinity;
+    }
+    const exp=S2_EXACT_FANTOMON_EXP_FROM_130[l-S2_EXACT_UPGRADE_RULES.floor];
+    return Number.isFinite(exp)&&exp>0 ? exp/TREAT_BASIC_EXP : Infinity;
   }
   function fantoCost(from,to,cfg=activeCalcConfig()){
     if(to<=from) return 0;
@@ -4675,6 +4717,22 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     for(let l=from;l<to;l++){ const c=fantoStepTreatCost(l,cfg); if(!Number.isFinite(c)) return Infinity; each+=c; }
     return each*4;
   }
+
+  /* Read-only internal regression probe for the extracted S2 cost tables. */
+  window.__sxsExactCostProbeV5=()=>{
+    const cfg=CALC_SEASONS.s2;
+    return {
+      charLen:S2_EXACT_CHARACTER_EXP_FROM_130.length,
+      fantoLen:S2_EXACT_FANTOMON_EXP_FROM_130.length,
+      gear130:gearStepCost(130,cfg),gear131:gearStepCost(131,cfg),gear160:gearStepCost(160,cfg),gear188:gearStepCost(188,cfg),
+      skill130:skillStepCost(130,cfg),skill140:skillStepCost(140,cfg),skill160:skillStepCost(160,cfg),skill180:skillStepCost(180,cfg),
+      relic13:relicStepSand(13,cfg),relic18:relicStepSand(18,cfg),relic27:relicStepSand(27,cfg),
+      fanto130:fantoStepTreatCost(130,cfg),fanto160:fantoStepTreatCost(160,cfg),
+      xp130:expRequiredForLevel(130,cfg),xp210:expRequiredForLevel(210,cfg),xp281:expRequiredForLevel(281,cfg),xp287:expRequiredForLevel(287,cfg),xp288:expRequiredForLevel(288,cfg),
+      refined134:gearStepRefined(134,cfg),refined139:gearStepRefined(139,cfg),refined135:gearStepRefined(135,cfg),
+      preGear121:gearStepCost(121,cfg),preSkill121:skillStepCost(121,cfg)
+    };
+  };
 
   function balancedGearTarget(base, increments){
     const t = base.slice();
@@ -6550,7 +6608,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       if(resources.refinedTracked) secondaryBits.push(`<b>Refined Ore:</b> ${fmt(plan.refinedCost)} required · ${refinedShort>0.5?`${fmt(Math.ceil(refinedShort))} short`:`${fmt(Math.max(0,resources.refined-plan.refinedCost))} left`}`);
       else secondaryBits.push(`<b>Refined Ore:</b> ${fmt(plan.refinedCost)} needed at +5 milestones`);
     }
-    if((plan.gearAdds||0)>0||(plan.relicAdds||0)>0) secondaryBits.push('<b>Rolla:</b> not tracked');
+    if((plan.gearAdds||0)>0) secondaryBits.push(`<b>Rolla:</b> ${fmt((Number(plan.oreCost)||0)*S2_EXACT_UPGRADE_RULES.rollaPerOre)} required · inventory not tracked`);
     secondary.hidden=secondaryBits.length===0;secondary.innerHTML=secondaryBits.join(' · ');
 
     // Two shortage views are intentional:
