@@ -3411,6 +3411,29 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+
+<style id="ore-tool-spacing-fix-v1">
+/* ORE_TOOL_SPACING_FIX_V1
+   The joined raw-material + Realm-tool card uses a negative margin to fuse two
+   visible halves. When the raw-material line is hidden (common for Ore when the
+   plan is funded entirely through Hammers), that same negative margin incorrectly
+   pulls the Hammer-only inset upward. Restore the normal standalone inset spacing. */
+.planCosts small.rawRemaining[hidden] + small.toolBalance:not([hidden]){
+  min-height:34px!important;
+  margin-top:5px!important;
+  margin-bottom:0!important;
+  padding:8px 10px!important;
+  border:1px solid var(--line)!important;
+  border-radius:10px!important;
+  background:var(--input-bg,var(--surface))!important;
+}
+@media(max-width:720px){
+  .planCosts small.rawRemaining[hidden] + small.toolBalance:not([hidden]){
+    margin-top:5px!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <main>
