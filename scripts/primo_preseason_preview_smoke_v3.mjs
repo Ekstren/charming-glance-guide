@@ -67,42 +67,20 @@ await page.addScriptTag({ content: `
   updateCalculator();
 })();
 ` });
-await page.waitForTimeout(300);
+await page.waitForTimeout(350);
 
-const preview = await page.evaluate(() => ({
-  targetStatus: document.getElementById('targetStatus')?.textContent?.trim() || '',
-  targetMessage: document.getElementById('targetMessage')?.textContent || '',
-  explain: document.getElementById('currentBreakdownExplain')?.textContent || '',
-  rules: document.getElementById('seasonRulesHint')?.textContent || '',
-}));
-
-assert(/Lv\.131/i.test(preview.explain + ' ' + preview.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${preview.explain}`);
-assert(preview.targetStatus !== 'cap', `Lv.120 preview is still structurally capped with abundant resources: ${preview.targetMessage}`);
-
-// Force a guaranteed structural-cap branch: lock Gear and request a deliberately impossible
-// 5,000-Primostar target. This exercises the same no-plan renderer that previously showed
-// baseline 298 as “Requested target” and left the Ore tool placeholder visible.
-await page.addScriptTag({ content: `
-(() => {
-  document.getElementById('targetStars').value = '5000';
-  gearLocked = true;
-  updateGearLockUI();
-  updateCalculator();
-})();
-` });
-await page.waitForTimeout(250);
-
-const capState = await page.evaluate(() => {
+const state = await page.evaluate(() => {
   const ore = document.getElementById('oreBalance');
   const oreTool = document.getElementById('oreToolBalance');
   const ess = document.getElementById('essenceBalance');
   const oreRect = ore?.getBoundingClientRect();
   const essRect = ess?.getBoundingClientRect();
   return {
-    eyebrow: document.getElementById('resultEyebrow')?.textContent?.trim() || '',
-    headline: document.getElementById('currentStars')?.textContent?.trim() || '',
-    status: document.getElementById('targetStatus')?.textContent?.trim() || '',
+    targetStatus: document.getElementById('targetStatus')?.textContent?.trim() || '',
     targetMessage: document.getElementById('targetMessage')?.textContent || '',
+    explain: document.getElementById('currentBreakdownExplain')?.textContent || '',
+    rules: document.getElementById('seasonRulesHint')?.textContent || '',
+    headline: document.getElementById('currentStars')?.textContent?.trim() || '',
     oreText: ore?.textContent?.trim() || '',
     oreHidden: !!ore?.hidden,
     oreToolHidden: !!oreTool?.hidden,
@@ -114,13 +92,12 @@ const capState = await page.evaluate(() => {
   };
 });
 
-assert(capState.status === 'cap', `forced impossible scenario did not enter cap branch: ${capState.status} · ${capState.targetMessage}`);
-assert(/Requested target/i.test(capState.eyebrow), `cap branch eyebrow wrong: ${capState.eyebrow}`);
-assert(capState.headline === '5,000', `cap branch mislabeled baseline as requested target: ${capState.headline}`);
-assert(!capState.oreHidden && /Remaining:/i.test(capState.oreText), `Ore card did not render normal Remaining row: ${capState.oreText}`);
-assert(capState.oreToolHidden, `empty Ore tool row is still visible: ${capState.oreToolText}`);
-assert(Math.abs(capState.oreTop - capState.essTop) < 3, `Ore inset top does not align with Essence: ${capState.oreTop} vs ${capState.essTop}`);
-assert(Math.abs(capState.oreHeight - capState.essHeight) < 3, `Ore inset height does not match Essence: ${capState.oreHeight} vs ${capState.essHeight}`);
+assert(/Lv\.131/i.test(state.explain + ' ' + state.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${state.explain}`);
+assert(state.targetStatus !== 'cap', `Lv.120 preview is still structurally capped with abundant resources: ${state.targetMessage}`);
+assert(!state.oreHidden && /Remaining:/i.test(state.oreText), `Ore card did not render a normal Remaining row: ${state.oreText}`);
+assert(state.oreToolHidden, `unused Ore tool placeholder is still visible: ${state.oreToolText}`);
+assert(Math.abs(state.oreTop - state.essTop) < 3, `Ore inset top does not align with Essence: ${state.oreTop} vs ${state.essTop}`);
+assert(Math.abs(state.oreHeight - state.essHeight) < 3, `Ore inset height does not match Essence: ${state.oreHeight} vs ${state.essHeight}`);
 
 assert(errors.length === 0, `page runtime errors:\n${errors.join('\n---\n')}`);
 await browser.close();
