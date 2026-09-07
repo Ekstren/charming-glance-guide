@@ -1,0 +1,78 @@
+name: Apply total-pool Smart Balance v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_total_pool_smart_balance_v1.py'
+      - 'scripts/total_pool_smart_balance_smoke_v1.mjs'
+      - 'scripts/smart_balance_goal_stop_smoke_v2.mjs'
+      - '.github/workflows/apply-total-pool-smart-balance-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Apply total-pool Smart Balance
+        run: python3 scripts/apply_total_pool_smart_balance_v1.py
+
+      - name: Validate inline JS and model markers
+        run: |
+          grep -Fq 'TOTAL_POOL_SMART_BALANCE_V1' index.html
+          grep -Fq 'const TOOL_SCARCITY_CREDIT=1.00;' index.html
+          grep -Fq 'raw + saved/planned Realm tools optimized as one pool' index.html
+          ! grep -Fq 'Saved + already-planned Realm tools contribute <b>80%</b>' index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          out=Path('/tmp/js-total-pool');out.mkdir(exist_ok=True)
+          for i,b in enumerate(re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)):
+              (out/f'{i}.js').write_text(b,encoding='utf-8')
+          PY
+          for f in /tmp/js-total-pool/*.js; do node --check "$f"; done
+
+      - name: Total-pool behavior regression
+        run: node scripts/total_pool_smart_balance_smoke_v1.mjs
+
+      - name: Scarcity direction regression
+        run: node scripts/scarcity_adjusted_acquisition_smoke_v1.mjs
+
+      - name: Goal-stop regression
+        run: node scripts/smart_balance_goal_stop_smoke_v2.mjs
+
+      - name: Exact S2 cost regression
+        run: node scripts/exact_s2_upgrade_costs_smoke_v5.mjs
+
+      - name: Calculator performance
+        run: node scripts/calculator_perf_check.mjs | tee /tmp/perf-total-pool.txt
+
+      - name: Full browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Total-pool Smart Balance already current'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Optimize Smart Balance across owned resource pools'
+            git pull --rebase origin main
+            git push origin main
+          fi
