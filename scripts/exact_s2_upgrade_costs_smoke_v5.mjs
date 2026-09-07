@@ -34,7 +34,7 @@ const eq=(key,expected,tol=1e-9)=>{
 };
 
 if(!dom.marker) throw new Error('Exact S2 marker missing');
-if(got.charLen!==152) throw new Error(`Expected 152 extracted S2 Character EXP rows, got ${got.charLen}`);
+if(got.charLen!==158) throw new Error(`Expected 158 extracted S2 Character EXP rows, got ${got.charLen}`);
 if(got.fantoLen!==150) throw new Error(`Expected 150 extracted S2 Fantomon EXP rows, got ${got.fantoLen}`);
 eq('gear130',16630);
 eq('gear131',16795);
@@ -52,7 +52,8 @@ eq('fanto160',91790/50);
 eq('xp130',6342809);
 eq('xp210',13478732);
 eq('xp281',13478732);
-if(Number.isFinite(got.xp282)) throw new Error(`xp282 should stop outside extracted range, got ${got.xp282}`);
+eq('xp287',13478732);
+if(Number.isFinite(got.xp288)) throw new Error(`xp288 should stop outside extracted range, got ${got.xp288}`);
 eq('refined134',510);
 eq('refined139',510);
 eq('refined135',0);
