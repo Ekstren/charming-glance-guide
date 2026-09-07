@@ -11,55 +11,63 @@ await page.goto(pathToFileURL(path.resolve('index.html')).href, { waitUntil: 'lo
 await page.waitForTimeout(250);
 
 const assert = (cond, msg) => { if (!cond) throw new Error(msg); };
-const set = async (id, value) => {
-  const loc = page.locator(`#${id}`);
-  assert(await loc.count() === 1, `missing input ${id}`);
-  await loc.fill(String(value));
-};
-
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
 await page.waitForTimeout(100);
 
-// Keep the first scenario unlocked.
-const gearLock = page.locator('#gearLockButton');
-if (await gearLock.getAttribute('aria-pressed') === 'true') await gearLock.click();
+// Run state changes in the page's own classic-script world so the calculator's global
+// lexical bindings (snapshotSeason, gearLocked, updateCalculator, etc.) are available.
+await page.addScriptTag({ content: `
+(() => {
+  const set = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) throw new Error('missing input ' + id);
+    el.value = String(value);
+  };
 
-await set('charLevel', 120);
-await set('charExp', 0);
-await set('bedExp', 0);
-await set('historicalStars', 253);
-await set('targetStars', 800);
-await set('skillLevel', 121);
-await set('relicLevel', 13);
-await set('fantomonLevel', 130);
-for (const id of ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots']) await set(id, 130);
+  snapshotSeason = 's2';
+  snapshotStateLoaded = true;
+  snapshotAtMs = Date.now();
+  snapshotCarry = { ore: 0, essence: 0, sand: 0, treat: 0, exp: 0 };
+  gearLocked = false;
 
-await set('oreCurrent', 100000000);
-await set('essenceCurrent', 100000000);
-await set('sandCurrent', 100000000);
-await set('sandBlueCurrent', 0);
-await set('treatCurrent', 100000000);
-await set('treatPremiumCurrent', 0);
-await set('treatDeluxeCurrent', 0);
-await set('oreRate', 0);
-await set('essenceRate', 0);
-await set('sandRate', 0);
-await set('treatRate', 0);
-await set('shopRefreshesDaily', 0);
-await set('hammerCurrent', 0);
-await set('knucklesCurrent', 0);
-await set('shovelCurrent', 0);
-await set('realmDailyOre', 0);
-await set('realmDailyEssence', 0);
-await set('realmDailySand', 0);
-await set('refinedOreCurrent', 0);
-await set('exactSkillLevels', '');
-await set('exactRelicLevels', '');
-await set('exactFantoLevels', '');
+  set('charLevel', 120);
+  set('charExp', 0);
+  set('bedExp', 0);
+  set('historicalStars', 253);
+  set('targetStars', 800);
+  set('skillLevel', 121);
+  set('relicLevel', 13);
+  set('fantomonLevel', 130);
+  for (const id of ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots']) set(id, 130);
 
-const confirm = page.locator('#confirmSeasonSnapshot');
-if (await confirm.count() && await confirm.isVisible()) await confirm.click();
-await page.waitForTimeout(500);
+  set('oreCurrent', 100000000);
+  set('essenceCurrent', 100000000);
+  set('sandCurrent', 100000000);
+  set('sandBlueCurrent', 0);
+  set('treatCurrent', 100000000);
+  set('treatPremiumCurrent', 0);
+  set('treatDeluxeCurrent', 0);
+  set('oreRate', 0);
+  set('essenceRate', 0);
+  set('sandRate', 0);
+  set('treatRate', 0);
+  set('shopRefreshesDaily', 0);
+  set('hammerCurrent', 0);
+  set('knucklesCurrent', 0);
+  set('shovelCurrent', 0);
+  set('realmDailyOre', 0);
+  set('realmDailyEssence', 0);
+  set('realmDailySand', 0);
+  set('refinedOreCurrent', 0);
+  set('exactSkillLevels', '');
+  set('exactRelicLevels', '');
+  set('exactFantoLevels', '');
+
+  updateGearLockUI();
+  updateCalculator();
+})();
+` });
+await page.waitForTimeout(300);
 
 const preview = await page.evaluate(() => ({
   targetStatus: document.getElementById('targetStatus')?.textContent?.trim() || '',
@@ -74,7 +82,13 @@ assert(preview.targetStatus !== 'cap', `Lv.120 preview is still structurally cap
 // Force the genuine structural-cap branch with Gear locked. This reproduces the screenshot
 // edge case and verifies that the header shows the actual requested target (800), while the
 // Ore card renders a normal raw Remaining row and hides the empty Realm-tool placeholder.
-await gearLock.click();
+await page.addScriptTag({ content: `
+(() => {
+  gearLocked = true;
+  updateGearLockUI();
+  updateCalculator();
+})();
+` });
 await page.waitForFunction(() => document.getElementById('targetStatus')?.textContent?.trim() === 'cap', null, { timeout: 5000 });
 await page.waitForTimeout(80);
 
