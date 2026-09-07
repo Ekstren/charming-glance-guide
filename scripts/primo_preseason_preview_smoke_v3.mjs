@@ -79,18 +79,18 @@ const preview = await page.evaluate(() => ({
 assert(/Lv\.131/i.test(preview.explain + ' ' + preview.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${preview.explain}`);
 assert(preview.targetStatus !== 'cap', `Lv.120 preview is still structurally capped with abundant resources: ${preview.targetMessage}`);
 
-// Force the genuine structural-cap branch with Gear locked. This reproduces the screenshot
-// edge case and verifies that the header shows the actual requested target (800), while the
-// Ore card renders a normal raw Remaining row and hides the empty Realm-tool placeholder.
+// Force a guaranteed structural-cap branch: lock Gear and request a deliberately impossible
+// 5,000-Primostar target. This exercises the same no-plan renderer that previously showed
+// baseline 298 as “Requested target” and left the Ore tool placeholder visible.
 await page.addScriptTag({ content: `
 (() => {
+  document.getElementById('targetStars').value = '5000';
   gearLocked = true;
   updateGearLockUI();
   updateCalculator();
 })();
 ` });
-await page.waitForFunction(() => document.getElementById('targetStatus')?.textContent?.trim() === 'cap', null, { timeout: 5000 });
-await page.waitForTimeout(80);
+await page.waitForTimeout(250);
 
 const capState = await page.evaluate(() => {
   const ore = document.getElementById('oreBalance');
@@ -102,6 +102,7 @@ const capState = await page.evaluate(() => {
     eyebrow: document.getElementById('resultEyebrow')?.textContent?.trim() || '',
     headline: document.getElementById('currentStars')?.textContent?.trim() || '',
     status: document.getElementById('targetStatus')?.textContent?.trim() || '',
+    targetMessage: document.getElementById('targetMessage')?.textContent || '',
     oreText: ore?.textContent?.trim() || '',
     oreHidden: !!ore?.hidden,
     oreToolHidden: !!oreTool?.hidden,
@@ -113,9 +114,9 @@ const capState = await page.evaluate(() => {
   };
 });
 
-assert(capState.status === 'cap', `locked regression scenario did not enter cap branch: ${capState.status}`);
+assert(capState.status === 'cap', `forced impossible scenario did not enter cap branch: ${capState.status} · ${capState.targetMessage}`);
 assert(/Requested target/i.test(capState.eyebrow), `cap branch eyebrow wrong: ${capState.eyebrow}`);
-assert(capState.headline === '800', `cap branch mislabeled baseline as requested target: ${capState.headline}`);
+assert(capState.headline === '5,000', `cap branch mislabeled baseline as requested target: ${capState.headline}`);
 assert(!capState.oreHidden && /Remaining:/i.test(capState.oreText), `Ore card did not render normal Remaining row: ${capState.oreText}`);
 assert(capState.oreToolHidden, `empty Ore tool row is still visible: ${capState.oreToolText}`);
 assert(Math.abs(capState.oreTop - capState.essTop) < 3, `Ore inset top does not align with Essence: ${capState.oreTop} vs ${capState.essTop}`);
