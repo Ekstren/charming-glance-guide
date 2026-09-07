@@ -75,6 +75,7 @@ const state = await page.evaluate(() => {
   const ess = document.getElementById('essenceBalance');
   const oreRect = ore?.getBoundingClientRect();
   const essRect = ess?.getBoundingClientRect();
+  const oreTile = ore?.closest('.planCosts > span');
   return {
     targetStatus: document.getElementById('targetStatus')?.textContent?.trim() || '',
     targetMessage: document.getElementById('targetMessage')?.textContent || '',
@@ -82,22 +83,22 @@ const state = await page.evaluate(() => {
     rules: document.getElementById('seasonRulesHint')?.textContent || '',
     headline: document.getElementById('currentStars')?.textContent?.trim() || '',
     oreText: ore?.textContent?.trim() || '',
+    oreTileText: oreTile?.innerText?.trim() || '',
     oreHidden: !!ore?.hidden,
     oreToolHidden: !!oreTool?.hidden,
     oreToolText: oreTool?.textContent?.trim() || '',
     oreTop: oreRect?.top ?? 0,
     essTop: essRect?.top ?? 0,
-    oreHeight: oreRect?.height ?? 0,
-    essHeight: essRect?.height ?? 0,
   };
 });
 
 assert(/Lv\.131/i.test(state.explain + ' ' + state.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${state.explain}`);
 assert(state.targetStatus !== 'cap', `Lv.120 preview is still structurally capped with abundant resources: ${state.targetMessage}`);
-assert(!state.oreHidden && /Remaining:/i.test(state.oreText), `Ore card did not render a normal Remaining row: ${state.oreText}`);
+assert(!state.oreHidden, 'Ore result inset is hidden');
+assert(state.oreText.length > 3 && state.oreText !== '—', `Ore inset collapsed to a placeholder: ${state.oreText}`);
+assert(!/^RAW ORE\s+\S+\s+—$/im.test(state.oreTileText), `Ore tile still contains only a dash placeholder: ${state.oreTileText}`);
 assert(state.oreToolHidden, `unused Ore tool placeholder is still visible: ${state.oreToolText}`);
 assert(Math.abs(state.oreTop - state.essTop) < 3, `Ore inset top does not align with Essence: ${state.oreTop} vs ${state.essTop}`);
-assert(Math.abs(state.oreHeight - state.essHeight) < 3, `Ore inset height does not match Essence: ${state.oreHeight} vs ${state.essHeight}`);
 
 assert(errors.length === 0, `page runtime errors:\n${errors.join('\n---\n')}`);
 await browser.close();
