@@ -17,7 +17,6 @@ src=src.replace(anchor,replacement,1)
 try:
     exec(compile(src,str(src_path)+'::v6-fixed','exec'))
 except SystemExit as exc:
-    # A rerun after index.html is already patched should still maintain the diagnostic probe.
     if 'already applied' not in str(exc):
         raise
 
@@ -35,7 +34,7 @@ if '__sxsExactCostProbeV5' not in s:
       skill130:skillStepCost(130,cfg),skill140:skillStepCost(140,cfg),skill160:skillStepCost(160,cfg),skill180:skillStepCost(180,cfg),
       relic13:relicStepSand(13,cfg),relic18:relicStepSand(18,cfg),relic27:relicStepSand(27,cfg),
       fanto130:fantoStepTreatCost(130,cfg),fanto160:fantoStepTreatCost(160,cfg),
-      xp130:expRequiredForLevel(130,cfg),xp210:expRequiredForLevel(210,cfg),xp281:expRequiredForLevel(281,cfg),xp282:expRequiredForLevel(282,cfg),
+      xp130:expRequiredForLevel(130,cfg),xp210:expRequiredForLevel(210,cfg),xp281:expRequiredForLevel(281,cfg),xp287:expRequiredForLevel(287,cfg),xp288:expRequiredForLevel(288,cfg),
       refined134:gearStepRefined(134,cfg),refined139:gearStepRefined(139,cfg),refined135:gearStepRefined(135,cfg),
       preGear121:gearStepCost(121,cfg),preSkill121:skillStepCost(121,cfg)
     };
