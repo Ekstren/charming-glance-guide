@@ -14,59 +14,56 @@ const assert = (cond, msg) => { if (!cond) throw new Error(msg); };
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
 await page.waitForTimeout(100);
 
-// Run state changes in the page's own classic-script world so the calculator's global
-// lexical bindings (snapshotSeason, gearLocked, updateCalculator, etc.) are available.
-await page.addScriptTag({ content: `
-(() => {
-  const set = (id, value) => {
-    const el = document.getElementById(id);
-    if (!el) throw new Error('missing input ' + id);
-    el.value = String(value);
-  };
+// Drive the calculator through its actual form events rather than reaching into lexical JS state.
+const set = async (id, value) => {
+  const loc = page.locator(`#${id}`);
+  assert(await loc.count() === 1, `missing input ${id}`);
+  await loc.evaluate((el, next) => {
+    el.value = String(next);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }, value);
+};
 
-  snapshotSeason = 's2';
-  snapshotStateLoaded = true;
-  snapshotAtMs = Date.now();
-  snapshotCarry = { ore: 0, essence: 0, sand: 0, treat: 0, exp: 0 };
-  gearLocked = false;
+await set('charLevel', 120);
+await set('charExp', 0);
+await set('bedExp', 0);
+await set('historicalStars', 253);
+await set('targetStars', 800);
+await set('skillLevel', 121);
+await set('relicLevel', 13);
+await set('fantomonLevel', 130);
+for (const id of ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots']) await set(id, 130);
 
-  set('charLevel', 120);
-  set('charExp', 0);
-  set('bedExp', 0);
-  set('historicalStars', 253);
-  set('targetStars', 800);
-  set('skillLevel', 121);
-  set('relicLevel', 13);
-  set('fantomonLevel', 130);
-  for (const id of ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots']) set(id, 130);
+await set('oreCurrent', 100000000);
+await set('essenceCurrent', 100000000);
+await set('sandCurrent', 100000000);
+await set('sandBlueCurrent', 0);
+await set('treatCurrent', 100000000);
+await set('treatPremiumCurrent', 0);
+await set('treatDeluxeCurrent', 0);
+await set('oreRate', 0);
+await set('essenceRate', 0);
+await set('sandRate', 0);
+await set('treatRate', 0);
+await set('shopRefreshesDaily', 0);
+await set('hammerCurrent', 0);
+await set('knucklesCurrent', 0);
+await set('shovelCurrent', 0);
+await set('realmDailyOre', 0);
+await set('realmDailyEssence', 0);
+await set('realmDailySand', 0);
+await set('refinedOreCurrent', 0);
+await set('exactSkillLevels', '');
+await set('exactRelicLevels', '');
+await set('exactFantoLevels', '');
 
-  set('oreCurrent', 100000000);
-  set('essenceCurrent', 100000000);
-  set('sandCurrent', 100000000);
-  set('sandBlueCurrent', 0);
-  set('treatCurrent', 100000000);
-  set('treatPremiumCurrent', 0);
-  set('treatDeluxeCurrent', 0);
-  set('oreRate', 0);
-  set('essenceRate', 0);
-  set('sandRate', 0);
-  set('treatRate', 0);
-  set('shopRefreshesDaily', 0);
-  set('hammerCurrent', 0);
-  set('knucklesCurrent', 0);
-  set('shovelCurrent', 0);
-  set('realmDailyOre', 0);
-  set('realmDailyEssence', 0);
-  set('realmDailySand', 0);
-  set('refinedOreCurrent', 0);
-  set('exactSkillLevels', '');
-  set('exactRelicLevels', '');
-  set('exactFantoLevels', '');
-
-  updateCalculator();
-})();
-` });
-await page.waitForTimeout(350);
+await page.waitForTimeout(650);
+const confirm = page.locator('#confirmSeasonSnapshot');
+if (await confirm.count() && await confirm.isVisible()) {
+  await confirm.click();
+  await page.waitForTimeout(650);
+}
 
 const state = await page.evaluate(() => {
   const ore = document.getElementById('oreBalance');
@@ -91,14 +88,14 @@ const state = await page.evaluate(() => {
   };
 });
 
-assert(/Lv\.131/i.test(state.explain + ' ' + state.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${state.explain}`);
-assert(state.targetStatus !== 'cap', `Lv.120 preview is still structurally capped with abundant resources: ${state.targetMessage}`);
+assert(/Lv\.131/i.test(state.explain + ' ' + state.rules), `Lv.120 planner does not expose the Lv.131 unlock preview: ${state.explain} / ${state.rules}`);
+assert(state.targetStatus !== 'cap', `Lv.120 preview is still structurally capped: ${state.targetMessage}`);
 assert(!state.oreHidden, 'Ore result inset is hidden');
 assert(state.oreText.length > 3 && state.oreText !== '—', `Ore inset collapsed to a placeholder: ${state.oreText}`);
 assert(!/^RAW ORE\s+\S+\s+—$/im.test(state.oreTileText), `Ore tile still contains only a dash placeholder: ${state.oreTileText}`);
 assert(state.oreToolHidden, `unused Ore tool placeholder is still visible: ${state.oreToolText}`);
 assert(Math.abs(state.oreTop - state.essTop) <= 4, `Ore inset top does not align with Essence: ${state.oreTop} vs ${state.essTop}`);
-
 assert(errors.length === 0, `page runtime errors:\n${errors.join('\n---\n')}`);
+
 await browser.close();
 console.log('pre-season Primostar preview + Ore card regression smoke passed');
