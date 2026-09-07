@@ -1,0 +1,87 @@
+name: Apply Smart Balance goal stop and tool weights v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_smart_balance_goal_stop_v2.py'
+      - 'scripts/apply_tool_material_weights_v1.py'
+      - 'scripts/smart_balance_goal_stop_smoke_v2.mjs'
+      - '.github/workflows/apply-smart-balance-goal-stop-tools-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply goal-stop behavior
+        run: python3 scripts/apply_smart_balance_goal_stop_v2.py
+
+      - name: Apply material-weighted tool behavior
+        run: python3 scripts/apply_tool_material_weights_v1.py
+
+      - name: Verify optimizer ordering
+        run: |
+          grep -Fq 'SMART_BALANCE_GOAL_STOP_V2' index.html
+          grep -Fq 'TOOL_MATERIAL_WEIGHTS_V1' index.html
+          grep -Fq 'projected raw-only potential' index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          fn=s[s.index('function betterFeasibleCandidate'):s.index('function betterDiagnosticCandidate')]
+          stage=fn.index('const cStage=candidateRealmStage')
+          effort=fn.index('const effortCmp=compareAcquisitionEffort')
+          tools=fn.index('const toolCmp=betterToolBurden')
+          if not (stage < effort < tools):
+              raise SystemExit('Expected strict source stage, then material weighting, then literal tool-count tie-break')
+          target=s[s.index('const targetStars=Math.max'):s.index("$('seasonRemaining').textContent")]
+          if 'const desired=requestedDesired;' not in target:
+              raise SystemExit('Recommendation is still being raised to the raw-only ceiling')
+          print('Verified: target stops at entered goal; source tier -> material weights -> tool-count tie-break.')
+          PY
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js'); out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run goal-stop regression smoke
+        run: node scripts/smart_balance_goal_stop_smoke_v2.mjs
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Smart Balance goal-stop/tool-weight behavior is already current.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Stop Smart Balance at goal and weight Realm tools by material'
+            git push
+          fi
