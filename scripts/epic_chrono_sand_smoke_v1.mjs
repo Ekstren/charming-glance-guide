@@ -20,9 +20,11 @@ const epic=page.locator('#sandEpicCurrent');
 if(await epic.count()!==1) throw new Error('Epic Chrono Sand saved input missing');
 
 await basic.fill('100');
+await basic.dispatchEvent('change');
 await rare.fill('2');
+await rare.dispatchEvent('change');
 await epic.fill('3');
-for (const el of [basic,rare,epic]) await el.dispatchEvent('input');
+await epic.dispatchEvent('change');
 await page.waitForTimeout(150);
 
 const text=(await page.locator('#sandEquivalentNow').innerText()).replace(/,/g,'');
