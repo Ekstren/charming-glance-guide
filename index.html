@@ -3593,7 +3593,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
               <div class="shopGainSummary" aria-label="Estimated shop material gain per day">
                 <div><span>Raw Ore</span><b id="shopGainOre">—</b></div>
                 <div><span>Skill Essence</span><b id="shopGainEssence">—</b></div>
-                <div><span>Chrono Sand</span><b id="shopGainSand">—</b></div>
+                <div><span>Chrono Sand eq.</span><b id="shopGainSand">—</b></div>
                 <div><span>Basic Treats</span><b id="shopGainTreat">—</b></div>
               </div>
             </div>
@@ -3644,7 +3644,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 progression gates:</b> the calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, <b>Lv.120 maximum S2 Realm/open-map material bracket and planner start</b>, <b>Lv.130 Season Power scoring baseline / second-dungeon milestone</b>, and a <b>Lv.131 full-seasonal unlock preview</b> used only for pre-gate planning. Lv.130 remains the actual scoring floor: exactly-at-floor levels contribute 0 progression points, while progress above the floor scores normally.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. Season 2 uses live inventory directly; Realm tools and paid purchases are treated as sourcing options rather than a separate optimizer mode.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
-<p><b>Shop Buyouts:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b> for each full-page buyout: <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per full-page buyout; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. Enter <b>0</b> for no shop stats, <b>1</b> to buy out the base page with no refresh, <b>2</b> to buy out the base page, restock once, then buy out that full page again, and so on. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
+<p><b>Shop Buyouts:</b> Season 2 shop income now uses a direct Charming Glance sample rather than the old map-yield proxy. The current sample is <b>4 untouched full shop pages</b>: average <b>3,337.5 Raw Ore</b>, <b>1,912.5 Battle Essence</b>, <b>1,200 regular Chrono Sand</b>, <b>217.5 Rare Chrono Sand</b>, and <b>167.5 Basic Treats</b> per page. Rare Chrono Sand remains separate in the sample data and is converted at <b>5 regular Sand per Rare Sand</b> only when the optimizer needs a single Sand-equivalent total, giving <b>2,287.5 Sand-equivalent per page</b> at the current n=4 average. Enter <b>0</b> for no shop stats, <b>1</b> for the base page only, <b>2</b> for the base page plus one restock and a second full-page buyout, and so on. Only future server-reset days are projected; the current day is excluded so materials already entered under Saved are not double-counted. This sample will be expanded as more untouched Charming Glance shop screenshots are collected.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
 <p><b>S2 target optimization:</b> target plans are ranked by marginal acquisition effort using the verified Lv.120 Realm values (1,200 Ore / 1,500 Essence / 1,000 Sand per tool), max-bracket open-map yields, entered Cart production and Treat income, and the actual S2 upgrade-cost curves. The optimizer can move between Gear, individual Skills, individual Relics and individual Fantomons as their marginal score efficiency changes. Raw materials, saved Realm tools and paid Realm purchases share one acquisition-efficiency ranking; Realm/tool burden is used only to break effectively equal routes.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
@@ -3885,16 +3885,44 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return Math.max(0,n('treatCurrent')) + Math.max(0,n('treatPremiumCurrent'))*TREAT_PREMIUM_EQ + Math.max(0,n('treatDeluxeCurrent'))*TREAT_DELUXE_EQ;
   }
 
-  // DAILY_SHOP_ESTIMATE_V5
-  // No trustworthy public slot/drop-rate table exists. Community evidence does show that
-  // shop material stack sizes rise with progression and broadly track map-gathering amounts.
-  // To avoid optimistic planning, count only 2/3 of one current-season map bundle per paid
-  // refresh for Ore / Essence / Sand, rounded DOWN to 25. Treats stay at a deliberately low
-  // 35 Basic-equivalent per refresh because their appearance rate and quality mix are less certain.
-  // The current server day is excluded so Saved inventory can include anything already bought today.
+  // CG_S2_SHOP_OBSERVED_N4_V1
+  // Charming Glance S2 shop averages measured from four untouched full shop pages.
+  // Keep regular Chrono Sand and Rare Chrono Sand separate in the raw sample data.
+  // The optimizer converts Rare Chrono Sand at the same 5:1 ratio used by saved inventory.
+  const S2_SHOP_OBSERVED_PAGES=Object.freeze([
+    Object.freeze({ore:3450,essence:1200,sand:1500,rareSand:270,treat:180}),
+    Object.freeze({ore:5250,essence:1650,sand:0,rareSand:330,treat:110}),
+    Object.freeze({ore:3000,essence:3000,sand:1500,rareSand:0,treat:135}),
+    Object.freeze({ore:1650,essence:1800,sand:1800,rareSand:270,treat:245})
+  ]);
+  function s2ShopObservedAverage(){
+    const pages=S2_SHOP_OBSERVED_PAGES;
+    const n=pages.length||1;
+    const total=pages.reduce((a,p)=>({
+      ore:a.ore+p.ore,
+      essence:a.essence+p.essence,
+      sand:a.sand+p.sand,
+      rareSand:a.rareSand+p.rareSand,
+      treat:a.treat+p.treat
+    }),{ore:0,essence:0,sand:0,rareSand:0,treat:0});
+    return Object.fromEntries(Object.entries(total).map(([k,v])=>[k,v/n]));
+  }
+
+  // S1 keeps the older conservative fallback because the observed pages above are S2-only.
   const DAILY_SHOP_CORE_BUNDLE_FACTOR=2/3;
   const DAILY_SHOP_TREAT_EQ_PER_REFRESH=35;
   function dailyShopMatsPerRefresh(cfg=activeCalcConfig()){
+    if(cfg?.key==='s2' && S2_SHOP_OBSERVED_PAGES.length){
+      const a=s2ShopObservedAverage();
+      return {
+        ore:a.ore,
+        essence:a.essence,
+        sand:a.sand+a.rareSand*SAND_BLUE_EQ,
+        treat:a.treat,
+        sandRegular:a.sand,
+        sandRare:a.rareSand
+      };
+    }
     const roundDown25=v=>Math.max(0,Math.floor((Number(v)||0)/25)*25);
     const map=cfg?.map||{};
     return {
@@ -3913,9 +3941,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const perBuyout=dailyShopMatsPerRefresh(cfg);
     const perDay=Object.fromEntries(Object.entries(perBuyout).map(([k,v])=>[k,v*buyouts]));
     const total=Object.fromEntries(Object.entries(perDay).map(([k,v])=>[k,v*days]));
-    return {active,refreshes:buyouts,buyouts,days,perRefresh:perBuyout,perBuyout,perDay,total};
+    return {
+      active,refreshes:buyouts,buyouts,days,perRefresh:perBuyout,perBuyout,perDay,total,
+      sampleCount:cfg.key==='s2'?S2_SHOP_OBSERVED_PAGES.length:0
+    };
   }
-
   function applyS2ScoringStartDefaults(){
     Object.entries(S2_SCORING_START_DEFAULTS).forEach(([id,value])=>{ if($(id)) $(id).value=String(value); });
     Object.entries(S2_SCORING_START_CHECKS).forEach(([id,value])=>{ if($(id)) $(id).checked=!!value; });
@@ -6301,12 +6331,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       gain('shopGainSand',shop.perDay.sand);
       gain('shopGainTreat',shop.perDay.treat);
       $('shopRefreshEstimate').textContent=shop.refreshes
-        ? `+${fmtCompact(shop.perDay.ore)} Ore · +${fmtCompact(shop.perDay.essence)} Essence · +${fmtCompact(shop.perDay.sand)} Sand · +${fmtCompact(shop.perDay.treat)} Treats / day`
+        ? `+${fmtCompact(shop.perDay.ore)} Ore · +${fmtCompact(shop.perDay.essence)} Essence · +${fmtCompact(shop.perDay.sand)} Sand-eq · +${fmtCompact(shop.perDay.treat)} Treats / day`
         : 'Off';
       if($('shopRefreshEstimateNote')){
+        const observed=shop.sampleCount>0;
+        const perPage=shop.perBuyout||{};
         $('shopRefreshEstimateNote').textContent=shop.refreshes
-          ? `${shop.days} future reset day${shop.days===1?'':'s'} counted · current day excluded to avoid double-counting materials already entered under Saved.`
-          : 'Set Shop Buyouts/day: 1 counts the base page with no refresh; 2 counts the base page plus one restock and a second full-page buyout.';
+          ? observed
+            ? `Observed Charming Glance S2 average from ${shop.sampleCount} untouched shop pages · ${shop.days} future reset day${shop.days===1?'':'s'} counted · Sand-eq includes ${fmtCompact(shop.perDay.sandRegular)} regular + ${fmtCompact(shop.perDay.sandRare)} Rare Chrono Sand/day (Rare ×${SAND_BLUE_EQ}).`
+            : `${shop.days} future reset day${shop.days===1?'':'s'} counted · current day excluded to avoid double-counting materials already entered under Saved.`
+          : observed
+            ? `Observed CG S2 sample n=${shop.sampleCount}: ${fmtCompact(perPage.ore)} Ore · ${fmtCompact(perPage.essence)} Essence · ${fmtCompact(perPage.sandRegular)} regular Sand + ${fmtCompact(perPage.sandRare)} Rare Sand · ${fmtCompact(perPage.treat)} Treats per page. Rare Sand counts ×${SAND_BLUE_EQ} toward Sand-equivalent.`
+            : 'Set Shop Buyouts/day: 1 counts the base page with no refresh; 2 counts the base page plus one restock and a second full-page buyout.';
       }
     }
 
