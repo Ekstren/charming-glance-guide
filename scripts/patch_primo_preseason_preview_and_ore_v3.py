@@ -81,9 +81,5 @@ replace_once(
     'progression gates explanation'
 )
 
-marker = "/* PRESEASON_RESOURCE_CARD_FIX_V3 */"
-if marker not in s:
-    s = s.replace('</style>\n\n\n<style id="build-dominator-reset-perf-v1">', f'''\n{marker}\n<style id="preseason-resource-card-fix-v3">\n/* Empty Realm-tool rows must never render a phantom inset. Raw Ore uses the same\n   standalone Remaining card as Essence/Sand whenever no tool row is present. */\n.planCosts small.toolBalance[hidden]{{display:none!important}}\n.planCosts small.rawRemaining:not(:has(+ small.toolBalance:not([hidden]))){{\n  margin-top:5px!important;\n  border-radius:10px!important;\n}}\n</style>\n\n</style>\n\n\n<style id="build-dominator-reset-perf-v1">''', 1)
-
 path.write_text(s, encoding='utf-8')
 print('patched pre-season Primostar preview, target labeling, and Ore/resource-card edge cases')
