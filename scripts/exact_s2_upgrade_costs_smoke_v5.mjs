@@ -19,7 +19,12 @@ await page.addInitScript(()=>{
 });
 
 await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
-const got=await page.evaluate(()=>{
+// page.evaluate runs through Playwright's utility world, which cannot see classic-script
+// top-level lexical bindings such as CALC_SEASONS. A normal script tag shares the page's
+// global lexical environment, so collect exact internal checkpoints there and read only the
+// serialized result back through Playwright.
+await page.addScriptTag({content:`
+window.__exactS2CostSmoke=(()=>{
   const cfg=CALC_SEASONS.s2;
   return {
     marker:document.documentElement.innerHTML.includes('EXACT_S2_UPGRADE_COSTS_V5'),
@@ -50,7 +55,9 @@ const got=await page.evaluate(()=>{
     secondaryStyle:document.getElementById('secondaryCostNote')?.getAttribute('style')||'',
     methodText:document.querySelector('.methodPanel')?.innerText||''
   };
-});
+})();
+`});
+const got=await page.evaluate(()=>window.__exactS2CostSmoke);
 
 const eq=(key,expected,tol=1e-9)=>{
   const actual=got[key];
@@ -64,25 +71,25 @@ const eq=(key,expected,tol=1e-9)=>{
 if(!got.marker) throw new Error('Exact S2 marker missing');
 if(got.charLen!==152) throw new Error(`Expected 152 extracted S2 Character EXP rows, got ${got.charLen}`);
 if(got.fantoLen!==150) throw new Error(`Expected 150 extracted S2 Fantomon EXP rows, got ${got.fantoLen}`);
-eq('gear130',16630);          // Lv.130 -> 131
-eq('gear131',16795);          // Lv.131 -> 132
-eq('gear160',21620);          // Lv.160 -> 161
-eq('gear188',26275);          // Lv.188 -> 189
+eq('gear130',16630);
+eq('gear131',16795);
+eq('gear160',21620);
+eq('gear188',26275);
 eq('skill130',12025);
 eq('skill140',13230);
 eq('skill160',15635);
 eq('skill180',18040);
-eq('relic13',33750);          // 1,350 Purple x25
-eq('relic18',50625);          // 2,025 Purple x25
-eq('relic27',81000);          // 3,240 Purple x25, 15th known S2 blessing
+eq('relic13',33750);
+eq('relic18',50625);
+eq('relic27',81000);
 eq('fanto130',57370/50);
 eq('fanto160',91790/50);
 eq('xp130',6342809);
 eq('xp210',13478732);
 eq('xp281',13478732);
 if(Number.isFinite(got.xp282)) throw new Error(`xp282 should stop outside extracted range, got ${got.xp282}`);
-eq('refined134',510);         // target Lv.135 = S2 blessing 5
-eq('refined139',510);         // target Lv.140 = S2 blessing 10
+eq('refined134',510);
+eq('refined139',510);
 eq('refined135',0);
 // Pre-floor catch-up math intentionally remains unchanged.
 eq('preGear121',14630);
