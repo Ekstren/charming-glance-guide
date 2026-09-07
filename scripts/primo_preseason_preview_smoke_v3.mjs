@@ -63,7 +63,6 @@ await page.addScriptTag({ content: `
   set('exactRelicLevels', '');
   set('exactFantoLevels', '');
 
-  updateGearLockUI();
   updateCalculator();
 })();
 ` });
