@@ -3661,7 +3661,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Shop Buyouts:</b> Season 2 shop income now uses a direct Charming Glance sample rather than the old map-yield proxy. The current sample is <b>4 untouched full shop pages</b>: average <b>3,337.5 Raw Ore</b>, <b>1,912.5 Battle Essence</b>, <b>1,200 regular Chrono Sand</b>, <b>217.5 Rare Chrono Sand</b>, and <b>167.5 Basic Treats</b> per page. Rare Chrono Sand remains separate in the sample data and is converted at <b>5 regular Sand per Rare Sand</b> only when the optimizer needs a single Sand-equivalent total, giving <b>2,287.5 Sand-equivalent per page</b> at the current n=4 average. Enter <b>0</b> for no shop stats, <b>1</b> for the base page only, <b>2</b> for the base page plus one restock and a second full-page buyout, and so on. Only future server-reset days are projected; the current day is excluded so materials already entered under Saved are not double-counted. This sample will be expanded as more untouched Charming Glance shop screenshots are collected.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. The planner finds the best balanced route to that goal using projected <b>raw materials first</b> (Saved + Cart + Shop + projected Stamina). If raw alone cannot reach the goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan; only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Separately, the result shows the higher <b>projected raw-only potential</b> when surplus raw income could reach more Primostars, but that ceiling is informational and does not raise the recommended spend. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are balanced by marginal acquisition efficiency and the actual S2 upgrade-cost curves.</p>
+<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. The planner finds the best balanced route to that goal using projected <b>raw materials first</b> (Saved + Cart + Shop + projected Stamina). If raw alone cannot reach the goal, it unlocks saved tools plus tools already included by the selected daily Realm purchase plan; only if raw + those projected tools still cannot reach the goal may it recommend additional Realm purchases. Separately, the result shows the higher <b>projected raw-only potential</b> when surplus raw income could reach more Primostars, but that ceiling is informational and does not raise the recommended spend. Within each sourcing tier, Gear, individual Skills, individual Relics and individual Fantomons are balanced by <b>scarcity-adjusted acquisition efficiency</b>: replacement difficulty is the base cost, then projected coverage makes abundant Ore/Hammers, Essence/Knuckles or Sand/Shovels cheaper to consume while nearly exhausted pools become more valuable. Surplus has a nonzero floor, so excess is cheap rather than literally worthless. Actual S2 upgrade-cost curves still determine every marginal step.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
 <p><b>Material Realm buys:</b> Each Realm purchase grants <b>5 actual Realm entries/tools</b>, and the planner allows up to <b>20 purchases per Realm per server day</b> (100 tools). The verified Dawnium curve currently covers purchases 1–10: 60, 60, 100, 100, 150, 150, 200, 200, 250, 300. Purchases 11–20 count fully toward tool capacity, but their Dawnium prices remain unknown and are not fabricated. Existing Hammers/Knuckles/Shovels and additional Realm purchases are evaluated as normal sourcing options under the same acquisition-efficiency ranking. Your recurring daily purchase plan is added after future server resets; extra purchases consume the same daily capacity. Resource-card shortfalls are shown after your selected recurring plan, while the top warning shows the hard remainder after every remaining extra slot is exhausted. The requested Primostar target is never lowered.</p>
@@ -5176,6 +5176,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     // Total material still productively spendable from the CURRENT category levels up to
     // the safe projected cap. This is independent of whichever candidate plan wins.
     const headroomCosts={
+      ore:Math.max(0,Number(gearOptions?.[gearOptions.length-1]?.oreCost)||0),
       essence:lastOptionCost(cats.skillOptions),
       sand:lastOptionCost(cats.relicOptions),
       treat:lastOptionCost(cats.fantoOptions)
@@ -5183,16 +5184,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return {baseScore,desired,p,cfg,current,currentCaps,projectedCaps,baseGear,cats,gearOptions,headroomCosts,charScore:characterScore(p,cfg)};
   }
 
-  /* SURPLUS_AWARE_OPTIMIZER_V2 · JOINT_REACQUISITION_V1 · DYNAMIC_HEADROOM_WEIGHTS_V1 · DYNAMIC_HEADROOM_WEIGHTS_V2
-     Enabled S2 hard reserves are enforced after each S1 candidate plan. Reacquisition is
-     solved jointly: Ore / Essence / Sand carts accrue simultaneously while one natural
-     Stamina stream is optimally shared between map nodes. Capped-resource future value is
-     now dynamic: if the current spendable raw + usable Realm-tool supply cannot fund the
-     remaining safe-cap upgrades, that material stays near full value; once the reachable
-     category is already comfortably funded, its value falls toward a deferred-use floor.
-     Ore remains the 1.00 baseline because Gear has the broadest runway. */
-  /* GATED_RAW_FIRST_OPTIMIZER_V2: once a capped category's remaining productive category headroom is fully funded by SAFE RAW, spending that raw on its own score progression has zero additional S1 opportunity cost. */
-  const SURPLUS_ACQUISITION_FLOORS={ore:1.00,essence:0.00,sand:0.00,treat:0.00};
+  /* SCARCITY_ADJUSTED_ACQUISITION_V1
+     Acquisition difficulty and projected scarcity are ONE economic metric, not competing
+     ranking rules. Every score material is priced by replacement effort, then discounted
+     continuously when projected usable supply comfortably covers remaining productive
+     upgrade demand. Ore is no longer a permanent 1.00 exception. A 0.25 floor keeps large
+     surpluses cheap-but-not-worthless; Treats retain the existing zero floor because they
+     have no Realm-tool substitute and the exact funded-Treat fast path depends on it.
+     Strict source tiers are unchanged: raw-only -> saved/planned tools -> extra purchases. */
+  const SURPLUS_ACQUISITION_FLOORS={ore:0.25,essence:0.25,sand:0.25,treat:0.00};
 
   /* OPTIMIZER_AUDIT_V3 · TOOLS_FIRST_S2_RESERVES_V1
      Enabled S2 Essence/Sand reserves hold carried/planned Realm tools first. Raw material
@@ -5201,6 +5201,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
      the raw material is genuinely exhausted. */
   function rawOnlyAcquisitionSupply(key,resources,cfg=activeCalcConfig()){
     return Math.max(0,Number(resources?.[key])||0);
+  }
+  function plannedToolAcquisitionSupply(key,resources,cfg=activeCalcConfig()){
+    if(key==='treat') return rawOnlyAcquisitionSupply(key,resources,cfg);
+    const inv=realmInventoryFor(key,cfg);
+    const perRun=Math.max(0,realmYieldFor(resources,key));
+    return rawOnlyAcquisitionSupply(key,resources,cfg)+Math.max(0,Number(inv?.banked)||0)*perRun;
+  }
+  function acquisitionResourcesForRealms(resources,realms,cfg=activeCalcConfig()){
+    const usesTools=(realms||[]).some(x=>{
+      const planRuns=Number.isFinite(Number(x?.planRuns))?Number(x.planRuns):Number(x?.runsUsed)||0;
+      return planRuns>0 || Math.max(0,Number(x?.packs)||0)>0 || Math.max(0,Number(x?.paidRunsUsed)||0)>0;
+    });
+    if(!usesTools) return resources;
+    return {...resources,acquisitionSupplyEquiv:{
+      ore:plannedToolAcquisitionSupply('ore',resources,cfg),
+      essence:plannedToolAcquisitionSupply('essence',resources,cfg),
+      sand:plannedToolAcquisitionSupply('sand',resources,cfg),
+      treat:rawOnlyAcquisitionSupply('treat',resources,cfg)
+    }};
   }
 
   /* MARGINAL_HEADROOM_COST_V2
@@ -5211,7 +5230,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function marginalWeightedSpend(amount,key,resources){
     const amountTotal=Math.max(0,Number(amount)||0);
     if(amountTotal<=0) return 0;
-    if(key==='ore') return amountTotal;
 
     const floor=Math.max(0,Math.min(1,Number(SURPLUS_ACQUISITION_FLOORS[key])||0));
     const usefulNeed=Math.max(0,Number(resources?.acquisitionHeadroomCosts?.[key])||0);
@@ -5244,12 +5262,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return effective;
   }
 
-  /* REMOVE_ORE_PRESERVATION_V1
-     Ore participates in the same acquisition-efficiency model as every other score
-     resource. Realm/tool burden is now only a true-efficiency tie-breaker. */
   function marginalWeightedCosts(costs,resources,cfg=activeCalcConfig()){
     return {
-      ore:Math.max(0,Number(costs?.ore)||0),
+      ore:marginalWeightedSpend(costs?.ore,'ore',resources),
       essence:marginalWeightedSpend(costs?.essence,'essence',resources),
       sand:marginalWeightedSpend(costs?.sand,'sand',resources),
       treat:marginalWeightedSpend(costs?.treat,'treat',resources)
@@ -5361,7 +5376,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const treatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
     const refinedShare=resources.refinedTracked&&resources.refined>0?go.refinedCost/resources.refined:0;
     const shares=[oreShare,essenceShare,sandShare,treatShare,refinedShare];
-    const acquisition=acquisitionResult||acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,activeCalcConfig());
+    const acquisitionResources=acquisitionResourcesForRealms(resources,realms,activeCalcConfig());
+    const realmStageForAcquisition=candidateRealmStage({realm:{ore:oreRealm,essence:essenceRealm,sand:sandRealm}});
+    const acquisition=(realmStageForAcquisition===0&&acquisitionResult)
+      ? acquisitionResult
+      : acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},acquisitionResources,activeCalcConfig());
     const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
     return {
       gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,
@@ -5504,6 +5523,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     // Gate 2 is RAW ONLY. Realm tools do not make a capped category look overfunded here;
     // they remain banked until no raw-only score plan can reach the requested target.
     resources.acquisitionSupplyEquiv={
+      ore:rawOnlyAcquisitionSupply('ore',resources,cfg),
       essence:rawOnlyAcquisitionSupply('essence',resources,cfg),
       sand:rawOnlyAcquisitionSupply('sand',resources,cfg),
       treat:rawOnlyAcquisitionSupply('treat',resources,cfg)
@@ -5514,24 +5534,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       return {plan:zero,diagnostic:zero};
     }
 
-    /* RAW_FUNDED_SEARCH_FAST_V1
-       Exact fast path for the expensive case where every reachable NON-ORE category is
-       already funded by raw inventory. marginalWeightedSpend then prices all productive
-       Essence/Sand/Treat spend at zero (their configured fully-funded floors), while Ore
-       remains the 1.00 acquisition baseline. Ore itself does NOT need to be fully funded:
-       lower Gear Ore cost still has strictly lower acquisition effort before Realm sourcing
-       is considered, even if that Gear route ultimately uses banked/paid Ore Realm entries.
-
-       Therefore the global winner must use the LOWEST Gear option that can still reach the
-       requested score with maximum non-Gear score. With Gear fixed, every candidate has the
-       same acquisition effort and Ore Realm stage. The normal comparator then reduces to
-       overscore -> maxShare -> sumShare. Evaluate that exact tie-break space as
-       Relic x Fantomon with a binary-search Skill lookup instead of Relic x Fantomon x Skill.
-       Refined-Ore tracking stays on the general path because it adds a separate hard constraint. */
-    const nonOreRawFunded=!resources.refinedTracked &&
-      (Number(resources.essence)||0)>=Math.max(0,Number(headroomCosts?.essence)||0)-0.5 &&
-      (Number(resources.sand)||0)>=Math.max(0,Number(headroomCosts?.sand)||0)-0.5 &&
-      (Number(resources.treat)||0)>=Math.max(0,Number(headroomCosts?.treat)||0)-0.5;
+    /* RAW_FUNDED_SEARCH_FAST_V1 is intentionally disabled under
+       SCARCITY_ADJUSTED_ACQUISITION_V1. Its dimensional collapse was exact only when fully
+       funded non-Ore material had zero marginal value and Ore was always fixed at 1.00.
+       With continuous nonzero scarcity floors, different Gear/Skill/Relic mixes retain
+       different economic costs and must stay in the general exact search. */
+    const nonOreRawFunded=false;
     if(nonOreRawFunded){
       const skillMax=cats.skillOptions[cats.skillOptions.length-1];
       const relicMax=cats.relicOptions[cats.relicOptions.length-1];
@@ -5582,6 +5590,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
        the same joint-reacquisition equation with scalar locals. This removes repeated DOM
        reads, logarithms, temporary objects and arrays from millions of candidate comparisons
        without changing the acquisition formula or any tie-break rule. */
+    for(const go of gearOptions) go.__acqOreV1=marginalWeightedSpend(go.oreCost,'ore',resources);
     for(const so of cats.skillOptions) so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
     for(const ro of cats.relicOptions) ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
     for(const fo of cats.fantoOptions) fo.__acqTreatV1=marginalWeightedSpend(fo.cost,'treat',resources);
@@ -5645,7 +5654,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       }
       return hi;
     };
-    const acquisitionFor=(go,so,ro,fo)=>({hours:jointHoursFast(go.oreCost,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1)});
+    const acquisitionFor=(go,so,ro,fo)=>({hours:jointHoursFast(go.__acqOreV1,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1)});
     let best=null,bestDiagnostic=null;
 
     /* TREAT_FUNDED_SEARCH_FAST_V1
