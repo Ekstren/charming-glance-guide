@@ -3624,9 +3624,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       <p class="optimizerSummary" id="optimizerSummary" hidden></p>
       <div class="optimizedResult" hidden><span>After recommended growth</span><b id="optimizedScore">—</b></div>
       <div class="planCosts planCostsFour">
-        <span>Raw Ore<b id="oreCost">0</b><small id="oreBalance">—</small><small id="oreToolBalance" class="toolBalance">—</small></span>
-        <span>Skill Essence<b id="essenceCost">0</b><small id="essenceBalance">—</small><small id="essenceToolBalance" class="toolBalance">—</small></span>
-        <span>Chrono Sand<b id="sandCost">0</b><small id="sandBalance">—</small><small id="sandToolBalance" class="toolBalance">—</small></span>
+        <span>Raw Ore<b id="oreCost">0</b><small id="oreBalance">—</small><small id="oreToolBalance" class="toolBalance" hidden>—</small></span>
+        <span>Skill Essence<b id="essenceCost">0</b><small id="essenceBalance">—</small><small id="essenceToolBalance" class="toolBalance" hidden>—</small></span>
+        <span>Chrono Sand<b id="sandCost">0</b><small id="sandBalance">—</small><small id="sandToolBalance" class="toolBalance" hidden>—</small></span>
         <span><!-- FANTOMON_TREAT_CARD_COMPACT_V1 -->Fantomon Treats<b id="treatCost">0</b><small id="treatBalance">—</small></span>
       </div>
       <div class="secondaryCostNote" id="secondaryCostNote" hidden style="display:none!important"></div>
@@ -3640,8 +3640,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>Season 1 carry-forward:</b> Season 1 / Tier III is retired from the live guide. Only historical values required by Season 2 calculations are retained internally, including carried S1 Primostars and cumulative Astral Pact math.</p>
 <p><b>Season 2:</b> the calculator automatically switches after the Aug 30 reset. Seasonal progression above the old floor resets to Lv.100 / Relics +10; S2 Season Power itself uses the new Lv.130 / Relic +13 scoring floor: Character = 100 points/level + completed percentage progress; Gear = 18 per slot level; Skills = 7 per level across 8 skills; Relics = 33 per level across 20 relics; Fantomons = 8 per level across 4 slots. S2 Primostars use <code>45 + floor(score / 27)</code>, plus the prior-season Primostars you enter. The score system unlocks at Lv.130.</p>
 <p><b>Astral Pact:</b> bonuses are calculated from <b>total cumulative Primostars</b>, not Character level. The calculator uses QY Maple's documented S1 Witching Hours thresholds (5–480) and S2 Crossed Paths continuation (505–1880). For example, 200 Primostars gives ATK +3%, Ascension +9%, Gem +15%, Dungeon double +6% and EXP +6%; 230 additionally reaches ATK +4% and Ascension +12%.</p>
-<p><b>S2 Primostar calculator:</b> Season 2 is the active Charming Glance scoring profile. Season 1 is retained only where carry-forward history is required. <b>Planning now starts at Player Lv.120</b>, because that is the verified maximum S2 Material Realm/open-map economy bracket, while <b>Season Power scoring still starts at the Lv.130 baseline</b>. From Lv.120–129 the calculator projects Character EXP, saved resources, Cart/Shop/Realm income and legal future upgrades through Lv.130 and season end; it does not award any Season Power below the real scoring floors. Any Gear/Skill/Fantomon/Relic slot below its score floor can be entered normally, scores zero until it crosses the floor, and keeps its real catch-up resource cost. Normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. S2 cost curves are applied from the actual scoring-start levels you enter: Gear/Ore and Skill Essence use the current S2 tables, Relic Sand uses the known S2 step table, and Fantomon Treats use the S2 level curve. This preserves the cost of catching up a lagging slot after Season Power unlocks instead of granting a free jump to the score floor. Exact data that is not independently confirmed stays conservative rather than fabricated. As a regression check, the formula still reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
-<p><b>S2 progression gates:</b> the calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, <b>Lv.120 maximum S2 Realm/open-map material bracket and planner start</b>, and <b>Lv.130 Season Power scoring baseline / second-dungeon milestone</b>. Lv.130 is the scoring floor, not Lv.131: exactly-at-floor levels contribute 0 progression points, while progress above the floor scores normally. These gates do not override the calculator's conservative upgrade-cap logic.</p>
+<p><b>S2 Primostar calculator:</b> Season 2 is the active Charming Glance scoring profile. Season 1 is retained only where carry-forward history is required. <b>Planning now starts at Player Lv.120</b>, because that is the verified maximum S2 Material Realm/open-map economy bracket, while <b>Season Power scoring still starts at the Lv.130 baseline</b>. From Lv.120–130 the calculator can run a <b>Lv.131 full-seasonal unlock preview</b> for upgrade availability, allowing stockpiled resources to be evaluated before the live gate opens; this preview does not award fake Character score below Lv.130. Any Gear/Skill/Fantomon/Relic slot below its score floor can be entered normally, scores zero until it crosses the floor, and keeps its real catch-up resource cost. Normal progression scores only above Lv.130, Relics score above +13, the season contributes 45 fixed Primostars, and every 27 progression score adds one more Primostar after flooring. Per-level weights are Character 100, Gear 18, Skill 7, Fantomon 8 and Relic 33. S2 cost curves are applied from the actual scoring-start levels you enter: Gear/Ore and Skill Essence use the current S2 tables, Relic Sand uses the known S2 step table, and Fantomon Treats use the S2 level curve. This preserves the cost of catching up a lagging slot after Season Power unlocks instead of granting a free jump to the score floor. Exact data that is not independently confirmed stays conservative rather than fabricated. As a regression check, the formula still reproduces the published S2 920-Primostar end-state (131 carried from S1; about Lv.190.8, Gear 195, Skills 180, Fantomons 175/175/173/173 and Relics +19).</p>
+<p><b>S2 progression gates:</b> the calculator surfaces Lv.106 T4 class, Lv.108 Adult Fantomon, Lv.116 Tower, <b>Lv.120 maximum S2 Realm/open-map material bracket and planner start</b>, <b>Lv.130 Season Power scoring baseline / second-dungeon milestone</b>, and a <b>Lv.131 full-seasonal unlock preview</b> used only for pre-gate planning. Lv.130 remains the actual scoring floor: exactly-at-floor levels contribute 0 progression points, while progress above the floor scores normally.</p>
 <p><b>S2 resource breakpoints:</b> community/QY data separates two milestones that are easy to confuse. <b>Lv.120</b> is the S2 maximum Material Realm resource bracket; <b>Lv.130</b> is the S2 Season Power scoring unlock/floor. At the Lv.120 max bracket, one Realm attempt yields 1,200 Raw Ore, 1,500 Skill Essence, 1,000 Chrono Sand or 11,800 Rolla. Open-map gathering costs 5 Stamina per node and the max-bracket base yields are 1,400 Ore, 1,770 Essence, 1,180 Sand or 14,000 Rolla. Before Lv.120 the site deliberately does not invent lower-bracket map yields; Realm tools are valued at the verified season-max bracket for saving/planning. During the final S1 rollover window the startup reserves remain protected automatically; the four old manual reserve switches are no longer shown. Season 2 uses live inventory directly; Realm tools and paid purchases are treated as sourcing options rather than a separate optimizer mode.</p>
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Shop Buyouts:</b> public guides do not expose a trustworthy slot/drop-rate table, but community reports and shop screenshots consistently show that material stacks increase with progression; one long-running CN guide explicitly notes that shop material quantities track map-gathering quantities. The planner therefore uses an <b>extremely conservative low-end model</b> for each full-page buyout: <b>2/3 of one current-season map bundle</b> for Ore, Skill Essence and Chrono Sand (rounded down), plus <b>35 Basic-Treat equivalents</b>. With the currently loaded late-S1 map values this is about <b>600 Ore / 975 Essence / 550 Sand / 35 Treats</b> per full-page buyout; at the S2 max-map bracket it is about <b>925 Ore / 1,175 Essence / 775 Sand / 35 Treats</b>. Enter <b>0</b> for no shop stats, <b>1</b> to buy out the base page with no refresh, <b>2</b> to buy out the base page, restock once, then buy out that full page again, and so on. Only future server-reset days are projected; the current day is excluded so materials already represented in Saved are not double-counted. Non-material rolls, premium shop items and the Rolla purchase cost are deliberately not valued.</p>
@@ -3696,6 +3696,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
        - Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8 per level
      Global live UI should still be spot-checked at rollover before changing any constants. */
   const S2_PLANNER_START_LEVEL = 120;
+  // PRESEASON_UNLOCK_PREVIEW_V3: Lv.120-130 can preview the first fully-seasonal
+  // upgrade state without awarding any fake pre-Lv.130 Season Power. The site's
+  // conservative S2 model treats Lv.131 as the first point where >130 Gear can be
+  // planned, so this is an upgrade-availability preview only, not a scoring-floor change.
+  const S2_FULL_SEASONAL_PREVIEW_LEVEL = 131;
 
   const S2_PRIMO_META = Object.freeze({
     modelStatus:'cross-region-confirmed-global-spotcheck',
@@ -4531,6 +4536,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return {...caps,skill:Infinity,relic:Infinity,fanto:Infinity,gear:Infinity};
   }
 
+  function optimizerPlanningLevel(projectedLevel,cfg=activeCalcConfig()){
+    const projected=Math.max(1,Math.floor(Number(projectedLevel)||1));
+    if(cfg.key!=='s2') return projected;
+    const current=Math.max(1,Math.floor(Number(characterSnapshot(cfg).level)||1));
+    if(current>=S2_PLANNER_START_LEVEL && current<S2_FULL_SEASONAL_PREVIEW_LEVEL){
+      return Math.max(projected,S2_FULL_SEASONAL_PREVIEW_LEVEL);
+    }
+    return projected;
+  }
+  function optimizerCategoryCaps(p,cfg=activeCalcConfig()){
+    const projectedLevel=p?.upgradeCapLevel ?? p?.level ?? 1;
+    return categoryCapsForCharacter(optimizerPlanningLevel(projectedLevel,cfg),cfg);
+  }
+
   function gearStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
     if(cfg.key==='s1') return 90*l + 310;
@@ -5100,7 +5119,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function createPlanningContext(baseScore,desired,p,cfg=activeCalcConfig()){
     const current=characterSnapshot(cfg);
     const currentCaps=categoryInputCapsForCharacter(current.level,cfg);
-    const projectedCaps=categoryCapsForCharacter(p.upgradeCapLevel??p.level,cfg);
+    const projectedCaps=optimizerCategoryCaps(p,cfg);
     const baseGear=GEAR_IDS.map(id=>Math.max(100,Math.floor(n(id,143))));
     const cats=planningCategoryState(cfg,currentCaps,projectedCaps);
     const gearOptions=buildGearOptions(baseGear,cfg,desired,projectedCaps.gear);
@@ -6018,7 +6037,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     }
     const setInputMax=(id,max)=>{const el=$(id);if(!el)return;if(Number.isFinite(max))el.max=String(max);else el.removeAttribute('max');};
     if(cfg.key==='s2'){
-      $('seasonRulesHint').innerHTML='<b>S2 scoring mode starts at Lv.130:</b> +45 fixed · 27 score / Primostar · normal floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120</b> is only the max S2 Material Realm/open-map bracket. Starter profile: Lv.130 · Gear 130 · Skills 130 · Fantomons 130 · Relics +13; carried stars/resources should be replaced with your actual snapshot.';
+      $('seasonRulesHint').innerHTML='<b>S2 scoring still starts at Lv.130:</b> +45 fixed · 27 score / Primostar · normal floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120+</b> can use the planner now; while you are Lv.120–130 it runs a clearly labeled <b>Lv.131 unlock preview</b> for upgrade availability so stockpiled resources can be evaluated before full seasonal progression opens. No pre-130 Character score is awarded. Starter floor: Gear 130 · Skills 130 · Fantomons 130 · Relics +13.';
       const currentCaps=categoryInputCapsForCharacter(characterSnapshot(cfg).level,cfg);
       /* S2_SCORING_INPUT_FLOOR_V2: Character Lv.130 unlocks the planner; actual category
          inputs may still be below their score floors and must retain their real catch-up costs. */
@@ -6207,7 +6226,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const baseResources=projectedResourceTotals;
     let resources=baseResources;
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
-    const projectedCaps=categoryCapsForCharacter(p.upgradeCapLevel??p.level,cfg);
+    const projectedCaps=optimizerCategoryCaps(p,cfg);
     const normalInputFloor=100;
     const relicInputFloor=10;
     const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
@@ -6310,12 +6329,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     $('currentRelicsLabel').textContent=`Relics · ${formatLevelMix(relicState.levels,{plus:true})}`;
     $('currentFantomonsLabel').textContent=`Fantomons · ${formatLevelMix(fantoState.levels)}`;
     $('currentBreakdownExplain').textContent=currentCharacter.decimal<cfg.scoreFloor
-      ? `${cfg.name} Season Power begins at Lv.${cfg.scoreFloor}; your current below-floor progression contributes 0 Season Power. The calculator is active because Lv.${S2_PLANNER_START_LEVEL}+ uses the verified max-rank S2 economy, so it can project your EXP, saved resources and future income through the scoring gate and show an attainable season-end Primostar result.`
+      ? `${cfg.name} Season Power begins at Lv.${cfg.scoreFloor}; your current below-floor progression contributes 0 Season Power. Because you are Lv.${S2_PLANNER_START_LEVEL}+, the optimizer uses a Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} full-seasonal unlock preview for upgrade availability while keeping Character score tied to your real projection. This lets stockpiled resources produce a useful Primostar estimate before the live scoring gate opens.`
       : `Character is Lv.${currentCharacter.level} at ${(currentCharacter.pct*100).toFixed(1)}% EXP. ${cfg.name} awards 1 point per completed 1% above the Lv.${cfg.scoreFloor} floor, so this contributes ${fmt(currentParts.character)} points.`;
 
     const recommendedSection=$('recommendedBreakdownSection');
     if(!plan){
       if($('resultEyebrow')) $('resultEyebrow').textContent='Requested target';
+      $('currentStars').textContent=fmt(targetStars);
       if(recommendedSection) recommendedSection.hidden=true;
       $('targetSkills').textContent=formatLevelMix(skillState.levels); $('targetRelics').textContent=formatLevelMix(relicState.levels,{plus:true}); $('targetFantomons').textContent=formatLevelMix(fantoState.levels);
       GEAR_IDS.forEach((id,i)=>$(['targetGearWeapon','targetGearOffhand','targetGearHelmet','targetGearArmor','targetGearBoots'][i]).textContent=gear[i]);
@@ -6325,10 +6345,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       $('targetMessage').hidden=false;$('targetMessage').classList.add('warning');
       $('targetMessage').textContent=`⚠ Target remains ${fmt(targetStars)} Primostars. No upgrade combination under the current lock/season caps reaches ${fmt(desired)} score, even with unlimited Ore/Essence/Sand.`;
       ['oreCost','essenceCost','sandCost','treatCost'].forEach(id=>$(id).textContent='0');
-      setBalance('oreBalance',0,resources.ore,resources.yields.orePerHammer,'Hammers');
+      setRawRemaining('oreBalance',0,resources.ore);
       setEssenceBalance('essenceBalance',0,resources);
       setSandBalance('sandBalance',0,resources);
       setTreatBalance('treatBalance',0,resources);
+      ['oreToolBalance','essenceToolBalance','sandToolBalance'].forEach(hidePlanBalance);
       $('materialRealmRecommendation').hidden=true;$('materialRealmRecommendation').textContent='';
       $('secondaryCostNote').hidden=true;$('secondaryCostNote').textContent='';
       $('milestoneNote').hidden=true;$('milestoneNote').textContent='';
@@ -6350,7 +6371,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     $('recommendedBreakdownExplain').textContent=resourceBlocked?`This is the score-capable upgrade route for your ORIGINAL ${fmt(targetStars)}-Primostar target. It is not being downgraded; the resource cards below show what still needs funding.`:`Actual ${cfg.name} season-end score used by the recommendation: projected Character plus every suggested upgrade, adding ${fmt(Math.max(0,recommendationDelta))} progression points over the no-upgrade baseline.`;
 
     const lockedText=gearLocked?' Gear is locked at the five current levels.':'';
-    const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120; Global live values are still spot-checked at rollover before changing the model.`;
+    const previewText=cfg.key==='s2'&&currentCharacter.level<S2_FULL_SEASONAL_PREVIEW_LEVEL
+      ? ` Pre-season preview uses Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} upgrade availability; Character score still uses the real projected level.`
+      : '';
+    const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120.${previewText}`;
     const planStars=historical+cfg.starBase+Math.floor(plan.score/cfg.scorePerStar);
     const achievableRewardStars=resourceBlocked?baselineStars:planStars;
     renderAstralPact(achievableRewardStars);
