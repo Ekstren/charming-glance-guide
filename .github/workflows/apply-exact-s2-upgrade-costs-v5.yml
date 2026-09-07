@@ -1,0 +1,78 @@
+name: Apply exact S2 upgrade costs v5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_exact_s2_upgrade_costs_v5.py'
+      - 'scripts/exact_s2_upgrade_costs_smoke_v5.mjs'
+      - '.github/workflows/apply-exact-s2-upgrade-costs-v5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Benchmark before exact costs
+        continue-on-error: true
+        run: node scripts/calculator_perf_check.mjs | tee /tmp/perf-exact-before.txt
+
+      - name: Apply exact S2 costs
+        run: python3 scripts/apply_exact_s2_upgrade_costs_v5.py
+
+      - name: Validate marker and inline JS
+        run: |
+          grep -Fq 'EXACT_S2_UPGRADE_COSTS_V5' index.html
+          grep -Fq 'S2_EXACT_CHARACTER_EXP_FROM_130' index.html
+          grep -Fq 'S2_EXACT_FANTOMON_EXP_FROM_130' index.html
+          grep -Fq 'refinedOreEvery5:510' index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          out=Path('/tmp/js-exact-s2');out.mkdir(exist_ok=True)
+          for i,b in enumerate(re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)):
+              (out/f'{i}.js').write_text(b,encoding='utf-8')
+          PY
+          for f in /tmp/js-exact-s2/*.js; do node --check "$f"; done
+
+      - name: Exact S2 cost regression
+        run: node scripts/exact_s2_upgrade_costs_smoke_v5.mjs
+
+      - name: Scarcity regression
+        run: node scripts/scarcity_adjusted_acquisition_smoke_v1.mjs
+
+      - name: Goal-stop regression
+        run: node scripts/smart_balance_goal_stop_smoke_v2.mjs
+
+      - name: Benchmark after exact costs
+        run: node scripts/calculator_perf_check.mjs | tee /tmp/perf-exact-after.txt
+
+      - name: Full browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Exact S2 costs already current'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Use exact extracted S2 upgrade costs'
+            git pull --rebase origin main
+            git push origin main
+          fi
