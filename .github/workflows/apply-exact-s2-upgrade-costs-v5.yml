@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/apply_exact_s2_upgrade_costs_v5.py'
+      - 'scripts/apply_exact_s2_upgrade_costs_v6.py'
       - 'scripts/exact_s2_upgrade_costs_smoke_v5.mjs'
       - '.github/workflows/apply-exact-s2-upgrade-costs-v5.yml'
   workflow_dispatch:
@@ -31,7 +32,7 @@ jobs:
         run: node scripts/calculator_perf_check.mjs | tee /tmp/perf-exact-before.txt
 
       - name: Apply exact S2 costs
-        run: python3 scripts/apply_exact_s2_upgrade_costs_v5.py
+        run: python3 scripts/apply_exact_s2_upgrade_costs_v6.py
 
       - name: Validate marker and inline JS
         run: |
