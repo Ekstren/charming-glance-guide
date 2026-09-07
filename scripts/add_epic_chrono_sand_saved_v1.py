@@ -17,10 +17,6 @@ repls = [
         "...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate','treatCurrent'"
     ),
     (
-        "'sandCurrent','sandBlueCurrent','sandRate',",
-        "'sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate',"
-    ),
-    (
         "const SAND_BLUE_EQ=5;\n  function savedSandEquivalent(){\n    return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ;\n  }",
         "const SAND_BLUE_EQ=5, SAND_EPIC_EQ=25;\n  function savedSandEquivalent(){\n    return Math.max(0,n('sandCurrent')) + Math.max(0,n('sandBlueCurrent'))*SAND_BLUE_EQ + Math.max(0,n('sandEpicCurrent'))*SAND_EPIC_EQ;\n  }"
     ),
@@ -39,6 +35,27 @@ for old, new in repls:
     s = s.replace(old, new, 1)
     changed = True
 
+# EPIC_SAND_COMPACT_COMMIT_V1:
+# Keep Epic/Purple Sand on exactly the same compact-number/commit path as the
+# existing Basic/Rare Sand fields. Scope the check to the compact set itself;
+# the same field sequence also appears in INPUT_IDS, so a whole-file `new in s`
+# check can produce a false positive.
+compact_start = s.find('const COMPACT_NUMBER_INPUT_IDS = new Set([')
+if compact_start < 0:
+    raise SystemExit('Compact-number input set not found')
+compact_end = s.find(']);', compact_start)
+if compact_end < 0:
+    raise SystemExit('Compact-number input set terminator not found')
+compact_block = s[compact_start:compact_end]
+if "'sandEpicCurrent'" not in compact_block:
+    old = "'sandCurrent','sandBlueCurrent','sandRate',"
+    new = "'sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate',"
+    if old not in compact_block:
+        raise SystemExit('Sand compact-number anchor not found')
+    compact_block = compact_block.replace(old, new, 1)
+    s = s[:compact_start] + compact_block + s[compact_end:]
+    changed = True
+
 marker = 'EPIC_CHRONO_SAND_SAVED_V1'
 if marker not in s:
     anchor = '  const SAND_BLUE_EQ=5, SAND_EPIC_EQ=25;'
@@ -49,6 +66,6 @@ if marker not in s:
 
 if changed:
     p.write_text(s, encoding='utf-8')
-    print('Added Epic/Purple Chrono Sand saved-material support.')
+    print('Added/updated Epic/Purple Chrono Sand saved-material support.')
 else:
     print('Epic/Purple Chrono Sand saved-material support already current.')
