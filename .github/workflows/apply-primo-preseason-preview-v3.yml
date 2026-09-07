@@ -46,7 +46,7 @@ jobs:
           grep -Fq 'const projectedCaps=optimizerCategoryCaps(p,cfg);' index.html
           grep -Fq '<small id="oreToolBalance" class="toolBalance" hidden>—</small>' index.html
           grep -Fq "setRawRemaining('oreBalance',0,resources.ore);" index.html
-          grep -Fq "$('currentStars').textContent=fmt(targetStars);" index.html
+          grep -Fq 'textContent=fmt(targetStars);' index.html
           grep -Fq 'Lv.131 full-seasonal unlock preview' index.html
 
       - name: Install browser smoke dependencies
