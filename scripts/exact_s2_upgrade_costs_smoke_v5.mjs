@@ -19,56 +19,21 @@ await page.addInitScript(()=>{
 });
 
 await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
-// page.evaluate runs through Playwright's utility world, which cannot see classic-script
-// top-level lexical bindings such as CALC_SEASONS. A normal script tag shares the page's
-// global lexical environment, so collect exact internal checkpoints there and read only the
-// serialized result back through Playwright.
-await page.addScriptTag({content:`
-window.__exactS2CostSmoke=(()=>{
-  const cfg=CALC_SEASONS.s2;
-  return {
-    marker:document.documentElement.innerHTML.includes('EXACT_S2_UPGRADE_COSTS_V5'),
-    charLen:S2_EXACT_CHARACTER_EXP_FROM_130.length,
-    fantoLen:S2_EXACT_FANTOMON_EXP_FROM_130.length,
-    gear130:gearStepCost(130,cfg),
-    gear131:gearStepCost(131,cfg),
-    gear160:gearStepCost(160,cfg),
-    gear188:gearStepCost(188,cfg),
-    skill130:skillStepCost(130,cfg),
-    skill140:skillStepCost(140,cfg),
-    skill160:skillStepCost(160,cfg),
-    skill180:skillStepCost(180,cfg),
-    relic13:relicStepSand(13,cfg),
-    relic18:relicStepSand(18,cfg),
-    relic27:relicStepSand(27,cfg),
-    fanto130:fantoStepTreatCost(130,cfg),
-    fanto160:fantoStepTreatCost(160,cfg),
-    xp130:expRequiredForLevel(130,cfg),
-    xp210:expRequiredForLevel(210,cfg),
-    xp281:expRequiredForLevel(281,cfg),
-    xp282:expRequiredForLevel(282,cfg),
-    refined134:gearStepRefined(134,cfg),
-    refined139:gearStepRefined(139,cfg),
-    refined135:gearStepRefined(135,cfg),
-    preGear121:gearStepCost(121,cfg),
-    preSkill121:skillStepCost(121,cfg),
-    secondaryStyle:document.getElementById('secondaryCostNote')?.getAttribute('style')||'',
-    methodText:document.querySelector('.methodPanel')?.innerText||''
-  };
-})();
-`});
-const got=await page.evaluate(()=>window.__exactS2CostSmoke);
+const probeReady=await page.evaluate(()=>typeof window.__sxsExactCostProbeV5==='function');
+if(!probeReady) throw new Error('Exact S2 internal cost probe missing');
+const got=await page.evaluate(()=>window.__sxsExactCostProbeV5());
+const dom=await page.evaluate(()=>({
+  marker:document.documentElement.innerHTML.includes('EXACT_S2_UPGRADE_COSTS_V5'),
+  secondaryStyle:document.getElementById('secondaryCostNote')?.getAttribute('style')||'',
+  methodText:document.querySelector('.methodPanel')?.innerText||''
+}));
 
 const eq=(key,expected,tol=1e-9)=>{
   const actual=got[key];
-  if(!Number.isFinite(expected)){
-    if(actual!==null && actual!==Infinity && Number.isFinite(actual)) throw new Error(`${key}: expected Infinity, got ${actual}`);
-    return;
-  }
   if(!Number.isFinite(actual)||Math.abs(actual-expected)>tol) throw new Error(`${key}: expected ${expected}, got ${actual}`);
 };
 
-if(!got.marker) throw new Error('Exact S2 marker missing');
+if(!dom.marker) throw new Error('Exact S2 marker missing');
 if(got.charLen!==152) throw new Error(`Expected 152 extracted S2 Character EXP rows, got ${got.charLen}`);
 if(got.fantoLen!==150) throw new Error(`Expected 150 extracted S2 Fantomon EXP rows, got ${got.fantoLen}`);
 eq('gear130',16630);
@@ -94,11 +59,11 @@ eq('refined135',0);
 // Pre-floor catch-up math intentionally remains unchanged.
 eq('preGear121',14630);
 eq('preSkill121',10265);
-if(/display\s*:\s*none\s*!important/i.test(got.secondaryStyle)) throw new Error('Secondary exact Gear costs are still force-hidden');
-if(!got.methodText.includes('1,350 Purple Sand')||!got.methodText.includes('510 Refined Ore')||!got.methodText.includes('Rolla is 2× Gear Ore')){
+if(/display\s*:\s*none\s*!important/i.test(dom.secondaryStyle)) throw new Error('Secondary exact Gear costs are still force-hidden');
+if(!dom.methodText.includes('1,350 Purple Sand')||!dom.methodText.includes('510 Refined Ore')||!dom.methodText.includes('Rolla is 2× Gear Ore')){
   throw new Error('Exact S2 method/source note is incomplete');
 }
 if(errors.length) throw new Error('Runtime errors:\n'+errors.join('\n---\n'));
 
-console.log('Exact S2 upgrade-cost smoke passed.',got);
+console.log('Exact S2 upgrade-cost smoke passed.',{...got,methodNote:true});
 await browser.close();
