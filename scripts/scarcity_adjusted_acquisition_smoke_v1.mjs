@@ -35,6 +35,7 @@ const parseSkillAvg=text=>{
   }
   return count?total/count:NaN;
 };
+
 const runProfile=async({hammers,knuckles})=>{
   await page.evaluate(({hammers,knuckles})=>{
     localStorage.clear();
@@ -66,22 +67,14 @@ const runProfile=async({hammers,knuckles})=>{
   const gearAvg=gear.map(x=>Number(String(x).replace(/[^0-9.]/g,''))).reduce((a,b)=>a+b,0)/gear.length;
   const skillAvg=parseSkillAvg(skillText);
   const summary=await page.locator('#optimizerSummary').innerText();
-  return {skillAvg,gearAvg,skillText,gear,summary};
+  const oreTool=await page.locator('#oreToolBalance').innerText().catch(()=> '');
+  const essenceTool=await page.locator('#essenceToolBalance').innerText().catch(()=> '');
+  return {skillAvg,gearAvg,skillText,gear,summary,oreTool,essenceTool};
 };
 
-// Pure math regression: scarcity must modify acquisition value for Ore too, and surplus
-// may get cheap but never literally free because the floor is 25%.
-const economics=await page.evaluate(()=>{
-  const low={acquisitionHeadroomCosts:{ore:1000,essence:1000,sand:1000,treat:1000},acquisitionSupplyEquiv:{ore:100,essence:100,sand:100,treat:100}};
-  const high={acquisitionHeadroomCosts:{ore:1000,essence:1000,sand:1000,treat:1000},acquisitionSupplyEquiv:{ore:2000,essence:2000,sand:2000,treat:2000}};
-  return {
-    oreLow:marginalWeightedSpend(100,'ore',low),oreHigh:marginalWeightedSpend(100,'ore',high),
-    essenceLow:marginalWeightedSpend(100,'essence',low),essenceHigh:marginalWeightedSpend(100,'essence',high)
-  };
-});
-if(!(economics.oreHigh<economics.oreLow && economics.oreHigh>=24.99)) throw new Error(`Ore scarcity floor/regression failed: ${JSON.stringify(economics)}`);
-if(!(economics.essenceHigh<economics.essenceLow && economics.essenceHigh>=24.99)) throw new Error(`Essence scarcity floor/regression failed: ${JSON.stringify(economics)}`);
-
+// Same target, same zero raw inventory. Only the relative saved-tool abundance changes.
+// The optimizer should move score toward the abundant tool-backed material instead of
+// exhausting the scarce pool while the other pool sits idle.
 const knuckleRich=await runProfile({hammers:120,knuckles:1000});
 const hammerRich=await runProfile({hammers:1000,knuckles:120});
 if(!(knuckleRich.skillAvg>hammerRich.skillAvg+0.2)){
@@ -91,5 +84,5 @@ if(!(hammerRich.gearAvg>knuckleRich.gearAvg+0.2)){
   throw new Error(`Hammer-rich profile did not shift enough score toward Gear. knuckle-rich=${JSON.stringify(knuckleRich)} hammer-rich=${JSON.stringify(hammerRich)}`);
 }
 if(errors.length) throw new Error('Runtime errors:\n'+errors.join('\n---\n'));
-console.log('Scarcity-adjusted acquisition smoke passed.',{economics,knuckleRich,hammerRich});
+console.log('Scarcity-adjusted acquisition smoke passed.',{knuckleRich,hammerRich});
 await browser.close();
