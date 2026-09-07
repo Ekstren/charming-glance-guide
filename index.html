@@ -3434,6 +3434,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+
+<style id="sand-spacing-match-treats-v1">
+/* SAND_SPACING_MATCH_TREATS_V1
+   Keep the 4 Sand inputs on the same equal 2x2 grid rhythm as Fantomon Treats. */
+.sandResourceFields{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+@media(max-width:520px){
+  .sandResourceFields{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:380px){
+  .sandResourceFields{grid-template-columns:1fr!important}
+}
+</style>
+
 </head>
 <body>
 <main>
