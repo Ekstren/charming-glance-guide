@@ -31,10 +31,12 @@ jobs:
       - name: Validate recurring event copy
         run: |
           grep -Fq 'STALE_OCEANIC_EVENT_REFS_V1' index.html
+          grep -Fq 'STALE_OCEANIC_EVENT_REFS_V2' index.html
           grep -Fq '<b>Rotation handling</b>' index.html
           grep -Fq "if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. Save extra Fruits for the next Bingo run if you finish early.';" index.html
           grep -Fq "if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools while Lucky Scratch is active to generate more scratch cards; bank tools during Feneck week for the next run.';" index.html
           if grep -Fq 'The separate 200-Fruit summer mission is now live inside <strong>Oceanic Festival</strong>' index.html; then exit 1; fi
+          if grep -Fq 'the separate 200-Fruit mission belongs to the current Oceanic Festival' index.html; then exit 1; fi
           if grep -Fq 'This run overlaps Oceanic, so Fruit spending progresses both.' index.html; then exit 1; fi
           if grep -Fq 'through Aug 31, Realm activity also overlaps Oceanic Beach Shovel objectives.' index.html; then exit 1; fi
 
@@ -61,7 +63,7 @@ jobs:
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git add index.html
-            git commit -m 'Remove stale Oceanic event references'
+            git commit -m 'Remove final stale Oceanic event reference'
             git pull --rebase origin main
             git push origin main
           fi
