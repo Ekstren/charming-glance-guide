@@ -3661,7 +3661,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 <p><b>S2 open-map Ore:</b> the planner budgets the conservative base value of <b>1,400 Ore per 5-Stamina node</b>. QY's empirical large-mine rate is 9.32% and large nodes pay 2×, which gives a long-run expected value of about <b>1,530 Ore/node</b>; that bonus is displayed as reference but is not silently counted in the resource budget.</p>
 <p><b>Shop Buyouts:</b> Season 2 shop income uses a direct Charming Glance sample rather than the old map-yield proxy. The current sample is <b>8 untouched full shop pages</b>: average <b>2,887.5 Raw Ore</b>, <b>2,343.8 Battle Essence</b>, <b>975 regular Chrono Sand</b>, <b>183.8 Rare Chrono Sand</b>, and <b>200.6 Basic Treats</b> per page. Rare Chrono Sand remains separate in the sample data and is converted at <b>5 regular Sand per Rare Sand</b> only when the optimizer needs a single Sand-equivalent total, giving <b>1,893.8 Sand-equivalent per page</b> at the current n=8 average. Enter <b>0</b> for no shop stats, <b>1</b> for the base page only, <b>2</b> for the base page plus one restock and a second full-page buyout, and so on. Only future server-reset days are projected; the current day is excluded so materials already entered under Saved are not double-counted. This sample will be expanded as more untouched Charming Glance shop screenshots are collected.</p>
 <p><b>Season rollover safety:</b> Cart/Bed snapshot aging stops at the old season boundary. When S2 goes live, the site will not reuse stale S1 seasonal levels as though they survived the reset. It asks you to update your actual S2 state once and confirm it as the new snapshot before S2 calculations resume.</p>
-<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. For economic balancing, each progression family is treated as one owned/projected pool: <b>Ore + saved/already-planned Hammers</b>, <b>Essence + saved/already-planned Knuckles</b>, and <b>Sand + saved/already-planned Shovels</b>, with tools valued at their full material equivalent. Smart Balance chooses the Gear / Skill / Relic / Fantomon mix by <b>marginal integrated scarcity-adjusted acquisition efficiency</b>: each additional unit is priced along the depletion curve, so early surplus spend stays cheap while later units rise progressively as a pool drains. This pool selection is separate from physical consumption: within a chosen family the calculator always spends projected <b>raw material first</b>, then uses saved/planned Realm tools only for the remainder. Tool preservation is a tie-breaker when two plans are economically equivalent, not a hard rule that can force a worse balance. <b>Extra Realm purchases are never counted as existing abundance and remain the final fallback</b>; they are recommended only when the target cannot be funded from the owned/projected pools. Separately, the result may show a higher <b>projected raw-only potential</b>; that ceiling is informational and never raises the entered goal. Actual S2 upgrade-cost curves determine every marginal step.</p>
+<p><b>S2 target optimization / Smart Balance:</b> the entered Primostar target is the <b>recommended stopping point</b>, not an instruction to spend every projected resource. For economic balancing, each progression family is treated as one owned/projected pool: <b>Ore + saved/already-planned Hammers</b>, <b>Essence + saved/already-planned Knuckles</b>, and <b>Sand + saved/already-planned Shovels</b>, with tools valued at their full material equivalent. Smart Balance chooses the Gear / Skill / Relic / Fantomon mix by <b>marginal integrated scarcity-adjusted acquisition efficiency</b>: Ore, Essence, Sand and Treats all price each additional unit along the same depletion curve, so early surplus spend stays cheap while later units rise progressively as a pool drains. Treats simply have no Realm-tool capacity added to their supply. This pool selection is separate from physical consumption: within a chosen family the calculator always spends projected <b>raw material first</b>, then uses saved/planned Realm tools only for the remainder. Tool preservation is a tie-breaker when two plans are economically equivalent, not a hard rule that can force a worse balance. <b>Extra Realm purchases are never counted as existing abundance and remain the final fallback</b>; they are recommended only when the target cannot be funded from the owned/projected pools. Separately, the result may show a higher <b>projected raw-only potential</b>; that ceiling is informational and never raises the entered goal. Actual S2 upgrade-cost curves determine every marginal step.</p>
 <p><b>Time projection:</b> Season deadlines and reset clocks are displayed in the timezone of the device opening this HTML. Internally the calculator still follows the Charming Glance server reset boundary, so travel/timezone changes do not alter the underlying server day. For now, Bed storage/hold automation is disabled; the planner uses the entered <b>Bed EXP per hour</b> directly through the season reset and includes the free 2-hour speed-up at each future reset.</p>
 <p><b>Exact S2 upgrade-cost source:</b> scoring-floor-and-above costs are cross-checked against the extracted live-client Season 2 blessing/level tables published by the 0xNobody multi-season calculator. Gear uses the client base/rate with nearest-5 rounding, Rolla is 2× Gear Ore, and every fifth S2 blessing requires 510 Refined Ore; Skills use their extracted base/rate with nearest-5 rounding; Relics use 1,350 Purple Sand at the first +13→+14 blessing and +135 Purple per subsequent S2 blessing; Fantomon feed EXP and Character EXP use the extracted per-level tables. Unknown levels outside the extracted ranges are not extrapolated as exact.</p>
 <p><b>Planning model:</b> Skills, Relics and Fantomons are optimized as individual slots, not forced to move as a whole category. The compact average inputs are converted into the nearest balanced real-slot distribution (Skills in 1/8-level steps, Relics 1/20, Fantomons 1/4). Optional exact slot-level inputs override that approximation and preserve the true uneven upgrade-cost path. Skill, Relic and Fantomon upgrade availability is evaluated through the actual season reset, with no separate finishing cutoff. Stamina covers verified score-material bottlenecks first; once that safety-adjusted target is funded, surplus verified nodes bank Raw Ore for next-season Gear.</p>
@@ -5255,7 +5255,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
      first inside each family and consumes tools only for the remaining shortfall. Tool preservation
      is a tie-breaker, not a hard preference. Extra Realm purchases are NOT included in starting
      abundance and remain the last-resort sourcing tier. */
-  const SURPLUS_ACQUISITION_FLOORS={ore:0.25,essence:0.25,sand:0.25,treat:0.00};
+  // TREAT_MARGINAL_SCARCITY_V1: Treats use the same marginal depletion curve as the
+  // other score-material families; their only economic difference is no Realm-tool supply.
+  const SURPLUS_ACQUISITION_FLOORS={ore:0.25,essence:0.25,sand:0.25,treat:0.25};
   const TOOL_SCARCITY_CREDIT=1.00;
   // MARGINAL_INTEGRATED_SCARCITY_V5: these shape the price of the NEXT unit consumed.
   // The optimizer integrates this curve over the candidate spend instead of applying the
@@ -5289,14 +5291,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
      Extra candidate purchases never add starting supply, so a paid route cannot make itself look
      abundant by counting tools it has not bought yet.
 
-     V5 prices Ore / Essence / Sand MARGINALLY as the pool is consumed. The scarcity multiplier
-     for the next unit is floor + (max-floor) * consumedFraction^exponent, and candidate cost is
-     the analytic integral of that curve from the pre-plan state through the candidate spend.
-     Therefore early surplus units stay cheap and only later units become strongly scarce; the
-     last unit no longer retroactively reprices every earlier unit. Any spend beyond the projected
-     owned/planned pool is priced at the maximum scarcity multiplier.
-
-     Treats intentionally keep the prior headroom integral because they have no Realm-tool pool. */
+     V5 prices Ore / Essence / Sand / Treats MARGINALLY as each pool is consumed. The scarcity
+     multiplier for the next unit is floor + (max-floor) * consumedFraction^exponent, and candidate
+     cost is the analytic integral of that curve from the pre-plan state through the candidate spend.
+     Therefore early surplus units stay cheap and only later units become strongly scarce; the last
+     unit no longer retroactively reprices every earlier unit. Any spend beyond the projected
+     owned/planned pool is priced at the maximum scarcity multiplier. Treats use projected raw/
+     acquired Treat-equivalent supply only; unlike Ore/Essence/Sand they have no Realm-tool credit. */
   function marginalWeightedSpend(amount,key,resources){
     const amountTotal=Math.max(0,Number(amount)||0);
     if(amountTotal<=0) return 0;
@@ -5308,23 +5309,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 
     const productive=Math.min(amountTotal,usefulNeed);
 
-    if(key==='treat'){
-      let effective=0;
-      if(available>=usefulNeed-1e-9){
-        effective+=productive*floor;
-      }else if(available<=1e-9){
-        effective+=productive;
-      }else{
-        const covered=Math.min(productive,available);
-        const deficit=Math.max(0,usefulNeed-available);
-        const denomEnd=Math.max(1e-12,usefulNeed-covered);
-        effective+=floor*covered+(1-floor)*deficit*Math.log(usefulNeed/denomEnd);
-        if(productive>covered) effective+=productive-covered;
-      }
-      if(amountTotal>productive) effective+=amountTotal-productive;
-      return effective;
-    }
-
+    // TREAT_MARGINAL_SCARCITY_V1: all four score-material families now use this same
+    // integrated depletion curve. Treats differ only in acquisitionSupplyEquiv construction:
+    // they have no Hammer/Knuckle/Shovel-style Realm-tool capacity added to their pool.
     let effective=0;
     if(available<=1e-9){
       effective=productive*POST_PLAN_SCARCITY_MAX;
