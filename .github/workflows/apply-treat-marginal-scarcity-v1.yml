@@ -32,8 +32,9 @@ jobs:
         run: |
           grep -Fq 'TREAT_MARGINAL_SCARCITY_V1' index.html
           grep -Fq 'treat:0.25' index.html
-          if grep -Fq "if(key==='treat')" index.html; then
-            echo 'Legacy Treat scarcity branch still present' >&2
+          grep -Fq 'all four score-material families now use this same' index.html
+          if grep -Fq 'Treats intentionally keep the prior headroom integral' index.html; then
+            echo 'Legacy Treat scarcity special-case comment still present' >&2
             exit 1
           fi
           python3 - <<'PY'
