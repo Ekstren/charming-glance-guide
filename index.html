@@ -3449,6 +3449,23 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+<style id="result-stamina-projection-v1">
+/* RESULT_STAMINA_PROJECTION_V1
+   Mirror the optimizer's Stamina allocation inside the right-side material result cards,
+   directly below the Material Realm tool actions. This keeps the recommended farming
+   target visible even when Material Realm is closed. */
+.planCosts small.toolBalance .toolSimpleLine.staminaProjectionLine,
+.planCosts small.toolBalance .toolSimpleLine.staminaProjectionLine i,
+.planCosts small.toolBalance .toolSimpleLine.staminaProjectionLine b,
+.planCosts small.toolBalance .toolSimpleLine.staminaProjectionLine b em{
+  color:var(--status-info,var(--blue))!important;
+}
+.planCosts small.toolBalance .toolSimpleLine.staminaProjectionLine{
+  margin-top:4px!important;
+  padding-top:4px!important;
+  border-top:1px dashed color-mix(in srgb,var(--line) 78%,transparent)!important;
+}
+</style>
 </head>
 <body>
 <main>
@@ -6024,6 +6041,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     el.innerHTML=lines.join('');
     el.classList.add((missing>0||dailyGapRuns>0)?'toolNeed':'toolLeft');
   }
+
+  // RESULT_STAMINA_PROJECTION_V1: repeat the optimizer's Stamina target in the
+  // right-side resource cards so the next farming target remains obvious when Realm is closed.
+  function appendStaminaProjection(id,nodes,gain,materialName){
+    const el=$(id); if(!el) return;
+    const count=Math.max(0,Math.floor(Number(nodes)||0));
+    const value=Math.max(0,Number(gain)||0);
+    if(count<=0) return;
+    const line=document.createElement('div');
+    line.className='toolSimpleLine staminaProjectionLine';
+    line.innerHTML=`<i>Stamina:</i><b>${fmt(count)}${value>0?` <em>→ +${fmtCompact(value)} ${materialName}</em>`:''}</b>`;
+    el.appendChild(line);
+    el.hidden=false;
+    if(!el.classList.contains('toolNeed')) el.classList.add('toolLeft');
+  }
   /* RICH_RESOURCE_SHORTFALL_NO_DUPLICATE_V1
      Keep the richer daily-plan / hard-cap presentation in the resource card itself.
      The separate Material Realm tool footer no longer repeats a "Still short" line. */
@@ -6665,6 +6697,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     setToolBalance('oreToolBalance',plan.realm?.ore,oreHardShort,oreYield,'Hammers',0,rawOreRemaining);
     setToolBalance('essenceToolBalance',plan.realm?.essence,essHardShort,essenceYield,'Knuckles',resources.s2SkillReserve?.knucklesReserved||0,rawEssenceRemaining);
     setToolBalance('sandToolBalance',plan.realm?.sand,sandHardShort,sandYield,'Shovels',resources.s2RelicSandReserve?.shovelsReserved||0,rawSandRemaining);
+    appendStaminaProjection('oreToolBalance',allocation.ore,added.ore,'Ore');
+    appendStaminaProjection('essenceToolBalance',allocation.essence,added.essence,'Essence');
+    appendStaminaProjection('sandToolBalance',allocation.sand,added.sand,'Sand');
 
     renderRealmDailyRecommendations(plan,resources,cfg);
 
