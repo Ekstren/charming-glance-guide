@@ -1,0 +1,69 @@
+name: Apply result Stamina projections
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_result_stamina_projection_v1.py'
+      - '.github/workflows/apply-result-stamina-projection-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply result Stamina projection UI
+        run: python3 scripts/apply_result_stamina_projection_v1.py
+
+      - name: Validate result Stamina projection UI
+        run: |
+          grep -Fq 'RESULT_STAMINA_PROJECTION_V1' index.html
+          grep -Fq 'function appendStaminaProjection' index.html
+          grep -Fq "appendStaminaProjection('oreToolBalance',allocation.ore,added.ore,'Ore')" index.html
+          grep -Fq "appendStaminaProjection('essenceToolBalance',allocation.essence,added.essence,'Essence')" index.html
+          grep -Fq "appendStaminaProjection('sandToolBalance',allocation.sand,added.sand,'Sand')" index.html
+          grep -Fq '<i>Stamina:</i>' index.html
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js')
+          out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Result Stamina projection UI is already current.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Show Stamina targets in result resource cards'
+            git push
+          fi
