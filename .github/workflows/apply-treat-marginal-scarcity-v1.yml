@@ -50,33 +50,33 @@ jobs:
       - name: Verify Treat uses the same marginal curve
         run: |
           node --input-type=module - <<'NODE'
-          import { chromium } from 'playwright';
-          import path from 'node:path';
-          import { pathToFileURL } from 'node:url';
-          const browser=await chromium.launch({headless:true});
-          const page=await browser.newPage();
-          await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
-          const vals=await page.evaluate(()=>{
-            const resources={
-              acquisitionHeadroomCosts:{ore:200000,treat:200000},
-              acquisitionSupplyEquiv:{ore:100000,treat:100000}
-            };
-            return {
-              ore10:marginalWeightedSpend(10000,'ore',resources),
-              treat10:marginalWeightedSpend(10000,'treat',resources),
-              ore25:marginalWeightedSpend(25000,'ore',resources),
-              treat25:marginalWeightedSpend(25000,'treat',resources),
-              treat100:marginalWeightedSpend(100000,'treat',resources),
-              treat110:marginalWeightedSpend(110000,'treat',resources)
-            };
-          });
+          import fs from 'node:fs';
+          const s=fs.readFileSync('index.html','utf8');
+          const floor=(s.match(/const SURPLUS_ACQUISITION_FLOORS=\{[^;]+;/)||[])[0];
+          const max=(s.match(/const POST_PLAN_SCARCITY_MAX=[^;]+;/)||[])[0];
+          const exp=(s.match(/const POST_PLAN_SCARCITY_EXPONENT=[^;]+;/)||[])[0];
+          const m=s.match(/  function marginalWeightedSpend\(amount,key,resources\)\{[\s\S]*?\n  \}\n\n  function marginalWeightedCosts/);
+          if(!floor||!max||!exp||!m) throw new Error('Could not extract marginalWeightedSpend kernel');
+          const fnText=m[0].replace(/\n\n  function marginalWeightedCosts$/,'');
+          const marginalWeightedSpend=new Function(`${floor}\n${max}\n${exp}\n${fnText}\nreturn marginalWeightedSpend;`)();
+          const resources={
+            acquisitionHeadroomCosts:{ore:200000,treat:200000},
+            acquisitionSupplyEquiv:{ore:100000,treat:100000}
+          };
+          const vals={
+            ore10:marginalWeightedSpend(10000,'ore',resources),
+            treat10:marginalWeightedSpend(10000,'treat',resources),
+            ore25:marginalWeightedSpend(25000,'ore',resources),
+            treat25:marginalWeightedSpend(25000,'treat',resources),
+            treat100:marginalWeightedSpend(100000,'treat',resources),
+            treat110:marginalWeightedSpend(110000,'treat',resources)
+          };
           const near=(a,b,t=0.02)=>Math.abs(a-b)<=t;
           if(!near(vals.treat10,vals.ore10)) throw new Error('Treat 10k does not match integrated curve: '+JSON.stringify(vals));
           if(!near(vals.treat25,vals.ore25)) throw new Error('Treat 25k does not match integrated curve: '+JSON.stringify(vals));
           if(!near(vals.treat100,120588.23529411765)) throw new Error('Treat 100k integrated scarcity mismatch: '+JSON.stringify(vals));
           if(!near(vals.treat110,155588.23529411765)) throw new Error('Treat beyond-pool scarcity mismatch: '+JSON.stringify(vals));
           if(!(vals.treat25/25000 > vals.treat10/10000)) throw new Error('Treat average scarcity did not rise with depletion');
-          await browser.close();
           console.log('Treat marginal scarcity numeric check passed.',vals);
           NODE
 
