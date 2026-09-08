@@ -6919,9 +6919,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       else if(/Mythic Relic/.test(reward)||/Miracle Relic/.test(reward)) strategy='Relic-focused phase; compare against your current collection before spending saved Energy.';
       timelineData.push([start,serverDay,'Treasure Hunt',`Grand Treasure Hunt · Phase ${phase}`,`UNCONFIRMED recurring server-age projection · Lv.5: ${reward} · ${strategy}`,'event',end,'unconfirmed']);
     }
+    // STALE_OCEANIC_EVENT_REFS_V2: recurring future rows contain only event-specific guidance;
+    // expired limited-event overlaps are kept only on their historical runs.
     // Normal rotating mini-events: Bingo -> Lucky Scratch -> Feneck, each one week.
     const defs=[
-      {base:15,name:'Bingo Draw',prep:'Destiny Fruits',note:'Rewards: board and milestone prizes (the exact item grid can vary). Complete every daily mission first. Global players report roughly 60–80 Destiny Fruits is usually enough to finish the normal board; the separate 200-Fruit mission belongs to the current Oceanic Festival.'},
+      {base:15,name:'Bingo Draw',prep:'Destiny Fruits',note:'Rewards: board and milestone prizes (the exact item grid can vary). Complete every daily mission first. Global players report roughly 60–80 Destiny Fruits is usually enough to finish the normal board.'},
       {base:22,name:'Lucky Scratch',prep:'Material Realm tools',note:'Rewards: scratch-card RNG and milestone prizes. Use saved Material Realm consumables while this event is active to generate more scratch cards. This is the week to cash in the tools you banked during Feneck.'},
       {base:29,name:"Feneck's Puzzle",prep:'No major stockpile',note:'Rewards: puzzle and daily-track prizes. Do the event rewards and start banking Material Realm tools for the next Lucky Scratch.'}
     ];
