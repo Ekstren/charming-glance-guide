@@ -4,7 +4,9 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
       - 'scripts/cleanup_timeline_recurring_duplicates_v1.py'
+      - 'scripts/check_timeline_duplicates.py'
       - '.github/workflows/cleanup-timeline-recurring-duplicates-v1.yml'
   workflow_dispatch:
 
@@ -23,6 +25,9 @@ jobs:
       - name: Cleanup recurring timeline rows
         run: python3 scripts/cleanup_timeline_recurring_duplicates_v1.py
 
+      - name: Block semantic recurring duplicates
+        run: python3 scripts/check_timeline_duplicates.py index.html
+
       - name: Validate inline JavaScript syntax
         run: |
           python3 - <<'PY'
@@ -38,18 +43,13 @@ jobs:
           PY
           for f in /tmp/inline-js/*.js; do node --check "$f"; done
 
-      - name: Verify recurring timeline cleanup
+      - name: Verify recurring generator remains intact
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
           s=Path('index.html').read_text(encoding='utf-8')
           assert 'function addRecurringEvents()' in s
-          assert not re.search(r"'Treasure Hunt \d+ \+ (?:Bingo Draw|Lucky Scratch|Feneck\\?'s Puzzle) \d+'", s)
-          rows=[ln.strip() for ln in s.splitlines() if re.match(r"^\s*\['\d{4}-\d{2}-\d{2}',\d+,",ln)]
-          dupes=sorted({r for r in rows if rows.count(r)>1})
-          assert not dupes, f'exact duplicate timeline rows remain: {dupes[:5]}'
-          print(f'validated {len(rows)} literal timeline rows with no exact duplicates')
+          print('Recurring event generator present.')
           PY
 
       - name: Install browser smoke dependencies
@@ -61,7 +61,7 @@ jobs:
       - name: Run site browser smoke
         run: node scripts/site_smoke_test.mjs
 
-      - name: Commit and push
+      - name: Commit and push cleanup
         run: |
           if git diff --quiet -- index.html; then
             echo 'Timeline recurring rows are already clean.'
@@ -69,6 +69,6 @@ jobs:
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git add index.html
-            git commit -m 'Clean duplicate recurring timeline events'
+            git commit -m 'Remove duplicate combined recurring event rows'
             git push
           fi
