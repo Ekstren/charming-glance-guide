@@ -1,0 +1,108 @@
+name: Apply Treat marginal scarcity v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_treat_marginal_scarcity_v1.py'
+      - '.github/workflows/apply-treat-marginal-scarcity-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Apply Treat marginal scarcity v1
+        run: python3 scripts/apply_treat_marginal_scarcity_v1.py
+
+      - name: Validate marker and inline JavaScript
+        run: |
+          grep -Fq 'TREAT_MARGINAL_SCARCITY_V1' index.html
+          grep -Fq 'treat:0.25' index.html
+          if grep -Fq "if(key==='treat')" index.html; then
+            echo 'Legacy Treat scarcity branch still present' >&2
+            exit 1
+          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          out=Path('/tmp/jstreat');out.mkdir(exist_ok=True)
+          for i,b in enumerate(re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)):
+              (out/f'{i}.js').write_text(b,encoding='utf-8')
+          PY
+          for f in /tmp/jstreat/*.js; do node --check "$f"; done
+
+      - name: Verify Treat uses the same marginal curve
+        run: |
+          node --input-type=module - <<'NODE'
+          import { chromium } from 'playwright';
+          import path from 'node:path';
+          import { pathToFileURL } from 'node:url';
+          const browser=await chromium.launch({headless:true});
+          const page=await browser.newPage();
+          await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
+          const vals=await page.evaluate(()=>{
+            const resources={
+              acquisitionHeadroomCosts:{ore:200000,treat:200000},
+              acquisitionSupplyEquiv:{ore:100000,treat:100000}
+            };
+            return {
+              ore10:marginalWeightedSpend(10000,'ore',resources),
+              treat10:marginalWeightedSpend(10000,'treat',resources),
+              ore25:marginalWeightedSpend(25000,'ore',resources),
+              treat25:marginalWeightedSpend(25000,'treat',resources),
+              treat100:marginalWeightedSpend(100000,'treat',resources),
+              treat110:marginalWeightedSpend(110000,'treat',resources)
+            };
+          });
+          const near=(a,b,t=0.02)=>Math.abs(a-b)<=t;
+          if(!near(vals.treat10,vals.ore10)) throw new Error('Treat 10k does not match integrated curve: '+JSON.stringify(vals));
+          if(!near(vals.treat25,vals.ore25)) throw new Error('Treat 25k does not match integrated curve: '+JSON.stringify(vals));
+          if(!near(vals.treat100,120588.23529411765)) throw new Error('Treat 100k integrated scarcity mismatch: '+JSON.stringify(vals));
+          if(!near(vals.treat110,155588.23529411765)) throw new Error('Treat beyond-pool scarcity mismatch: '+JSON.stringify(vals));
+          if(!(vals.treat25/25000 > vals.treat10/10000)) throw new Error('Treat average scarcity did not rise with depletion');
+          await browser.close();
+          console.log('Treat marginal scarcity numeric check passed.',vals);
+          NODE
+
+      - name: Existing scarcity regression
+        run: node scripts/scarcity_adjusted_acquisition_smoke_v1.mjs
+
+      - name: Total-pool regression
+        run: node scripts/total_pool_smart_balance_smoke_v1.mjs
+
+      - name: Goal-stop regression
+        run: node scripts/smart_balance_goal_stop_smoke_v2.mjs
+
+      - name: Calculator performance check
+        run: node scripts/calculator_perf_check.mjs
+
+      - name: Full browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Treat marginal scarcity v1 already current'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Apply marginal scarcity curve to Treats'
+            git pull --rebase origin main
+            git push origin main
+          fi
