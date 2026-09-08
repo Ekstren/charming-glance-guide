@@ -3476,19 +3476,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         <div class="sourcePills"><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple research ↗</a><a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRm-49ccED61NjRSorhEIHc_IkdexkPemXy_tPG5djelXPsoNxCgf5DHSOSl6YJg2K3yNmq1Hh2oCgM/pubhtml?chrome=false&amp;gid=0&amp;single=true&amp;widget=false" target="_blank" rel="noreferrer">QY season table ↗</a><a href="https://lootandwaifus.com/sword-x-staff-fantomon-database/" target="_blank" rel="noreferrer">Global Fantomon DB ↗</a><a href="https://lootandwaifus.com/sword-x-staff-item-database/" target="_blank" rel="noreferrer">Global item DB ↗</a><a href="https://limitlessgaming.gg/timeline" target="_blank" rel="noreferrer">Legacy server-age cross-check ↗</a><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Original Qenu anchor ↗</a></div>
       </div>
     </details>
+    <!-- STALE_OCEANIC_EVENT_REFS_V1: current/future recurring event copy no longer inherits expired Oceanic Festival overlap text. -->
     <details class="timelineIntel" id="recurringEventsDetails">
       <summary><span>Recurring event rotation</span><small>Server-age schedule · active events stay visible until their weekly reset</small></summary>
       <div class="timelineIntelBody eventCycleGrid">
         <div class="eventCycleCard"><b>Grand Treasure Hunt</b><span>Weekly · first appears Server Day 8</span><p>Exact Phase 1–57 dates and the important Lv.5 rotating reward are now in the timeline. <strong>Auroradrasil Energy carries over</strong>, so low spenders should save for the phases with the relic/reward they actually want.</p></div>
-        <div class="eventCycleCard"><b>Bingo Draw</b><span>Every 3 weeks · first appears Server Day 15</span><p>Uses <strong>Destiny Fruits</strong> for extra tickets. Rewards come from the board/milestones and can vary by run. Global community reports usually clearing normal Bingo with roughly <strong>60–80 Fruits plus all daily missions</strong>. The separate 200-Fruit summer mission is now live inside <strong>Oceanic Festival</strong>.</p></div>
+        <div class="eventCycleCard"><b>Bingo Draw</b><span>Every 3 weeks · first appears Server Day 15</span><p>Uses <strong>Destiny Fruits</strong> for extra tickets. Rewards come from the board/milestones and can vary by run. Global community reports usually clearing normal Bingo with roughly <strong>60–80 Fruits plus all daily missions</strong>.</p></div>
         <div class="eventCycleCard"><b>Lucky Scratch</b><span>Every 3 weeks · follows Bingo</span><p>Material Realm consumables feed the scratch-ticket missions. Rewards are scratch RNG/milestones rather than one fixed rotating relic. Best practical prep: <strong>save realm tools during Feneck week</strong>, then spend the saved tools while Lucky Scratch is active.</p></div>
         <div class="eventCycleCard"><b>Feneck's Puzzle</b><span>Every 3 weeks · follows Lucky Scratch</span><p>No big Destiny-Fruit dump is recommended. Rewards come from the puzzle/daily track. Treat this as the setup week: do the event/dailies and begin banking Material Realm tools for the next Lucky Scratch.</p></div>
       </div>
       <div class="timelineIntelBody recurringGrid">
         <div><b>Void Rifts ↔ Chaos Invasion</b><p>EOG/community guidance has these alternating on Sundays. Because the rotation anchor can differ by server grouping, they remain in the reference panel rather than being assigned fake Charming Glance dates.</p></div>
-        <div><b>Charming Glance right now</b><p><b>Aug 19–26:</b> Bingo Draw 2 overlaps Oceanic Festival, so Destiny Fruit spending can advance both. <b>Aug 26:</b> Lucky Scratch 2 starts while Oceanic is still active; Material Realm activity can also feed Oceanic Beach Shovel objectives.</p></div>
+        <div><b>Rotation handling</b><p>Bingo Draw → Lucky Scratch → Feneck's Puzzle repeats on the projected 21-day server-age cycle. Use the dated timeline rows below for the current and upcoming Charming Glance run instead of carrying old limited-event overlap notes forward.</p></div>
       </div>
-      <div class="eventSourceNote" style="padding:0 16px 14px">Schedule cross-check: Limitless Gaming server-age timeline. Treasure Hunt Phase 1–15 rewards: QY Maple. Event strategy: current Oceanic Festival guides, Loot & Waifus, Prydwen and Global community reports.</div>
+      <div class="eventSourceNote" style="padding:0 16px 14px">Schedule cross-check: Limitless Gaming server-age timeline. Treasure Hunt Phase 1–15 rewards: QY Maple. Event strategy: Loot & Waifus, Prydwen and Global community reports.</div>
     </details>
   </div>
   <div class="controls"><div class="filters" id="timelineFilters"></div><label class="pastToggle"><input id="showPast" type="checkbox"> Show past entries</label></div>
@@ -6979,8 +6980,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const text=String((e&&e[4])||'').trim();
     const title=String((e&&e[3])||'');
     if(title.startsWith('Oceanic Festival')) return 'Global Aug 18–31. Prioritize Beach Shovels; Bingo Draw 2 overlaps on Charming Glance, so Destiny Fruit spending can progress both events.';
-    if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. This run overlaps Oceanic, so Fruit spending progresses both.';
-    if(title.startsWith('Lucky Scratch')) return 'Aug 26–Sep 2. Spend saved Material Realm tools to generate scratch cards; through Aug 31, Realm activity also overlaps Oceanic Beach Shovel objectives.';
+    if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. Save extra Fruits for the next Bingo run if you finish early.';
+    if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools while Lucky Scratch is active to generate more scratch cards; bank tools during Feneck week for the next run.';
     if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';
     if(title==='Gift code · Summer') return 'UNCONFIRMED cutoff: Summer gives 160 Dawnium and is reported valid through Sep 1; redeem promptly.';
     if(title==='Gift code · VEGGIE') return 'Official Global Discord: 10 Rare Auroral Badges + 80 Dawnium. Expires Sep 8 at 00:00 UTC-5 = Sep 7 at 10:00 PM PDT; redeem before then.';
