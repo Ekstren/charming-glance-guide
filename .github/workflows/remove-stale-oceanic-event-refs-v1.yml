@@ -1,0 +1,67 @@
+name: Remove stale Oceanic event refs v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/remove_stale_oceanic_event_refs_v1.py'
+      - '.github/workflows/remove-stale-oceanic-event-refs-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Apply cleanup
+        run: python3 scripts/remove_stale_oceanic_event_refs_v1.py
+
+      - name: Validate recurring event copy
+        run: |
+          grep -Fq 'STALE_OCEANIC_EVENT_REFS_V1' index.html
+          grep -Fq '<b>Rotation handling</b>' index.html
+          grep -Fq "if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. Save extra Fruits for the next Bingo run if you finish early.';" index.html
+          grep -Fq "if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools while Lucky Scratch is active to generate more scratch cards; bank tools during Feneck week for the next run.';" index.html
+          if grep -Fq 'The separate 200-Fruit summer mission is now live inside <strong>Oceanic Festival</strong>' index.html; then exit 1; fi
+          if grep -Fq 'This run overlaps Oceanic, so Fruit spending progresses both.' index.html; then exit 1; fi
+          if grep -Fq 'through Aug 31, Realm activity also overlaps Oceanic Beach Shovel objectives.' index.html; then exit 1; fi
+
+      - name: Validate inline JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          out=Path('/tmp/js-oceanic-clean');out.mkdir(exist_ok=True)
+          for i,b in enumerate(re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)):
+              (out/f'{i}.js').write_text(b,encoding='utf-8')
+          PY
+          for f in /tmp/js-oceanic-clean/*.js; do node --check "$f"; done
+
+      - name: Full browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Oceanic cleanup already current'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Remove stale Oceanic event references'
+            git pull --rebase origin main
+            git push origin main
+          fi
