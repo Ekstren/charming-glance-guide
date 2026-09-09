@@ -31,7 +31,7 @@ async function runCase(name, values){
     oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,
     sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,
     treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,
-    hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,refinedOreCurrent:0,
+    hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,refinedOreCurrent:'',
     ...values
   };
   const wallStart=Date.now();
