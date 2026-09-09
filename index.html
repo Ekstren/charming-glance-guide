@@ -6014,13 +6014,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
        normal overscore/share tie-breaks, so select the first Fantomon option that reaches
        target. This replaces Relic x Fantomon x Skill with Relic x Skill while preserving
        the exact candidate comparator. */
-    /* FULLY_FUNDED_TREAT_REFINED_V2
-       Refined tracking only blocks the Treat-funded dimensional collapse when Refined Ore
-       can actually constrain Gear. If the projected Refined pool covers the maximum reachable
-       Gear option, the constraint is inactive and the same exact Relic x Skill collapse applies. */
-    const maxReachableRefined=Math.max(0,Number(gearOptions[gearOptions.length-1]?.refinedCost)||0);
-    const refinedFullyFunded=!resources.refinedTracked || (Number(resources.refined)||0)>=maxReachableRefined-0.5;
-    const treatFullyFunded=refinedFullyFunded &&
+    /* REFINED_FASTPATH_GUARD_V3
+       Keep the Treat-funded dimensional collapse disabled whenever Refined Ore tracking is
+       active. Even a numerically funded Refined pool still participates in downstream share/
+       tie-break semantics, so collapsing that dimension changes the exact chosen plan. */
+    const treatFullyFunded=!resources.refinedTracked &&
       (Number(resources.treat)||0)>=Math.max(0,Number(headroomCosts?.treat)||0)-0.5;
     if(treatFullyFunded && cats.fantoOptions.length>1){
       const fantoMax=cats.fantoOptions[cats.fantoOptions.length-1];
