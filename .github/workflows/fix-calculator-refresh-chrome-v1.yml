@@ -1,0 +1,74 @@
+name: Fix calculator refresh chrome
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/fix_calculator_refresh_chrome_v1.py'
+      - '.github/workflows/fix-calculator-refresh-chrome-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply refresh fix
+        run: python3 scripts/fix_calculator_refresh_chrome_v1.py
+
+      - name: Validate refresh chrome
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert 'id="seasonDeadlineLabel">Season 1 ends<' not in s
+          assert 'id="seasonDeadlineLabel">Season ends<' in s
+          assert 'renderCalculatorSeasonChrome(activeCalcConfig());' in s
+          print('calculator refresh chrome validated')
+          PY
+
+      - name: Validate timeline duplicates
+        run: python3 scripts/check_timeline_duplicates.py index.html
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js'); out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Install browser smoke dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Calculator refresh chrome already current.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+Ekstren@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Fix calculator season display on refresh'
+            git pull --rebase origin main
+            git push origin main
+          fi
