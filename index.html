@@ -5705,7 +5705,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return null;
   }
   function makePlanCandidate(go,so,ro,fo,score,desired,resources,realms,acquisitionResult=null){
-    const [oreRealm,essenceRealm,sandRealm]=realms;
+    const oreRealm=realms[0],essenceRealm=realms[1],sandRealm=realms[2];
     const dawniumCost=oreRealm.dawnium+essenceRealm.dawnium+sandRealm.dawnium;
     const realmPacks=oreRealm.packs+essenceRealm.packs+sandRealm.packs;
     const oreShare=resources.ore>0?go.oreCost/resources.ore:(go.oreCost>0?go.oreCost/100000:0);
@@ -5713,13 +5713,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const sandShare=resources.sand>0?ro.cost/resources.sand:(ro.cost>0?ro.cost/100000:0);
     const treatShare=resources.treat>0?fo.cost/resources.treat:(fo.cost>0?fo.cost/10000:0);
     const refinedShare=resources.refinedTracked&&resources.refined>0?go.refinedCost/resources.refined:0;
-    const shares=[oreShare,essenceShare,sandShare,treatShare,refinedShare];
-    /* ACQUISITION_KERNEL_V2 · TOTAL_POOL_SMART_BALANCE_V1
-       Scarcity coverage is fixed for one resource snapshot using projected raw + saved/planned
-       tools at full material equivalent. Feasibility and the raw-before-tools consumption order
-       are decided separately by Realm top-up math, so the hot search can reuse this kernel. */
-    const acquisition=acquisitionResult||acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,activeCalcConfig());
-    const unknownPriceRefreshes=realms.reduce((sum,x)=>sum+Math.max(0,Number(x?.unknownPriceRefreshes)||0),0);
+    const maxShare=Math.max(oreShare,essenceShare,sandShare,treatShare,refinedShare);
+    const sumShare=oreShare+essenceShare+sandShare+treatShare+refinedShare;
+    /* ACQUISITION_KERNEL_V2 · TOTAL_POOL_SMART_BALANCE_V1 · CANDIDATE_SCALAR_FASTPATH_V5
+       Candidate creation is in the hottest optimizer path. Keep the exact same economics and
+       public result fields, but avoid per-candidate temporary share/Realm arrays, reduce()
+       callbacks and repeated activeCalcConfig() lookups. */
+    const cfg=activeCalcConfig();
+    const acquisition=acquisitionResult||acquisitionEffortFor({ore:go.oreCost,essence:so.cost,sand:ro.cost,treat:fo.cost},resources,cfg);
+    const unknownPriceRefreshes=
+      Math.max(0,Number(oreRealm?.unknownPriceRefreshes)||0)+
+      Math.max(0,Number(essenceRealm?.unknownPriceRefreshes)||0)+
+      Math.max(0,Number(sandRealm?.unknownPriceRefreshes)||0);
+    const bankedHammersUsed=oreRealm.bankedUsed||0;
+    const bankedKnucklesUsed=essenceRealm.bankedUsed||0;
+    const bankedShovelsUsed=sandRealm.bankedUsed||0;
     return {
       gear:go.target,skill:so.avg,relic:ro.avg,fanto:fo.avg,
       skillLevels:so.levels,relicLevels:ro.levels,fantoLevels:fo.levels,
@@ -5727,11 +5735,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       score,gearAdds:go.adds,skillAdds:so.adds,relicAdds:ro.adds,fantoAdds:fo.adds,
       oreShare,essenceShare,sandShare,treatShare,refinedShare,
       acquisitionHours:acquisition.hours,unknownPriceRefreshes,
-      maxShare:Math.max(...shares),sumShare:shares.reduce((a,b)=>a+b,0),overshoot:score-desired,
+      maxShare,sumShare,overshoot:score-desired,
       dawniumCost,realmAttempts:realmPacks,realmPacks,
-      bankedHammersUsed:(oreRealm.bankedUsed||0),bankedKnucklesUsed:(essenceRealm.bankedUsed||0),bankedShovelsUsed:(sandRealm.bankedUsed||0),
-      bankedToolsUsed:(oreRealm.bankedUsed||0)+(essenceRealm.bankedUsed||0)+(sandRealm.bankedUsed||0),seasonKey:activeCalcConfig().key,
-      realm:{days:Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(activeCalcConfig()),ore:oreRealm,essence:essenceRealm,sand:sandRealm}
+      bankedHammersUsed,bankedKnucklesUsed,bankedShovelsUsed,
+      bankedToolsUsed:bankedHammersUsed+bankedKnucklesUsed+bankedShovelsUsed,seasonKey:cfg.key,
+      realm:{days:Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg),ore:oreRealm,essence:essenceRealm,sand:sandRealm}
     };
   }
 
@@ -5773,16 +5781,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function betterFeasibleCandidate(candidate,best){
     if(!best) return true;
 
-    /* TOTAL_POOL_SMART_BALANCE_V1
-       Raw material and saved/already-planned Realm tools belong to the SAME owned/projected
-       economic tier. Do not force a raw-only candidate to beat a healthier pooled candidate.
-       The only hard sourcing boundary is EXTRA Realm purchases, which remain last resort. */
-    const cStage=candidateRealmStage(candidate),bStage=candidateRealmStage(best);
-    const cPaid=cStage>=2,bPaid=bStage>=2;
+    /* TOTAL_POOL_SMART_BALANCE_V1 · FEASIBLE_COMPARE_SCALAR_V5
+       Feasible candidates never carry Treat/Realm-overflow diagnostics. Their paid-source
+       tier is therefore exactly `realmPacks > 0`; avoid candidateRealmStage() array creation
+       on every comparison. Inline the acquisition metric's two scalar reads as well. */
+    const cPaid=(Number(candidate.realmPacks)||0)>0,bPaid=(Number(best.realmPacks)||0)>0;
     if(cPaid!==bPaid) return !cPaid;
 
-    // If extra purchases are unavoidable for both routes, minimize unknown-price refreshes
-    // and verified Dawnium before choosing among their economic mixes.
     if(cPaid&&bPaid){
       const cu=Math.max(0,Number(candidate.unknownPriceRefreshes)||0),bu=Math.max(0,Number(best.unknownPriceRefreshes)||0);
       if(cu<bu) return true;
@@ -5791,16 +5796,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       if(candidate.dawniumCost>best.dawniumCost+1e-9) return false;
     }
 
-    // Primary choice inside the owned/projected tier: total-pool scarcity-adjusted acquisition.
-    const effortCmp=compareAcquisitionEffort(candidate,best);
-    if(effortCmp!==null) return effortCmp;
+    const cm0=Number(candidate.acquisitionHours),bm0=Number(best.acquisitionHours);
+    const cm=Number.isFinite(cm0)?cm0:1e18,bm=Number.isFinite(bm0)?bm0:1e18;
+    if(cm<bm-1e-9) return true;
+    if(cm>bm+1e-9) return false;
 
-    // Tool preservation is deliberately ONLY a tie-breaker. realmTopupFor() has already spent
-    // raw first, so this chooses fewer Hammers/Knuckles/Shovels only when economics are tied.
+    // Tool preservation remains ONLY a tie-breaker after exact acquisition equality.
     const toolCmp=betterToolBurden(candidate,best);
     if(toolCmp!==null) return toolCmp;
 
-    // Do not spend material just for meaningless overscore once strategic cost is tied.
     return candidate.overshoot<best.overshoot-1e-9||
       (Math.abs(candidate.overshoot-best.overshoot)<1e-9&&candidate.maxShare<best.maxShare-1e-9)||
       (Math.abs(candidate.overshoot-best.overshoot)<1e-9&&Math.abs(candidate.maxShare-best.maxShare)<1e-9&&candidate.sumShare<best.sumShare-1e-9);
@@ -6189,46 +6193,31 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           const fixedBeforeSkill=charScore+ro.score+fo.score;
           const skillStart=firstScoreIndex(boundedSkill,desired-fixedBeforeSkill-maxGearScore);
           if(skillStart>=boundedSkill.length) continue;
-          /* SKILL_GEAR_BREAKPOINT_JUMP_V4
-             The old seed loop incremented through every Skill option, but after the first
-             option selecting a given minimum Gear state it discarded every later Skill
-             option selecting that same Gear state. Jump straight to the first Skill score
-             at which the previous Gear option can satisfy the target. This visits the exact
-             same candidate frontier in the exact same order. */
-          for(let si=skillStart;si<boundedSkill.length;){
+          let lastGearAdds=null;
+          for(let si=skillStart;si<boundedSkill.length;si++){
             const so=boundedSkill[si];
             const go=gearLocked
               ? (boundedGear[0].score>=Math.max(0,desired-fixedBeforeSkill-so.score)?boundedGear[0]:null)
               : firstGearOptionAtLeast(boundedGear,Math.max(0,desired-fixedBeforeSkill-so.score));
-            if(!go){ si++; continue; }
-
-            let nextSi=si+1;
-            if(go.adds===0){
-              nextSi=boundedSkill.length;
-            }else{
-              // buildGearOptions() appends exactly one level per option, so adds === index.
-              const previousGear=boundedGear[Math.max(0,go.adds-1)];
-              if(previousGear){
-                nextSi=Math.max(nextSi,firstScoreIndex(
-                  boundedSkill,
-                  desired-fixedBeforeSkill-(Number(previousGear.score)||0)
-                ));
-              }
-            }
-
+            if(!go) continue;
+            if(lastGearAdds===go.adds){ if(go.adds===0) break; continue; }
+            lastGearAdds=go.adds;
             const score=fixedBeforeSkill+so.score+go.score;
-            if(score>=desired&&refinedFunded(go)){
-              const oreRealm=oreFor(go),essenceRealm=essFor(so);
-              if(oreRealm.feasible&&essenceRealm.feasible&&sandRealm.feasible){
-                const acquisition=acquisitionFor(go,so,ro,fo);
-                const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
-                candidate.realm.days=realmDays;
-                candidate.realmFeasible=true;
-                if(betterFeasibleCandidate(candidate,boundedBest)) boundedBest=candidate;
-              }
-            }
-            if(go.adds===0) break;
-            si=nextSi;
+            if(score<desired||!refinedFunded(go)) continue;
+            const oreRealm=oreFor(go),essenceRealm=essFor(so);
+            if(!oreRealm.feasible||!essenceRealm.feasible||!sandRealm.feasible) continue;
+            const acquisition=acquisitionFor(go,so,ro,fo);
+            /* NO_PAID_PRIMARY_FAST_COMPARE_V5
+               boundedLast===noPaidLast means every candidate is in the same preferred owned
+               tier. Acquisition is the exact primary comparator, so do not allocate a full
+               candidate object for a value that is already strictly worse than boundedBest. */
+            if(noPaidRoutePossible&&boundedBest&&acquisition.hours>boundedBest.acquisitionHours+1e-9) continue;
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
+            candidate.realm.days=realmDays;
+            candidate.realmFeasible=true;
+            if(noPaidRoutePossible&&boundedBest&&acquisition.hours<boundedBest.acquisitionHours-1e-9){
+              boundedBest=candidate;
+            }else if(betterFeasibleCandidate(candidate,boundedBest)) boundedBest=candidate;
           }
         }
       }
@@ -6264,56 +6253,51 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           if(skillStart>=boundedSkill.length) continue;
           const skillEnd=firstWorseIndex(boundedSkill,skillStart,so=>jointHoursFast(0,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1));
           if(skillStart>=skillEnd) continue;
+          let lastGearAdds=null;
 
-          /* SKILL_GEAR_BREAKPOINT_JUMP_V4
-             For fixed Relic+Fantomon, Skill rises monotonically while the minimum Gear
-             required falls monotonically. The previous loop already rejected every Skill
-             option after the first one for each Gear step. Instead of walking those rejected
-             states one-by-one, binary-search the first Skill option where the NEXT lower
-             Gear step becomes sufficient. Candidate order and comparator inputs are unchanged. */
-          for(let si=skillStart;si<skillEnd;){
+          for(let si=skillStart;si<skillEnd;si++){
             const so=boundedSkill[si];
             const fixedScore=fixedBeforeSkill+so.score;
             const needGear=Math.max(0,desired-fixedScore);
             const go=gearLocked
               ? (boundedGear[0].score>=needGear?boundedGear[0]:null)
               : firstGearOptionAtLeast(boundedGear,needGear);
-            if(!go){ si++; continue; }
+            if(!go) continue;
 
-            let nextSi=si+1;
-            if(go.adds===0){
-              nextSi=skillEnd;
-            }else{
-              // buildGearOptions() guarantees one sequential adds value per array index.
-              const previousGear=boundedGear[Math.max(0,go.adds-1)];
-              if(previousGear){
-                nextSi=Math.max(nextSi,firstScoreIndex(
-                  boundedSkill,
-                  desired-fixedBeforeSkill-(Number(previousGear.score)||0)
-                ));
-              }
+            // For fixed Relic+Fantomon, Skill rises monotonically while the minimum Gear
+            // required falls monotonically. Only the first Skill option for each Gear step
+            // can survive the cost/overscore comparator. Once Gear is already at its base,
+            // all later Skill options are strictly dominated.
+            if(lastGearAdds===go.adds){
+              if(go.adds===0) break;
+              continue;
             }
+            lastGearAdds=go.adds;
 
             const score=fixedScore+go.score;
-            if(score>=desired&&refinedFunded(go)){
-              const oreRealm=oreFor(go),essenceRealm=essFor(so);
-              if(oreRealm.feasible&&essenceRealm.feasible&&sandRealm.feasible){
-                // Same exact dominance rule used by the legacy full scan, but before the
-                // expensive joint acquisition equation.
-                const dominated=boundedBest && go.oreCost>=boundedBest.oreCost &&
-                  so.cost>=boundedBest.essenceCost && ro.cost>=boundedBest.sandCost &&
-                  fo.cost>=boundedBest.treatCost && go.refinedCost>=boundedBest.refinedCost;
-                if(!dominated){
-                  const acquisition=acquisitionFor(go,so,ro,fo);
-                  const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
-                  candidate.realm.days=realmDays;
-                  candidate.realmFeasible=true;
-                  if(betterFeasibleCandidate(candidate,boundedBest)) boundedBest=candidate;
-                }
-              }
-            }
-            if(go.adds===0) break;
-            si=nextSi;
+            if(score<desired) continue;
+            if(!refinedFunded(go)) continue;
+            const oreRealm=oreFor(go),essenceRealm=essFor(so);
+            if(!oreRealm.feasible||!essenceRealm.feasible||!sandRealm.feasible) continue;
+
+            // Same exact dominance rule used by the legacy full scan, but before the
+            // expensive joint acquisition equation.
+            if(boundedBest && go.oreCost>=boundedBest.oreCost && so.cost>=boundedBest.essenceCost &&
+               ro.cost>=boundedBest.sandCost && fo.cost>=boundedBest.treatCost &&
+               go.refinedCost>=boundedBest.refinedCost) continue;
+
+            const acquisition=acquisitionFor(go,so,ro,fo);
+            /* NO_PAID_PRIMARY_FAST_COMPARE_V5
+               boundedLast===noPaidLast means every candidate is in the same preferred owned
+               tier. Acquisition is the exact primary comparator, so do not allocate a full
+               candidate object for a value that is already strictly worse than boundedBest. */
+            if(noPaidRoutePossible&&boundedBest&&acquisition.hours>boundedBest.acquisitionHours+1e-9) continue;
+            const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
+            candidate.realm.days=realmDays;
+            candidate.realmFeasible=true;
+            if(noPaidRoutePossible&&boundedBest&&acquisition.hours<boundedBest.acquisitionHours-1e-9){
+              boundedBest=candidate;
+            }else if(betterFeasibleCandidate(candidate,boundedBest)) boundedBest=candidate;
           }
         }
       }
