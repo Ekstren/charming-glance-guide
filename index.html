@@ -3695,6 +3695,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+
+<style id="left-align-remaining-counts-v1">
+/* LEFT_ALIGN_REMAINING_COUNTS_V1
+   Keep the Remaining value visually attached to its label instead of pinning it
+   to the far edge of each resource card. */
+.planCosts .resourceRemainingLine{
+  justify-content:flex-start!important;
+  gap:6px!important;
+}
+.planCosts .resourceRemainingLine b{
+  margin-left:0!important;
+}
+</style>
+
 </head>
 <body>
 <main>
