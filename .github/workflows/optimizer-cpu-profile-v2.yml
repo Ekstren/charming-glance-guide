@@ -1,0 +1,25 @@
+name: Optimizer CPU profile v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/optimizer-cpu-profile-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install browser dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Profile current optimizer
+        run: node scripts/optimizer_cpu_profile_v1.mjs
