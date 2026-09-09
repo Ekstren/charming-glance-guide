@@ -3550,7 +3550,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         </div>
         <!-- MOVE_PROJECTION_BEFORE_PROGRESSION_V1 -->
         <div class="projectionCallout projectionInline"><span>Projected season-end level</span><strong id="projectedCharacter">—</strong><small id="projectionNote" hidden></small></div>
-        <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season 1 ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
+        <div class="seasonDeadline"><span id="seasonDeadlineLabel">Season ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="s2ProgressionGates" id="s2ProgressionGates" hidden aria-label="Season 2 progression gates"><span><b>106</b>T4</span><span><b>108</b>Adult Fanto</span><span><b>116</b>Tower</span><span><b>120</b>Realm max</span><span><b>130</b>Scoring + Dungeon</span></div>
         <!-- COMPACT_PROGRESSION_TOP_V1 -->
         <div class="compactProgression" aria-label="Current progression used by the optimizer">
@@ -7408,6 +7408,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
   function initializeCalculatorIfNeeded(){
     if(calculatorInitialized) return;
+    // Paint the lightweight season-specific chrome immediately on refresh before
+    // the optimizer starts. This prevents stale S1 fallback text from flashing
+    // while a saved S2 plan is being restored and solved.
+    renderCalculatorSeasonChrome(activeCalcConfig());
     const status=$('optimizerSummary');
     if(status) status.textContent='Calculating your saved season plan…';
     // Let the Calculator tab paint before the expensive optimizer starts.
