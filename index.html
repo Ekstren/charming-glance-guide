@@ -6206,6 +6206,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       const maxGearScore=Number(boundedGear[boundedGear.length-1]?.score)||0;
       const maxSkillScore=Number(boundedSkill[boundedSkill.length-1]?.score)||0;
       const maxFantoScore=Number(boundedFanto[boundedFanto.length-1]?.score)||0;
+
+      /* BOUNDED_EAGER_REALM_V12
+         The exact bounded scan revisits the same Gear/Skill/Relic options thousands of times.
+         Materialize each immutable Realm result once for this search snapshot and store the
+         refined-funding bit on Gear. The hot loops then use direct property reads instead of
+         repeatedly entering oreFor()/essFor()/sandFor()/refinedFunded() wrappers. */
+      for(const go of boundedGear){ go.__realmOreV7=oreFor(go); go.__refinedFundedV12=refinedFunded(go); }
+      for(const so of boundedSkill) so.__realmEssenceV7=essFor(so);
+      for(const ro of boundedRelic) ro.__realmSandV7=sandFor(ro);
+
       const relicStart=firstScoreIndex(boundedRelic,desired-charScore-maxGearScore-maxSkillScore-maxFantoScore);
       let boundedBest=null;
 
@@ -6225,7 +6235,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         return [...out].sort((a,b)=>a-b);
       };
       for(const ri of sampledIndices(relicStart,boundedRelic.length,10)){
-        const ro=boundedRelic[ri],sandRealm=sandFor(ro);
+        const ro=boundedRelic[ri],sandRealm=ro.__realmSandV7;
         const fantoStart=firstScoreIndex(boundedFanto,desired-charScore-ro.score-maxGearScore-maxSkillScore);
         for(const fi of sampledIndices(fantoStart,boundedFanto.length,10)){
           const fo=boundedFanto[fi];
@@ -6243,8 +6253,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           while(si<boundedSkill.length&&gi<boundedGear.length){
             const so=boundedSkill[si],go=boundedGear[gi];
             const score=fixedBeforeSkill+so.score+go.score;
-            if(score>=desired&&refinedFunded(go)){
-              const oreRealm=oreFor(go),essenceRealm=essFor(so);
+            if(score>=desired&&go.__refinedFundedV12){
+              const oreRealm=go.__realmOreV7,essenceRealm=so.__realmEssenceV7;
               if(oreRealm.feasible&&essenceRealm.feasible&&sandRealm.feasible &&
                  !(noPaidRoutePossible&&boundedBest&&acquisitionCannotBeat(boundedBest.acquisitionHours,go,so,ro,fo))){
                 const acquisition=acquisitionFor(go,so,ro,fo);
@@ -6290,11 +6300,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       const relicEnd=firstWorseIndex(boundedRelic,relicStart,ro=>jointHoursFast(0,0,ro.__acqSandV1,0));
       for(let ri=relicStart;ri<relicEnd;ri++){
         const ro=boundedRelic[ri];
-        const sandRealm=sandFor(ro);
+        /* DYNAMIC_OUTER_BOUND_V12
+           relicEnd/fantoEnd are based on the seed winner. If the exact scan finds a faster
+           winner, refresh the cheap monotone subset bound inline so we can stop the now-dead
+           Relic/Fantomon suffix immediately. */
+        if(noPaidRoutePossible&&boundedBest&&
+           jointHoursFast(0,0,ro.__acqSandV1,0)>boundedBest.acquisitionHours+1e-9) break;
+        const sandRealm=ro.__realmSandV7;
         const fantoStart=firstScoreIndex(boundedFanto,desired-charScore-ro.score-maxGearScore-maxSkillScore);
         const fantoEnd=firstWorseIndex(boundedFanto,fantoStart,fo=>jointHoursFast(0,0,ro.__acqSandV1,fo.__acqTreatV1));
         for(let fi=fantoStart;fi<fantoEnd;fi++){
           const fo=boundedFanto[fi];
+          if(noPaidRoutePossible&&boundedBest&&
+             jointHoursFast(0,0,ro.__acqSandV1,fo.__acqTreatV1)>boundedBest.acquisitionHours+1e-9) break;
           const fixedBeforeSkill=charScore+ro.score+fo.score;
           const skillStart=firstScoreIndex(boundedSkill,desired-fixedBeforeSkill-maxGearScore);
           if(skillStart>=boundedSkill.length) continue;
@@ -6311,8 +6329,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
           while(si<skillEnd&&gi<boundedGear.length){
             const so=boundedSkill[si],go=boundedGear[gi];
             const score=fixedBeforeSkill+so.score+go.score;
-            if(score>=desired&&refinedFunded(go)){
-              const oreRealm=oreFor(go),essenceRealm=essFor(so);
+            if(score>=desired&&go.__refinedFundedV12){
+              const oreRealm=go.__realmOreV7,essenceRealm=so.__realmEssenceV7;
               if(oreRealm.feasible&&essenceRealm.feasible&&sandRealm.feasible){
                 const dominated=boundedBest && go.oreCost>=boundedBest.oreCost &&
                   so.cost>=boundedBest.essenceCost && ro.cost>=boundedBest.sandCost &&
