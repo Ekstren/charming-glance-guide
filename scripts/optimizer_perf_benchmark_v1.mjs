@@ -70,5 +70,17 @@ cases.push(await runCase('s2-920-zero-resources',{}));
 cases.push(await runCase('s2-920-zero-resources-repeat',{}));
 cases.push(await runCase('s2-920-funded',{oreCurrent:50000000,essenceCurrent:50000000,sandCurrent:50000000,treatCurrent:5000000,refinedOreCurrent:5000000}));
 
+if(process.env.EXPECT_BASELINE_FINGERPRINTS==='1'){
+  const expected={
+    's2-920-zero-resources':'8c379e8b0bf46b35ef820e8ea45f87d23d153e0dac1c0e1a479551a2a6a5ccf5',
+    's2-920-zero-resources-repeat':'8c379e8b0bf46b35ef820e8ea45f87d23d153e0dac1c0e1a479551a2a6a5ccf5',
+    's2-920-funded':'8ed5b9031ba827b79af087302a1a0d97b87b4aacd3064db233fd0f2ce9e544f0'
+  };
+  for(const c of cases){
+    if(c.fingerprint!==expected[c.name]) throw new Error(`optimizer result changed for ${c.name}: ${c.fingerprint} != ${expected[c.name]}`);
+  }
+  console.log('optimizer result fingerprints match pre-optimization baseline');
+}
+
 console.log('BENCHMARK_JSON='+JSON.stringify(cases));
 await browser.close();
