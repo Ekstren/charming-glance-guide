@@ -72,7 +72,8 @@ if(process.env.EXPECT_BASELINE_FINGERPRINTS==='1'){
   const expected={
     's2-920-zero-resources':'8c379e8b0bf46b35ef820e8ea45f87d23d153e0dac1c0e1a479551a2a6a5ccf5',
     's2-920-zero-resources-repeat':'8c379e8b0bf46b35ef820e8ea45f87d23d153e0dac1c0e1a479551a2a6a5ccf5',
-    's2-920-funded':'8ed5b9031ba827b79af087302a1a0d97b87b4aacd3064db233fd0f2ce9e544f0'
+    's2-920-funded':'8ed5b9031ba827b79af087302a1a0d97b87b4aacd3064db233fd0f2ce9e544f0',
+    's2-920-funded-cart-rates':'7da21975c8f438669be3e56ee065c291b054a086763943e84bf11eabb8335eed'
   };
   for(const c of cases){
     if(expected[c.name] && c.fingerprint!==expected[c.name]) throw new Error(`optimizer result changed for ${c.name}: ${c.fingerprint} != ${expected[c.name]}`);
