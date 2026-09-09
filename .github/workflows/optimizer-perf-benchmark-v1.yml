@@ -1,0 +1,27 @@
+name: Optimizer performance benchmark
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'scripts/optimizer_perf_benchmark_v1.mjs'
+      - '.github/workflows/optimizer-perf-benchmark-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install benchmark dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Run optimizer benchmark
+        run: node scripts/optimizer_perf_benchmark_v1.mjs
