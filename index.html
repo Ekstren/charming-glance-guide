@@ -7541,18 +7541,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(summary && !/[.!?…]$/.test(summary)) summary+='.';
     return summary;
   }
+  // TIMELINE_SUMMARY_ONLY_V1: timeline cards never expose expandable research/details UI.
+  // Full source/research text remains in timelineData for maintenance, while cards show only the concise summary.
   function timelineDetailHtml(e){
-    const full=String((e&&e[4])||'').trim();
-    // Rich entries contain complete markup. Keep them intact behind Details instead of
-    // passing raw HTML through the text truncator or leaving a long card visible by default.
-    if(full.includes('launchChecklist')){
-      const summary=timelineSummaryText(e);
-      return `<p>${summary}</p><details class="entryMore"><summary>Checklist</summary><div class="timelineRichBody">${full}</div></details>`;
-    }
     const summary=timelineSummaryText(e);
-    const evidenceHeavy=/^(?:CONFIRMED|UNCONFIRMED|PROJECTED|EXPECTED|STRONGLY SUPPORTED|OFFICIAL GLOBAL NAME)/i.test(full);
-    if(!full || summary===full || evidenceHeavy) return `<p>${summary||full}</p>`;
-    return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
+    return `<p>${summary}</p>`;
   }
   function dedupeTimelineDetails(){
     const timeline=$('timeline');
