@@ -48,6 +48,8 @@ jobs:
       - name: Run full site browser smoke
         run: node scripts/site_smoke_test.mjs
       - name: Run optimizer performance benchmark
+        env:
+          EXPECT_BASELINE_FINGERPRINTS: '1'
         run: node scripts/optimizer_perf_benchmark_v1.mjs
       - name: Commit and push
         run: |
