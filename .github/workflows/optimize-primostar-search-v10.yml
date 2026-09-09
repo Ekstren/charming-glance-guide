@@ -1,0 +1,104 @@
+name: Optimize Primostar search v10
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/optimize_primostar_search_v10.py'
+      - '.github/workflows/optimize-primostar-search-v10.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install browser dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Benchmark current optimizer
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/optimizer_perf_benchmark_v1.mjs | tee /tmp/optimizer-before-v10.log
+
+      - name: Apply optimizer v10
+        run: python3 scripts/optimize_primostar_search_v10.py
+
+      - name: Validate optimizer markers
+        run: |
+          grep -Fq 'NO_PAID_PRIMARY_FAST_COMPARE_V5' index.html
+          grep -Fq 'REALM_OPTION_PROPERTY_CACHE_V7' index.html
+          ! grep -Fq 'BOUNDED_COMPACT_BEST_V6' index.html
+          ! grep -Fq 'SKILL_GEAR_BREAKPOINT_JUMP_V4' index.html
+
+      - name: Validate timeline duplicates
+        run: python3 scripts/check_timeline_duplicates.py index.html
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js'); out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts): (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Guard exact results and benchmark optimized
+        env:
+          EXPECT_BASELINE_FINGERPRINTS: '1'
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/optimizer_perf_benchmark_v1.mjs | tee /tmp/optimizer-after-v10.log
+
+      - name: Require aggregate improvement
+        run: |
+          python3 - <<'PY'
+          import json
+          def rows(path):
+              line=next(x for x in open(path,encoding='utf-8') if x.startswith('BENCHMARK_JSON='))
+              return json.loads(line.split('=',1)[1])
+          before=rows('/tmp/optimizer-before-v10.log'); after=rows('/tmp/optimizer-after-v10.log')
+          bm={x['name']:x['reportedMs'] for x in before}; am={x['name']:x['reportedMs'] for x in after}
+          names=[x for x in bm if x in am]
+          bsum=sum(bm[x] for x in names); asum=sum(am[x] for x in names)
+          hot='s2-920-funded-cart-rates'
+          print(f"AGGREGATE {bsum:.1f}ms -> {asum:.1f}ms ({asum/bsum*100:.1f}% of baseline)")
+          print(f"HOT CASE {bm[hot]:.1f}ms -> {am[hot]:.1f}ms")
+          if asum/bsum>0.95:
+              raise SystemExit('v10 did not improve aggregate guarded solve time by at least 5%; refusing to commit')
+          PY
+
+      - name: Run calculator performance regression
+        run: node scripts/calculator_perf_check.mjs
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Optimizer v10 already applied.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Cache Primostar Realm option lookups v10'
+            git pull --rebase origin main
+            git push origin main
+          fi
