@@ -46,8 +46,7 @@ async function runCase(name, values){
     const mode=document.getElementById('staminaMode'); if(mode) mode.value='auto';
     const section=document.getElementById('calculatorSection');
     if(section) section.dataset.lastSolveMs='';
-    const trigger=document.getElementById('targetStars');
-    trigger?.dispatchEvent(new Event('change',{bubbles:true}));
+    document.getElementById('targetStars')?.dispatchEvent(new Event('change',{bubbles:true}));
   },{all});
   await page.waitForFunction(()=>!!document.querySelector('#calculatorSection')?.dataset.lastSolveMs,null,{timeout:60000});
   const timing = await page.evaluate(()=>({reportedMs:Number(document.querySelector('#calculatorSection')?.dataset.lastSolveMs||0)}));
@@ -57,9 +56,7 @@ async function runCase(name, values){
   const summary = await page.evaluate(()=>({
     stars:document.getElementById('optimizedStars')?.textContent||document.getElementById('summaryOptimizedStars')?.textContent||'',
     score:document.getElementById('summaryOptimizedScore')?.textContent||document.getElementById('optimizedScore')?.textContent||'',
-    target:document.getElementById('desiredScore')?.textContent||'',
-    status:document.getElementById('targetStatus')?.textContent||'',
-    projected:document.getElementById('projectedCharacter')?.textContent||''
+    target:document.getElementById('desiredScore')?.textContent||'',status:document.getElementById('targetStatus')?.textContent||'',projected:document.getElementById('projectedCharacter')?.textContent||''
   }));
   console.log(JSON.stringify({name,...timing,fingerprint,summary}));
   return {name,...timing,fingerprint,summary};
@@ -69,6 +66,7 @@ const cases=[];
 cases.push(await runCase('s2-920-zero-resources',{}));
 cases.push(await runCase('s2-920-zero-resources-repeat',{}));
 cases.push(await runCase('s2-920-funded',{oreCurrent:50000000,essenceCurrent:50000000,sandCurrent:50000000,treatCurrent:5000000,refinedOreCurrent:5000000}));
+cases.push(await runCase('s2-920-funded-cart-rates',{oreCurrent:50000000,essenceCurrent:50000000,sandCurrent:50000000,treatCurrent:5000000,refinedOreCurrent:5000000,oreRate:1000,essenceRate:1200,sandRate:800,treatRate:80}));
 
 if(process.env.EXPECT_BASELINE_FINGERPRINTS==='1'){
   const expected={
@@ -77,9 +75,9 @@ if(process.env.EXPECT_BASELINE_FINGERPRINTS==='1'){
     's2-920-funded':'8ed5b9031ba827b79af087302a1a0d97b87b4aacd3064db233fd0f2ce9e544f0'
   };
   for(const c of cases){
-    if(c.fingerprint!==expected[c.name]) throw new Error(`optimizer result changed for ${c.name}: ${c.fingerprint} != ${expected[c.name]}`);
+    if(expected[c.name] && c.fingerprint!==expected[c.name]) throw new Error(`optimizer result changed for ${c.name}: ${c.fingerprint} != ${expected[c.name]}`);
   }
-  console.log('optimizer result fingerprints match pre-optimization baseline');
+  console.log('guarded optimizer result fingerprints match pre-optimization baseline');
 }
 
 console.log('BENCHMARK_JSON='+JSON.stringify(cases));
