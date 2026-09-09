@@ -75,18 +75,15 @@ css = r'''
   border-top:1px solid var(--line)!important;
   color:var(--secondary-text)!important;
 }
-.planCosts small.rawRemaining + small.toolBalance:not([hidden]){
-  display:grid!important;
-  gap:5px!important;
-  margin-top:8px!important;
-  padding-top:8px!important;
-  border-top:1px solid var(--line)!important;
-}
-.planCosts small.toolBalance:not([hidden]):not(.rawRemaining + small.toolBalance){
+.planCosts small.toolBalance:not([hidden]){
   display:grid!important;
   gap:5px!important;
   padding-top:9px!important;
   border-top:1px solid var(--line)!important;
+}
+.planCosts small.rawRemaining + small.toolBalance:not([hidden]){
+  margin-top:8px!important;
+  padding-top:8px!important;
 }
 
 .planCosts .resourceRemainingLine,
