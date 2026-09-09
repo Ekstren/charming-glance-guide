@@ -5987,6 +5987,23 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       return hi;
     };
     const acquisitionFor=(go,so,ro,fo)=>({hours:jointHoursFast(go.__acqOreV1,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1)});
+    /* ACQUISITION_LIMIT_PRECHECK_V8
+       For the no-paid bounded search acquisition hours are the primary comparator. Before
+       solving the piecewise joint-hours equation, test the current winner's time directly:
+       if Treat Cart production cannot cover Treat demand by that time, or the map-node work
+       still exceeds the same time budget, the candidate's exact joint root must be later and
+       it cannot win. This is a necessary-condition rejection only; surviving candidates still
+       run the original exact jointHoursFast() and the normal tie-break chain. */
+    const acquisitionCannotBeat=(bestHours,go,so,ro,fo)=>{
+      if(!Number.isFinite(bestHours)||bestHours>=1e9) return false;
+      const limit=bestHours+1e-9;
+      const treat=fo.__acqTreatV1;
+      if(treat>0){
+        if(acqCartTreat<=0) return true;
+        if(treat>acqCartTreat*limit+1e-7) return true;
+      }
+      return nodesAtFast(limit,go.__acqOreV1,so.__acqEssenceV1,ro.__acqSandV1)>limit+1e-7;
+    };
     let best=null,bestDiagnostic=null;
 
     /* OWNED_POOL_IMPOSSIBILITY_FASTPATH_V4 · TOTAL_POOL_SMART_BALANCE_V1
@@ -6210,11 +6227,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
             if(score<desired||!refinedFunded(go)) continue;
             const oreRealm=oreFor(go),essenceRealm=essFor(so);
             if(!oreRealm.feasible||!essenceRealm.feasible||!sandRealm.feasible) continue;
+            if(noPaidRoutePossible&&boundedBest&&acquisitionCannotBeat(boundedBest.acquisitionHours,go,so,ro,fo)) continue;
             const acquisition=acquisitionFor(go,so,ro,fo);
-            /* NO_PAID_PRIMARY_FAST_COMPARE_V5
-               boundedLast===noPaidLast means every candidate is in the same preferred owned
-               tier. Acquisition is the exact primary comparator, so do not allocate a full
-               candidate object for a value that is already strictly worse than boundedBest. */
+            /* NO_PAID_PRIMARY_FAST_COMPARE_V5 · ACQUISITION_LIMIT_PRECHECK_V8
+               The cheap current-winner feasibility test above rejects obvious losers before
+               the full joint solve; this exact comparison remains the final numeric guard. */
             if(noPaidRoutePossible&&boundedBest&&acquisition.hours>boundedBest.acquisitionHours+1e-9) continue;
             const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
             candidate.realm.days=realmDays;
@@ -6290,11 +6307,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
                ro.cost>=boundedBest.sandCost && fo.cost>=boundedBest.treatCost &&
                go.refinedCost>=boundedBest.refinedCost) continue;
 
+            if(noPaidRoutePossible&&boundedBest&&acquisitionCannotBeat(boundedBest.acquisitionHours,go,so,ro,fo)) continue;
             const acquisition=acquisitionFor(go,so,ro,fo);
-            /* NO_PAID_PRIMARY_FAST_COMPARE_V5
-               boundedLast===noPaidLast means every candidate is in the same preferred owned
-               tier. Acquisition is the exact primary comparator, so do not allocate a full
-               candidate object for a value that is already strictly worse than boundedBest. */
+            /* NO_PAID_PRIMARY_FAST_COMPARE_V5 · ACQUISITION_LIMIT_PRECHECK_V8
+               The cheap current-winner feasibility test above rejects obvious losers before
+               the full joint solve; this exact comparison remains the final numeric guard. */
             if(noPaidRoutePossible&&boundedBest&&acquisition.hours>boundedBest.acquisitionHours+1e-9) continue;
             const candidate=makePlanCandidate(go,so,ro,fo,score,desired,resources,[oreRealm,essenceRealm,sandRealm],acquisition);
             candidate.realm.days=realmDays;
