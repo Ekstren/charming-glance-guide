@@ -5923,6 +5923,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const acqNodeOre=Math.max(0,Number(acqMap.ore)||0);
     const acqNodeEssence=Math.max(0,Number(acqMap.essence)||0);
     const acqNodeSand=Math.max(0,Number(acqMap.sand)||0);
+    /* JOINT_HOURS_NO_CLOSURE_V2
+       This helper used to be allocated inside every jointHoursFast() call. Keeping it once
+       per optimizer search removes hot-loop closure churn without changing arithmetic. */
+    const nodesAtFast=(hours,ore,essence,sand)=>{
+      let total=0,rem=0;
+      rem=Math.max(0,ore-acqCartOre*hours);if(rem>0){if(acqNodeOre<=0)return Infinity;total+=rem/acqNodeOre;}
+      rem=Math.max(0,essence-acqCartEssence*hours);if(rem>0){if(acqNodeEssence<=0)return Infinity;total+=rem/acqNodeEssence;}
+      rem=Math.max(0,sand-acqCartSand*hours);if(rem>0){if(acqNodeSand<=0)return Infinity;total+=rem/acqNodeSand;}
+      return total;
+    };
     const jointHoursFast=(oreRaw,essRaw,sandRaw,treatRaw)=>{
       const ore=Math.max(0,Number(oreRaw)||0);
       const essence=Math.max(0,Number(essRaw)||0);
@@ -5936,14 +5946,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       if(ore>0&&acqNodeOre<=0){if(acqCartOre<=0)return 1e9;floor=Math.max(floor,ore/acqCartOre);}
       if(essence>0&&acqNodeEssence<=0){if(acqCartEssence<=0)return 1e9;floor=Math.max(floor,essence/acqCartEssence);}
       if(sand>0&&acqNodeSand<=0){if(acqCartSand<=0)return 1e9;floor=Math.max(floor,sand/acqCartSand);}
-      const nodesAt=hours=>{
-        let total=0,rem=0;
-        rem=Math.max(0,ore-acqCartOre*hours);if(rem>0){if(acqNodeOre<=0)return Infinity;total+=rem/acqNodeOre;}
-        rem=Math.max(0,essence-acqCartEssence*hours);if(rem>0){if(acqNodeEssence<=0)return Infinity;total+=rem/acqNodeEssence;}
-        rem=Math.max(0,sand-acqCartSand*hours);if(rem>0){if(acqNodeSand<=0)return Infinity;total+=rem/acqNodeSand;}
-        return total;
-      };
-      if(nodesAt(floor)<=floor+1e-9) return floor;
+      if(nodesAtFast(floor,ore,essence,sand)<=floor+1e-9) return floor;
       let mask=0;
       if(ore>acqCartOre*floor+1e-9&&acqNodeOre>0) mask|=1;
       if(essence>acqCartEssence*floor+1e-9&&acqNodeEssence>0) mask|=2;
@@ -5960,18 +5963,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         if((mask&2)&&essence>acqCartEssence*hours+1e-9) next|=2;
         if((mask&4)&&sand>acqCartSand*hours+1e-9) next|=4;
         if(next===mask){
-          if(nodesAt(hours)<=hours+1e-7) return hours;
+          if(nodesAtFast(hours,ore,essence,sand)<=hours+1e-7) return hours;
           break;
         }
         mask=next;
         if(!mask) return floor;
       }
       let lo=floor,hi=Math.max(1,hours,floor);
-      while(nodesAt(hi)>hi+1e-9&&hi<1e9) hi*=2;
-      if(hi>=1e9&&nodesAt(hi)>hi+1e-9) return 1e9;
+      while(nodesAtFast(hi,ore,essence,sand)>hi+1e-9&&hi<1e9) hi*=2;
+      if(hi>=1e9&&nodesAtFast(hi,ore,essence,sand)>hi+1e-9) return 1e9;
       for(let i=0;i<48;i++){
         const mid=(lo+hi)/2;
-        if(nodesAt(mid)<=mid) hi=mid; else lo=mid;
+        if(nodesAtFast(mid,ore,essence,sand)<=mid) hi=mid; else lo=mid;
       }
       return hi;
     };
@@ -6011,7 +6014,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
        normal overscore/share tie-breaks, so select the first Fantomon option that reaches
        target. This replaces Relic x Fantomon x Skill with Relic x Skill while preserving
        the exact candidate comparator. */
-    const treatFullyFunded=!resources.refinedTracked &&
+    /* FULLY_FUNDED_TREAT_REFINED_V2
+       Refined tracking only blocks the Treat-funded dimensional collapse when Refined Ore
+       can actually constrain Gear. If the projected Refined pool covers the maximum reachable
+       Gear option, the constraint is inactive and the same exact Relic x Skill collapse applies. */
+    const maxReachableRefined=Math.max(0,Number(gearOptions[gearOptions.length-1]?.refinedCost)||0);
+    const refinedFullyFunded=!resources.refinedTracked || (Number(resources.refined)||0)>=maxReachableRefined-0.5;
+    const treatFullyFunded=refinedFullyFunded &&
       (Number(resources.treat)||0)>=Math.max(0,Number(headroomCosts?.treat)||0)-0.5;
     if(treatFullyFunded && cats.fantoOptions.length>1){
       const fantoMax=cats.fantoOptions[cats.fantoOptions.length-1];
@@ -6204,30 +6213,41 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
         }
       }
 
-      /* ACQUISITION_LOWER_BOUND_PRUNE_V1
-         jointHoursFast() is monotone in every resource demand. Therefore a branch's
-         acquisition time with one or more remaining categories set to ZERO is a strict
-         lower bound on every real plan in that branch. Once that optimistic bound is
-         already worse than the best exact candidate, the whole monotone suffix can be
-         skipped without changing the winner. */
-      const effortWorseThanBest=hours=>boundedBest && hours>boundedBest.acquisitionHours+1e-9;
+      /* ACQUISITION_LOWER_BOUND_PRUNE_V1 · MONOTONE_BOUND_BINARY_PRUNE_V2
+         jointHoursFast() is monotone in every resource demand. Instead of evaluating the
+         same lower-bound equation once for every Relic/Fantomon/Skill iteration, binary-search
+         the first option that is already worse than the current exact seed. This preserves the
+         identical candidate set: only a monotone suffix that the old loop would immediately
+         break on is skipped. A later/improved best can only make these precomputed ends loose,
+         never incorrectly exclude a winner. */
+      const firstWorseIndex=(options,start,hoursFor)=>{
+        if(!boundedBest) return options.length;
+        const limit=boundedBest.acquisitionHours+1e-9;
+        let lo=Math.max(0,start),hi=options.length-1,ans=options.length;
+        while(lo<=hi){
+          const mid=(lo+hi)>>1;
+          if(hoursFor(options[mid])>limit){ans=mid;hi=mid-1;}else lo=mid+1;
+        }
+        return ans;
+      };
 
-      for(let ri=relicStart;ri<boundedRelic.length;ri++){
+      const relicEnd=firstWorseIndex(boundedRelic,relicStart,ro=>jointHoursFast(0,0,ro.__acqSandV1,0));
+      for(let ri=relicStart;ri<relicEnd;ri++){
         const ro=boundedRelic[ri];
-        if(effortWorseThanBest(jointHoursFast(0,0,ro.__acqSandV1,0))) break;
         const sandRealm=sandFor(ro);
         const fantoStart=firstScoreIndex(boundedFanto,desired-charScore-ro.score-maxGearScore-maxSkillScore);
-        for(let fi=fantoStart;fi<boundedFanto.length;fi++){
+        const fantoEnd=firstWorseIndex(boundedFanto,fantoStart,fo=>jointHoursFast(0,0,ro.__acqSandV1,fo.__acqTreatV1));
+        for(let fi=fantoStart;fi<fantoEnd;fi++){
           const fo=boundedFanto[fi];
-          if(effortWorseThanBest(jointHoursFast(0,0,ro.__acqSandV1,fo.__acqTreatV1))) break;
           const fixedBeforeSkill=charScore+ro.score+fo.score;
           const skillStart=firstScoreIndex(boundedSkill,desired-fixedBeforeSkill-maxGearScore);
           if(skillStart>=boundedSkill.length) continue;
+          const skillEnd=firstWorseIndex(boundedSkill,skillStart,so=>jointHoursFast(0,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1));
+          if(skillStart>=skillEnd) continue;
           let lastGearAdds=null;
 
-          for(let si=skillStart;si<boundedSkill.length;si++){
+          for(let si=skillStart;si<skillEnd;si++){
             const so=boundedSkill[si];
-            if(effortWorseThanBest(jointHoursFast(0,so.__acqEssenceV1,ro.__acqSandV1,fo.__acqTreatV1))) break;
             const fixedScore=fixedBeforeSkill+so.score;
             const needGear=Math.max(0,desired-fixedScore);
             const go=gearLocked
