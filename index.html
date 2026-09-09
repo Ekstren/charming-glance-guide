@@ -7335,7 +7335,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     ['2026-09-06',54,'Event','Official Top-Up Platform events open','CONFIRMED by the official Sword x Staff Global announcements feed on Sep. 4. The Official Top-Up Platform launches two reward events at Sep. 7, 00:00 (UTC-5), which is Sep. 6 at 10:00 PM PDT for Charming Glance: Cumulative Top-up Lottery runs through Oct. 4, 23:59:59 (UTC-5), awarding 1 draw per 9,999 Vouchers topped up with prizes including 29,999 / 9,999 / 4,999 / 999 Vouchers; Daily Top-up Sign-in runs through Sep. 6, 2027 and gives 1 daily draw after any official-platform top-up, with prizes including Vouchers, Bond Trinket, and Covenite. These are paid top-up promotions, not a Charming Glance progression unlock, and they begin about 8 hours before the Sep. 7 server reset.','event','2026-10-05',null,'2026-09-07T05:00:00Z'],
     ['2026-09-07',55,'Collab','Vegetables Fairy Collab Pt. 2','CONFIRMED GLOBAL DATE from the official Sword x Staff announcements feed on Sep. 4: the official reward preview says only 3 days remain until the collab begins, placing the launch on Sep. 7. The post does not give an exact clock time or say it starts at Charming Glance reset, so this row confirms the calendar date without claiming a 6:00 AM PDT start. Confirmed Pt. 2 rewards/activities include daily sign-in rewards (Eggplant Mallet, Vegetable Cuddle Hairpin, Wheel Tickets and collab Emoticons), Golden Veggie Coins from event quests for the Veggie Shop, daily Veggie Shuffle stages toward the Violet Kitty Suit, and Lemon Whale purification 3 times for the Lemon Whale Plushie. Earlier official Global previews also confirmed the Cabbage Dog Fantomon and Pt. 2 Visages. TIME-LIMITED GIFT CODE: VEGGIE — 10 Rare Auroral Badges + 80 Dawnium. Multiple current code trackers report it active through Sep. 8; this expiry is community/secondary-source reported rather than confirmed by the mirrored official feed, so redeem it promptly. Exact event end date remains unannounced.','event'],
     // S2_EVENT_ROTATION_DAY57_64_V1
-    ['2026-09-12',60,'Dungeon','Warlord’s Rest','CONFIRMED CHARMING GLANCE DATE + NORMAL REQUIREMENTS: an in-game Warlord’s Rest — Normal countdown captured on Sep. 8 at about 8:54 PM PDT showed 3d 09h 05m 54s remaining, resolving exactly to the Sep. 12, 2026 6:00 AM PDT server reset. The same Charming Glance unlock screen directly shows Player Lv.130 and 3.55M Power for Normal. Existing higher-difficulty requirements remain Hard 5M · Nightmare 6M; those two thresholds are not established by this Normal-mode screenshot.','dungeon'],
+    ['2026-09-12',60,'Dungeon','Warlord’s Rest','Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M','dungeon'],
     ['2026-09-12',60,'Feature','Season Power unlock','Player Lv.130','feature'],
     ['2026-09-13',61,'Seasonal Map','Acme Nexus','OFFICIAL GLOBAL NAME confirmed by the Sword x Staff Global announcements feed on Sep. 7: the Aethyris dungeon preview explicitly says “Reach the top of Acme Nexus, and Aethyris awaits,” confirming Acme Nexus as the current Global-English name and its role immediately before Aethyris. TIMING REMAINS PROJECTED: QY-derived Season 2 scheduling places the Loong Haven seasonal map on S2 Day 15 / Server Day 61, which maps to Sep. 13 for Charming Glance, while a separate older-server calendar lists the equivalent seasonal-map milestone on Server Day 71 (Sep. 23). Keep Sep. 13 as the lead projection until Charming Glance’s in-game unlock/telescope resolves the cadence conflict.','seasonal-map',null,'unconfirmed'],
     ['2026-09-25',73,'Dungeon','Cloudcrest Temple','Normal 6.2M · Hard 7.7M · Nightmare 9.8M','dungeon'],
@@ -7488,6 +7488,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   function timelineSummaryText(e){
     const text=String((e&&e[4])||'').trim();
     const title=String((e&&e[3])||'');
+    const type=String((e&&e[2])||'');
+    // TIMELINE_PLAIN_EVENT_COPY_V1: user-facing cards summarize the event itself.
+    // Research confidence/source prose stays in the maintained raw row when useful,
+    // but CONFIRMED / UNCONFIRMED / PROJECTED-style audit language is not shown on cards.
+    if(title==='Warlord’s Rest') return 'Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M';
+    if(title==='Server Tournament') return 'Registration opens Sep. 4 · tournament Sep. 5.';
+    if(title==='Nexus Tournament · 4v4') return '4v4 Nexus Tournament · Top-4 qualification format; brackets and prediction phases are handled in game.';
+    if(title==='Acme Nexus') return 'Loong Haven seasonal map · gateway to Aethyris.';
+    if(title==='Aethyris opens') return 'Season 3 · Aethyris · Tier 5 · Nexus grouping expands from 4 servers to an 8-server pool.';
+    if(title==='Crystal Spiral Tree') return 'Aethyris’s first dungeon · current older-server guidance lists Hard at 9M.';
+    if(title==='Gift code · CRYSTAL') return '300 Raw Ore + 1 Stellatie · redeem before the reported Sep. 15 expiry.';
+    if(title==='Official Top-Up Platform events open') return 'Cumulative Top-up Lottery + Daily Top-up Sign-in open on the official top-up platform.';
+    if(title==='Vegetables Fairy Collab Pt. 2') return 'Daily sign-in, Veggie Shop, Veggie Shuffle, Lemon Whale purification, Cabbage Dog Fantomon and Part 2 Visages.';
     if(title.startsWith('Oceanic Festival')) return 'Global Aug 18–31. Prioritize Beach Shovels; Bingo Draw 2 overlaps on Charming Glance, so Destiny Fruit spending can progress both events.';
     if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. Save extra Fruits for the next Bingo run if you finish early.';
     if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools while Lucky Scratch is active to generate more scratch cards; bank tools during Feneck week for the next run.';
@@ -7502,10 +7515,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(title==='Loong Haven opens') return 'Confirmed Aug 30 at 6:00 AM PDT. Gates: Lv.106 T4; Lv.108 + Numbuville + Mythic duplicate for Fantomon Adult; Lv.116 Demonbind Tower.';
     if(title==='Gear Refinement & Affix Transfer') return 'S2 feature: Mythic+ S2 gear can reroll or transfer affixes; S1 gear cannot transfer forward. Same-season transfer is free.';
     if(title==='Season 2 Day 1 checklist') return 'At S2 reset: claim rollover rewards, rank up first, push reachable statues, then spend saved Bed boosts, Stamina and Material Realm resources.';
-    if(title==='Vegetable Fairy Part Two') return 'Expected Sep 7 from a secondary event guide; no official Global or Charming Glance confirmation yet.';
-    if(text.length<=170) return text;
-    const sentences=text.split(/\.\s+/).filter(Boolean);
-    let summary=sentences[0]||text;
+    if(title==='Vegetable Fairy Part Two') return 'Vegetable Fairy Part Two event.';
+    let displayText=text;
+    if(/^(?:CONFIRMED|UNCONFIRMED|PROJECTED|EXPECTED|STRONGLY SUPPORTED|OFFICIAL GLOBAL NAME)/i.test(displayText)){
+      const colon=displayText.indexOf(':');
+      if(colon>=0 && colon<180) displayText=displayText.slice(colon+1).trim();
+      displayText=displayText
+        .replace(/^(?:CONFIRMED|UNCONFIRMED|PROJECTED|EXPECTED|STRONGLY SUPPORTED)\b[^.]{0,180}\.\s*/i,'')
+        .replace(/\b(?:CONFIRMED|UNCONFIRMED|PROJECTED|STRONGLY SUPPORTED)\b/gi,'')
+        .replace(/\s{2,}/g,' ')
+        .trim();
+    }
+    if(displayText.length<=170) return displayText;
+    const sentences=displayText.split(/\.\s+/).filter(Boolean);
+    let summary=sentences[0]||displayText;
     if(summary.length<95 && sentences.length>1) summary += '. ' + sentences[1];
     if(summary.length>170) summary=summary.slice(0,167).replace(/\s+\S*$/,'')+'…';
     if(summary && !/[.!?…]$/.test(summary)) summary+='.';
@@ -7520,7 +7543,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       return `<p>${summary}</p><details class="entryMore"><summary>Checklist</summary><div class="timelineRichBody">${full}</div></details>`;
     }
     const summary=timelineSummaryText(e);
-    if(!full || summary===full) return `<p>${full}</p>`;
+    const evidenceHeavy=/^(?:CONFIRMED|UNCONFIRMED|PROJECTED|EXPECTED|STRONGLY SUPPORTED|OFFICIAL GLOBAL NAME)/i.test(full);
+    if(!full || summary===full || evidenceHeavy) return `<p>${summary||full}</p>`;
     return `<p>${summary}</p><details class="entryMore"><summary>Details</summary><div>${full}</div></details>`;
   }
   function dedupeTimelineDetails(){
