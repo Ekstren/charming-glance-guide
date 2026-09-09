@@ -23,8 +23,6 @@ await page.goto(url,{waitUntil:'load'});
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
 await page.waitForFunction(()=>!!document.querySelector('#calculatorSection')?.dataset.lastSolveMs,null,{timeout:60000});
 
-const setValue = async (id,value) => page.evaluate(({id,value})=>{ const el=document.getElementById(id); if(el) el.value=String(value); },{id,value});
-
 async function runCase(name, values){
   const all = {
     targetStars:920,historicalStars:253,charLevel:126,charExp:0,bedExp:516970,
@@ -36,18 +34,24 @@ async function runCase(name, values){
     hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,refinedOreCurrent:0,
     ...values
   };
-  for(const [id,value] of Object.entries(all)) await setValue(id,value);
-  await setValue('exactSkillLevels','');
-  await setValue('exactRelicLevels','');
-  await setValue('exactFantoLevels','');
-  await setValue('staminaMode','auto');
-  const timing = await page.evaluate(()=>{
-    const t0=performance.now();
-    updateCalculator();
-    const t1=performance.now();
+  const wallStart=Date.now();
+  await page.evaluate(({all})=>{
+    for(const [id,value] of Object.entries(all)){
+      const el=document.getElementById(id);
+      if(el) el.value=String(value);
+    }
+    for(const id of ['exactSkillLevels','exactRelicLevels','exactFantoLevels']){
+      const el=document.getElementById(id); if(el) el.value='';
+    }
+    const mode=document.getElementById('staminaMode'); if(mode) mode.value='auto';
     const section=document.getElementById('calculatorSection');
-    return {wallMs:t1-t0,reportedMs:Number(section?.dataset.lastSolveMs||0)};
-  });
+    if(section) section.dataset.lastSolveMs='';
+    const trigger=document.getElementById('targetStars');
+    trigger?.dispatchEvent(new Event('input',{bubbles:true}));
+  },{all});
+  await page.waitForFunction(()=>!!document.querySelector('#calculatorSection')?.dataset.lastSolveMs,null,{timeout:60000});
+  const timing = await page.evaluate(()=>({reportedMs:Number(document.querySelector('#calculatorSection')?.dataset.lastSolveMs||0)}));
+  timing.wallMs=Date.now()-wallStart;
   const resultText = await page.locator('#calcResults').innerText();
   const fingerprint = crypto.createHash('sha256').update(resultText.replace(/\s+/g,' ').trim()).digest('hex');
   const summary = await page.evaluate(()=>({
