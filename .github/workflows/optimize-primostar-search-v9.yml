@@ -1,0 +1,105 @@
+name: Optimize Primostar search v9
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/optimize_primostar_search_v9.py'
+      - '.github/workflows/optimize-primostar-search-v9.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install browser dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Benchmark current optimizer
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/optimizer_perf_benchmark_v1.mjs | tee /tmp/optimizer-before-v9.log
+
+      - name: Apply optimizer v9
+        run: python3 scripts/optimize_primostar_search_v9.py
+
+      - name: Validate optimizer markers
+        run: |
+          grep -Fq 'REFINED_FASTPATH_GUARD_V3' index.html
+          grep -Fq 'JOINT_HOURS_NO_CLOSURE_V2' index.html
+          grep -Fq 'MONOTONE_BOUND_BINARY_PRUNE_V2' index.html
+          grep -Fq 'CANDIDATE_SCALAR_FASTPATH_V5' index.html
+          grep -Fq 'BOUNDED_COMPACT_BEST_V6' index.html
+          ! grep -Fq 'SKILL_GEAR_BREAKPOINT_JUMP_V4' index.html
+
+      - name: Validate timeline duplicates
+        run: python3 scripts/check_timeline_duplicates.py index.html
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js'); out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts): (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Guard exact results and benchmark optimized
+        env:
+          EXPECT_BASELINE_FINGERPRINTS: '1'
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/optimizer_perf_benchmark_v1.mjs | tee /tmp/optimizer-after-v9.log
+
+      - name: Require hot-case improvement
+        run: |
+          python3 - <<'PY'
+          import json
+          def read_case(path,name):
+              line=next(x for x in open(path,encoding='utf-8') if x.startswith('BENCHMARK_JSON='))
+              rows=json.loads(line.split('=',1)[1])
+              return next(x for x in rows if x['name']==name)
+          name='s2-920-funded-cart-rates'
+          before=read_case('/tmp/optimizer-before-v9.log',name)
+          after=read_case('/tmp/optimizer-after-v9.log',name)
+          ratio=after['reportedMs']/before['reportedMs']
+          print(f"HOT CASE {before['reportedMs']:.1f}ms -> {after['reportedMs']:.1f}ms ({ratio*100:.1f}% of baseline)")
+          if ratio>0.95:
+              raise SystemExit('v9 did not improve the funded+Cart hot case by at least 5%; refusing to commit')
+          PY
+
+      - name: Run calculator performance regression
+        run: node scripts/calculator_perf_check.mjs
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Optimizer v9 already applied.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Compact Primostar bounded search v9'
+            git pull --rebase origin main
+            git push origin main
+          fi
