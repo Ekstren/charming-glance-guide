@@ -47,7 +47,7 @@ async function runCase(name, values){
     const section=document.getElementById('calculatorSection');
     if(section) section.dataset.lastSolveMs='';
     const trigger=document.getElementById('targetStars');
-    trigger?.dispatchEvent(new Event('input',{bubbles:true}));
+    trigger?.dispatchEvent(new Event('change',{bubbles:true}));
   },{all});
   await page.waitForFunction(()=>!!document.querySelector('#calculatorSection')?.dataset.lastSolveMs,null,{timeout:60000});
   const timing = await page.evaluate(()=>({reportedMs:Number(document.querySelector('#calculatorSection')?.dataset.lastSolveMs||0)}));
