@@ -1581,17 +1581,18 @@ input[type=number]:not([disabled]),input[type=text]:not([disabled]),select,texta
 
 <style id="s2-primo-ready-v1-style">
 /* S2 Primostar readiness controls. Hidden until the active calculator season is S2. */
-.s2TargetPresets{grid-column:1/-1;border:1px solid var(--line);background:var(--filter-bg);border-radius:10px;padding:9px 10px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 10px}
+.s2TargetPresets{grid-column:1/-1;border:1px solid var(--line);background:var(--ui-subpanel,var(--filter-bg));border-radius:10px;padding:10px 11px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 10px}
 .s2TargetPresets[hidden],.s2ProgressionGates[hidden]{display:none!important}
-.s2TargetPresets>span{color:var(--green);font-size:9px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
-.s2TargetPresets>div{display:flex;gap:5px;flex-wrap:wrap}
-.s2TargetPresets button{border:1px solid var(--line);background:var(--surface);color:var(--body-text);border-radius:8px;min-height:32px;padding:6px 9px;font-size:10px;font-weight:850;cursor:pointer}
-.s2TargetPresets button:hover,.s2TargetPresets button.active{border-color:var(--green);color:var(--green);background:var(--green-soft)}
-.s2TargetPresets small{color:var(--muted);font-size:8px;line-height:1.35;text-align:right}
+.s2TargetPresets>span{color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.s2TargetPresets>div{display:flex;gap:6px;flex-wrap:wrap}
+.s2TargetPresets button{border:1px solid var(--line);background:var(--ui-inset,var(--surface));color:var(--ink);border-radius:8px;min-height:36px;padding:7px 10px;font-size:11px;line-height:1.2;font-weight:850;cursor:pointer;transition:background .16s,color .16s,border-color .16s}
+.s2TargetPresets button:hover{border-color:var(--green);color:var(--green);background:var(--ui-hover,var(--green-soft))}
+.s2TargetPresets button.active{border-color:var(--green);color:var(--green);background:var(--calc-accent-soft,var(--green-soft));box-shadow:0 0 0 1px color-mix(in srgb,var(--green) 12%,transparent)}
+.s2TargetPresets small{color:var(--secondary-text);font-size:9px;line-height:1.4;text-align:right}
 .s2ProgressionGates{margin-top:8px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.s2ProgressionGates span{border:1px solid var(--line);background:var(--filter-bg);color:var(--secondary-text);border-radius:9px;padding:7px 6px;text-align:center;font-size:8px;line-height:1.25;font-weight:750}
-.s2ProgressionGates b{display:block;color:var(--green);font-size:12px;line-height:1.1;margin-bottom:2px}
-@media(max-width:760px){.s2TargetPresets{grid-template-columns:1fr}.s2TargetPresets small{text-align:left}.s2ProgressionGates{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.s2ProgressionGates span{border:1px solid var(--line);background:var(--ui-subpanel,var(--filter-bg));color:var(--secondary-text);border-radius:9px;padding:8px 6px;text-align:center;font-size:9px;line-height:1.3;font-weight:750}
+.s2ProgressionGates b{display:block;color:var(--green);font-size:13px;line-height:1.1;margin-bottom:2px}
+@media(max-width:760px){.s2TargetPresets{grid-template-columns:1fr}.s2TargetPresets small{text-align:left}.s2TargetPresets button{min-height:40px}.s2ProgressionGates{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:520px){.s2ProgressionGates{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 <style id="tool-only-resource-gaps-v4">
