@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/modernize_site_structure_v1.py'
       - 'scripts/site_refactor_equivalence_v1.mjs'
+      - 'scripts/check_timeline_duplicates.py'
       - '.github/workflows/modernize-whole-site-v1.yml'
   workflow_dispatch:
 
@@ -98,7 +99,6 @@ jobs:
               out.append(text[cursor:])
               return ''.join(out)
           '''
-          # Dedent the embedded replacement by its common YAML/Python indentation.
           import textwrap
           s=s[:start]+textwrap.dedent(new_css)+s[end:]
           p.write_text(s,encoding='utf-8')
