@@ -5,7 +5,25 @@ import sys
 
 path = Path(sys.argv[1] if len(sys.argv) > 1 else 'index.html')
 text = path.read_text(encoding='utf-8')
-normalized = text.replace("\\'", "'")
+
+# The site may keep timeline data/runtime inline or in local external JS modules.
+# When checking HTML, include those local scripts so architectural cleanup does
+# not weaken the duplicate guard.
+scan_parts = [text]
+if path.suffix.lower() in {'.html', '.htm'}:
+    for src in re.findall(r'<script\b[^>]*\bsrc=["\']([^"\']+)["\'][^>]*>', text, re.I):
+        if re.match(r'^(?:https?:)?//', src) or src.startswith('data:'):
+            continue
+        candidate = (path.parent / src.split('?', 1)[0].split('#', 1)[0]).resolve()
+        try:
+            candidate.relative_to(path.parent.resolve())
+        except ValueError:
+            continue
+        if candidate.is_file():
+            scan_parts.append(candidate.read_text(encoding='utf-8'))
+
+scan_text = '\n'.join(scan_parts)
+normalized = scan_text.replace("\\'", "'")
 
 errors = []
 
@@ -23,7 +41,7 @@ if combined:
 # Catch exact duplicate literal timeline rows as a second line of defense.
 rows = [
     line.strip()
-    for line in text.splitlines()
+    for line in scan_text.splitlines()
     if re.match(r"^\s*\['\d{4}-\d{2}-\d{2}',\s*\d+,", line)
 ]
 seen = set()
@@ -35,7 +53,7 @@ for row in rows:
 if dupes:
     errors.append('exact duplicate literal timeline rows found: ' + ' | '.join(dupes[:5]))
 
-if 'function addRecurringEvents()' not in text:
+if 'function addRecurringEvents()' not in scan_text:
     errors.append('recurring-event generator is missing')
 
 if errors:
