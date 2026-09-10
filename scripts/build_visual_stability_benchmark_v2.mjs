@@ -20,10 +20,12 @@ const samples=[];
 const snap=()=>{
   const host=document.getElementById('buildContent');
   const active=document.querySelector('#classTabs button.active');
+  const guide=host?.querySelector(':scope > .guideSummary');
   const grid=host?.querySelector('.buildGrid');
   const quick=host?.querySelector('.buildQuickStats');
   const roll=host?.querySelector('.rollGuide');
   const meta=host?.querySelector('.metaBuildControls');
+  const hero=!!guide?.classList.contains('buildHeroLayoutV2')&&!!guide.querySelector(':scope > .buildHeroLeft')&&!!guide.querySelector(':scope > .buildHeroRoll');
   const visibleCards=[...(host?.querySelectorAll('.buildCard')||[])].filter(el=>!el.hidden&&getComputedStyle(el).display!=='none');
   const transition=active?getComputedStyle(active).transitionDuration:'missing';
   const transitionMs=transition.split(',').map(v=>v.trim()).reduce((m,v)=>{
@@ -41,6 +43,7 @@ const snap=()=>{
   const counts={
     quick:host?.querySelectorAll('.buildQuickStats').length||0,
     roll:host?.querySelectorAll('.rollGuide').length||0,
+    heroRoll:host?.querySelectorAll('.buildHeroRoll > .rollGuide').length||0,
     meta:host?.querySelectorAll('.metaBuildControls').length||0,
     pair:host?.querySelectorAll('.priorityPair').length||0,
     priority:host?.querySelectorAll('.priorityPanel').length||0,
@@ -53,6 +56,7 @@ const snap=()=>{
     quick:!!quick,
     roll:!!roll,
     meta:!!meta,
+    hero,
     visibleCards:visibleCards.length,
     transitionMs,
     height:host?.scrollHeight||0,
@@ -65,7 +69,7 @@ const snap=()=>{
 };
 
 const sameLayout=(a,b)=>
-  a.cls===b.cls && a.quick===b.quick && a.roll===b.roll && a.meta===b.meta &&
+  a.cls===b.cls && a.quick===b.quick && a.roll===b.roll && a.meta===b.meta && a.hero===b.hero &&
   a.visibleCards===b.visibleCards && Math.abs(a.height-b.height)<=1 &&
   a.gridTop===b.gridTop && a.quickTop===b.quickTop && a.rollTop===b.rollTop && a.metaTop===b.metaTop;
 
@@ -77,7 +81,7 @@ for(const cls of sequence){
     btn.click();
     return snapshot();
   },{cls,snapSrc:snap.toString()});
-  const ready=immediate.cls===cls&&immediate.quick&&immediate.roll&&immediate.meta&&immediate.visibleCards===1;
+  const ready=immediate.cls===cls&&immediate.quick&&immediate.roll&&immediate.meta&&immediate.hero&&immediate.counts.heroRoll===1&&immediate.visibleCards===1;
   if(ready) immediateFullyReady++;
   if(immediate.transitionMs===0) zeroTabTransition++;
 
