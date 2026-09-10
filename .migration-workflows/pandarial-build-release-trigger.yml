@@ -1,0 +1,48 @@
+name: Activate Pandarial build prep
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/pandarial-build-prep-v1.json'
+      - 'scripts/activate_pandarial_build_prep_v1.py'
+      - 'scripts/validate_pandarial_build_prep_v1.py'
+      - '.github/workflows/pandarial-build-release-trigger.yml'
+  # Charming Glance projection: Oct 14, 2026 at the 6:00 AM PDT reset.
+  schedule:
+    - cron: '10 * 14-16 10 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate staged Pandarial data
+        run: |
+          python3 -m py_compile scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py
+          python3 -m json.tool data/pandarial-build-prep-v1.json >/dev/null
+          python3 scripts/validate_pandarial_build_prep_v1.py
+      - name: Activate if release gate is live
+        run: python3 scripts/activate_pandarial_build_prep_v1.py
+      - name: Verify and publish activation
+        run: |
+          if git diff --quiet -- assets/builds.js; then
+            echo 'Pandarial is not due yet or is already active.'
+            exit 0
+          fi
+          grep -Fq 'PANDARIAL_RELEASE_V1' assets/builds.js
+          grep -Fq "pick('Pandarial','Burst/front-load alt" assets/builds.js
+          grep -Fq "pick('Pandarial','Main aggressive Guardian lead" assets/builds.js
+          grep -Fq "pick('Pandarial','Main healer/hybrid lead" assets/builds.js
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/builds.js
+          git commit -m 'Activate Pandarial build recommendations'
+          git pull --rebase origin main
+          git push origin main

@@ -6,7 +6,7 @@ import re
 
 GATE_UTC = datetime(2026, 9, 12, 13, 0, 0, tzinfo=timezone.utc)  # 6:00 AM PDT
 MARKER = 'BUILD_ROLL_GUIDE_WARLORD_V1'
-FILES = [Path('index.html'), Path('scripts/patch_build_roll_guide_v2.py')]
+FILES = [Path('assets/builds.js'), Path('scripts/patch_build_roll_guide_v2.py')]
 
 WARLORD_ROWS = {
     'atk': "['ATK','Lv162 scaling',1,'Flat ATK scales with receiving gear level. Global-English Warlord-era transfer evidence at Lv162 shows inherited ATK lines reaching 3577 and 4501, but those are observed values rather than a proven Affix Preview maximum.',1]",

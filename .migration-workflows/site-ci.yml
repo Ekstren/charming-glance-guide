@@ -1,0 +1,75 @@
+name: Site CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'data/pandarial-build-prep-v1.json'
+      - 'data/warlords-rest-roll-guide-v1.json'
+      - 'scripts/check_timeline_duplicates.py'
+      - 'scripts/site_smoke_test.mjs'
+      - 'scripts/calculator_perf_check.mjs'
+      - 'scripts/build_swap_smoke.mjs'
+      - 'scripts/build_visual_stability_benchmark_v2.mjs'
+      - '.github/workflows/site-ci.yml'
+      - '.github/workflows/pandarial-build-release-trigger.yml'
+      - '.github/workflows/warlords-rest-roll-guide-trigger.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'data/pandarial-build-prep-v1.json'
+      - 'data/warlords-rest-roll-guide-v1.json'
+      - 'scripts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static validation
+        run: |
+          python3 scripts/check_timeline_duplicates.py index.html
+          node --check assets/runtime.js
+          node --check assets/companions.js
+          node --check assets/builds.js
+          node --check assets/build-layout-icons-v1.js
+          python3 -m py_compile scripts/fetch_discord_feed.py scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py scripts/patch_build_roll_guide_v2.py
+          python3 -m json.tool data/pandarial-build-prep-v1.json >/dev/null
+          python3 -m json.tool data/warlords-rest-roll-guide-v1.json >/dev/null
+      - name: Install browser dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Calculator regression/performance
+        run: node scripts/calculator_perf_check.mjs
+      - name: Build variant regression
+        run: node scripts/build_swap_smoke.mjs
+      - name: Build visual stability regression
+        run: |
+          node scripts/build_visual_stability_benchmark_v2.mjs | tee /tmp/build-visual.log
+          python3 - <<'PY'
+          import json
+          line=next(x for x in open('/tmp/build-visual.log',encoding='utf-8') if x.startswith('BUILD_VISUAL_JSON='))
+          row=json.loads(line.split('=',1)[1])
+          n=row['switches']
+          assert not row['errors'], row['errors']
+          assert row['immediateFullyReady']==n, row
+          assert row['firstFrameStable']==n, row
+          assert row['zeroTabTransition']==n, row
+          assert row['maxHeightDelta']==0, row
+          print(f'Build visual stability: {n}/{n} one-paint switches, 0px shift')
+          PY
+      - name: Full browser smoke
+        run: node scripts/site_smoke_test.mjs

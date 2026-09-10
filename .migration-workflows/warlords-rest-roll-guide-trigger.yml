@@ -1,0 +1,47 @@
+name: Activate Warlord's Rest roll guide
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/warlords-rest-roll-guide-v1.json'
+      - 'scripts/activate_warlords_rest_roll_guide_v1.py'
+      - 'scripts/validate_warlords_rest_roll_guide_v1.py'
+      - '.github/workflows/warlords-rest-roll-guide-trigger.yml'
+  # Confirmed Charming Glance unlock: Sep 12, 2026 at 6:00 AM PDT.
+  schedule:
+    - cron: '10 * 12 9 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate staged Warlord data
+        run: |
+          python3 -m py_compile scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py
+          python3 -m json.tool data/warlords-rest-roll-guide-v1.json >/dev/null
+          python3 scripts/validate_warlords_rest_roll_guide_v1.py
+      - name: Activate if release gate is live
+        run: python3 scripts/activate_warlords_rest_roll_guide_v1.py
+      - name: Verify and publish activation
+        run: |
+          if git diff --quiet -- assets/builds.js scripts/patch_build_roll_guide_v2.py; then
+            echo "Warlord's Rest is not due yet or is already active."
+            exit 0
+          fi
+          grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' assets/builds.js
+          grep -Fq "Warlord's Rest · Lv162" assets/builds.js
+          grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' scripts/patch_build_roll_guide_v2.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/builds.js scripts/patch_build_roll_guide_v2.py
+          git commit -m "Activate Warlord's Rest roll guide"
+          git pull --rebase origin main
+          git push origin main
