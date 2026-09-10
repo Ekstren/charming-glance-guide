@@ -192,16 +192,33 @@ jobs:
           echo "Before index: $BEFORE_INDEX_BYTES bytes · after: $(wc -c < index.html) bytes"
           echo "Before styles: $BEFORE_STYLES inline · after: $(grep -oi '<style\b' index.html | wc -l) inline"
           echo "Before inline scripts: $BEFORE_INLINE_SCRIPTS · after: 0"
-          echo "Before workflows: $BEFORE_WORKFLOWS · after: $(find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) | wc -l)"
+          echo "Before workflows: $BEFORE_WORKFLOWS · lean target: $(find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) | wc -l)"
           echo "Maintained scripts: $(find scripts -maxdepth 1 -type f | wc -l)"
           echo "Assets:"
           ls -lh assets
 
-      - name: Commit and push clean architecture
+      - name: Publish validated cleanup candidate branch
         run: |
+          set -euo pipefail
+          # Preserve the four generated canonical workflows outside .github so the
+          # connected maintainer can install them atomically after validation.
+          rm -rf .migration-workflows
+          mkdir .migration-workflows
+          cp .github/workflows/*.yml .migration-workflows/
+
+          # The Actions token is intentionally not allowed to rewrite workflow files.
+          # Restore the current workflow tree so this candidate contains zero workflow
+          # changes, then publish it to a non-main branch.
+          rm -rf .github/workflows
+          git checkout HEAD -- .github/workflows
+
+          # Test-only dependencies/cache must never enter the repository.
+          rm -rf node_modules scripts/__pycache__
+          rm -f package.json package-lock.json
+          find . -name '*.pyc' -delete
+
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -m 'Consolidate and clean whole site architecture'
-          git pull --rebase origin main
-          git push origin main
+          git commit -m 'Prepare validated modular site cleanup candidate'
+          git push --force origin HEAD:refs/heads/site-cleanup-candidate
