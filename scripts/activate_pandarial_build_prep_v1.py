@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data' / 'pandarial-build-prep-v1.json'
-TARGETS = [ROOT / 'index.html', ROOT / '.github' / 'build-fantomons-inject.html']
+TARGETS = [ROOT / 'assets' / 'builds.js']
 MARK = 'PANDARIAL_RELEASE_V1'
 
 REPLS = [
