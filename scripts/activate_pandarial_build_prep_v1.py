@@ -40,8 +40,8 @@ REPLS = [
         "      PvP:[pick('Aegiswing','Main PvP Guardian pet: extra Taunt, survival and anti-Taunt damage reduction remain the safest class fit.'),pick('Pandarial','Aggressive PvP alt: -1 opening Technique CD lets Guardian bring high-CD pressure online earlier.'),pick('Kels','Utility alternative for dispelling buffs and adding DEF Down.'),pick('Nyxarchon','Greedy pressure option when your team already has enough protection.')]"
     ),
     (
-        "      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: adds real damage and DEF shred while the Dominator handles buffs and utility.'),pick('Terragon','Alt team-utility pick when reducing enemy ATK/pressure matters more than personal damage.')],",
-        "      Tournament:[pick('Pandarial','Main hybrid Tournament lead: opening CD reduction accelerates support/burst tools and Adult healing + Fragility contribute on both sides of the fight.'),pick('Nyxarchon','Damage-focused alt when repeated Dark damage and DEF shred matter more than opening support tempo.')],"
+        "      Tournament:[pick('Nyxarchon','Main hybrid Tournament pick: adds real damage and DEF shred while the Dominator handles buffs and utility.'),pick('Terragon','Alt team-utility pick when reducing enemy ATK/pressure matters more than personal damage.'),pick('Sylvaerie','No-shop alternative: ATK + SPD improves both pressure and support tempo.')],",
+        "      Tournament:[pick('Pandarial','Main hybrid Tournament lead: opening CD reduction accelerates support/burst tools and Adult healing + Fragility contribute on both sides of the fight.'),pick('Nyxarchon','Damage-focused alt when repeated Dark damage and DEF shred matter more than opening support tempo.'),pick('Sylvaerie','No-shop alternative: ATK + SPD still improves both pressure and support tempo.')],"
     ),
     (
         "      Solo:[pick('Nyxarchon','Main DPS choice: Prydwen calls Nyx Dominator’s BIS thanks to Dark AoE damage and its supportive effect.'),pick('Zeioletus','Best straightforward F2P damage stopgap.'),pick('Sylvaerie','ATK + SPD can outperform Zei on some accounts.'),pick('Aegiswing','Use when surviving solo progression is more important than max damage.')],",
@@ -58,10 +58,6 @@ REPLS = [
     (
         "      PvP:[pick('Mandragora','Main support/healing pick when your job is keeping teammates alive.'),pick('Aegiswing','Survival-first alternative when you are being focused.'),pick('Terragon','Debuffing option that can reduce enemy pressure while you support.'),pick('Sylvaerie','SPD improves support tempo when raw healing is already sufficient.')]",
         "      PvP:[pick('Nyxarchon','Main solo-Arena DPS lead: the Arena card is damage/utility rather than a pure-healing bar.'),pick('Pandarial','Burst/hybrid alt: opening cooldown reduction speeds pressure and Adult form still adds support value.'),pick('Aegiswing','Survival-first alternative when you are being focused.'),pick('Mandragora','Use only when you deliberately pivot the PvP bar toward healing/support.')]"
-    ),
-    (
-        "If Pandarial and your ranks support it, Luminous Shield → Light Sword Array is the aggressive flex; keep Block stats high.",
-        "With Pandarial, Luminous Shield → Light Sword Array is the aggressive flex because the opening CD reduction brings the higher-CD pressure online sooner; keep Block stats high."
     ),
 ]
 
@@ -91,10 +87,8 @@ def patch_text(text: str) -> tuple[str, int]:
         if old in out:
             out = out.replace(old, new)
             changed += 1
-    # The modular Builds runtime owns only 11 of the 13 historical replacement
-    # anchors; the other two belonged to retired injected/legacy build sources.
-    if changed < 11:
-        raise SystemExit(f'Pandarial prep found only {changed}/{len(REPLS)} expected anchors; refusing partial activation')
+    if changed != len(REPLS):
+        raise SystemExit(f'Pandarial prep found only {changed}/{len(REPLS)} current modular anchors; refusing partial activation')
     anchor = "  const FANTO={"
     if anchor not in out:
         raise SystemExit('Could not find FANTO anchor for Pandarial activation marker')
