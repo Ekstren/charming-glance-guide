@@ -24,9 +24,9 @@ assert data['planned_impacts']['Dominator']['Healing'] == ['Pandarial', 'Mandrag
 required = [
     "pick('Pandarial','Burst/front-load alt",
     "pick('Pandarial','Main aggressive Guardian lead",
+    "Tournament:[pick('Pandarial','Main hybrid Tournament lead",
     "pick('Pandarial','Main healer/hybrid lead",
     "Destroyer:{\n      Solo:[pick('Nyxarchon','Main premium choice",
-    "With Pandarial, Luminous Shield → Light Sword Array",
 ]
 
 for path in TARGETS:
@@ -37,7 +37,7 @@ for path in TARGETS:
         continue
 
     patched, changed = mod.patch_text(original)
-    assert changed >= 11, f'{path}: expected modular staged replacements, got {changed}'
+    assert changed == len(mod.REPLS), f'{path}: expected {len(mod.REPLS)} modular staged replacements, got {changed}'
     assert mod.MARK in patched
     missing = [token for token in required if token not in patched]
     assert not missing, f'{path}: staged Pandarial release is incomplete: {missing}'
