@@ -36,12 +36,14 @@ jobs:
           grep -Fq 'BUILD_VISUAL_STABILITY_V2' index.html
           grep -Fq '__applyBuildRichNow' index.html
           grep -Fq '__applyBuildRollNow' index.html
+          grep -Fq '__applyBuildHeroNow' index.html
+          grep -Fq 'window.__applyBuildHeroNow=apply' assets/build-layout-icons-v1.js
           grep -Fq '#buildsSection #classTabs button{transition:none!important}' index.html
 
       - name: Validate timeline duplicates
         run: python3 scripts/check_timeline_duplicates.py index.html
 
-      - name: Validate inline JavaScript syntax
+      - name: Validate JavaScript syntax
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -53,6 +55,7 @@ jobs:
           print(f'extracted {len(scripts)} inline scripts')
           PY
           for f in /tmp/inline-js/*.js; do node --check "$f"; done
+          node --check assets/build-layout-icons-v1.js
 
       - name: Benchmark finished Builds rendering
         run: node scripts/build_visual_stability_benchmark_v2.mjs | tee /tmp/build-visual-after.log
@@ -74,7 +77,7 @@ jobs:
           if after['errors']:
               raise SystemExit('runtime errors: '+str(after['errors']))
           if after['immediateFullyReady'] != n:
-              raise SystemExit(f"finished rich/meta/roll UI was not ready synchronously: {after['immediateFullyReady']}/{n}")
+              raise SystemExit(f"finished META/Rich/Roll/Hero UI was not ready synchronously: {after['immediateFullyReady']}/{n}")
           if after['zeroTabTransition'] != n:
               raise SystemExit(f"Builds class tab still has a visual transition: {after['zeroTabTransition']}/{n}")
           if after['firstFrameStable'] != n:
@@ -89,12 +92,12 @@ jobs:
 
       - name: Commit and push
         run: |
-          if git diff --quiet -- index.html; then
+          if git diff --quiet -- index.html assets/build-layout-icons-v1.js; then
             echo 'Build visual stability v2 already applied.'
           else
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add index.html
+            git add index.html assets/build-layout-icons-v1.js
             git commit -m 'Fix remaining Builds visual flicker'
             git pull --rebase origin main
             git push origin main
