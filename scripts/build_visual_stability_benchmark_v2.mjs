@@ -30,6 +30,24 @@ const snap=()=>{
     const n=parseFloat(v)||0;
     return Math.max(m,v.endsWith('ms')?n:n*1000);
   },0);
+  const children=[...(host?.children||[])].map((el,i)=>({
+    i,
+    tag:el.tagName,
+    cls:el.className,
+    hidden:!!el.hidden,
+    h:Math.round(el.getBoundingClientRect().height*10)/10,
+    text:(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,55)
+  }));
+  const counts={
+    quick:host?.querySelectorAll('.buildQuickStats').length||0,
+    roll:host?.querySelectorAll('.rollGuide').length||0,
+    meta:host?.querySelectorAll('.metaBuildControls').length||0,
+    pair:host?.querySelectorAll('.priorityPair').length||0,
+    priority:host?.querySelectorAll('.priorityPanel').length||0,
+    fantomon:host?.querySelectorAll('.fantomonPair').length||0,
+    buildCards:host?.querySelectorAll('.buildCard').length||0,
+    tooltips:host?.querySelectorAll('[data-skill-tooltip]').length||0,
+  };
   return {
     cls:active?.dataset.class||'',
     quick:!!quick,
@@ -42,6 +60,7 @@ const snap=()=>{
     quickTop:quick?Math.round(quick.getBoundingClientRect().top*10)/10:null,
     rollTop:roll?Math.round(roll.getBoundingClientRect().top*10)/10:null,
     metaTop:meta?Math.round(meta.getBoundingClientRect().top*10)/10:null,
+    counts,children
   };
 };
 
@@ -66,7 +85,7 @@ for(const cls of sequence){
   const after=await page.evaluate(snap);
   if(sameLayout(immediate,after)) firstFrameStable++;
   maxHeightDelta=Math.max(maxHeightDelta,Math.abs(immediate.height-after.height));
-  if(samples.length<6) samples.push({cls,immediate,after});
+  if(samples.length<4) samples.push({cls,immediate,after});
 }
 
 const result={switches:sequence.length,immediateFullyReady,firstFrameStable,zeroTabTransition,maxHeightDelta,errors,samples};
