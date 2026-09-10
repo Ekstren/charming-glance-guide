@@ -1,0 +1,20 @@
+name: Whole-site cleanup audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/full_site_cleanup_audit.py'
+      - '.github/workflows/full-site-cleanup-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit repository and runtime structure
+        run: python3 scripts/full_site_cleanup_audit.py
