@@ -5,7 +5,8 @@ asset=Path('assets/build-layout-icons-v1.js')
 s=p.read_text(encoding='utf-8')
 a=asset.read_text(encoding='utf-8')
 MARK='BUILD_VISUAL_STABILITY_V2'
-if MARK in s and 'window.__applyBuildHeroNow=apply' in a:
+had_marker=MARK in s
+if had_marker and 'window.__applyBuildHeroNow=apply' in a:
     print('Build visual stability v2 already applied.')
     raise SystemExit(0)
 if 'BUILD_SWITCH_NO_FLICKER_V1' not in s:
@@ -67,7 +68,7 @@ s=s.replace(old_hook,new_hook,1)
 # The selected class fill also lagged behind the content because the generic class-tab rule animates
 # background/color/border for 160 ms. Companion tabs already feel good, so scope this only to Builds.
 style='''\n<style id="build-visual-stability-v2">\n/* BUILD_VISUAL_STABILITY_V2: selected class state must change in the same paint as its content. */\n#buildsSection #classTabs button{transition:none!important}\n</style>\n'''
-if MARK not in s:
+if not had_marker:
     if '</head>' not in s:
         raise SystemExit('head close not found')
     s=s.replace('</head>',style+'\n</head>',1)
