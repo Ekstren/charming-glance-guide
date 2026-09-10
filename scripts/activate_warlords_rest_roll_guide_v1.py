@@ -6,7 +6,7 @@ import re
 
 GATE_UTC = datetime(2026, 9, 12, 13, 0, 0, tzinfo=timezone.utc)  # 6:00 AM PDT
 MARKER = 'BUILD_ROLL_GUIDE_WARLORD_V1'
-FILES = [Path('assets/builds.js'), Path('scripts/patch_build_roll_guide_v2.py')]
+FILES = [Path('assets/builds.js')]
 
 WARLORD_ROWS = {
     'atk': "['ATK','Lv162 scaling',1,'Flat ATK scales with receiving gear level. Global-English Warlord-era transfer evidence at Lv162 shows inherited ATK lines reaching 3577 and 4501, but those are observed values rather than a proven Affix Preview maximum.',1]",
@@ -56,7 +56,6 @@ def patch_text(text: str) -> str:
 
     text = replace_roll_rows(text)
 
-    # Label the active tier rather than the retired pre-160 reference.
     text, n = re.subn(
         r'\$\{esc\(label\)\} · Early S2 &lt;160',
         '${esc(label)} · Warlord\'s Rest · Lv162',
@@ -78,10 +77,10 @@ def patch_text(text: str) -> str:
         raise RuntimeError('Could not locate Roll guide confidence note')
     text = text.replace(old_note, new_note, 1)
 
-    # Preserve the existing CSS/script ids for compatibility; marker records the live data tier.
-    if 'BUILD_ROLL_GUIDE_V2' not in text:
-        raise RuntimeError('Could not locate BUILD_ROLL_GUIDE_V2 marker')
-    text = text.replace('BUILD_ROLL_GUIDE_V2', f'BUILD_ROLL_GUIDE_V2 {MARKER}', 1)
+    anchor = '  const R={'
+    if anchor not in text:
+        raise RuntimeError('Could not locate Roll guide marker anchor')
+    text = text.replace(anchor, f'  // {MARKER}\n{anchor}', 1)
     return text
 
 
