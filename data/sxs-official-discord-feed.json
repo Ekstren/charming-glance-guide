@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1546474031488962570",
+  "last_message_id": "1547435328372219944",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -306,6 +306,39 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1546474031488962570"
+    },
+    {
+      "id": "1547435328372219944",
+      "timestamp": "2026-09-10T02:35:32.242000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# Aethyris PV | That Time We Crushed Chaos Just to Save Akane\n \nAtop the Acme Nexus, the Adventurer and Akane are just about to set foot in Aethyris when—surprise! A Chaosborn swoops in and snatches Akane away!\n\"Akane's been kidnapped?! What about all the materials in my cart?!\"\nWell... looks like we're heading to Aethyris after all!\n \nFinale of Chaos begins today!\nAdventurers, set your sights on the floating city above the clouds\nand put an end to the source of the Chaos invasion!\n✦－－－－－－－－－－－－－－－－－－－－－－－✦\n 🛒 5% Top-Up Bonus on the Official Top-Up Platform: https://gamepay.boltray.com/addCredit?cur_game=8039&media=A803903",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1547434237815165038",
+          "filename": "pv.mp4",
+          "content_type": "video/quicktime",
+          "size": 16088131,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1547434237815165038/pv.mp4?ex=6aa367f0&is=6aa21670&hm=3db782c82fbd835df28286ab4984c221ffc445d00b807931433c849f0fab6f33&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1547434237815165038/pv.mp4?ex=6aa367f0&is=6aa21670&hm=3db782c82fbd835df28286ab4984c221ffc445d00b807931433c849f0fab6f33&",
+          "width": 1280,
+          "height": 720
+        }
+      ],
+      "message_reference": {
+        "message_id": "1547434239123791892",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1547435328372219944"
     }
   ]
 }
