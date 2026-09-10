@@ -3709,6 +3709,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 </style>
 
+
+<style id="build-visual-stability-v2">
+/* BUILD_VISUAL_STABILITY_V2: selected class state must change in the same paint as its content. */
+#buildsSection #classTabs button{transition:none!important}
+</style>
+
 </head>
 <body>
 <main>
@@ -7984,9 +7990,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     const template=buildTemplateForClass(currentClass);
     host.replaceChildren(template.content.cloneNode(true));
     applyDominatorBuildMode();
-    // The META script is loaded after this main runtime. On initial parse it will enhance at
-    // DOMContentLoaded; on every later class click this hook exists and completes before paint.
+    /* BUILD_VISUAL_STABILITY_V2
+       The recording exposed several post-render stages after a class click. Finish all of them
+       synchronously so the browser gets only the final class layout. META first creates the final
+       activity cards. Rich fingerprints those headings and creates the priority pair/stats panel.
+       META then runs once more to re-anchor its activity selector after the newly-created priority
+       pair for Guardian/Dominator. Roll populates the stats panel and Hero performs the final
+       two-column summary/reflow last. */
     if(typeof window.__applyBuildMetaNow==='function') window.__applyBuildMetaNow();
+    if(typeof window.__applyBuildRichNow==='function') window.__applyBuildRichNow();
+    if(typeof window.__applyBuildMetaNow==='function') window.__applyBuildMetaNow();
+    if(typeof window.__applyBuildRollNow==='function') window.__applyBuildRollNow();
+    if(typeof window.__applyBuildHeroNow==='function') window.__applyBuildHeroNow();
     warmBuildTemplates(list);
   };
   setupBuilds=function(){
@@ -9583,6 +9598,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     ensurePriorityPair(host,cls,mode);
     applyDominatorRole(host,mode);
   }
+  // BUILD_VISUAL_STABILITY_V2: class switching calls the rich-layout transformer
+  // in the same click task, before the browser paints the newly mounted class.
+  window.__applyBuildRichNow=apply;
   function queue(){
     if(queued) return;
     queued=true;
@@ -9713,6 +9731,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
       else quick.querySelector(':scope > .quickSubstats')?.insertAdjacentHTML('afterend',html);
     });
   }
+  // BUILD_VISUAL_STABILITY_V2: Roll Guide is part of the finished class layout,
+  // so make it available to the synchronous Builds render pipeline.
+  window.__applyBuildRollNow=apply;
   function queue(){if(queued)return;queued=true;requestAnimationFrame(()=>setTimeout(apply,0))}
   document.addEventListener('DOMContentLoaded',()=>{
     const host=document.getElementById('buildContent');

@@ -194,6 +194,8 @@
     queued=false;
     document.querySelectorAll('#buildContent .guideSummary.buildSummaryCompact').forEach(enhanceGuide);
   }
+  // BUILD_VISUAL_STABILITY_V2: finish the hero reflow in the originating class-click task.
+  window.__applyBuildHeroNow=apply;
   function queue(){
     if(queued) return;
     queued=true;
