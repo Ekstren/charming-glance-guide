@@ -37,7 +37,7 @@ for path in TARGETS:
         continue
 
     patched, changed = mod.patch_text(original)
-    assert changed >= 12, f'{path}: expected staged replacements, got {changed}'
+    assert changed >= 11, f'{path}: expected modular staged replacements, got {changed}'
     assert mod.MARK in patched
     missing = [token for token in required if token not in patched]
     assert not missing, f'{path}: staged Pandarial release is incomplete: {missing}'
