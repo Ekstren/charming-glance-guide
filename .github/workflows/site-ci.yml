@@ -8,11 +8,7 @@ on:
       - 'assets/**'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
-      - 'scripts/check_timeline_duplicates.py'
-      - 'scripts/site_smoke_test.mjs'
-      - 'scripts/calculator_perf_check.mjs'
-      - 'scripts/build_swap_smoke.mjs'
-      - 'scripts/build_visual_stability_benchmark_v2.mjs'
+      - 'scripts/**'
       - '.github/workflows/site-ci.yml'
       - '.github/workflows/pandarial-build-release-trigger.yml'
       - '.github/workflows/warlords-rest-roll-guide-trigger.yml'
@@ -23,6 +19,7 @@ on:
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
@@ -44,9 +41,11 @@ jobs:
           node --check assets/companions.js
           node --check assets/builds.js
           node --check assets/build-layout-icons-v1.js
-          python3 -m py_compile scripts/fetch_discord_feed.py scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py scripts/patch_build_roll_guide_v2.py
+          python3 -m py_compile scripts/fetch_discord_feed.py scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py
           python3 -m json.tool data/pandarial-build-prep-v1.json >/dev/null
           python3 -m json.tool data/warlords-rest-roll-guide-v1.json >/dev/null
+          python3 scripts/validate_pandarial_build_prep_v1.py
+          python3 scripts/validate_warlords_rest_roll_guide_v1.py
       - name: Install browser dependencies
         run: |
           npm init -y >/dev/null 2>&1
