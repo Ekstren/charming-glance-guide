@@ -35,7 +35,7 @@ jobs:
           PY
           )" >> "$GITHUB_ENV"
 
-      - name: Correct Pandarial module ownership
+      - name: Correct extraction ownership and body styles
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -56,6 +56,51 @@ jobs:
             if old not in s:
               raise SystemExit(f'missing correction anchor: {old}')
             s=s.replace(old,new)
+
+          start=s.index('def externalize_css(text: str) -> str:')
+          end=s.index('\ndef externalize_js(text: str) -> str:', start)
+          new_css=r'''def externalize_css(text: str) -> str:
+              tag_re = re.compile(r'<style\b([^>]*)>(.*?)</style>|<link\b([^>]*\brel=["\']stylesheet["\'][^>]*)>', re.S | re.I)
+              parts = []
+              matches = []
+              for m in tag_re.finditer(text):
+                  if m.group(2) is not None:
+                      attrs, body = m.group(1), m.group(2)
+                      sid = re.search(r'\bid=["\']([^"\']+)', attrs or '', re.I)
+                      label = sid.group(1) if sid else 'legacy-base'
+                      parts.append(f'\n/* ---- {label} ---- */\n{body.strip()}\n')
+                      matches.append(m)
+                  else:
+                      attrs = m.group(3) or ''
+                      href = re.search(r'\bhref=["\']([^"\']+)', attrs, re.I)
+                      if not href:
+                          raise SystemExit('Stylesheet link without href')
+                      href = href.group(1)
+                      if href != 'assets/build-layout-icons-v1.css':
+                          raise SystemExit(f'Unexpected stylesheet during consolidation: {href}')
+                      source = ROOT / href
+                      if not source.exists():
+                          raise SystemExit(f'Missing stylesheet: {href}')
+                      parts.append(f'\n/* ---- build layout icons ---- */\n{source.read_text(encoding="utf-8").strip()}\n')
+                      matches.append(m)
+              style_count = sum(1 for m in matches if m.group(2) is not None)
+              if style_count < 50:
+                  raise SystemExit(f'Expected layered legacy CSS; found only {style_count} style tags')
+              ASSETS.mkdir(exist_ok=True)
+              (ASSETS / 'site.css').write_text(''.join(parts).lstrip(), encoding='utf-8')
+              out=[]; cursor=0; first=True
+              for m in matches:
+                  out.append(text[cursor:m.start()])
+                  if first:
+                      out.append('<link rel="stylesheet" href="assets/site.css">')
+                      first=False
+                  cursor=m.end()
+              out.append(text[cursor:])
+              return ''.join(out)
+          '''
+          # Dedent the embedded replacement by its common YAML/Python indentation.
+          import textwrap
+          s=s[:start]+textwrap.dedent(new_css)+s[end:]
           p.write_text(s,encoding='utf-8')
           PY
 
