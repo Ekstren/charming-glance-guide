@@ -35,13 +35,13 @@ const after = await makePage(afterPath);
 
 const normalizeBody = async page => page.evaluate(() => {
   const clone=document.body.cloneNode(true);
-  clone.querySelectorAll('script,style').forEach(x=>x.remove());
+  clone.querySelectorAll('script,style,link[rel~="stylesheet"]').forEach(x=>x.remove());
   return clone.innerHTML;
 });
 
 const visualFingerprint = async page => page.evaluate(() => {
   const round=n=>Math.round(n*10)/10;
-  const skip=new Set(['SCRIPT','STYLE','NOSCRIPT']);
+  const skip=new Set(['SCRIPT','STYLE','LINK','NOSCRIPT']);
   return [...document.body.querySelectorAll('*')]
     .filter(el=>!skip.has(el.tagName))
     .map((el,i)=>{
