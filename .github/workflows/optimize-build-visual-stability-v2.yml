@@ -1,0 +1,101 @@
+name: Optimize Builds visual stability v2
+
+on:
+  push:
+    paths:
+      - 'scripts/patch_build_visual_stability_v2.py'
+      - 'scripts/build_visual_stability_benchmark_v2.mjs'
+      - '.github/workflows/optimize-build-visual-stability-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install browser dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Reproduce current Builds visual staging
+        run: node scripts/build_visual_stability_benchmark_v2.mjs | tee /tmp/build-visual-before.log
+
+      - name: Apply Builds visual stability v2
+        run: python3 scripts/patch_build_visual_stability_v2.py
+
+      - name: Validate patch markers
+        run: |
+          grep -Fq 'BUILD_VISUAL_STABILITY_V2' index.html
+          grep -Fq '__applyBuildRichNow' index.html
+          grep -Fq '__applyBuildRollNow' index.html
+          grep -Fq '#buildsSection #classTabs button{transition:none!important}' index.html
+
+      - name: Validate timeline duplicates
+        run: python3 scripts/check_timeline_duplicates.py index.html
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js'); out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts): (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Benchmark finished Builds rendering
+        run: node scripts/build_visual_stability_benchmark_v2.mjs | tee /tmp/build-visual-after.log
+
+      - name: Require one-paint class switching
+        run: |
+          python3 - <<'PY'
+          import json
+          def row(path):
+              line=next(x for x in open(path,encoding='utf-8') if x.startswith('BUILD_VISUAL_JSON='))
+              return json.loads(line.split('=',1)[1])
+          before=row('/tmp/build-visual-before.log')
+          after=row('/tmp/build-visual-after.log')
+          print('BEFORE',before)
+          print('AFTER ',after)
+          n=after['switches']
+          if before['immediateFullyReady'] == before['switches'] and before['zeroTabTransition'] == before['switches'] and before['firstFrameStable'] == before['switches']:
+              raise SystemExit('baseline did not reproduce any visible Builds staging issue')
+          if after['errors']:
+              raise SystemExit('runtime errors: '+str(after['errors']))
+          if after['immediateFullyReady'] != n:
+              raise SystemExit(f"finished rich/meta/roll UI was not ready synchronously: {after['immediateFullyReady']}/{n}")
+          if after['zeroTabTransition'] != n:
+              raise SystemExit(f"Builds class tab still has a visual transition: {after['zeroTabTransition']}/{n}")
+          if after['firstFrameStable'] != n:
+              raise SystemExit(f"Builds layout changed after click before/through first paint: {after['firstFrameStable']}/{n}; max height delta {after['maxHeightDelta']}")
+          PY
+
+      - name: Run complete build variant smoke
+        run: node scripts/build_swap_smoke.mjs
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Build visual stability v2 already applied.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Fix remaining Builds visual flicker'
+            git pull --rebase origin main
+            git push origin main
+          fi
