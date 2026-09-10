@@ -17,7 +17,7 @@ REPLS = [
     ),
     (
         "      Boss:[pick('Nyxarchon','Main long-fight choice: DEF shred remains extremely valuable on hard bosses.'),pick('Sylvaerie','Permanent ATK + SPD scales the full boss rotation.'),pick('Zeioletus','Reliable extra damage if it tests better on your account.'),pick('Aegiswing','Defensive fallback for bosses where dying is the actual DPS loss.')],",
-        "      Boss:[pick('Nyxarchon','Main long-fight choice: repeated DEF shred remains more valuable than opening burst on hard bosses.'),pick('Pandarial','Front-load alt for shorter boss fights or faster first rotations; Adult Fragility adds another damage-amplification window.'),pick('Sylvaerie','Permanent ATK + SPD scales the full boss rotation.'),pick('Aegiswing','Defensive fallback when dying is the actual DPS loss.')],"
+        "      Boss:[pick('Nyxarchon','Main long-fight choice: repeated DEF shred remains more valuable than opening burst on hard bosses.'),pick('Pandarial','Front-load alt for shorter boss fights or faster first rotations; Adult Fragility adds another damage-amplification window.'),pick('Sylvaerie','Permanent ATK + SPD scales the full boss rotation.'),pick('Aegiswing','Defensive fallback for bosses where dying is the actual DPS loss.')],"
     ),
     (
         "      PvP:[pick('Aegiswing','Main PvP choice: extra survival plus its S2 Materialization utility is more valuable here than pure damage.'),pick('Nyxarchon','Greedy damage/DEF-shred alternative.'),pick('Sylvaerie','SPD can help win action tempo while still boosting ATK.'),pick('Zeioletus','Pure damage alternative when survivability is already covered.')]",
@@ -91,7 +91,9 @@ def patch_text(text: str) -> tuple[str, int]:
         if old in out:
             out = out.replace(old, new)
             changed += 1
-    if changed < 12:
+    # The modular Builds runtime owns only 11 of the 13 historical replacement
+    # anchors; the other two belonged to retired injected/legacy build sources.
+    if changed < 11:
         raise SystemExit(f'Pandarial prep found only {changed}/{len(REPLS)} expected anchors; refusing partial activation')
     anchor = "  const FANTO={"
     if anchor not in out:
