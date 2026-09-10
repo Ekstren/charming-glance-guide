@@ -1,0 +1,1175 @@
+=== INDEX ===
+bytes 701362
+lines 9764
+style_tags 74 style_bytes 240565
+script_tags 8 inline_script_bytes 416225
+html_comments 22
+mutation_observers 4
+raf_calls 7
+settimeout_calls 11
+important_rules 1880
+
+STYLE IDS:
+00 <anonymous> 94288B
+01 v54-mobile-polish 9551B
+02 v59-treat-timezone-polish 493B
+03 calculator-semantic-colors-final 2712B
+04 calculator-compact-layout 1863B
+05 calc-action-row-polish 1049B
+06 goal-achievability-cleanup 633B
+07 resource-usage-clarity 1093B
+08 tool-usage-alignment-v2 1788B
+09 sand-cost-clarity-v1 45B
+10 s2-launch-checklist-v1 687B
+11 s2-launch-checklist-layout-fix 351B
+12 build-season-nav-toggle-v1 1309B
+13 <anonymous> 758B
+14 companion-guide-v1 5710B
+15 companion-current-season-v1 388B
+16 companion-build-width-v1 93B
+17 site-layout-mobile-v1 7128B
+18 post-plan-reserve-lines-v2 533B
+19 s2-primo-ready-v1-style 2015B
+20 tool-only-resource-gaps-v4 1484B
+21 plain-tool-lines-v10 2149B
+22 simple-tool-counts-v11 2795B
+23 target-message-lines-v1 97B
+24 result-border-state-v1 432B
+25 result-target-gear-gap-v1 156B
+26 optimizer-explanation-v1 1101B
+27 optimizer-system-audit-v4 778B
+28 max-layout-speed-realm-cap-v1 832B
+29 max-helper-text-v2 78B
+30 max-target-contained-v1 917B
+31 apply-recommended-realm-refreshes-v1 846B
+32 apply-realm-refresh-button-delegation-v2 105B
+33 compact-progression-top-v1 1063B
+34 collapsible-character-materials-v1 983B
+35 matched-character-materials-headers-v1 782B
+36 materials-header-compact-v1 1088B
+37 max-target-one-line-v2 592B
+38 max-target-plan-text-size-v1 268B
+39 page-spacing-max-target-align-v1 906B
+40 all-section-top-spacing-v1 330B
+41 consistent-page-spacing-v1 1969B
+42 mobile-readability-pass-v2 9066B
+43 result-card-polish-v1 2469B
+44 resource-card-consistency-v1 2294B
+45 resource-tools-reward-layout-v1 2014B
+46 resource-tool-card-spacing-v2 2151B
+47 calculator-size-consistency-v1 10458B
+48 material-realm-visual-cleanup-v1 3749B
+49 s2-scoring-start-prep-v1-style 306B
+50 result-card-consistency-v2 2911B
+51 realm-ui-cleanup-v3 2769B
+52 consistency-mobile-v4 3215B
+53 build-dominator-reset-perf-v1 651B
+54 dominator-toggle-inline-v1 634B
+55 site-polish-v1 5833B
+56 timeline-source-scope-v1 798B
+57 timeline-season-day-v1 243B
+58 mobile-timeline-layout-final-v2 4041B
+59 nav-tab-interactions-v1 1673B
+60 mobile-summary-row-v1 989B
+61 ore-tool-spacing-fix-v1 815B
+62 sand-spacing-match-treats-v1 374B
+63 result-stamina-projection-v1 808B
+64 hide-s2-progression-helper-v1 182B
+65 result-resource-cards-cleanup-v1 7074B
+66 left-align-remaining-counts-v1 325B
+67 build-visual-stability-v2 161B
+68 ui-consistency-v1 8050B
+69 <anonymous> 6602B
+70 build-skill-tooltips-v1 1868B
+71 restore-rich-builds-v1 2581B
+72 s2-only-build-nav-v1 303B
+73 build-roll-guide-v1 2920B
+
+SCRIPT IDS/SRC:
+00 id=- src=- 297128B
+01 id=companion-guide-script-v1 src=- 19098B
+02 id=- src=- 54593B
+03 id=build-skill-tooltips-v1-script src=- 22492B
+04 id=restore-rich-builds-v1-script src=- 13986B
+05 id=s2-only-build-nav-v1-script src=- 625B
+06 id=build-roll-guide-v1-script src=- 8303B
+07 id=- src=assets/build-layout-icons-v1.js 0B
+
+DUPLICATE CSS SELECTOR HOTSPOTS:
+27 @media(max-width:700px)
+11 .calcResults
+11 .suggestedGear span
+11 @media(max-width:760px)
+10 .sectionSwitch button
+10 .starTotal
+10 .planCosts small.toolBalance
+10 .realmPlanSummary
+10 .planCosts .resourceRemainingLine
+9 .sectionSwitch
+9 .summary
+9 .currentLevelsPanel>summary
+9 .suggestedGear
+9 .suggestedGear b
+9 .realmInventoryTop
+9 .realmInventoryTop small
+9 .realmDailyInputs
+9 .realmDailyInputs small
+9 .realmPlanSummary small
+9 .priorityPair
+9 .planCosts small.rawRemaining + small.toolBalance:not([hidden])
+8 .currentLevelsBody
+8 .resourceCardHead small
+8 .realmInventory
+8 .realmDailyTitle
+8 .realmPlanSummary b
+8 @media(max-width:520px)
+7 :root
+7 .logo
+7 .sectionHeading>p
+7 .classTabs button
+7 .guideSummary
+7 .buildGrid
+7 .buildCard
+7 .calculatorLayout
+7 .calcActions button
+7 .realmInventoryTop strong
+7 .resultScoreLine
+7 .realmDailyPlanRow
+7 @media(max-width:720px)
+
+VERSION/PATCH MARKERS IN INDEX: 161
+7 TOTAL_POOL_SMART_BALANCE_V1
+4 TOOL_ONLY_RESOURCE_GAPS_V4
+4 BUILD_VISUAL_STABILITY_V2
+3 META_BUILD_MODES_V1
+2 PRIMOSTAR_REWARD_REFERENCE_V1
+2 APPLY_RECOMMENDED_REALM_REFRESHES_V1
+2 COMPACT_PROGRESSION_TOP_V1
+2 RESOURCE_TOOLS_REWARD_LAYOUT_V1
+2 S2_SCORING_START_PREP_V1
+2 BUILD_DOMINATOR_RESET_PERF_V1
+2 RESULT_STAMINA_PROJECTION_V1
+2 S2_PRIMO_READY_V1
+2 S2_PRIMO_BENCHMARK_V2
+2 S2_ZERO_SCORE_DEFAULTS_V1
+2 SCARCITY_ADJUSTED_ACQUISITION_V1
+2 POST_PLAN_SCARCITY_V4
+2 TREAT_MARGINAL_SCARCITY_V1
+2 MARGINAL_INTEGRATED_SCARCITY_V5
+2 SKILL_GEAR_TWO_POINTER_V10
+2 RECOVERABLE_SHORTFALL_REFRESH_PLAN_V1
+2 BUILD_SWITCH_NO_FLICKER_V1
+1 PRIMOSTAR_REWARD_PROJECTION_V1
+1 BUILD_STATS_ROLES_V3
+1 EYE_COMFORT_PALETTE_V1
+1 ROSE_PINE_PALETTE_V1
+1 CALC_HEADER_CLEANUP_V1
+1 RESULTS_SPACING_CLEANUP_V1
+1 STATUS_COLOR_SEMANTICS_V1
+1 GLOBAL_STATUS_SEMANTICS_V1
+1 CALCULATOR_SEMANTIC_COLORS_FINAL_V1
+1 CALCULATOR_COMPACT_LAYOUT_V1
+1 CALC_ACTION_ROW_POLISH_V1
+1 GOAL_ACHIEVABILITY_CLEANUP_V1
+1 SHORTFALL_BREAKDOWN_VISIBLE_V1
+1 TIMELINE_DETAILS_CONSISTENCY_V1
+1 PLAIN_TOOL_LINES_V10
+1 SIMPLE_TOOL_COUNTS_V11
+1 TOOL_ACTION_COLORS_V17
+1 TARGET_MESSAGE_LINES_V1
+1 RESULT_BORDER_STATE_V1
+1 RESULT_TARGET_GEAR_GAP_V1
+1 OPTIMIZER_SYSTEM_AUDIT_V4
+1 MAX_LAYOUT_SPEED_REALM_CAP_V1
+1 MAX_HELPER_TEXT_V2
+1 MAX_TARGET_CONTAINED_V1
+1 APPLY_REALM_REFRESH_BUTTON_DELEGATION_V2
+1 COLLAPSIBLE_CHARACTER_MATERIALS_V1
+1 MATCH_CHARACTER_MATERIALS_HEADERS_V1
+1 MATERIALS_HEADER_COMPACT_V1
+1 MAX_TARGET_ONE_LINE_V2
+1 MAX_TARGET_PLAN_TEXT_SIZE_V1
+1 PAGE_SPACING_MAX_TARGET_ALIGN_V1
+1 ALL_SECTION_TOP_SPACING_V1
+1 CONSISTENT_PAGE_SPACING_V1
+1 MOBILE_READABILITY_PASS_V2
+1 RESULT_CARD_POLISH_AND_FIXED_RESERVES_V1
+1 RESOURCE_CARD_CONSISTENCY_V1
+1 RESOURCE_TOOL_CARD_SPACING_V2
+1 CALCULATOR_SIZE_CONSISTENCY_V1
+1 MATERIAL_REALM_VISUAL_CLEANUP_V1
+1 RESULT_CARD_CONSISTENCY_V2
+1 REALM_UI_CLEANUP_V3
+1 DOMINATOR_TOGGLE_INLINE_V1
+1 GUARDIAN_SHIELD_SLOT_V1
+1 REMOVE_TOOL_MODE_SCOPE_TIMELINE_V1
+1 TIMELINE_SEASON_DAY_V1
+1 MOBILE_TIMELINE_LAYOUT_FINAL_V2
+1 NAV_TAB_INTERACTIONS_V1
+1 MOBILE_SUMMARY_ROW_V1
+1 ORE_TOOL_SPACING_FIX_V1
+1 SAND_SPACING_MATCH_TREATS_V1
+1 HIDE_S2_PROGRESSION_HELPER_V1
+1 RESULT_RESOURCE_CARDS_CLEANUP_V1
+1 LEFT_ALIGN_REMAINING_COUNTS_V1
+1 STALE_OCEANIC_EVENT_REFS_V1
+1 MOVE_PROJECTION_BEFORE_PROGRESSION_V1
+1 DAILY_SHOP_ESTIMATE_V4
+1 FANTOMON_TREAT_CARD_COMPACT_V1
+1 S1_SCORING_METHOD_REFRESH_V1
+1 S2_SCORING_SOURCE_CONFIRM_V1
+1 PRESEASON_UNLOCK_PREVIEW_V3
+1 S2_CART_RATE_DEFAULTS_V1
+1 S2_PLANNER_START_V1
+1 STAMINA_AUTO_DEFAULT_V1
+1 COMPACT_NUMBER_INPUTS_V1
+1 EPIC_CHRONO_SAND_SAVED_V1
+1 CG_S2_SHOP_OBSERVED_N19_V1
+1 AUTO_AGE_REALM_TOOLS_V1
+1 SHOP_REFRESH_DEFAULT_ZERO_V1
+1 EXACT_S2_UPGRADE_COSTS_V5
+1 BED_STORAGE_DISABLED_V1
+1 AUTO_STAMINA_THREE_WAY_V2
+1 AUTO_STAMINA_EXACT_THREE_V1
+1 REALM_20_REFRESH_TOOL_COUNT_V1
+1 TOOLS_FIRST_S2_RESERVES_V1
+1 S2_ACQUISITION_OPTIMIZER_V1
+1 GLOBAL_ACQUISITION_PRIORITY_V2
+1 CANDIDATE_SCALAR_FASTPATH_V5
+1 REALM_TOOL_TIEBREAK_V2
+1 FEASIBLE_COMPARE_SCALAR_V5
+1 RAW_FUNDED_SEARCH_FAST_V1
+1 REALM_OPTION_PROPERTY_CACHE_V7
+1 JOINT_HOURS_NO_CLOSURE_V2
+1 JOINT_HOURS_ACTIVE_SET_V9
+1 ACQUISITION_LIMIT_PRECHECK_V8
+1 OWNED_POOL_IMPOSSIBILITY_FASTPATH_V4
+1 TREAT_FUNDED_SEARCH_FAST_V1
+1 REFINED_FASTPATH_GUARD_V3
+1 BOUNDED_FEASIBLE_SEARCH_V1
+1 ZERO_RATE_FANTO_PRUNE_V1
+1 BOUNDED_EAGER_REALM_V12
+1 COARSE_EXACT_SEED_V1
+1 ACQUISITION_LOWER_BOUND_PRUNE_V1
+1 MONOTONE_BOUND_BINARY_PRUNE_V2
+1 DYNAMIC_OUTER_BOUND_V12
+1 AFFORDABLE_TREAT_FEASIBLE_V1
+1 RAW_REMAINING_DISPLAY_V1
+1 RAW_REMAINING_NO_RAW_LABEL_V2
+1 TOOL_VALUE_DISPLAY_V6
+1 TOOL_RESERVE_HOLD_LABEL_V7
+1 REMAINING_REALM_TOOLS_VISIBLE_V1
+1 TOOL_NEED_VALUE_V14
+1 TOOL_COUNT_LABELS_V15
+1 RAW_MATERIAL_SHORTFALL_DISPLAY_V1
+1 CONDITIONAL_TOOL_REMAINING_V1
+1 RICH_RESOURCE_SHORTFALL_NO_DUPLICATE_V1
+1 PRIMOSTAR_REWARD_REFERENCE_V2
+1 S2_SCORING_INPUT_FLOOR_V2
+1 SMART_BALANCE_RAW_CEILING_V1
+1 SMART_BALANCE_GOAL_STOP_V2
+1 BLUE_SAND_LABEL_CLEANUP_V1
+1 TARGET_PLAN_HEADER_COMPLETE_V1
+1 PARTIAL_SHORTFALL_SHOW_REMAINING_V1
+1 COMPACT_REALM_AFTER_PLAN_V1
+1 TOURNAMENT_TIMING_SEP9_V1
+1 CRYSTAL_EXPIRY_SEP9_V1
+1 S2_EVENT_ROTATION_DAY57_64_V1
+1 ACME_NEXUS_DAY71_CORRECTION_SEP9_V1
+1 S3_SUMMARY_ONLY_CLEANUP_SEP9_V1
+1 S3_AETHYRIS_SEP9_RESEARCH_V1
+1 S3_DUNGEON_LOCALIZATION_SEP9_V1
+1 S3_T5_GUIDE_STATUS_SEP9_V1
+1 S3_BOND_ODYSSEY_STONE_SYMPHONY_SEP9_V1
+1 S3_COMPANIONS_SEP9_V1
+1 STALE_OCEANIC_EVENT_REFS_V2
+1 TIMELINE_PLAIN_EVENT_COPY_V1
+1 TIMELINE_SUMMARY_PROVENANCE_CLEAN_V2
+1 TIMELINE_SUMMARY_ONLY_V1
+1 TIMELINE_CURRENT_NEXT_SEASONS_V1
+1 SEASONAL_BUILD_OVERRIDE_V1
+1 MAIN_RUNTIME_REPAIR_V1
+1 S2_ROLLOVER_HEADER_RESET_V1
+1 BUILD_GUIDE_CONSENSUS_PVP_V1
+1 BUILD_ARENA_TOURNAMENT_SPLIT_V1
+1 SAGE_TOURNAMENT_HYBRID_V1
+1 ARENA_TOURNAMENT_RESTORE_V2
+1 GUARDIAN_ROLE_TOGGLE_V1
+1 BUILD_SKILL_TOOLTIPS_V1
+1 RESTORE_RICH_BUILDS_V1
+1 S2_ONLY_BUILD_NAV_V1
+1 BUILD_ROLL_GUIDE_V2
+
+=== WORKFLOWS ===
+count 82
+SHOT  .github/workflows/apply-build-layout-icons-v1.yml 
+SHOT  .github/workflows/apply-crystal-weekly-code-timeline.yml 
+SHOT  .github/workflows/apply-epic-chrono-sand-saved-v1.yml 
+SHOT  .github/workflows/apply-exact-s2-upgrade-costs-v5.yml 
+SHOT  .github/workflows/apply-marginal-integrated-scarcity-v5.yml 
+SHOT  .github/workflows/apply-official-crystal-spiral-tree-v1.yml 
+SHOT  .github/workflows/apply-official-topup-events-sep7-v1.yml 
+SHOT  .github/workflows/apply-ore-tool-spacing-v1.yml 
+SHOT  .github/workflows/apply-post-plan-scarcity-v4.yml 
+SHOT  .github/workflows/apply-primo-planner-start-120-v2.yml 
+SHOT  .github/workflows/apply-primo-preseason-preview-v3.yml 
+SHOT  .github/workflows/apply-raw-impossibility-fastpath-v3.yml 
+SHOT  .github/workflows/apply-result-stamina-projection-v1.yml 
+SHOT  .github/workflows/apply-s2-first-nexus-tournament-v1.yml 
+SHOT  .github/workflows/apply-s2-primo-breakpoints-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n10-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n11-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n15-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n19-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n4-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n7-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n8-v1.yml 
+SHOT  .github/workflows/apply-s2-shop-observed-n9-v1.yml 
+SHOT  .github/workflows/apply-s3-nexus-expansion-v1.yml 
+SHOT  .github/workflows/apply-s3-sep9-research-v1.yml 
+SHOT  .github/workflows/apply-sand-spacing-match-treats-v1.yml 
+SHOT  .github/workflows/apply-scarcity-adjusted-acquisition-v1.yml 
+SHOT  .github/workflows/apply-smart-balance-goal-stop-tools-v2.yml 
+SHOT  .github/workflows/apply-smart-balance-raw-first-v1.yml 
+SHOT  .github/workflows/apply-t5-global-names-v1.yml 
+SHOT  .github/workflows/apply-t5-longevity-investment-v1.yml 
+SHOT  .github/workflows/apply-tool-scarcity-perf-v2.yml 
+SHOT  .github/workflows/apply-total-pool-smart-balance-v1.yml 
+SHOT  .github/workflows/apply-treat-marginal-scarcity-v1.yml 
+SHOT  .github/workflows/apply-veggie-pt2-sep7-official-v2.yml 
+SHOT  .github/workflows/apply-warlords-rest-ingame-confirmation-v1.yml 
+SHOT  .github/workflows/calculator-perf-check.yml 
+SHOT  .github/workflows/clean-timeline-event-copy-v1.yml 
+SHOT  .github/workflows/clean-timeline-summary-copy-v2.yml 
+SHOT  .github/workflows/cleanup-stale-nexus-projections-v1.yml 
+SHOT  .github/workflows/cleanup-timeline-recurring-duplicates-v1.yml 
+SHOT  .github/workflows/confirm-acme-nexus-global-name-v1.yml 
+SHOT  .github/workflows/fix-acme-nexus-day71-sep9-v1.yml 
+SHOT  .github/workflows/fix-calculator-refresh-chrome-v1.yml 
+SHOT  .github/workflows/fix-crystal-expiry-sep9-v1.yml 
+SHOT  .github/workflows/fix-tournament-timing-sep9-v1.yml 
+SHOT  .github/workflows/fix-tournament-weekdays-v1.yml 
+SHOT  .github/workflows/full-site-cleanup-audit.yml 
+SHOT  .github/workflows/hide-s2-progression-helper-v1.yml 
+SHOT  .github/workflows/left-align-remaining-counts-v1.yml 
+SHOT  .github/workflows/optimize-build-class-switch-v1.yml 
+SHOT  .github/workflows/optimize-build-visual-stability-v2.yml 
+SHOT  .github/workflows/optimize-primostar-search-v1.yml 
+SHOT  .github/workflows/optimize-primostar-search-v10.yml 
+SHOT  .github/workflows/optimize-primostar-search-v11.yml 
+SHOT  .github/workflows/optimize-primostar-search-v12.yml 
+SHOT  .github/workflows/optimize-primostar-search-v13.yml 
+SHOT  .github/workflows/optimize-primostar-search-v14.yml 
+SHOT  .github/workflows/optimize-primostar-search-v15.yml 
+SHOT  .github/workflows/optimize-primostar-search-v2.yml 
+SHOT  .github/workflows/optimize-primostar-search-v3.yml 
+SHOT  .github/workflows/optimize-primostar-search-v4.yml 
+SHOT  .github/workflows/optimize-primostar-search-v5.yml 
+SHOT  .github/workflows/optimize-primostar-search-v6.yml 
+SHOT  .github/workflows/optimize-primostar-search-v7.yml 
+SHOT  .github/workflows/optimize-primostar-search-v8.yml 
+SHOT  .github/workflows/optimize-primostar-search-v9.yml 
+SHOT  .github/workflows/optimizer-cpu-profile-v1.yml 
+SHOT  .github/workflows/optimizer-cpu-profile-v2.yml 
+SHOT  .github/workflows/optimizer-cpu-profile-v3.yml 
+SHOT  .github/workflows/optimizer-perf-benchmark-v1.yml 
+KEEP  .github/workflows/pandarial-build-release-trigger.yml schedule
+SHOT  .github/workflows/polish-result-resource-cards-v1.yml 
+SHOT  .github/workflows/refresh-s3-summary-cards-sep9-v1.yml 
+SHOT  .github/workflows/remove-stale-oceanic-event-refs-v1.yml 
+SHOT  .github/workflows/remove-timeline-details-v1.yml 
+SHOT  .github/workflows/site-polish-smoke.yml 
+SHOT  .github/workflows/site-runtime-smoke.yml 
+KEEP  .github/workflows/sxs-discord-feed.yml schedule
+SHOT  .github/workflows/update-s3-bond-odyssey-sep9.yml 
+SHOT  .github/workflows/update-s3-dungeon-names-sep9-v1.yml 
+KEEP  .github/workflows/warlords-rest-roll-guide-trigger.yml schedule
+durable 3 one_shot 79
+
+PATCH-LIKE FILES 312
+.github/fix-optimizer-audit-anchor.py
+.github/patch-acme-nexus-timing-conflict-v1.py
+.github/patch-acquisition-optimizer.py
+.github/patch-add-veggie-code-v1.py
+.github/patch-all-section-top-spacing.py
+.github/patch-apply-realm-refresh-button-v2.py
+.github/patch-apply-recommended-realm-refreshes.py
+.github/patch-auto-age-realm-tools.py
+.github/patch-bed-hold-34h-v1.py
+.github/patch-bed-hold-stops-all-exp-v1.py
+.github/patch-bed-stored-exp-v1.py
+.github/patch-blue-sand.py
+.github/patch-build-arena-role-ui-v4.py
+.github/patch-build-fallback-structure.py
+.github/patch-build-presets.py
+.github/patch-calculator-size-consistency-v1.py
+.github/patch-clear-reserve-cards.py
+.github/patch-clear-reserve-labels.py
+.github/patch-collapsible-character-materials.py
+.github/patch-compact-materials-header.py
+.github/patch-compact-number-inputs-v1.py
+.github/patch-compact-progression.py
+.github/patch-compact-realm-after-plan-v1.py
+.github/patch-compact-tool-summary.py
+.github/patch-companion-current-season.py
+.github/patch-companion-guide.py
+.github/patch-companion-layout.py
+.github/patch-consistent-page-spacing.py
+.github/patch-current-levels-grid-gap.py
+.github/patch-current-next-timeline-deepdive-v1.py
+.github/patch-daily-shop-estimate-v1.py
+.github/patch-dynamic-headroom.py
+.github/patch-essence-treat-reserve-display.py
+.github/patch-fantasia-ascent-builds-v1.py
+.github/patch-fantasia-ascent-builds-v2.py
+.github/patch-fantasia-ascent-builds-v3.py
+.github/patch-favor-saving-ore-toggle.py
+.github/patch-gated-raw-first-optimizer.py
+.github/patch-global-acquisition-priority-v2.py
+.github/patch-guide-builds.py
+.github/patch-hard-short-status-v1.py
+.github/patch-headroom-coverage-v2.py
+.github/patch-hide-reserve-tools-when-raw-remains.py
+.github/patch-hide-tools-until-used.py
+.github/patch-hide-unconfirmed-pills-v1.py
+.github/patch-hide-zero-tool-use.py
+.github/patch-joint-reacquisition.py
+.github/patch-marginal-headroom.py
+.github/patch-match-character-materials-headers.py
+.github/patch-material-realm-visual-cleanup-v1.py
+.github/patch-material-shortfall-display.py
+.github/patch-max-helper-text-v2.py
+.github/patch-max-layout-speed-realm-cap.py
+.github/patch-max-target-contained.py
+.github/patch-mobile-readability-pass-v2.py
+.github/patch-move-projection-up.py
+.github/patch-nexus-4v4-deep-dive-v2.py
+.github/patch-nexus-4v4-timeline-v1.py
+.github/patch-nexus-biweekly-cadence-v1.py
+.github/patch-optimizer-audit-v3.py
+.github/patch-optimizer-cleanup-v5.py
+.github/patch-optimizer-explanation.py
+.github/patch-optimizer-priority.py
+.github/patch-optimizer-system-audit-v4.py
+.github/patch-page-spacing-max-target-align.py
+.github/patch-plain-tool-lines.py
+.github/patch-positive-shortfall-label-v1.py
+.github/patch-post-plan-reserves.py
+.github/patch-preserve-ore-priority.py
+.github/patch-primostar-reward-reference-v1.py
+.github/patch-primostar-reward-reference-v2.py
+.github/patch-raw-before-realm-tools.py
+.github/patch-raw-first-reserves.py
+.github/patch-raw-first-s2-tool-reserve-v1.py
+.github/patch-raw-remaining-v5.py
+.github/patch-realm-20-refresh-tools.py
+.github/patch-realm-tool-efficiency-v4.py
+.github/patch-realm-tool-preserve-policy-v3.py
+.github/patch-recoverable-shortfall-refresh-plan-v1.py
+.github/patch-remove-12h-finishing-window-v1.py
+.github/patch-remove-blue-sand-x5-labels-v1.py
+.github/patch-remove-goal-heading.py
+.github/patch-remove-ore-preservation-v1.py
+.github/patch-remove-recurring-event-duplicates-v1.py
+.github/patch-remove-resource-strategy.py
+.github/patch-remove-s1-reserves-v1.py
+.github/patch-remove-timeline-report-button-v1.py
+.github/patch-resource-card-consistency-v1.py
+.github/patch-resource-shortfall-card-cleanup-v1.py
+.github/patch-resource-tool-card-seam-v3.py
+.github/patch-resource-tool-card-spacing-v2.py
+.github/patch-resource-tools-and-reward-layout-v1.py
+.github/patch-restore-remaining-tools-v1.py
+.github/patch-restore-rich-resource-shortfall-v1.py
+.github/patch-restore-shortfall-breakdown-visibility-v1.py
+.github/patch-result-border-state.py
+.github/patch-result-target-gear-gap.py
+.github/patch-s2-acquisition-optimizer-v1.py
+.github/patch-s2-cart-rate-defaults-v1.py
+.github/patch-s2-ore-premium-v1.py
+.github/patch-s2-postlaunch-cleanup-v1.py
+.github/patch-s2-primo-benchmark-v2.py
+.github/patch-s2-primo-ready-v1.py
+.github/patch-s2-scoring-source-confirm-v1.py
+.github/patch-s2-scoring-start-input-floor-v2.py
+.github/patch-s2-scoring-start-prep-v1.py
+.github/patch-s2-zero-score-defaults-v1.py
+.github/patch-s3-complete-timeline-v2.py
+.github/patch-shortfall-messaging-v2.py
+.github/patch-show-remaining-on-partial-shortfall.py
+.github/patch-simple-tool-counts.py
+.github/patch-site-layout.py
+.github/patch-spaghetti-cleanup-v1.py
+.github/patch-stamina-auto-default.py
+.github/patch-stamina-optimizer.py
+.github/patch-stamina-single-target.py
+.github/patch-surplus-aware-optimizer.py
+.github/patch-target-message-lines.py
+.github/patch-timeline-report-button-v1.py
+.github/patch-timeline-semantic-duplicates-v1.py
+.github/patch-tool-action-labels.py
+.github/patch-tool-count-labels.py
+.github/patch-tool-need-gap.py
+.github/patch-tool-reserve-wording.py
+.github/patch-tool-toggle-top-v1.py
+.github/patch-tool-use-label.py
+.github/patch-tool-value-display.py
+.github/patch-tools-first-s2-reserves.py
+.github/patch-veggie-cabbage-dog-v1.py
+.github/patch-veggie-fairy-confirmed-v1.py
+.github/scripts/patch-daily-shop-panel-v2.py
+.github/workflows/apply-build-layout-icons-v1.yml
+.github/workflows/apply-crystal-weekly-code-timeline.yml
+.github/workflows/apply-epic-chrono-sand-saved-v1.yml
+.github/workflows/apply-exact-s2-upgrade-costs-v5.yml
+.github/workflows/apply-marginal-integrated-scarcity-v5.yml
+.github/workflows/apply-official-crystal-spiral-tree-v1.yml
+.github/workflows/apply-official-topup-events-sep7-v1.yml
+.github/workflows/apply-ore-tool-spacing-v1.yml
+.github/workflows/apply-post-plan-scarcity-v4.yml
+.github/workflows/apply-primo-planner-start-120-v2.yml
+.github/workflows/apply-primo-preseason-preview-v3.yml
+.github/workflows/apply-raw-impossibility-fastpath-v3.yml
+.github/workflows/apply-result-stamina-projection-v1.yml
+.github/workflows/apply-s2-first-nexus-tournament-v1.yml
+.github/workflows/apply-s2-primo-breakpoints-v1.yml
+.github/workflows/apply-s2-shop-observed-n10-v1.yml
+.github/workflows/apply-s2-shop-observed-n11-v1.yml
+.github/workflows/apply-s2-shop-observed-n15-v1.yml
+.github/workflows/apply-s2-shop-observed-n19-v1.yml
+.github/workflows/apply-s2-shop-observed-n4-v1.yml
+.github/workflows/apply-s2-shop-observed-n7-v1.yml
+.github/workflows/apply-s2-shop-observed-n8-v1.yml
+.github/workflows/apply-s2-shop-observed-n9-v1.yml
+.github/workflows/apply-s3-nexus-expansion-v1.yml
+.github/workflows/apply-s3-sep9-research-v1.yml
+.github/workflows/apply-sand-spacing-match-treats-v1.yml
+.github/workflows/apply-scarcity-adjusted-acquisition-v1.yml
+.github/workflows/apply-smart-balance-goal-stop-tools-v2.yml
+.github/workflows/apply-smart-balance-raw-first-v1.yml
+.github/workflows/apply-t5-global-names-v1.yml
+.github/workflows/apply-t5-longevity-investment-v1.yml
+.github/workflows/apply-tool-scarcity-perf-v2.yml
+.github/workflows/apply-total-pool-smart-balance-v1.yml
+.github/workflows/apply-treat-marginal-scarcity-v1.yml
+.github/workflows/apply-veggie-pt2-sep7-official-v2.yml
+.github/workflows/apply-warlords-rest-ingame-confirmation-v1.yml
+.github/workflows/optimize-build-class-switch-v1.yml
+.github/workflows/optimize-build-visual-stability-v2.yml
+.github/workflows/optimize-primostar-search-v1.yml
+.github/workflows/optimize-primostar-search-v10.yml
+.github/workflows/optimize-primostar-search-v11.yml
+.github/workflows/optimize-primostar-search-v12.yml
+.github/workflows/optimize-primostar-search-v13.yml
+.github/workflows/optimize-primostar-search-v14.yml
+.github/workflows/optimize-primostar-search-v15.yml
+.github/workflows/optimize-primostar-search-v2.yml
+.github/workflows/optimize-primostar-search-v3.yml
+.github/workflows/optimize-primostar-search-v4.yml
+.github/workflows/optimize-primostar-search-v5.yml
+.github/workflows/optimize-primostar-search-v6.yml
+.github/workflows/optimize-primostar-search-v7.yml
+.github/workflows/optimize-primostar-search-v8.yml
+.github/workflows/optimize-primostar-search-v9.yml
+scripts/apply_build_layout_icons_v1.py
+scripts/apply_crystal_weekly_code_timeline.py
+scripts/apply_exact_s2_upgrade_costs_v5.py
+scripts/apply_exact_s2_upgrade_costs_v6.py
+scripts/apply_marginal_integrated_scarcity_v5.py
+scripts/apply_official_crystal_spiral_tree_v1.py
+scripts/apply_post_plan_scarcity_v4.py
+scripts/apply_raw_impossibility_fastpath_v3.py
+scripts/apply_result_stamina_projection_v1.py
+scripts/apply_s2_shop_observed_n10_v1.py
+scripts/apply_s2_shop_observed_n11_v1.py
+scripts/apply_s2_shop_observed_n15_v1.py
+scripts/apply_s2_shop_observed_n19_v1.py
+scripts/apply_s2_shop_observed_n4_v1.py
+scripts/apply_s2_shop_observed_n7_v1.py
+scripts/apply_s2_shop_observed_n8_v1.py
+scripts/apply_s2_shop_observed_n9_v1.py
+scripts/apply_s3_sep9_research_v1.py
+scripts/apply_sand_spacing_match_treats_v1.py
+scripts/apply_scarcity_adjusted_acquisition_v1.py
+scripts/apply_smart_balance_goal_stop_v2.py
+scripts/apply_smart_balance_raw_first_v1.py
+scripts/apply_stage_aware_tool_scarcity_v1.py
+scripts/apply_tool_material_weights_v1.py
+scripts/apply_tool_scarcity_perf_v2.py
+scripts/apply_total_pool_smart_balance_v1.py
+scripts/apply_total_pool_smart_balance_v2.py
+scripts/apply_treat_marginal_scarcity_v1.py
+scripts/apply_warlords_rest_ingame_confirmation_v1.py
+scripts/left_align_remaining_counts_v1.py
+scripts/optimize_primostar_search_v1.py
+scripts/optimize_primostar_search_v10.py
+scripts/optimize_primostar_search_v11.py
+scripts/optimize_primostar_search_v12.py
+scripts/optimize_primostar_search_v13.py
+scripts/optimize_primostar_search_v14.py
+scripts/optimize_primostar_search_v15.py
+scripts/optimize_primostar_search_v2.py
+scripts/optimize_primostar_search_v3.py
+scripts/optimize_primostar_search_v4.py
+scripts/optimize_primostar_search_v5.py
+scripts/optimize_primostar_search_v6.py
+scripts/optimize_primostar_search_v7.py
+scripts/optimize_primostar_search_v8.py
+scripts/optimize_primostar_search_v9.py
+scripts/patch_acquisition_kernel_v1.py
+scripts/patch_active_now_remove_active_badge_v1.py
+scripts/patch_affordable_treat_feasible_v1.py
+scripts/patch_auto_stamina_exact_three_v1.py
+scripts/patch_build_class_same_click_noop_v1.py
+scripts/patch_build_dominator_reset_perf_v1.py
+scripts/patch_build_roll_guide_v1.py
+scripts/patch_build_roll_guide_v2.py
+scripts/patch_build_skill_tooltips_v1.py
+scripts/patch_build_switch_no_flicker_v1.py
+scripts/patch_build_visual_stability_v2.py
+scripts/patch_conditional_tool_remaining_v1.py
+scripts/patch_confirm_charming_glance_tournament_times_v1.py
+scripts/patch_conqueror_4v4_gale_swap_v1.py
+scripts/patch_consistency_mobile_v4.py
+scripts/patch_core_percent_substats_v1.py
+scripts/patch_core_percent_substats_v2.py
+scripts/patch_destroyer_atk_label_v2.py
+scripts/patch_destroyer_s2_balance_and_simple_substats_v1.py
+scripts/patch_destroyer_stat_prio_v1.py
+scripts/patch_dominator_toggle_inline_v1.py
+scripts/patch_guardian_4v4_control_tank_v1.py
+scripts/patch_guardian_build_pass_sep2_v1.py
+scripts/patch_guardian_pvp_soul_protection_v1.py
+scripts/patch_guardian_shield_slot_v1.py
+scripts/patch_guardian_tank_boss_charms_v1.py
+scripts/patch_guardian_tank_dps_toggle_v1.py
+scripts/patch_guardian_valor_every_build_v1.py
+scripts/patch_meta_build_modes_v1.py
+scripts/patch_meta_toggle_position_v1.py
+scripts/patch_mobile_summary_row_v1.py
+scripts/patch_mobile_timeline_layout_v1.py
+scripts/patch_mobile_timeline_layout_v2.py
+scripts/patch_nav_tab_interactions_v1.py
+scripts/patch_official_topup_events_sep7_v1.py
+scripts/patch_ore_tool_spacing_v1.py
+scripts/patch_other_t4_stat_prio_v1.py
+scripts/patch_performance_stabilization_v1.py
+scripts/patch_primo_planner_start_120_v2.py
+scripts/patch_primo_preseason_preview_and_ore_v3.py
+scripts/patch_primostar_reward_projection_v1.py
+scripts/patch_purchase_restock_labels_v1.py
+scripts/patch_raw_funded_search_fast_v1.py
+scripts/patch_realm_ui_cleanup_v3.py
+scripts/patch_remove_after_plan_v1.py
+scripts/patch_remove_s1_build_nav_v1.py
+scripts/patch_remove_substat_periods_v1.py
+scripts/patch_remove_tool_mode_scope_timeline_v1.py
+scripts/patch_restore_main_runtime_v1.py
+scripts/patch_restore_rich_builds_v1.py
+scripts/patch_result_card_consistency_v2.py
+scripts/patch_rich_builds_v2.py
+scripts/patch_roll_guide_value_scheme_v1.py
+scripts/patch_roll_guide_value_scheme_v2.py
+scripts/patch_s2_build_activity_audit_v1.py
+scripts/patch_s2_class_stats_final_v1.py
+scripts/patch_s2_first_nexus_tournament_v1.py
+scripts/patch_s2_primo_breakpoints_v1.py
+scripts/patch_s2_projection_hold_null_v1.py
+scripts/patch_s2_rollover_header_reset_v1.py
+scripts/patch_s3_nexus_expansion_v1.py
+scripts/patch_server_tournament_saturday_v1.py
+scripts/patch_shop_buyouts_v1.py
+scripts/patch_shop_default_zero_v1.py
+scripts/patch_shop_grounded_estimate_v5.py
+scripts/patch_shop_panel_compact_v3.py
+scripts/patch_shop_panel_final_v4.py
+scripts/patch_site_polish_v1.py
+scripts/patch_t4_class_order_dominator_roles_v1.py
+scripts/patch_t4_class_order_dominator_roles_v2.py
+scripts/patch_t4_live_class_order_v1.py
+scripts/patch_t5_global_names_v1.py
+scripts/patch_t5_longevity_investment_v1.py
+scripts/patch_timeline_current_next_seasons_v1.py
+scripts/patch_timeline_season_day_size_v2.py
+scripts/patch_timeline_season_day_size_v3.py
+scripts/patch_timeline_season_day_v1.py
+scripts/patch_timeline_season_number_label_v1.py
+scripts/patch_treat_funded_search_fast_v1.py
+scripts/patch_ui_consistency_v1.py
+scripts/patch_veggie_pt2_sep7_official_v2.py
+scripts/patch_veggie_pt2_sep7_projection_v1.py
+scripts/polish_result_resource_cards_v1.py
+
+PATCH-LIKE REFERENCED BY DURABLE WORKFLOW 1
+scripts/patch_build_roll_guide_v2.py
+
+PATCH-LIKE UNREFERENCED 311
+.github/fix-optimizer-audit-anchor.py
+.github/patch-acme-nexus-timing-conflict-v1.py
+.github/patch-acquisition-optimizer.py
+.github/patch-add-veggie-code-v1.py
+.github/patch-all-section-top-spacing.py
+.github/patch-apply-realm-refresh-button-v2.py
+.github/patch-apply-recommended-realm-refreshes.py
+.github/patch-auto-age-realm-tools.py
+.github/patch-bed-hold-34h-v1.py
+.github/patch-bed-hold-stops-all-exp-v1.py
+.github/patch-bed-stored-exp-v1.py
+.github/patch-blue-sand.py
+.github/patch-build-arena-role-ui-v4.py
+.github/patch-build-fallback-structure.py
+.github/patch-build-presets.py
+.github/patch-calculator-size-consistency-v1.py
+.github/patch-clear-reserve-cards.py
+.github/patch-clear-reserve-labels.py
+.github/patch-collapsible-character-materials.py
+.github/patch-compact-materials-header.py
+.github/patch-compact-number-inputs-v1.py
+.github/patch-compact-progression.py
+.github/patch-compact-realm-after-plan-v1.py
+.github/patch-compact-tool-summary.py
+.github/patch-companion-current-season.py
+.github/patch-companion-guide.py
+.github/patch-companion-layout.py
+.github/patch-consistent-page-spacing.py
+.github/patch-current-levels-grid-gap.py
+.github/patch-current-next-timeline-deepdive-v1.py
+.github/patch-daily-shop-estimate-v1.py
+.github/patch-dynamic-headroom.py
+.github/patch-essence-treat-reserve-display.py
+.github/patch-fantasia-ascent-builds-v1.py
+.github/patch-fantasia-ascent-builds-v2.py
+.github/patch-fantasia-ascent-builds-v3.py
+.github/patch-favor-saving-ore-toggle.py
+.github/patch-gated-raw-first-optimizer.py
+.github/patch-global-acquisition-priority-v2.py
+.github/patch-guide-builds.py
+.github/patch-hard-short-status-v1.py
+.github/patch-headroom-coverage-v2.py
+.github/patch-hide-reserve-tools-when-raw-remains.py
+.github/patch-hide-tools-until-used.py
+.github/patch-hide-unconfirmed-pills-v1.py
+.github/patch-hide-zero-tool-use.py
+.github/patch-joint-reacquisition.py
+.github/patch-marginal-headroom.py
+.github/patch-match-character-materials-headers.py
+.github/patch-material-realm-visual-cleanup-v1.py
+.github/patch-material-shortfall-display.py
+.github/patch-max-helper-text-v2.py
+.github/patch-max-layout-speed-realm-cap.py
+.github/patch-max-target-contained.py
+.github/patch-mobile-readability-pass-v2.py
+.github/patch-move-projection-up.py
+.github/patch-nexus-4v4-deep-dive-v2.py
+.github/patch-nexus-4v4-timeline-v1.py
+.github/patch-nexus-biweekly-cadence-v1.py
+.github/patch-optimizer-audit-v3.py
+.github/patch-optimizer-cleanup-v5.py
+.github/patch-optimizer-explanation.py
+.github/patch-optimizer-priority.py
+.github/patch-optimizer-system-audit-v4.py
+.github/patch-page-spacing-max-target-align.py
+.github/patch-plain-tool-lines.py
+.github/patch-positive-shortfall-label-v1.py
+.github/patch-post-plan-reserves.py
+.github/patch-preserve-ore-priority.py
+.github/patch-primostar-reward-reference-v1.py
+.github/patch-primostar-reward-reference-v2.py
+.github/patch-raw-before-realm-tools.py
+.github/patch-raw-first-reserves.py
+.github/patch-raw-first-s2-tool-reserve-v1.py
+.github/patch-raw-remaining-v5.py
+.github/patch-realm-20-refresh-tools.py
+.github/patch-realm-tool-efficiency-v4.py
+.github/patch-realm-tool-preserve-policy-v3.py
+.github/patch-recoverable-shortfall-refresh-plan-v1.py
+.github/patch-remove-12h-finishing-window-v1.py
+.github/patch-remove-blue-sand-x5-labels-v1.py
+.github/patch-remove-goal-heading.py
+.github/patch-remove-ore-preservation-v1.py
+.github/patch-remove-recurring-event-duplicates-v1.py
+.github/patch-remove-resource-strategy.py
+.github/patch-remove-s1-reserves-v1.py
+.github/patch-remove-timeline-report-button-v1.py
+.github/patch-resource-card-consistency-v1.py
+.github/patch-resource-shortfall-card-cleanup-v1.py
+.github/patch-resource-tool-card-seam-v3.py
+.github/patch-resource-tool-card-spacing-v2.py
+.github/patch-resource-tools-and-reward-layout-v1.py
+.github/patch-restore-remaining-tools-v1.py
+.github/patch-restore-rich-resource-shortfall-v1.py
+.github/patch-restore-shortfall-breakdown-visibility-v1.py
+.github/patch-result-border-state.py
+.github/patch-result-target-gear-gap.py
+.github/patch-s2-acquisition-optimizer-v1.py
+.github/patch-s2-cart-rate-defaults-v1.py
+.github/patch-s2-ore-premium-v1.py
+.github/patch-s2-postlaunch-cleanup-v1.py
+.github/patch-s2-primo-benchmark-v2.py
+.github/patch-s2-primo-ready-v1.py
+.github/patch-s2-scoring-source-confirm-v1.py
+.github/patch-s2-scoring-start-input-floor-v2.py
+.github/patch-s2-scoring-start-prep-v1.py
+.github/patch-s2-zero-score-defaults-v1.py
+.github/patch-s3-complete-timeline-v2.py
+.github/patch-shortfall-messaging-v2.py
+.github/patch-show-remaining-on-partial-shortfall.py
+.github/patch-simple-tool-counts.py
+.github/patch-site-layout.py
+.github/patch-spaghetti-cleanup-v1.py
+.github/patch-stamina-auto-default.py
+.github/patch-stamina-optimizer.py
+.github/patch-stamina-single-target.py
+.github/patch-surplus-aware-optimizer.py
+.github/patch-target-message-lines.py
+.github/patch-timeline-report-button-v1.py
+.github/patch-timeline-semantic-duplicates-v1.py
+.github/patch-tool-action-labels.py
+.github/patch-tool-count-labels.py
+.github/patch-tool-need-gap.py
+.github/patch-tool-reserve-wording.py
+.github/patch-tool-toggle-top-v1.py
+.github/patch-tool-use-label.py
+.github/patch-tool-value-display.py
+.github/patch-tools-first-s2-reserves.py
+.github/patch-veggie-cabbage-dog-v1.py
+.github/patch-veggie-fairy-confirmed-v1.py
+.github/scripts/patch-daily-shop-panel-v2.py
+.github/workflows/apply-build-layout-icons-v1.yml
+.github/workflows/apply-crystal-weekly-code-timeline.yml
+.github/workflows/apply-epic-chrono-sand-saved-v1.yml
+.github/workflows/apply-exact-s2-upgrade-costs-v5.yml
+.github/workflows/apply-marginal-integrated-scarcity-v5.yml
+.github/workflows/apply-official-crystal-spiral-tree-v1.yml
+.github/workflows/apply-official-topup-events-sep7-v1.yml
+.github/workflows/apply-ore-tool-spacing-v1.yml
+.github/workflows/apply-post-plan-scarcity-v4.yml
+.github/workflows/apply-primo-planner-start-120-v2.yml
+.github/workflows/apply-primo-preseason-preview-v3.yml
+.github/workflows/apply-raw-impossibility-fastpath-v3.yml
+.github/workflows/apply-result-stamina-projection-v1.yml
+.github/workflows/apply-s2-first-nexus-tournament-v1.yml
+.github/workflows/apply-s2-primo-breakpoints-v1.yml
+.github/workflows/apply-s2-shop-observed-n10-v1.yml
+.github/workflows/apply-s2-shop-observed-n11-v1.yml
+.github/workflows/apply-s2-shop-observed-n15-v1.yml
+.github/workflows/apply-s2-shop-observed-n19-v1.yml
+.github/workflows/apply-s2-shop-observed-n4-v1.yml
+.github/workflows/apply-s2-shop-observed-n7-v1.yml
+.github/workflows/apply-s2-shop-observed-n8-v1.yml
+.github/workflows/apply-s2-shop-observed-n9-v1.yml
+.github/workflows/apply-s3-nexus-expansion-v1.yml
+.github/workflows/apply-s3-sep9-research-v1.yml
+.github/workflows/apply-sand-spacing-match-treats-v1.yml
+.github/workflows/apply-scarcity-adjusted-acquisition-v1.yml
+.github/workflows/apply-smart-balance-goal-stop-tools-v2.yml
+.github/workflows/apply-smart-balance-raw-first-v1.yml
+.github/workflows/apply-t5-global-names-v1.yml
+.github/workflows/apply-t5-longevity-investment-v1.yml
+.github/workflows/apply-tool-scarcity-perf-v2.yml
+.github/workflows/apply-total-pool-smart-balance-v1.yml
+.github/workflows/apply-treat-marginal-scarcity-v1.yml
+.github/workflows/apply-veggie-pt2-sep7-official-v2.yml
+.github/workflows/apply-warlords-rest-ingame-confirmation-v1.yml
+.github/workflows/optimize-build-class-switch-v1.yml
+.github/workflows/optimize-build-visual-stability-v2.yml
+.github/workflows/optimize-primostar-search-v1.yml
+.github/workflows/optimize-primostar-search-v10.yml
+.github/workflows/optimize-primostar-search-v11.yml
+.github/workflows/optimize-primostar-search-v12.yml
+.github/workflows/optimize-primostar-search-v13.yml
+.github/workflows/optimize-primostar-search-v14.yml
+.github/workflows/optimize-primostar-search-v15.yml
+.github/workflows/optimize-primostar-search-v2.yml
+.github/workflows/optimize-primostar-search-v3.yml
+.github/workflows/optimize-primostar-search-v4.yml
+.github/workflows/optimize-primostar-search-v5.yml
+.github/workflows/optimize-primostar-search-v6.yml
+.github/workflows/optimize-primostar-search-v7.yml
+.github/workflows/optimize-primostar-search-v8.yml
+.github/workflows/optimize-primostar-search-v9.yml
+scripts/apply_build_layout_icons_v1.py
+scripts/apply_crystal_weekly_code_timeline.py
+scripts/apply_exact_s2_upgrade_costs_v5.py
+scripts/apply_exact_s2_upgrade_costs_v6.py
+scripts/apply_marginal_integrated_scarcity_v5.py
+scripts/apply_official_crystal_spiral_tree_v1.py
+scripts/apply_post_plan_scarcity_v4.py
+scripts/apply_raw_impossibility_fastpath_v3.py
+scripts/apply_result_stamina_projection_v1.py
+scripts/apply_s2_shop_observed_n10_v1.py
+scripts/apply_s2_shop_observed_n11_v1.py
+scripts/apply_s2_shop_observed_n15_v1.py
+scripts/apply_s2_shop_observed_n19_v1.py
+scripts/apply_s2_shop_observed_n4_v1.py
+scripts/apply_s2_shop_observed_n7_v1.py
+scripts/apply_s2_shop_observed_n8_v1.py
+scripts/apply_s2_shop_observed_n9_v1.py
+scripts/apply_s3_sep9_research_v1.py
+scripts/apply_sand_spacing_match_treats_v1.py
+scripts/apply_scarcity_adjusted_acquisition_v1.py
+scripts/apply_smart_balance_goal_stop_v2.py
+scripts/apply_smart_balance_raw_first_v1.py
+scripts/apply_stage_aware_tool_scarcity_v1.py
+scripts/apply_tool_material_weights_v1.py
+scripts/apply_tool_scarcity_perf_v2.py
+scripts/apply_total_pool_smart_balance_v1.py
+scripts/apply_total_pool_smart_balance_v2.py
+scripts/apply_treat_marginal_scarcity_v1.py
+scripts/apply_warlords_rest_ingame_confirmation_v1.py
+scripts/left_align_remaining_counts_v1.py
+scripts/optimize_primostar_search_v1.py
+scripts/optimize_primostar_search_v10.py
+scripts/optimize_primostar_search_v11.py
+scripts/optimize_primostar_search_v12.py
+scripts/optimize_primostar_search_v13.py
+scripts/optimize_primostar_search_v14.py
+scripts/optimize_primostar_search_v15.py
+scripts/optimize_primostar_search_v2.py
+scripts/optimize_primostar_search_v3.py
+scripts/optimize_primostar_search_v4.py
+scripts/optimize_primostar_search_v5.py
+scripts/optimize_primostar_search_v6.py
+scripts/optimize_primostar_search_v7.py
+scripts/optimize_primostar_search_v8.py
+scripts/optimize_primostar_search_v9.py
+scripts/patch_acquisition_kernel_v1.py
+scripts/patch_active_now_remove_active_badge_v1.py
+scripts/patch_affordable_treat_feasible_v1.py
+scripts/patch_auto_stamina_exact_three_v1.py
+scripts/patch_build_class_same_click_noop_v1.py
+scripts/patch_build_dominator_reset_perf_v1.py
+scripts/patch_build_roll_guide_v1.py
+scripts/patch_build_skill_tooltips_v1.py
+scripts/patch_build_switch_no_flicker_v1.py
+scripts/patch_build_visual_stability_v2.py
+scripts/patch_conditional_tool_remaining_v1.py
+scripts/patch_confirm_charming_glance_tournament_times_v1.py
+scripts/patch_conqueror_4v4_gale_swap_v1.py
+scripts/patch_consistency_mobile_v4.py
+scripts/patch_core_percent_substats_v1.py
+scripts/patch_core_percent_substats_v2.py
+scripts/patch_destroyer_atk_label_v2.py
+scripts/patch_destroyer_s2_balance_and_simple_substats_v1.py
+scripts/patch_destroyer_stat_prio_v1.py
+scripts/patch_dominator_toggle_inline_v1.py
+scripts/patch_guardian_4v4_control_tank_v1.py
+scripts/patch_guardian_build_pass_sep2_v1.py
+scripts/patch_guardian_pvp_soul_protection_v1.py
+scripts/patch_guardian_shield_slot_v1.py
+scripts/patch_guardian_tank_boss_charms_v1.py
+scripts/patch_guardian_tank_dps_toggle_v1.py
+scripts/patch_guardian_valor_every_build_v1.py
+scripts/patch_meta_build_modes_v1.py
+scripts/patch_meta_toggle_position_v1.py
+scripts/patch_mobile_summary_row_v1.py
+scripts/patch_mobile_timeline_layout_v1.py
+scripts/patch_mobile_timeline_layout_v2.py
+scripts/patch_nav_tab_interactions_v1.py
+scripts/patch_official_topup_events_sep7_v1.py
+scripts/patch_ore_tool_spacing_v1.py
+scripts/patch_other_t4_stat_prio_v1.py
+scripts/patch_performance_stabilization_v1.py
+scripts/patch_primo_planner_start_120_v2.py
+scripts/patch_primo_preseason_preview_and_ore_v3.py
+scripts/patch_primostar_reward_projection_v1.py
+scripts/patch_purchase_restock_labels_v1.py
+scripts/patch_raw_funded_search_fast_v1.py
+scripts/patch_realm_ui_cleanup_v3.py
+scripts/patch_remove_after_plan_v1.py
+scripts/patch_remove_s1_build_nav_v1.py
+scripts/patch_remove_substat_periods_v1.py
+scripts/patch_remove_tool_mode_scope_timeline_v1.py
+scripts/patch_restore_main_runtime_v1.py
+scripts/patch_restore_rich_builds_v1.py
+scripts/patch_result_card_consistency_v2.py
+scripts/patch_rich_builds_v2.py
+scripts/patch_roll_guide_value_scheme_v1.py
+scripts/patch_roll_guide_value_scheme_v2.py
+scripts/patch_s2_build_activity_audit_v1.py
+scripts/patch_s2_class_stats_final_v1.py
+scripts/patch_s2_first_nexus_tournament_v1.py
+scripts/patch_s2_primo_breakpoints_v1.py
+scripts/patch_s2_projection_hold_null_v1.py
+scripts/patch_s2_rollover_header_reset_v1.py
+scripts/patch_s3_nexus_expansion_v1.py
+scripts/patch_server_tournament_saturday_v1.py
+scripts/patch_shop_buyouts_v1.py
+scripts/patch_shop_default_zero_v1.py
+scripts/patch_shop_grounded_estimate_v5.py
+scripts/patch_shop_panel_compact_v3.py
+scripts/patch_shop_panel_final_v4.py
+scripts/patch_site_polish_v1.py
+scripts/patch_t4_class_order_dominator_roles_v1.py
+scripts/patch_t4_class_order_dominator_roles_v2.py
+scripts/patch_t4_live_class_order_v1.py
+scripts/patch_t5_global_names_v1.py
+scripts/patch_t5_longevity_investment_v1.py
+scripts/patch_timeline_current_next_seasons_v1.py
+scripts/patch_timeline_season_day_size_v2.py
+scripts/patch_timeline_season_day_size_v3.py
+scripts/patch_timeline_season_day_v1.py
+scripts/patch_timeline_season_number_label_v1.py
+scripts/patch_treat_funded_search_fast_v1.py
+scripts/patch_ui_consistency_v1.py
+scripts/patch_veggie_pt2_sep7_official_v2.py
+scripts/patch_veggie_pt2_sep7_projection_v1.py
+scripts/polish_result_resource_cards_v1.py
+
+VERSION FAMILIES:
+patch-fantasia-ascent-builds-v1.py | patch-fantasia-ascent-builds-v2.py | patch-fantasia-ascent-builds-v3.py
+patch-primostar-reward-reference-v1.py | patch-primostar-reward-reference-v2.py
+apply-s2-shop-observed-n10-v1.yml | apply-s2-shop-observed-n11-v1.yml | apply-s2-shop-observed-n15-v1.yml | apply-s2-shop-observed-n19-v1.yml | apply-s2-shop-observed-n4-v1.yml | apply-s2-shop-observed-n7-v1.yml | apply-s2-shop-observed-n8-v1.yml | apply-s2-shop-observed-n9-v1.yml
+optimize-primostar-search-v1.yml | optimize-primostar-search-v10.yml | optimize-primostar-search-v11.yml | optimize-primostar-search-v12.yml | optimize-primostar-search-v13.yml | optimize-primostar-search-v14.yml | optimize-primostar-search-v15.yml | optimize-primostar-search-v2.yml | optimize-primostar-search-v3.yml | optimize-primostar-search-v4.yml | optimize-primostar-search-v5.yml | optimize-primostar-search-v6.yml | optimize-primostar-search-v7.yml | optimize-primostar-search-v8.yml | optimize-primostar-search-v9.yml
+apply_exact_s2_upgrade_costs_v5.py | apply_exact_s2_upgrade_costs_v6.py
+apply_s2_shop_observed_n10_v1.py | apply_s2_shop_observed_n11_v1.py | apply_s2_shop_observed_n15_v1.py | apply_s2_shop_observed_n19_v1.py | apply_s2_shop_observed_n4_v1.py | apply_s2_shop_observed_n7_v1.py | apply_s2_shop_observed_n8_v1.py | apply_s2_shop_observed_n9_v1.py
+apply_total_pool_smart_balance_v1.py | apply_total_pool_smart_balance_v2.py
+optimize_primostar_search_v1.py | optimize_primostar_search_v10.py | optimize_primostar_search_v11.py | optimize_primostar_search_v12.py | optimize_primostar_search_v13.py | optimize_primostar_search_v14.py | optimize_primostar_search_v15.py | optimize_primostar_search_v2.py | optimize_primostar_search_v3.py | optimize_primostar_search_v4.py | optimize_primostar_search_v5.py | optimize_primostar_search_v6.py | optimize_primostar_search_v7.py | optimize_primostar_search_v8.py | optimize_primostar_search_v9.py
+patch_build_roll_guide_v1.py | patch_build_roll_guide_v2.py
+patch_core_percent_substats_v1.py | patch_core_percent_substats_v2.py
+patch_mobile_timeline_layout_v1.py | patch_mobile_timeline_layout_v2.py
+patch_roll_guide_value_scheme_v1.py | patch_roll_guide_value_scheme_v2.py
+patch_t4_class_order_dominator_roles_v1.py | patch_t4_class_order_dominator_roles_v2.py
+patch_timeline_season_day_size_v2.py | patch_timeline_season_day_size_v3.py
+
+TOP-LEVEL .github NON-WORKFLOW FILES:
+.github/build-fantomons-inject.html 84461
+.github/build-maintenance.md 6705
+.github/build-role-toggle-inject.html 4113
+.github/fix-optimizer-audit-anchor.py 1206
+.github/patch-acme-nexus-timing-conflict-v1.py 1089
+.github/patch-acquisition-optimizer.py 17558
+.github/patch-add-veggie-code-v1.py 1570
+.github/patch-all-section-top-spacing.py 785
+.github/patch-apply-realm-refresh-button-v2.py 1323
+.github/patch-apply-recommended-realm-refreshes.py 3871
+.github/patch-auto-age-realm-tools.py 2285
+.github/patch-bed-hold-34h-v1.py 2649
+.github/patch-bed-hold-stops-all-exp-v1.py 3221
+.github/patch-bed-stored-exp-v1.py 8431
+.github/patch-blue-sand.py 3973
+.github/patch-build-arena-role-ui-v4.py 10651
+.github/patch-build-fallback-structure.py 2455
+.github/patch-build-presets.py 13875
+.github/patch-calculator-size-consistency-v1.py 10906
+.github/patch-clear-reserve-cards.py 6561
+.github/patch-clear-reserve-labels.py 5950
+.github/patch-collapsible-character-materials.py 3713
+.github/patch-compact-materials-header.py 3143
+.github/patch-compact-number-inputs-v1.py 3160
+.github/patch-compact-progression.py 5798
+.github/patch-compact-realm-after-plan-v1.py 1337
+.github/patch-compact-tool-summary.py 3839
+.github/patch-companion-current-season.py 7714
+.github/patch-companion-guide.py 13462
+.github/patch-companion-layout.py 1781
+.github/patch-consistent-page-spacing.py 2409
+.github/patch-current-levels-grid-gap.py 546
+.github/patch-current-next-timeline-deepdive-v1.py 8308
+.github/patch-daily-shop-estimate-v1.py 9894
+.github/patch-dynamic-headroom.py 9950
+.github/patch-essence-treat-reserve-display.py 2299
+.github/patch-fantasia-ascent-builds-v1.py 11607
+.github/patch-fantasia-ascent-builds-v2.py 4538
+.github/patch-fantasia-ascent-builds-v3.py 9866
+.github/patch-favor-saving-ore-toggle.py 7713
+.github/patch-gated-raw-first-optimizer.py 10919
+.github/patch-global-acquisition-priority-v2.py 5481
+.github/patch-guide-builds.py 10358
+.github/patch-hard-short-status-v1.py 1659
+.github/patch-headroom-coverage-v2.py 1959
+.github/patch-hide-reserve-tools-when-raw-remains.py 3213
+.github/patch-hide-tools-until-used.py 1655
+.github/patch-hide-unconfirmed-pills-v1.py 588
+.github/patch-hide-zero-tool-use.py 2480
+.github/patch-joint-reacquisition.py 6937
+.github/patch-marginal-headroom.py 4825
+.github/patch-match-character-materials-headers.py 1613
+.github/patch-material-realm-visual-cleanup-v1.py 4655
+.github/patch-material-shortfall-display.py 1708
+.github/patch-max-helper-text-v2.py 876
+.github/patch-max-layout-speed-realm-cap.py 9517
+.github/patch-max-target-contained.py 3553
+.github/patch-mobile-readability-pass-v2.py 9536
+.github/patch-move-projection-up.py 1441
+.github/patch-nexus-4v4-deep-dive-v2.py 3442
+.github/patch-nexus-4v4-timeline-v1.py 1769
+.github/patch-nexus-biweekly-cadence-v1.py 3927
+.github/patch-optimizer-audit-v3.py 10735
+.github/patch-optimizer-cleanup-v5.py 5047
+.github/patch-optimizer-explanation.py 4150
+.github/patch-optimizer-priority.py 6744
+.github/patch-optimizer-system-audit-v4.py 33682
+.github/patch-page-spacing-max-target-align.py 1381
+.github/patch-plain-tool-lines.py 3040
+.github/patch-positive-shortfall-label-v1.py 1002
+.github/patch-post-plan-reserves.py 17913
+.github/patch-preserve-ore-priority.py 2572
+.github/patch-primostar-reward-reference-v1.py 5864
+.github/patch-primostar-reward-reference-v2.py 5750
+.github/patch-raw-before-realm-tools.py 7463
+.github/patch-raw-first-reserves.py 10900
+.github/patch-raw-first-s2-tool-reserve-v1.py 4109
+.github/patch-raw-remaining-v5.py 3326
+.github/patch-realm-20-refresh-tools.py 3640
+.github/patch-realm-tool-efficiency-v4.py 11266
+.github/patch-realm-tool-preserve-policy-v3.py 14199
+.github/patch-recoverable-shortfall-refresh-plan-v1.py 4665
+.github/patch-remove-12h-finishing-window-v1.py 4473
+.github/patch-remove-blue-sand-x5-labels-v1.py 1040
+.github/patch-remove-goal-heading.py 355
+.github/patch-remove-ore-preservation-v1.py 2886
+.github/patch-remove-recurring-event-duplicates-v1.py 2458
+.github/patch-remove-resource-strategy.py 4949
+.github/patch-remove-s1-reserves-v1.py 8419
+.github/patch-remove-timeline-report-button-v1.py 3440
+.github/patch-resource-card-consistency-v1.py 3997
+.github/patch-resource-shortfall-card-cleanup-v1.py 2591
+.github/patch-resource-tool-card-seam-v3.py 1215
+.github/patch-resource-tool-card-spacing-v2.py 2466
+.github/patch-resource-tools-and-reward-layout-v1.py 3913
+.github/patch-restore-remaining-tools-v1.py 3613
+.github/patch-restore-rich-resource-shortfall-v1.py 2660
+.github/patch-restore-shortfall-breakdown-visibility-v1.py 1011
+.github/patch-result-border-state.py 967
+.github/patch-result-target-gear-gap.py 638
+.github/patch-s2-acquisition-optimizer-v1.py 5207
+.github/patch-s2-cart-rate-defaults-v1.py 1387
+.github/patch-s2-ore-premium-v1.py 5398
+.github/patch-s2-postlaunch-cleanup-v1.py 3312
+.github/patch-s2-primo-benchmark-v2.py 4075
+.github/patch-s2-primo-ready-v1.py 13055
+.github/patch-s2-scoring-source-confirm-v1.py 1498
+.github/patch-s2-scoring-start-input-floor-v2.py 5056
+.github/patch-s2-scoring-start-prep-v1.py 18775
+.github/patch-s2-zero-score-defaults-v1.py 2450
+.github/patch-s3-complete-timeline-v2.py 8082
+.github/patch-shortfall-messaging-v2.py 3389
+.github/patch-show-remaining-on-partial-shortfall.py 2766
+.github/patch-simple-tool-counts.py 3567
+.github/patch-site-layout.py 7906
+.github/patch-spaghetti-cleanup-v1.py 11703
+.github/patch-stamina-auto-default.py 1980
+.github/patch-stamina-optimizer.py 11876
+.github/patch-stamina-single-target.py 2003
+.github/patch-surplus-aware-optimizer.py 5048
+.github/patch-target-message-lines.py 2384
+.github/patch-timeline-report-button-v1.py 3684
+.github/patch-timeline-semantic-duplicates-v1.py 7997
+.github/patch-tool-action-labels.py 1445
+.github/patch-tool-count-labels.py 2700
+.github/patch-tool-need-gap.py 2556
+.github/patch-tool-reserve-wording.py 3376
+.github/patch-tool-toggle-top-v1.py 3705
+.github/patch-tool-use-label.py 411
+.github/patch-tool-value-display.py 7360
+.github/patch-tools-first-s2-reserves.py 15035
+.github/patch-veggie-cabbage-dog-v1.py 1592
+.github/patch-veggie-fairy-confirmed-v1.py 1169
+.github/t5-priority-smoke-diagnostic.txt 1592
+
+=== CORE TESTS PRESENT ===
+scripts/check_timeline_duplicates.py True
+scripts/site_smoke_test.mjs True
+scripts/calculator_perf_check.mjs True
+scripts/build_swap_smoke.mjs True
