@@ -1,0 +1,67 @@
+name: Apply S2 relic +14 Lv131 direct evidence v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_s2_relic_14_lv131_direct_v1.py'
+      - '.github/workflows/apply-s2-relic-14-lv131-direct-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply direct S2 relic gate correction
+        run: python3 scripts/apply_s2_relic_14_lv131_direct_v1.py
+
+      - name: Verify intended correction
+        run: |
+          grep -Fq 'S2_RELIC_14_LV131_DIRECT_V1' index.html
+          grep -Fq "if(cfg.key==='s2' && lvl<=130) return 13;" index.html
+          test "$(grep -Fc 'relic:relicCapForCharacter(lvl,cfg),' index.html)" -eq 2
+          if grep -Fq "<details class=\"entryMore\"" index.html; then
+            echo 'Timeline summary-only guard violated.' >&2
+            exit 1
+          fi
+
+      - name: Check timeline duplicates
+        run: python3 scripts/check_timeline_duplicates.py index.html
+
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          out=Path('/tmp/inline-js')
+          out.mkdir(exist_ok=True)
+          for i,body in enumerate(scripts):
+              (out/f'{i}.js').write_text(body,encoding='utf-8')
+          print(f'extracted {len(scripts)} inline scripts')
+          PY
+          for f in /tmp/inline-js/*.js; do node --check "$f"; done
+
+      - name: Run full site browser smoke
+        run: node scripts/site_smoke_test.mjs
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'S2 relic +14 Lv.131 gate is already current.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Correct S2 relic +14 gate to Lv131'
+            git push
+          fi
