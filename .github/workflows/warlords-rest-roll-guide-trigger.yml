@@ -32,16 +32,15 @@ jobs:
         run: python3 scripts/activate_warlords_rest_roll_guide_v1.py
       - name: Verify and publish activation
         run: |
-          if git diff --quiet -- assets/builds.js scripts/patch_build_roll_guide_v2.py; then
+          if git diff --quiet -- assets/builds.js; then
             echo "Warlord's Rest is not due yet or is already active."
             exit 0
           fi
           grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' assets/builds.js
           grep -Fq "Warlord's Rest · Lv162" assets/builds.js
-          grep -Fq 'BUILD_ROLL_GUIDE_WARLORD_V1' scripts/patch_build_roll_guide_v2.py
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/builds.js scripts/patch_build_roll_guide_v2.py
+          git add assets/builds.js
           git commit -m "Activate Warlord's Rest roll guide"
           git pull --rebase origin main
           git push origin main
