@@ -4864,9 +4864,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return out;
   }
 
-  function relicCapForCharacter(characterLevel){
+  function relicCapForCharacter(characterLevel,cfg=activeCalcConfig()){
     const lvl=Math.max(1,Math.floor(Number(characterLevel)||1));
-    // Community/live planner rule: Lv.100→+11, 110→+12, 120→+13, 130→+14, etc.
+    // S2_RELIC_14_LV131_DIRECT_V1: Charming Glance live evidence on Sep. 10 shows +13→+14 is locked through Lv.130 and unlocks at Character Lv.131.
+    if(cfg.key==='s2' && lvl<=130) return 13;
+    // Legacy/S1 rule retained outside the directly observed S2 Lv.130 gate.
     return lvl<100 ? 10 : Math.max(10,Math.floor(lvl/10)+1);
   }
   function categoryCapsForCharacter(characterLevel,cfg=activeCalcConfig()){
@@ -4874,7 +4876,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     if(cfg.key==='s1'){
       return {
         skill:Math.max(100,lvl),
-        relic:relicCapForCharacter(lvl),
+        relic:relicCapForCharacter(lvl,cfg),
         // Seasonal Fantomon progression sits one 10-level band ahead: Lv.120–129 → Fantomon 130, Lv.130–139 → Fantomon 140.
         fanto:Math.max(100,(Math.floor(lvl/10)+1)*10),
         gear:Infinity
@@ -4883,7 +4885,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     return {
       // Exact late-S2 skill/relic unlock laws are not sufficiently documented; keep future recommendations conservative.
       skill:Math.max(100,lvl),
-      relic:relicCapForCharacter(lvl),
+      relic:relicCapForCharacter(lvl,cfg),
       fanto:Math.max(100,lvl),
       // S2 seasonal Gear levels do not open until the Lv.130 floor is reached; from Lv.131 onward there is no fake 229 ceiling.
       gear:lvl<=130?130:Infinity
