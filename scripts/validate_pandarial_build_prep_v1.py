@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVATOR = ROOT / 'scripts' / 'activate_pandarial_build_prep_v1.py'
 DATA = ROOT / 'data' / 'pandarial-build-prep-v1.json'
-TARGETS = [ROOT / 'index.html', ROOT / '.github' / 'build-fantomons-inject.html']
+TARGETS = [ROOT / 'assets' / 'builds.js']
 
 spec = importlib.util.spec_from_file_location('pandarial_activator', ACTIVATOR)
 mod = importlib.util.module_from_spec(spec)
@@ -33,4 +33,4 @@ for path in TARGETS:
     assert "Destroyer:{\n      Solo:[pick('Nyxarchon','Main premium choice" in patched
     assert "With Pandarial, Luminous Shield → Light Sword Array" in patched
 
-print('Pandarial build prep validates cleanly against current index + maintained Fantomon source')
+print('Pandarial build prep validates cleanly against modular Builds runtime')
