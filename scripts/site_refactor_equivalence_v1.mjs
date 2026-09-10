@@ -25,8 +25,6 @@ const makePage = async file => {
   const errors=[];
   page.on('pageerror', e=>errors.push(String(e?.stack||e)));
   await page.goto(pathToFileURL(path.resolve(file)).href,{waitUntil:'load'});
-  // Refactor equivalence is about final rendered state, not sub-frame differences in
-  // transitions caused by moving the same CSS from inline tags to a stylesheet file.
   await page.addStyleTag({content:'*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}'});
   await page.waitForTimeout(450);
   if(errors.length) throw new Error(`${file} runtime errors:\n${errors.join('\n---\n')}`);
@@ -39,6 +37,7 @@ const after = await makePage(afterPath);
 const normalizeBody = async page => page.evaluate(() => {
   const clone=document.body.cloneNode(true);
   clone.querySelectorAll('script,style,link[rel~="stylesheet"]').forEach(x=>x.remove());
+  clone.querySelectorAll('[data-last-solve-ms]').forEach(x=>x.removeAttribute('data-last-solve-ms'));
   return clone.innerHTML;
 });
 
