@@ -73,4 +73,4 @@ jobs:
       - name: Full browser smoke
         run: node scripts/site_smoke_test.mjs
 
-# CI touch: validate projected season-end level now matches neighboring calculator field styling.
+# CI touch: validate average Gear input, exact Gear override, and cart-line removal.
