@@ -168,6 +168,18 @@ const calcYieldMs = Date.now()-calcStarted;
 assert(!(await page.locator('#calculatorSection').evaluate(el => el.hidden)), 'Calculator tab did not reveal #calculatorSection');
 assert(calcYieldMs < 5000, `calculator blocked the browser for ${calcYieldMs}ms`);
 
+// Pixel geometry regression: projected level must exactly match Bed EXP.
+const projectionGeometry = await page.evaluate(()=>{
+  const bed=document.getElementById('bedExp')?.getBoundingClientRect();
+  const projected=document.getElementById('projectedCharacter')?.getBoundingClientRect();
+  return bed&&projected?{bed:{top:bed.top,height:bed.height},projected:{top:projected.top,height:projected.height}}:null;
+});
+assert(projectionGeometry, 'projection/Bed EXP geometry unavailable');
+assert(Math.abs(projectionGeometry.bed.height-projectionGeometry.projected.height)<0.51,
+  `projected field height mismatch: Bed ${projectionGeometry.bed.height}px vs projected ${projectionGeometry.projected.height}px`);
+assert(Math.abs(projectionGeometry.bed.top-projectionGeometry.projected.top)<0.51,
+  `projected field top mismatch: Bed ${projectionGeometry.bed.top}px vs projected ${projectionGeometry.projected.top}px`);
+
 await page.locator('.sectionSwitch button[data-section="timeline"]').click({timeout:5000});
 await page.waitForTimeout(30);
 assert(!(await page.locator('#timelineSection').evaluate(el => el.hidden)), 'Timeline tab did not reveal #timelineSection after calculator');

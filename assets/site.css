@@ -4449,3 +4449,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     height:44px!important;
   }
 }
+
+
+/* PROJECTION_FIELD_PIXEL_MATCH_V3 */
+/* Screenshot measurement: Bed EXP = 48 rendered px; projected = 46 px. */
+.projectionCallout.projectionInline.projectionGridCell>strong{
+  min-height:44px!important;
+  height:44px!important;
+}
+@media(max-width:760px){
+  .projectionCallout.projectionInline.projectionGridCell>strong{
+    min-height:44px!important;
+    height:44px!important;
+  }
+}
