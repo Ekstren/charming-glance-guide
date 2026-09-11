@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture remaining small/public SxS game-data assignments missed by the main snapshotter.
+"""Capture remaining small/public SxS game-data payloads missed by the main snapshotter.
 
 Only structured game facts are retained. This does not mirror UI/source/assets.
 """
@@ -23,10 +23,15 @@ DROP_KEYS = {
     "thumbnail", "thumbnails", "screenshot", "screenshots",
 }
 
-SOURCES = [
+ASSIGNMENT_SOURCES = [
     ("sxs-loadout-builder/fantomons.js", "FANTOMON_CATALOG", "sxs-loadout-builder/fantomons.json"),
     ("sxs-primo-calculator/server-data.js", "SXS_SERVER_ROWS", "sxs-primo-calculator/server-data.json"),
     ("wardrobe-assets/catalog.js", "WARDROBE_DATA", "wardrobe-assets/catalog.json"),
+]
+
+# Standalone structured factual tables that are not wired through a window.X assignment.
+JSON_SOURCES = [
+    ("tools/skill-entity-links.json", "tools/skill-entity-links.json"),
 ]
 
 
@@ -80,7 +85,6 @@ def parse_assignment(path: Path, expected: str) -> Any:
     if rhs.endswith(";"):
         rhs = rhs[:-1].rstrip()
 
-    # Most generated payloads are strict JSON already.
     try:
         return json.loads(rhs)
     except json.JSONDecodeError:
@@ -101,6 +105,21 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n", encoding="utf-8")
 
 
+def record_output(manifest: dict[str, Any], rel: str, dest: Path, src: Path, variable: str | None = None) -> None:
+    manifest["skipped"] = [x for x in manifest.get("skipped", []) if x.get("source") != rel]
+    manifest["outputs"] = [x for x in manifest.get("outputs", []) if x.get("source") != rel]
+    row = {
+        "source": rel,
+        "output": str(dest),
+        "source_sha256": sha256(src),
+        "output_bytes": dest.stat().st_size,
+    }
+    if variable:
+        row["variable"] = variable
+    manifest["outputs"].append(row)
+    print(f"captured {rel} -> {dest} ({dest.stat().st_size:,} bytes)")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--upstream", required=True, type=Path)
@@ -110,7 +129,7 @@ def main() -> int:
     manifest_path = args.output / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
-    for rel, variable, out_rel in SOURCES:
+    for rel, variable, out_rel in ASSIGNMENT_SOURCES:
         src = args.upstream / rel
         raw = parse_assignment(src, variable)
         clean = scrub(raw)
@@ -118,18 +137,17 @@ def main() -> int:
             raise ValueError(f"{rel}: empty after scrub")
         dest = args.output / "0xnobody" / out_rel
         write_json(dest, clean)
+        record_output(manifest, rel, dest, src, variable)
 
-        # Main snapshotter may have recorded this as skipped; replace that record.
-        manifest["skipped"] = [x for x in manifest.get("skipped", []) if x.get("source") != rel]
-        manifest["outputs"] = [x for x in manifest.get("outputs", []) if x.get("source") != rel]
-        manifest["outputs"].append({
-            "source": rel,
-            "variable": variable,
-            "output": str(dest),
-            "source_sha256": sha256(src),
-            "output_bytes": dest.stat().st_size,
-        })
-        print(f"captured {rel} -> {dest} ({dest.stat().st_size:,} bytes)")
+    for rel, out_rel in JSON_SOURCES:
+        src = args.upstream / rel
+        raw = json.loads(src.read_text(encoding="utf-8"))
+        clean = scrub(raw)
+        if clean is SKIP:
+            raise ValueError(f"{rel}: empty after scrub")
+        dest = args.output / "0xnobody" / out_rel
+        write_json(dest, clean)
+        record_output(manifest, rel, dest, src)
 
     manifest["outputs"] = sorted(manifest["outputs"], key=lambda x: (x.get("source", ""), x.get("output", "")))
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
