@@ -61,12 +61,3 @@ a=a.replace("buildMetrics.classTabs.forEach(b=>assert(b.h>=38,`w${width}: Builds
 a=a.replace("assert(companions.overflow<=1,`w${width}: Companions overflows by ${companions.overflow}px`);",
             "assert(companions.overflow<=1,`w${width}: Companions overflows by ${companions.overflow}px`);\n  companions.buttons.forEach(b=>assert(b.h>=44,`w${width}: Companion class tab ${b.text} only ${b.h}px tall`));")
 audit.write_text(a)
-
-ci=Path('.github/workflows/site-ci.yml')
-c=ci.read_text()
-if 'Mobile layout regression' not in c:
-    anchor='      - name: Full browser smoke\n        run: node scripts/site_smoke_test.mjs\n'
-    extra=anchor+'      - name: Mobile layout regression\n        run: node scripts/mobile_audit_v1.mjs\n'
-    if anchor not in c:
-        raise SystemExit('Site CI smoke anchor missing')
-    ci.write_text(c.replace(anchor,extra,1))
