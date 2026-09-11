@@ -807,13 +807,19 @@
   }
   function finishEarlyDaysValue(){
     const raw=Number($('finishEarlyDays')?.value);
-    return Number.isFinite(raw)?Math.max(0,Math.floor(raw)):0;
+    // FINISH_EARLY_HALF_DAY_V1: planner cutoff supports 0.5-day increments.
+    return Number.isFinite(raw)?Math.max(0,Math.round(raw*2)/2):0;
   }
   function finishScoreCutoffMs(cfg=activeCalcConfig()){
     const days=finishEarlyDaysValue();
     if(days<=0) return cfg.end.getTime();
     const endIso=pacificIsoAt(cfg.end.getTime());
-    const cutoff=pacificLocalMs(isoAddDays(endIso,-days),6,0);
+    const wholeDays=Math.floor(days);
+    const hasHalf=days-wholeDays>=0.5;
+    // Preserve reset-day semantics across DST. A half day lands at 6 PM Pacific on
+    // the preceding local date instead of subtracting a blind 12h from a UTC timestamp.
+    const cutoffIso=isoAddDays(endIso,-(wholeDays+(hasHalf?1:0)));
+    const cutoff=pacificLocalMs(cutoffIso,hasHalf?18:6,0);
     return Math.min(cfg.end.getTime(),cutoff);
   }
   function upgradeFinishCutoffMs(cfg=activeCalcConfig()){

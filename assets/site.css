@@ -4736,3 +4736,27 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   .planCosts span{padding:9px}
 }
 /* MOBILE_CALCULATOR_PASS_V1_END */
+
+/* FINISH_EARLY_HALF_DAY_SIZE_V1_START */
+/* Slightly larger than the compact v2 control while staying intentionally small. */
+.finishEarlyCard{
+  min-height:46px!important;
+  padding:8px 11px!important;
+  gap:6px!important;
+  font-size:9px!important;
+}
+.finishEarlyCard input{
+  width:46px!important;
+  min-width:46px!important;
+  max-width:46px!important;
+  flex-basis:46px!important;
+  height:30px!important;
+  min-height:30px!important;
+  font-size:11px!important;
+}
+.finishEarlyCard em{font-size:9px!important}
+@media(max-width:760px){
+  .finishEarlyCard{min-height:48px!important;padding:9px 12px!important}
+  .finishEarlyCard input{width:48px!important;min-width:48px!important;max-width:48px!important;flex-basis:48px!important;height:32px!important;min-height:32px!important;font-size:12px!important}
+}
+/* FINISH_EARLY_HALF_DAY_SIZE_V1_END */
