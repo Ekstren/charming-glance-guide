@@ -15,7 +15,7 @@
     s1:{key:'s1',name:'Season 1',nextName:'Season 2',end:S1_END,deadline:'device-local',scoreFloor:100,relicFloor:10,starBase:10,scorePerStar:100,weights:{character:100,gear:38,skill:13,relic:57,fanto:14},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:90,realm:{ore:610,essence:1000,sand:568,rolla:9000},map:{ore:900,essence:1475,sand:838,rolla:9000,bigRate:0},optimizeRelic:true,optimizeFanto:true},
     // S2 scoring constants are well-established. Live Global evidence confirms Gear, Skills and Relic ranks can advance above Character level.
     // The optimizer therefore treats those three systems as resource/table-limited rather than Character-level gated.
-    // Fantomon future planning remains conservative until its Global unlock law is verified.
+    // Fantomon growth uses a resonance-style 10-level soft gate: the next decade opens only after all four scoring Fantomons reach the current decade boundary.
     s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1200,essence:1500,sand:1000,rolla:11800},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true}
   };
 
@@ -38,7 +38,7 @@
   // PRESEASON_UNLOCK_PREVIEW_V4: Lv.120-130 may preview the first post-floor Fantomon
   // planning state without awarding fake pre-Lv.130 Season Power. Gear, Skills and Relic
   // ranks are not Character-level gated in S2; this preview now applies only to the
-  // still-conservative Fantomon planning rule.
+  // resonance-gated Fantomon planning rule.
   const S2_FULL_SEASONAL_PREVIEW_LEVEL = 131;
 
   const S2_PRIMO_META = Object.freeze({
@@ -869,17 +869,21 @@
     }
     return categoryStateFromAverage(n(avgId,fallback),count,minLevel,maxLevel,floor,weight);
   }
-  function buildCategoryOptionsFromLevels(baseLevels,cap,floor,weight,stepCost){
+  function buildCategoryOptionsFromLevels(baseLevels,cap,floor,weight,stepCost,gateSpan=0){
     const levels=baseLevels.slice();
     let score=categoryScoreFromLevels(levels,floor,weight),cost=0,adds=0;
     const out=[{levels:levels.slice(),avg:averageLevels(levels),score,cost,adds}];
     const hardCap=Math.floor(cap);
+    const gate=Math.max(0,Math.floor(Number(gateSpan)||0));
     let safety=0;
     while(safety++<10000){
+      const minLevel=gate?Math.min(...levels):-Infinity;
+      const gateCeiling=gate?(Math.floor(minLevel/gate)*gate+gate):Infinity;
       let bestIdx=-1,bestCost=Infinity,bestLevel=Infinity;
       for(let i=0;i<levels.length;i++){
         const lvl=levels[i];
         if(lvl>=hardCap) continue;
+        if(gate && lvl+1>gateCeiling) continue;
         const c=Number(stepCost(lvl));
         if(!Number.isFinite(c)) continue;
         if(c<bestCost-1e-9 || (Math.abs(c-bestCost)<1e-9 && lvl<bestLevel)){
@@ -945,7 +949,7 @@
       // planning ceilings; user-entered actual values remain uncapped below.
       skill:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_UPGRADE_RULES.skillBlessingLimit,
       relic:relicCapForCharacter(lvl,cfg),
-      fanto:Math.max(100,lvl),
+      fanto:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_FANTOMON_EXP_FROM_130.length,
       gear:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_UPGRADE_RULES.gearBlessingLimit
     };
   }
@@ -971,6 +975,23 @@
     return categoryCapsForCharacter(optimizerPlanningLevel(projectedLevel,cfg),cfg);
   }
   window.__sxsPlannerCapProbeV1=(characterLevel=131)=>({...categoryCapsForCharacter(characterLevel,CALC_SEASONS.s2)});
+  window.__sxsResonanceGateProbeV1=()=>{
+    const cfg=CALC_SEASONS.s2;
+    const relicBase=[15,15,...Array(18).fill(14)];
+    const relic=buildCategoryOptionsFromLevels(relicBase,18,cfg.relicFloor,cfg.weights.relic,l=>relicStepSand(l,cfg),1);
+    const relicAll15=relic.findIndex(o=>Math.min(...o.levels)>=15);
+    const relicFirst16=relic.findIndex(o=>Math.max(...o.levels)>=16);
+    const relicLegal=relic.every(o=>Math.max(...o.levels)<=Math.min(...o.levels)+1);
+    const fantoBase=[150,150,150,140];
+    const fanto=buildCategoryOptionsFromLevels(fantoBase,170,cfg.scoreFloor,cfg.weights.fanto,l=>fantoStepTreatCost(l,cfg),10);
+    const fantoAll150=fanto.findIndex(o=>Math.min(...o.levels)>=150);
+    const fantoFirst151=fanto.findIndex(o=>Math.max(...o.levels)>=151);
+    const fantoLegal=fanto.every(o=>{
+      const min=Math.min(...o.levels),max=Math.max(...o.levels);
+      return max<=Math.floor(min/10)*10+10;
+    });
+    return {relicLegal,relicAll15,relicFirst16,fantoLegal,fantoAll150,fantoFirst151};
+  };
 
   function gearStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
@@ -1569,8 +1590,8 @@
     return {
       skill,relic,fanto,
       skillOptions:buildCategoryOptionsFromLevels(skill.levels,Math.max(Math.ceil(skill.avg),projectedCaps.skill),cfg.scoreFloor,cfg.weights.skill,l=>skillStepCost(l,cfg)),
-      relicOptions:cfg.optimizeRelic?buildCategoryOptionsFromLevels(relic.levels,Math.max(Math.ceil(relic.avg),projectedCaps.relic),cfg.relicFloor,cfg.weights.relic,l=>relicStepSand(l,cfg)):[{...relic,cost:0,adds:0}],
-      fantoOptions:cfg.optimizeFanto?buildCategoryOptionsFromLevels(fanto.levels,Math.max(Math.ceil(fanto.avg),projectedCaps.fanto),cfg.scoreFloor,cfg.weights.fanto,l=>fantoStepTreatCost(l,cfg)):[{...fanto,cost:0,adds:0}]
+      relicOptions:cfg.optimizeRelic?buildCategoryOptionsFromLevels(relic.levels,Math.max(Math.ceil(relic.avg),projectedCaps.relic),cfg.relicFloor,cfg.weights.relic,l=>relicStepSand(l,cfg),1):[{...relic,cost:0,adds:0}],
+      fantoOptions:cfg.optimizeFanto?buildCategoryOptionsFromLevels(fanto.levels,Math.max(Math.ceil(fanto.avg),projectedCaps.fanto),cfg.scoreFloor,cfg.weights.fanto,l=>fantoStepTreatCost(l,cfg),10):[{...fanto,cost:0,adds:0}]
     };
   }
 

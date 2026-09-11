@@ -40,6 +40,16 @@ if(!(s2Caps.skill>131 && s2Caps.relic>15 && s2Caps.gear>131)){
   throw new Error(`S2 Gear/Skill/Relic planner is still Character-level capped: ${JSON.stringify(s2Caps)}`);
 }
 console.log(`S2 CAPS char131: Gear ${s2Caps.gear} · Skills ${s2Caps.skill} · Relics +${s2Caps.relic} · Fantomon ${s2Caps.fanto}`);
+if(!(s2Caps.fanto>140)) throw new Error(`S2 Fantomon planning is still Character-level capped: ${JSON.stringify(s2Caps)}`);
+const resonance=await page.evaluate(()=>window.__sxsResonanceGateProbeV1?.());
+if(!resonance) throw new Error('missing S2 resonance-gate regression probe');
+if(!resonance.relicLegal || resonance.relicFirst16!==resonance.relicAll15+1){
+  throw new Error(`Relic resonance gate regressed: ${JSON.stringify(resonance)}`);
+}
+if(!resonance.fantoLegal || resonance.fantoFirst151!==resonance.fantoAll150+1){
+  throw new Error(`Fantomon decade resonance gate regressed: ${JSON.stringify(resonance)}`);
+}
+console.log(`S2 GATES relic all +15 @${resonance.relicAll15}, first +16 @${resonance.relicFirst16} · Fanto all 150 @${resonance.fantoAll150}, first 151 @${resonance.fantoFirst151}`);
 
 const base={
   targetStars:'920',historicalStars:'253',charLevel:'130',charExp:'2005316',bedExp:'280772',
