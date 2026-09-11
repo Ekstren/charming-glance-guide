@@ -76,8 +76,8 @@
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
     charLevel:130,charExp:0,bedExp:0,
-    skillLevel:130,relicLevel:13,fantomonLevel:130,
-    gearWeapon:130,gearOffhand:130,gearHelmet:130,gearArmor:130,gearBoots:130,
+    skillLevel:130,relicLevel:13,fantomonLevel:130,gearLevel:130,
+    exactGearLevels:'',
     // S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.
     oreCurrent:0,oreRate:1000,essenceCurrent:0,essenceRate:1200,
     sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:800,
@@ -94,7 +94,7 @@
      itself must contribute exactly 0 Season Power before the optimizer recommends upgrades. */
   function validateS2ScoringStartDefaults(){
     const d=S2_SCORING_START_DEFAULTS,c=CALC_SEASONS.s2,w=c.weights;
-    const gear=[d.gearWeapon,d.gearOffhand,d.gearHelmet,d.gearArmor,d.gearBoots];
+    const gear=Array(5).fill(Number(d.gearLevel)||0);
     const score=
       Math.max(0,(Number(d.charLevel)||0)-c.scoreFloor)*w.character +
       gear.reduce((sum,l)=>sum+Math.max(0,(Number(l)||0)-c.scoreFloor)*w.gear,0) +
@@ -150,11 +150,12 @@
   const ASTRAL_LABELS={atk:'ATK',def:'DEF',hp:'HP',spd:'SPD',ascension:'Ascension drop rate',gem:'Gem acquisition',dungeon:'Dungeon double reward',exp:'EXP gain'};
   const ASTRAL_ORDER=['atk','def','hp','spd','ascension','gem','dungeon','exp'];
 
-  const GEAR_IDS = ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'];
+  const LEGACY_GEAR_IDS = ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'];
+  const GEAR_OUTPUT_IDS = ['targetGearWeapon','targetGearOffhand','targetGearHelmet','targetGearArmor','targetGearBoots'];
   const INPUT_IDS = [
-    'targetStars','historicalStars','charLevel','charExp','bedExp','skillLevel','relicLevel','fantomonLevel',
-    ...GEAR_IDS,'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
-    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels'
+    'targetStars','historicalStars','charLevel','charExp','bedExp','skillLevel','relicLevel','fantomonLevel','gearLevel',
+    'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
+    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels','exactGearLevels'
   ];
   const CHECK_IDS = [];
   const defaults = Object.create(null);
@@ -639,6 +640,13 @@
         if(state.realmDailyEssence===undefined) state.realmDailyEssence=String(oldDaily);
         if(state.realmDailySand===undefined) state.realmDailySand=String(oldDaily);
       }
+      if(hadState && state.gearLevel===undefined){
+        const legacy=LEGACY_GEAR_IDS.map(id=>Number(state[id])).filter(Number.isFinite);
+        if(legacy.length===5){
+          state.gearLevel=String(legacy.reduce((a,b)=>a+b,0)/legacy.length);
+          if(state.exactGearLevels===undefined && new Set(legacy).size>1) state.exactGearLevels=legacy.join(', ');
+        }
+      }
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && $(id)) $(id).checked = !!state[id]; });
       if(!hadState && activeCalcConfig().key==='s2') applyS2ScoringStartDefaults();
@@ -868,6 +876,9 @@
       return {levels,avg:averageLevels(levels),score:categoryScoreFromLevels(levels,floor,weight),exact:true};
     }
     return categoryStateFromAverage(n(avgId,fallback),count,minLevel,maxLevel,floor,weight);
+  }
+  function gearStateFromUser(cfg,maxLevel,fallback){
+    return categoryStateFromUser('gearLevel','exactGearLevels',5,100,maxLevel,cfg.scoreFloor,cfg.weights.gear,fallback);
   }
   function buildCategoryOptionsFromLevels(baseLevels,cap,floor,weight,stepCost,gateSpan=0){
     const levels=baseLevels.slice();
@@ -1601,7 +1612,7 @@
     const current=characterSnapshot(cfg);
     const currentCaps=categoryInputCapsForCharacter(current.level,cfg);
     const projectedCaps=optimizerCategoryCaps(p,cfg);
-    const baseGear=GEAR_IDS.map(id=>Math.max(100,Math.floor(n(id,143))));
+    const baseGear=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143).levels.slice();
     const cats=planningCategoryState(cfg,currentCaps,projectedCaps);
     const gearOptions=buildGearOptions(baseGear,cfg,desired,projectedCaps.gear);
     const lastOptionCost=options=>{
@@ -2848,14 +2859,14 @@
       $('skillLevel').min='100'; setInputMax('skillLevel',currentCaps.skill); $('skillLevel').step='0.125';
       $('relicLevel').min='10'; setInputMax('relicLevel',currentCaps.relic); $('relicLevel').step='0.05';
       $('fantomonLevel').min='100'; setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
-      GEAR_IDS.forEach(id=>{if($(id)) $(id).min='100';});
+      if($('gearLevel')){$('gearLevel').min='100';setInputMax('gearLevel',currentCaps.gear);$('gearLevel').step='0.2';}
     } else {
       $('seasonRulesHint').innerHTML='Season 2 data is preloaded: <b>Material Realm reaches its S2 max at Lv.120</b>; Season Power scoring starts at Lv.130.';
       const currentCaps=categoryInputCapsForCharacter(characterSnapshot(cfg).level,cfg);
       $('skillLevel').min='100'; setInputMax('skillLevel',currentCaps.skill); $('skillLevel').step='0.125';
       $('relicLevel').min='10'; setInputMax('relicLevel',currentCaps.relic); $('relicLevel').step='0.05';
       $('fantomonLevel').min='100'; setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
-      GEAR_IDS.forEach(id=>{if($(id)) $(id).min='100';});
+      if($('gearLevel')){$('gearLevel').min='100';setInputMax('gearLevel',currentCaps.gear);$('gearLevel').step='0.2';}
     }
     const mismatch=snapshotSeason!==cfg.key;
     $('calcSeasonNotice').hidden=!mismatch;
@@ -2947,7 +2958,8 @@
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
     const normalInputFloor=100;
     const relicInputFloor=10;
-    const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
+    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143);
+    const gear=gearState.levels;
     const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
     const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
     const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
@@ -3081,7 +3093,8 @@
     const projectedCaps=optimizerCategoryCaps(p,cfg);
     const normalInputFloor=100;
     const relicInputFloor=10;
-    const gear=GEAR_IDS.map(id=>Math.max(normalInputFloor,Math.floor(n(id,cfg.key==='s2'?130:143))));
+    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143);
+    const gear=gearState.levels;
     const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
     const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
     const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
@@ -3089,7 +3102,8 @@
     const exactChecks=[
       ['exactSkillLevels',8,normalInputFloor,currentCaps.skill,'Skills'],
       ['exactRelicLevels',20,relicInputFloor,currentCaps.relic,'Relics'],
-      ['exactFantoLevels',4,normalInputFloor,currentCaps.fanto,'Fantomons']
+      ['exactFantoLevels',4,normalInputFloor,currentCaps.fanto,'Fantomons'],
+      ['exactGearLevels',5,normalInputFloor,currentCaps.gear,'Gear']
     ].map(([id,count,min,max,label])=>({label,...parseExactLevelInput(id,count,min,max)}));
     const exactStatus=$('exactProgressStatus');
     if(exactStatus){
@@ -3132,7 +3146,6 @@
     $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 unknown EXP steps use the community-style ~1.83M/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
     if($('levelSummary')) $('levelSummary').textContent=`Skills ${formatAverage(skill)} · Relics +${formatAverage(relic)} · Fantomons ${formatAverage(fanto)} · Gear avg ${(gear.reduce((a,b)=>a+b,0)/5).toFixed(0)}`;
 
-    $('graceText').textContent=`Effective Cart/Stamina production: ${resources.cartHours.toFixed(1)}h (${resources.wallResourceHours.toFixed(1)} wall hours + ${resources.boostResets} reset boost${resources.boostResets===1?'':'s'}). Runs through the ${cfg.name} reset.`;
     const allocation=staminaPlan||resources.staminaAllocation||{ore:0,essence:0,sand:0,rolla:0,unassigned:resources.staminaNodes||0};
     const added=resources.staminaAdded||{ore:0,essence:0,sand:0,rolla:0};
     renderStaminaCurrentPlan(allocation,added,resources);
@@ -3202,7 +3215,7 @@
       $('currentStars').textContent=fmt(targetStars);
       if(recommendedSection) recommendedSection.hidden=true;
       $('targetSkills').textContent=formatLevelMix(skillState.levels); $('targetRelics').textContent=formatLevelMix(relicState.levels,{plus:true}); $('targetFantomons').textContent=formatLevelMix(fantoState.levels);
-      GEAR_IDS.forEach((id,i)=>$(['targetGearWeapon','targetGearOffhand','targetGearHelmet','targetGearArmor','targetGearBoots'][i]).textContent=gear[i]);
+      GEAR_OUTPUT_IDS.forEach((id,i)=>$(id).textContent=gear[i]);
       $('optimizerSummary').textContent=gearLocked?'The requested score cannot be reached while Gear is locked under the current season caps.':'The requested score exceeds the currently supported progression caps/level gates; this is a score-cap issue, not a Material Realm shortage.';
       $('optimizedScore').textContent=`${fmt(baselineScore)} / ${fmt(desired)} score · target stays ${fmt(targetStars)} Primostars`;
       $('summaryOptimizedScore').textContent='—'; if($('targetStatus')){$('targetStatus').textContent='cap';$('targetStatus').classList.add('notMet');}

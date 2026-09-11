@@ -51,10 +51,20 @@ if(!resonance.fantoLegal || resonance.fantoFirst151!==resonance.fantoAll150+1){
 }
 console.log(`S2 GATES relic all +15 @${resonance.relicAll15}, first +16 @${resonance.relicFirst16} · Fanto all 150 @${resonance.fantoAll150}, first 151 @${resonance.fantoFirst151}`);
 
+const gearEditor=await page.evaluate(()=>({
+  average:!!document.getElementById('gearLevel'),
+  exact:!!document.getElementById('exactGearLevels'),
+  legacy:['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'].filter(id=>document.getElementById(id)).length,
+  cartLine:!!document.getElementById('graceText')
+}));
+if(!gearEditor.average || !gearEditor.exact || gearEditor.legacy!==0 || gearEditor.cartLine){
+  throw new Error(`compact Gear editor regression: ${JSON.stringify(gearEditor)}`);
+}
+console.log('GEAR EDITOR average + exact override · legacy five-field row removed · cart production line removed');
+
 const base={
   targetStars:'920',historicalStars:'253',charLevel:'130',charExp:'2005316',bedExp:'280772',
-  skillLevel:'130',relicLevel:'13',fantomonLevel:'130',
-  gearWeapon:'130',gearOffhand:'130',gearHelmet:'130',gearArmor:'130',gearBoots:'130',
+  skillLevel:'130',relicLevel:'13',fantomonLevel:'130',gearLevel:'130',exactGearLevels:'',
   oreRate:'1184',essenceRate:'1387',sandRate:'850',treatRate:'91',
   shopRefreshesDaily:'0',realmDailyOre:'4',realmDailyEssence:'4',realmDailySand:'4'
 };
