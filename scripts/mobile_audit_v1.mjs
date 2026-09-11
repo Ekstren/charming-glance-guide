@@ -30,7 +30,8 @@ for (const width of widths) {
   // Top-level navigation should fit and remain comfortably tappable.
   const nav=await page.locator('.sectionSwitch > button[data-section]').evaluateAll(btns=>btns.map(b=>{const r=b.getBoundingClientRect();return {text:b.textContent.trim(),x:r.x,y:r.y,w:r.width,h:r.height};}));
   assert(nav.length===4,`w${width}: expected four top nav buttons`);
-  nav.forEach(b=>assert(b.h>=40,`w${width}: top nav ${b.text} tap target only ${b.h}px`));
+  nav.forEach(b=>assert(b.h>=44,`w${width}: top nav ${b.text} tap target only ${b.h}px`));
+  if(width<=430) assert(base.nav<=62,`w${width}: top navigation still consumes ${base.nav}px vertically`);
   if(nav.length===4) assert(nav[3].x+nav[3].w<=width+1,`w${width}: top nav clips right edge`);
 
   // Timeline.
@@ -43,18 +44,24 @@ for (const width of widths) {
   }));
   assert(timeline.overflow<=1,`w${width}: Timeline overflows by ${timeline.overflow}px`);
   assert(timeline.groups>0,`w${width}: Timeline did not render`);
+  timeline.filters.forEach((b,i)=>assert(b.h>=40,`w${width}: timeline filter ${i+1} only ${b.h}px tall`));
 
   // Builds.
   await page.locator('.sectionSwitch button[data-section="builds"]').click();
   await page.waitForTimeout(100);
   const buildMetrics=await page.evaluate(()=>({
     overflow:document.documentElement.scrollWidth-window.innerWidth,
-    classTabs:[...document.querySelectorAll('#classTabs button')].filter(x=>x.offsetParent!==null).map(x=>{const r=x.getBoundingClientRect();return {text:x.textContent.trim(),w:r.width,h:r.height}}),
-    scenarioTabs:[...document.querySelectorAll('#buildContent .metaBuildTabs button')].filter(x=>x.offsetParent!==null).map(x=>{const r=x.getBoundingClientRect();return {text:x.textContent.trim(),w:r.width,h:r.height}}),
+    classTabs:[...document.querySelectorAll('#classTabs button')].filter(x=>x.offsetParent!==null).map(x=>{const r=x.getBoundingClientRect();return {text:x.textContent.trim(),w:r.width,h:r.height,x:r.x,y:r.y}}),
+    scenarioTabs:[...document.querySelectorAll('#buildContent .metaBuildTabs button')].filter(x=>x.offsetParent!==null).map(x=>{const r=x.getBoundingClientRect();return {text:x.textContent.trim(),w:r.width,h:r.height,x:r.x,y:r.y}}),
     cards:[...document.querySelectorAll('#buildContent .buildCard')].filter(x=>x.offsetParent!==null).map(x=>{const r=x.getBoundingClientRect();return {w:r.width,x:r.x,right:r.right}})
   }));
   assert(buildMetrics.overflow<=1,`w${width}: Builds overflows by ${buildMetrics.overflow}px`);
-  buildMetrics.classTabs.forEach(b=>assert(b.h>=38,`w${width}: Builds class tab ${b.text} only ${b.h}px tall`));
+  buildMetrics.classTabs.forEach(b=>assert(b.h>=44,`w${width}: Builds class tab ${b.text} only ${b.h}px tall`));
+  buildMetrics.scenarioTabs.forEach(b=>assert(b.h>=40,`w${width}: Builds scenario tab ${b.text} only ${b.h}px tall`));
+  if(width<=600 && buildMetrics.classTabs.length===4){
+    const rows=[...new Set(buildMetrics.classTabs.map(b=>Math.round(b.y)))];
+    assert(rows.length===2,`w${width}: Builds class tabs should be a compact 2x2 grid, found ${rows.length} rows`);
+  }
   buildMetrics.cards.forEach(c=>assert(c.x>=-0.5 && c.right<=width+0.5,`w${width}: Builds card clips viewport (${c.x}..${c.right})`));
 
   // Companions.
@@ -65,6 +72,7 @@ for (const width of widths) {
     buttons:[...document.querySelectorAll('#companionsSection button')].filter(x=>x.offsetParent!==null).slice(0,20).map(x=>{const r=x.getBoundingClientRect();return {text:x.textContent.trim(),h:r.height,w:r.width}})
   }));
   assert(companions.overflow<=1,`w${width}: Companions overflows by ${companions.overflow}px`);
+  companions.buttons.forEach(b=>assert(b.h>=44,`w${width}: Companion class tab ${b.text} only ${b.h}px tall`));
 
   // Calculator.
   await page.locator('.sectionSwitch button[data-section="calculator"]').click();
