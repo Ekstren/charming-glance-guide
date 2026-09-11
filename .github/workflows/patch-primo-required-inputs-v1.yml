@@ -1,4 +1,4 @@
-name: Patch Primostar required inputs v1
+name: Patch Primostar required inputs v2
 
 on:
   push:
@@ -25,6 +25,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/runtime.js index.html
-          git commit -m 'Guard Primostar optimizer until production inputs exist'
+          git add assets/runtime.js
+          git commit -m 'Require all Primostar production inputs before solve'
           git push origin HEAD:main
