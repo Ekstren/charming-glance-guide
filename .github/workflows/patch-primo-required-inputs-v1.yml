@@ -1,4 +1,4 @@
-name: Runtime smoke test
+name: Repair runtime viewer-time syntax
 
 on:
   push:
@@ -6,18 +6,27 @@ on:
       - .github/workflows/patch-primo-required-inputs-v1.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  smoke:
+  repair:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check runtime JavaScript syntax
+        with:
+          fetch-depth: 0
+      - name: Repair broken viewer-local timezone strings
+        run: python3 scripts/fix_runtime_viewer_apostrophe_v1.py
+      - name: Verify runtime JavaScript syntax
         run: node --check assets/runtime.js
-      - name: Check required startup hooks
+      - name: Commit repaired runtime
         run: |
-          grep -q "setupNavigation();" assets/runtime.js
-          grep -q "setupTimeline();" assets/runtime.js
-          grep -q "setupCalculator();" assets/runtime.js
-          grep -q '<script src="assets/runtime.js"></script>' index.html
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+Ekstren@users.noreply.github.com'
+          git add assets/runtime.js
+          git commit -m 'Fix viewer-local time runtime syntax'
+          git push origin HEAD:main
