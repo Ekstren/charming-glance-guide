@@ -4335,3 +4335,47 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     white-space:nowrap;
   }
 }
+
+
+/* PROJECTION_FIELD_MATCH_V1
+   Make the projected season-end level look like the neighboring calculator fields. */
+.projectionCallout.projectionInline.projectionGridCell{
+  border:0!important;
+  background:transparent!important;
+  border-radius:0!important;
+  padding:0!important;
+  margin:0!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:4px!important;
+  align-self:stretch;
+}
+.projectionCallout.projectionInline.projectionGridCell>span{
+  color:var(--muted)!important;
+  letter-spacing:.06em!important;
+  text-transform:uppercase!important;
+  font-size:9px!important;
+  font-weight:850!important;
+  line-height:1.5!important;
+}
+.projectionCallout.projectionInline.projectionGridCell>strong{
+  grid-area:auto!important;
+  border:1px solid var(--line)!important;
+  background:var(--bg)!important;
+  width:100%!important;
+  min-height:38px!important;
+  color:var(--ink)!important;
+  border-radius:10px!important;
+  padding:7px 10px!important;
+  font-size:14px!important;
+  font-weight:750!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  white-space:nowrap;
+}
+@media(max-width:700px){
+  .projectionCallout.projectionInline.projectionGridCell{gap:4px!important}
+  .projectionCallout.projectionInline.projectionGridCell>span{font-size:10px!important;letter-spacing:.045em!important}
+  .projectionCallout.projectionInline.projectionGridCell>strong{min-height:44px!important;font-size:14px!important;padding:9px 11px!important}
+}
