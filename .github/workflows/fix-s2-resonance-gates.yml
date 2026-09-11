@@ -1,0 +1,76 @@
+name: Fix S2 resonance gates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-s2-resonance-gates.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply resonance-gate correction
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          runtime=Path('assets/runtime.js')
+          s=runtime.read_text()
+
+          old="function buildCategoryOptionsFromLevels(baseLevels,cap,floor,weight,stepCost){"
+          new="function buildCategoryOptionsFromLevels(baseLevels,cap,floor,weight,stepCost,gateSpan=0){"
+          if old not in s:
+              raise SystemExit('buildCategoryOptionsFromLevels signature anchor missing')
+          s=s.replace(old,new,1)
+
+          old="""    const hardCap=Math.floor(cap);\n    let safety=0;\n    while(safety++<10000){\n      let bestIdx=-1,bestCost=Infinity,bestLevel=Infinity;\n      for(let i=0;i<levels.length;i++){\n        const lvl=levels[i];\n        if(lvl>=hardCap) continue;\n"""
+          new="""    const hardCap=Math.floor(cap);\n    const gate=Math.max(0,Math.floor(Number(gateSpan)||0));\n    let safety=0;\n    while(safety++<10000){\n      const minLevel=gate?Math.min(...levels):-Infinity;\n      const gateCeiling=gate?(Math.floor(minLevel/gate)*gate+gate):Infinity;\n      let bestIdx=-1,bestCost=Infinity,bestLevel=Infinity;\n      for(let i=0;i<levels.length;i++){\n        const lvl=levels[i];\n        if(lvl>=hardCap) continue;\n        if(gate && lvl+1>gateCeiling) continue;\n"""
+          if old not in s:
+              raise SystemExit('category option loop anchor missing')
+          s=s.replace(old,new,1)
+
+          s=s.replace("l=>relicStepSand(l,cfg)):[{...relic,cost:0,adds:0}]", "l=>relicStepSand(l,cfg),1):[{...relic,cost:0,adds:0}]", 1)
+          s=s.replace("l=>fantoStepTreatCost(l,cfg)):[{...fanto,cost:0,adds:0}]", "l=>fantoStepTreatCost(l,cfg),10):[{...fanto,cost:0,adds:0}]", 1)
+
+          old="      fanto:Math.max(100,lvl),"
+          new="      fanto:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_FANTOMON_EXP_FROM_130.length,"
+          if old not in s:
+              raise SystemExit('S2 Fantomon cap anchor missing')
+          s=s.replace(old,new,1)
+
+          s=s.replace("    // Fantomon future planning remains conservative until its Global unlock law is verified.",
+                      "    // Fantomon growth uses a resonance-style 10-level soft gate: the next decade opens only after all four scoring Fantomons reach the current decade boundary.",1)
+          s=s.replace("  // still-conservative Fantomon planning rule.",
+                      "  // resonance-gated Fantomon planning rule.",1)
+
+          anchor="  window.__sxsPlannerCapProbeV1=(characterLevel=131)=>({...categoryCapsForCharacter(characterLevel,CALC_SEASONS.s2)});\n"
+          probe="""  window.__sxsPlannerCapProbeV1=(characterLevel=131)=>({...categoryCapsForCharacter(characterLevel,CALC_SEASONS.s2)});\n  window.__sxsResonanceGateProbeV1=()=>{\n    const cfg=CALC_SEASONS.s2;\n    const relicBase=[15,15,...Array(18).fill(14)];\n    const relic=buildCategoryOptionsFromLevels(relicBase,18,cfg.relicFloor,cfg.weights.relic,l=>relicStepSand(l,cfg),1);\n    const relicAll15=relic.findIndex(o=>Math.min(...o.levels)>=15);\n    const relicFirst16=relic.findIndex(o=>Math.max(...o.levels)>=16);\n    const relicLegal=relic.every(o=>Math.max(...o.levels)<=Math.min(...o.levels)+1);\n    const fantoBase=[150,150,150,140];\n    const fanto=buildCategoryOptionsFromLevels(fantoBase,170,cfg.scoreFloor,cfg.weights.fanto,l=>fantoStepTreatCost(l,cfg),10);\n    const fantoAll150=fanto.findIndex(o=>Math.min(...o.levels)>=150);\n    const fantoFirst151=fanto.findIndex(o=>Math.max(...o.levels)>=151);\n    const fantoLegal=fanto.every(o=>{\n      const min=Math.min(...o.levels),max=Math.max(...o.levels);\n      return max<=Math.floor(min/10)*10+10;\n    });\n    return {relicLegal,relicAll15,relicFirst16,fantoLegal,fantoAll150,fantoFirst151};\n  };\n"""
+          if anchor not in s:
+              raise SystemExit('planner probe anchor missing')
+          s=s.replace(anchor,probe,1)
+          runtime.write_text(s)
+
+          test=Path('scripts/calculator_perf_check.mjs')
+          t=test.read_text()
+          anchor="console.log(`S2 CAPS char131: Gear ${s2Caps.gear} · Skills ${s2Caps.skill} · Relics +${s2Caps.relic} · Fantomon ${s2Caps.fanto}`);\n"
+          insert="""console.log(`S2 CAPS char131: Gear ${s2Caps.gear} · Skills ${s2Caps.skill} · Relics +${s2Caps.relic} · Fantomon ${s2Caps.fanto}`);\nif(!(s2Caps.fanto>140)) throw new Error(`S2 Fantomon planning is still Character-level capped: ${JSON.stringify(s2Caps)}`);\nconst resonance=await page.evaluate(()=>window.__sxsResonanceGateProbeV1?.());\nif(!resonance) throw new Error('missing S2 resonance-gate regression probe');\nif(!resonance.relicLegal || resonance.relicFirst16!==resonance.relicAll15+1){\n  throw new Error(`Relic resonance gate regressed: ${JSON.stringify(resonance)}`);\n}\nif(!resonance.fantoLegal || resonance.fantoFirst151!==resonance.fantoAll150+1){\n  throw new Error(`Fantomon decade resonance gate regressed: ${JSON.stringify(resonance)}`);\n}\nconsole.log(`S2 GATES relic all +15 @${resonance.relicAll15}, first +16 @${resonance.relicFirst16} · Fanto all 150 @${resonance.fantoAll150}, first 151 @${resonance.fantoFirst151}`);\n"""
+          if anchor not in t:
+              raise SystemExit('calculator regression anchor missing')
+          t=t.replace(anchor,insert,1)
+          test.write_text(t)
+          PY
+          node --check assets/runtime.js
+      - name: Commit calculator correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/runtime.js scripts/calculator_perf_check.mjs
+          git commit -m 'Model S2 relic and Fantomon resonance gates'
+          git push
