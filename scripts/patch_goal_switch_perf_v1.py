@@ -100,7 +100,7 @@ helper='''  function clearS2ProjectedAtFloor(cfg,p=projectCharacter(cfg)){
     $('targetMessage').classList.add('warning','caution');
     $('targetMessage').textContent=`Projected season-end Character is Lv.${p.level}. The S2 optimizer stays paused until the projection reaches Lv.131, so a Lv.130-or-lower projection never runs the heavy upgrade search.`;
     if($('targetStatus')){$('targetStatus').textContent='waiting for Lv.131';$('targetStatus').classList.remove('notMet');}
-    $('optimizerSummary').textContent='No Gear / Skill / Relic / Fantomon optimization runs while projected season-end Character remains Lv.130 or lower.';
+    $('optimizerSummary').textContent='Optimizer paused: projected season-end Character is Lv.130 or lower, so no Gear / Skill / Relic / Fantomon search is run.';
     $('optimizedScore').textContent='—';
     ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if($(id))$(id).textContent='—';});
     GEAR_OUTPUT_IDS.forEach(id=>{if($(id))$(id).textContent='—';});
