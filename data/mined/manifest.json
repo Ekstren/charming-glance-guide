@@ -1,0 +1,126 @@
+{
+  "generated_utc": "2026-09-11T22:21:08.863022+00:00",
+  "outputs": [
+    {
+      "output": "data/mined/0xnobody/sxs-companions/data.json",
+      "output_bytes": 1102164,
+      "source": "sxs-companions/data.js",
+      "source_sha256": "27a53209394bced8d79705565ba16a12338bca5ad5cdc9760c613da45ba8ff3a",
+      "variable": "COMPANION_DATA"
+    },
+    {
+      "output": "data/mined/0xnobody/sxs-loadout-builder/combat-data.json",
+      "output_bytes": 8858651,
+      "source": "sxs-loadout-builder/combat-data.js",
+      "source_sha256": "8eb3e1a26c47211a4aacd6c1d92d50bbd899f66c6dfe255de8182811eb4ebcf5",
+      "variable": "SXS_COMBAT_DATA"
+    },
+    {
+      "output": "data/mined/0xnobody/sxs-loadout-builder/data.json",
+      "output_bytes": 74741,
+      "source": "sxs-loadout-builder/data.js",
+      "source_sha256": "45b7f2553befeaf8c3fac95bb2c280f3c3117b502e71a54fe0984bc1ea418145",
+      "variable": "LOADOUT_DATA"
+    },
+    {
+      "output": "data/mined/0xnobody/sxs-stellaris/data.json",
+      "output_bytes": 35467,
+      "source": "sxs-stellaris/data.js",
+      "source_sha256": "091e13219d91874f594a01e2d0e384f2e3c44704e39579027425e1360878aaf3",
+      "variable": "STELLARIS_DATA"
+    },
+    {
+      "constants": [
+        "BONUS_STAT_OPTIONS",
+        "CHARACTER_RIG",
+        "COMPOUND_STATS",
+        "CORE_STATS",
+        "DAMAGE_TEST_BEHAVIOR",
+        "EQUIPMENT_AFFIX_STATS",
+        "GEAR_SLOTS",
+        "GEM_NAMES",
+        "PASSIVE_LABELS",
+        "PERCENT_STATS",
+        "PET_SKILL_RANK",
+        "RELIC_STATS",
+        "SOURCE_DEFS",
+        "STATUS_PAIRS",
+        "STAT_NAMES"
+      ],
+      "output": "data/mined/0xnobody/constants/sxs-loadout-builder/index.json",
+      "output_bytes": 8689,
+      "source": "sxs-loadout-builder/index.html",
+      "source_sha256": "b6c8bf9f0fb354d7ad038a9829d9fa11bfca36f5fc942be1a3412a8472b08595",
+      "unresolved_constants": [
+        "D",
+        "EQUIPMENT_QUALITIES"
+      ]
+    },
+    {
+      "constants": [
+        "CALENDAR_ASSETS",
+        "CHARACTER_XP_DATA",
+        "EVENT_ART",
+        "EVENT_ICONS",
+        "FANTOMON_XP_DATA",
+        "FENNEC_REWARDS",
+        "PROFILE_KEY",
+        "RATING_NAMES",
+        "RATING_THRESHOLDS",
+        "REALM_DAMAGE_PROBABILITIES",
+        "REALM_DISPLAY_RANKS",
+        "REALM_INTERNAL_RANKS",
+        "REALM_RANK_MULTIPLIERS",
+        "REWARD_ASSETS",
+        "SCRATCH_REWARDS",
+        "SEASON_RULES"
+      ],
+      "output": "data/mined/0xnobody/constants/sxs-primo-calculator/index.json",
+      "output_bytes": 16794,
+      "source": "sxs-primo-calculator/index.html",
+      "source_sha256": "e06d6b3e9b78b0a6206df2ffd1f19224ca264951b300a1fd3a52bc9920c330d7",
+      "unresolved_constants": [
+        "T",
+        "T",
+        "C",
+        "T",
+        "KNOWN_SERVERS"
+      ]
+    },
+    {
+      "constants": [
+        "FORMAT",
+        "HEADLINE",
+        "PROP_IX"
+      ],
+      "output": "data/mined/mystonats/constants/skill-scale.json",
+      "output_bytes": 1343,
+      "source": "skill-scale.js",
+      "source_sha256": "2d2fe883d6c80bcca11078086323cef2c28cb244c794f62073cd75e3e229040b",
+      "unresolved_constants": [
+        "D"
+      ]
+    }
+  ],
+  "scope": "Structured Sword x Staff game facts only; UI/code/assets and long prose excluded.",
+  "skipped": [
+    {
+      "reason": "not a pure JSON assignment",
+      "source": "sxs-loadout-builder/fantomons.js"
+    },
+    {
+      "reason": "not a pure JSON assignment",
+      "source": "sxs-primo-calculator/server-data.js"
+    }
+  ],
+  "sources": {
+    "0xnobody": {
+      "commit": "885795c9bc5077449692c91d68b5b1b838e35f28",
+      "repo": "https://github.com/0xNobodyYT/0xNobodyYT.github.io"
+    },
+    "mystonats": {
+      "commit": "3a92a4495f537e57848c69b522b8ee4d08c96171",
+      "repo": "https://github.com/Mystonats/sxs_skills"
+    }
+  }
+}
