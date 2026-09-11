@@ -3253,12 +3253,20 @@
     const missingCart=cartInputs.filter((_,i)=>cartRates[i]<=0).map(([,label])=>label);
     return {bed,cartRates,missingCart,hasBed:bed>0,hasAllCart:missingCart.length===0};
   }
-  function clearS2ForRequiredPlannerInputs(cfg,requirements){
+  function clearS2ForRequiredPlannerInputs(cfg,requirements,p=null){
     const missing=[];
     if(!requirements.hasBed) missing.push('Bed EXP/hr');
     missing.push(...requirements.missingCart);
-    if($('projectedCharacter')) $('projectedCharacter').value='Enter required inputs';
-    if($('resultProjectedCharacter')) $('resultProjectedCharacter').textContent='—';
+    // Character projection is lightweight and only needs Bed EXP; keep it available while
+    // the material-production guard continues to block the expensive Primostar optimizer.
+    if(requirements.hasBed && p){
+      if($('seasonRemaining')) $('seasonRemaining').textContent=formatRemaining(p.hours);
+      if($('projectedCharacter')) $('projectedCharacter').value=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
+      if($('resultProjectedCharacter')) $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
+    }else{
+      if($('projectedCharacter')) $('projectedCharacter').value='Enter Bed EXP';
+      if($('resultProjectedCharacter')) $('resultProjectedCharacter').textContent='—';
+    }
     ['currentStars','currentScoreNow','summaryOptimizedScore','desiredScore','optimizedScore'].forEach(id=>{if($(id))$(id).textContent='—';});
     if($('targetStatus')){
       $('targetStatus').textContent='waiting for production inputs';
@@ -3292,11 +3300,16 @@
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
+    let p=null;
     if(cfg.key==='s2'){
       const required=s2RequiredPlannerInputs();
-      if(!required.hasBed || !required.hasAllCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }
+      // Bed EXP is the only production input required for Character level projection.
+      if(!required.hasBed){ clearS2ForRequiredPlannerInputs(cfg,required); return; }
+      p=projectCharacter(cfg);
+      // Do not run the full Primostar/material optimizer until every Cart rate exists.
+      if(!required.hasAllCart){ clearS2ForRequiredPlannerInputs(cfg,required,p); return; }
     }
-    const p=projectCharacter(cfg);
+    if(!p) p=projectCharacter(cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
     // Upgrade availability now runs through the actual season reset; there is no separate finishing cutoff.
