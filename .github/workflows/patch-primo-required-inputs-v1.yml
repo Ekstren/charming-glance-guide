@@ -1,4 +1,4 @@
-name: Patch finish-early Max v1
+name: Patch finish-early Max v1 retry
 
 on:
   push:
