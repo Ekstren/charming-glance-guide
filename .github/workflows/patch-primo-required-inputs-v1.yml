@@ -1,6 +1,5 @@
-name: Finish Early Max + device timezone
+name: Fast no-extra Finish Early Max
 
-# DEPLOY_VERIFIED_MAX_TIMEZONE_V2
 on:
   push:
     paths:
@@ -16,14 +15,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Apply Finish Early Max and device timezone patch
-        run: python3 scripts/patch_finish_early_max_timezone_v2.py
+      - name: Apply fast no-extra Finish Early Max patch
+        run: python3 scripts/patch_finish_early_max_fast_noextra_v3.py
       - name: Verify runtime JavaScript syntax
         run: node --check assets/runtime.js
       - name: Verify patch markers
         run: |
-          grep -q 'FINISH_EARLY_MAX_V2' assets/runtime.js
-          grep -q 'VIEWER_DEVICE_TIMEZONE_V2' assets/runtime.js
+          grep -q 'FINISH_EARLY_MAX_FAST_NOEXTRA_V3' assets/runtime.js
           grep -q 'id="finishEarlyMax"' index.html
       - name: Commit verified site changes
         run: |
@@ -33,6 +31,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+Ekstren@users.noreply.github.com'
-          git add index.html assets/runtime.js assets/site.css
-          git commit -m 'Restore Finish Early Max and enforce device-local times'
+          git add index.html assets/runtime.js
+          git commit -m 'Make Finish Early Max fast and no-extra-purchase'
           git push origin HEAD:main
