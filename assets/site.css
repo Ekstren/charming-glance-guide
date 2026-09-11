@@ -4313,3 +4313,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   #buildContent .buildHeroRoll .rollGuideGrid{grid-template-columns:1fr}
   #buildContent .buildHeroLeft .quickSubstats{grid-template-columns:1fr}
 }
+
+
+/* COMPACT_PROJECTION_BED_ROW_V1
+   Keep the season-end projection in the unused second column beside Bed EXP. */
+.projectionCallout.projectionInline.projectionGridCell{
+  margin-top:0!important;
+  align-self:stretch;
+  min-height:0!important;
+  padding:8px 11px!important;
+}
+@media(max-width:520px){
+  .projectionCallout.projectionInline.projectionGridCell{
+    grid-template-columns:1fr auto!important;
+    align-items:center;
+    gap:4px 8px;
+  }
+  .projectionCallout.projectionInline.projectionGridCell strong{
+    grid-area:auto!important;
+    font-size:14px!important;
+    white-space:nowrap;
+  }
+}
