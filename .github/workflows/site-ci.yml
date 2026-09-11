@@ -75,4 +75,4 @@ jobs:
       - name: Mobile layout regression
         run: node scripts/mobile_audit_v1.mjs
 
-# CI touch: validate projected field geometry, restored read-only accent tint, and mobile layout.
+# CI touch: validate target reach timing, projected-field geometry/tint, and mobile layout.
