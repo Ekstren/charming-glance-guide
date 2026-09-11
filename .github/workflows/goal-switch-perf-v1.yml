@@ -26,7 +26,7 @@ jobs:
         run: node scripts/goal_switch_perf_v1.mjs | tee /tmp/goal-before.log
       - name: Apply optimization
         run: |
-          python3 scripts/patch_goal_switch_perf_v1.py
+          python3 scripts/patch_goal_switch_perf_v2.py
           node --check assets/runtime.js
       - name: Benchmark after
         run: node scripts/goal_switch_perf_v1.mjs | tee /tmp/goal-after.log
@@ -41,17 +41,14 @@ jobs:
           b=before['rows']; a=after['rows']
           print('BEFORE',b)
           print('AFTER ',a)
-          # Returning to already-solved goals should be effectively instant after memoization.
           repeat=a[-2:]
           assert max(x['solve'] for x in repeat) < 120, repeat
-          # The projected-Lv130 path must skip the heavy optimizer entirely.
           assert 'paused' in after['floor']['summary'].lower(), after['floor']
           assert after['floor']['lastSolve']=='0.0', after['floor']
-          # New-target average should not regress versus baseline.
           before_first=sum(x['solve'] for x in b[:4])/4
           after_first=sum(x['solve'] for x in a[:4])/4
           print(f'first-target avg: {before_first:.1f} -> {after_first:.1f} ms')
-          assert after_first <= before_first*1.03, (before_first,after_first)
+          assert after_first <= before_first*0.90, (before_first,after_first)
           PY
       - name: Full regressions
         run: |
