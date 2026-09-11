@@ -830,6 +830,17 @@
     // FINISH_EARLY_HALF_DAY_V1: planner cutoff supports 0.5-day increments.
     return Number.isFinite(raw)?Math.max(0,Math.round(raw*2)/2):0;
   }
+  /* GOAL_CHANGE_FINISH_EARLY_RESET_V1
+     Finish Early is target-specific. If the user changes the Primostar goal after Max
+     found (for example) 38 days early for a lower goal, do not let that stale cutoff make
+     the new goal look impossible. New goals always solve from the full remaining season;
+     Max can then be run again for the new target. */
+  function resetFinishEarlyForGoalChange(){
+    const input=$('finishEarlyDays');
+    if(!input || finishEarlyDaysValue()<=0) return false;
+    input.value='0';
+    return true;
+  }
   function finishScoreCutoffMs(cfg=activeCalcConfig()){
     const days=finishEarlyDaysValue();
     if(days<=0) return cfg.end.getTime();
@@ -3980,9 +3991,14 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     if(!btn||!status) return;
     const fingerprint=maxAchievableFingerprint();
     if(maxAchievableState.fingerprint===fingerprint && Number.isFinite(maxAchievableState.hard)){
-      $('targetStars').value=String(maxAchievableState.hard);
-      markManualSnapshot('targetStars');
-      scheduleCalculatorUpdate(0);
+      const hardTarget=maxAchievableState.hard;
+      resetFinishEarlyForGoalChange();
+      $('targetStars').value=String(hardTarget);
+      resetMaxAchievableUi();
+      saveState();
+      if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
+      queueRegularGoalOptimizerProgress();
+      requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
       return;
     }
     const snap=buildMaxAchievableSnapshot();
@@ -4250,10 +4266,13 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
   let lastRequestedTargetStars=null;
   let lastEffectiveTargetStars=null;
 
-  /* GOAL_SWITCH_CACHE_V2
-     Changing Target Primostars does not change the account snapshot. Reuse the expensive
-     raw-only ceiling and any exact target solution already computed while every non-target
-     input remains identical. New goals still build their normal target-specific context. */
+  /* GOAL_SWITCH_CACHE_V3 · RESPONSIVE_GOAL_PREP_V1
+     Changing Target Primostars does not change the account snapshot. Reuse exact target
+     solutions while every non-target input remains identical. The old path eagerly built an
+     informational raw-only ceiling with a synthetic 1,000,000-score target before the real
+     solve; that synchronous structural expansion could freeze the main thread, leaving Cancel
+     and the elapsed timer stuck during "Preparing goal calculation". Ceiling discovery now
+     stays behind the explicit Find max achievable control instead of blocking normal goals. */
   let goalSwitchCache={fingerprint:'',rawCeiling:null,solutions:new Map()};
   function goalSwitchFingerprint(cfg,baseScore){
     return JSON.stringify({
@@ -4268,8 +4287,9 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
   function goalSwitchPlanningState(baseScore,p,baseResources,cfg,historical){
     const fingerprint=goalSwitchFingerprint(cfg,baseScore);
     if(goalSwitchCache.fingerprint===fingerprint) return goalSwitchCache;
-    const rawCeiling=smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical);
-    goalSwitchCache={fingerprint,rawCeiling,solutions:new Map()};
+    // RESPONSIVE_GOAL_PREP_V1: rawCeiling is informational only. Do not synchronously
+    // expand a synthetic million-score planning context before the requested goal solve.
+    goalSwitchCache={fingerprint,rawCeiling:null,solutions:new Map()};
     return goalSwitchCache;
   }
 
@@ -5551,6 +5571,9 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       el.addEventListener('change',()=>{
         normalizeCompactNumberInput(id);
         if(id==='targetStars'){
+          // GOAL_CHANGE_FINISH_EARLY_RESET_V1: always evaluate a newly entered goal with
+          // the full remaining season. A previous Max cutoff is only valid for its old goal.
+          if(resetFinishEarlyForGoalChange()) resetMaxAchievableUi();
           saveState();
           if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
           queueRegularGoalOptimizerProgress();
@@ -5583,6 +5606,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       const btn=e.target.closest?.('[data-s2-target]');
       if(!btn || activeCalcConfig().key!=='s2') return;
       $('targetStars').value=btn.dataset.s2Target;
+      resetFinishEarlyForGoalChange();
       resetMaxAchievableUi();
       saveState();
       $('s2TargetPresets')?.querySelectorAll('[data-s2-target]').forEach(x=>x.classList.toggle('active',x===btn));
