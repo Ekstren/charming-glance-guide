@@ -1,6 +1,6 @@
-name: Fix cancellable Finish Early Max
+name: Fix regular goal progress window
 
-# COOPERATIVE_FINISH_EARLY_MAX_V4_WORKFLOW
+# REGULAR_GOAL_PROGRESS_V1_WORKFLOW
 on:
   push:
     paths:
@@ -16,16 +16,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Apply cooperative Max and bootstrap fix
-        run: python3 scripts/patch_cooperative_max_and_bootstrap_v2.py
+      - name: Apply regular goal progress fix
+        run: python3 scripts/patch_regular_goal_progress_v1.py
       - name: Verify runtime JavaScript syntax
         run: node --check assets/runtime.js
-      - name: Verify cooperative checkpoints
+      - name: Verify progress job hooks
         run: |
+          grep -q 'REGULAR_GOAL_PROGRESS_V1' assets/runtime.js
+          grep -q 'queueRegularGoalOptimizerProgress' assets/runtime.js
+          grep -q 'Preparing goal calculation' assets/runtime.js
+          grep -q 'Searching .* Primostar upgrade combinations' assets/runtime.js
           grep -q 'COOPERATIVE_OPTIMIZER_BOOTSTRAP_V2' assets/runtime.js
-          grep -q 'COOPERATIVE_FINISH_EARLY_MAX_V4' assets/runtime.js
-          grep -q 'await checkpoint(true)' assets/runtime.js
-          grep -q 'Finding max Finish Early' assets/runtime.js
       - name: Commit verified site changes
         run: |
           if git diff --quiet; then
@@ -35,5 +36,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898258+github-actions[bot]@users.noreply.github.com'
           git add assets/runtime.js
-          git commit -m 'Make Finish Early Max cancellable and responsive'
+          git commit -m 'Show cancellable progress for regular Primostar goals'
           git push origin HEAD:main
