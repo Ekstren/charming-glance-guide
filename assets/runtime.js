@@ -72,7 +72,7 @@
      from a representative scoring-unlock profile. Saved materials, Cart rates and Bed EXP start at 0 so the player must enter real production values.
      The heavy optimizer stays paused until Bed EXP and all four Cart/hr rates are provided. */
   const S2_SCORING_START_DEFAULTS=Object.freeze({
-    targetStars:800,
+    targetStars:680,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
     charLevel:130,charExp:0,bedExp:0,
@@ -2971,6 +2971,16 @@
       $('relicLevel').min='10'; setInputMax('relicLevel',currentCaps.relic); $('relicLevel').step='0.05';
       $('fantomonLevel').min='100'; setInputMax('fantomonLevel',currentCaps.fanto); $('fantomonLevel').step='0.25';
       if($('gearLevel')){$('gearLevel').min='100';setInputMax('gearLevel',currentCaps.gear);$('gearLevel').step='0.2';}
+    }
+    // S2_AUTO_RESET_STALE_SNAPSHOT_V1: stale pre-S2 calculator state is never offered for reuse.
+    // Load clean S2 defaults immediately so old seasonal levels/resources cannot leak into the new season.
+    if(cfg.key==='s2' && snapshotSeason!==cfg.key){
+      applyS2ScoringStartDefaults();
+      snapshotSeason=cfg.key;
+      snapshotAtMs=Date.now();
+      snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0};
+      snapshotStateLoaded=true;
+      saveState();
     }
     const mismatch=snapshotSeason!==cfg.key;
     $('calcSeasonNotice').hidden=!mismatch;
