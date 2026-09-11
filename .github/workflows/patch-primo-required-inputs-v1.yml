@@ -1,4 +1,4 @@
-name: Patch finish-early Max v1 retry
+name: Emergency rollback finish-early Max
 
 on:
   push:
@@ -9,15 +9,15 @@ permissions:
   contents: write
 
 jobs:
-  patch:
+  rollback:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Apply finish-early Max patch
-        run: python3 scripts/patch_finish_early_max_v1.py
-      - name: Commit finish-early Max button
+      - name: Roll back finish-early Max patch
+        run: python3 scripts/rollback_finish_early_max_v1.py
+      - name: Commit rollback
         run: |
           if git diff --quiet; then
             echo 'No changes to commit.'
@@ -26,5 +26,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+Ekstren@users.noreply.github.com'
           git add index.html assets/runtime.js assets/site.css
-          git commit -m 'Add Max button for finish-early target'
+          git commit -m 'Rollback finish-early Max button'
           git push origin HEAD:main
