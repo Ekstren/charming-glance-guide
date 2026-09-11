@@ -73,4 +73,4 @@ jobs:
       - name: Full browser smoke
         run: node scripts/site_smoke_test.mjs
 
-# CI touch: validate the S2 above-character Gear/Skill/Relic planner correction.
+# CI touch: validate the S2 Relic +1 resonance gate and Fantomon +10 resonance-band gate.
