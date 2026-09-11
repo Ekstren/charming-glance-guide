@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/snapshot_mined_game_data.py'
+      - 'scripts/augment_mined_game_data.py'
       - '.github/workflows/snapshot-mined-game-data.yml'
 
 permissions:
@@ -32,21 +33,31 @@ jobs:
             --upstream /tmp/0xnobody \
             --mystonats /tmp/mystonats \
             --output data/mined
+          python3 scripts/augment_mined_game_data.py \
+            --upstream /tmp/0xnobody \
+            --output data/mined
 
       - name: Validate snapshot and site runtime
         run: |
           test -s data/mined/manifest.json
           test -s data/mined/0xnobody/sxs-loadout-builder/combat-data.json
           test -s data/mined/0xnobody/sxs-loadout-builder/data.json
+          test -s data/mined/0xnobody/sxs-loadout-builder/fantomons.json
+          test -s data/mined/0xnobody/sxs-primo-calculator/server-data.json
           test -s data/mined/0xnobody/sxs-companions/data.json
           test -s data/mined/0xnobody/sxs-stellaris/data.json
+          test -s data/mined/0xnobody/wardrobe-assets/catalog.json
           python3 - <<'PY'
           import json
           from pathlib import Path
           p=Path('data/mined/manifest.json')
           m=json.loads(p.read_text())
           assert m['outputs'], 'no mined outputs produced'
+          skipped={x.get('source') for x in m.get('skipped', [])}
+          assert 'sxs-loadout-builder/fantomons.js' not in skipped
+          assert 'sxs-primo-calculator/server-data.js' not in skipped
           print('datasets:', len(m['outputs']))
+          print('remaining skipped:', sorted(skipped))
           print('source commits:', {k:v['commit'] for k,v in m['sources'].items()})
           PY
           node --check assets/runtime.js
