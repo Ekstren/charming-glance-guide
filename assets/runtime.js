@@ -69,19 +69,19 @@
      This calculator is a Season Power / Primostar planner, not a Lv.100→130 launch-day simulator.
      QY's current Global timeline puts S2 Season Power at Player Lv.130; Lv.120 is only the
      maximum S2 Material Realm / open-map bracket. New S2 calculator states therefore begin
-     from a representative scoring-unlock profile. Saved materials remain 0 until the player enters them. Starter Cart rates use conservative S2 planning defaults
-     (Ore 1,000/hr, Essence 1,200/hr, Sand 800/hr, Treats 80/hr) and can be replaced with live values at any time. */
+     from a representative scoring-unlock profile. Saved materials, Cart rates and Bed EXP start at 0 so the player must enter real production values.
+     The heavy optimizer stays paused until Bed EXP and at least one Cart/hr rate are provided. */
   const S2_SCORING_START_DEFAULTS=Object.freeze({
     targetStars:800,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
-    charLevel:130,charExp:0,bedExp:400000,
+    charLevel:130,charExp:0,bedExp:0,
     skillLevel:130,relicLevel:13,fantomonLevel:130,gearLevel:130,
     exactGearLevels:'',
-    // S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.
-    oreCurrent:0,oreRate:1000,essenceCurrent:0,essenceRate:1200,
-    sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:800,
-    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:80,
+    // S2_REQUIRED_INPUT_DEFAULTS_V1: never guess production. Saved materials, Cart rates and Bed EXP start at zero.
+    oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,
+    sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,
+    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,
     shopRefreshesDaily:0,
     hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,
     staminaMode:'auto',realmDailyOre:4,realmDailyEssence:4,realmDailySand:4,
@@ -3231,11 +3231,59 @@
     return goalSwitchCache;
   }
 
+  /* S2_REQUIRED_INPUT_GUARD_V1
+     Avoid launching the expensive target search from an empty production snapshot.
+     Saved materials and Material Realm purchases are allowed to remain zero, but the
+     S2 optimizer needs real Bed EXP plus at least one Cart/hr production rate. */
+  function s2RequiredPlannerInputs(){
+    const bed=Math.max(0,parseCompactNumber($('bedExp')?.value,0));
+    const cartIds=['oreRate','essenceRate','sandRate','treatRate'];
+    const cartRates=cartIds.map(id=>Math.max(0,parseCompactNumber($(id)?.value,0)));
+    return {bed,cartRates,hasBed:bed>0,hasCart:cartRates.some(value=>value>0)};
+  }
+  function clearS2ForRequiredPlannerInputs(cfg,requirements){
+    const missing=[];
+    if(!requirements.hasBed) missing.push('Bed EXP/hr');
+    if(!requirements.hasCart) missing.push('at least one Cart/hr rate');
+    if($('projectedCharacter')) $('projectedCharacter').value='Enter required inputs';
+    if($('resultProjectedCharacter')) $('resultProjectedCharacter').textContent='—';
+    ['currentStars','currentScoreNow','summaryOptimizedScore','desiredScore','optimizedScore'].forEach(id=>{if($(id))$(id).textContent='—';});
+    if($('targetStatus')){
+      $('targetStatus').textContent='waiting for production inputs';
+      $('targetStatus').classList.remove('notMet');
+    }
+    if($('targetMessage')){
+      $('targetMessage').hidden=false;
+      $('targetMessage').classList.remove('danger');
+      $('targetMessage').classList.add('warning','caution');
+      $('targetMessage').textContent=`Enter ${missing.join(' and ')} to run the S2 optimizer. Saved materials and Material Realm purchases can stay at 0.`;
+    }
+    if($('optimizerSummary')){
+      $('optimizerSummary').hidden=false;
+      $('optimizerSummary').textContent='The heavy Primostar search is paused until Bed EXP and Cart production are entered.';
+    }
+    if($('recommendedBreakdownSection')) $('recommendedBreakdownSection').hidden=true;
+    ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if($(id))$(id).textContent='—';});
+    GEAR_OUTPUT_IDS.forEach(id=>{if($(id))$(id).textContent='—';});
+    ['oreCost','essenceCost','sandCost','treatCost'].forEach(id=>{if($(id))$(id).textContent='0';});
+    ['oreBalance','essenceBalance','sandBalance','treatBalance','oreToolBalance','essenceToolBalance','sandToolBalance'].forEach(hidePlanBalance);
+    if($('materialRealmRecommendation')){$('materialRealmRecommendation').hidden=true;$('materialRealmRecommendation').textContent='';}
+    if($('secondaryCostNote')){$('secondaryCostNote').hidden=true;$('secondaryCostNote').textContent='';}
+    if($('milestoneNote')){$('milestoneNote').hidden=true;$('milestoneNote').textContent='';}
+    const calcSection=$('calculatorSection');
+    if(calcSection) calcSection.dataset.lastSolveMs='0.0';
+    saveState();
+  }
+
   function updateCalculator(){
     const perfStarted=performance.now();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
+    if(cfg.key==='s2'){
+      const required=s2RequiredPlannerInputs();
+      if(!required.hasBed || !required.hasCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }
+    }
     const p=projectCharacter(cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
