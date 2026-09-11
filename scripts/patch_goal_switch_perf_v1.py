@@ -1,5 +1,4 @@
 from pathlib import Path
-import re
 
 runtime=Path('assets/runtime.js')
 s=runtime.read_text()
@@ -16,27 +15,18 @@ new_html='<label>Bed EXP per hour<input id="bedExp" type="number" value="400000"
 assert old_html in h, 'bedExp HTML anchor missing'
 h=h.replace(old_html,new_html,1)
 
-# 2) Share the expensive structural planning context between raw-ceiling and target solve.
-old='function smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical){\n    // Large structural target only expands Gear options; actual affordability below is\n    // still limited strictly by projected raw resources and verified progression gates.\n    const ctx=createPlanningContext(baseScore,1_000_000,p,cfg);'
-new='function smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical,sharedCtx=null){\n    // Large structural target only expands Gear options; actual affordability below is\n    // still limited strictly by projected raw resources and verified progression gates.\n    const ctx=sharedCtx||createPlanningContext(baseScore,1_000_000,p,cfg);'
-assert old in s, 'raw ceiling anchor missing'
-s=s.replace(old,new,1)
-
-pattern=r"function solveTargetWithAutoStamina\(baseScore,desired,p,baseResources,cfg=activeCalcConfig\(\)\)\{\n    const ctx=createPlanningContext\(baseScore,desired,p,cfg\);"
-repl="function solveTargetWithAutoStamina(baseScore,desired,p,baseResources,cfg=activeCalcConfig(),sharedCtx=null){\n    const ctx=sharedCtx||createPlanningContext(baseScore,desired,p,cfg);"
-s,n=re.subn(pattern,repl,s,count=1)
-assert n==1, 'solveTargetWithAutoStamina anchor missing'
-
-# 3) Cache target-independent structural state and per-target solutions while inputs stay unchanged.
+# 2) Cache target-independent raw-ceiling work and exact solutions already solved for
+#    this unchanged account snapshot. New targets still use their normal target-specific
+#    planning context, so first-time goal performance does not get worse.
 anchor='  let lastRequestedTargetStars=null;\n  let lastEffectiveTargetStars=null;\n\n  function updateCalculator(){'
 insert='''  let lastRequestedTargetStars=null;
   let lastEffectiveTargetStars=null;
 
-  /* GOAL_SWITCH_CACHE_V1
-     Target Primostars is the only value that changes when the user taps a preparation goal.
-     All expensive category option tables, the raw-only ceiling, and previously solved targets
-     can therefore be reused until any other calculator input/snapshot changes. */
-  let goalSwitchCache={fingerprint:'',ctx:null,rawCeiling:null,solutions:new Map()};
+  /* GOAL_SWITCH_CACHE_V2
+     Changing Target Primostars does not change the account snapshot. Reuse the expensive
+     raw-only ceiling and any exact target solution already computed while every non-target
+     input remains identical. New goals still build their normal target-specific context. */
+  let goalSwitchCache={fingerprint:'',rawCeiling:null,solutions:new Map()};
   function goalSwitchFingerprint(cfg,baseScore){
     return JSON.stringify({
       season:cfg.key,
@@ -49,12 +39,9 @@ insert='''  let lastRequestedTargetStars=null;
   }
   function goalSwitchPlanningState(baseScore,p,baseResources,cfg,historical){
     const fingerprint=goalSwitchFingerprint(cfg,baseScore);
-    if(goalSwitchCache.fingerprint===fingerprint && goalSwitchCache.ctx){
-      return goalSwitchCache;
-    }
-    const ctx=createPlanningContext(baseScore,1_000_000,p,cfg);
-    const rawCeiling=smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical,ctx);
-    goalSwitchCache={fingerprint,ctx,rawCeiling,solutions:new Map()};
+    if(goalSwitchCache.fingerprint===fingerprint) return goalSwitchCache;
+    const rawCeiling=smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical);
+    goalSwitchCache={fingerprint,rawCeiling,solutions:new Map()};
     return goalSwitchCache;
   }
 
@@ -62,16 +49,23 @@ insert='''  let lastRequestedTargetStars=null;
 assert anchor in s, 'goal cache insertion anchor missing'
 s=s.replace(anchor,insert,1)
 
-# 4) When the projected season-end player level does not reach 131, do not run the optimizer at all.
-old='''    const p=projectCharacter(cfg);
+# 3) The calculator should only perform S2 upgrade optimization if the projected
+#    season-end Character actually clears the Lv.130 scoring floor. A projection that
+#    still ends at Lv.130 or lower gets a zero-cost paused state instead.
+old='''    const cfg=activeCalcConfig();
+    if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
+    if(cfg.key==='s2' && characterSnapshot(cfg).level<S2_PLANNER_START_LEVEL){ clearS2PreScoring(cfg); return; }
+    const p=projectCharacter(cfg);
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);'''
-new='''    const p=projectCharacter(cfg);
+new='''    const cfg=activeCalcConfig();
+    if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
+    const p=projectCharacter(cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);'''
-assert old in s, 'projected-floor fast path anchor missing'
+assert old in s, 'updateCalculator projected-floor anchor missing'
 s=s.replace(old,new,1)
 
-# 5) Reuse the shared context/raw ceiling and memoize exact target solutions.
+# 4) Reuse raw-ceiling result and memoize exact target solutions.
 old='''    const rawCeiling=smartBalanceRawCeiling(baselineScore,p,baseResources,cfg,historical);
     const projectedRawCeilingStars=Math.max(baselineStars,Math.floor(Number(rawCeiling?.stars)||baselineStars));
     const desired=requestedDesired;
@@ -82,13 +76,13 @@ new='''    const goalState=goalSwitchPlanningState(baselineScore,p,baseResources
     const desired=requestedDesired;
     let solution=goalState.solutions.get(desired);
     if(!solution){
-      solution=solveTargetWithAutoStamina(baselineScore,desired,p,baseResources,cfg,goalState.ctx);
+      solution=solveTargetWithAutoStamina(baselineScore,desired,p,baseResources,cfg);
       goalState.solutions.set(desired,solution);
     }'''
 assert old in s, 'goal solve replacement anchor missing'
 s=s.replace(old,new,1)
 
-# 6) Add the projected-floor paused-state renderer next to the existing pre-scoring renderer.
+# 5) Add projected-floor paused renderer.
 anchor='''  function clearCalcForRollover(cfg){'''
 helper='''  function clearS2ProjectedAtFloor(cfg,p=projectCharacter(cfg)){
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
@@ -104,9 +98,9 @@ helper='''  function clearS2ProjectedAtFloor(cfg,p=projectCharacter(cfg)){
     $('targetMessage').hidden=false;
     $('targetMessage').classList.remove('danger');
     $('targetMessage').classList.add('warning','caution');
-    $('targetMessage').textContent=`Projected season-end Character is Lv.${p.level}. The S2 preparation optimizer stays paused until the projection reaches Lv.131, so changing the Primostar goal does not run the heavy upgrade search at Lv.130 or lower.`;
+    $('targetMessage').textContent=`Projected season-end Character is Lv.${p.level}. The S2 optimizer stays paused until the projection reaches Lv.131, so a Lv.130-or-lower projection never runs the heavy upgrade search.`;
     if($('targetStatus')){$('targetStatus').textContent='waiting for Lv.131';$('targetStatus').classList.remove('notMet');}
-    $('optimizerSummary').textContent='No Gear / Skill / Relic / Fantomon optimization is run while projected season-end Character remains Lv.130 or lower.';
+    $('optimizerSummary').textContent='No Gear / Skill / Relic / Fantomon optimization runs while projected season-end Character remains Lv.130 or lower.';
     $('optimizedScore').textContent='—';
     ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if($(id))$(id).textContent='—';});
     GEAR_OUTPUT_IDS.forEach(id=>{if($(id))$(id).textContent='—';});
@@ -126,12 +120,52 @@ helper='''  function clearS2ProjectedAtFloor(cfg,p=projectCharacter(cfg)){
 assert anchor in s, 'clear projected floor helper anchor missing'
 s=s.replace(anchor,helper,1)
 
-# 7) Let the selected goal paint before the heavy solve starts on slower phones.
-old="""      markManualSnapshot('targetStars');
+# 6) Target Primostars is a goal, not account state. Do not roll/retimestamp the saved
+#    resources just because the user focuses or changes that field; otherwise every target
+#    edit invalidates the exact-solution cache.
+old="""      if(e.target?.matches?.('input')){
+        // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
+        // expensive optimizer just for tabbing/clicking between fields.
+        rollSnapshotForward(Date.now(),true);
+      }"""
+new="""      if(e.target?.matches?.('input') && e.target.id!=='targetStars'){
+        // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
+        // expensive optimizer just for tabbing/clicking between account-state fields.
+        // Target Primostars is only a goal selector and must not mutate the snapshot clock.
+        rollSnapshotForward(Date.now(),true);
+      }"""
+assert old in s, 'focus aging anchor missing'
+s=s.replace(old,new,1)
+
+old="""      el.addEventListener('change',()=>{
+        normalizeCompactNumberInput(id);
+        if(id!=='targetStars') resetMaxAchievableUi();
+        markManualSnapshot(id);
+        scheduleCalculatorUpdate(0);
+      });"""
+new="""      el.addEventListener('change',()=>{
+        normalizeCompactNumberInput(id);
+        if(id==='targetStars'){
+          saveState();
+          if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
+          requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
+          return;
+        }
+        resetMaxAchievableUi();
+        markManualSnapshot(id);
+        scheduleCalculatorUpdate(0);
+      });"""
+assert old in s, 'input change anchor missing'
+s=s.replace(old,new,1)
+
+old="""      $('targetStars').value=btn.dataset.s2Target;
+      resetMaxAchievableUi();
+      markManualSnapshot('targetStars');
       saveState();
       scheduleCalculatorUpdate(0);
     });"""
-new="""      markManualSnapshot('targetStars');
+new="""      $('targetStars').value=btn.dataset.s2Target;
+      resetMaxAchievableUi();
       saveState();
       $('s2TargetPresets')?.querySelectorAll('[data-s2-target]').forEach(x=>x.classList.toggle('active',x===btn));
       if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
@@ -142,4 +176,4 @@ s=s.replace(old,new,1)
 
 runtime.write_text(s)
 index.write_text(h)
-print('Applied goal-switch performance patch + S2 bed default + projected-Lv130 fast path')
+print('Applied GOAL_SWITCH_CACHE_V2 + projected-Lv130 fast path + Bed EXP 400k default')
