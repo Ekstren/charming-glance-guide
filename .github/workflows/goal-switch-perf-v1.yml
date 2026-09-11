@@ -44,7 +44,7 @@ jobs:
           repeat=a[-2:]
           assert max(x['solve'] for x in repeat) < 120, repeat
           assert after['floor']['projected'].startswith('Lv.130'), after['floor']
-          assert 'optimization' in after['floor']['summary'].lower(), after['floor']
+          assert 'paused' in after['floor']['summary'].lower(), after['floor']
           assert after['floor']['lastSolve']=='0.0', after['floor']
           before_first=sum(x['solve'] for x in b[:4])/4
           after_first=sum(x['solve'] for x in a[:4])/4
@@ -67,4 +67,4 @@ jobs:
           git pull --rebase origin main
           git push
 
-# v4: projected-Lv130 validation checks the actual zero-solve state, not copy wording.
+# v5: final cache + projected-Lv130 zero-solve validation.
