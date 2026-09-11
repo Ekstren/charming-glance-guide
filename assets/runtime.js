@@ -2723,6 +2723,18 @@
   let optimizerJobSequence=0;
   let optimizerUpdateGeneration=0; // COOPERATIVE_OPTIMIZER_GENERATION_V1
   let activeOptimizerJob=null;
+  let queuedGoalOptimizerJob=null; // REGULAR_GOAL_PROGRESS_V1
+
+  function queueRegularGoalOptimizerProgress(){
+    const cfg=activeCalcConfig();
+    const historical=Math.max(0,Math.floor(n('historicalStars',0)));
+    const target=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
+    const job=beginOptimizerJob(target);
+    queuedGoalOptimizerJob=job;
+    const detail=$('optimizerProgressDetail');
+    if(detail) detail.textContent='Preparing goal calculation';
+    return job;
+  }
 
   function ensureOptimizerProgressPanel(){
     let panel=$('optimizerProgressPanel');
@@ -4316,20 +4328,32 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
 
   async function updateCalculator(){
     const updateGeneration=++optimizerUpdateGeneration;
-    // Any newer edit supersedes an older in-flight solve, even if the new state is cached.
-    if(activeOptimizerJob) activeOptimizerJob.cancelled=true;
+    const queuedGoalJob=queuedGoalOptimizerJob;
+    if(queuedGoalJob===queuedGoalOptimizerJob) queuedGoalOptimizerJob=null;
+    // Any newer edit supersedes an older in-flight solve, except the goal job intentionally
+    // queued by the target control so its already-painted progress panel can be reused.
+    if(activeOptimizerJob && activeOptimizerJob!==queuedGoalJob) activeOptimizerJob.cancelled=true;
     const perfStarted=performance.now();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
-    if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
+    if(queuedGoalJob){
+      // REGULAR_GOAL_PROGRESS_V1: target-button handlers create the job before scheduling
+      // this update, giving the browser a full paint turn before any calculator work begins.
+      await new Promise(resolve=>setTimeout(resolve,0));
+      if(queuedGoalJob.cancelled){ finishOptimizerJob(queuedGoalJob,'cancelled'); return; }
+    }
+    if(renderCalculatorSeasonChrome(cfg)){
+      if(queuedGoalJob) finishOptimizerJob(queuedGoalJob,'done');
+      clearCalcForRollover(cfg); return;
+    }
     let p=null;
     if(cfg.key==='s2'){
       const required=s2RequiredPlannerInputs();
       // Bed EXP is the only production input required for Character level projection.
-      if(!required.hasBed){ clearS2ForRequiredPlannerInputs(cfg,required); return; }
+      if(!required.hasBed){ if(queuedGoalJob) finishOptimizerJob(queuedGoalJob,'done'); clearS2ForRequiredPlannerInputs(cfg,required); return; }
       p=projectCharacter(cfg);
       // Do not run the full Primostar/material optimizer until every Cart rate exists.
-      if(!required.hasAllCart){ clearS2ForRequiredPlannerInputs(cfg,required,p); return; }
+      if(!required.hasAllCart){ if(queuedGoalJob) finishOptimizerJob(queuedGoalJob,'done'); clearS2ForRequiredPlannerInputs(cfg,required,p); return; }
     }
     if(!p) p=projectCharacter(cfg);
     const seasonEndP=p;
@@ -4379,13 +4403,25 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     // SMART_BALANCE_GOAL_STOP_V2: calculate raw-only upside for INFORMATION only.
     // The recommendation itself stops at the entered goal instead of spending surplus raw
     // materials merely because a higher raw-only ceiling exists.
+    if(queuedGoalJob){
+      const detail=$('optimizerProgressDetail');
+      if(detail) detail.textContent=`Preparing ${fmt(targetStars)} Primostar goal`;
+      await new Promise(resolve=>setTimeout(resolve,0));
+      if(queuedGoalJob.cancelled){ finishOptimizerJob(queuedGoalJob,'cancelled'); return; }
+    }
     const goalState=goalSwitchPlanningState(baselineScore,p,baseResources,cfg,historical);
+    if(queuedGoalJob){
+      await new Promise(resolve=>setTimeout(resolve,0));
+      if(queuedGoalJob.cancelled){ finishOptimizerJob(queuedGoalJob,'cancelled'); return; }
+    }
     const rawCeiling=goalState.rawCeiling;
     const projectedRawCeilingStars=Math.max(baselineStars,Math.floor(Number(rawCeiling?.stars)||baselineStars));
     const desired=requestedDesired;
     let solution=goalState.solutions.get(desired);
     if(!solution){
-      const optimizerJob=beginOptimizerJob(targetStars);
+      const optimizerJob=(queuedGoalJob && !queuedGoalJob.cancelled)?queuedGoalJob:beginOptimizerJob(targetStars);
+      const detail=$('optimizerProgressDetail');
+      if(detail) detail.textContent=`Searching ${fmt(targetStars)} Primostar upgrade combinations`;
       try{
         solution=await solveTargetWithAutoStaminaCooperative(baselineScore,desired,p,baseResources,cfg,optimizerJob);
         if(updateGeneration!==optimizerUpdateGeneration || optimizerJob.cancelled) throw new OptimizerCancelledError();
@@ -4400,6 +4436,8 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
         console.error('COOPERATIVE_OPTIMIZER_V1',err);
         return;
       }
+    }else if(queuedGoalJob && activeOptimizerJob===queuedGoalJob){
+      finishOptimizerJob(queuedGoalJob,'done');
     }
     let plan=solution.plan;
     const diagnosticPlan=solution.diagnostic||null;
@@ -5515,6 +5553,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
         if(id==='targetStars'){
           saveState();
           if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
+          queueRegularGoalOptimizerProgress();
           requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
           return;
         }
@@ -5548,6 +5587,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       saveState();
       $('s2TargetPresets')?.querySelectorAll('[data-s2-target]').forEach(x=>x.classList.toggle('active',x===btn));
       if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
+      queueRegularGoalOptimizerProgress();
       requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
     });
     /* S2_ROLLOVER_HEADER_RESET_V1 */
