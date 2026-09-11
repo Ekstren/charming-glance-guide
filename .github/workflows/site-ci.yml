@@ -72,5 +72,7 @@ jobs:
           PY
       - name: Full browser smoke
         run: node scripts/site_smoke_test.mjs
+      - name: Mobile layout regression
+        run: node scripts/mobile_audit_v1.mjs
 
-# CI touch: validate projected field geometry and restored read-only accent tint.
+# CI touch: validate projected field geometry, restored read-only accent tint, and mobile layout.
