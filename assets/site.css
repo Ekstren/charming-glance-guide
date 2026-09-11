@@ -4815,3 +4815,49 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
 }
 
+
+
+/* COOPERATIVE_OPTIMIZER_V1_STYLE */
+.optimizerProgressPanel{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:9999;
+  width:min(340px,calc(100vw - 36px));
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) auto;
+  align-items:center;
+  gap:11px;
+  padding:12px 12px 12px 13px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--surface);
+  color:var(--text);
+  box-shadow:0 14px 38px rgba(0,0,0,.28);
+}
+.optimizerProgressPanel[hidden]{display:none!important}
+.optimizerProgressSpinner{
+  width:22px;height:22px;border-radius:50%;
+  border:3px solid var(--line);
+  border-top-color:var(--green);
+  animation:optimizerProgressSpin .8s linear infinite;
+}
+.optimizerProgressCopy{min-width:0;display:flex;flex-direction:column;gap:2px}
+.optimizerProgressCopy strong{font-size:11px;line-height:1.25;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.optimizerProgressCopy span{font-size:9px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.optimizerProgressCopy small{font-size:8px;line-height:1.2;color:var(--muted)}
+#optimizerCancelButton{
+  min-width:58px;height:32px;padding:0 10px;border-radius:8px;
+  border:1px solid var(--line);background:var(--surface2,var(--surface));color:var(--pink,var(--green));
+  font-size:9px;font-weight:900;cursor:pointer;
+}
+#optimizerCancelButton:hover{border-color:currentColor}
+#optimizerCancelButton:disabled{opacity:.6;cursor:default}
+.optimizerProgressPanel.optimizerCancelled .optimizerProgressSpinner{animation:none;border-top-color:var(--muted)}
+.optimizerProgressPanel.optimizerError .optimizerProgressSpinner{animation:none;border-top-color:var(--danger,var(--pink))}
+@keyframes optimizerProgressSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.optimizerProgressSpinner{animation:none}}
+@media(max-width:700px){
+  .optimizerProgressPanel{right:10px;bottom:10px;width:calc(100vw - 20px);padding:11px;grid-template-columns:26px minmax(0,1fr) auto}
+  #optimizerCancelButton{min-width:64px;height:36px;font-size:10px}
+}
