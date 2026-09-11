@@ -1,4 +1,4 @@
-name: Repair runtime viewer-time syntax
+name: Finish Early Max + device timezone
 
 on:
   push:
@@ -9,17 +9,22 @@ permissions:
   contents: write
 
 jobs:
-  repair:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Repair broken viewer-local timezone strings
-        run: python3 scripts/fix_runtime_viewer_apostrophe_v1.py
+      - name: Apply Finish Early Max and device timezone patch
+        run: python3 scripts/patch_finish_early_max_timezone_v2.py
       - name: Verify runtime JavaScript syntax
         run: node --check assets/runtime.js
-      - name: Commit repaired runtime
+      - name: Verify patch markers
+        run: |
+          grep -q 'FINISH_EARLY_MAX_V2' assets/runtime.js
+          grep -q 'VIEWER_DEVICE_TIMEZONE_V2' assets/runtime.js
+          grep -q 'id="finishEarlyMax"' index.html
+      - name: Commit verified site changes
         run: |
           if git diff --quiet; then
             echo 'No changes to commit.'
@@ -27,6 +32,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+Ekstren@users.noreply.github.com'
-          git add assets/runtime.js
-          git commit -m 'Fix viewer-local time runtime syntax'
+          git add index.html assets/runtime.js assets/site.css
+          git commit -m 'Restore Finish Early Max and enforce device-local times'
           git push origin HEAD:main
