@@ -9,7 +9,7 @@ index = index_path.read_text(encoding='utf-8')
 runtime = runtime_path.read_text(encoding='utf-8')
 css = css_path.read_text(encoding='utf-8')
 
-old_control = '<label class="finishEarlyCard" title="Stop counting Character score and projected resources this many reset-days before season end"><span>Finish early</span><input id="finishEarlyDays" type="number" min="0" step="0.5" value="0" inputmode="decimal"><em>days</em></label>'
+old_control = '<label class="finishEarlyCard" title="Stop counting Character score and projected resources this many days before season end"><span>Finish early</span><input id="finishEarlyDays" type="number" min="0" step="0.5" value="0" inputmode="decimal"><em>days</em></label>'
 new_control = '<div class="finishEarlyCard" title="Stop counting Character score and projected resources this many days before season end"><span>Finish early</span><input id="finishEarlyDays" type="number" min="0" step="0.5" value="0" inputmode="decimal" aria-label="Finish early days"><em>days</em><button id="finishEarlyMax" class="finishEarlyMax" type="button" title="Find the maximum half-day finish-early value that still reaches the selected Primostar target">Max</button></div>'
 if old_control in index:
     index = index.replace(old_control, new_control, 1)
@@ -39,7 +39,6 @@ max_fn = r'''  /* FINISH_EARLY_MAX_V1
     calculatorUpdateTimer=null;
     setTimeout(()=>{
       try{
-        // First prove the selected target is reachable with the full remaining season.
         input.value='0';
         updateCalculator();
         if(!finishEarlyTargetFundable()){
