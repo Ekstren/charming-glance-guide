@@ -70,7 +70,7 @@
      QY's current Global timeline puts S2 Season Power at Player Lv.130; Lv.120 is only the
      maximum S2 Material Realm / open-map bracket. New S2 calculator states therefore begin
      from a representative scoring-unlock profile. Saved materials, Cart rates and Bed EXP start at 0 so the player must enter real production values.
-     The heavy optimizer stays paused until Bed EXP and at least one Cart/hr rate are provided. */
+     The heavy optimizer stays paused until Bed EXP and all four Cart/hr rates are provided. */
   const S2_SCORING_START_DEFAULTS=Object.freeze({
     targetStars:800,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
@@ -3234,17 +3234,18 @@
   /* S2_REQUIRED_INPUT_GUARD_V1
      Avoid launching the expensive target search from an empty production snapshot.
      Saved materials and Material Realm purchases are allowed to remain zero, but the
-     S2 optimizer needs real Bed EXP plus at least one Cart/hr production rate. */
+     S2 optimizer needs real Bed EXP plus all four Cart/hr production rates. */
   function s2RequiredPlannerInputs(){
     const bed=Math.max(0,parseCompactNumber($('bedExp')?.value,0));
-    const cartIds=['oreRate','essenceRate','sandRate','treatRate'];
-    const cartRates=cartIds.map(id=>Math.max(0,parseCompactNumber($(id)?.value,0)));
-    return {bed,cartRates,hasBed:bed>0,hasCart:cartRates.some(value=>value>0)};
+    const cartInputs=[['oreRate','Raw Ore Cart/hr'],['essenceRate','Skill Essence Cart/hr'],['sandRate','Chrono Sand Cart/hr'],['treatRate','Fantomon Treats Cart/hr']];
+    const cartRates=cartInputs.map(([id])=>Math.max(0,parseCompactNumber($(id)?.value,0)));
+    const missingCart=cartInputs.filter((_,i)=>cartRates[i]<=0).map(([,label])=>label);
+    return {bed,cartRates,missingCart,hasBed:bed>0,hasAllCart:missingCart.length===0};
   }
   function clearS2ForRequiredPlannerInputs(cfg,requirements){
     const missing=[];
     if(!requirements.hasBed) missing.push('Bed EXP/hr');
-    if(!requirements.hasCart) missing.push('at least one Cart/hr rate');
+    missing.push(...requirements.missingCart);
     if($('projectedCharacter')) $('projectedCharacter').value='Enter required inputs';
     if($('resultProjectedCharacter')) $('resultProjectedCharacter').textContent='—';
     ['currentStars','currentScoreNow','summaryOptimizedScore','desiredScore','optimizedScore'].forEach(id=>{if($(id))$(id).textContent='—';});
@@ -3260,7 +3261,7 @@
     }
     if($('optimizerSummary')){
       $('optimizerSummary').hidden=false;
-      $('optimizerSummary').textContent='The heavy Primostar search is paused until Bed EXP and Cart production are entered.';
+      $('optimizerSummary').textContent='The heavy Primostar search is paused until Bed EXP and all four Cart production rates are entered.';
     }
     if($('recommendedBreakdownSection')) $('recommendedBreakdownSection').hidden=true;
     ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if($(id))$(id).textContent='—';});
@@ -3282,7 +3283,7 @@
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
     if(cfg.key==='s2'){
       const required=s2RequiredPlannerInputs();
-      if(!required.hasBed || !required.hasCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }
+      if(!required.hasBed || !required.hasAllCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }
     }
     const p=projectCharacter(cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
