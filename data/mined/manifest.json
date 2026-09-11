@@ -1,6 +1,20 @@
 {
-  "generated_utc": "2026-09-11T22:21:08.863022+00:00",
+  "generated_utc": "2026-09-11T22:24:08.816117+00:00",
   "outputs": [
+    {
+      "constants": [
+        "FORMAT",
+        "HEADLINE",
+        "PROP_IX"
+      ],
+      "output": "data/mined/mystonats/constants/skill-scale.json",
+      "output_bytes": 1343,
+      "source": "skill-scale.js",
+      "source_sha256": "2d2fe883d6c80bcca11078086323cef2c28cb244c794f62073cd75e3e229040b",
+      "unresolved_constants": [
+        "D"
+      ]
+    },
     {
       "output": "data/mined/0xnobody/sxs-companions/data.json",
       "output_bytes": 1102164,
@@ -23,11 +37,11 @@
       "variable": "LOADOUT_DATA"
     },
     {
-      "output": "data/mined/0xnobody/sxs-stellaris/data.json",
-      "output_bytes": 35467,
-      "source": "sxs-stellaris/data.js",
-      "source_sha256": "091e13219d91874f594a01e2d0e384f2e3c44704e39579027425e1360878aaf3",
-      "variable": "STELLARIS_DATA"
+      "output": "data/mined/0xnobody/sxs-loadout-builder/fantomons.json",
+      "output_bytes": 1125,
+      "source": "sxs-loadout-builder/fantomons.js",
+      "source_sha256": "4b7e9c6014dca3f5df8a850dec4a8b620e0b0211e82955f56ad0c6b8234da00b",
+      "variable": "FANTOMON_CATALOG"
     },
     {
       "constants": [
@@ -88,31 +102,29 @@
       ]
     },
     {
-      "constants": [
-        "FORMAT",
-        "HEADLINE",
-        "PROP_IX"
-      ],
-      "output": "data/mined/mystonats/constants/skill-scale.json",
-      "output_bytes": 1343,
-      "source": "skill-scale.js",
-      "source_sha256": "2d2fe883d6c80bcca11078086323cef2c28cb244c794f62073cd75e3e229040b",
-      "unresolved_constants": [
-        "D"
-      ]
+      "output": "data/mined/0xnobody/sxs-primo-calculator/server-data.json",
+      "output_bytes": 33138,
+      "source": "sxs-primo-calculator/server-data.js",
+      "source_sha256": "5ad1329c183bf4d9b13844d6039b3c280e4844f7be3150c424d3ac313b655119",
+      "variable": "SXS_SERVER_ROWS"
+    },
+    {
+      "output": "data/mined/0xnobody/sxs-stellaris/data.json",
+      "output_bytes": 35467,
+      "source": "sxs-stellaris/data.js",
+      "source_sha256": "091e13219d91874f594a01e2d0e384f2e3c44704e39579027425e1360878aaf3",
+      "variable": "STELLARIS_DATA"
+    },
+    {
+      "output": "data/mined/0xnobody/wardrobe-assets/catalog.json",
+      "output_bytes": 478987,
+      "source": "wardrobe-assets/catalog.js",
+      "source_sha256": "10a1f56009ed6b67d4a850eb5a1604670295c0a98edcaa9edb0070d1f4798e63",
+      "variable": "WARDROBE_DATA"
     }
   ],
   "scope": "Structured Sword x Staff game facts only; UI/code/assets and long prose excluded.",
-  "skipped": [
-    {
-      "reason": "not a pure JSON assignment",
-      "source": "sxs-loadout-builder/fantomons.js"
-    },
-    {
-      "reason": "not a pure JSON assignment",
-      "source": "sxs-primo-calculator/server-data.js"
-    }
-  ],
+  "skipped": [],
   "sources": {
     "0xnobody": {
       "commit": "885795c9bc5077449692c91d68b5b1b838e35f28",
