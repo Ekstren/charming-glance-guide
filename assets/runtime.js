@@ -8,6 +8,11 @@
   const S1_END = new Date('2026-08-30T06:00:00-07:00');
   const S2_END = new Date('2026-11-05T06:00:00-08:00');
   const SERVER_START = new Date('2026-07-15T06:00:00-07:00');
+/* S2_MINED_REALM_YIELDS_V1
+     S2 max-bracket (Champion III / client Saint III) Material Realm averages are precomputed
+     from factual live-client tables: rank multiplier 19.5 plus object weights, durability,
+     hit-damage probabilities, break rewards and free-box rules. Values are long-run expected
+     resources per actual Realm run/tool. Sand is Basic/White equivalent (Blue x5, Purple x25). */
   const CALC_SEASONS = {
     // S1_SCORING_METHOD_REFRESH_V1: shared acquisition optimizer; S1 scoring constants remain unchanged.
     // S1: Skills follow Character level, Relics unlock +11/+12/+13/+14 at Lv.100/110/120/130,
@@ -16,7 +21,7 @@
     // S2 scoring constants are well-established. Live Global evidence confirms Gear, Skills and Relic ranks can advance above Character level.
     // The optimizer therefore treats those three systems as resource/table-limited rather than Character-level gated.
     // Fantomon growth uses a resonance-style 10-level soft gate: the next decade opens only after all four scoring Fantomons reach the current decade boundary.
-    s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1200,essence:1500,sand:1000,rolla:11800},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true}
+    s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1888.455092195316,essence:2645.717313492359,sand:1797.432822048046,rolla:19169.242644394664},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true}
   };
 
   /* S2_SCORING_SOURCE_CONFIRM_V1
