@@ -72,3 +72,5 @@ jobs:
           PY
       - name: Full browser smoke
         run: node scripts/site_smoke_test.mjs
+
+# CI touch: validate the S2 above-character Gear/Skill/Relic planner correction.
