@@ -2956,7 +2956,7 @@
     renderLocalTimeLabels();
     $('seasonDeadlineLabel').textContent=`${cfg.name} ends`;
     $('seasonDeadlineDate').textContent=localDeadlineLabel(cfg.end,cfg.key==='s2');
-    $('historicalStarsLabel').textContent='Season 1 Primostars (carried)';
+    $('historicalStarsLabel').textContent='Season 1 Primostars';
     $('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); future free 2-hour reset boosts are included automatically.`;
     if($('astralBonusReference')) $('astralBonusReference').hidden=false;
     const s2Presets=$('s2TargetPresets'),s2Gates=$('s2ProgressionGates'),seasonHint=$('seasonRulesHint');
@@ -4463,6 +4463,29 @@
     INPUT_IDS.forEach(id=>{
       const el=$(id);
       if(!el) return;
+      if(id==='finishEarlyDays'){
+        // Finish-early is a planning preference, not account-state data. Recalculate on a
+        // short debounce so the cutoff visibly responds while typing without hammering the
+        // optimizer once per keystroke or moving the user's snapshot clock.
+        let finishEarlyTimer=0;
+        const commitFinishEarly=()=>{
+          const value=finishEarlyDaysValue();
+          el.value=String(value);
+          resetMaxAchievableUi();
+          saveState();
+          scheduleCalculatorUpdate(0);
+        };
+        el.addEventListener('input',()=>{
+          clearTimeout(finishEarlyTimer);
+          finishEarlyTimer=setTimeout(commitFinishEarly,250);
+        });
+        el.addEventListener('change',()=>{
+          clearTimeout(finishEarlyTimer);
+          commitFinishEarly();
+        });
+        el.addEventListener('keydown',ev=>{if(ev.key==='Enter') el.blur();});
+        return;
+      }
       if(id==='staminaMode'){
         el.addEventListener('change',()=>{resetMaxAchievableUi();markManualSnapshot(id);scheduleCalculatorUpdate(0);});
         return;

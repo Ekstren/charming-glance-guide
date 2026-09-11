@@ -4584,3 +4584,65 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   .seasonDeadline .finishEarlyControl{order:3;margin-left:0}
   .seasonDeadline #seasonRemaining{order:4;width:auto;margin-left:auto}
 }
+
+
+/* FINISH_EARLY_SCORE_UI_V2 */
+.seasonPlanningRow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) max-content;
+  gap:8px;
+  align-items:stretch;
+  margin-top:14px;
+}
+.seasonPlanningRow .seasonDeadline{
+  margin-top:0!important;
+  min-width:0;
+  height:100%;
+}
+.finishEarlyCard{
+  border:1px solid var(--line);
+  background:var(--bg);
+  border-radius:10px;
+  min-height:42px;
+  padding:7px 9px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  color:var(--muted);
+  text-align:right;
+  white-space:nowrap;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  font-size:8px;
+  font-weight:850;
+}
+.finishEarlyCard span{color:var(--muted);font:inherit;letter-spacing:inherit;text-transform:inherit}
+.finishEarlyCard input{
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+  flex:0 0 34px!important;
+  height:26px!important;
+  min-height:26px!important;
+  padding:3px 4px!important;
+  margin:0!important;
+  border:1px solid var(--line)!important;
+  border-radius:7px!important;
+  background:var(--input-bg)!important;
+  color:var(--ink)!important;
+  text-align:center!important;
+  font-size:10px!important;
+  font-weight:850!important;
+  line-height:1!important;
+  outline:0!important;
+}
+.finishEarlyCard input:focus{
+  border-color:var(--green)!important;
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 15%,transparent)!important;
+}
+.finishEarlyCard em{color:var(--muted);font-style:normal;font-size:8px;font-weight:850;text-transform:none}
+@media(max-width:700px){
+  .seasonPlanningRow{grid-template-columns:1fr}
+  .finishEarlyCard{justify-content:flex-end}
+}
