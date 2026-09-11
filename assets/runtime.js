@@ -498,17 +498,27 @@
     if(FUTURE_RESET_COUNT_CACHE.size>64) FUTURE_RESET_COUNT_CACHE.delete(FUTURE_RESET_COUNT_CACHE.keys().next().value);
     return count;
   }
+  /* VIEWER_DEVICE_TIMEZONE_V2
+     Server/reset calculations stay anchored to Pacific internally. Every visible clock/date
+     is formatted in the timezone reported by the device viewing the page. */
+  function viewerTimeZone(){
+    try{return Intl.DateTimeFormat().resolvedOptions().timeZone||undefined;}catch(_){return undefined;}
+  }
+  function viewerDateTimeFormatter(options){
+    const timeZone=viewerTimeZone();
+    return new Intl.DateTimeFormat(undefined,timeZone?{...options,timeZone}:options);
+  }
   function localClockLabel(ms){
-    return new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(ms));
+    return viewerDateTimeFormatter({hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(ms));
   }
   function localDeadlineLabel(date,projected=false){
-    const text=new Intl.DateTimeFormat(undefined,{month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date).replace(' at ',' · ');
+    const text=viewerDateTimeFormatter({month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date).replace(' at ',' · ');
     return `${projected?'Projected · ':''}${text}`;
   }
   function localShortDateTimeLabel(value){
     const date=value instanceof Date?value:new Date(value);
     if(!Number.isFinite(date.getTime())) return '—';
-    return new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date).replace(' at ',' · ');
+    return viewerDateTimeFormatter({month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date).replace(' at ',' · ');
   }
   function nextResetLocalLabel(){ return localClockLabel(nextPacificResetMs(Date.now())); }
   function renderLocalTimeLabels(){
@@ -3190,6 +3200,64 @@
     },0);
   }
 
+  /* FINISH_EARLY_MAX_V2
+     Search only half-day values and reuse the normal visible calculator result as the
+     feasibility test. The optimizer itself is untouched. Binary search keeps this to a
+     handful of solves rather than brute-forcing every half day. */
+  function finishEarlyTargetFundable(){
+    const status=($('targetStatus')?.textContent||'').trim();
+    return status==='✓' || status.startsWith('✓');
+  }
+  function findMaxFinishEarly(){
+    const btn=$('finishEarlyMax'),input=$('finishEarlyDays');
+    if(!btn||!input||btn.disabled) return;
+    const cfg=activeCalcConfig();
+    const original=String(input.value||'0');
+    const halfDayMs=12*60*60*1000;
+    const maxHalfSteps=Math.max(0,Math.floor((cfg.end.getTime()-Date.now())/halfDayMs));
+    btn.disabled=true;
+    btn.textContent='…';
+    btn.setAttribute('aria-busy','true');
+    clearTimeout(calculatorUpdateTimer);
+    calculatorUpdateTimer=null;
+    setTimeout(()=>{
+      try{
+        input.value='0';
+        updateCalculator();
+        if(!finishEarlyTargetFundable()){
+          input.value=original;
+          updateCalculator();
+          btn.title='The selected target is not reachable with the full remaining season, or required inputs are still missing.';
+          return;
+        }
+        let lo=0,hi=maxHalfSteps;
+        while(lo<hi){
+          const mid=Math.ceil((lo+hi)/2);
+          input.value=String(mid/2);
+          updateCalculator();
+          if(finishEarlyTargetFundable()) lo=mid;
+          else hi=mid-1;
+        }
+        input.value=String(lo/2);
+        resetMaxAchievableUi();
+        saveState();
+        updateCalculator();
+        btn.title=lo>0
+          ? `Maximum finish-early value for the current target: ${lo/2} days.`
+          : 'The current target needs the full remaining season.';
+      }catch(err){
+        console.error('FINISH_EARLY_MAX_V2',err);
+        input.value=original;
+        updateCalculator();
+        btn.title='Could not calculate the maximum finish-early value from the current inputs.';
+      }finally{
+        btn.disabled=false;
+        btn.textContent='Max';
+        btn.removeAttribute('aria-busy');
+      }
+    },0);
+  }
+
   /* SMART_BALANCE_RAW_CEILING_V1
      The requested Primostar value is a minimum goal. If projected RAW income alone can
      reach a higher whole-Primostar breakpoint, recommend that higher breakpoint without
@@ -4542,6 +4610,7 @@
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
     $('resetSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
     $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
+    $('finishEarlyMax')?.addEventListener('click',findMaxFinishEarly);
     $('targetMessage')?.addEventListener('click',e=>{
       const btn=e.target.closest?.('.applyRealmRecommendation');
       if(btn) applyRecommendedRealmRefreshes(btn);
