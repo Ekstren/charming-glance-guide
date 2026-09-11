@@ -4597,7 +4597,7 @@
 
   function setupCalculator(){
     document.getElementById('calculatorSection')?.addEventListener('focusin',e=>{
-      if(e.target?.matches?.('input') && e.target.id!=='targetStars'){
+      if(e.target?.matches?.('input') && e.target.id!=='targetStars' && e.target.id!=='finishEarlyDays'){
         // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
         // expensive optimizer just for tabbing/clicking between account-state fields.
         // Target Primostars is only a goal selector and must not mutate the snapshot clock.
@@ -4611,10 +4611,11 @@
       const el=$(id);
       if(!el) return;
       if(id==='finishEarlyDays'){
-        // Finish-early is a planning preference, not account-state data. Recalculate on a
-        // short debounce so the cutoff visibly responds while typing without hammering the
-        // optimizer once per keystroke or moving the user's snapshot clock.
-        let finishEarlyTimer=0;
+        /* FINISH_EARLY_COMMIT_ON_BLUR_V1
+           Finish Early can trigger an expensive optimizer solve, so never recalculate while
+           the user is still typing or clicking the number spinner. Commit only when editing
+           is explicitly finished: Enter blurs the field; Tab and clicking/tapping elsewhere
+           naturally fire blur. This is a planning preference and never moves snapshot time. */
         const commitFinishEarly=()=>{
           const value=finishEarlyDaysValue();
           el.value=String(value);
@@ -4622,15 +4623,13 @@
           saveState();
           scheduleCalculatorUpdate(0);
         };
-        el.addEventListener('input',()=>{
-          clearTimeout(finishEarlyTimer);
-          finishEarlyTimer=setTimeout(commitFinishEarly,250);
+        el.addEventListener('blur',commitFinishEarly);
+        el.addEventListener('keydown',ev=>{
+          if(ev.key==='Enter'){
+            ev.preventDefault();
+            el.blur();
+          }
         });
-        el.addEventListener('change',()=>{
-          clearTimeout(finishEarlyTimer);
-          commitFinishEarly();
-        });
-        el.addEventListener('keydown',ev=>{if(ev.key==='Enter') el.blur();});
         return;
       }
       if(id==='staminaMode'){
