@@ -1,4 +1,4 @@
-name: Patch finish-early score planner v1
+name: Patch character deadline UI v2
 
 on:
   push:
@@ -15,9 +15,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Apply finish-early planner patch
-        run: python3 scripts/patch_finish_early_score_v1.py
-      - name: Commit finish-early planner
+      - name: Apply character deadline UI patch
+        run: python3 scripts/patch_character_deadline_ui_v2.py
+      - name: Commit character deadline UI fixes
         run: |
           if git diff --quiet; then
             echo 'No changes to commit.'
@@ -26,5 +26,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+Ekstren@users.noreply.github.com'
           git add index.html assets/runtime.js assets/site.css
-          git commit -m 'Add finish-early Primostar target cutoff'
+          git commit -m 'Clean up Character deadline row and refresh finish-early planning'
           git push origin HEAD:main
