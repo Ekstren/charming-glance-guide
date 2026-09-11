@@ -1,0 +1,101 @@
+from pathlib import Path
+
+runtime_path = Path('assets/runtime.js')
+runtime = runtime_path.read_text(encoding='utf-8')
+
+replacements = [
+    (
+        "Saved materials remain 0 until the player enters them. Starter Cart rates use conservative S2 planning defaults\n     (Ore 1,000/hr, Essence 1,200/hr, Sand 800/hr, Treats 80/hr) and can be replaced with live values at any time.",
+        "Saved materials, Cart rates and Bed EXP start at 0 so the player must enter real production values.\n     The heavy optimizer stays paused until Bed EXP and at least one Cart/hr rate are provided."
+    ),
+    (
+        "charLevel:130,charExp:0,bedExp:400000,",
+        "charLevel:130,charExp:0,bedExp:0,"
+    ),
+    (
+        "// S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.\n    oreCurrent:0,oreRate:1000,essenceCurrent:0,essenceRate:1200,\n    sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:800,\n    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:80,",
+        "// S2_REQUIRED_INPUT_DEFAULTS_V1: never guess production. Saved materials, Cart rates and Bed EXP start at zero.\n    oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,\n    sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,\n    treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,"
+    ),
+]
+
+for old, new in replacements:
+    count = runtime.count(old)
+    if count != 1:
+        raise SystemExit(f'Expected exactly one runtime replacement, found {count}: {old[:80]!r}')
+    runtime = runtime.replace(old, new, 1)
+
+marker = "  function updateCalculator(){\n    const perfStarted=performance.now();"
+if runtime.count(marker) != 1:
+    raise SystemExit(f'Expected exactly one updateCalculator marker, found {runtime.count(marker)}')
+
+guard = r'''  /* S2_REQUIRED_INPUT_GUARD_V1
+     Avoid launching the expensive target search from an empty production snapshot.
+     Saved materials and Material Realm purchases are allowed to remain zero, but the
+     S2 optimizer needs real Bed EXP plus at least one Cart/hr production rate. */
+  function s2RequiredPlannerInputs(){
+    const bed=Math.max(0,parseCompactNumber($('bedExp')?.value,0));
+    const cartIds=['oreRate','essenceRate','sandRate','treatRate'];
+    const cartRates=cartIds.map(id=>Math.max(0,parseCompactNumber($(id)?.value,0)));
+    return {bed,cartRates,hasBed:bed>0,hasCart:cartRates.some(value=>value>0)};
+  }
+  function clearS2ForRequiredPlannerInputs(cfg,requirements){
+    const missing=[];
+    if(!requirements.hasBed) missing.push('Bed EXP/hr');
+    if(!requirements.hasCart) missing.push('at least one Cart/hr rate');
+    if($('projectedCharacter')) $('projectedCharacter').value='Enter required inputs';
+    if($('resultProjectedCharacter')) $('resultProjectedCharacter').textContent='—';
+    ['currentStars','currentScoreNow','summaryOptimizedScore','desiredScore','optimizedScore'].forEach(id=>{if($(id))$(id).textContent='—';});
+    if($('targetStatus')){
+      $('targetStatus').textContent='waiting for production inputs';
+      $('targetStatus').classList.remove('notMet');
+    }
+    if($('targetMessage')){
+      $('targetMessage').hidden=false;
+      $('targetMessage').classList.remove('danger');
+      $('targetMessage').classList.add('warning','caution');
+      $('targetMessage').textContent=`Enter ${missing.join(' and ')} to run the S2 optimizer. Saved materials and Material Realm purchases can stay at 0.`;
+    }
+    if($('optimizerSummary')){
+      $('optimizerSummary').hidden=false;
+      $('optimizerSummary').textContent='The heavy Primostar search is paused until Bed EXP and Cart production are entered.';
+    }
+    if($('recommendedBreakdownSection')) $('recommendedBreakdownSection').hidden=true;
+    ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if($(id))$(id).textContent='—';});
+    GEAR_OUTPUT_IDS.forEach(id=>{if($(id))$(id).textContent='—';});
+    ['oreCost','essenceCost','sandCost','treatCost'].forEach(id=>{if($(id))$(id).textContent='0';});
+    ['oreBalance','essenceBalance','sandBalance','treatBalance','oreToolBalance','essenceToolBalance','sandToolBalance'].forEach(hidePlanBalance);
+    if($('materialRealmRecommendation')){$('materialRealmRecommendation').hidden=true;$('materialRealmRecommendation').textContent='';}
+    if($('secondaryCostNote')){$('secondaryCostNote').hidden=true;$('secondaryCostNote').textContent='';}
+    if($('milestoneNote')){$('milestoneNote').hidden=true;$('milestoneNote').textContent='';}
+    const calcSection=$('calculatorSection');
+    if(calcSection) calcSection.dataset.lastSolveMs='0.0';
+    saveState();
+  }
+
+'''
+runtime = runtime.replace(marker, guard + marker, 1)
+
+old_start = "  function updateCalculator(){\n    const perfStarted=performance.now();\n    $('targetMessage')?.classList.remove('danger','caution');\n    const cfg=activeCalcConfig();\n    if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }\n    const p=projectCharacter(cfg);"
+new_start = "  function updateCalculator(){\n    const perfStarted=performance.now();\n    $('targetMessage')?.classList.remove('danger','caution');\n    const cfg=activeCalcConfig();\n    if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }\n    if(cfg.key==='s2'){\n      const required=s2RequiredPlannerInputs();\n      if(!required.hasBed || !required.hasCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }\n    }\n    const p=projectCharacter(cfg);"
+if runtime.count(old_start) != 1:
+    raise SystemExit(f'Expected exactly one updateCalculator start, found {runtime.count(old_start)}')
+runtime = runtime.replace(old_start, new_start, 1)
+runtime_path.write_text(runtime, encoding='utf-8')
+
+index_path = Path('index.html')
+index = index_path.read_text(encoding='utf-8')
+old_bed = '<label>Bed EXP per hour<input id="bedExp" type="number" value="400000"></label>'
+new_bed = '<label>Bed EXP per hour<input id="bedExp" type="number" min="0" value="0"><small>Required for projection</small></label>'
+if index.count(old_bed) != 1:
+    raise SystemExit(f'Expected exactly one Bed EXP input, found {index.count(old_bed)}')
+index = index.replace(old_bed, new_bed, 1)
+index_path.write_text(index, encoding='utf-8')
+
+runtime_check = runtime_path.read_text(encoding='utf-8')
+assert 'charLevel:130,charExp:0,bedExp:0,' in runtime_check
+assert 'oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,' in runtime_check
+assert 'sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,' in runtime_check
+assert 'treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,' in runtime_check
+assert "if(!required.hasBed || !required.hasCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }" in runtime_check
+
+print('Primostar required-input guard patched successfully.')
