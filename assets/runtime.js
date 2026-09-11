@@ -75,7 +75,7 @@
     targetStars:680,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
-    charLevel:130,charExp:0,bedExp:0,
+    charLevel:130,charExp:0,bedExp:0,finishEarlyDays:0,
     skillLevel:130,relicLevel:13,fantomonLevel:130,gearLevel:130,
     exactGearLevels:'',
     // S2_REQUIRED_INPUT_DEFAULTS_V1: never guess production. Saved materials, Cart rates and Bed EXP start at zero.
@@ -154,7 +154,7 @@
   const LEGACY_GEAR_IDS = ['gearWeapon','gearOffhand','gearHelmet','gearArmor','gearBoots'];
   const GEAR_OUTPUT_IDS = ['targetGearWeapon','targetGearOffhand','targetGearHelmet','targetGearArmor','targetGearBoots'];
   const INPUT_IDS = [
-    'targetStars','historicalStars','charLevel','charExp','bedExp','skillLevel','relicLevel','fantomonLevel','gearLevel',
+    'targetStars','historicalStars','charLevel','charExp','bedExp','finishEarlyDays','skillLevel','relicLevel','fantomonLevel','gearLevel',
     'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels','exactGearLevels'
   ];
@@ -343,7 +343,7 @@
   }
   function futureRealmPurchaseDays(cfg=activeCalcConfig()){
     const now=Date.now();
-    const cutoff=cfg.end.getTime();
+    const cutoff=upgradeFinishCutoffMs(cfg);
     if(cutoff<=now) return 0;
     const key=`${cfg.key}|${cutoff}`;
     if(FUTURE_REALM_DAY_CACHE.key===key && now<FUTURE_REALM_DAY_CACHE.validUntil) return FUTURE_REALM_DAY_CACHE.value;
@@ -512,10 +512,10 @@
     if($('timelineResetLocal')) $('timelineResetLocal').textContent=reset;
   }
   function resourceCutoffMs(cfg=activeCalcConfig()){
-    return Math.max(Date.now(),cfg.end.getTime());
+    return upgradeFinishCutoffMs(cfg);
   }
   function projectionResourceHoursAt(ms,cfg=activeCalcConfig()){
-    const cutoff=cfg.end.getTime();
+    const cutoff=upgradeFinishCutoffMs(cfg);
     const capped=Math.min(ms,cutoff);
     if(capped>=cutoff) return 0;
     const wallHours=(cutoff-capped)/3_600_000;
@@ -556,7 +556,7 @@
        Future projection then loses that reset at the same time, so season-end tool totals stay
        stable instead of requiring the user to manually add Hammers/Knuckles/Shovels each day.
        Match futureRealmPurchaseDays(): purchases stop at the optional finishing-window cutoff. */
-    const realmCutoffMs=cfg.end.getTime();
+    const realmCutoffMs=finishScoreCutoffMs(cfg);
     const realmAgeEnd=Math.min(cappedNow,realmCutoffMs);
     const elapsedRealmResets=realmAgeEnd>snapshotAtMs
       ? countFuturePacificResets(snapshotAtMs,realmAgeEnd)
@@ -805,8 +805,19 @@
   function projectCharacter(cfg=activeCalcConfig()){
     return projectCharacterTo(cfg.end.getTime(),cfg);
   }
+  function finishEarlyDaysValue(){
+    const raw=Number($('finishEarlyDays')?.value);
+    return Number.isFinite(raw)?Math.max(0,Math.floor(raw)):0;
+  }
+  function finishScoreCutoffMs(cfg=activeCalcConfig()){
+    const days=finishEarlyDaysValue();
+    if(days<=0) return cfg.end.getTime();
+    const endIso=pacificIsoAt(cfg.end.getTime());
+    const cutoff=pacificLocalMs(isoAddDays(endIso,-days),6,0);
+    return Math.min(cfg.end.getTime(),cutoff);
+  }
   function upgradeFinishCutoffMs(cfg=activeCalcConfig()){
-    return cfg.end.getTime();
+    return Math.max(Date.now(),finishScoreCutoffMs(cfg));
   }
 
   const gearScore = (levels,cfg=activeCalcConfig()) => levels.reduce((s,l) => s + Math.max(0,l-cfg.scoreFloor)*cfg.weights.gear, 0);
@@ -1157,12 +1168,14 @@
   // Season-end projection calls this with cfg.end; target ETA reuses it without rerunning the optimizer.
   function futureRealmPurchaseDaysUntil(targetMs,cfg=activeCalcConfig()){
     const now=Date.now();
-    const cutoff=Math.max(now,Math.min(Number(targetMs)||cfg.end.getTime(),cfg.end.getTime()));
+    const plannerCutoff=upgradeFinishCutoffMs(cfg);
+    const cutoff=Math.max(now,Math.min(Number(targetMs)||plannerCutoff,plannerCutoff));
     return cutoff>now?countFuturePacificResets(now,cutoff):0;
   }
   function projectedResourcesTo(targetMs,cfg=activeCalcConfig()){
     const now=Date.now();
-    const cutoff=Math.max(now,Math.min(Number(targetMs)||cfg.end.getTime(),cfg.end.getTime()));
+    const plannerCutoff=upgradeFinishCutoffMs(cfg);
+    const cutoff=Math.max(now,Math.min(Number(targetMs)||plannerCutoff,plannerCutoff));
     const fullRemaining=projectionResourceHoursAt(now,cfg);
     const afterCutoffRemaining=projectionResourceHoursAt(cutoff,cfg);
     const resourceHours=Math.max(0,fullRemaining-afterCutoffRemaining);
@@ -1194,7 +1207,7 @@
     };
   }
   function projectedResources(hours,cfg=activeCalcConfig()){
-    return projectedResourcesTo(cfg.end.getTime(),cfg);
+    return projectedResourcesTo(upgradeFinishCutoffMs(cfg),cfg);
   }
 
   function applyStaminaAllocation(base,allocation,cfg=activeCalcConfig()){
@@ -1559,8 +1572,8 @@
   }
 
   function materialRealmDaysAvailable(cfg=activeCalcConfig()){
-    if(cfg.end.getTime()<=Date.now()) return 0;
-    // Current server-day window + each future 6 AM reset strictly before the cutoff.
+    if(upgradeFinishCutoffMs(cfg)<=Date.now()) return 0;
+    // Current server-day window + each future 6 AM reset strictly before the planner cutoff.
     return 1+futureRealmPurchaseDays(cfg);
   }
   function realmInventoryFor(key,cfg=activeCalcConfig()){
@@ -3012,8 +3025,9 @@
   function clearS2ProjectedAtFloor(cfg,p=projectCharacter(cfg)){
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
     const carried=historical+cfg.starBase;
-    $('seasonRemaining').textContent=formatRemaining(p.hours);
-    $('projectedCharacter').value=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
+    const seasonEndP=projectCharacter(cfg);
+    $('seasonRemaining').textContent=formatRemaining(seasonEndP.hours);
+    $('projectedCharacter').value=`Lv.${seasonEndP.level} · ${(seasonEndP.pct*100).toFixed(1)}%`;
     $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
     $('currentStars').textContent=fmt(carried);
     $('currentScoreNow').textContent='0';
@@ -3310,9 +3324,11 @@
       if(!required.hasAllCart){ clearS2ForRequiredPlannerInputs(cfg,required,p); return; }
     }
     if(!p) p=projectCharacter(cfg);
+    const seasonEndP=p;
+    p=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
-    const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
-    // Upgrade availability now runs through the actual season reset; there is no separate finishing cutoff.
+    const upgradeP=p;
+    // Upgrade availability and score projection stop at the optional finish-early cutoff.
     p.upgradeCapLevel=upgradeP.level;
     p.upgradeCapPct=upgradeP.pct;
     const currentCharacter=p.current||characterSnapshot(cfg);
@@ -3374,10 +3390,10 @@
     if(!plan&&diagnosticPlan){plan=diagnosticPlan;resourceBlocked=!diagnosticPlan.realmFeasible;}
     lastRequestedTargetStars=targetStars; lastEffectiveTargetStars=targetStars;
 
-    $('seasonRemaining').textContent=formatRemaining(p.hours);
-    const pc=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
+    $('seasonRemaining').textContent=formatRemaining(seasonEndP.hours);
+    const pc=`Lv.${seasonEndP.level} · ${(seasonEndP.pct*100).toFixed(1)}%`;
     $('projectedCharacter').value=pc;
-    const expEstimated=cfg.key==='s1'&&s1ProjectionUsesEstimatedExp(currentCharacter.level,p.level);
+    const expEstimated=cfg.key==='s1'&&s1ProjectionUsesEstimatedExp(currentCharacter.level,seasonEndP.level);
     $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
     $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 unknown EXP steps use the community-style ~1.83M/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
     if($('levelSummary')) $('levelSummary').textContent=`Skills ${formatAverage(skill)} · Relics +${formatAverage(relic)} · Fantomons ${formatAverage(fanto)} · Gear avg ${(gear.reduce((a,b)=>a+b,0)/5).toFixed(0)}`;

@@ -4543,3 +4543,44 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   box-shadow:none!important;
   outline:0!important;
 }
+
+
+/* FINISH_EARLY_SCORE_V1 */
+.finishEarlyControl{
+  border:1px solid var(--line);
+  background:var(--surface);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-left:auto;
+  padding:4px 7px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  font-size:8px;
+  font-weight:850;
+  white-space:nowrap;
+}
+.finishEarlyControl span{color:var(--muted);font:inherit;letter-spacing:inherit;text-transform:inherit}
+.finishEarlyControl input{
+  width:42px;
+  height:26px;
+  min-height:26px;
+  border:1px solid var(--line)!important;
+  background:var(--input-bg)!important;
+  color:var(--ink)!important;
+  border-radius:6px;
+  padding:3px 5px;
+  text-align:center;
+  font-size:10px;
+  font-weight:850;
+  outline:0;
+}
+.finishEarlyControl input:focus{border-color:var(--green)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 15%,transparent)!important}
+.finishEarlyControl em{color:var(--muted);font-style:normal;font-size:8px;font-weight:850}
+.seasonDeadline>.finishEarlyControl+small{margin-left:0}
+@media(max-width:700px){
+  .seasonDeadline .finishEarlyControl{order:3;margin-left:0}
+  .seasonDeadline #seasonRemaining{order:4;width:auto;margin-left:auto}
+}
