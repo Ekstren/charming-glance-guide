@@ -13,9 +13,9 @@
     // S1: Skills follow Character level, Relics unlock +11/+12/+13/+14 at Lv.100/110/120/130,
     // Fantomons unlock to the next 10-level band (so Character Lv.130 opens Fantomons through Lv.140), while Gear can continue above Character level.
     s1:{key:'s1',name:'Season 1',nextName:'Season 2',end:S1_END,deadline:'device-local',scoreFloor:100,relicFloor:10,starBase:10,scorePerStar:100,weights:{character:100,gear:38,skill:13,relic:57,fanto:14},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:90,realm:{ore:610,essence:1000,sand:568,rolla:9000},map:{ore:900,essence:1475,sand:838,rolla:9000,bigRate:0},optimizeRelic:true,optimizeFanto:true},
-    // S2 scoring constants are well-established. Late-season Gear/Skill/Relic ceilings are NOT represented by fake fixed caps;
-    // the optimizer uses conservative character-gated progression while actual entered S2 values may exceed those planning gates.
-    // No unverified fixed S2 Fantomon ceiling is imposed.
+    // S2 scoring constants are well-established. Live Global evidence confirms Gear, Skills and Relic ranks can advance above Character level.
+    // The optimizer therefore treats those three systems as resource/table-limited rather than Character-level gated.
+    // Fantomon future planning remains conservative until its Global unlock law is verified.
     s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1200,essence:1500,sand:1000,rolla:11800},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true}
   };
 
@@ -35,10 +35,10 @@
        - Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8 per level
      Global live UI should still be spot-checked at rollover before changing any constants. */
   const S2_PLANNER_START_LEVEL = 120;
-  // PRESEASON_UNLOCK_PREVIEW_V3: Lv.120-130 can preview the first fully-seasonal
-  // upgrade state without awarding any fake pre-Lv.130 Season Power. The site's
-  // conservative S2 model treats Lv.131 as the first point where >130 Gear can be
-  // planned, so this is an upgrade-availability preview only, not a scoring-floor change.
+  // PRESEASON_UNLOCK_PREVIEW_V4: Lv.120-130 may preview the first post-floor Fantomon
+  // planning state without awarding fake pre-Lv.130 Season Power. Gear, Skills and Relic
+  // ranks are not Character-level gated in S2; this preview now applies only to the
+  // still-conservative Fantomon planning rule.
   const S2_FULL_SEASONAL_PREVIEW_LEVEL = 131;
 
   const S2_PRIMO_META = Object.freeze({
@@ -922,9 +922,10 @@
 
   function relicCapForCharacter(characterLevel,cfg=activeCalcConfig()){
     const lvl=Math.max(1,Math.floor(Number(characterLevel)||1));
-    // S2_RELIC_14_LV131_DIRECT_V1: Charming Glance live evidence on Sep. 10 shows +13→+14 is locked through Lv.130 and unlocks at Character Lv.131.
-    if(cfg.key==='s2' && lvl<=130) return 13;
-    // Legacy/S1 rule retained outside the directly observed S2 Lv.130 gate.
+    // S2_ABOVE_CHARACTER_UPGRADES_V1: live Global evidence at Character Lv.131 includes
+    // 18 Relics at +14 with enough material to push two slots to +15. Relic rank is not
+    // Character-level capped; use the extracted S2 blessing table as the planning ceiling.
+    if(cfg.key==='s2') return S2_EXACT_UPGRADE_RULES.relicBase + S2_EXACT_UPGRADE_RULES.relicBlessingLimit;
     return lvl<100 ? 10 : Math.max(10,Math.floor(lvl/10)+1);
   }
   function categoryCapsForCharacter(characterLevel,cfg=activeCalcConfig()){
@@ -939,19 +940,20 @@
       };
     }
     return {
-      // Exact late-S2 skill/relic unlock laws are not sufficiently documented; keep future recommendations conservative.
-      skill:Math.max(100,lvl),
+      // S2_ABOVE_CHARACTER_UPGRADES_V1: Gear, Skills and Relic ranks are material-limited,
+      // not Character-level limited. The extracted seasonal tables provide safe supported
+      // planning ceilings; user-entered actual values remain uncapped below.
+      skill:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_UPGRADE_RULES.skillBlessingLimit,
       relic:relicCapForCharacter(lvl,cfg),
       fanto:Math.max(100,lvl),
-      // S2 seasonal Gear levels do not open until the Lv.130 floor is reached; from Lv.131 onward there is no fake 229 ceiling.
-      gear:lvl<=130?130:Infinity
+      gear:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_UPGRADE_RULES.gearBlessingLimit
     };
   }
   function categoryInputCapsForCharacter(characterLevel,cfg=activeCalcConfig()){
     const caps=categoryCapsForCharacter(characterLevel,cfg);
     if(cfg.key!=='s2') return caps;
-    // Real late-S2 records exceed Character level for Skills and exceed +21 Relics. Accept actual values without
-    // pretending we know the exact future unlock schedule; only the optimizer's NEW upgrades stay conservative.
+    // Accept actual S2 values without Character-level clamping. The optimizer also allows new Gear/Skill/Relic
+    // upgrades above Character level, bounded only by the supported seasonal cost tables; Fantomon remains conservative.
     return {...caps,skill:Infinity,relic:Infinity,fanto:Infinity,gear:Infinity};
   }
 
@@ -968,6 +970,7 @@
     const projectedLevel=p?.upgradeCapLevel ?? p?.level ?? 1;
     return categoryCapsForCharacter(optimizerPlanningLevel(projectedLevel,cfg),cfg);
   }
+  window.__sxsPlannerCapProbeV1=(characterLevel=131)=>({...categoryCapsForCharacter(characterLevel,CALC_SEASONS.s2)});
 
   function gearStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
@@ -3216,8 +3219,8 @@
 
     const lockedText=gearLocked?' Gear is locked at the five current levels.':'';
     const previewText=cfg.key==='s2'&&currentCharacter.level<S2_FULL_SEASONAL_PREVIEW_LEVEL
-      ? ` Pre-season preview uses Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} upgrade availability; Character score still uses the real projected level.`
-      : '';
+      ? ` Fantomon planning uses a conservative Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} availability preview; Gear, Skills and Relic ranks are not Character-level capped.`
+      : (cfg.key==='s2'?' Gear, Skills and Relic ranks are not Character-level capped; recommendations are limited by resources and the supported S2 blessing tables.':'');
     const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120.${previewText}`;
     const achievableRewardStars=resourceBlocked?baselineStars:planStars;
     renderAstralPact(achievableRewardStars);

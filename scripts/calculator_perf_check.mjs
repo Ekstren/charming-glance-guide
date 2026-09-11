@@ -28,6 +28,19 @@ await page.waitForFunction(()=>{
 },null,{timeout:10000});
 await page.waitForTimeout(150);
 
+// S2_ABOVE_CHARACTER_UPGRADES_V1: at Character Lv.131 the planner must not cap
+// Gear, Skills, or Relic ranks to the Character level. These are the supported
+// ceilings of the extracted S2 cost tables, not claims about a lower character gate.
+const s2Caps=await page.evaluate(()=>window.__sxsPlannerCapProbeV1?.(131));
+if(!s2Caps) throw new Error('missing S2 planner-cap regression probe');
+if(s2Caps.skill!==280 || s2Caps.relic!==28 || s2Caps.gear!==430){
+  throw new Error(`S2 above-character planning regressed: ${JSON.stringify(s2Caps)}`);
+}
+if(!(s2Caps.skill>131 && s2Caps.relic>15 && s2Caps.gear>131)){
+  throw new Error(`S2 Gear/Skill/Relic planner is still Character-level capped: ${JSON.stringify(s2Caps)}`);
+}
+console.log(`S2 CAPS char131: Gear ${s2Caps.gear} · Skills ${s2Caps.skill} · Relics +${s2Caps.relic} · Fantomon ${s2Caps.fanto}`);
+
 const base={
   targetStars:'920',historicalStars:'253',charLevel:'130',charExp:'2005316',bedExp:'280772',
   skillLevel:'130',relicLevel:'13',fantomonLevel:'130',
