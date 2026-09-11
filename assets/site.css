@@ -4463,3 +4463,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     height:44px!important;
   }
 }
+
+
+/* PROJECTED_FIELD_ACCENT_RESTORE_V1
+   Keep the projected level as a real native input so its geometry exactly matches
+   the other calculator fields, but restore the darker info-tinted read-only color
+   used by the old projection callout. */
+.projectionField #projectedCharacter{
+  background:var(--ui-accent-soft)!important;
+  border-color:var(--ui-accent-border)!important;
+  cursor:default;
+}
+@supports (color:color-mix(in srgb, black, white)){
+  .projectionField #projectedCharacter{
+    background:color-mix(in srgb,var(--status-info) 8%,var(--surface))!important;
+    border-color:color-mix(in srgb,var(--status-info) 38%,var(--line))!important;
+  }
+}

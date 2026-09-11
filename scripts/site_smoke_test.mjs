@@ -185,6 +185,13 @@ assert(Math.abs(projectionGeometry.bed.height-projectionGeometry.projected.heigh
   `projected field height mismatch: Bed ${projectionGeometry.bed.height}px vs projected ${projectionGeometry.projected.height}px`);
 assert(Math.abs(projectionGeometry.bed.top-projectionGeometry.projected.top)<0.51,
   `projected field top mismatch: Bed ${projectionGeometry.bed.top}px vs projected ${projectionGeometry.projected.top}px`);
+const projectionColors = await page.evaluate(()=>{
+  const bed=getComputedStyle(document.getElementById('bedExp'));
+  const projected=getComputedStyle(document.getElementById('projectedCharacter'));
+  return {bedBg:bed.backgroundColor,projectedBg:projected.backgroundColor,bedBorder:bed.borderTopColor,projectedBorder:projected.borderTopColor};
+});
+assert(projectionColors.projectedBg!==projectionColors.bedBg,
+  `projected field should keep its distinct read-only tint: ${JSON.stringify(projectionColors)}`);
 
 await page.locator('.sectionSwitch button[data-section="timeline"]').click({timeout:5000});
 await page.waitForTimeout(30);
