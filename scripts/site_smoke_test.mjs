@@ -167,6 +167,12 @@ await page.waitForTimeout(80);
 const calcYieldMs = Date.now()-calcStarted;
 assert(!(await page.locator('#calculatorSection').evaluate(el => el.hidden)), 'Calculator tab did not reveal #calculatorSection');
 assert(calcYieldMs < 5000, `calculator blocked the browser for ${calcYieldMs}ms`);
+const targetTiming=page.locator('#targetTiming');
+assert(await targetTiming.count()===1, 'target timing strip missing');
+const targetTimingState=await targetTiming.evaluate(el=>({text:el.innerText,overflow:Math.max(0,el.scrollWidth-el.clientWidth)}));
+assert(/Projected target/i.test(targetTimingState.text) && /Season left after target/i.test(targetTimingState.text), `target timing labels missing: ${targetTimingState.text}`);
+assert(targetTimingState.overflow<=1, `target timing strip overflows by ${targetTimingState.overflow}px`);
+assert((await page.locator('#targetReachedDate').innerText()).trim().length>0, 'target timing date did not render');
 
 // Pixel geometry regression: projected level must exactly match Bed EXP.
 const projectionGeometry = await page.evaluate(()=>{
