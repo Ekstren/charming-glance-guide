@@ -1,5 +1,6 @@
 name: Snapshot mined SxS game data
 
+# DATA_REFRESH_2026_09_11_V1: refresh the normalized factual snapshot before the calculator accuracy audit.
 on:
   workflow_dispatch:
   push:
