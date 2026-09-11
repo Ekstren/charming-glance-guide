@@ -2883,7 +2883,7 @@
   function clearS2PreScoring(cfg){
     const current=characterSnapshot(cfg),p=projectCharacter(cfg);
     $('seasonRemaining').textContent=formatRemaining(remainingHoursAt(Date.now(),cfg));
-    $('projectedCharacter').textContent=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
+    $('projectedCharacter').value=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
     $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
     $('currentStars').textContent='—'; $('currentScoreNow').textContent='—'; $('summaryOptimizedScore').textContent='—'; $('desiredScore').textContent='—';
     $('targetMessage').hidden=false; $('targetMessage').classList.remove('danger'); $('targetMessage').classList.add('warning','caution');
@@ -2897,7 +2897,7 @@
 
   function clearCalcForRollover(cfg){
     $('seasonRemaining').textContent=formatRemaining(remainingHoursAt(Date.now(),cfg));
-    $('projectedCharacter').textContent='Update snapshot';
+    $('projectedCharacter').value='Update snapshot';
     $('resultProjectedCharacter').textContent='Update snapshot';
     $('currentStars').textContent='—'; $('currentScoreNow').textContent='—'; $('summaryOptimizedScore').textContent='—'; $('desiredScore').textContent='—';
     $('targetMessage').hidden=false; $('targetMessage').classList.add('warning');
@@ -3140,7 +3140,7 @@
 
     $('seasonRemaining').textContent=formatRemaining(p.hours);
     const pc=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
-    $('projectedCharacter').textContent=pc;
+    $('projectedCharacter').value=pc;
     const expEstimated=cfg.key==='s1'&&s1ProjectionUsesEstimatedExp(currentCharacter.level,p.level);
     $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
     $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 unknown EXP steps use the community-style ~1.83M/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;

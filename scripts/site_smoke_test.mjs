@@ -175,6 +175,12 @@ const projectionGeometry = await page.evaluate(()=>{
   return bed&&projected?{bed:{top:bed.top,height:bed.height},projected:{top:projected.top,height:projected.height}}:null;
 });
 assert(projectionGeometry, 'projection/Bed EXP geometry unavailable');
+const projectedFieldKind = await page.evaluate(()=>{
+  const el=document.getElementById('projectedCharacter');
+  return el?{tag:el.tagName,readOnly:!!el.readOnly}:null;
+});
+assert(projectedFieldKind?.tag==='INPUT' && projectedFieldKind.readOnly,
+  `projected season-end field must reuse the native readonly input geometry: ${JSON.stringify(projectedFieldKind)}`);
 assert(Math.abs(projectionGeometry.bed.height-projectionGeometry.projected.height)<0.51,
   `projected field height mismatch: Bed ${projectionGeometry.bed.height}px vs projected ${projectionGeometry.projected.height}px`);
 assert(Math.abs(projectionGeometry.bed.top-projectionGeometry.projected.top)<0.51,
