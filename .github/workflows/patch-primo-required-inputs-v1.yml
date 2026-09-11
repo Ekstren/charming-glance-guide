@@ -1,6 +1,6 @@
 name: Finish Early commit on blur
 
-# DEPLOY_FINISH_EARLY_COMMIT_ON_BLUR_V1
+# DEPLOY_FINISH_EARLY_COMMIT_ON_BLUR_V1_PAGES
 on:
   push:
     paths:
