@@ -1,6 +1,6 @@
-name: Fix goal switching and optimizer prep
+name: Mined data accuracy and optimizer cleanup
 
-# GOAL_CHANGE_FINISH_EARLY_RESET_V1_WORKFLOW
+# MINED_SITE_ACCURACY_AUDIT_V1_WORKFLOW
 on:
   push:
     paths:
@@ -16,17 +16,34 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Apply goal switching and optimizer prep fix
-        run: python3 scripts/patch_goal_switch_reset_v1.py
+      - name: Apply consolidated accuracy and optimizer patch
+        run: python3 scripts/patch_mined_accuracy_audit_v1.py
       - name: Verify runtime JavaScript syntax
         run: node --check assets/runtime.js
-      - name: Verify target reset and responsive prep hooks
+      - name: Verify optimizer behavior
         run: |
           grep -q 'GOAL_CHANGE_FINISH_EARLY_RESET_V1' assets/runtime.js
           grep -q 'RESPONSIVE_GOAL_PREP_V1' assets/runtime.js
+          grep -q 'OPTIMIZER_CANCEL_TIMER_V3' assets/runtime.js
           grep -q 'resetFinishEarlyForGoalChange' assets/runtime.js
           grep -q 'goalSwitchCache={fingerprint,rawCeiling:null,solutions:new Map()}' assets/runtime.js
           grep -q 'COOPERATIVE_OPTIMIZER_BOOTSTRAP_V2' assets/runtime.js
+      - name: Verify mined-data accuracy corrections
+        run: |
+          grep -q 'S1_MINED_EXP_PLATEAU_V1' assets/runtime.js
+          grep -q 'const S1_LATE_EXP_PLATEAU = 1_833_196' assets/runtime.js
+          grep -q 'ore:1041.7527105032607,essence:1466.093120963844,sand:987.7707800556983,rolla:10616.811310741661' assets/runtime.js
+          grep -q 'ore:1888.455092195316,essence:2645.717313492359,sand:1797.432822048046,rolla:19169.242644394664' assets/runtime.js
+          grep -q 'MINED_REALM_AND_OPEN_MAP_PROVENANCE_V1' assets/runtime.js
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/mined/site-accuracy-audit.json')
+          d=json.loads(p.read_text())
+          assert d['corrected_in_this_pass']['s1_character_exp_plateau']==1833196
+          assert d['not_mined_verified']['s2_open_map_5_stamina']['current_model']['ore']==1400
+          print(json.dumps(d,indent=2))
+          PY
       - name: Commit verified site changes
         run: |
           if git diff --quiet; then
@@ -35,6 +52,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898258+github-actions[bot]@users.noreply.github.com'
-          git add assets/runtime.js
-          git commit -m 'Reset Finish Early when Primostar goal changes'
+          git add assets/runtime.js data/mined/site-accuracy-audit.json
+          git commit -m 'Audit mined data and harden optimizer controls'
           git push origin HEAD:main
