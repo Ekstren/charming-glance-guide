@@ -1,9 +1,9 @@
 name: Patch Primostar required inputs v1
 
-on:
+'on':
   push:
     paths:
-      - '.github/workflows/patch-primo-required-inputs-v1.yml'
+      - .github/workflows/patch-primo-required-inputs-v1.yml
 
 permissions:
   contents: write
@@ -17,8 +17,8 @@ jobs:
           fetch-depth: 0
 
       - name: Patch calculator defaults and required-input guard
-        shell: python
         run: |
+          python3 - <<'PY'
           from pathlib import Path
 
           runtime_path = Path('assets/runtime.js')
@@ -113,16 +113,15 @@ jobs:
           index = index.replace(old_bed, new_bed, 1)
           index_path.write_text(index, encoding='utf-8')
 
-          # Sanity checks: defaults are zero and the guard executes before projectCharacter().
           runtime_check = runtime_path.read_text(encoding='utf-8')
           assert 'charLevel:130,charExp:0,bedExp:0,' in runtime_check
           assert 'oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,' in runtime_check
           assert 'sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,' in runtime_check
           assert 'treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,' in runtime_check
           assert "if(!required.hasBed || !required.hasCart){ clearS2ForRequiredPlannerInputs(cfg,required); return; }" in runtime_check
+          PY
 
       - name: Commit patch
-        shell: bash
         run: |
           if git diff --quiet; then
             echo 'No changes to commit.'
