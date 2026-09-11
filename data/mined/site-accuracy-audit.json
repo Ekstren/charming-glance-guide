@@ -1,0 +1,52 @@
+{
+  "archived_but_not_auto_applied": {
+    "class_skill_data": "Exact class/skill/inheritance data is archived for build validation; recommendation prose is not copied from upstream tools",
+    "future_seasons": "S3-S6 factual tables remain stored locally but dormant until their season is relevant",
+    "timeline_localization": "Official Global names/dates remain authoritative over mined/pre-release/localized labels"
+  },
+  "audit_version": "MINED_SITE_ACCURACY_AUDIT_V1",
+  "corrected_in_this_pass": {
+    "s1_character_exp_plateau": 1833196,
+    "s1_realm_max_expected": {
+      "essence": 1466.093120963844,
+      "multiplier": 10.8,
+      "ore": 1041.7527105032607,
+      "rolla": 10616.811310741661,
+      "sand_basic_equivalent": 987.7707800556983
+    }
+  },
+  "not_mined_verified": {
+    "s1_open_map_5_stamina": {
+      "current_model": {
+        "essence": 1475,
+        "ore": 900,
+        "rolla": 9000,
+        "sand": 838,
+        "stamina": 5
+      },
+      "status": "mixed live/community model; not replaced by Material Realm data"
+    },
+    "s2_open_map_5_stamina": {
+      "current_model": {
+        "essence": 1770,
+        "ore": 1400,
+        "rolla": 14000,
+        "sand": 1180,
+        "stamina": 5
+      },
+      "status": "retained; public mined snapshot has no open-map gathering reward table"
+    }
+  },
+  "scope": "Calculator/game-data constants checked against the refreshed public mined snapshot",
+  "verified_or_matched": {
+    "s1_scoring": "Season 1 scoring floors/fixed stars/divisor/weights match archived season rules",
+    "s2_character_exp": "Exact Lv.130+ curve matches archived CHARACTER_XP_DATA season 2",
+    "s2_fantomon_exp": "Exact Lv.130+ curve matches archived FANTOMON_XP_DATA season 2",
+    "s2_gear_costs": "16630 base, 166.3 rate and every-5 blessing 510 Refined Ore match archived rules",
+    "s2_realm_max": "Champion III/client Saint III multiplier 19.5; expected yields already exact",
+    "s2_relic_costs": "Purple Sand 1350 base +135/step; Purple=25 Basic-equivalent matches archived rules",
+    "s2_scoring": "Season 2 floor 130, relic floor 13, fixed 45, divisor 27, weights 100/18/7/33/8 match",
+    "s2_skill_costs": "12025 base and 120.25 rate match archived rules",
+    "server_data": "Refreshed from latest upstream snapshot"
+  }
+}

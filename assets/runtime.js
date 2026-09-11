@@ -8,6 +8,13 @@
   const S1_END = new Date('2026-08-30T06:00:00-07:00');
   const S2_END = new Date('2026-11-05T06:00:00-08:00');
   const SERVER_START = new Date('2026-07-15T06:00:00-07:00');
+/* MINED_REALM_AND_OPEN_MAP_PROVENANCE_V1
+     Material Realm values below are long-run expectations computed from published client-derived
+     object weights, durability, damage probabilities, break rewards, free-box rules and each
+     season's max rank multiplier. Open-map `map` values are a SEPARATE 5-Stamina-node model.
+     The current public mined snapshot does not expose the gathering-node reward table, so S2
+     1400 Ore / 1770 Essence / 1180 Sand / 14000 Rolla per 5 Stamina remain live-observed model
+     values and are deliberately NOT relabeled or altered as mined data. */
 /* S2_MINED_REALM_YIELDS_V1
      S2 max-bracket (Champion III / client Saint III) Material Realm averages are precomputed
      from factual live-client tables: rank multiplier 19.5 plus object weights, durability,
@@ -17,7 +24,7 @@
     // S1_SCORING_METHOD_REFRESH_V1: shared acquisition optimizer; S1 scoring constants remain unchanged.
     // S1: Skills follow Character level, Relics unlock +11/+12/+13/+14 at Lv.100/110/120/130,
     // Fantomons unlock to the next 10-level band (so Character Lv.130 opens Fantomons through Lv.140), while Gear can continue above Character level.
-    s1:{key:'s1',name:'Season 1',nextName:'Season 2',end:S1_END,deadline:'device-local',scoreFloor:100,relicFloor:10,starBase:10,scorePerStar:100,weights:{character:100,gear:38,skill:13,relic:57,fanto:14},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:90,realm:{ore:610,essence:1000,sand:568,rolla:9000},map:{ore:900,essence:1475,sand:838,rolla:9000,bigRate:0},optimizeRelic:true,optimizeFanto:true},
+    s1:{key:'s1',name:'Season 1',nextName:'Season 2',end:S1_END,deadline:'device-local',scoreFloor:100,relicFloor:10,starBase:10,scorePerStar:100,weights:{character:100,gear:38,skill:13,relic:57,fanto:14},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:90,realm:{ore:1041.7527105032607,essence:1466.093120963844,sand:987.7707800556983,rolla:10616.811310741661},map:{ore:900,essence:1475,sand:838,rolla:9000,bigRate:0},optimizeRelic:true,optimizeFanto:true},
     // S2 scoring constants are well-established. Live Global evidence confirms Gear, Skills and Relic ranks can advance above Character level.
     // The optimizer therefore treats those three systems as resource/table-limited rather than Character-level gated.
     // Fantomon growth uses a resonance-style 10-level soft gate: the next decade opens only after all four scoring Fantomons reach the current decade boundary.
@@ -718,7 +725,7 @@
     106:1096529,107:1135645,108:1174997,109:1214584,110:1258533,
     111:1303677,112:1348574,113:1393941,114:1439780,115:1486091,
     116:1532872,117:1580125,118:1627849,119:1676044,120:1730017,
-    121:1783360,122:1833196,124:1830000
+    121:1783360,122:1833196,123:1833196,124:1833196
   };
   const S2_EXP_REQUIREMENTS = {
     100:886000,101:3027527,102:3032011,103:3117883,104:3191855,105:3220513,
@@ -758,10 +765,10 @@
     refinedOreEvery5:510,rollaPerOre:2
   });
 
-  // Late-S1 community method: use confirmed checkpoints first, then the nearest accepted late-S1 plateau.
-  // 122→123 is confirmed at 1,833,196 and the user's live 124→125 value is 1.83M, so unknown 123+ steps
-  // use 1.83M rather than extrapolating an artificial rising curve.
-  const S1_LATE_EXP_PLATEAU = 1_830_000;
+  // S1_MINED_EXP_PLATEAU_V1: the published client-derived S1 EXP table repeats 1,833,196
+  // from Lv.122 onward across the supported late-season range. Use that exact plateau rather
+  // than the old rounded ~1.83M community fallback.
+  const S1_LATE_EXP_PLATEAU = 1_833_196;
   function isEstimatedS1ExpLevel(level){
     const l=Math.floor(Number(level)||0);
     return l>=123 && !S1_EXP_REQUIREMENTS[l];
@@ -2835,7 +2842,13 @@
       if(!job) return;
       if(job.cancelled) throw new OptimizerCancelledError();
       const now=performance.now();
-      if(force || now-lastYield>=12){
+      if(force || now-lastYield>=8){
+        // OPTIMIZER_CANCEL_TIMER_V3: refresh elapsed time at the same cooperative checkpoints
+        // that service click/input events. This keeps the timer honest and gives Cancel a
+        // browser turn even when the setInterval callback was delayed by optimizer work.
+        const elapsed=$('optimizerProgressElapsed');
+        const seconds=(performance.now()-job.started)/1000;
+        if(elapsed) elapsed.textContent=`${seconds.toFixed(seconds<10?1:0)}s elapsed`;
         await new Promise(resolve=>setTimeout(resolve,0));
         lastYield=performance.now();
         if(job.cancelled) throw new OptimizerCancelledError();
@@ -4474,7 +4487,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     $('projectedCharacter').value=pc;
     const expEstimated=cfg.key==='s1'&&s1ProjectionUsesEstimatedExp(currentCharacter.level,seasonEndP.level);
     $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
-    $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 unknown EXP steps use the community-style ~1.83M/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
+    $('projectionNote').textContent=expEstimated?`Exact reset timing (${nextResetLocalLabel()} locally) · late-S1 EXP uses the exact mined 1,833,196/level plateau.`:`Uses exact server resets (${nextResetLocalLabel()} on this device); the free 2-hour speed-up is counted only when its checkbox is enabled and an actual reset occurs.`;
     if($('levelSummary')) $('levelSummary').textContent=`Skills ${formatAverage(skill)} · Relics +${formatAverage(relic)} · Fantomons ${formatAverage(fanto)} · Gear avg ${(gear.reduce((a,b)=>a+b,0)/5).toFixed(0)}`;
 
     const allocation=staminaPlan||resources.staminaAllocation||{ore:0,essence:0,sand:0,rolla:0,unassigned:resources.staminaNodes||0};
