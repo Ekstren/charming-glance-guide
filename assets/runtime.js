@@ -2721,6 +2721,7 @@
     constructor(){ super('Optimizer calculation cancelled'); this.name='OptimizerCancelledError'; }
   }
   let optimizerJobSequence=0;
+  let optimizerUpdateGeneration=0; // COOPERATIVE_OPTIMIZER_GENERATION_V1
   let activeOptimizerJob=null;
 
   function ensureOptimizerProgressPanel(){
@@ -4269,6 +4270,9 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
   }
 
   async function updateCalculator(){
+    const updateGeneration=++optimizerUpdateGeneration;
+    // Any newer edit supersedes an older in-flight solve, even if the new state is cached.
+    if(activeOptimizerJob) activeOptimizerJob.cancelled=true;
     const perfStarted=performance.now();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
@@ -4339,7 +4343,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       const optimizerJob=beginOptimizerJob(targetStars);
       try{
         solution=await solveTargetWithAutoStaminaCooperative(baselineScore,desired,p,baseResources,cfg,optimizerJob);
-        if(optimizerJob.cancelled) throw new OptimizerCancelledError();
+        if(updateGeneration!==optimizerUpdateGeneration || optimizerJob.cancelled) throw new OptimizerCancelledError();
         goalState.solutions.set(desired,solution);
         finishOptimizerJob(optimizerJob,'done');
       }catch(err){
