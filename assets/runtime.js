@@ -75,7 +75,7 @@
     targetStars:800,
     // QY labels 128 as an S1 F2P/Light recommendation; it is only a starter/example carry value.
     historicalStars:128,
-    charLevel:130,charExp:0,bedExp:0,
+    charLevel:130,charExp:0,bedExp:400000,
     skillLevel:130,relicLevel:13,fantomonLevel:130,gearLevel:130,
     exactGearLevels:'',
     // S2_CART_RATE_DEFAULTS_V1: conservative starter Cart rates; lower than the user's current late-S1 production.
@@ -2895,6 +2895,38 @@
     renderRealmToolProjection(cfg);
   }
 
+  function clearS2ProjectedAtFloor(cfg,p=projectCharacter(cfg)){
+    const historical=Math.max(0,Math.floor(n('historicalStars',0)));
+    const carried=historical+cfg.starBase;
+    $('seasonRemaining').textContent=formatRemaining(p.hours);
+    $('projectedCharacter').value=`Lv.${p.level} · ${(p.pct*100).toFixed(1)}%`;
+    $('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
+    $('currentStars').textContent=fmt(carried);
+    $('currentScoreNow').textContent='0';
+    $('summaryOptimizedScore').textContent='—';
+    $('desiredScore').textContent='—';
+    if($('recommendedBreakdownSection')) $('recommendedBreakdownSection').hidden=true;
+    $('targetMessage').hidden=false;
+    $('targetMessage').classList.remove('danger');
+    $('targetMessage').classList.add('warning','caution');
+    $('targetMessage').textContent=`Projected season-end Character is Lv.${p.level}. The S2 optimizer stays paused until the projection reaches Lv.131, so a Lv.130-or-lower projection never runs the heavy upgrade search.`;
+    if($('targetStatus')){$('targetStatus').textContent='waiting for Lv.131';$('targetStatus').classList.remove('notMet');}
+    $('optimizerSummary').textContent='No Gear / Skill / Relic / Fantomon optimization runs while projected season-end Character remains Lv.130 or lower.';
+    $('optimizedScore').textContent='—';
+    ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if($(id))$(id).textContent='—';});
+    GEAR_OUTPUT_IDS.forEach(id=>{if($(id))$(id).textContent='—';});
+    ['oreCost','essenceCost','sandCost','treatCost'].forEach(id=>{if($(id))$(id).textContent='0';});
+    ['oreBalance','essenceBalance','sandBalance','treatBalance','oreToolBalance','essenceToolBalance','sandToolBalance'].forEach(hidePlanBalance);
+    $('materialRealmRecommendation').hidden=true;$('materialRealmRecommendation').textContent='';
+    $('secondaryCostNote').hidden=true;$('secondaryCostNote').textContent='';
+    $('milestoneNote').hidden=true;$('milestoneNote').textContent='';
+    renderAstralPact(carried);
+    renderPrimostarRewardReference(carried,carried);
+    saveState();
+    const calcSection=$('calculatorSection');
+    if(calcSection) calcSection.dataset.lastSolveMs='0.0';
+  }
+
   function clearCalcForRollover(cfg){
     $('seasonRemaining').textContent=formatRemaining(remainingHoursAt(Date.now(),cfg));
     $('projectedCharacter').value='Update snapshot';
@@ -3073,13 +3105,36 @@
   let lastRequestedTargetStars=null;
   let lastEffectiveTargetStars=null;
 
+  /* GOAL_SWITCH_CACHE_V2
+     Changing Target Primostars does not change the account snapshot. Reuse the expensive
+     raw-only ceiling and any exact target solution already computed while every non-target
+     input remains identical. New goals still build their normal target-specific context. */
+  let goalSwitchCache={fingerprint:'',rawCeiling:null,solutions:new Map()};
+  function goalSwitchFingerprint(cfg,baseScore){
+    return JSON.stringify({
+      season:cfg.key,
+      snapshotAtMs,
+      gearLocked,
+      baseScore:Math.round((Number(baseScore)||0)*1000)/1000,
+      inputs:INPUT_IDS.filter(id=>id!=='targetStars').map(id=>$(id)?.value??''),
+      checks:CHECK_IDS.map(id=>!!$(id)?.checked)
+    });
+  }
+  function goalSwitchPlanningState(baseScore,p,baseResources,cfg,historical){
+    const fingerprint=goalSwitchFingerprint(cfg,baseScore);
+    if(goalSwitchCache.fingerprint===fingerprint) return goalSwitchCache;
+    const rawCeiling=smartBalanceRawCeiling(baseScore,p,baseResources,cfg,historical);
+    goalSwitchCache={fingerprint,rawCeiling,solutions:new Map()};
+    return goalSwitchCache;
+  }
+
   function updateCalculator(){
     const perfStarted=performance.now();
     $('targetMessage')?.classList.remove('danger','caution');
     const cfg=activeCalcConfig();
     if(renderCalculatorSeasonChrome(cfg)){ clearCalcForRollover(cfg); return; }
-    if(cfg.key==='s2' && characterSnapshot(cfg).level<S2_PLANNER_START_LEVEL){ clearS2PreScoring(cfg); return; }
     const p=projectCharacter(cfg);
+    if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
     // Upgrade availability now runs through the actual season reset; there is no separate finishing cutoff.
     p.upgradeCapLevel=upgradeP.level;
@@ -3124,10 +3179,15 @@
     // SMART_BALANCE_GOAL_STOP_V2: calculate raw-only upside for INFORMATION only.
     // The recommendation itself stops at the entered goal instead of spending surplus raw
     // materials merely because a higher raw-only ceiling exists.
-    const rawCeiling=smartBalanceRawCeiling(baselineScore,p,baseResources,cfg,historical);
+    const goalState=goalSwitchPlanningState(baselineScore,p,baseResources,cfg,historical);
+    const rawCeiling=goalState.rawCeiling;
     const projectedRawCeilingStars=Math.max(baselineStars,Math.floor(Number(rawCeiling?.stars)||baselineStars));
     const desired=requestedDesired;
-    const solution=solveTargetWithAutoStamina(baselineScore,desired,p,baseResources,cfg);
+    let solution=goalState.solutions.get(desired);
+    if(!solution){
+      solution=solveTargetWithAutoStamina(baselineScore,desired,p,baseResources,cfg);
+      goalState.solutions.set(desired,solution);
+    }
     let plan=solution.plan;
     const diagnosticPlan=solution.diagnostic||null;
     let resourceBlocked=false;
@@ -4197,9 +4257,10 @@
 
   function setupCalculator(){
     document.getElementById('calculatorSection')?.addEventListener('focusin',e=>{
-      if(e.target?.matches?.('input')){
+      if(e.target?.matches?.('input') && e.target.id!=='targetStars'){
         // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
-        // expensive optimizer just for tabbing/clicking between fields.
+        // expensive optimizer just for tabbing/clicking between account-state fields.
+        // Target Primostars is only a goal selector and must not mutate the snapshot clock.
         rollSnapshotForward(Date.now(),true);
       }
     });
@@ -4215,7 +4276,13 @@
       }
       el.addEventListener('change',()=>{
         normalizeCompactNumberInput(id);
-        if(id!=='targetStars') resetMaxAchievableUi();
+        if(id==='targetStars'){
+          saveState();
+          if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
+          requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
+          return;
+        }
+        resetMaxAchievableUi();
         markManualSnapshot(id);
         scheduleCalculatorUpdate(0);
       });
@@ -4242,9 +4309,10 @@
       if(!btn || activeCalcConfig().key!=='s2') return;
       $('targetStars').value=btn.dataset.s2Target;
       resetMaxAchievableUi();
-      markManualSnapshot('targetStars');
       saveState();
-      scheduleCalculatorUpdate(0);
+      $('s2TargetPresets')?.querySelectorAll('[data-s2-target]').forEach(x=>x.classList.toggle('active',x===btn));
+      if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
+      requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
     });
     /* S2_ROLLOVER_HEADER_RESET_V1 */
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
