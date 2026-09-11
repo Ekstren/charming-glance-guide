@@ -4396,3 +4396,56 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 @media(max-width:520px){
   .compactExactInputs .exactProgressGrid{grid-template-columns:1fr!important}
 }
+
+
+/* OPTIMIZER_IN_FORMULA_PANEL_V1
+   Keep the Character editor focused on inputs; explanatory optimizer copy belongs
+   with the calculator formula/source reference below the result layout. */
+.optimizerExplainEmbedded{
+  border-bottom:1px solid var(--line);
+  margin:0 0 13px;
+  padding:0 0 13px;
+}
+.optimizerExplainEmbeddedHead{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:8px;
+}
+.optimizerExplainEmbeddedHead h3{
+  margin:0;
+  color:var(--ink);
+  font-size:11px;
+  font-weight:850;
+}
+.optimizerExplainEmbeddedHead small{
+  color:var(--muted);
+  font-size:9px;
+  text-align:right;
+}
+.optimizerExplainEmbedded .optimizerExplainBody{
+  border-top:0;
+  padding:0;
+  gap:7px;
+}
+@media(max-width:700px){
+  .optimizerExplainEmbeddedHead{align-items:flex-start;flex-direction:column;gap:2px}
+  .optimizerExplainEmbeddedHead small{font-size:9px;text-align:left}
+}
+
+/* PROJECTION_FIELD_EQUAL_HEIGHT_V2
+   Match the projected season-end readout to the neighboring calculator inputs. */
+.projectionCallout.projectionInline.projectionGridCell>strong{
+  min-height:42px!important;
+  height:42px!important;
+  border-radius:9px!important;
+  padding:8px 10px!important;
+  box-sizing:border-box!important;
+}
+@media(max-width:760px){
+  .projectionCallout.projectionInline.projectionGridCell>strong{
+    min-height:44px!important;
+    height:44px!important;
+  }
+}

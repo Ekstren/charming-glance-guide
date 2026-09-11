@@ -272,16 +272,7 @@
             </div>
           </details>
         </div>
-        <details class="optimizerExplain" id="optimizerExplain">
-          <summary><span>How the optimizer decides</span><small>Best overall acquisition efficiency</small></summary>
-          <div class="optimizerExplainBody">
-            <p><b>1 · Use the active season’s scoring rules.</b> Season 1 keeps its own Primostar formula and S1 score weights; Season 2 keeps its separate S2 formula. The optimizer method is shared, but scoring values are never mixed between seasons.</p>
-            <p><b>2 · Find the most acquisition-efficient score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score, using the active season's real cost curves and resource yields. It avoids meaningless overscore and does not force a fixed Gear/Skill/Relic/Fantomon order.</p>
-            <p><b>3 · Rank by overall acquisition efficiency.</b> Raw materials, saved Realm tools and paid Realm purchases are all sourcing options for the same progression route. The optimizer chooses the route with the lowest modeled acquisition burden instead of applying a separate tool-preservation mode.</p>
-            <p><b>4 · Use Realm burden only to break true efficiency ties.</b> If two routes have effectively identical acquisition effort, the planner prefers the one with the lighter Realm/tool sourcing burden. If even maximum Realm capacity cannot fund the requested target, it reports the actual shortfall instead of lowering the target.</p>
-            <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. The optimizer uses one consistent acquisition-efficiency policy and always considers Gear alongside Skills, Relics and Fantomons.</p>
-          </div>
-        </details>
+
         </div>
       </details>
 
@@ -372,6 +363,16 @@
     </aside>
   </div>
   <details class="methodPanel"><summary>Formula and source checks</summary><div>
+<section class="optimizerExplainEmbedded" id="optimizerExplain">
+  <div class="optimizerExplainEmbeddedHead"><h3>How the optimizer decides</h3><small>Best overall acquisition efficiency</small></div>
+  <div class="optimizerExplainBody">
+<p><b>1 · Use the active season’s scoring rules.</b> Season 1 keeps its own Primostar formula and S1 score weights; Season 2 keeps its separate S2 formula. The optimizer method is shared, but scoring values are never mixed between seasons.</p>
+            <p><b>2 · Find the most acquisition-efficient score route.</b> The planner searches Gear, Skills, Relics and Fantomons together for a combination that reaches the requested Primostar score, using the active season's real cost curves and resource yields. It avoids meaningless overscore and does not force a fixed Gear/Skill/Relic/Fantomon order.</p>
+            <p><b>3 · Rank by overall acquisition efficiency.</b> Raw materials, saved Realm tools and paid Realm purchases are all sourcing options for the same progression route. The optimizer chooses the route with the lowest modeled acquisition burden instead of applying a separate tool-preservation mode.</p>
+            <p><b>4 · Use Realm burden only to break true efficiency ties.</b> If two routes have effectively identical acquisition effort, the planner prefers the one with the lighter Realm/tool sourcing burden. If even maximum Realm capacity cannot fund the requested target, it reports the actual shortfall instead of lowering the target.</p>
+            <p><b>Auto Stamina</b> compares three simple all-in choices—every projected node to Ore, every node to Essence, or every node to Sand—and picks the destination that best reduces Realm farming for the selected score route. It never asks you to track a fiddly multi-resource split. The optimizer uses one consistent acquisition-efficiency policy and always considers Gear alongside Skills, Relics and Fantomons.</p>
+  </div>
+</section>
 <p><b>Season 1 carry-forward:</b> Season 1 / Tier III is retired from the live guide. Only historical values required by Season 2 calculations are retained internally, including carried S1 Primostars and cumulative Astral Pact math.</p>
 <p><b>Season 2:</b> the calculator automatically switches after the Aug 30 reset. Seasonal progression above the old floor resets to Lv.100 / Relics +10; S2 Season Power itself uses the new Lv.130 / Relic +13 scoring floor: Character = 100 points/level + completed percentage progress; Gear = 18 per slot level; Skills = 7 per level across 8 skills; Relics = 33 per level across 20 relics; Fantomons = 8 per level across 4 slots. S2 Primostars use <code>45 + floor(score / 27)</code>, plus the prior-season Primostars you enter. The score system unlocks at Lv.130.</p>
 <p><b>Astral Pact:</b> bonuses are calculated from <b>total cumulative Primostars</b>, not Character level. The calculator uses QY Maple's documented S1 Witching Hours thresholds (5–480) and S2 Crossed Paths continuation (505–1880). For example, 200 Primostars gives ATK +3%, Ascension +9%, Gem +15%, Dungeon double +6% and EXP +6%; 230 additionally reaches ATK +4% and Ascension +12%.</p>
