@@ -505,6 +505,11 @@
     const text=new Intl.DateTimeFormat(undefined,{month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date).replace(' at ',' · ');
     return `${projected?'Projected · ':''}${text}`;
   }
+  function localShortDateTimeLabel(value){
+    const date=value instanceof Date?value:new Date(value);
+    if(!Number.isFinite(date.getTime())) return '—';
+    return new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date).replace(' at ',' · ');
+  }
   function nextResetLocalLabel(){ return localClockLabel(nextPacificResetMs(Date.now())); }
   function renderLocalTimeLabels(){
     const reset=nextResetLocalLabel();
@@ -813,13 +818,10 @@
   function finishScoreCutoffMs(cfg=activeCalcConfig()){
     const days=finishEarlyDaysValue();
     if(days<=0) return cfg.end.getTime();
-    const endIso=pacificIsoAt(cfg.end.getTime());
-    const wholeDays=Math.floor(days);
-    const hasHalf=days-wholeDays>=0.5;
-    // Preserve reset-day semantics across DST. A half day lands at 6 PM Pacific on
-    // the preceding local date instead of subtracting a blind 12h from a UTC timestamp.
-    const cutoffIso=isoAddDays(endIso,-(wholeDays+(hasHalf?1:0)));
-    const cutoff=pacificLocalMs(cutoffIso,hasHalf?18:6,0);
+    // FINISH_EARLY_DEVICE_LOCAL_V1: "days early" is an elapsed duration from the
+    // actual season-end instant. Server/reset math remains Pacific internally, while
+    // any displayed cutoff/deadline is formatted in the viewer device's local zone.
+    const cutoff=cfg.end.getTime()-(days*24*60*60*1000);
     return Math.min(cfg.end.getTime(),cutoff);
   }
   function upgradeFinishCutoffMs(cfg=activeCalcConfig()){
@@ -3744,8 +3746,8 @@
     // ---- Season 1 · Charming Glance / Qenu anchor + QY Maple details ----
 
     // ---- Season 2 · Loong Haven ----
-    ['2026-08-30',47,'Region','Loong Haven opens','CONFIRMED for Charming Glance: Season 2 Day 1 begins Aug 30 at the 6:00 AM PDT reset. On Aug 26 at about 8:15 AM PDT, the in-game season countdown showed 3d 21h remaining, aligning with this reset; Prydwen independently places T4 at Server Day 47. Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Fantomon Adult / Materialization requires Lv.108, Numbuville unlocked, and Mythic rarity (duplicate); Lv.116 = Demonbind Tower.','region'],
-    ['2026-08-30',47,'Feature','Gear Refinement & Affix Transfer','Season 2 feature confirmed by Prydwen: Mythic-or-better S2+ gear can reroll affixes, and affixes can transfer to same-type Mythic-or-better gear. Same-season Affix Transfer is free; carrying chosen affixes across later seasons uses Divinecraft Stones. S1 gear is not eligible for Affix Transfer, even at Mythic rarity, so do not save S1 gear expecting to move its stats into S2. Charming Glance Season 2 is confirmed for the Aug 30 6:00 AM PDT reset by the in-game season countdown.','feature'],
+    ['2026-08-30',47,'Region','Loong Haven opens','CONFIRMED for Charming Glance: Season 2 Day 1 begins at the Aug 30 server reset. On Aug 26, the in-game season countdown showed 3d 21h remaining, aligning with this reset; Prydwen independently places T4 at Server Day 47. Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Fantomon Adult / Materialization requires Lv.108, Numbuville unlocked, and Mythic rarity (duplicate); Lv.116 = Demonbind Tower.','region'],
+    ['2026-08-30',47,'Feature','Gear Refinement & Affix Transfer','Season 2 feature confirmed by Prydwen: Mythic-or-better S2+ gear can reroll affixes, and affixes can transfer to same-type Mythic-or-better gear. Same-season Affix Transfer is free; carrying chosen affixes across later seasons uses Divinecraft Stones. S1 gear is not eligible for Affix Transfer, even at Mythic rarity, so do not save S1 gear expecting to move its stats into S2. Charming Glance Season 2 is confirmed for the Aug 30 server reset by the in-game season countdown.','feature'],
     ['2026-08-30',47,'Feature','Season 2 Day 1 checklist','<span class="launchChecklist"><span><b>1.</b><strong>Start with rollover rewards.</strong><em>Season 2 is live; collect the new-season rewards before spending progression resources.</em></span><span><b>2.</b><strong>Claim Astral / season rewards.</strong><em>Grab rollover, Astral Pact, and other immediately available season rewards.</em></span><span><b>3.</b><strong>Rank up as far as possible.</strong><em>Do this before spending Stamina or Material Realm resources so later rewards use your higher rank where applicable.</em></span><span><b>4.</b><strong>Claim your saved Bed EXP.</strong><em>Collect the banked 34 hours now. Current community testing says waiting for statues does not increase EXP already stored.</em></span><span><b>5.</b><strong>Push the new map and activate reachable statues.</strong><em>Explore as far as your level allows and activate every Goddess / Lost Goddess Statue you can reach.</em></span><span><b>6.</b><strong>Use Bed boosts after statue progress.</strong><em>Use the free 2-hour Bed boost and other Bed speed-ups after pushing statues so the new rate applies to the boosted time.</em></span><span><b>7.</b><strong>Spend Stamina and Material Realm resources.</strong><em>Once rank and early map progress are set, start using saved Realm tools, refreshes, and Stamina.</em></span><span><b>8.</b><strong>Finish progression cleanup.</strong><em>Do class advancement, relics, gear, Fantomons, and other upgrades as the new level gates open.</em></span></span>','feature'],
     // TOURNAMENT_TIMING_SEP9_V1: direct Charming Glance screenshots taken just after midnight Sep. 9 PDT.
     // Standard Tournament registration showed ~2d 5h remaining (Friday reset); Nexus itself showed ~3d 19h to start (Saturday evening).
@@ -3761,12 +3763,12 @@
     ['2026-08-30',47,'Fantomon','Fantomon Adult / Materialization unlock','Season 2 gate: Player Lv.108 + Numbuville unlocked + Mythic rarity; Mythic evolution requires a duplicate copy. Date is shown at S2 start only as a timeline reference; the unlock occurs when all requirements are met.','fantomon'],
     ['2026-08-30',47,'Feature','Demonbind Tower unlock','Level-gated in Season 2 at Player Lv.116 · Gem Tower / gem-harvest feature. Date is shown at the S2 start only as a timeline reference; actual unlock happens when Lv.116 is reached.','feature'],
     ['2026-08-30',47,'Dungeon','Demonseal Gorge','Season 2 Day 1 · Normal · Hard 2.35M · Global-first/QY English name','dungeon'],
-    ['2026-09-01',49,'Event','Gift code · VEGGIE','Confirmed by the official Sword x Staff Global Discord gift-code announcement: 10 Rare Auroral Badges + 80 Dawnium. Active now. Official validity ends Sep. 8 at 00:00 (UTC-5), which is Sep. 7 at 10:00 PM PDT for Charming Glance. Redeem before 10:00 PM PDT Sep. 7.','event','2026-09-08',null,'2026-09-08T05:00:00Z'],
+    ['2026-09-01',49,'Event','Gift code · VEGGIE','Confirmed by the official Sword x Staff Global Discord gift-code announcement: 10 Rare Auroral Badges + 80 Dawnium. Active now. Official validity ends Sep. 8 at 00:00 (UTC-5), with its stored expiry timestamp converted to the viewer's local timezone.','event','2026-09-08',null,'2026-09-08T05:00:00Z'],
     // CRYSTAL_EXPIRY_SEP9_V1: current code trackers agree on Sep. 15 00:00 UTC-5; official mirror has not carried CRYSTAL yet.
     // This resolves to Sep. 14 10:00 PM PDT for Charming Glance, eight hours before the Sep. 15 server reset.
-    ['2026-09-08',56,'Event','Gift code · CRYSTAL','Current reports list CRYSTAL as the Community Weekly Gift Code: 300 Raw Ore + 1 Stellatie. Reported expiry is Sep. 15 at 00:00 UTC-5, which is Sep. 14 at 10:00 PM PDT for Charming Glance. The mirrored official Global feed has not carried this code yet.','event','2026-09-15','unconfirmed','2026-09-15T05:00:00Z'],
-    ['2026-09-06',54,'Event','Official Top-Up Platform events open','CONFIRMED by the official Sword x Staff Global announcements feed on Sep. 4. The Official Top-Up Platform launches two reward events at Sep. 7, 00:00 (UTC-5), which is Sep. 6 at 10:00 PM PDT for Charming Glance: Cumulative Top-up Lottery runs through Oct. 4, 23:59:59 (UTC-5), awarding 1 draw per 9,999 Vouchers topped up with prizes including 29,999 / 9,999 / 4,999 / 999 Vouchers; Daily Top-up Sign-in runs through Sep. 6, 2027 and gives 1 daily draw after any official-platform top-up, with prizes including Vouchers, Bond Trinket, and Covenite. These are paid top-up promotions, not a Charming Glance progression unlock, and they begin about 8 hours before the Sep. 7 server reset.','event','2026-10-05',null,'2026-09-07T05:00:00Z'],
-    ['2026-09-07',55,'Collab','Vegetables Fairy Collab Pt. 2','CONFIRMED GLOBAL DATE from the official Sword x Staff announcements feed on Sep. 4: the official reward preview says only 3 days remain until the collab begins, placing the launch on Sep. 7. The post does not give an exact clock time or say it starts at Charming Glance reset, so this row confirms the calendar date without claiming a 6:00 AM PDT start. Confirmed Pt. 2 rewards/activities include daily sign-in rewards (Eggplant Mallet, Vegetable Cuddle Hairpin, Wheel Tickets and collab Emoticons), Golden Veggie Coins from event quests for the Veggie Shop, daily Veggie Shuffle stages toward the Violet Kitty Suit, and Lemon Whale purification 3 times for the Lemon Whale Plushie. Earlier official Global previews also confirmed the Cabbage Dog Fantomon and Pt. 2 Visages. TIME-LIMITED GIFT CODE: VEGGIE — 10 Rare Auroral Badges + 80 Dawnium. Multiple current code trackers report it active through Sep. 8; this expiry is community/secondary-source reported rather than confirmed by the mirrored official feed, so redeem it promptly. Exact event end date remains unannounced.','event'],
+    ['2026-09-08',56,'Event','Gift code · CRYSTAL','Current reports list CRYSTAL as the Community Weekly Gift Code: 300 Raw Ore + 1 Stellatie. Reported expiry is Sep. 15 at 00:00 UTC-5, with its stored expiry timestamp converted to the viewer's local timezone. The mirrored official Global feed has not carried this code yet.','event','2026-09-15','unconfirmed','2026-09-15T05:00:00Z'],
+    ['2026-09-06',54,'Event','Official Top-Up Platform events open','CONFIRMED by the official Sword x Staff Global announcements feed on Sep. 4. The Official Top-Up Platform launches two reward events at Sep. 7, 00:00 (UTC-5), with the stored start timestamp converted to the viewer's local timezone: Cumulative Top-up Lottery runs through Oct. 4, 23:59:59 (UTC-5), awarding 1 draw per 9,999 Vouchers topped up with prizes including 29,999 / 9,999 / 4,999 / 999 Vouchers; Daily Top-up Sign-in runs through Sep. 6, 2027 and gives 1 daily draw after any official-platform top-up, with prizes including Vouchers, Bond Trinket, and Covenite. These are paid top-up promotions, not a Charming Glance progression unlock, and they begin about 8 hours before the Sep. 7 server reset.','event','2026-10-05',null,'2026-09-07T05:00:00Z'],
+    ['2026-09-07',55,'Collab','Vegetables Fairy Collab Pt. 2','CONFIRMED GLOBAL DATE from the official Sword x Staff announcements feed on Sep. 4: the official reward preview says only 3 days remain until the collab begins, placing the launch on Sep. 7. The post does not give an exact clock time or say it starts at Charming Glance reset, so this row confirms the calendar date without claiming a server-reset start time. Confirmed Pt. 2 rewards/activities include daily sign-in rewards (Eggplant Mallet, Vegetable Cuddle Hairpin, Wheel Tickets and collab Emoticons), Golden Veggie Coins from event quests for the Veggie Shop, daily Veggie Shuffle stages toward the Violet Kitty Suit, and Lemon Whale purification 3 times for the Lemon Whale Plushie. Earlier official Global previews also confirmed the Cabbage Dog Fantomon and Pt. 2 Visages. TIME-LIMITED GIFT CODE: VEGGIE — 10 Rare Auroral Badges + 80 Dawnium. Multiple current code trackers report it active through Sep. 8; this expiry is community/secondary-source reported rather than confirmed by the mirrored official feed, so redeem it promptly. Exact event end date remains unannounced.','event'],
     // S2_EVENT_ROTATION_DAY57_64_V1
     ['2026-09-12',60,'Dungeon','Warlord’s Rest','Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M','dungeon'],
     ['2026-09-12',60,'Feature','Season Power unlock','Player Lv.130','feature'],
@@ -3962,21 +3964,21 @@
     if(title==='Grotesque Fairground') return 'Hapadi Day 15 season map';
     if(title==='Leviathan Submersible') return 'Hapadi Day 28 · Normal 62M · Hard 72M · Nightmare 87M · Purgatory 130M';
     if(title==='Crystal Spiral Tree') return 'Aethyris’s first dungeon · Sylvan Set · current older-server guidance lists Hard at 9M.';
-    if(title==='Gift code · CRYSTAL') return '300 Raw Ore + 1 Stellatie · reported cutoff Sep. 14 at 10:00 PM PDT.';
+    if(title==='Gift code · CRYSTAL'){const t=Date.parse(String((e&&e[8])||''));return `300 Raw Ore + 1 Stellatie · reported cutoff ${Number.isFinite(t)?localShortDateTimeLabel(t):'Sep. 15 source cutoff'}.`;}
     if(title==='Official Top-Up Platform events open') return 'Cumulative Top-up Lottery + Daily Top-up Sign-in open on the official top-up platform.';
     if(title==='Vegetables Fairy Collab Pt. 2') return 'Daily sign-in, Veggie Shop, Veggie Shuffle, Lemon Whale purification, Cabbage Dog Fantomon and Part 2 Visages.';
     if(title.startsWith('Oceanic Festival')) return 'Global Aug 18–31. Prioritize Beach Shovels; Bingo Draw 2 overlaps on Charming Glance, so Destiny Fruit spending can progress both events.';
     if(title.startsWith('Bingo Draw')) return 'Do dailies first; roughly 60–80 Destiny Fruits usually clears the normal board. Save extra Fruits for the next Bingo run if you finish early.';
     if(title.startsWith('Lucky Scratch')) return 'Spend saved Material Realm tools while Lucky Scratch is active to generate more scratch cards; bank tools during Feneck week for the next run.';
-    if(title.startsWith('Weekly gift code')) return '2,000 Rolla + 120 Dawnium. Expired at the reported Aug 25 00:00 UTC-5 cutoff (Aug 24, 10:00 PM PDT).';
+    if(title.startsWith('Weekly gift code')) return `2,000 Rolla + 120 Dawnium. Expired ${localShortDateTimeLabel('2026-08-25T05:00:00Z')}.`;
     if(title==='Gift code · Summer') return 'UNCONFIRMED cutoff: Summer gives 160 Dawnium and is reported valid through Sep 1; redeem promptly.';
-    if(title==='Gift code · VEGGIE') return 'Official Global Discord: 10 Rare Auroral Badges + 80 Dawnium. Expires Sep 8 at 00:00 UTC-5 = Sep 7 at 10:00 PM PDT; redeem before then.';
+    if(title==='Gift code · VEGGIE'){const t=Date.parse(String((e&&e[8])||''));return `Official Global Discord: 10 Rare Auroral Badges + 80 Dawnium. Expires ${Number.isFinite(t)?localShortDateTimeLabel(t):'at the stored source cutoff'}; redeem before then.`;}
     if(title.startsWith('Grand Treasure Hunt')){
       const reward=(text.match(/Lv\.5:\s*([^·.]+)/)||[])[1];
       return reward ? `Lv.5 reward: ${reward.trim()}. Auroradrasil Energy carries over.` : 'Check the Lv.5 reward before spending saved Auroradrasil Energy; unused Energy carries over.';
     }
     if(title==='Season 2 final-day prep') return 'Historical rollover note: the Bed EXP hold used 34 hours of natural accumulation plus the single 2-hour reset boost, filling the 36-hour Bed capacity.';
-    if(title==='Loong Haven opens') return 'Confirmed Aug 30 at 6:00 AM PDT. Gates: Lv.106 T4; Lv.108 + Numbuville + Mythic duplicate for Fantomon Adult; Lv.116 Demonbind Tower.';
+    if(title==='Loong Haven opens') return `Confirmed ${localShortDateTimeLabel(S1_END)}. Gates: Lv.106 T4; Lv.108 + Numbuville + Mythic duplicate for Fantomon Adult; Lv.116 Demonbind Tower.`;
     if(title==='Gear Refinement & Affix Transfer') return 'S2 feature: Mythic+ S2 gear can reroll or transfer affixes; S1 gear cannot transfer forward. Same-season transfer is free.';
     if(title==='Season 2 Day 1 checklist') return 'At S2 reset: claim rollover rewards, rank up first, push reachable statues, then spend saved Bed boosts, Stamina and Material Realm resources.';
     if(title==='Vegetable Fairy Part Two') return 'Vegetable Fairy Part Two event.';
