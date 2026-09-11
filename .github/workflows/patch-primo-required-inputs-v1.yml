@@ -1,5 +1,6 @@
 name: Finish Early Max + device timezone
 
+# DEPLOY_VERIFIED_MAX_TIMEZONE_V2
 on:
   push:
     paths:
