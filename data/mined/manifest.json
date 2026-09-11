@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-11T22:24:08.816117+00:00",
+  "generated_utc": "2026-09-11T22:29:12.753136+00:00",
   "outputs": [
     {
       "constants": [
@@ -114,6 +114,12 @@
       "source": "sxs-stellaris/data.js",
       "source_sha256": "091e13219d91874f594a01e2d0e384f2e3c44704e39579027425e1360878aaf3",
       "variable": "STELLARIS_DATA"
+    },
+    {
+      "output": "data/mined/0xnobody/tools/skill-entity-links.json",
+      "output_bytes": 13619,
+      "source": "tools/skill-entity-links.json",
+      "source_sha256": "d6d102beaaa9f8d3dcb5b8ff630d9860050f1be91a0e96e65da98ffd1cc60cf2"
     },
     {
       "output": "data/mined/0xnobody/wardrobe-assets/catalog.json",
