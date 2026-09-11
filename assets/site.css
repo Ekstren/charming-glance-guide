@@ -4760,3 +4760,28 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   .finishEarlyCard input{width:48px!important;min-width:48px!important;max-width:48px!important;flex-basis:48px!important;height:32px!important;min-height:32px!important;font-size:12px!important}
 }
 /* FINISH_EARLY_HALF_DAY_SIZE_V1_END */
+
+/* FINISH_EARLY_MAX_V1_STYLE */
+.finishEarlyCard{gap:8px!important}
+.finishEarlyMax{
+  flex:0 0 auto;
+  min-width:42px;
+  height:30px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--green);
+  border-radius:8px;
+  padding:0 9px;
+  font-size:9px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.03em;
+  cursor:pointer;
+}
+.finishEarlyMax:hover{border-color:var(--green);background:var(--green-soft)}
+.finishEarlyMax:disabled{opacity:.6;cursor:wait}
+@media(max-width:700px){
+  .finishEarlyCard{justify-content:flex-end!important}
+  .finishEarlyMax{min-width:46px;height:32px;font-size:10px}
+}
+

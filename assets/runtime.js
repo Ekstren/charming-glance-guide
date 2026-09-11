@@ -3190,6 +3190,66 @@
     },0);
   }
 
+  /* FINISH_EARLY_MAX_V1
+     Find the largest 0.5-day cutoff that still reaches the selected Primostar target.
+     This intentionally reuses updateCalculator() so Max follows the exact same scoring,
+     resource, Realm and cap rules as the visible result card. Binary search keeps the
+     number of heavy optimizer passes small even with a long season remaining. */
+  function finishEarlyTargetFundable(){
+    return ($('targetStatus')?.textContent||'').trim()==='✓';
+  }
+  function findMaxFinishEarly(){
+    const btn=$('finishEarlyMax'),input=$('finishEarlyDays');
+    if(!btn||!input||btn.disabled) return;
+    const cfg=activeCalcConfig();
+    const original=String(input.value||'0');
+    const halfDayMs=12*60*60*1000;
+    const maxHalfSteps=Math.max(0,Math.floor((cfg.end.getTime()-Date.now())/halfDayMs));
+    btn.disabled=true;
+    btn.textContent='…';
+    btn.setAttribute('aria-busy','true');
+    clearTimeout(calculatorUpdateTimer);
+    calculatorUpdateTimer=null;
+    setTimeout(()=>{
+      try{
+        input.value='0';
+        updateCalculator();
+        if(!finishEarlyTargetFundable()){
+          input.value=original;
+          updateCalculator();
+          btn.title='The selected target is not reachable with the full remaining season, or required inputs are still missing.';
+          return;
+        }
+
+        let lo=0,hi=maxHalfSteps;
+        while(lo<hi){
+          const mid=Math.ceil((lo+hi)/2);
+          input.value=String(mid/2);
+          updateCalculator();
+          if(finishEarlyTargetFundable()) lo=mid;
+          else hi=mid-1;
+        }
+
+        input.value=String(lo/2);
+        resetMaxAchievableUi();
+        saveState();
+        updateCalculator();
+        btn.title=lo>0
+          ? `Maximum finish-early value for the current target: ${lo/2} days.`
+          : 'The current target needs the full remaining season.';
+      }catch(err){
+        console.error('FINISH_EARLY_MAX_V1',err);
+        input.value=original;
+        updateCalculator();
+        btn.title='Could not calculate the maximum finish-early value from the current inputs.';
+      }finally{
+        btn.disabled=false;
+        btn.textContent='Max';
+        btn.removeAttribute('aria-busy');
+      }
+    },0);
+  }
+
   /* SMART_BALANCE_RAW_CEILING_V1
      The requested Primostar value is a minimum goal. If projected RAW income alone can
      reach a higher whole-Primostar breakpoint, recommend that higher breakpoint without
@@ -4542,6 +4602,7 @@
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
     $('resetSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
     $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
+    $('finishEarlyMax')?.addEventListener('click',findMaxFinishEarly);
     $('targetMessage')?.addEventListener('click',e=>{
       const btn=e.target.closest?.('.applyRealmRecommendation');
       if(btn) applyRecommendedRealmRefreshes(btn);
