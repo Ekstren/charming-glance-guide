@@ -82,9 +82,10 @@
     oreCurrent:0,oreRate:0,essenceCurrent:0,essenceRate:0,
     sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,
     treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,
-    shopRefreshesDaily:0,
+    // ROUTINE_SPEND_DEFAULTS_V1: safe baseline routine plan for a fresh/reset S2 calculator.
+    shopRefreshesDaily:1,
     hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,
-    staminaMode:'auto',realmDailyOre:4,realmDailyEssence:4,realmDailySand:4,
+    staminaMode:'auto',realmDailyOre:2,realmDailyEssence:2,realmDailySand:2,
     refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
   });
   const S2_SCORING_START_CHECKS=Object.freeze({});
