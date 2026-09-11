@@ -1,0 +1,84 @@
+name: Fix S2 upgrade caps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-s2-upgrade-caps.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Correct S2 upgrade planning caps
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          runtime=Path('assets/runtime.js')
+          text=runtime.read_text(encoding='utf-8')
+
+          replacements=[
+            (
+              "    // S2 scoring constants are well-established. Late-season Gear/Skill/Relic ceilings are NOT represented by fake fixed caps;\n    // the optimizer uses conservative character-gated progression while actual entered S2 values may exceed those planning gates.\n    // No unverified fixed S2 Fantomon ceiling is imposed.",
+              "    // S2 scoring constants are well-established. Live Global evidence confirms Gear, Skills and Relic ranks can advance above Character level.\n    // The optimizer therefore treats those three systems as resource/table-limited rather than Character-level gated.\n    // Fantomon future planning remains conservative until its Global unlock law is verified."
+            ),
+            (
+              "  // PRESEASON_UNLOCK_PREVIEW_V3: Lv.120-130 can preview the first fully-seasonal\n  // upgrade state without awarding any fake pre-Lv.130 Season Power. The site's\n  // conservative S2 model treats Lv.131 as the first point where >130 Gear can be\n  // planned, so this is an upgrade-availability preview only, not a scoring-floor change.\n  const S2_FULL_SEASONAL_PREVIEW_LEVEL = 131;",
+              "  // PRESEASON_UNLOCK_PREVIEW_V4: Lv.120-130 may preview the first post-floor Fantomon\n  // planning state without awarding fake pre-Lv.130 Season Power. Gear, Skills and Relic\n  // ranks are not Character-level gated in S2; this preview now applies only to the\n  // still-conservative Fantomon planning rule.\n  const S2_FULL_SEASONAL_PREVIEW_LEVEL = 131;"
+            ),
+            (
+              "  function relicCapForCharacter(characterLevel,cfg=activeCalcConfig()){\n    const lvl=Math.max(1,Math.floor(Number(characterLevel)||1));\n    // S2_RELIC_14_LV131_DIRECT_V1: Charming Glance live evidence on Sep. 10 shows +13→+14 is locked through Lv.130 and unlocks at Character Lv.131.\n    if(cfg.key==='s2' && lvl<=130) return 13;\n    // Legacy/S1 rule retained outside the directly observed S2 Lv.130 gate.\n    return lvl<100 ? 10 : Math.max(10,Math.floor(lvl/10)+1);\n  }",
+              "  function relicCapForCharacter(characterLevel,cfg=activeCalcConfig()){\n    const lvl=Math.max(1,Math.floor(Number(characterLevel)||1));\n    // S2_ABOVE_CHARACTER_UPGRADES_V1: live Global evidence at Character Lv.131 includes\n    // 18 Relics at +14 with enough material to push two slots to +15. Relic rank is not\n    // Character-level capped; use the extracted S2 blessing table as the planning ceiling.\n    if(cfg.key==='s2') return S2_EXACT_UPGRADE_RULES.relicBase + S2_EXACT_UPGRADE_RULES.relicBlessingLimit;\n    return lvl<100 ? 10 : Math.max(10,Math.floor(lvl/10)+1);\n  }"
+            ),
+            (
+              "    return {\n      // Exact late-S2 skill/relic unlock laws are not sufficiently documented; keep future recommendations conservative.\n      skill:Math.max(100,lvl),\n      relic:relicCapForCharacter(lvl,cfg),\n      fanto:Math.max(100,lvl),\n      // S2 seasonal Gear levels do not open until the Lv.130 floor is reached; from Lv.131 onward there is no fake 229 ceiling.\n      gear:lvl<=130?130:Infinity\n    };",
+              "    return {\n      // S2_ABOVE_CHARACTER_UPGRADES_V1: Gear, Skills and Relic ranks are material-limited,\n      // not Character-level limited. The extracted seasonal tables provide safe supported\n      // planning ceilings; user-entered actual values remain uncapped below.\n      skill:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_UPGRADE_RULES.skillBlessingLimit,\n      relic:relicCapForCharacter(lvl,cfg),\n      fanto:Math.max(100,lvl),\n      gear:S2_EXACT_UPGRADE_RULES.floor + S2_EXACT_UPGRADE_RULES.gearBlessingLimit\n    };"
+            ),
+            (
+              "    // Real late-S2 records exceed Character level for Skills and exceed +21 Relics. Accept actual values without\n    // pretending we know the exact future unlock schedule; only the optimizer's NEW upgrades stay conservative.",
+              "    // Accept actual S2 values without Character-level clamping. The optimizer also allows new Gear/Skill/Relic\n    // upgrades above Character level, bounded only by the supported seasonal cost tables; Fantomon remains conservative."
+            ),
+            (
+              "  function optimizerCategoryCaps(p,cfg=activeCalcConfig()){\n    const projectedLevel=p?.upgradeCapLevel ?? p?.level ?? 1;\n    return categoryCapsForCharacter(optimizerPlanningLevel(projectedLevel,cfg),cfg);\n  }",
+              "  function optimizerCategoryCaps(p,cfg=activeCalcConfig()){\n    const projectedLevel=p?.upgradeCapLevel ?? p?.level ?? 1;\n    return categoryCapsForCharacter(optimizerPlanningLevel(projectedLevel,cfg),cfg);\n  }\n  window.__sxsPlannerCapProbeV1=(characterLevel=131)=>({...categoryCapsForCharacter(characterLevel,CALC_SEASONS.s2)});"
+            ),
+            (
+              "    const previewText=cfg.key==='s2'&&currentCharacter.level<S2_FULL_SEASONAL_PREVIEW_LEVEL\n      ? ` Pre-season preview uses Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} upgrade availability; Character score still uses the real projected level.`\n      : '';",
+              "    const previewText=cfg.key==='s2'&&currentCharacter.level<S2_FULL_SEASONAL_PREVIEW_LEVEL\n      ? ` Fantomon planning uses a conservative Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} availability preview; Gear, Skills and Relic ranks are not Character-level capped.`\n      : (cfg.key==='s2'?' Gear, Skills and Relic ranks are not Character-level capped; recommendations are limited by resources and the supported S2 blessing tables.':'');"
+            )
+          ]
+
+          for old,new in replacements:
+            count=text.count(old)
+            if count!=1:
+              raise SystemExit(f'expected exactly one runtime anchor, found {count}: {old[:90]!r}')
+            text=text.replace(old,new,1)
+          runtime.write_text(text,encoding='utf-8')
+
+          test=Path('scripts/calculator_perf_check.mjs')
+          t=test.read_text(encoding='utf-8')
+          anchor="await page.waitForTimeout(150);\n\nconst base={"
+          insert="""await page.waitForTimeout(150);\n\n// S2_ABOVE_CHARACTER_UPGRADES_V1: at Character Lv.131 the planner must not cap\n// Gear, Skills, or Relic ranks to the Character level. These are the supported\n// ceilings of the extracted S2 cost tables, not claims about a lower character gate.\nconst s2Caps=await page.evaluate(()=>window.__sxsPlannerCapProbeV1?.(131));\nif(!s2Caps) throw new Error('missing S2 planner-cap regression probe');\nif(s2Caps.skill!==280 || s2Caps.relic!==28 || s2Caps.gear!==430){\n  throw new Error(`S2 above-character planning regressed: ${JSON.stringify(s2Caps)}`);\n}\nif(!(s2Caps.skill>131 && s2Caps.relic>15 && s2Caps.gear>131)){\n  throw new Error(`S2 Gear/Skill/Relic planner is still Character-level capped: ${JSON.stringify(s2Caps)}`);\n}\nconsole.log(`S2 CAPS char131: Gear ${s2Caps.gear} · Skills ${s2Caps.skill} · Relics +${s2Caps.relic} · Fantomon ${s2Caps.fanto}`);\n\nconst base={"""
+          if t.count(anchor)!=1:
+            raise SystemExit(f'calculator perf anchor count={t.count(anchor)}')
+          t=t.replace(anchor,insert,1)
+          test.write_text(t,encoding='utf-8')
+          PY
+          node --check assets/runtime.js
+          node --check scripts/calculator_perf_check.mjs
+          grep -q 'S2_ABOVE_CHARACTER_UPGRADES_V1' assets/runtime.js
+      - name: Commit calculator correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/runtime.js scripts/calculator_perf_check.mjs
+          git commit -m 'Allow S2 upgrades above Character level'
+          git pull --rebase origin main
+          git push origin HEAD:main
