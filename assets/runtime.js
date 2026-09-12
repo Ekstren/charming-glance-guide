@@ -1647,7 +1647,8 @@
 
   function postTargetRawGains(reached,cfg,state=selectedPostTargetToolState(),staminaCarry=0){
     const end=cfg.end.getTime();
-    const start=Math.max(Date.now(),Math.min(Number(reached)||end,end));
+    const now=Date.now();
+    const start=Math.max(now,Math.min(Number(reached)||end,end));
     if(!(end>start)) return {ore:0,essence:0,sand:0,treat:0,resets:0,resourceHours:0};
     const wallHours=(end-start)/3_600_000;
     const resets=countFuturePacificResets(start,end);
@@ -1663,8 +1664,15 @@
     // Keep post-target Stamina behavior consistent with the live planner. Auto banks surplus in Ore.
     const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
     // Stamina regenerates from real elapsed time; daily 2h idle boosts do not create Stamina.
-    const staminaGenerated=Math.max(0,Math.floor(Math.max(0,Number(staminaCarry)||0)+(wallHours*5)));
-    const staminaNodes=Math.floor(staminaGenerated/Math.max(1,Number(yields.staminaPerNode)||5));
+    const staminaPerNode=Math.max(1,Number(yields.staminaPerNode)||5);
+    const regenPerHour=5;
+    const preWallHours=Math.max(0,(start-now)/3_600_000);
+    const fullWallHours=Math.max(0,(end-now)/3_600_000);
+    const preGenerated=Math.max(0,Math.floor(preWallHours*regenPerHour));
+    const fullGenerated=Math.max(0,Math.floor(fullWallHours*regenPerHour));
+    const preNodes=Math.floor(preGenerated/staminaPerNode);
+    const fullNodes=Math.floor(fullGenerated/staminaPerNode);
+    const staminaNodes=Math.max(0,fullNodes-preNodes);
     const currentMode=$('staminaMode')?.value||'auto';
     const requested=state?.stamina||'current';
     const destination=requested==='current'
