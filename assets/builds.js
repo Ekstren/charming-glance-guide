@@ -875,27 +875,28 @@
 /* ---- build module boundary ---- */
 
 (()=>{
+  // BUILD_ROLL_GUIDE_WARLORD_V1
   const R={
-    atk:['ATK','Gear-level scaling',1,'No single season-wide cap. Flat ATK scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
-    atkpct:['ATK%','Max unconfirmed',1,'ATK% is a separate percentage substat from flat ATK. Current Global class guides explicitly list both ATK and ATK%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
-    def:['DEF','Gear-level scaling',1,'No single season-wide cap. Flat DEF scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
-    defpct:['DEF%','Max unconfirmed',1,'DEF% is a separate percentage substat from flat DEF. Current Global class guides explicitly list both DEF and DEF%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
-    hp:['HP','Gear-level scaling',1,'No single season-wide cap. Flat HP scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
-    hppct:['HP%','Max unconfirmed',1,'HP% is a separate percentage substat from flat HP. Current Global class guides explicitly list both HP and HP%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
-    spd:['SPD','Gear-level scaling',1,'No single season-wide cap. Flat SPD scales with the receiving gear level; the exact current English-client early-S2 maximum still needs a direct Affix Preview capture.',1],
-    spdpct:['SPD%','Max unconfirmed',1,'SPD% is a separate percentage substat from flat SPD. Current Global class guides explicitly list both SPD and SPD%, but I do not have a direct pre-160 English-client Affix Preview capture proving the maximum roll.',0],
-    crit:['Crit Rate','≈ 5.00%',1,'Approximate standalone early-S2 Crit Rate cap. Older-server data confirms normal Crit Rate is a variable-range affix that grows later in S2, but I do not have a direct current English-client pre-160 maximum capture yet.',0],
-    critdmg:['Crit DMG','≈ 7.50%',1,'Approximate standalone early-S2 Crit DMG cap. The paired Crit Rate + Crit DMG affix is directly documented, but this standalone maximum has not been directly confirmed on the current English client.',0],
-    block:['Block Rate','≈ 5.00%',1,'Approximate early-S2 standalone Block Rate cap inferred from the same pre-160 normal-affix tier. Needs direct English-client Affix Preview confirmation.',0],
-    acc:['Accuracy','≈ 5.00%',1,'Approximate early-S2 standalone Accuracy cap inferred from the same pre-160 normal-affix tier. Needs direct English-client Affix Preview confirmation.',0],
-    em:['Elemental Mastery','Gear-level scaling',1,'Elemental Mastery is a flat/white-number normal affix, not a fixed percentage roll. Affix values scale with gear/season level; the exact current pre-160 English-client maximum still needs a direct Affix Preview capture.',1],
-    ehr:['Effect Hit Rate','Gear-level scaling',1,'Effect Hit Rate is a flat/white-number normal affix, not a fixed percentage roll. Its exact current pre-160 English-client maximum still needs a direct Affix Preview capture.',1],
-    dmgres:['DMG RES','≈ 2.50%',1,'Derived early-S2 standalone DMG RES cap. The documented paired DMG RES + Healing Boost roll is 2.56% + 10.24%; the paired affix uses the same 1.024× uplift seen on other documented pairs, which implies a 2.50% standalone DMG RES base. No direct current English-client standalone Affix Preview capture yet.',0],
-    heal:['Healing Boost','≈ 10.00%',1,'Approximate standalone early-S2 Healing Boost cap. The paired DMG RES + Healing Boost affix is documented at later S2 scaling, but this standalone current maximum has not been directly confirmed.',0],
-    critpair:['Crit Rate + Crit DMG','5.12% + 7.68%',0,'',0],
-    critacc:['Crit Rate + Accuracy','5.12% + 5.12%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0],
-    blockpair:['Block Rate + Block Efficiency','5.12% + 7.68%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0],
-    healpair:['DMG RES + Healing Boost','2.56% + 10.24%',1,'Very high-confidence early-S2 value derived from the documented 3× S2 special-affix scaling, but not directly captured from the current English client.',0]
+    atk:['ATK','Lv162 scaling',1,'Flat ATK scales with receiving gear level. Global-English Warlord-era transfer evidence at Lv162 shows inherited ATK lines reaching 3577 and 4501, but those are observed values rather than a proven Affix Preview maximum.',1],
+    atkpct:['ATK%','Lv162 max unconfirmed',1,'ATK% is a separate percentage substat from flat ATK. Current Global guides confirm the affix exists, but I do not have a direct Global-English Warlord Affix Preview proving its Lv162 maximum.',0],
+    def:['DEF','Lv162 scaling',1,'Flat DEF scales with receiving gear level. Global-English Warlord-era transfer evidence at Lv162 shows an inherited DEF line reaching 3603, but that is an observed value rather than a proven Affix Preview maximum.',1],
+    defpct:['DEF%','Lv162 max unconfirmed',1,'DEF% is a separate percentage substat from flat DEF. Current Global evidence includes percentage DEF refinement lines, but I do not have a direct Warlord Affix Preview proving the Lv162 maximum.',0],
+    hp:['HP','Lv162 scaling',1,'Flat HP scales with receiving gear level. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
+    hppct:['HP%','Lv162 max unconfirmed',1,'HP% is a separate percentage substat from flat HP. Current Global guides confirm the affix exists, but I do not have a direct Global-English Warlord Affix Preview proving its Lv162 maximum.',0],
+    spd:['SPD','Lv162 scaling',1,'Flat SPD scales with receiving gear level. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
+    spdpct:['SPD%','Lv162 max unconfirmed',1,'SPD% is a separate percentage substat from flat SPD. Current Global guides confirm the affix exists, but I do not have a direct Global-English Warlord Affix Preview proving its Lv162 maximum.',0],
+    crit:['Crit Rate','≈ 7.50%',1,'Approximate Warlord/Lv162 standalone Crit Rate maximum. Older-server first-post-160 scaling reports about +50% for normal percentage affixes, and Global community evidence independently places high-end Crit rolls around 7.5%; a direct current English-client Affix Preview maximum is still needed.',0],
+    critdmg:['Crit DMG','≈ 11.25%',1,'Approximate Warlord/Lv162 standalone Crit DMG maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
+    block:['Block Rate','≈ 7.50%',1,'Approximate Warlord/Lv162 standalone Block Rate maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
+    acc:['Accuracy','≈ 7.50%',1,'Approximate Warlord/Lv162 standalone Accuracy maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
+    em:['Elemental Mastery','Lv162 scaling',1,'Elemental Mastery is a flat-number refinable affix whose inherited value scales with receiving gear level. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
+    ehr:['Effect Hit Rate','Lv162 scaling',1,'Effect Hit Rate is a flat-number refinable affix. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
+    dmgres:['DMG RES','No verified standalone max',1,'The current refinement pool clearly exposes the paired DMG RES + Healing Boost affix, but I could not establish a trustworthy standalone Warlord DMG RES refinement maximum.',0],
+    heal:['Healing Boost','≈ 15.00%',1,'Approximate Warlord/Lv162 standalone Healing Boost maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
+    critpair:['Crit Rate + Crit DMG','15.3% + 23%',0,'',0],
+    critacc:['Crit Rate + Accuracy','15.3% + 15.3%',1,'High-confidence post-160 special-affix maximum from the documented 3× special-affix breakpoint and older-server S2 affix table, but not retained as a direct current Global-English Affix Preview capture.',0],
+    blockpair:['Block Rate + Block Efficiency','15.3% + 23%',1,'High-confidence post-160 special-affix maximum from the documented 3× special-affix breakpoint and older-server S2 affix table, but not retained as a direct current Global-English Affix Preview capture.',0],
+    healpair:['DMG RES + Healing Boost','7.68% + 30.7%',1,'High-confidence post-160 special-affix maximum from the documented 3× special-affix breakpoint and older-server S2 affix table, but not retained as a direct current Global-English Affix Preview capture.',0],
   };
   const PROFILES={
     Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
@@ -921,7 +922,7 @@
   const guideHtml=(cls,mode)=>{
     const rows=rowsFor(cls,mode);
     const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls==='Guardian'?`${cls} · ${mode==='dps'?'DPS':'Tank'}`:cls;
-    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Early S2 &lt;160</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate/unconfirmed.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Pre-160 S2 reference. Double-Crit is directly documented; other paired values marked <b>?</b> are derived from older-server S2 scaling. Flat/white-number stats such as Mastery scale with gear level.</div></div></details>`;
+    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Warlord's Rest · Lv162</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate, derived, or not directly confirmed on the current Global client.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Warlord's Rest / Lv162 reference. Double-Crit is directly documented; other paired values marked <b>?</b> use the documented post-160 special-affix breakpoint. Normal single-stat caps marked <b>?</b> are first-post-160 estimates; flat-number stats scale with gear level.</div></div></details>`;
   };
   let queued=false;
   function apply(){
