@@ -1553,7 +1553,7 @@
     try{
       const saved=JSON.parse(localStorage.getItem(POST_TARGET_TOOL_STORAGE_KEY)||'{}');
       if(['current','stop','custom'].includes(saved.mode)) out.mode=saved.mode;
-      if(['current','ore','essence','sand','save'].includes(saved.stamina)) out.stamina=saved.stamina;
+      if(['current','ore','essence','sand'].includes(saved.stamina)) out.stamina=saved.stamina;
       for(const k of ['ore','essence','sand']) if(Number.isFinite(Number(saved[k]))) out[k]=clamp(Math.floor(Number(saved[k])),0,20);
     }catch(_){}
     return out;
@@ -1616,14 +1616,16 @@
     };
     // Keep post-target Stamina behavior consistent with the live planner. Auto banks surplus in Ore.
     const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
-    const staminaGenerated=Math.max(0,Math.floor(resourceHours*5));
+    // Stamina regenerates from real elapsed time; daily 2h idle boosts do not create Stamina.
+    const staminaGenerated=Math.max(0,Math.floor(wallHours*5));
     const staminaNodes=Math.floor(staminaGenerated/Math.max(1,Number(yields.staminaPerNode)||5));
     const currentMode=$('staminaMode')?.value||'auto';
     const requested=state?.stamina||'current';
     const destination=requested==='current'
       ? (currentMode==='auto'?'ore':currentMode)
-      : (requested==='save'?null:requested);
-    if(['ore','essence','sand'].includes(destination)) gains[destination]+=staminaNodes*Math.max(0,Number(yields[destination])||0);
+      : requested;
+    const map=yields.map||{};
+    if(['ore','essence','sand'].includes(destination)) gains[destination]+=staminaNodes*Math.max(0,Number(map[destination])||0);
     gains.staminaNodes=staminaNodes;
     gains.staminaDestination=destination;
     return gains;
