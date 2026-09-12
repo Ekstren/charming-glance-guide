@@ -4886,3 +4886,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .postTargetGainGrid small{display:block;color:var(--green);font-size:8px;font-weight:800;margin-top:5px}
 @media (max-width:760px){.postTargetHeader,.postTargetPlanHead{display:block}.postTargetHeader>small,.postTargetPlanHead small{text-align:left;display:block;margin-top:4px}.postTargetGainGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:430px){.postTargetCustom{grid-template-columns:1fr}.postTargetGainGrid{grid-template-columns:1fr 1fr}.postTargetGainGrid b{font-size:13px}}
+
+
+/* POST_TARGET_STAMINA_V1 */
+.postTargetStaminaPlan{border-top:1px solid var(--line);margin-top:9px;padding-top:9px}

@@ -1549,10 +1549,11 @@
   let postTargetLastReachMs=NaN;
   let postTargetLastCfg=null;
   function postTargetToolState(){
-    let out={mode:'current',ore:0,essence:0,sand:0};
+    let out={mode:'current',stamina:'current',ore:0,essence:0,sand:0};
     try{
       const saved=JSON.parse(localStorage.getItem(POST_TARGET_TOOL_STORAGE_KEY)||'{}');
       if(['current','stop','custom'].includes(saved.mode)) out.mode=saved.mode;
+      if(['current','ore','essence','sand','save'].includes(saved.stamina)) out.stamina=saved.stamina;
       for(const k of ['ore','essence','sand']) if(Number.isFinite(Number(saved[k]))) out[k]=clamp(Math.floor(Number(saved[k])),0,20);
     }catch(_){}
     return out;
@@ -1562,7 +1563,8 @@
   }
   function selectedPostTargetToolState(){
     const checked=document.querySelector('input[name="postTargetToolMode"]:checked');
-    const state={mode:checked?.value||'current',ore:0,essence:0,sand:0};
+    const staminaChecked=document.querySelector('input[name="postTargetStaminaMode"]:checked');
+    const state={mode:checked?.value||'current',stamina:staminaChecked?.value||'current',ore:0,essence:0,sand:0};
     state.ore=clamp(Math.floor(Number($('postTargetOreDaily')?.value)||0),0,20);
     state.essence=clamp(Math.floor(Number($('postTargetEssenceDaily')?.value)||0),0,20);
     state.sand=clamp(Math.floor(Number($('postTargetSandDaily')?.value)||0),0,20);
@@ -1575,6 +1577,8 @@
     const saved=postTargetToolState();
     const mode=document.querySelector(`input[name="postTargetToolMode"][value="${saved.mode}"]`) || document.querySelector('input[name="postTargetToolMode"][value="current"]');
     if(mode) mode.checked=true;
+    const staminaMode=document.querySelector(`input[name="postTargetStaminaMode"][value="${saved.stamina}"]`) || document.querySelector('input[name="postTargetStaminaMode"][value="current"]');
+    if(staminaMode) staminaMode.checked=true;
     if($('postTargetOreDaily')) $('postTargetOreDaily').value=String(saved.ore);
     if($('postTargetEssenceDaily')) $('postTargetEssenceDaily').value=String(saved.essence);
     if($('postTargetSandDaily')) $('postTargetSandDaily').value=String(saved.sand);
@@ -1585,6 +1589,7 @@
       if(Number.isFinite(postTargetLastReachMs) && postTargetLastCfg) renderPostTargetGains(postTargetLastReachMs,postTargetLastCfg);
     };
     host.querySelectorAll('input[name="postTargetToolMode"]').forEach(el=>el.addEventListener('change',refresh));
+    host.querySelectorAll('input[name="postTargetStaminaMode"]').forEach(el=>el.addEventListener('change',refresh));
     ['postTargetOreDaily','postTargetEssenceDaily','postTargetSandDaily'].forEach(id=>$(id)?.addEventListener('input',refresh));
     if($('postTargetCustom')) $('postTargetCustom').hidden=saved.mode!=='custom';
   }
@@ -1594,7 +1599,7 @@
     postTargetLastReachMs=NaN;
     postTargetLastCfg=null;
   }
-  function postTargetRawGains(reached,cfg){
+  function postTargetRawGains(reached,cfg,state=selectedPostTargetToolState()){
     const end=cfg.end.getTime();
     const start=Math.max(Date.now(),Math.min(Number(reached)||end,end));
     if(!(end>start)) return {ore:0,essence:0,sand:0,treat:0,resets:0,resourceHours:0};
@@ -1613,8 +1618,11 @@
     const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
     const staminaGenerated=Math.max(0,Math.floor(resourceHours*5));
     const staminaNodes=Math.floor(staminaGenerated/Math.max(1,Number(yields.staminaPerNode)||5));
-    const mode=$('staminaMode')?.value||'auto';
-    const destination=mode==='auto'?'ore':mode;
+    const currentMode=$('staminaMode')?.value||'auto';
+    const requested=state?.stamina||'current';
+    const destination=requested==='current'
+      ? (currentMode==='auto'?'ore':currentMode)
+      : (requested==='save'?null:requested);
     if(['ore','essence','sand'].includes(destination)) gains[destination]+=staminaNodes*Math.max(0,Number(yields[destination])||0);
     gains.staminaNodes=staminaNodes;
     gains.staminaDestination=destination;
@@ -1631,7 +1639,7 @@
     host.hidden=false;
     const state=selectedPostTargetToolState();
     if($('postTargetCustom')) $('postTargetCustom').hidden=state.mode!=='custom';
-    const gains=postTargetRawGains(reached,cfg);
+    const gains=postTargetRawGains(reached,cfg,state);
     const daily=state.mode==='stop'
       ? {ore:0,essence:0,sand:0}
       : state.mode==='custom'
@@ -4874,8 +4882,8 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       else if(planSourceStage===2) brief.push('extra Realm purchases required as final fallback');
       if((resources.s2SkillReserve?.target||0)>0) brief.push(`${fmt(resources.s2SkillReserve.target)} S2 skill reserve`);
       if(gearLocked) brief.push('Gear locked');
-      $('optimizerSummary').hidden=false;
-      $('optimizerSummary').textContent=brief.join(' · ');
+      $('optimizerSummary').hidden=true;
+      $('optimizerSummary').textContent='';
       setRawRemaining('oreBalance',plan.oreCost,resources.ore);
       setEssenceBalance('essenceBalance',plan.essenceCost,{...resources,planRealmProvided:plan.realm?.essence?.planProvided||0});
       setSandBalance('sandBalance',plan.sandCost,{...resources,planRealmProvided:plan.realm?.sand?.planProvided||0});
