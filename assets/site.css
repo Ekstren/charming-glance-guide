@@ -4919,3 +4919,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .resultScoreLine .seasonEndExcessScore{display:inline-block;margin-left:6px;color:var(--green);font-size:10px;font-weight:850;white-space:nowrap}
 .seasonEndExcessNote{display:block;color:var(--muted);font-size:8px;line-height:1.35;margin:-7px 2px 8px;text-align:right}
 @media (max-width:430px){.starTotal .seasonEndExcessStars{margin-left:5px;font-size:.3em}.resultScoreLine .seasonEndExcessScore{font-size:9px;margin-left:4px}.seasonEndExcessNote{font-size:7px;text-align:left;margin-top:-5px}}
+
+
+/* SEASON_END_EXCESS_NOTE_IN_CARD_V1 */
+.resultScoreLine{flex-wrap:wrap}
+.resultScoreLine>.seasonEndExcessNote{order:3;flex:0 0 100%;width:100%;display:block;margin:1px 0 0;padding-top:5px;border-top:1px solid color-mix(in srgb,var(--line) 65%,transparent);color:var(--muted);font-size:8px!important;line-height:1.35;text-align:left;text-transform:none!important;letter-spacing:0!important;font-weight:650!important}
+@media(max-width:700px){.resultScoreLine>.seasonEndExcessNote{margin-top:2px;padding-top:5px;font-size:8px!important}}
