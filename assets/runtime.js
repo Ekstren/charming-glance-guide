@@ -1541,6 +1541,114 @@
     }
     return hi;
   }
+  /* POST_TARGET_GAINS_V1
+     Preview only: once the requested Primostar target is projected to be reached, show the
+     resources expected to accumulate from that moment through season end. Post-target Realm
+     purchase overrides affect this preview only and never feed back into Smart Balance scoring. */
+  const POST_TARGET_TOOL_STORAGE_KEY='sxsPostTargetToolPlanV1';
+  let postTargetLastReachMs=NaN;
+  let postTargetLastCfg=null;
+  function postTargetToolState(){
+    let out={mode:'current',ore:0,essence:0,sand:0};
+    try{
+      const saved=JSON.parse(localStorage.getItem(POST_TARGET_TOOL_STORAGE_KEY)||'{}');
+      if(['current','stop','custom'].includes(saved.mode)) out.mode=saved.mode;
+      for(const k of ['ore','essence','sand']) if(Number.isFinite(Number(saved[k]))) out[k]=clamp(Math.floor(Number(saved[k])),0,20);
+    }catch(_){}
+    return out;
+  }
+  function savePostTargetToolState(state){
+    try{localStorage.setItem(POST_TARGET_TOOL_STORAGE_KEY,JSON.stringify(state));}catch(_){}
+  }
+  function selectedPostTargetToolState(){
+    const checked=document.querySelector('input[name="postTargetToolMode"]:checked');
+    const state={mode:checked?.value||'current',ore:0,essence:0,sand:0};
+    state.ore=clamp(Math.floor(Number($('postTargetOreDaily')?.value)||0),0,20);
+    state.essence=clamp(Math.floor(Number($('postTargetEssenceDaily')?.value)||0),0,20);
+    state.sand=clamp(Math.floor(Number($('postTargetSandDaily')?.value)||0),0,20);
+    return state;
+  }
+  function ensurePostTargetControls(){
+    const host=$('postTargetGains');
+    if(!host || host.dataset.controlsBound==='1') return;
+    host.dataset.controlsBound='1';
+    const saved=postTargetToolState();
+    const mode=document.querySelector(`input[name="postTargetToolMode"][value="${saved.mode}"]`) || document.querySelector('input[name="postTargetToolMode"][value="current"]');
+    if(mode) mode.checked=true;
+    if($('postTargetOreDaily')) $('postTargetOreDaily').value=String(saved.ore);
+    if($('postTargetEssenceDaily')) $('postTargetEssenceDaily').value=String(saved.essence);
+    if($('postTargetSandDaily')) $('postTargetSandDaily').value=String(saved.sand);
+    const refresh=()=>{
+      const state=selectedPostTargetToolState();
+      savePostTargetToolState(state);
+      if($('postTargetCustom')) $('postTargetCustom').hidden=state.mode!=='custom';
+      if(Number.isFinite(postTargetLastReachMs) && postTargetLastCfg) renderPostTargetGains(postTargetLastReachMs,postTargetLastCfg);
+    };
+    host.querySelectorAll('input[name="postTargetToolMode"]').forEach(el=>el.addEventListener('change',refresh));
+    ['postTargetOreDaily','postTargetEssenceDaily','postTargetSandDaily'].forEach(id=>$(id)?.addEventListener('input',refresh));
+    if($('postTargetCustom')) $('postTargetCustom').hidden=saved.mode!=='custom';
+  }
+  function hidePostTargetGains(){
+    const host=$('postTargetGains');
+    if(host) host.hidden=true;
+    postTargetLastReachMs=NaN;
+    postTargetLastCfg=null;
+  }
+  function postTargetRawGains(reached,cfg){
+    const end=cfg.end.getTime();
+    const start=Math.max(Date.now(),Math.min(Number(reached)||end,end));
+    if(!(end>start)) return {ore:0,essence:0,sand:0,treat:0,resets:0,resourceHours:0};
+    const wallHours=(end-start)/3_600_000;
+    const resets=countFuturePacificResets(start,end);
+    const resourceHours=wallHours+(2*resets);
+    const shop=dailyShopMaterialEstimate(cfg,resets);
+    const gains={
+      ore:Math.max(0,n('oreRate',0))*resourceHours+Math.max(0,Number(shop?.total?.ore)||0),
+      essence:Math.max(0,n('essenceRate',0))*resourceHours+Math.max(0,Number(shop?.total?.essence)||0),
+      sand:Math.max(0,n('sandRate',0))*resourceHours+Math.max(0,Number(shop?.total?.sand)||0),
+      treat:Math.max(0,n('treatRate',0))*resourceHours+Math.max(0,Number(shop?.total?.treat)||0),
+      resets,resourceHours
+    };
+    // Keep post-target Stamina behavior consistent with the live planner. Auto banks surplus in Ore.
+    const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
+    const staminaGenerated=Math.max(0,Math.floor(resourceHours*5));
+    const staminaNodes=Math.floor(staminaGenerated/Math.max(1,Number(yields.staminaPerNode)||5));
+    const mode=$('staminaMode')?.value||'auto';
+    const destination=mode==='auto'?'ore':mode;
+    if(['ore','essence','sand'].includes(destination)) gains[destination]+=staminaNodes*Math.max(0,Number(yields[destination])||0);
+    gains.staminaNodes=staminaNodes;
+    gains.staminaDestination=destination;
+    return gains;
+  }
+  function renderPostTargetGains(reached,cfg=activeCalcConfig()){
+    const host=$('postTargetGains');
+    if(!host) return;
+    ensurePostTargetControls();
+    const end=cfg.end.getTime();
+    if(!Number.isFinite(reached) || reached>=end){ hidePostTargetGains(); return; }
+    postTargetLastReachMs=reached;
+    postTargetLastCfg=cfg;
+    host.hidden=false;
+    const state=selectedPostTargetToolState();
+    if($('postTargetCustom')) $('postTargetCustom').hidden=state.mode!=='custom';
+    const gains=postTargetRawGains(reached,cfg);
+    const daily=state.mode==='stop'
+      ? {ore:0,essence:0,sand:0}
+      : state.mode==='custom'
+        ? {ore:state.ore,essence:state.essence,sand:state.sand}
+        : {ore:realmDailyValue('ore'),essence:realmDailyValue('essence'),sand:realmDailyValue('sand')};
+    const toolMultiplier=Math.max(0,Math.floor(Number(REALM_RUNS_PER_REFRESH)||5))*gains.resets;
+    const tools={ore:daily.ore*toolMultiplier,essence:daily.essence*toolMultiplier,sand:daily.sand*toolMultiplier};
+    if($('postTargetWindow')) $('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} from target to season end`;
+    if($('postTargetOreGain')) $('postTargetOreGain').textContent=`+${fmt(Math.floor(gains.ore))}`;
+    if($('postTargetEssenceGain')) $('postTargetEssenceGain').textContent=`+${fmt(Math.floor(gains.essence))}`;
+    if($('postTargetSandGain')) $('postTargetSandGain').textContent=`+${fmt(Math.floor(gains.sand))}`;
+    if($('postTargetTreatGain')) $('postTargetTreatGain').textContent=`+${fmt(Math.floor(gains.treat))}`;
+    if($('postTargetHammerGain')) $('postTargetHammerGain').textContent=`+${fmt(tools.ore)} Hammers`;
+    if($('postTargetKnuckleGain')) $('postTargetKnuckleGain').textContent=`+${fmt(tools.essence)} Knuckles`;
+    if($('postTargetShovelGain')) $('postTargetShovelGain').textContent=`+${fmt(tools.sand)} Shovels`;
+  }
+
   function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activeCalcConfig()){
     const host=$('targetTiming'),dateEl=$('targetReachedDate'),leftEl=$('targetSeasonLeft');
     if(!host||!dateEl||!leftEl) return;
@@ -1549,11 +1657,13 @@
     if(!Number.isFinite(reached)){
       dateEl.textContent='Not projected';
       leftEl.textContent='—';
+      hidePostTargetGains();
       return;
     }
     const now=Date.now();
     dateEl.textContent=reached<=now+60_000?'Now':targetMomentLabel(reached);
     leftEl.textContent=compactDurationMs(Math.max(0,cfg.end.getTime()-reached));
+    renderPostTargetGains(reached,cfg);
   }
 
   function renderStaminaCurrentPlan(allocation,added,resources){
