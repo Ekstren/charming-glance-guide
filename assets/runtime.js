@@ -1311,7 +1311,8 @@
     const futureDays=futureRealmPurchaseDaysUntil(cutoff,cfg);
     const staminaStart=0;
     const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
-    const staminaGenerated=Math.max(0,Math.floor(resourceHours*5));
+    // Stamina regenerates from real wall-clock time only; idle/2h speed-ups do not create Stamina.
+    const staminaGenerated=Math.max(0,Math.floor(wallResourceHours*5));
     const staminaSpendable=staminaStart+staminaGenerated;
     const staminaNodes=Math.floor(staminaSpendable/yields.staminaPerNode);
     const staminaUnused=staminaSpendable-staminaNodes*yields.staminaPerNode;
@@ -1604,7 +1605,7 @@
     postTargetLastPEnd=null;
   }
   function postTargetCarryAt(reached,plan,pEnd,cfg=activeCalcConfig()){
-    const emptyCarry={ore:0,essence:0,sand:0,treat:0,hammers:0,knuckles:0,shovels:0};
+    const emptyCarry={ore:0,essence:0,sand:0,treat:0,hammers:0,knuckles:0,shovels:0,staminaUnused:0};
     if(!plan || !Number.isFinite(Number(reached))) return emptyCarry;
     const pAt=projectCharacterTo(reached,cfg);
     const base=projectedResourcesTo(reached,cfg);
@@ -1637,13 +1638,14 @@
         treat:Math.max(0,(Number(resources.treat)||0)-(Number(plan.treatCost)||0)),
         hammers:Math.max(0,Math.floor(Number(oreTop.bankedRemaining)||0)+Math.floor(Number(oreTop.sparePurchasedRuns)||0)),
         knuckles:Math.max(0,Math.floor(Number(essenceTop.bankedRemaining)||0)+Math.floor(Number(essenceTop.sparePurchasedRuns)||0)),
-        shovels:Math.max(0,Math.floor(Number(sandTop.bankedRemaining)||0)+Math.floor(Number(sandTop.sparePurchasedRuns)||0))
+        shovels:Math.max(0,Math.floor(Number(sandTop.bankedRemaining)||0)+Math.floor(Number(sandTop.sparePurchasedRuns)||0)),
+        staminaUnused:Math.max(0,Number(resources.staminaUnused)||0)
       };
     }
     return emptyCarry;
   }
 
-  function postTargetRawGains(reached,cfg,state=selectedPostTargetToolState()){
+  function postTargetRawGains(reached,cfg,state=selectedPostTargetToolState(),staminaCarry=0){
     const end=cfg.end.getTime();
     const start=Math.max(Date.now(),Math.min(Number(reached)||end,end));
     if(!(end>start)) return {ore:0,essence:0,sand:0,treat:0,resets:0,resourceHours:0};
@@ -1661,7 +1663,7 @@
     // Keep post-target Stamina behavior consistent with the live planner. Auto banks surplus in Ore.
     const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
     // Stamina regenerates from real elapsed time; daily 2h idle boosts do not create Stamina.
-    const staminaGenerated=Math.max(0,Math.floor(wallHours*5));
+    const staminaGenerated=Math.max(0,Math.floor(Math.max(0,Number(staminaCarry)||0)+(wallHours*5)));
     const staminaNodes=Math.floor(staminaGenerated/Math.max(1,Number(yields.staminaPerNode)||5));
     const currentMode=$('staminaMode')?.value||'auto';
     const requested=state?.stamina||'current';
@@ -1688,7 +1690,7 @@
     const state=selectedPostTargetToolState();
     if($('postTargetCustom')) $('postTargetCustom').hidden=state.mode!=='custom';
     const carry=postTargetCarryAt(reached,plan,pEnd,cfg);
-    const gains=postTargetRawGains(reached,cfg,state);
+    const gains=postTargetRawGains(reached,cfg,state,carry.staminaUnused);
     const daily=state.mode==='stop'
       ? {ore:0,essence:0,sand:0}
       : state.mode==='custom'
