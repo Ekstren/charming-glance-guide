@@ -510,6 +510,24 @@
     if(FUTURE_RESET_COUNT_CACHE.size>64) FUTURE_RESET_COUNT_CACHE.delete(FUTURE_RESET_COUNT_CACHE.keys().next().value);
     return count;
   }
+  /* PRESEASON_BED_RESERVE_V1
+     Universal rollover strategy: stop CLAIMING Bed EXP 34 wall-clock hours before a season ends.
+     The final daily reset inside that hold window still uses its free 2-hour speed-up, but that
+     accelerated EXP stays in the Bed. Result at rollover: 34 natural hours + 2 boosted hours =
+     36 hours of Bed EXP banked for the next season. Other Cart/material production is unaffected. */
+  const PRESEASON_BED_HOLD_WALL_HOURS=34;
+  const PRESEASON_BED_FINAL_RESET_BOOST_HOURS=2;
+  function characterExpCollectionCutoffMs(cfg=activeCalcConfig()){
+    return cfg.end.getTime()-(PRESEASON_BED_HOLD_WALL_HOURS*3_600_000);
+  }
+  function projectionBedClaimableHoursAt(ms,cfg=activeCalcConfig()){
+    const cutoff=characterExpCollectionCutoffMs(cfg);
+    const capped=Math.min(ms,cutoff);
+    if(capped>=cutoff) return 0;
+    const wallHours=Math.max(0,(cutoff-capped)/3_600_000);
+    const boostHours=2*countFuturePacificResets(capped,cutoff);
+    return Math.max(0,wallHours+boostHours);
+  }
   /* VIEWER_DEVICE_TIMEZONE_V2
      Server/reset calculations stay anchored to Pacific internally. Every visible clock/date
      is formatted in the timezone reported by the device viewing the page. */
@@ -576,6 +594,9 @@
     const oldResourceHours = projectionResourceHoursAt(snapshotAtMs,cfg);
     const newResourceHours = projectionResourceHoursAt(cappedNow,cfg);
     const elapsedResourceHours = Math.max(0, oldResourceHours-newResourceHours);
+    const oldBedClaimableHours = projectionBedClaimableHoursAt(snapshotAtMs,cfg);
+    const newBedClaimableHours = projectionBedClaimableHoursAt(cappedNow,cfg);
+    const elapsedBedClaimableHours = Math.max(0,oldBedClaimableHours-newBedClaimableHours);
 
     /* AUTO_AGE_REALM_TOOLS_V1
        Treat the saved Daily purchase plan like Cart production: once a planned 6 AM
@@ -614,7 +635,7 @@
     });
 
     const bedRate=Math.max(0,n('bedExp',0));
-    const producedExp=bedRate*elapsedResourceHours + Math.max(0,Number(snapshotCarry.exp)||0);
+    const producedExp=bedRate*elapsedBedClaimableHours + Math.max(0,Number(snapshotCarry.exp)||0);
     const wholeExp=Math.floor(producedExp+1e-9);
     snapshotCarry.exp=Math.max(0,producedExp-wholeExp);
     if(wholeExp>0) advanceCharacterSnapshot(wholeExp,cfg);
@@ -622,7 +643,7 @@
     // Already-held Stamina is intentionally not snapshot-aged because the calculator tracks only future regenerated Stamina.
     snapshotAtMs = cappedNow;
     if(persist) saveState();
-    return elapsedResourceHours>0 || elapsedRealmResets>0;
+    return elapsedResourceHours>0 || elapsedBedClaimableHours>0 || elapsedRealmResets>0;
   }
 
   function markManualSnapshot(id){
@@ -805,19 +826,24 @@
     const pct=req>0?clamp(exp/req,0,0.999999999):0;
     return {level:lvl,exp,req,pct,decimal:lvl+pct};
   }
-  /* BED_STORAGE_DISABLED_V1
-     Stored/hold Bed automation is temporarily disabled. The planner still uses the entered
-     Bed EXP/hour for ordinary season-end projection, including the free 2-hour reset boosts. */
+  /* PRESEASON_BED_RESERVE_V1
+     Character progression assumes the recommended rollover strategy by default: stop claiming
+     Bed EXP 34 hours before season end, then use the final reset's 2-hour speed-up without
+     claiming it. That leaves 36 hours of Bed EXP ready for the next season. The returned
+     `hours` remains the full requested wall-clock horizon so Cart/material projections do not
+     inherit this Character-only hold. */
   function projectCharacterTo(targetMs,cfg=activeCalcConfig()){
     const now=Date.now();
     const current=characterSnapshot(cfg);
     let lvl=current.level, exp=current.exp;
     const endMs=cfg.end.getTime();
     const target=Math.max(now,Math.min(Number(targetMs)||endMs,endMs));
+    const expTarget=Math.min(target,characterExpCollectionCutoffMs(cfg));
     const naturalHours=Math.max(0,(target-now)/3_600_000);
-    const boostResets=target>now?countFuturePacificResets(now,target):0;
+    const expNaturalHours=Math.max(0,(expTarget-now)/3_600_000);
+    const boostResets=expTarget>now?countFuturePacificResets(now,expTarget):0;
     const boostHours=2*boostResets;
-    const acceleratedHours=naturalHours+boostHours;
+    const acceleratedHours=expNaturalHours+boostHours;
     exp += Math.max(0,n('bedExp',0))*acceleratedHours;
     let safety=0;
     while(safety++<400){
@@ -827,7 +853,7 @@
     }
     const req=expRequiredForLevel(lvl,cfg);
     const pct=req>0?clamp(exp/req,0,0.999999999):0;
-    return {level:lvl,exp,req,pct,decimal:lvl+pct,hours:naturalHours,reserve:0,acceleratedHours,naturalHours,boostHours,boostResets,current,targetMs:target};
+    return {level:lvl,exp,req,pct,decimal:lvl+pct,hours:naturalHours,reserve:0,acceleratedHours,naturalHours,expNaturalHours,boostHours,boostResets,current,targetMs:target,expTargetMs:expTarget,preseasonBedReserveHours:PRESEASON_BED_HOLD_WALL_HOURS+PRESEASON_BED_FINAL_RESET_BOOST_HOURS};
   }
   function projectCharacter(cfg=activeCalcConfig()){
     return projectCharacterTo(cfg.end.getTime(),cfg);
