@@ -1548,6 +1548,8 @@
   const POST_TARGET_TOOL_STORAGE_KEY='sxsPostTargetToolPlanV1';
   let postTargetLastReachMs=NaN;
   let postTargetLastCfg=null;
+  let postTargetLastPlan=null;
+  let postTargetLastPEnd=null;
   function postTargetToolState(){
     let out={mode:'current',stamina:'current',ore:0,essence:0,sand:0};
     try{
@@ -1586,7 +1588,7 @@
       const state=selectedPostTargetToolState();
       savePostTargetToolState(state);
       if($('postTargetCustom')) $('postTargetCustom').hidden=state.mode!=='custom';
-      if(Number.isFinite(postTargetLastReachMs) && postTargetLastCfg) renderPostTargetGains(postTargetLastReachMs,postTargetLastCfg);
+      if(Number.isFinite(postTargetLastReachMs) && postTargetLastCfg && postTargetLastPlan && postTargetLastPEnd) renderPostTargetGains(postTargetLastReachMs,postTargetLastPlan,postTargetLastPEnd,postTargetLastCfg);
     };
     host.querySelectorAll('input[name="postTargetToolMode"]').forEach(el=>el.addEventListener('change',refresh));
     host.querySelectorAll('input[name="postTargetStaminaMode"]').forEach(el=>el.addEventListener('change',refresh));
@@ -1598,7 +1600,49 @@
     if(host) host.hidden=true;
     postTargetLastReachMs=NaN;
     postTargetLastCfg=null;
+    postTargetLastPlan=null;
+    postTargetLastPEnd=null;
   }
+  function postTargetCarryAt(reached,plan,pEnd,cfg=activeCalcConfig()){
+    const emptyCarry={ore:0,essence:0,sand:0,treat:0,hammers:0,knuckles:0,shovels:0};
+    if(!plan || !Number.isFinite(Number(reached))) return emptyCarry;
+    const pAt=projectCharacterTo(reached,cfg);
+    const base=projectedResourcesTo(reached,cfg);
+    const total=Math.max(0,Math.floor(base.staminaNodes||0));
+    const empty={ore:0,essence:0,sand:0,rolla:0,unassigned:0};
+    const map=base.yields?.map||{};
+    const allocationCandidates=[];
+    if(!base.yields?.mapReady || total<=0){
+      allocationCandidates.push({...empty,unassigned:total});
+    }else if(staminaMode()==='auto'){
+      for(const key of ['ore','essence','sand']) if((Number(map[key])||0)>0) allocationCandidates.push({...empty,[key]:total});
+    }else{
+      const key=staminaMode();
+      allocationCandidates.push((Number(map[key])||0)>0?{...empty,[key]:total}:{...empty,unassigned:total});
+    }
+    if(!allocationCandidates.length) allocationCandidates.push({...empty,unassigned:total});
+
+    for(const allocation of allocationCandidates){
+      const resources=applyStaminaAllocation(base,allocation,cfg);
+      if((Number(plan.treatCost)||0)>(Number(resources.treat)||0)+0.5) continue;
+      if(resources.refinedTracked && (Number(plan.refinedCost)||0)>(Number(resources.refined)||0)+0.5) continue;
+      const oreTop=realmTopupForMoment('ore',plan.oreCost,resources,reached,pAt,cfg);
+      const essenceTop=realmTopupForMoment('essence',plan.essenceCost,resources,reached,pAt,cfg);
+      const sandTop=realmTopupForMoment('sand',plan.sandCost,resources,reached,pAt,cfg);
+      if(!(oreTop.feasible&&essenceTop.feasible&&sandTop.feasible)) continue;
+      return {
+        ore:Math.max(0,(Number(resources.ore)||0)-(Number(plan.oreCost)||0)),
+        essence:Math.max(0,(Number(resources.essence)||0)-(Number(plan.essenceCost)||0)),
+        sand:Math.max(0,(Number(resources.sand)||0)-(Number(plan.sandCost)||0)),
+        treat:Math.max(0,(Number(resources.treat)||0)-(Number(plan.treatCost)||0)),
+        hammers:Math.max(0,Math.floor(Number(oreTop.bankedRemaining)||0)+Math.floor(Number(oreTop.sparePurchasedRuns)||0)),
+        knuckles:Math.max(0,Math.floor(Number(essenceTop.bankedRemaining)||0)+Math.floor(Number(essenceTop.sparePurchasedRuns)||0)),
+        shovels:Math.max(0,Math.floor(Number(sandTop.bankedRemaining)||0)+Math.floor(Number(sandTop.sparePurchasedRuns)||0))
+      };
+    }
+    return emptyCarry;
+  }
+
   function postTargetRawGains(reached,cfg,state=selectedPostTargetToolState()){
     const end=cfg.end.getTime();
     const start=Math.max(Date.now(),Math.min(Number(reached)||end,end));
@@ -1630,7 +1674,7 @@
     gains.staminaDestination=destination;
     return gains;
   }
-  function renderPostTargetGains(reached,cfg=activeCalcConfig()){
+  function renderPostTargetGains(reached,plan,pEnd,cfg=activeCalcConfig()){
     const host=$('postTargetGains');
     if(!host) return;
     ensurePostTargetControls();
@@ -1638,9 +1682,12 @@
     if(!Number.isFinite(reached) || reached>=end){ hidePostTargetGains(); return; }
     postTargetLastReachMs=reached;
     postTargetLastCfg=cfg;
+    postTargetLastPlan=plan;
+    postTargetLastPEnd=pEnd;
     host.hidden=false;
     const state=selectedPostTargetToolState();
     if($('postTargetCustom')) $('postTargetCustom').hidden=state.mode!=='custom';
+    const carry=postTargetCarryAt(reached,plan,pEnd,cfg);
     const gains=postTargetRawGains(reached,cfg,state);
     const daily=state.mode==='stop'
       ? {ore:0,essence:0,sand:0}
@@ -1648,15 +1695,25 @@
         ? {ore:state.ore,essence:state.essence,sand:state.sand}
         : {ore:realmDailyValue('ore'),essence:realmDailyValue('essence'),sand:realmDailyValue('sand')};
     const toolMultiplier=Math.max(0,Math.floor(Number(REALM_RUNS_PER_REFRESH)||5))*gains.resets;
-    const tools={ore:daily.ore*toolMultiplier,essence:daily.essence*toolMultiplier,sand:daily.sand*toolMultiplier};
-    if($('postTargetWindow')) $('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} from target to season end`;
-    if($('postTargetOreGain')) $('postTargetOreGain').textContent=`+${fmt(Math.floor(gains.ore))}`;
-    if($('postTargetEssenceGain')) $('postTargetEssenceGain').textContent=`+${fmt(Math.floor(gains.essence))}`;
-    if($('postTargetSandGain')) $('postTargetSandGain').textContent=`+${fmt(Math.floor(gains.sand))}`;
-    if($('postTargetTreatGain')) $('postTargetTreatGain').textContent=`+${fmt(Math.floor(gains.treat))}`;
-    if($('postTargetHammerGain')) $('postTargetHammerGain').textContent=`+${fmt(tools.ore)} Hammers`;
-    if($('postTargetKnuckleGain')) $('postTargetKnuckleGain').textContent=`+${fmt(tools.essence)} Knuckles`;
-    if($('postTargetShovelGain')) $('postTargetShovelGain').textContent=`+${fmt(tools.sand)} Shovels`;
+    const tools={
+      ore:carry.hammers+daily.ore*toolMultiplier,
+      essence:carry.knuckles+daily.essence*toolMultiplier,
+      sand:carry.shovels+daily.sand*toolMultiplier
+    };
+    const totals={
+      ore:carry.ore+gains.ore,
+      essence:carry.essence+gains.essence,
+      sand:carry.sand+gains.sand,
+      treat:carry.treat+gains.treat
+    };
+    if($('postTargetWindow')) $('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} after target · season-end totals`;
+    if($('postTargetOreGain')) $('postTargetOreGain').textContent=fmt(Math.floor(totals.ore));
+    if($('postTargetEssenceGain')) $('postTargetEssenceGain').textContent=fmt(Math.floor(totals.essence));
+    if($('postTargetSandGain')) $('postTargetSandGain').textContent=fmt(Math.floor(totals.sand));
+    if($('postTargetTreatGain')) $('postTargetTreatGain').textContent=fmt(Math.floor(totals.treat));
+    if($('postTargetHammerGain')) $('postTargetHammerGain').textContent=`${fmt(tools.ore)} Hammers total`;
+    if($('postTargetKnuckleGain')) $('postTargetKnuckleGain').textContent=`${fmt(tools.essence)} Knuckles total`;
+    if($('postTargetShovelGain')) $('postTargetShovelGain').textContent=`${fmt(tools.sand)} Shovels total`;
   }
 
   function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activeCalcConfig()){
@@ -1673,7 +1730,7 @@
     const now=Date.now();
     dateEl.textContent=reached<=now+60_000?'Now':targetMomentLabel(reached);
     leftEl.textContent=compactDurationMs(Math.max(0,cfg.end.getTime()-reached));
-    renderPostTargetGains(reached,cfg);
+    renderPostTargetGains(reached,plan,pEnd,cfg);
   }
 
   function renderStaminaCurrentPlan(allocation,added,resources){
