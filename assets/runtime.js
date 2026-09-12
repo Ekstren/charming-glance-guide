@@ -5149,7 +5149,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
         $('targetMessage').classList.add('warning','caution');
         // APPLY_RECOMMENDED_REALM_REFRESHES_V1: recommendation and one-click apply live inside the caution box.
         const route=dailySuggested.changed
-          ? `<span class="targetMessageDetail">Recommended refreshes/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.</span>`
+          ? `<span class="targetMessageDetail">Recommended purchases/day: Ore ${dailySuggested.ore} · Essence ${dailySuggested.essence} · Sand ${dailySuggested.sand}.</span>`
           : '';
         const action=dailySuggested.changed
           ? `<button type="button" class="applyRealmRecommendation" data-ore="${dailySuggested.ore}" data-essence="${dailySuggested.essence}" data-sand="${dailySuggested.sand}">Apply purchases</button>`
