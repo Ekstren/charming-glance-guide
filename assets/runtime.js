@@ -4327,6 +4327,27 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     const btn=$('findMaxStars'),status=$('maxAchievableStatus');
     if(btn){btn.disabled=false;btn.textContent='Find max achievable';}
     if(status) status.textContent='Shows the maximum with your selected daily Realm plan and the hard maximum using all remaining Realm capacity.';
+    const finishBtn=$('finishEarlyMax'),finishHint=$('finishEarlyMaxHint');
+    if(finishBtn?.dataset.maxLocked==='true'){
+      delete finishBtn.dataset.maxLocked;
+      finishBtn.disabled=false;
+      finishBtn.title='Find the maximum half-day finish-early value that still reaches the selected Primostar target';
+    }
+    if(finishHint) finishHint.hidden=true;
+  }
+
+  function lockFinishEarlyMaxForPurchasePlan(){
+    const btn=$('finishEarlyMax'),hint=$('finishEarlyMaxHint');
+    if(!btn) return;
+    btn.dataset.maxLocked='true';
+    btn.disabled=true;
+    btn.textContent='Max';
+    btn.title='Max reached for current purchase plan. To finish earlier, increase Material Realm purchases per day.';
+    btn.removeAttribute('aria-busy');
+    if(hint){
+      hint.textContent='Max reached for current purchase plan. To finish earlier, increase Material Realm purchases per day.';
+      hint.hidden=false;
+    }
   }
   function buildMaxAchievableSnapshot(){
     const cfg=activeCalcConfig();
@@ -4525,8 +4546,8 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       if(!fullSeasonPossible){
         input.value=original;
         finishOptimizerJob(optimizerJob,'done');
-        btn.title='The selected target is not reachable without extra Realm purchases beyond your configured routine.';
         await updateCalculator();
+        lockFinishEarlyMaxForPurchasePlan();
         return;
       }
 
@@ -4573,7 +4594,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
         btn.title='Could not calculate the no-extra-purchase maximum from the current inputs.';
       }
     }finally{
-      btn.disabled=false;
+      if(btn.dataset.maxLocked!=='true') btn.disabled=false;
       btn.textContent='Max';
       btn.removeAttribute('aria-busy');
     }

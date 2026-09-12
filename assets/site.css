@@ -4925,3 +4925,27 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .resultScoreLine{flex-wrap:wrap}
 .resultScoreLine>.seasonEndExcessNote{order:3;flex:0 0 100%;width:100%;display:block;margin:1px 0 0;padding-top:5px;border-top:1px solid color-mix(in srgb,var(--line) 65%,transparent);color:var(--muted);font-size:8px!important;line-height:1.35;text-align:left;text-transform:none!important;letter-spacing:0!important;font-weight:650!important}
 @media(max-width:700px){.resultScoreLine>.seasonEndExcessNote{margin-top:2px;padding-top:5px;font-size:8px!important}}
+
+
+/* FINISH_EARLY_MAX_LOCKED_V1
+   A disabled Max here is explanatory, not a loading state: the current routine cannot
+   support the selected target without additional Material Realm purchases. */
+.finishEarlyMax:disabled[data-max-locked="true"]{
+  opacity:.42!important;
+  cursor:not-allowed!important;
+  border-color:var(--line)!important;
+  background:var(--surface)!important;
+  color:var(--muted)!important;
+}
+.finishEarlyMaxHint{
+  display:block;
+  margin:-2px 4px 8px 0;
+  color:var(--gold);
+  font-size:8px;
+  font-weight:750;
+  line-height:1.35;
+  text-align:right;
+}
+@media(max-width:700px){
+  .finishEarlyMaxHint{margin:0 2px 8px;text-align:left;font-size:8px}
+}
