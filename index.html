@@ -335,13 +335,15 @@
     <aside class="calcResults success" id="calcResults">
       <span class="calcEyebrow" id="resultEyebrow">Recommended season-end result</span>
       <div class="resultHeadline">
-        <strong class="starTotal"><span id="currentStars">—</span><small> Primostars</small></strong>
+        <strong class="starTotal"><span id="currentStars">—</span><span id="seasonEndExcessStars" class="seasonEndExcess seasonEndExcessStars" hidden>(+0)</span><small> Primostars</small></strong>
         <p class="finalLevelLine" hidden>Projected <b id="resultProjectedCharacter">—</b></p>
       </div>
       <div class="resultScoreLine">
-        <span><small>Score</small><b id="currentScoreNow">—</b><i>→</i><b id="summaryOptimizedScore">—</b></span>
+        <span><small>Score</small><b id="currentScoreNow">—</b><i>→</i><b id="summaryOptimizedScore">—</b><b id="seasonEndExcessScore" class="seasonEndExcess seasonEndExcessScore" hidden>(+0)</b></span>
         <span><small>Target</small><b id="desiredScore">—</b><em id="targetStatus">—</em></span>
       </div>
+      <!-- SEASON_END_EXCESS_V1 -->
+      <small id="seasonEndExcessNote" class="seasonEndExcessNote" hidden>Parentheses show projected gains after reaching the target.</small>
       <div class="targetTiming" id="targetTiming" title="Estimate based on current production inputs and the recommended target route.">
         <span><small>Projected target</small><b id="targetReachedDate">—</b></span>
         <span><small>Season left after target</small><b id="targetSeasonLeft">—</b></span>

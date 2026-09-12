@@ -1768,6 +1768,7 @@
   function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activeCalcConfig()){
     const host=$('targetTiming'),dateEl=$('targetReachedDate'),leftEl=$('targetSeasonLeft');
     const targetCharEl=$('targetCharacterAtGoal'),seasonCharEl=$('seasonEndCharacterResult');
+    const excessStarsEl=$('seasonEndExcessStars'),excessScoreEl=$('seasonEndExcessScore'),excessNoteEl=$('seasonEndExcessNote');
     if(!host||!dateEl||!leftEl) return;
     const reached=estimateTargetReachMoment(plan,resourceBlocked,requestedDesired,pEnd,cfg);
     host.classList.toggle('isUnreachable',!Number.isFinite(reached));
@@ -1776,6 +1777,9 @@
       leftEl.textContent='—';
       if(targetCharEl) targetCharEl.textContent='—';
       if(seasonCharEl) seasonCharEl.textContent='—';
+      if(excessStarsEl){excessStarsEl.hidden=true;excessStarsEl.textContent='';}
+      if(excessScoreEl){excessScoreEl.hidden=true;excessScoreEl.textContent='';}
+      if(excessNoteEl){excessNoteEl.hidden=true;excessNoteEl.textContent='';}
       hidePostTargetGains();
       return;
     }
@@ -1786,6 +1790,34 @@
     leftEl.textContent=compactDurationMs(Math.max(0,cfg.end.getTime()-reached));
     if(targetCharEl) targetCharEl.textContent=`Lv.${targetP.level} · ${(targetP.pct*100).toFixed(1)}%`;
     if(seasonCharEl) seasonCharEl.textContent=`Lv.${seasonP.level} · ${(seasonP.pct*100).toFixed(1)}%`;
+
+    /* SEASON_END_EXCESS_V1
+       Keep the requested plan/build fixed. Parenthetical values show what Character EXP alone
+       adds AFTER the displayed target-route score, through the normal season-end EXP projection.
+       Primostar excess is recomputed from the actual floor conversion, not excessScore/scorePerStar. */
+    const planScore=Math.max(0,Number(plan?.score)||0);
+    const nonCharacterScore=Math.max(0,planScore-characterScore(pEnd,cfg));
+    const seasonEndScore=Math.max(planScore,nonCharacterScore+characterScore(seasonP,cfg));
+    const excessScore=Math.max(0,Math.floor(seasonEndScore-planScore+1e-9));
+    const historical=Math.max(0,Math.floor(n('historicalStars',0)));
+    const planStars=historical+cfg.starBase+Math.floor(planScore/cfg.scorePerStar);
+    const seasonEndStars=historical+cfg.starBase+Math.floor(seasonEndScore/cfg.scorePerStar);
+    const excessStars=Math.max(0,seasonEndStars-planStars);
+    const timeAfterTargetMs=Math.max(0,cfg.end.getTime()-reached);
+    const timeAfterTarget=compactDurationMs(timeAfterTargetMs);
+    if(excessStarsEl){
+      excessStarsEl.textContent=`(+${fmt(excessStars)})`;
+      excessStarsEl.hidden=excessStars<=0;
+    }
+    if(excessScoreEl){
+      excessScoreEl.textContent=`(+${fmt(excessScore)})`;
+      excessScoreEl.hidden=excessScore<=0;
+    }
+    if(excessNoteEl){
+      const hasExcess=excessStars>0||excessScore>0;
+      excessNoteEl.textContent=`( ) = projected extra gained after reaching the target ${timeAfterTarget} before season end`;
+      excessNoteEl.hidden=!hasExcess||timeAfterTargetMs<=0;
+    }
     renderPostTargetGains(reached,plan,pEnd,cfg);
   }
 
