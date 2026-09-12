@@ -1,0 +1,35 @@
+name: Finish Early hint polish v1
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-finish-early-hint-polish-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Finish Early hint polish
+        run: python scripts/patch_finish_early_hint_polish_v1.py
+      - name: Verify runtime JavaScript syntax
+        run: node --check assets/runtime.js
+      - name: Verify helper UI
+        run: |
+          grep -F 'Current purchase plan sets this Max.' assets/runtime.js
+          grep -F 'FINISH_EARLY_MAX_HINT_POLISH_V1' assets/site.css
+      - name: Commit verified site changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/runtime.js assets/site.css
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Polish Finish Early Max limit notice'
+          git push
