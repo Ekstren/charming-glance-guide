@@ -1755,7 +1755,7 @@
       sand:carry.sand+gains.sand,
       treat:carry.treat+gains.treat
     };
-    if($('postTargetWindow')) $('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} after target · season-end totals`;
+    if($('postTargetWindow')) $('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} of post-target gathering · season-end carry`;
     if($('postTargetOreGain')) $('postTargetOreGain').textContent=fmt(Math.floor(totals.ore));
     if($('postTargetEssenceGain')) $('postTargetEssenceGain').textContent=fmt(Math.floor(totals.essence));
     if($('postTargetSandGain')) $('postTargetSandGain').textContent=fmt(Math.floor(totals.sand));
@@ -1767,18 +1767,25 @@
 
   function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activeCalcConfig()){
     const host=$('targetTiming'),dateEl=$('targetReachedDate'),leftEl=$('targetSeasonLeft');
+    const targetCharEl=$('targetCharacterAtGoal'),seasonCharEl=$('seasonEndCharacterResult');
     if(!host||!dateEl||!leftEl) return;
     const reached=estimateTargetReachMoment(plan,resourceBlocked,requestedDesired,pEnd,cfg);
     host.classList.toggle('isUnreachable',!Number.isFinite(reached));
     if(!Number.isFinite(reached)){
       dateEl.textContent='Not projected';
       leftEl.textContent='—';
+      if(targetCharEl) targetCharEl.textContent='—';
+      if(seasonCharEl) seasonCharEl.textContent='—';
       hidePostTargetGains();
       return;
     }
     const now=Date.now();
+    const targetP=projectCharacterTo(reached,cfg);
+    const seasonP=projectCharacter(cfg);
     dateEl.textContent=reached<=now+60_000?'Now':targetMomentLabel(reached);
     leftEl.textContent=compactDurationMs(Math.max(0,cfg.end.getTime()-reached));
+    if(targetCharEl) targetCharEl.textContent=`Lv.${targetP.level} · ${(targetP.pct*100).toFixed(1)}%`;
+    if(seasonCharEl) seasonCharEl.textContent=`Lv.${seasonP.level} · ${(seasonP.pct*100).toFixed(1)}%`;
     renderPostTargetGains(reached,plan,pEnd,cfg);
   }
 

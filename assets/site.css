@@ -4890,3 +4890,26 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 
 /* POST_TARGET_STAMINA_V1 */
 .postTargetStaminaPlan{border-top:1px solid var(--line);margin-top:9px;padding-top:9px}
+
+
+/* SMART_BALANCE_RESULT_V1
+   Main result = target timing + target Character + recommended levels + next-season carry.
+   Detailed material spend remains available in the Materials input panel / score details, but
+   is intentionally removed from the primary Smart Balance result. */
+.calcResults .planCosts{display:none!important}
+.targetTiming>span em{display:block;color:var(--muted);font-size:8px;font-style:normal;line-height:1.35;margin-top:4px}
+.targetTiming .targetCharacterCard{border-color:color-mix(in srgb,var(--purple) 76%,var(--line));background:color-mix(in srgb,var(--surface) 84%,var(--purple));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--purple) 18%,transparent)}
+.targetTiming .targetCharacterCard small{color:color-mix(in srgb,var(--purple) 72%,var(--ink))}
+.postTargetHeader>div>span{color:color-mix(in srgb,var(--purple) 72%,var(--ink))}
+.postTargetOptions{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:10px 0;padding:0}
+.postTargetOptions>summary{cursor:pointer;color:var(--body-text);font-size:9px;font-weight:850;letter-spacing:.03em;padding:9px 2px;list-style:none}
+.postTargetOptions>summary::-webkit-details-marker{display:none}
+.postTargetOptions>summary:after{content:'+';float:right;color:var(--muted);font-size:14px;line-height:1}
+.postTargetOptions[open]>summary:after{content:'−'}
+.postTargetOptionsBody{padding:0 0 10px}
+.postTargetOptions .postTargetToolPlan{border-top:0;padding-top:0}
+.postTargetGainGrid{margin-top:10px}
+@media (max-width:430px){
+  .targetTiming{grid-template-columns:1fr}
+  .targetTiming>span em{font-size:7.5px}
+}

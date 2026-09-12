@@ -345,6 +345,8 @@
       <div class="targetTiming" id="targetTiming" title="Estimate based on current production inputs and the recommended target route.">
         <span><small>Projected target</small><b id="targetReachedDate">—</b></span>
         <span><small>Season left after target</small><b id="targetSeasonLeft">—</b></span>
+        <span class="targetCharacterCard"><small>Character used for target</small><b id="targetCharacterAtGoal">—</b><em>Used in score calculation</em></span>
+        <span><small>Season-end character</small><b id="seasonEndCharacterResult">—</b><em>Projected final season level</em></span>
       </div>
       <p class="targetMessage" id="targetMessage" hidden></p>
       <div class="materialRealmRecommendation" id="materialRealmRecommendation" hidden></div>
@@ -362,9 +364,10 @@
       <!-- POST_TARGET_GAINS_V1 -->
       <section class="postTargetGains" id="postTargetGains" hidden>
         <div class="postTargetHeader">
-          <div><span>Estimated post-target totals</span><small id="postTargetWindow">—</small></div>
-          <small>Bed EXP is claimed normally until 34h before season end; the final 36h stays banked for next season.</small>
+          <div><span>Estimated next-season inventory</span><small id="postTargetWindow">—</small></div>
+          <small>What you will have at season end after reaching the target. Bed EXP still banks the final 36h for next season.</small>
         </div>
+        <details class="postTargetOptions"><summary>Post-target plan options</summary><div class="postTargetOptionsBody">
         <div class="postTargetToolPlan">
           <div class="postTargetPlanHead"><b>Post-target tool plan</b><small>Applies only after the target is reached · does not affect score planning.</small></div>
           <div class="postTargetPlanControls">
@@ -387,6 +390,7 @@
             <label><input type="radio" name="postTargetStaminaMode" value="sand"> Sand</label>
           </div>
         </div>
+        </div></details>
         <div class="postTargetGainGrid">
           <div><span>Raw Ore</span><b id="postTargetOreGain">—</b><small id="postTargetHammerGain">—</small></div>
           <div><span>Skill Essence</span><b id="postTargetEssenceGain">—</b><small id="postTargetKnuckleGain">—</small></div>
