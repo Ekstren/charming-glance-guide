@@ -4342,10 +4342,10 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     btn.dataset.maxLocked='true';
     btn.disabled=true;
     btn.textContent='Max';
-    btn.title='Max reached for current purchase plan. To finish earlier, increase Material Realm purchases per day.';
+    btn.title='Current purchase plan sets this Max. Increase Material Realm purchases/day to finish earlier.';
     btn.removeAttribute('aria-busy');
     if(hint){
-      hint.textContent='Max reached for current purchase plan. To finish earlier, increase Material Realm purchases per day.';
+      hint.textContent='Current purchase plan sets this Max. Increase Material Realm purchases/day to finish earlier.';
       hint.hidden=false;
     }
   }
