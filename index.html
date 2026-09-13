@@ -223,18 +223,18 @@
   <footer class="timelineSources"><p>Timeline is intentionally limited to the <b>current season and the next season</b>. Older seasons stay hidden even with Show past, and farther roadmap seasons enter automatically when the season window advances. Dates use QY Maple plus current Global/community cross-checks.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </section>
 
-<section id="buildsSection" class="siteSection builds" hidden>
+<section id="buildsSection" class="siteSection builds">
   <div class="classTabs" id="classTabs"></div>
   <div id="buildContent"></div>
 </section>
 
 <!-- COMPANION_GUIDE_SECTION_START -->
-<section id="companionsSection" class="siteSection companions" hidden>
+<section id="companionsSection" class="siteSection companions">
   <div class="classTabs companionClassTabs" id="companionClassTabs"></div>
   <div id="companionContent"></div>
 </section>
 <!-- COMPANION_GUIDE_SECTION_END -->
-<section id="calculatorSection" class="siteSection calculator" hidden aria-label="Primostar Calculator">
+<section id="calculatorSection" class="siteSection calculator" aria-label="Primostar Calculator">
   <div class="calcSeasonNotice" id="calcSeasonNotice" hidden><div><strong id="calcSeasonNoticeTitle">Season rollover</strong><p id="calcSeasonNoticeText">—</p></div><div class="calcSeasonNoticeActions"><button id="confirmSeasonSnapshot" type="button">Use entries as new snapshot</button><button id="resetSeasonSnapshot" type="button" class="calcSeasonReset">Reset calculator</button></div></div>
   <div class="calculatorLayout">
     <div class="calcInputs">
@@ -467,14 +467,19 @@
 
 <script src="assets/build-layout-icons-v1.js" defer></script>
 <script>
-// Navigation tabs
+
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.sectionSwitch');
   const buttons = nav.querySelectorAll('button');
   const sections = document.querySelectorAll('.siteSection');
+
   function showSection(target) {
-    sections.forEach(sec => sec.style.display = sec.id === target ? 'block' : 'none');
+    const targetId = target + 'Section';
+    sections.forEach(sec => {
+      sec.style.display = sec.id === targetId ? 'block' : 'none';
+    });
   }
+
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       buttons.forEach(b => b.classList.remove('active'));
@@ -482,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showSection(btn.dataset.section);
     });
   });
-  // init: show first section
+
   const firstBtn = buttons[0];
   if (firstBtn) {
     showSection(firstBtn.dataset.section);
