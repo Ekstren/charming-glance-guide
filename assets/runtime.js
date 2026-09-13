@@ -2555,10 +2555,10 @@
     }
 
     /* REALM_OPTION_PROPERTY_CACHE_V7
-       Realm top-up results are immutable for one search snapshot and every option object is
-       search-local. Cache the result directly on the option instead of doing Map.has()+Map.set()
-       +Map.get() on every hot-loop access. This preserves lazy evaluation (unused options still
-       cost nothing) while turning repeat Gear/Skill/Relic lookups into one property read. */
+       Realm top-up results are immutable for one resource allocation, but Auto-Stamina
+       reuses option objects across allocations. Reset cached Realm costs in the acquisition
+       prepass below so each search sees its own raw/tool budget. Hot-loop reads remain direct
+       property accesses and unused Realm options are still evaluated lazily. */
     const oreFor=go=>go.__realmOreV7||(go.__realmOreV7=realmTopupFor('ore',go.oreCost,resources.ore,resources,cfg,p));
     const essFor=so=>so.__realmEssenceV7||(so.__realmEssenceV7=realmTopupFor('essence',so.cost,resources.essence,resources,cfg,p));
     const sandFor=ro=>ro.__realmSandV7||(ro.__realmSandV7=realmTopupFor('sand',ro.cost,resources.sand,resources,cfg,p));
@@ -2567,9 +2567,18 @@
        scarcity-adjusted spend ONCE against the full owned/projected resource-family pool,
        read Cart/map rates once, and run the joint-reacquisition equation with scalar locals.
        Raw-funded and tool-backed candidates therefore use the same economic kernel. */
-    for(const go of gearOptions) go.__acqOreV1=marginalWeightedSpend(go.oreCost,'ore',resources);
-    for(const so of cats.skillOptions) so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
-    for(const ro of cats.relicOptions) ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
+    for(const go of gearOptions){
+      go.__realmOreV7=null;
+      go.__acqOreV1=marginalWeightedSpend(go.oreCost,'ore',resources);
+    }
+    for(const so of cats.skillOptions){
+      so.__realmEssenceV7=null;
+      so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
+    }
+    for(const ro of cats.relicOptions){
+      ro.__realmSandV7=null;
+      ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
+    }
     for(const fo of cats.fantoOptions) fo.__acqTreatV1=marginalWeightedSpend(fo.cost,'treat',resources);
     const acqMap=resources?.yields?.map||cfg.map||{};
     const acqCartOre=Math.max(0,n('oreRate'));
@@ -3222,9 +3231,12 @@
     panel.hidden=true;
   }
 
+  // Most checkpoints only inspect the clock/cancellation flag. Return a promise only
+  // when yielding: awaiting an already-resolved promise in each hot-loop iteration
+  // needlessly allocates promises and drains the microtask queue without painting.
   function createOptimizerCheckpoint(job){
     let lastYield=performance.now();
-    return async(force=false)=>{
+    return (force=false)=>{
       if(!job) return;
       if(job.cancelled) throw new OptimizerCancelledError();
       const now=performance.now();
@@ -3235,9 +3247,10 @@
         const elapsed=$('optimizerProgressElapsed');
         const seconds=(performance.now()-job.started)/1000;
         if(elapsed) elapsed.textContent=`${seconds.toFixed(seconds<10?1:0)}s elapsed`;
-        await new Promise(resolve=>setTimeout(resolve,0));
-        lastYield=performance.now();
-        if(job.cancelled) throw new OptimizerCancelledError();
+        return new Promise(resolve=>setTimeout(resolve,0)).then(()=>{
+          lastYield=performance.now();
+          if(job.cancelled) throw new OptimizerCancelledError();
+        });
       }
     };
   }
@@ -3295,9 +3308,9 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
         const sharedAcquisition=acquisitionEffortFor({ore:go.oreCost,essence:0,sand:0,treat:0},resources,cfg);
         let fastBest=null;
         for(const ro of cats.relicOptions){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
           for(const fo of cats.fantoOptions){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
             const neededSkill=Math.max(0,desired-charScore-go.score-ro.score-fo.score);
             const so=firstSkillAtLeast(neededSkill);
             if(!so) continue;
@@ -3315,10 +3328,10 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
     }
 
     /* REALM_OPTION_PROPERTY_CACHE_V7
-       Realm top-up results are immutable for one search snapshot and every option object is
-       search-local. Cache the result directly on the option instead of doing Map.has()+Map.set()
-       +Map.get() on every hot-loop access. This preserves lazy evaluation (unused options still
-       cost nothing) while turning repeat Gear/Skill/Relic lookups into one property read. */
+       Realm top-up results are immutable for one resource allocation, but Auto-Stamina
+       reuses option objects across allocations. Reset cached Realm costs in the acquisition
+       prepass below so each search sees its own raw/tool budget. Hot-loop reads remain direct
+       property accesses and unused Realm options are still evaluated lazily. */
     const oreFor=go=>go.__realmOreV7||(go.__realmOreV7=realmTopupFor('ore',go.oreCost,resources.ore,resources,cfg,p));
     const essFor=so=>so.__realmEssenceV7||(so.__realmEssenceV7=realmTopupFor('essence',so.cost,resources.essence,resources,cfg,p));
     const sandFor=ro=>ro.__realmSandV7||(ro.__realmSandV7=realmTopupFor('sand',ro.cost,resources.sand,resources,cfg,p));
@@ -3327,9 +3340,18 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
        scarcity-adjusted spend ONCE against the full owned/projected resource-family pool,
        read Cart/map rates once, and run the joint-reacquisition equation with scalar locals.
        Raw-funded and tool-backed candidates therefore use the same economic kernel. */
-    for(const go of gearOptions) go.__acqOreV1=marginalWeightedSpend(go.oreCost,'ore',resources);
-    for(const so of cats.skillOptions) so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
-    for(const ro of cats.relicOptions) ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
+    for(const go of gearOptions){
+      go.__realmOreV7=null;
+      go.__acqOreV1=marginalWeightedSpend(go.oreCost,'ore',resources);
+    }
+    for(const so of cats.skillOptions){
+      so.__realmEssenceV7=null;
+      so.__acqEssenceV1=marginalWeightedSpend(so.cost,'essence',resources);
+    }
+    for(const ro of cats.relicOptions){
+      ro.__realmSandV7=null;
+      ro.__acqSandV1=marginalWeightedSpend(ro.cost,'sand',resources);
+    }
     for(const fo of cats.fantoOptions) fo.__acqTreatV1=marginalWeightedSpend(fo.cost,'treat',resources);
     const acqMap=resources?.yields?.map||cfg.map||{};
     const acqCartOre=Math.max(0,n('oreRate'));
@@ -3472,7 +3494,7 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
       };
       let fastBest=null,fastDiagnostic=null;
       for(const ro of cats.relicOptions){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
         const sandRealm=sandFor(ro);
         for(const so of cats.skillOptions){
           const fixedScore=charScore+ro.score+so.score;
@@ -3633,11 +3655,11 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
         return [...out].sort((a,b)=>a-b);
       };
       for(const ri of sampledIndices(relicStart,boundedRelic.length,10)){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
         const ro=boundedRelic[ri],sandRealm=ro.__realmSandV7;
         const fantoStart=firstScoreIndex(boundedFanto,desired-charScore-ro.score-maxGearScore-maxSkillScore);
         for(const fi of sampledIndices(fantoStart,boundedFanto.length,10)){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
           const fo=boundedFanto[fi];
           const fixedBeforeSkill=charScore+ro.score+fo.score;
           const skillStart=firstScoreIndex(boundedSkill,desired-fixedBeforeSkill-maxGearScore);
@@ -3651,7 +3673,7 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
           let si=skillStart;
           let gi=gearLocked?0:firstScoreIndex(boundedGear,desired-fixedBeforeSkill-boundedSkill[si].score);
           while(si<boundedSkill.length&&gi<boundedGear.length){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
             const so=boundedSkill[si],go=boundedGear[gi];
             const score=fixedBeforeSkill+so.score+go.score;
             if(score>=desired&&go.__refinedFundedV12){
@@ -3700,7 +3722,7 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
 
       const relicEnd=firstWorseIndex(boundedRelic,relicStart,ro=>jointHoursFast(0,0,ro.__acqSandV1,0));
       for(let ri=relicStart;ri<relicEnd;ri++){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
         const ro=boundedRelic[ri];
         /* DYNAMIC_OUTER_BOUND_V12
            relicEnd/fantoEnd are based on the seed winner. If the exact scan finds a faster
@@ -3712,7 +3734,7 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
         const fantoStart=firstScoreIndex(boundedFanto,desired-charScore-ro.score-maxGearScore-maxSkillScore);
         const fantoEnd=firstWorseIndex(boundedFanto,fantoStart,fo=>jointHoursFast(0,0,ro.__acqSandV1,fo.__acqTreatV1));
         for(let fi=fantoStart;fi<fantoEnd;fi++){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
           const fo=boundedFanto[fi];
           if(noPaidRoutePossible&&boundedBest&&
              jointHoursFast(0,0,ro.__acqSandV1,fo.__acqTreatV1)>boundedBest.acquisitionHours+1e-9) break;
@@ -3778,7 +3800,7 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
     if(affordableFantoOptions.length>0 && affordableFantoOptions.length*1.25<cats.fantoOptions.length){
       let affordableBest=null;
       for(const ro of cats.relicOptions){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
         const sandRealm=sandFor(ro);
         for(const fo of affordableFantoOptions){
           const fixedBeforeSkill=charScore+ro.score+fo.score;
@@ -3809,10 +3831,10 @@ async function searchPlansCooperative(baseScore,desired,p,resources,cfg=activeCa
     }
 
     for(const ro of cats.relicOptions){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
       const sandRealm=sandFor(ro);
       for(const fo of cats.fantoOptions){
-        await checkpoint();
+        { const pending=checkpoint(); if(pending) await pending; }
         const treatShortfall=Math.max(0,fo.cost-resources.treat);
         const fixedBeforeSkill=charScore+ro.score+fo.score;
         let lastGearAdds=null;

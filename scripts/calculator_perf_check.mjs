@@ -1,6 +1,7 @@
 import { chromium } from 'playwright';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { writeFileSync } from 'node:fs';
 
 const browser = await chromium.launch({headless:true});
 const page = await browser.newPage({viewport:{width:1440,height:1000}});
@@ -82,14 +83,16 @@ const base={
   shopRefreshesDaily:'0',realmDailyOre:'4',realmDailyEssence:'4',realmDailySand:'4'
 };
 
-const noCart={oreRate:'0',essenceRate:'0',sandRate:'0',treatRate:'0'};
+// S2 requires positive production rates. Near-zero rates exercise scarce-resource
+// searches; zero rates only benchmark the missing-input placeholder.
+const minimalCart={oreRate:'1',essenceRate:'1',sandRate:'1',treatRate:'1'};
 const scenarios=[
   ['realistic-mixed',{...base,oreCurrent:'240000',essenceCurrent:'420000',sandCurrent:'390000',treatCurrent:'32000',treatPremiumCurrent:'700',treatDeluxeCurrent:'4',hammerCurrent:'110',knucklesCurrent:'399',shovelCurrent:'427'}],
-  ['raw-abundant',{...base,...noCart,oreCurrent:'10000000',essenceCurrent:'10000000',sandCurrent:'10000000',treatCurrent:'500000',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'0',knucklesCurrent:'0',shovelCurrent:'0',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}],
-  ['tool-heavy',{...base,...noCart,oreCurrent:'0',essenceCurrent:'0',sandCurrent:'0',treatCurrent:'250000',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'5000',knucklesCurrent:'5000',shovelCurrent:'5000',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}],
+  ['raw-abundant',{...base,...minimalCart,oreCurrent:'10000000',essenceCurrent:'10000000',sandCurrent:'10000000',treatCurrent:'500000',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'0',knucklesCurrent:'0',shovelCurrent:'0',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}],
+  ['tool-heavy',{...base,...minimalCart,oreCurrent:'0',essenceCurrent:'0',sandCurrent:'0',treatCurrent:'250000',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'5000',knucklesCurrent:'5000',shovelCurrent:'5000',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}],
   ['high-target-mixed',{...base,targetStars:'1060',oreCurrent:'1200000',essenceCurrent:'900000',sandCurrent:'800000',treatCurrent:'60000',treatPremiumCurrent:'800',treatDeluxeCurrent:'5',hammerCurrent:'600',knucklesCurrent:'600',shovelCurrent:'600',realmDailyOre:'8',realmDailyEssence:'8',realmDailySand:'8'}],
   ['production-only-low-target',{...base,targetStars:'680',oreCurrent:'0',essenceCurrent:'0',sandCurrent:'0',treatCurrent:'0',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'0',knucklesCurrent:'0',shovelCurrent:'0',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}],
-  ['true-starved-low-target',{...base,...noCart,targetStars:'680',oreCurrent:'0',essenceCurrent:'0',sandCurrent:'0',treatCurrent:'0',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'0',knucklesCurrent:'0',shovelCurrent:'0',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}]
+  ['near-zero-cart-low-target',{...base,...minimalCart,targetStars:'680',oreCurrent:'0',essenceCurrent:'0',sandCurrent:'0',treatCurrent:'0',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'0',knucklesCurrent:'0',shovelCurrent:'0',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}]
 ];
 
 // CALC_SETTLE_PROBE_V1: resolve only after the app reports every scheduled
@@ -134,9 +137,13 @@ const runScenario=async(name,fields)=>{
       upgrades:text('.optimizerTargets'),
       gear:text('.suggestedGear'),
       costs:text('.planCosts'),
-      stamina:text('#staminaCurrentPlan')
+      stamina:text('#staminaCurrentPlan'),
+      solveMs:Number(document.querySelector('#calculatorSection')?.dataset.lastSolveMs)
     };
   });
+  if(!read.total || read.total.includes('—') || read.score.includes('waiting for production')){
+    throw new Error(`${name} did not produce an optimizer result: ${JSON.stringify(read)}`);
+  }
   return { name, ms, ...read };
 }
 
@@ -186,4 +193,5 @@ const times=[...results.map(x=>x.ms),burst.ms];
 const avg=times.reduce((a,b)=>a+b,0)/times.length;
 const max=Math.max(...times);
 console.log(`SUMMARY average ${avg.toFixed(1)}ms · worst ${max.toFixed(1)}ms · ${scenarios.length} scenarios + repeat + burst`);
+if(process.env.SXS_PERF_OUTPUT) writeFileSync(process.env.SXS_PERF_OUTPUT,JSON.stringify({results,burst},null,2)+'\n');
 await browser.close();
