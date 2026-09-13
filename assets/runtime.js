@@ -5968,7 +5968,10 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
           el.value=String(value);
           resetMaxAchievableUi();
           saveState();
-          scheduleCalculatorUpdate(0);
+          // FINISH_EARLY_PROGRESS_V1: Finish Early launches the same heavy optimizer as a goal change,
+          // so show the cancellable calculating panel instead of making the UI appear frozen.
+          queueRegularGoalOptimizerProgress();
+          requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
         };
         el.addEventListener('blur',commitFinishEarly);
         el.addEventListener('keydown',ev=>{
