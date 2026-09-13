@@ -5028,3 +5028,26 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 @media(max-width:760px){
   .postTargetOptionsBody{grid-template-columns:1fr!important}
 }
+
+
+/* POST_TARGET_CUSTOM_ALIGN_V1 */
+.postTargetCustom label{
+  display:grid!important;
+  grid-template-rows:24px 34px!important;
+  gap:5px!important;
+  align-content:start!important;
+  align-items:stretch!important;
+}
+.postTargetCustom label>span{
+  display:flex!important;
+  align-items:flex-end!important;
+  min-width:0;
+  line-height:1.15!important;
+}
+.postTargetCustom input{
+  height:34px!important;
+  margin-top:0!important;
+}
+@media(max-width:430px){
+  .postTargetCustom label{grid-template-rows:auto 34px!important}
+}

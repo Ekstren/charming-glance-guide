@@ -369,7 +369,7 @@
           <div><span>Estimated next-season inventory</span><small id="postTargetWindow">—</small></div>
           <small>What you will have at season end after reaching the target. Bed EXP still banks the final 36h for next season.</small>
         </div>
-        <details class="postTargetOptions"><summary>Post-target plan options</summary><div class="postTargetOptionsBody">
+        <details class="postTargetOptions" open><summary>Post-target plan options</summary><div class="postTargetOptionsBody">
         <div class="postTargetToolPlan">
           <div class="postTargetPlanHead"><b>Post-target tool plan</b><small>Applies only after the target is reached · does not affect score planning.</small></div>
           <div class="postTargetPlanControls">
@@ -377,9 +377,9 @@
             <label><input type="radio" name="postTargetToolMode" value="custom"> Custom</label>
           </div>
           <div class="postTargetCustom" id="postTargetCustom" hidden>
-            <label>Ore Realm/day<input id="postTargetOreDaily" type="number" min="0" max="20" step="1" value="0"></label>
-            <label>Essence Realm/day<input id="postTargetEssenceDaily" type="number" min="0" max="20" step="1" value="0"></label>
-            <label>Sand Realm/day<input id="postTargetSandDaily" type="number" min="0" max="20" step="1" value="0"></label>
+            <label><span>Ore purchases/day</span><input id="postTargetOreDaily" type="number" min="0" max="20" step="1" value="0"></label>
+            <label><span>Essence purchases/day</span><input id="postTargetEssenceDaily" type="number" min="0" max="20" step="1" value="0"></label>
+            <label><span>Sand purchases/day</span><input id="postTargetSandDaily" type="number" min="0" max="20" step="1" value="0"></label>
           </div>
         </div>
         <div class="postTargetStaminaPlan">
