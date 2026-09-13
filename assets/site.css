@@ -178,7 +178,9 @@
 
 
 
-/* v45: full-site visual consistency pass */
+ .sectionSwitch button[data-section="builds"]{display:none;}
+.builds{display:none;}
+
 :root{
   --ui-panel:var(--surface);
   --ui-subpanel:color-mix(in srgb,var(--surface) 88%,var(--bg));
