@@ -95,3 +95,7 @@ for(const cls of sequence){
 const result={switches:sequence.length,immediateFullyReady,firstFrameStable,zeroTabTransition,maxHeightDelta,errors,samples};
 console.log('BUILD_VISUAL_JSON='+JSON.stringify(result));
 await browser.close();
+if(errors.length || immediateFullyReady!==sequence.length || firstFrameStable!==sequence.length ||
+   zeroTabTransition!==sequence.length || maxHeightDelta!==0){
+  throw new Error('Build visual stability regression; inspect BUILD_VISUAL_JSON above');
+}

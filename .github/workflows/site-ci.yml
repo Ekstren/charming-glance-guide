@@ -6,6 +6,8 @@ on:
     paths:
       - 'index.html'
       - 'assets/**'
+      - 'package.json'
+      - 'package-lock.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/**'
@@ -16,6 +18,8 @@ on:
     paths:
       - 'index.html'
       - 'assets/**'
+      - 'package.json'
+      - 'package-lock.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/**'
@@ -35,6 +39,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
       - name: Static validation
         run: |
           python3 scripts/check_timeline_duplicates.py index.html
@@ -53,15 +61,13 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-            ~/.npm
-          key: playwright-1.55.0-chromium-${{ runner.os }}
-          restore-keys: |
-            playwright-1.55.0-chromium-${{ runner.os }}
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install browser dependencies
         run: |
-          npm init -y >/dev/null 2>&1
-          npm install --no-save playwright@1.55.0 >/dev/null
+          npm ci
           npx playwright install --with-deps chromium >/dev/null
+      - name: Optimizer cache and cancellation regression
+        run: npm run test:optimizer
       - name: Calculator regression/performance
         run: node scripts/calculator_perf_check.mjs
       - name: Build variant regression

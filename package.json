@@ -2,9 +2,12 @@
   "name": "charming-glance-guide",
   "version": "1.0.0",
   "description": "Sword x Staff (SxS) \"Charming Glance\" season planning guide and interactive calculator — a single-file static site hosted on GitHub Pages.",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node scripts/optimizer_regression.mjs && node scripts/calculator_perf_check.mjs && node scripts/build_swap_smoke.mjs && node scripts/build_visual_stability_benchmark_v2.mjs && node scripts/site_smoke_test.mjs && node scripts/mobile_audit_v1.mjs",
+    "test:perf": "node scripts/calculator_perf_check.mjs",
+    "test:optimizer": "node scripts/optimizer_regression.mjs",
+    "test:static": "python scripts/validate_site_v1.py"
   },
   "repository": {
     "type": "git",
@@ -12,10 +15,13 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Ekstren/charming-glance-guide/issues"
   },
-  "homepage": "https://github.com/Ekstren/charming-glance-guide#readme"
+  "homepage": "https://github.com/Ekstren/charming-glance-guide#readme",
+  "devDependencies": {
+    "playwright": "1.55.1"
+  }
 }

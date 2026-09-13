@@ -52,7 +52,7 @@ One-shot "patch" workflows from earlier development were deliberately **not** ke
 There's no build step. Serve the repo root:
 
 ```
-npx serve .        # or: python -m http.server
+python -m http.server 8000
 ```
 
 Then open `http://localhost:8000`.
@@ -60,14 +60,17 @@ Then open `http://localhost:8000`.
 ## Running the CI test suite
 
 ```
-npm init -y && npm install --no-save playwright@1.55.0
+npm ci
 npx playwright install --with-deps chromium
-node scripts/calculator_perf_check.mjs
-node scripts/build_swap_smoke.mjs
-node scripts/build_visual_stability_benchmark_v2.mjs
-node scripts/site_smoke_test.mjs
-node scripts/mobile_audit_v1.mjs
+npm run test:static
+npm test
 ```
+
+Use `npm run test:perf` for the calculator benchmark or `npm run test:optimizer`
+for allocation-cache and cancellation regression checks. Set `SXS_PERF_OUTPUT` to
+a file path to save benchmark timings and result fingerprints for before/after
+comparisons. Performance scenarios require a completed numeric result; the S2
+missing-production placeholder is not counted as a successful solve.
 
 ## Notes
 
