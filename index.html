@@ -466,5 +466,28 @@
 <!-- BUILD_HERO_LAYOUT_ICONS_V1_ASSETS -->
 
 <script src="assets/build-layout-icons-v1.js" defer></script>
+<script>
+// Navigation tabs
+document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.querySelector('.sectionSwitch');
+  const buttons = nav.querySelectorAll('button');
+  const sections = document.querySelectorAll('.siteSection');
+  function showSection(target) {
+    sections.forEach(sec => sec.style.display = sec.id === target ? 'block' : 'none');
+  }
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showSection(btn.dataset.section);
+    });
+  });
+  // init: show first section
+  const firstBtn = buttons[0];
+  if (firstBtn) {
+    showSection(firstBtn.dataset.section);
+  }
+});
+</script>
 </body>
 </html>
