@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sword × Staff Guide — Charming Glance</title>
 <meta name="description" content="Charming Glance Sword × Staff timeline, builds and Primostar planner.">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/site.min.css">
 
 
 
@@ -441,7 +441,7 @@
 </main>
 <script src="assets/runtime.js"></script>
 <!-- COMPANION_GUIDE_SCRIPT_START -->
-<script src="assets/companions.js"></script>
+
 <!-- COMPANION_GUIDE_SCRIPT_END -->
 
 
@@ -449,7 +449,7 @@
 
 <!-- BUILD_FANTOMON_PAIRS_START -->
 
-<script src="assets/builds.js"></script>
+<script>fetch('data/builds.json').then(r=>r.json()).then(data=>{window.ROLE_PRESETS=data;});</script>
 
 
 <!-- BUILD_FANTOMON_PAIRS_END -->
