@@ -1,3 +1,0 @@
-/* Hide Builds tab and section */
-.sectionSwitch button[data-section="builds"]{display:none;}
-.builds{display:none;}
