@@ -3865,7 +3865,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     if(!baseResources.yields?.mapReady){
       const allocation={ore:0,essence:0,sand:0,rolla:0,unassigned:baseResources.staminaNodes||0};
       const resources=applyStaminaAllocation(baseResources,allocation,cfg);
-      const result=await searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx);
+      const result=await searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx,job);
       return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation};
     }
 
@@ -3873,7 +3873,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     if(staminaMode()!=='auto'){
       const allocation=allocateStaminaForPlan(null,baseResources,cfg,p);
       const resources=applyStaminaAllocation(baseResources,allocation,cfg);
-      const result=await searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx);
+      const result=await searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx,job);
       return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation};
     }
 
@@ -3882,7 +3882,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     const empty={ore:0,essence:0,sand:0,rolla:0,unassigned:0};
     const resultState=async (allocation)=>{
       const resources=applyStaminaAllocation(baseResources,allocation,cfg);
-      const result=await searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx);
+      const result=await searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx,job);
       return {plan:result.plan,diagnostic:result.plan||result.diagnostic,resources,allocation,result};
     };
     const betterState=(state,best)=>{
@@ -5964,6 +5964,8 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
            is explicitly finished: Enter blurs the field; Tab and clicking/tapping elsewhere
            naturally fire blur. This is a planning preference and never moves snapshot time. */
         const commitFinishEarly=()=>{
+          // FINISH_EARLY_CANCEL_CLAMP_V1: normalize visibly before starting any heavy solve.
+          syncFinishEarlyInputLimit(activeCalcConfig(),true);
           const value=finishEarlyDaysValue();
           el.value=String(value);
           resetMaxAchievableUi();
@@ -5973,6 +5975,11 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
           queueRegularGoalOptimizerProgress();
           requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
         };
+        // Do not let a manually typed value sit above the physical season-time ceiling.
+        el.addEventListener('input',()=>{
+          const raw=Number(el.value),max=maxFinishEarlyDays(activeCalcConfig());
+          if(Number.isFinite(raw)&&raw>max) el.value=String(max);
+        });
         el.addEventListener('blur',commitFinishEarly);
         el.addEventListener('keydown',ev=>{
           if(ev.key==='Enter'){
