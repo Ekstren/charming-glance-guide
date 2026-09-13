@@ -37,6 +37,9 @@ await page.waitForFunction(()=>{
   return total && !total.includes('—');
 },null,{timeout:10000});
 await page.waitForTimeout(150);
+// The initial solve must be fully settled before scenario reads, otherwise the first
+// scenario can race an in-flight cooperative search and read the previous result.
+await waitCalculatorSettled(page,'initial solve',15000);
 
 // S2_ABOVE_CHARACTER_UPGRADES_V1: at Character Lv.131 the planner must not cap
 // Gear, Skills, or Relic ranks to the Character level. These are the supported
@@ -89,47 +92,53 @@ const scenarios=[
   ['true-starved-low-target',{...base,...noCart,targetStars:'680',oreCurrent:'0',essenceCurrent:'0',sandCurrent:'0',treatCurrent:'0',treatPremiumCurrent:'0',treatDeluxeCurrent:'0',hammerCurrent:'0',knucklesCurrent:'0',shovelCurrent:'0',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0'}]
 ];
 
-const runScenario=async(name,fields)=>page.evaluate(async ({name,fields})=>{
-  const resultRoot=document.querySelector('.calcResults');
-  if(!resultRoot) throw new Error('calculator result root missing');
-  const triggerId=Object.keys(fields).at(-1);
-  for(const [id,value] of Object.entries(fields)){
-    const el=document.getElementById(id);
-    if(!el) throw new Error(`missing calculator input ${id}`);
-    el.value=String(value);
+// CALC_SETTLE_PROBE_V1: resolve only after the app reports every scheduled
+// updateCalculator() run has completed. A DOM quiet window is not enough: a cooperative
+// optimizer search renders nothing until it finishes, so "no mutations for 100 ms" can
+// resolve mid-search and read the previous (stale) result.
+async function waitCalculatorSettled(page,label,timeoutMs=10000){
+  // Give the app one paint turn so rAF/setTimeout-scheduled updates commit to the settle
+  // counter before we start observing it (the goal control schedules via rAF).
+  await page.waitForTimeout(50);
+  try{
+    await page.waitForFunction(
+      ()=>typeof window.__sxsCalculatorSettledV1==='function' && window.__sxsCalculatorSettledV1()===true,
+      null,
+      { timeout: timeoutMs, polling: 'raf' }
+    );
+  }catch(err){
+    throw new Error(`${label} did not settle within ${timeoutMs}ms (calculator still running or settle probe missing)`);
   }
+}
 
-  let mutations=0;
-  let lastMutation=performance.now();
-  const started=performance.now();
-  const observer=new MutationObserver(()=>{mutations++;lastMutation=performance.now();});
-  observer.observe(resultRoot,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','style']});
-  document.getElementById(triggerId).dispatchEvent(new Event('change',{bubbles:true}));
-
-  await new Promise((resolve,reject)=>{
-    const poll=()=>{
-      const now=performance.now();
-      if(mutations>0 && now-lastMutation>=100){ resolve(); return; }
-      if(now-started>10000){ reject(new Error(`${name} did not settle within 10s`)); return; }
-      setTimeout(poll,20);
+const runScenario=async(name,fields)=>{
+  const t0=performance.now();
+  await page.evaluate(({fields})=>{
+    const resultRoot=document.querySelector('.calcResults');
+    if(!resultRoot) throw new Error('calculator result root missing');
+    const triggerId=Object.keys(fields).at(-1);
+    for(const [id,value] of Object.entries(fields)){
+      const el=document.getElementById(id);
+      if(!el) throw new Error(`missing calculator input ${id}`);
+      el.value=String(value);
+    }
+    document.getElementById(triggerId).dispatchEvent(new Event('change',{bubbles:true}));
+  },{fields});
+  await waitCalculatorSettled(page,`${name} solve`,10000);
+  const ms=performance.now()-t0;
+  const read=await page.evaluate(()=>{
+    const text=sel=>document.querySelector(sel)?.innerText?.replace(/\s+/g,' ').trim()||'';
+    return {
+      total:text('.starTotal'),
+      score:text('.resultScoreLine'),
+      upgrades:text('.optimizerTargets'),
+      gear:text('.suggestedGear'),
+      costs:text('.planCosts'),
+      stamina:text('#staminaCurrentPlan')
     };
-    poll();
   });
-  observer.disconnect();
-
-  const text=sel=>document.querySelector(sel)?.innerText?.replace(/\s+/g,' ').trim()||'';
-  return {
-    name,
-    ms:performance.now()-started,
-    mutations,
-    total:text('.starTotal'),
-    score:text('.resultScoreLine'),
-    upgrades:text('.optimizerTargets'),
-    gear:text('.suggestedGear'),
-    costs:text('.planCosts'),
-    stamina:text('#staminaCurrentPlan')
-  };
-},{name,fields});
+  return { name, ms, ...read };
+}
 
 const results=[];
 const fingerprint=x=>JSON.stringify([x.total,x.score,x.upgrades,x.gear,x.costs,x.stamina]);
@@ -137,7 +146,7 @@ for(let i=0;i<scenarios.length;i++){
   const [name,fields]=scenarios[i];
   const r=await runScenario(name,fields);
   results.push(r);
-  console.log(`PERF ${name}: ${r.ms.toFixed(1)}ms · mutations ${r.mutations} · ${r.total} · ${r.score}`);
+  console.log(`PERF ${name}: ${r.ms.toFixed(1)}ms · ${r.total} · ${r.score}`);
   if(r.ms>5000) throw new Error(`${name} took ${r.ms.toFixed(1)}ms (>5s lockup guard)`);
 
   // Check determinism immediately on the representative real-world case, before any
@@ -155,29 +164,21 @@ for(let i=0;i<scenarios.length;i++){
 }
 
 // Event-coalescing check: a burst of target edits should settle once, not queue a backlog.
-const burst=await page.evaluate(async ()=>{
-  const el=document.getElementById('targetStars');
-  const root=document.querySelector('.calcResults');
-  let mutations=0,last=performance.now();
-  const started=performance.now();
-  const obs=new MutationObserver(()=>{mutations++;last=performance.now();});
-  obs.observe(root,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','style']});
-  for(const value of ['681','700','760','800','840','880','900','920']){
-    el.value=value;
+const burstT0=performance.now();
+for(const value of ['681','700','760','800','840','880','900','920']){
+  await page.evaluate(v=>{
+    const el=document.getElementById('targetStars');
+    el.value=v;
     el.dispatchEvent(new Event('change',{bubbles:true}));
-  }
-  await new Promise((resolve,reject)=>{
-    const poll=()=>{
-      const now=performance.now();
-      if(mutations>0&&now-last>=100){resolve();return;}
-      if(now-started>10000){reject(new Error('rapid edit burst did not settle'));return;}
-      setTimeout(poll,20);
-    };poll();
-  });
-  obs.disconnect();
-  return {ms:performance.now()-started,mutations,total:document.querySelector('.starTotal')?.innerText||''};
-});
-console.log(`BURST 8 target edits: ${burst.ms.toFixed(1)}ms · mutations ${burst.mutations} · final ${burst.total.replace(/\s+/g,' ')}`);
+  },value);
+  await page.waitForTimeout(10);
+}
+await waitCalculatorSettled(page,'rapid edit burst',10000);
+const burst={
+  ms:performance.now()-burstT0,
+  total:(await page.evaluate(()=>document.querySelector('.starTotal')?.innerText||'')).replace(/\s+/g,' ')
+};
+console.log(`BURST 8 target edits: ${burst.ms.toFixed(1)}ms · final ${burst.total}`);
 if(burst.ms>5000) throw new Error(`rapid edit burst took ${burst.ms.toFixed(1)}ms (>5s lockup guard)`);
 
 if(errors.length) throw new Error('browser runtime errors:\n'+errors.join('\n---\n'));

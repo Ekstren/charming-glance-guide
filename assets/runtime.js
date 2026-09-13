@@ -3113,6 +3113,22 @@
   let activeOptimizerJob=null;
   let queuedGoalOptimizerJob=null; // REGULAR_GOAL_PROGRESS_V1
 
+  /* CALC_SETTLE_PROBE_V1
+     Exposes a deterministic "calculator fully settled" signal for automation and tests,
+     so they can await a completed render instead of guessing from DOM quiet windows that
+     can resolve while a cooperative optimizer search is still in flight. Every scheduled
+     or direct updateCalculator() run is counted; the probe reports settled only after all
+     of them have completed (superseded pending timers count as settled). */
+  let calculatorRunsScheduled=0;
+  let calculatorRunsSettled=0;
+  if(typeof window!=='undefined') window.__sxsCalculatorSettledV1=()=>calculatorRunsScheduled===calculatorRunsSettled;
+  function runCalculatorUpdateSettled(){
+    calculatorRunsScheduled++;
+    return Promise.resolve(updateCalculator())
+      .catch(err=>{ if(!(err instanceof OptimizerCancelledError)) console.error('CALC_SETTLE_PROBE_V1: update failed',err); })
+      .finally(()=>{ calculatorRunsSettled++; });
+  }
+
   function queueRegularGoalOptimizerProgress(){
     const cfg=activeCalcConfig();
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
@@ -4318,7 +4334,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       if(!Number.isFinite(target) || target<=480) $('targetStars').value=String(S2_SCORING_START_DEFAULTS.targetStars);
     }
     snapshotSeason=cfg.key; snapshotAtMs=Date.now(); snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
-    saveState(); renderCalculatorSeasonChrome(cfg); updateCalculator();
+    saveState(); renderCalculatorSeasonChrome(cfg); runCalculatorUpdateSettled();
   }
 
   function updateGearLockUI(){
@@ -4565,7 +4581,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       if(!fullSeasonPossible){
         input.value=original;
         finishOptimizerJob(optimizerJob,'done');
-        await updateCalculator();
+        await runCalculatorUpdateSettled();
         lockFinishEarlyMaxForPurchasePlan();
         return;
       }
@@ -4597,7 +4613,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       finishOptimizerJob(optimizerJob,'done');
 
       // One full cooperative solve only, after the cheap binary search finds the cutoff.
-      await updateCalculator();
+      await runCalculatorUpdateSettled();
       btn.title=lo>0
         ? `Maximum no-extra-purchase finish-early value: ${lo/2} days. Uses your configured Realm/Shop routine but no additional recommended Realm purchases.`
         : 'The current target needs the full remaining season without extra Realm purchases.';
@@ -5190,7 +5206,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
   }
 
   async function copyPlan(){
-    await updateCalculator();
+    await runCalculatorUpdateSettled();
     const text=[
       `Charming Glance ${activeCalcConfig().name} plan`,
       `Current score now: ${$('currentScoreNow').textContent}`,
@@ -5224,7 +5240,7 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
       applyS2ScoringStartDefaults();
     }
     gearLocked=false; snapshotAtMs=Date.now(); snapshotSeason=cfg.key; snapshotCarry={ore:0,essence:0,sand:0,treat:0,exp:0}; snapshotStateLoaded=true;
-    updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); updateCalculator();
+    updateGearLockUI(); localStorage.removeItem(STORAGE_KEY); saveState(); runCalculatorUpdateSettled();
   }
 
   // ---------- Timeline ----------
@@ -5912,13 +5928,23 @@ async function solveTargetWithAutoStaminaCooperative(baseScore,desired,p,baseRes
     requestAnimationFrame(()=>setTimeout(()=>{
       if(calculatorInitialized) return;
       calculatorInitialized=true;
-      updateCalculator();
+      runCalculatorUpdateSettled();
     },0));
   }
   function scheduleCalculatorUpdate(delay=120){
     if(!calculatorInitialized) return;
-    clearTimeout(calculatorUpdateTimer);
-    calculatorUpdateTimer=setTimeout(()=>{calculatorUpdateTimer=null;updateCalculator();},delay);
+    if(calculatorUpdateTimer){
+      clearTimeout(calculatorUpdateTimer);
+      calculatorUpdateTimer=null;
+      calculatorRunsSettled++; // superseded pending run settles trivially
+    }
+    calculatorRunsScheduled++;
+    calculatorUpdateTimer=setTimeout(async()=>{
+      calculatorUpdateTimer=null;
+      try{ await updateCalculator(); }
+      catch(err){ if(!(err instanceof OptimizerCancelledError)) console.error('CALC_SETTLE_PROBE_V1: update failed',err); }
+      finally{ calculatorRunsSettled++; }
+    },delay);
   }
   const SECTION_STORAGE_KEY='sxs-active-section';
   function setSection(name){
