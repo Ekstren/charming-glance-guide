@@ -1,0 +1,36 @@
+name: Cleanup junk branches
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cleanup-junk-branches.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Delete old branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in \
+            backup-20260912 \
+            site-cleanup-candidate \
+            tmp-revert-surplus \
+            tmp-revert-surplus2 \
+            tmp-revert-surplus3 \
+            trigger-s2-confirm \
+            branch-cleanup-safety \
+            cleanup-runner-temp
+          do
+            echo "Deleting $branch"
+            git push origin --delete "$branch" || true
+          done
