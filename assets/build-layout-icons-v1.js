@@ -302,3 +302,16 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initPatch,{once:true});
   else initPatch();
 })();
+
+/* TIMELINE_SUMMARY_ONLY_V1
+   Timeline research/source/confidence UI is intentionally kept out of the player-facing timeline.
+   Provenance remains in maintained source comments/data rather than secondary disclosure panels. */
+(()=>{
+  function enforceSummaryOnly(){
+    document.querySelector('.timelineIntelWrap')?.remove();
+    document.querySelector('.timelineSources')?.remove();
+    document.querySelectorAll('#timeline details.entryMore').forEach(el=>el.remove());
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',enforceSummaryOnly,{once:true});
+  else enforceSummaryOnly();
+})();
