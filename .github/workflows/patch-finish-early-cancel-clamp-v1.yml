@@ -1,0 +1,35 @@
+name: Finish Early cancel + clamp v1
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-finish-early-cancel-clamp-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Finish Early cancel/clamp fix
+        run: python scripts/patch_finish_early_cancel_clamp_v1.py
+      - name: Verify runtime JavaScript syntax
+        run: node --check assets/runtime.js
+      - name: Verify cancellation and clamp hooks
+        run: |
+          grep -F 'FINISH_EARLY_CANCEL_CLAMP_V1' assets/runtime.js
+          test "$(grep -o "searchPlansCooperative(baseScore,desired,p,resources,cfg,ctx,job);" assets/runtime.js | wc -l)" -ge 3
+      - name: Commit verified site changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/runtime.js
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Fix Finish Early clamp and cancellation'
+          git push

@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sword × Staff Guide — Charming Glance</title>
 <meta name="description" content="Charming Glance Sword × Staff timeline, builds and Primostar planner.">
-<style>
-/* Critical CSS placeholder */
-</style>
-<link rel="stylesheet" href="assets/site.min.css">
+<link rel="stylesheet" href="assets/site.css">
 
 
 
@@ -226,7 +223,7 @@
   <footer class="timelineSources"><p>Timeline is intentionally limited to the <b>current season and the next season</b>. Older seasons stay hidden even with Show past, and farther roadmap seasons enter automatically when the season window advances. Dates use QY Maple plus current Global/community cross-checks.</p><div class="footerLinks"><a href="https://qenu.github.io/ethna-timeline/?start=20260715" target="_blank" rel="noreferrer">Qenu ↗</a><a href="https://qymaple.github.io/sxs-research-global/" target="_blank" rel="noreferrer">QY Maple ↗</a><a href="https://eog.gg/games/sword-x-staff/" target="_blank" rel="noreferrer">EOG ↗</a></div></footer>
 </section>
 
-<section id="buildsSection" class="siteSection builds">
+<section id="buildsSection" class="siteSection builds" hidden>
   <div class="classTabs" id="classTabs"></div>
   <div id="buildContent"></div>
 </section>
@@ -442,15 +439,9 @@
 </section>
 
 </main>
-<script src="assets/runtime.min.js" defer></script>
+<script src="assets/runtime.js"></script>
 <!-- COMPANION_GUIDE_SCRIPT_START -->
-<script>
-// Lazy load companions module when the Companions tab is activated
-const companionsLink = document.querySelector('[data-section="companions"]');
-companionsLink.addEventListener('click', () => {
-  import('./assets/companions.min.js');
-});
-</script>
+<script src="assets/companions.js"></script>
 <!-- COMPANION_GUIDE_SCRIPT_END -->
 
 
@@ -458,13 +449,7 @@ companionsLink.addEventListener('click', () => {
 
 <!-- BUILD_FANTOMON_PAIRS_START -->
 
-<script>
-// Lazy load builds module when the Builds tab is activated
-const buildsLink = document.querySelector('[data-section="builds"]');
-buildsLink.addEventListener('click', () => {
-  import('./assets/builds.min.js');
-});
-</script>
+<script src="assets/builds.js"></script>
 
 
 <!-- BUILD_FANTOMON_PAIRS_END -->
@@ -481,11 +466,5 @@ buildsLink.addEventListener('click', () => {
 <!-- BUILD_HERO_LAYOUT_ICONS_V1_ASSETS -->
 
 <script src="assets/build-layout-icons-v1.js" defer></script>
-<script>
-// Register service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-</script>
 </body>
 </html>

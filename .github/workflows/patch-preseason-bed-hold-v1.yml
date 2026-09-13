@@ -1,0 +1,40 @@
+name: Apply preseason Bed reserve strategy
+
+on:
+  push:
+    paths:
+      - .github/workflows/patch-preseason-bed-hold-v1.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply preseason Bed hold patch
+        run: python3 scripts/patch_preseason_bed_hold_v1.py
+      - name: Verify runtime JavaScript syntax
+        run: node --check assets/runtime.js
+      - name: Verify rollover strategy is baked in
+        run: |
+          grep -q 'PRESEASON_BED_RESERVE_V1' assets/runtime.js
+          grep -q 'PRESEASON_BED_HOLD_WALL_HOURS=34' assets/runtime.js
+          grep -q 'PRESEASON_BED_FINAL_RESET_BOOST_HOURS=2' assets/runtime.js
+          grep -q 'const expTarget=Math.min(target,characterExpCollectionCutoffMs(cfg));' assets/runtime.js
+          grep -q 'const producedExp=bedRate\*elapsedBedClaimableHours' assets/runtime.js
+          grep -q 'preseasonBedReserveHours:PRESEASON_BED_HOLD_WALL_HOURS+PRESEASON_BED_FINAL_RESET_BOOST_HOURS' assets/runtime.js
+      - name: Commit verified site change
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898258+github-actions[bot]@users.noreply.github.com'
+          git add assets/runtime.js
+          git commit -m 'Reserve 36 hours of Bed EXP before season rollover'
+          git push origin HEAD:main

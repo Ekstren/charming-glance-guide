@@ -1,0 +1,50 @@
+name: Mirror Sword x Staff Discord feed
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sxs-discord-feed
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch Discord announcements
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}
+        run: python scripts/fetch_discord_feed.py
+
+      - name: Commit feed changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add data/sxs-official-discord-feed.json
+          if git diff --cached --quiet; then
+            echo "No Discord feed changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update official Sword x Staff Discord feed"
+          git pull --rebase origin main
+          git push origin HEAD:main

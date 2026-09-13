@@ -1,0 +1,40 @@
+name: Exact progression average sync
+
+on:
+  push:
+    paths:
+      - scripts/patch_exact_average_sync_v1.py
+      - .github/workflows/patch-exact-average-sync-v1.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact progression sync patch
+        run: python3 scripts/patch_exact_average_sync_v1.py
+      - name: Verify runtime JavaScript syntax
+        run: node --check assets/runtime.js
+      - name: Verify exact progression sync hooks
+        run: |
+          grep -q 'EXACT_LEVEL_AVERAGE_SYNC_V1' assets/runtime.js
+          grep -q 'syncAverageInputsFromExact' assets/runtime.js
+          grep -q 'syncExactProgressionPanelLock' assets/runtime.js
+          grep -q "Exact entries active · clear to collapse" assets/runtime.js
+          grep -q 'syncExactProgressionUi(cfg,currentCaps)' assets/runtime.js
+      - name: Commit verified site changes
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898258+github-actions[bot]@users.noreply.github.com'
+          git add assets/runtime.js
+          git commit -m 'Sync exact progression averages and lock active editor'
+          git push origin HEAD:main

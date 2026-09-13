@@ -1,0 +1,60 @@
+name: Optimize calculator target v1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/optimize-calculator-target-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install browser dependencies
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Benchmark before
+        run: node scripts/calculator_perf_check.mjs | tee /tmp/calc-before.log
+      - name: Apply target optimization
+        run: |
+          python3 scripts/optimize_calculator_target_v1.py
+          node --check assets/runtime.js
+          python3 scripts/check_timeline_duplicates.py index.html
+      - name: Benchmark after
+        run: node scripts/calculator_perf_check.mjs | tee /tmp/calc-after.log
+      - name: Validate browser behavior
+        run: |
+          node scripts/build_swap_smoke.mjs
+          node scripts/build_visual_stability_benchmark_v2.mjs
+          node scripts/site_smoke_test.mjs
+          node scripts/mobile_audit_v1.mjs
+      - name: Compare performance and commit
+        run: |
+          python3 - <<'PY'
+          import re
+          def vals(path):
+              t=open(path,encoding='utf-8').read()
+              m=re.search(r'PERF realistic-mixed: ([0-9.]+)ms',t)
+              s=re.search(r'SUMMARY average ([0-9.]+)ms · worst ([0-9.]+)ms',t)
+              if not m or not s: raise SystemExit(f'missing perf lines in {path}')
+              return float(m.group(1)),float(s.group(1)),float(s.group(2))
+          b=vals('/tmp/calc-before.log'); a=vals('/tmp/calc-after.log')
+          print('BEFORE realistic/avg/worst:',b)
+          print('AFTER  realistic/avg/worst:',a)
+          # Fail closed on a material regression. The target-frontier trim should normally win clearly.
+          if a[0] > b[0]*1.05: raise SystemExit('realistic calculator performance regressed >5%')
+          if a[1] > b[1]*1.05: raise SystemExit('aggregate calculator performance regressed >5%')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+Ekstren@users.noreply.github.com'
+          git add assets/runtime.js index.html
+          git commit -m 'Speed up Primostar target changes'
+          git push
