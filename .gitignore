@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Local scratch / secrets (never commit tokens)
+*.local
+.env
+secrets/
+
+# Working-state handoff notes (regenerable; not site content)
+_state_snapshot.txt
+*_state_snapshot.txt

@@ -32,6 +32,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Static validation
@@ -41,11 +42,21 @@ jobs:
           node --check assets/companions.js
           node --check assets/builds.js
           node --check assets/build-layout-icons-v1.js
-          python3 -m py_compile scripts/fetch_discord_feed.py scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py
+          python3 -m py_compile scripts/fetch_discord_feed.py scripts/activate_pandarial_build_prep_v1.py scripts/validate_pandarial_build_prep_v1.py scripts/activate_warlords_rest_roll_guide_v1.py scripts/validate_warlords_rest_roll_guide_v1.py scripts/validate_site_v1.py scripts/repo_state_snapshot_v1.py
           python3 -m json.tool data/pandarial-build-prep-v1.json >/dev/null
           python3 -m json.tool data/warlords-rest-roll-guide-v1.json >/dev/null
           python3 scripts/validate_pandarial_build_prep_v1.py
           python3 scripts/validate_warlords_rest_roll_guide_v1.py
+          python3 scripts/validate_site_v1.py
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/.npm
+          key: playwright-1.55.0-chromium-${{ runner.os }}
+          restore-keys: |
+            playwright-1.55.0-chromium-${{ runner.os }}
       - name: Install browser dependencies
         run: |
           npm init -y >/dev/null 2>&1
