@@ -22,6 +22,16 @@ await page.addInitScript(now=>{
 await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
 await page.waitForTimeout(250);
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
+// S2 defaults have zero production inputs, so seed Bed EXP + Cart rates before waiting
+// for the calculator to render a non-placeholder result.
+await page.evaluate(()=>{
+  const set=(id,v)=>{const el=document.getElementById(id);if(el){el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}));}};
+  set('bedExp','280772');
+  set('oreRate','1184');
+  set('essenceRate','1387');
+  set('sandRate','850');
+  set('treatRate','91');
+});
 await page.waitForFunction(()=>{
   const total=document.querySelector('.starTotal')?.textContent||'';
   return total && !total.includes('—');
