@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sword × Staff Guide — Charming Glance</title>
 <meta name="description" content="Charming Glance Sword × Staff timeline, builds and Primostar planner.">
+<style>
+/* Critical CSS placeholder */
+</style>
 <link rel="stylesheet" href="assets/site.min.css">
 
 
@@ -439,9 +442,15 @@
 </section>
 
 </main>
-<script src="assets/runtime.min.js"></script>
+<script src="assets/runtime.min.js" defer></script>
 <!-- COMPANION_GUIDE_SCRIPT_START -->
-<script src="assets/companions.min.js"></script>
+<script>
+// Lazy load companions module when the Companions tab is activated
+const companionsLink = document.querySelector('[data-section="companions"]');
+companionsLink.addEventListener('click', () => {
+  import('./assets/companions.min.js');
+});
+</script>
 <!-- COMPANION_GUIDE_SCRIPT_END -->
 
 
@@ -449,7 +458,13 @@
 
 <!-- BUILD_FANTOMON_PAIRS_START -->
 
-<script src="assets/builds.min.js"></script>
+<script>
+// Lazy load builds module when the Builds tab is activated
+const buildsLink = document.querySelector('[data-section="builds"]');
+buildsLink.addEventListener('click', () => {
+  import('./assets/builds.min.js');
+});
+</script>
 
 
 <!-- BUILD_FANTOMON_PAIRS_END -->
@@ -466,5 +481,11 @@
 <!-- BUILD_HERO_LAYOUT_ICONS_V1_ASSETS -->
 
 <script src="assets/build-layout-icons-v1.js" defer></script>
+<script>
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
 </body>
 </html>
