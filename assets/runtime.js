@@ -51,7 +51,7 @@ export async function runOptimizer(cfg, projected, target) {
 
 // ------------ Worker integration ------------
 // Instantiate a single worker that forwards requests to runOptimizer
-const optimizerWorker = new Worker('assets/optimizer.worker.js');
+const optimizerWorker = new Worker('./assets/optimizer.worker.js');
 
 // Forward any messages from the worker to the main thread (e.g. progress)
 optimizerWorker.onmessage = e => {
