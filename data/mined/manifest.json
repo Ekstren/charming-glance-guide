@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-11T23:00:38.127154+00:00",
+  "generated_utc": "2026-09-13T05:57:31.379814+00:00",
   "outputs": [
     {
       "constants": [
@@ -64,7 +64,7 @@
       "output": "data/mined/0xnobody/constants/sxs-loadout-builder/index.json",
       "output_bytes": 8689,
       "source": "sxs-loadout-builder/index.html",
-      "source_sha256": "b6c8bf9f0fb354d7ad038a9829d9fa11bfca36f5fc942be1a3412a8472b08595",
+      "source_sha256": "f13efdc203349ab78f78250f6375d0cf0ad660abb46ddc80f2bddd1e81725f21",
       "unresolved_constants": [
         "D",
         "EQUIPMENT_QUALITIES"
@@ -92,7 +92,7 @@
       "output": "data/mined/0xnobody/constants/sxs-primo-calculator/index.json",
       "output_bytes": 16794,
       "source": "sxs-primo-calculator/index.html",
-      "source_sha256": "e06d6b3e9b78b0a6206df2ffd1f19224ca264951b300a1fd3a52bc9920c330d7",
+      "source_sha256": "99dd0fb7bc565087028c1d53426677692769aa67817899f04166b7c3bc001a19",
       "unresolved_constants": [
         "T",
         "T",
@@ -103,9 +103,9 @@
     },
     {
       "output": "data/mined/0xnobody/sxs-primo-calculator/server-data.json",
-      "output_bytes": 33218,
+      "output_bytes": 179563,
       "source": "sxs-primo-calculator/server-data.js",
-      "source_sha256": "a0df034ce4f244c20b87d7d3bbfba2098d892bfa7e9d1f024ccf4036f391e1a9",
+      "source_sha256": "2ff2b34a84e03509037693fe0a19f564be7829a504bc53ae8d9290f8b76d0c05",
       "variable": "SXS_SERVER_ROWS"
     },
     {
@@ -133,7 +133,7 @@
   "skipped": [],
   "sources": {
     "0xnobody": {
-      "commit": "5b76234dff6b3fa88250dda3de17f308fdd3af12",
+      "commit": "a773b657b164610e8624fef2c0aac2dcba67e9a1",
       "repo": "https://github.com/0xNobodyYT/0xNobodyYT.github.io"
     },
     "mystonats": {
