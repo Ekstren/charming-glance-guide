@@ -1,5 +1,5 @@
 // Optimizer worker for Season 2
-importScripts('assets/runtime.js');
+importScripts('./runtime.js');
 
 self.onmessage = function(e) {
   const { cfg, projected, target } = e.data;
