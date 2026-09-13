@@ -5051,3 +5051,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 @media(max-width:430px){
   .postTargetCustom label{grid-template-rows:auto 34px!important}
 }
+
+
+/* S2_BREAKPOINT_REWARD_LABELS_V1 */
+.s2TargetPresets button{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.s2TargetPresets button span{color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.06em;line-height:1}
+.s2TargetPresets button.active span{color:inherit;opacity:.82}
+@media (max-width:760px){.s2TargetPresets button{gap:3px}.s2TargetPresets button span{font-size:6.5px}}
