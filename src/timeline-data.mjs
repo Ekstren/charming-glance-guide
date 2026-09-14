@@ -1,0 +1,88 @@
+export const timelineData = [
+    // ---- Season 1 · Charming Glance / Qenu anchor + QY Maple details ----
+
+    // ---- Season 2 · Loong Haven ----
+    ['2026-08-30',47,'Region','Loong Haven opens','CONFIRMED for Charming Glance: Season 2 Day 1 begins at the Aug 30 server reset. On Aug 26, the in-game season countdown showed 3d 21h remaining, aligning with this reset; Prydwen independently places T4 at Server Day 47. Once S2 is live: Lv.106 = T4 class advancement + Loong Haven Five; Fantomon Adult / Materialization requires Lv.108, Numbuville unlocked, and Mythic rarity (duplicate); Lv.116 = Demonbind Tower.','region'],
+    ['2026-08-30',47,'Feature','Gear Refinement & Affix Transfer','Season 2 feature confirmed by Prydwen: Mythic-or-better S2+ gear can reroll affixes, and affixes can transfer to same-type Mythic-or-better gear. Same-season Affix Transfer is free; carrying chosen affixes across later seasons uses Divinecraft Stones. S1 gear is not eligible for Affix Transfer, even at Mythic rarity, so do not save S1 gear expecting to move its stats into S2. Charming Glance Season 2 is confirmed for the Aug 30 server reset by the in-game season countdown.','feature'],
+    ['2026-08-30',47,'Feature','Season 2 Day 1 checklist','<span class="launchChecklist"><span><b>1.</b><strong>Start with rollover rewards.</strong><em>Season 2 is live; collect the new-season rewards before spending progression resources.</em></span><span><b>2.</b><strong>Claim Astral / season rewards.</strong><em>Grab rollover, Astral Pact, and other immediately available season rewards.</em></span><span><b>3.</b><strong>Rank up as far as possible.</strong><em>Do this before spending Stamina or Material Realm resources so later rewards use your higher rank where applicable.</em></span><span><b>4.</b><strong>Claim your saved Bed EXP.</strong><em>Collect the banked 34 hours now. Current community testing says waiting for statues does not increase EXP already stored.</em></span><span><b>5.</b><strong>Push the new map and activate reachable statues.</strong><em>Explore as far as your level allows and activate every Goddess / Lost Goddess Statue you can reach.</em></span><span><b>6.</b><strong>Use Bed boosts after statue progress.</strong><em>Use the free 2-hour Bed boost and other Bed speed-ups after pushing statues so the new rate applies to the boosted time.</em></span><span><b>7.</b><strong>Spend Stamina and Material Realm resources.</strong><em>Once rank and early map progress are set, start using saved Realm tools, refreshes, and Stamina.</em></span><span><b>8.</b><strong>Finish progression cleanup.</strong><em>Do class advancement, relics, gear, Fantomons, and other upgrades as the new level gates open.</em></span></span>','feature'],
+    // TOURNAMENT_TIMING_SEP9_V1: direct Charming Glance screenshots taken just after midnight Sep. 9 PDT.
+    // Standard Tournament registration showed ~2d 5h remaining (Friday reset); Nexus itself showed ~3d 19h to start (Saturday evening).
+    ['2026-09-05',53,'Event','Server Tournament','The weekly Server Tournament runs Saturday; registration opens the day before.','event'],
+    ['2026-09-12',60,'Event','Server Tournament','Registration opens Friday Sep. 11 · tournament Saturday Sep. 12.','event'],
+    ['2026-09-12',60,'Event','Nexus Tournament · 4v4','Direct Charming Glance countdown just after midnight Sep. 9 showed 3d 19h to start, placing Nexus on Saturday evening Sep. 12.','event'],
+    ['2026-09-26',74,'Event','Nexus Tournament · 4v4','14-day Nexus cadence following the Saturday Sep. 12 tournament. Recheck the in-game timer as the date approaches.','event'],
+    ['2026-10-10',88,'Event','Nexus Tournament · 4v4','14-day Nexus cadence following the Saturday Sep. 12 tournament. Recheck the in-game timer as the date approaches.','event'],
+    ['2026-10-24',102,'Event','Nexus Tournament · 4v4','14-day Nexus cadence following the Saturday Sep. 12 tournament; likely the final S2 Nexus before rollover.','event'],
+    ['2026-09-01',49,'Collab','Vegetables Fairy Pt. 2 · free emoticons','CONFIRMED by the official Sword x Staff Global announcements channel on Sep. 1: 8 limited-time collaboration Emoticons are free. The notice says 4 come from sign-in, 4 from Shop exchange, and the remaining 4 can be obtained from the prize wheel. This is a pre-launch/reward announcement only; it does not confirm the full Vegetables Fairy Part Two collab is live or provide an exact collab start/end date.','event'],
+
+    ['2026-08-30',47,'Class Advancement','Tier 4 class advancement','Level-gated in Season 2: unlocks at Player Lv.106 · Class Lv.89 · Tier 3 class Lv.19 · Loong Haven Five. Date is shown at the S2 start only as a timeline reference; actual unlock happens when Lv.106 is reached.','class-advancement'],
+    ['2026-08-30',47,'Fantomon','Fantomon Adult / Materialization unlock','Season 2 gate: Player Lv.108 + Numbuville unlocked + Mythic rarity; Mythic evolution requires a duplicate copy. Date is shown at S2 start only as a timeline reference; the unlock occurs when all requirements are met.','fantomon'],
+    ['2026-08-30',47,'Feature','Demonbind Tower unlock','Level-gated in Season 2 at Player Lv.116 · Gem Tower / gem-harvest feature. Date is shown at the S2 start only as a timeline reference; actual unlock happens when Lv.116 is reached.','feature'],
+    ['2026-08-30',47,'Dungeon','Demonseal Gorge','Season 2 Day 1 · Normal · Hard 2.35M · Global-first/QY English name','dungeon'],
+    ['2026-09-01',49,'Event','Gift code · VEGGIE','Confirmed by the official Sword x Staff Global Discord gift-code announcement: 10 Rare Auroral Badges + 80 Dawnium. Active now. Official validity ends Sep. 8 at 00:00 (UTC-5), with its stored expiry timestamp converted to the viewer device local timezone.','event','2026-09-08',null,'2026-09-08T05:00:00Z'],
+    // CRYSTAL_EXPIRY_SEP9_V1: current code trackers agree on Sep. 15 00:00 UTC-5; official mirror has not carried CRYSTAL yet.
+    // This resolves to Sep. 14 10:00 PM PDT for Charming Glance, eight hours before the Sep. 15 server reset.
+    ['2026-09-08',56,'Event','Gift code · CRYSTAL','Current reports list CRYSTAL as the Community Weekly Gift Code: 300 Raw Ore + 1 Stellatie. Reported expiry is Sep. 15 at 00:00 UTC-5, with its stored expiry timestamp converted to the viewer device local timezone. The mirrored official Global feed has not carried this code yet.','event','2026-09-15','unconfirmed','2026-09-15T05:00:00Z'],
+    ['2026-09-06',54,'Event','Official Top-Up Platform events open','CONFIRMED by the official Sword x Staff Global announcements feed on Sep. 4. The Official Top-Up Platform launches two reward events at Sep. 7, 00:00 (UTC-5), with the stored start timestamp converted to the viewer device local timezone: Cumulative Top-up Lottery runs through Oct. 4, 23:59:59 (UTC-5), awarding 1 draw per 9,999 Vouchers topped up with prizes including 29,999 / 9,999 / 4,999 / 999 Vouchers; Daily Top-up Sign-in runs through Sep. 6, 2027 and gives 1 daily draw after any official-platform top-up, with prizes including Vouchers, Bond Trinket, and Covenite. These are paid top-up promotions, not a Charming Glance progression unlock, and they begin about 8 hours before the Sep. 7 server reset.','event','2026-10-05',null,'2026-09-07T05:00:00Z'],
+    ['2026-09-07',55,'Collab','Vegetables Fairy Collab Pt. 2','CONFIRMED GLOBAL DATE from the official Sword x Staff announcements feed on Sep. 4: the official reward preview says only 3 days remain until the collab begins, placing the launch on Sep. 7. The post does not give an exact clock time or say it starts at Charming Glance reset, so this row confirms the calendar date without claiming a server-reset start time. Confirmed Pt. 2 rewards/activities include daily sign-in rewards (Eggplant Mallet, Vegetable Cuddle Hairpin, Wheel Tickets and collab Emoticons), Golden Veggie Coins from event quests for the Veggie Shop, daily Veggie Shuffle stages toward the Violet Kitty Suit, and Lemon Whale purification 3 times for the Lemon Whale Plushie. Earlier official Global previews also confirmed the Cabbage Dog Fantomon and Pt. 2 Visages. TIME-LIMITED GIFT CODE: VEGGIE — 10 Rare Auroral Badges + 80 Dawnium. Multiple current code trackers report it active through Sep. 8; this expiry is community/secondary-source reported rather than confirmed by the mirrored official feed, so redeem it promptly. Exact event end date remains unannounced.','event'],
+    // S2_EVENT_ROTATION_DAY57_64_V1
+    ['2026-09-12',60,'Dungeon','Warlord’s Rest','Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M','dungeon'],
+    ['2026-09-12',60,'Feature','Season Power unlock','Player Lv.130','feature'],
+    // ACME_NEXUS_DAY71_CORRECTION_SEP9_V1
+    // Official Global confirms the Global-English name Acme Nexus and its gateway role before Aethyris.
+    // Limitless Gaming's live older-server schedule places the Loong Haven seasonal map at Server Day 71.
+    // That same schedule matches Charming Glance's established S2 milestones at Days 60, 73, 78, 86, 92 and 99,
+    // so Day 71 is stronger cadence evidence than the earlier QY-derived Day 61 projection.
+    ['2026-09-23',71,'Seasonal Map','Acme Nexus','Official Global name: Acme Nexus. Current older-server cadence places the Loong Haven seasonal map on Server Day 71, mapping to Sep. 23 for Charming Glance. It is the gateway immediately before Aethyris.','seasonal-map',null,'unconfirmed'],
+    ['2026-09-25',73,'Dungeon','Cloudcrest Temple','Normal 6.2M · Hard 7.7M · Nightmare 9.8M','dungeon'],
+    ['2026-09-30',78,'Ancient Relic','Ethereal Oracle','Loong Haven Relic II · second Loong Haven relic gacha','ancient-relic'],
+    ['2026-10-08',86,'Dungeon','Bladeshire','Normal 10M · Hard 12.5M · Nightmare 15.8M','dungeon'],
+    ['2026-10-14',92,'Fantomon','Pandarial','Global Fantomon name · older translated calendars may call it Bamboo Immortal. UNCONFIRMED FOR CHARMING GLANCE: recent community reports that say either ‘S2 Day 46’ or ‘Server Day 92’ are describing the same server-age unlock, because Season 2 begins on Server Day 47. For Charming Glance that maps to Oct. 14. General-Global guides also report Pandarial appearing in the wider Summon Crystal exchange from Aug. 18, so do not treat it as usable here until Charming Glance’s in-game exchange confirms it.','fantomon'],
+    ['2026-10-21',99,'Dungeon','Celestship','Normal 16.5M · Hard 20M · Nightmare 24.5M · Purgatory 40M · QY: lasts around three weeks','dungeon'],
+
+
+
+    // ---- Season 3 · Aethyris ----
+    // S3_SUMMARY_ONLY_CLEANUP_SEP9_V1: visible S3 cards were stripped of confidence/source-audit prose; provenance remains in comments and maintained research notes.
+    // S3_AETHYRIS_SEP9_RESEARCH_V1: LDShop's Sep. 9 Season 3 guide independently names the Aethyris subzones Skyrend Cliff, Unbroken Camp, and Harmonic Crystal. Keep these names as current secondary-source localization until Global in-game text or an official announcement supersedes them.
+    // S3_DUNGEON_LOCALIZATION_SEP9_V1: the same current Sep. 9 guide names Crystal Spiral Tree's Sylvan Set and the second Aethyris dungeon Eternal Garden with the Lifespring Set. This supersedes the older pre-release label Eternal Blossom Courtyard while preserving the existing Day-127 cadence placement.
+    ['2026-11-05',114,'Region','Aethyris opens','Skyrend Cliff · Unbroken Camp · Harmonic Crystal · Tier 5 era begins','region',null,'unconfirmed'],
+    ['2026-11-05',114,'Dungeon','Crystal Spiral Tree','First Aethyris dungeon · Sylvan Set · Hard 9M','dungeon'],
+    // S3_T5_GUIDE_STATUS_SEP9_V1: Prydwen now publishes dedicated Ravager, Magister, and Prophet T5 guides; Templar remains the only T5 path without a dedicated guide on its current guide index.
+    ['2026-11-05',114,'Class Advancement','Tier 5 class advancement','Player Lv.136 · Class Lv.180 · Tier 4 class Lv.40 · Conqueror → Ravager · Guardian → Templar · Destroyer → Magister · Dominator → Prophet','class-advancement'],
+    // S3_BOND_ODYSSEY_STONE_SYMPHONY_SEP9_V1: LDShop's Sep. 9 Season 3 guide identifies Bond Odyssey/Vista Dispatch and Stone Symphony as Aethyris systems, with timed companion expeditions and souvenir rewards. The visible row stays summary-only; the Nov. 5 placement follows the maintained S3 Day-114 rollover model.
+    ['2026-11-05',114,'Feature','Bond Odyssey + Stone Symphony','Season 3 passive progression · Vista Dispatch milestones · timed companion expeditions · souvenir rewards','feature'],
+    // S3_COMPANIONS_SEP9_V1: LDShop's Sep. 9 Season 3 guide names Isla and Astrid as new Aethyris companions.
+    ['2026-11-05',114,'Companions','Isla + Astrid','New Season 3 companions joining in Aethyris','companions'],
+    ['2026-11-05',114,'Feature','Aethyris area-unlock stockpile','Gateway Key ×5 · Magic Drill ×2 · Water Mine ×2 · “cloud key” ×2 · hammer ×5 (last two use QY labels; exact future Global item names unverified)','feature'],
+    ['2026-11-18',127,'Dungeon','Eternal Garden','Normal 12.5M + Player Lv.160 · Hard 15M · Nightmare 18M · Purgatory 28.5M · Lifespring Set','dungeon'],
+    ['2026-11-18',127,'Feature','Season Power unlock','Player Lv.160','feature'],
+    ['2026-11-19',128,'Seasonal Map','Astral Odyssey','Aethyris season map · pre-release English/data name','seasonal-map'],
+    ['2026-12-02',141,'Dungeon','Abyssal Bastion','Normal 20M · Hard 26M · Nightmare 30M · Purgatory 46M · pre-release English/data name','dungeon'],
+    ['2026-12-05',144,'Ancient Relic','Aethyris Relic II','Second Aethyris relic gacha · final Global banner title not yet verified','ancient-relic'],
+    ['2026-12-16',155,'Dungeon','Courtyard of Purification','Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M · pre-release English/data name','dungeon'],
+    ['2026-12-20',159,'Fantomon','Prismora','Aethyris Fantomon · S3 Day 46','fantomon',null,'unconfirmed'],
+    ['2026-12-30',169,'Dungeon','Temple of Order','Normal 55M · Hard 65M · Nightmare 82M · Purgatory 115M · pre-release English/data name','dungeon'],
+    ['2027-01-04',174,'Ancient Relic','Aethyris Relic III','Third Aethyris relic gacha · final Global banner title not yet verified','ancient-relic'],
+    ['2027-01-13',183,'Dungeon','Solar Spire','Normal 84.5M · Hard 100M · Nightmare 120M · Purgatory 180M · pre-release English/data name','dungeon'],
+    ['2027-01-27',197,'Dungeon','Sovereign’s Nest','Normal 125M · Hard 145M · Nightmare 180M · Purgatory 250M · Abyss 350M. Current QY groups Abyss at S3 Day 84; the old separate Feb 2 legacy row has been retired.','dungeon'],
+
+    // ---- Season 4 · Hapadi ----
+    // QY currently lists S3 at ~112 days. With the projected Nov 5 Aethyris anchor, that places Hapadi on Feb 25 / Server Day 226.
+    // These absolute dates remain merger-sensitive; the season-day offsets are the stronger reference.
+    ['2027-02-25',226,'Region','Hapadi opens','UNCONFIRMED Charming Glance Season 4 projection. Current QY scheduling uses an ~112-day S3 and places Hapadi at Server Day 226 / Feb. 25. A separate fixed older-server calendar points to a Tier 6 boundary at Server Day 215 / Feb. 14, so the exact rollover remains unresolved; Feb. 25 stays the lead projection until the Charming Glance telescope/countdown or official Global notice confirms it. “Hapadi” is already present in current Global relic data.','region',null,'unconfirmed'],
+    ['2027-02-25',226,'Dungeon','Ingenious Clocktower','Hapadi Day 1 · Normal · Hard 27M · pre-release English/data name','dungeon'],
+    ['2027-02-25',226,'Class Advancement','Tier 6 class advancement','Level-gated in Hapadi: Player Lv.172 · Class Lv.280 · Tier 5 class Lv.50 · Hapadi Nine. Date is the projected Hapadi Day 1 reference; actual unlock requires the listed levels.','class-advancement'],
+    ['2027-02-25',226,'Feature','Hapadi area-unlock stockpile','Gateway Key ×5 · Magic Drill ×2 · Water Mine ×2 · season item ×5 (QY calls it “lego”; final Global item name unverified)','feature'],
+    ['2027-02-25',226,'Fantomon','Fantomon Resonance unlock','Level-gated at Player Lv.180 during Hapadi; Day 1 date is only the projected season reference.','fantomon'],
+    ['2027-03-10',239,'Dungeon','Pirate Galleon','Hapadi Day 14 · Normal 35M + Player Lv.190 · Hard 48M · Nightmare 57M · Purgatory 84M · pre-release English/data name','dungeon'],
+    ['2027-03-10',239,'Feature','Season Power unlock','Hapadi Day 14 · Player Lv.190','feature'],
+    ['2027-03-11',240,'Seasonal Map','Grotesque Fairground','Hapadi Day 15 season map · pre-release English/data name','seasonal-map'],
+    ['2027-03-24',253,'Dungeon','Leviathan Submersible','Hapadi Day 28 · Normal 62M · Hard 72M · Nightmare 87M · Purgatory 130M · pre-release English/data name','dungeon'],
+    ['2027-03-27',256,'Ancient Relic','Hapadi Relic II','Hapadi Day 31 · second Hapadi relic gacha · English localization name TBD','ancient-relic'],
+    ['2027-04-07',267,'Dungeon','Clockwork Fortress','Hapadi Day 42 · Normal 91M · Hard 110M · Nightmare 135M · Purgatory 190M','dungeon'],
+    ['2027-04-21',281,'Dungeon','Celestial Observatory','Hapadi Day 56 · Normal 145M · Hard 175M · Nightmare 210M · Purgatory 305M','dungeon'],
+    ['2027-04-26',286,'Ancient Relic','Hapadi Relic III','Hapadi Day 61 · third Hapadi relic gacha · English localization name TBD','ancient-relic'],
+    ['2027-05-05',295,'Dungeon','Titan Hot-Air Balloon','Hapadi Day 70 · Normal 220M · Hard 256M · Nightmare 300M · Purgatory 460M','dungeon'],
+    ['2027-05-19',309,'Dungeon','Astral Citadel','Hapadi Day 84 · Normal 315M · Hard 365M · Nightmare 435M · Purgatory 630M · Abyss 880M · pre-release English/data name · current QY values.','dungeon'],
+  ];

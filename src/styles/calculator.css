@@ -120,8 +120,6 @@
 }
 #calculatorSection .seasonDeadline {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 5px;
   padding: 0 !important;
   border: 0;
   min-height: 0 !important;
@@ -129,7 +127,6 @@
 #calculatorSection .finishEarlyCard {
   display: flex;
   flex-wrap: wrap !important;
-  gap: 10px !important;
   padding: 0 !important;
   border: 0;
 }
@@ -448,7 +445,6 @@
 }
 #calculatorSection .finishEarlyCard {
   display: grid !important;
-  grid-template-columns: auto 60px auto 1fr;
   min-height: 44px !important;
   gap: 8px !important;
   text-align: left;
@@ -466,7 +462,6 @@
   #calculatorSection .seasonDeadline { grid-template-columns: minmax(0, 1fr); }
   #calculatorSection .seasonDeadline #seasonRemaining { grid-column: 1; grid-row: 3; text-align: left; }
 }
-
 /* Season timing shares one background; the input is the only filled control. */
 #calculatorSection .seasonPlanningRow > .seasonDeadline,
 #calculatorSection .seasonPlanningRow > .finishEarlyCard {

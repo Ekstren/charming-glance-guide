@@ -111,7 +111,7 @@ def main() -> int:
 
     print("== __applyBuild*Now hook contract ==")
     runtime = (ROOT / "assets/runtime.js").read_text(encoding="utf-8", errors="replace")
-    called = set(re.findall(r"window\.(__applyBuild\w+Now)==='function'", runtime))
+    called = set(re.findall(r"window\.(__applyBuild\w+Now)\s*===\s*['\"]function['\"]", runtime))
     check(bool(called), f"runtime.js calls {len(called)} hooks: {sorted(called)}")
     # Only count hook assignments in files that are NOT the caller (runtime.js
     # uses `if(typeof window.__applyBuild*Now==='function')` which is a call,

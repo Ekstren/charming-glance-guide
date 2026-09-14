@@ -22,3 +22,6 @@ secrets/
 # Working-state handoff notes (regenerable; not site content)
 _state_snapshot.txt
 *_state_snapshot.txt
+
+# Browser comparison reports
+test-results/
