@@ -13,7 +13,8 @@ It projects your season score against a requested **Primostar target**, plans **
 |------|---------|
 | `index.html` | The whole site: calculator UI, S1/S2 rules, Astral Pact, breakpoints. |
 | `assets/runtime.js` | Core calculator engine (scoring, stamina split, post-target gains, optimizer). |
-| `assets/site.css` | All site styling. |
+| `assets/site.css` | Shared site styling and themes. |
+| `assets/calculator-layout.css` | Scoped calculator layout and responsive overrides. |
 | `assets/builds.js` | Build recommendations (Conqueror / Guardian / Destroyer / Dominator, etc.). |
 | `assets/companions.js` | Companion guide section. |
 | `assets/build-layout-icons-v1.js` | Build-summary layout reflow (legacy filename; decorative icons intentionally removed). |
@@ -71,6 +72,10 @@ for allocation-cache and cancellation regression checks. Set `SXS_PERF_OUTPUT` t
 a file path to save benchmark timings and result fingerprints for before/after
 comparisons. Performance scenarios require a completed numeric result; the S2
 missing-production placeholder is not counted as a successful solve.
+
+`npm run test:layout` checks populated calculator results and expanded custom
+settings in light and dark themes at six widths from 320 to 1440 px. Set
+`SXS_LAYOUT_SCREENSHOTS` to an output directory to also capture layout screenshots.
 
 ## Notes
 

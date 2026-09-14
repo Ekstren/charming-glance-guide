@@ -1,0 +1,390 @@
+/* Calculator layout: scoped overrides for the legacy stylesheet's competing
+   viewport rules. Keep responsive sizing here, in readable source order. */
+#calculatorSection {
+  max-width: 1280px;
+  margin: 20px auto 64px;
+}
+#calculatorSection .calculatorLayout {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px !important;
+}
+#calculatorSection .calcInputs,
+#calculatorSection .calcResults {
+  container-type: inline-size;
+  min-width: 0;
+}
+#calculatorSection .calcResults {
+  padding: 20px !important;
+}
+#calculatorSection .characterPanelBody {
+  padding: 18px !important;
+}
+#calculatorSection .collapsibleCard > summary {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 14px 18px !important;
+  text-align: left;
+  font-size: 14px;
+}
+#calculatorSection .collapsibleCard > summary::after {
+  margin: 0;
+  flex: 0 0 auto;
+}
+#calculatorSection .calcGrid,
+#calculatorSection .currentProgressGrid,
+#calculatorSection .exactProgressGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px 12px !important;
+  align-items: end;
+}
+#calculatorSection .calcGrid > label,
+#calculatorSection .currentProgressGrid > label,
+#calculatorSection .exactProgressGrid > label {
+  display: grid !important;
+  grid-template-rows: auto 44px;
+  gap: 5px;
+  min-width: 0;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: .025em;
+  line-height: 1.45;
+}
+#calculatorSection .calcGrid > label > input,
+#calculatorSection .currentProgressGrid > label > input,
+#calculatorSection .exactProgressGrid > label > input {
+  margin-top: 0 !important;
+}
+#calculatorSection input:not([type=radio]):not([type=checkbox]),
+#calculatorSection select {
+  min-width: 0 !important;
+  min-height: 44px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums;
+}
+#calculatorSection input:focus-visible,
+#calculatorSection button:focus-visible,
+#calculatorSection summary:focus-visible,
+#calculatorSection select:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+#calculatorSection a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+#calculatorSection #s2TargetPresets {
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 10px !important;
+  padding: 12px !important;
+  text-align: left;
+}
+#calculatorSection #s2TargetPresets > div {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+#calculatorSection #s2TargetPresets button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px !important;
+  min-width: 0;
+  min-height: 48px !important;
+  padding: 6px 2px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+}
+#calculatorSection #s2TargetPresets button > span {
+  margin: 0 !important;
+  font-size: 9px !important;
+  line-height: 1;
+}
+#calculatorSection #s2TargetPresets small {
+  text-align: left !important;
+  font-size: 11px;
+}
+#calculatorSection .seasonPlanningRow {
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+#calculatorSection .seasonDeadline {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 5px;
+  padding: 12px !important;
+}
+#calculatorSection .finishEarlyCard {
+  display: flex;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  padding: 10px 12px;
+}
+#calculatorSection .finishEarlyCard input {
+  flex: 1 1 60px !important;
+  width: 70px;
+  max-width: 100px;
+}
+#calculatorSection .finishEarlyMax {
+  min-height: 44px !important;
+  min-width: 48px;
+  margin-left: auto;
+}
+#calculatorSection .resultHeadline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px !important;
+}
+#calculatorSection .targetTiming {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+#calculatorSection .targetTiming small,
+#calculatorSection .optimizerTargets > span,
+#calculatorSection .suggestedGear > span {
+  font-size: 10px !important;
+  font-weight: 650;
+  line-height: 1.45;
+}
+#calculatorSection .targetTiming b {
+  white-space: normal;
+  overflow: visible;
+  font-size: 14px;
+  line-height: 1.5;
+}
+#calculatorSection .targetTiming em {
+  font-size: 11px;
+}
+#calculatorSection .optimizerTargets {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px;
+}
+#calculatorSection .optimizerTargets b {
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+#calculatorSection .suggestedGear {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  overflow: visible;
+  gap: 6px !important;
+}
+#calculatorSection .suggestedGear > span {
+  min-width: 0;
+  grid-column: auto !important;
+  padding: 10px 3px !important;
+}
+#calculatorSection .planCostsFour {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+#calculatorSection .postTargetGains {
+  padding: 16px;
+  margin-top: 20px;
+}
+#calculatorSection .postTargetHeader {
+  display: block !important;
+}
+#calculatorSection .postTargetHeader > div > span {
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: .045em;
+}
+#calculatorSection .postTargetHeader small {
+  display: block;
+  max-width: none;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+#calculatorSection .postTargetOptions > summary {
+  min-height: 44px;
+  padding: 14px 0;
+  font-size: 12px;
+}
+#calculatorSection .calculatorJumpNav {
+  display: none;
+}
+#calculatorSection #characterDetails,
+#calculatorSection #calcResults {
+  scroll-margin-top: 90px;
+}
+#calculatorSection .postTargetOptionsBody {
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+}
+#calculatorSection .postTargetOptions .postTargetToolPlan,
+#calculatorSection .postTargetOptions .postTargetStaminaPlan {
+  padding: 12px !important;
+}
+#calculatorSection .postTargetPlanHead b {
+  font-size: 13px;
+  font-weight: 650;
+}
+#calculatorSection .postTargetPlanHead small {
+  font-size: 11px;
+  line-height: 1.5;
+}
+#calculatorSection .postTargetPlanControls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px !important;
+}
+#calculatorSection .postTargetPlanControls label {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.4;
+}
+#calculatorSection .postTargetPlanControls label:has(input:checked) {
+  background: var(--calc-accent-soft, var(--green-soft));
+  border-color: var(--green);
+}
+#calculatorSection .postTargetPlanControls input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+#calculatorSection .postTargetCustom {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 12px;
+}
+#calculatorSection .postTargetCustom label {
+  min-width: 0;
+  grid-template-rows: auto 44px !important;
+  gap: 6px !important;
+}
+#calculatorSection .postTargetCustom label > span {
+  font-size: 11px !important;
+  font-weight: 600;
+  line-height: 1.4 !important;
+  text-transform: none;
+  letter-spacing: 0;
+  overflow-wrap: normal;
+}
+#calculatorSection .postTargetCustom input {
+  height: 44px !important;
+  padding: 0 8px;
+}
+#calculatorSection .postTargetGainGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px;
+}
+#calculatorSection .postTargetGainGrid > div {
+  padding: 12px;
+}
+#calculatorSection .postTargetGainGrid span {
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: 650;
+}
+#calculatorSection .postTargetGainGrid b {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+#calculatorSection .postTargetGainGrid small {
+  font-size: 11px;
+  line-height: 1.5;
+  font-weight: 550;
+}
+@media (max-width: 960px) {
+  #calculatorSection .calculatorJumpNav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  #calculatorSection .calculatorJumpNav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+  }
+  #calculatorSection .calculatorJumpNav a:last-child {
+    background: var(--calc-accent-soft, var(--green-soft));
+    border-color: var(--green);
+  }
+  #calculatorSection .calculatorLayout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+@media (max-width: 620px) {
+  #calculatorSection .characterPanelBody,
+  #calculatorSection .calcResults {
+    padding: 14px !important;
+  }
+  #calculatorSection .calculatorLayout {
+    gap: 14px !important;
+  }
+  #calculatorSection .calcGrid,
+  #calculatorSection .currentProgressGrid,
+  #calculatorSection .exactProgressGrid {
+    gap: 12px 10px !important;
+  }
+  #calculatorSection .postTargetGains {
+    padding: 12px;
+  }
+  #calculatorSection .postTargetGainGrid > div {
+    padding: 10px;
+  }
+  #calculatorSection .postTargetGainGrid b {
+    font-size: 18px;
+  }
+}
+@container (max-width: 330px) {
+  #calculatorSection .optimizerTargets {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  #calculatorSection .optimizerTargets > span {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  #calculatorSection .optimizerTargets b {
+    margin-top: 0;
+    text-align: right;
+  }
+  #calculatorSection .postTargetCustom {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  #calculatorSection .postTargetCustom label {
+    grid-template-columns: minmax(0, 1fr) 80px;
+    grid-template-rows: 44px !important;
+    align-items: center !important;
+  }
+  #calculatorSection .postTargetCustom label > span {
+    align-items: center !important;
+  }
+  #calculatorSection .suggestedGear > span {
+    font-size: 8px !important;
+  }
+}
