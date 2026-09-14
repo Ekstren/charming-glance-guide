@@ -20,8 +20,7 @@ body .topbar {
   margin-inline: auto;
   padding-inline: var(--site-gutter) !important;
 }
-body .logoButton small,
-body .headerMeta span {
+body .logoButton small,body .headerMeta span {
   font-size: 11px !important;
   line-height: 1.4;
   color: var(--reading-muted);
@@ -38,71 +37,54 @@ body nav.sectionSwitch > button[data-section] {
   min-width: 0 !important;
   white-space: normal !important;
 }
-#timelineSection, #buildsSection, #companionsSection, #calculatorSection {
+#timelineSection,#buildsSection,#companionsSection,#calculatorSection {
   width: 100% !important;
   max-width: var(--site-width) !important;
   margin: 16px auto 64px !important;
   padding-inline: var(--site-gutter) !important;
 }
-body nav.sectionSwitch > button[data-section],
-body .classTabs button {
+body nav.sectionSwitch > button[data-section],body .classTabs button {
   min-height: 44px !important;
   font-size: 13px !important;
   line-height: 1.3 !important;
   font-weight: 650 !important;
   color: var(--reading-muted);
 }
-body nav.sectionSwitch > button[data-section].active,
-body .classTabs button.active,
-#buildsSection button.active,
-#companionsSection button.active,
-#timelineSection .filters button.active {
+body nav.sectionSwitch > button[data-section].active,body .classTabs button.active,#buildsSection button.active,#companionsSection button.active,#timelineSection .filters button.active {
   background: var(--selected-bg) !important;
   color: #fff !important;
 }
-body button:focus-visible,
-body summary:focus-visible,
-body a:focus-visible {
+body button:focus-visible,body summary:focus-visible,body a:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
-#buildsSection .classTabs,
-#companionsSection .classTabs {
+#buildsSection .classTabs,#companionsSection .classTabs {
   margin: 0 0 12px !important;
 }
-#timelineSection p,
-#buildsSection p,
-#companionsSection p {
+#timelineSection p,#buildsSection p,#companionsSection p {
   color: var(--reading-text) !important;
   font-size: 14px !important;
   font-weight: 450 !important;
   line-height: 1.55 !important;
   overflow-wrap: break-word;
 }
-#buildsSection h3,
-#companionsSection h3,
-#calculatorSection .calcResults > h3 {
+#buildsSection h3,#companionsSection h3,#calculatorSection .calcResults > h3 {
   font-size: 16px !important;
   line-height: 1.4 !important;
   font-weight: 650 !important;
 }
-#buildsSection .buildSource,
-#companionsSection .companionSources {
+#buildsSection .buildSource,#companionsSection .companionSources {
   font-size: 12px !important;
   line-height: 1.5 !important;
   color: var(--reading-muted) !important;
 }
-#buildsSection .buildSource a,
-#companionsSection .companionSources a {
+#buildsSection .buildSource a,#companionsSection .companionSources a {
   color: var(--reading-link) !important;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 /* Timeline: keep dates and category labels compact; give event copy room. */
-#timelineSection > .summary,
-#timelineSection > .timelineNow,
-#timelineSection > .controls,
-#timelineSection > .timeline {
+#timelineSection > .summary,#timelineSection > .timelineNow,#timelineSection > .controls,#timelineSection > .timeline {
   width: 100% !important;
   max-width: none !important;
   margin-inline: 0 !important;
@@ -114,8 +96,7 @@ body a:focus-visible {
   gap: 10px !important;
 }
 #timelineSection .summary > div { padding: 12px 16px !important; }
-#timelineSection .summary span,
-#timelineSection .summaryMeta {
+#timelineSection .summary span,#timelineSection .summaryMeta {
   font-size: 12px !important;
   line-height: 1.4 !important;
   color: var(--reading-muted);
@@ -123,15 +104,13 @@ body a:focus-visible {
 #timelineSection .summary strong { font-size: 18px; line-height: 1.4; }
 #timelineSection .summary .summaryNumber { font-size: 28px; }
 #timelineSection .timelineNowHead b { font-size: 16px; }
-#timelineSection .timelineNowHead span,
-#timelineSection .timelineNowCard small {
+#timelineSection .timelineNowHead span,#timelineSection .timelineNowCard small {
   font-size: 13px !important;
   line-height: 1.5 !important;
   color: var(--reading-muted);
 }
 #timelineSection .timelineNowCard strong { font-size: 14px; line-height: 1.5; }
-#timelineSection .filters button,
-#timelineSection .pastToggle {
+#timelineSection .filters button,#timelineSection .pastToggle {
   min-height: 44px !important;
   font-size: 13px !important;
   font-weight: 600;
@@ -142,30 +121,16 @@ body a:focus-visible {
 #timelineSection .entry p:first-child { font-size: 15px !important; }
 #timelineSection .entry p + p { margin-top: 5px; }
 #timelineSection .entry b { font-weight: 650; }
-#timelineSection .entry .category,
-#timelineSection .activePill,
-#timelineSection .dayMarker b { font-size: 11px !important; line-height: 1.4; }
+#timelineSection .entry .category,#timelineSection .activePill,#timelineSection .dayMarker b { font-size: 11px !important; line-height: 1.4; }
 #timelineSection .dateBlock small { font-size: 11px; }
 /* Builds: a legible stat table instead of five densely packed mini-cards. */
-#buildsSection .guideSummary span,
-#buildsSection .quickTitle,
-#buildsSection .priorityIntro > span,
-#buildsSection .skillGroup > span,
-#buildsSection .fantomonPair > span {
+#buildsSection .guideSummary span,#buildsSection .quickTitle,#buildsSection .priorityIntro > span,#buildsSection .skillGroup > span,#buildsSection .fantomonPair > span {
   font-size: 11px !important;
   line-height: 1.5 !important;
   letter-spacing: .04em;
 }
 #buildsSection .guideSummary strong { font-size: 22px; line-height: 1.4; }
-#buildsSection .quickTitle,
-#buildsSection .priorityIntro > span,
-#buildsSection .buildHeroLeft > div > span,
-#buildsSection #buildContent .quickGearRow b,
-#buildsSection #buildContent .quickGemLabel,
-#buildsSection #buildContent .quickSubstats b,
-#buildsSection #buildContent .rollGuideName,
-#companionsSection .companionPanelLabel,
-#companionsSection .companionHeroMain > span {
+#buildsSection .quickTitle,#buildsSection .priorityIntro > span,#buildsSection .buildHeroLeft > div > span,#buildsSection #buildContent .quickGearRow b,#buildsSection #buildContent .quickGemLabel,#buildsSection #buildContent .quickSubstats b,#buildsSection #buildContent .rollGuideName,#companionsSection .companionPanelLabel,#companionsSection .companionHeroMain > span {
   color: var(--reading-link) !important;
 }
 #buildsSection #buildContent .guideSummary.buildHeroLayoutV2 {
@@ -181,11 +146,7 @@ body a:focus-visible {
   gap: 5px 10px;
   padding: 9px 10px;
 }
-#buildsSection #buildContent .quickGearRow b,
-#buildsSection #buildContent .quickGearRow > span,
-#buildsSection #buildContent .quickGemLine span,
-#buildsSection #buildContent .quickSubstats span,
-#buildsSection #buildContent .quickSubstats b {
+#buildsSection #buildContent .quickGearRow b,#buildsSection #buildContent .quickGearRow > span,#buildsSection #buildContent .quickGemLine span,#buildsSection #buildContent .quickSubstats span,#buildsSection #buildContent .quickSubstats b {
   font-size: 13px !important;
   line-height: 1.45 !important;
   font-weight: 550;
@@ -193,17 +154,13 @@ body a:focus-visible {
   letter-spacing: 0;
 }
 #buildsSection #buildContent .quickGemText { color: var(--reading-muted); }
-#buildsSection #buildContent .quickGemNote,
-#buildsSection #buildContent .rollGuideNote,
-#buildsSection #buildContent .rollGuideSources,
-#buildsSection #buildContent .rollGuide summary small {
+#buildsSection #buildContent .quickGemNote,#buildsSection #buildContent .rollGuideNote,#buildsSection #buildContent .rollGuideSources,#buildsSection #buildContent .rollGuide summary small {
   font-size: 12px !important;
   line-height: 1.5 !important;
   color: var(--reading-muted);
 }
 #buildsSection #buildContent .rollGuideRow { min-height: 44px; }
-#buildsSection #buildContent .rollGuideName,
-#buildsSection #buildContent .rollGuideValue {
+#buildsSection #buildContent .rollGuideName,#buildsSection #buildContent .rollGuideValue {
   font-size: 13px !important;
   line-height: 1.45 !important;
 }
@@ -228,26 +185,19 @@ body a:focus-visible {
   line-height: 1.4 !important;
   padding: 8px 10px !important;
 }
-#buildsSection .metaBuildTabs button,
-#buildsSection [data-guardian-mode],
-#buildsSection [data-dominator-mode],
-#companionsSection .companionRoleToggle button {
+#buildsSection .metaBuildTabs button,#buildsSection [data-guardian-mode],#buildsSection [data-dominator-mode],#companionsSection .companionRoleToggle button {
   min-height: 44px !important;
   font-size: 13px !important;
   line-height: 1.3 !important;
   font-weight: 650;
 }
 #buildsSection .roleBadge { font-size: 11px; line-height: 1.4; }
-#buildsSection .buildSwapRows p,
-#buildsSection .buildSwapRows strong,
-#buildsSection .buildSwapRows span { font-size: 13px !important; line-height: 1.5 !important; }
+#buildsSection .buildSwapRows p,#buildsSection .buildSwapRows strong,#buildsSection .buildSwapRows span { font-size: 13px !important; line-height: 1.5 !important; }
 #buildsSection .fantomonPick small { font-size: 11px; }
 #buildsSection .fantomonPick b { font-size: 15px; line-height: 1.4; }
 #buildsSection .fantomonPick p { font-size: 13px !important; }
 /* Companions: match guide prose, retain compact reference tables and labels. */
-#companionsSection .companionHeroMain > span,
-#companionsSection .companionPanelLabel,
-#companionsSection .companionFocus small {
+#companionsSection .companionHeroMain > span,#companionsSection .companionPanelLabel,#companionsSection .companionFocus small {
   font-size: 11px;
   line-height: 1.5;
   letter-spacing: .04em;
@@ -260,18 +210,13 @@ body a:focus-visible {
 }
 #companionsSection .companionLadder b { font-size: 12px; }
 #companionsSection .companionLadder strong { font-size: 14px; line-height: 1.5; }
-#companionsSection .companionLadder span,
-#companionsSection .companionRule p,
-#companionsSection .companionGroup p,
-#companionsSection .companionCaution {
+#companionsSection .companionLadder span,#companionsSection .companionRule p,#companionsSection .companionGroup p,#companionsSection .companionCaution {
   font-size: 13px !important;
   line-height: 1.5 !important;
   color: var(--reading-text) !important;
 }
-#companionsSection .companionGroupHead b,
-#companionsSection .companionRule strong { font-size: 14px; line-height: 1.5; }
-#companionsSection .companionGroupHead small,
-#companionsSection .companionRule > b { font-size: 11px; line-height: 1.4; }
+#companionsSection .companionGroupHead b,#companionsSection .companionRule strong { font-size: 14px; line-height: 1.5; }
+#companionsSection .companionGroupHead small,#companionsSection .companionRule > b { font-size: 11px; line-height: 1.4; }
 #companionsSection .companionNames span { font-size: 13px; line-height: 1.4; padding: 6px 9px; }
 #companionsSection .companionBreakpointTable {
   width: 100%;
@@ -289,9 +234,7 @@ body a:focus-visible {
 }
 #companionsSection .companionBreakpointTable :is(th, td):first-child { width: 68px; }
 @media (max-width: 1050px) {
-  #buildsSection #buildContent .guideSummary.buildHeroLayoutV2,
-  #companionsSection .companionHero,
-  #companionsSection .companionGrid {
+  #buildsSection #buildContent .guideSummary.buildHeroLayoutV2,#companionsSection .companionHero,#companionsSection .companionGrid {
     grid-template-columns: minmax(0, 1fr) !important;
   }
   #buildsSection #buildContent .buildHeroRoll {
@@ -307,14 +250,11 @@ body a:focus-visible {
   #timelineSection .filters { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
   #timelineSection .filters button { min-width: 0; width: 100%; padding: 6px 4px !important; font-size: 12px !important; }
   #timelineSection .entry { padding: 12px; }
-  #buildsSection #buildContent .buildHeroLeft,
-  #buildsSection #buildContent .buildHeroRoll { padding: 14px !important; }
+  #buildsSection #buildContent .buildHeroLeft,#buildsSection #buildContent .buildHeroRoll { padding: 14px !important; }
   #buildsSection #buildContent .quickGearRow { grid-template-columns: 64px minmax(0, 1fr); }
   #buildsSection .metaBuildTabs button { font-size: 12px !important; }
   #buildsSection #buildContent .rollGuideGrid { grid-template-columns: minmax(0, 1fr); }
-  #companionsSection .companionHeroMain,
-  #companionsSection .companionFocus,
-  #companionsSection .companionPanel { padding: 14px; }
+  #companionsSection .companionHeroMain,#companionsSection .companionFocus,#companionsSection .companionPanel { padding: 14px; }
   #companionsSection .companionLadder { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {

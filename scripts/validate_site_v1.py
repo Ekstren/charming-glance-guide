@@ -2,17 +2,15 @@
 
 Checks, in order:
   1. index.html: referenced local asset paths exist on disk; no dangling `defer`
-     scripts after the BUILD_HERO_LAYOUT_ICONS_V1 hook (that script is synchronous
-     and must run in source order with builds.js so __applyBuild*Now hooks exist).
+     scripts (the shell captures document.currentScript for versioned chunk URLs).
   2. Every assets/*.js file passes Node's `--check` syntax validation (skipped
      with a clear warning if Node is not on PATH, e.g. running in a Python-only
      environment — CI always has Node and this check is mandatory there).
   3. Every assets/*.css file has balanced braces (outside strings/comments).
   4. data/*.json files parse as JSON.
   5. Cross-file hook contract: window.__applyBuild*Now hooks called by
-     assets/runtime.js are each defined by exactly one assets/*.js file (other
-     than runtime.js itself, which only *calls* them), and no hook is defined
-     twice.
+     src/builds.mjs are each defined by exactly one maintained assets/*.js source
+     file; generated bundles are excluded from the definition count.
 
 Exit code 0 = all checks pass; nonzero = at least one failure (details printed).
 Run: python scripts/validate_site_v1.py
@@ -110,15 +108,13 @@ def main() -> int:
         check(ok, f"JSON parses: {f.relative_to(ROOT)}")
 
     print("== __applyBuild*Now hook contract ==")
-    runtime = (ROOT / "assets/runtime.js").read_text(encoding="utf-8", errors="replace")
+    runtime = (ROOT / "src/builds.mjs").read_text(encoding="utf-8", errors="replace")
     called = set(re.findall(r"window\.(__applyBuild\w+Now)\s*===\s*['\"]function['\"]", runtime))
-    check(bool(called), f"runtime.js calls {len(called)} hooks: {sorted(called)}")
-    # Only count hook assignments in files that are NOT the caller (runtime.js
-    # uses `if(typeof window.__applyBuild*Now==='function')` which is a call,
-    # not a definition).
+    check(bool(called), f"builds.mjs calls {len(called)} hooks: {sorted(called)}")
+    # Count maintained source definitions, excluding generated bundles.
     all_defs: dict[str, int] = {}
     for f in asset_js:
-        if f.name == "runtime.js":
+        if f.name in {"runtime.js", "builds-section.js", "companions-section.js", "calculator.js"}:
             continue
         src = f.read_text(encoding="utf-8", errors="replace")
         defs = re.findall(r"window\.(__applyBuild\w+Now)\s*=", src)

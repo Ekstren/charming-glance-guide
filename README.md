@@ -12,7 +12,7 @@ It projects your season score against a requested **Primostar target**, plans **
 | Path | Purpose |
 |------|---------|
 | `index.html` | The whole site: calculator UI, S1/S2 rules, Astral Pact, breakpoints. |
-| `src/app.mjs` | Lightweight site shell, Timeline and Builds orchestration. |
+| `src/app.mjs` | Lightweight site shell, Timeline and section loading. |
 | `src/calculator/` | Calculator model, search engine, saved state, rendering and controller. |
 | `src/calculator-loader.mjs` | Load-on-demand lifecycle and retry handling. |
 | `src/navigation.mjs`, `src/time.mjs`, `src/timeline-data.mjs` | Navigation, Pacific reset calculations and timeline content. |
@@ -30,7 +30,7 @@ It projects your season score against a requested **Primostar target**, plans **
 
 ## Validation / CI
 
-`scripts/validate_site_v1.py` is a fast, dependency-light static gate (asset references resolve, `node --check` on every JS asset, CSS brace balance, data JSON parses, and the `window.__applyBuild*Now` cross-file hook contract — each hook called by `runtime.js` is defined by exactly one other file). It runs as the first step of `Site CI` before the Playwright browser tests, so a broken asset fails in seconds rather than minutes.
+`scripts/validate_site_v1.py` is a fast, dependency-light static gate (asset references resolve, `node --check` on every JS asset, CSS brace balance, data JSON parses, and the `window.__applyBuild*Now` cross-file hook contract — each hook called by `src/builds.mjs` is defined by exactly one other file). It runs as the first step of `Site CI` before the Playwright browser tests, so a broken asset fails in seconds rather than minutes.
 
 ## Data sources
 
@@ -92,9 +92,9 @@ See [Calculator modules and loading](docs/calculator-modules.md) for module owne
 ## Visual and performance regression checks
 
 `npm run test:visual` renders the approved Git commit in `scripts/visual-baseline.json`
-and the working tree with the same installed Chromium. It compares 36 screenshots:
+and the working tree with the same installed Chromium. It compares 88 screenshots:
 all four sections plus populated calculator results and the season controls, at
-390, 650 and 1440 px in both themes. The clock, locale, timezone and external
+390, 650 and 1440 px in both themes, plus full-section class/role variants and expanded controls at 390/1440 px. The clock, locale, timezone and external
 requests are fixed. Pixel differences fail the check; expected/actual/diff images
 are written to `test-results/visual/` and uploaded by CI. A full Git history is
 required so the baseline commit can be archived. Update the baseline commit only
@@ -120,3 +120,5 @@ build so generated files stay reproducible.
 - Season deadlines and reset clocks render in the viewer's device timezone; the engine still uses the server reset boundary internally.
 - Unknown late-S1 / out-of-range values are labeled as estimates rather than fabricated.
 - Released under the MIT License (see `LICENSE`).
+
+See [site loading and startup budgets](docs/site-loading.md) for guide chunk ownership, CSS cleanup, and loading regression checks.
