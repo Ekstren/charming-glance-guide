@@ -466,3 +466,13 @@
   #calculatorSection .seasonDeadline { grid-template-columns: minmax(0, 1fr); }
   #calculatorSection .seasonDeadline #seasonRemaining { grid-column: 1; grid-row: 3; text-align: left; }
 }
+
+/* Season timing shares one background; the input is the only filled control. */
+#calculatorSection .seasonPlanningRow > .seasonDeadline,
+#calculatorSection .seasonPlanningRow > .finishEarlyCard {
+  background: transparent !important;
+  border-radius: 0;
+}
+#calculatorSection .finishEarlyCard {
+  grid-template-columns: auto 60px auto minmax(48px, 1fr);
+}
