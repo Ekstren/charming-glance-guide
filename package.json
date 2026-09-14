@@ -1,15 +1,20 @@
 {
   "name": "charming-glance-guide",
   "version": "1.0.0",
-  "description": "Sword x Staff (SxS) \"Charming Glance\" season planning guide and interactive calculator — a single-file static site hosted on GitHub Pages.",
+  "description": "Sword x Staff (SxS) \"Charming Glance\" season planning guide and interactive calculator \u00e2\u20ac\u201d a single-file static site hosted on GitHub Pages.",
   "private": true,
   "scripts": {
-    "test": "node scripts/optimizer_regression.mjs && node scripts/calculator_perf_check.mjs && node scripts/build_swap_smoke.mjs && node scripts/build_visual_stability_benchmark_v2.mjs && node scripts/site_smoke_test.mjs && node scripts/mobile_audit_v1.mjs && node scripts/calculator_layout_check.mjs && node scripts/site_readability_check.mjs",
+    "test": "npm run test:build && npm run test:time && node scripts/optimizer_regression.mjs && node scripts/calculator_perf_check.mjs && node scripts/build_swap_smoke.mjs && node scripts/build_visual_stability_benchmark_v2.mjs && node scripts/site_smoke_test.mjs && node scripts/mobile_audit_v1.mjs && node scripts/calculator_layout_check.mjs && node scripts/site_readability_check.mjs && npm run test:visual",
     "test:readability": "node scripts/site_readability_check.mjs",
     "test:layout": "node scripts/calculator_layout_check.mjs",
     "test:perf": "node scripts/calculator_perf_check.mjs",
     "test:optimizer": "node scripts/optimizer_regression.mjs",
-    "test:static": "python scripts/validate_site_v1.py"
+    "test:static": "python scripts/validate_site_v1.py",
+    "build": "node scripts/build_assets.mjs",
+    "test:build": "node scripts/build_assets.mjs --check",
+    "test:visual": "node scripts/visual_regression.mjs",
+    "test:mobile-perf": "node scripts/mobile_performance.mjs",
+    "test:time": "node scripts/time_test.mjs"
   },
   "repository": {
     "type": "git",
@@ -24,6 +29,10 @@
   },
   "homepage": "https://github.com/Ekstren/charming-glance-guide#readme",
   "devDependencies": {
-    "playwright": "1.55.1"
+    "esbuild": "0.25.10",
+    "pixelmatch": "7.1.0",
+    "playwright": "1.55.1",
+    "pngjs": "7.0.0",
+    "postcss": "8.5.28"
   }
 }

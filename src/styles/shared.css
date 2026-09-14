@@ -98,7 +98,6 @@ body a:focus-visible {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-
 /* Timeline: keep dates and category labels compact; give event copy room. */
 #timelineSection > .summary,
 #timelineSection > .timelineNow,
@@ -147,7 +146,6 @@ body a:focus-visible {
 #timelineSection .activePill,
 #timelineSection .dayMarker b { font-size: 11px !important; line-height: 1.4; }
 #timelineSection .dateBlock small { font-size: 11px; }
-
 /* Builds: a legible stat table instead of five densely packed mini-cards. */
 #buildsSection .guideSummary span,
 #buildsSection .quickTitle,
@@ -246,7 +244,6 @@ body a:focus-visible {
 #buildsSection .fantomonPick small { font-size: 11px; }
 #buildsSection .fantomonPick b { font-size: 15px; line-height: 1.4; }
 #buildsSection .fantomonPick p { font-size: 13px !important; }
-
 /* Companions: match guide prose, retain compact reference tables and labels. */
 #companionsSection .companionHeroMain > span,
 #companionsSection .companionPanelLabel,

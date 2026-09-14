@@ -4,7 +4,17 @@ import { pathToFileURL } from 'node:url';
 import { writeFileSync } from 'node:fs';
 
 const browser = await chromium.launch({headless:true});
-const page = await browser.newPage({viewport:{width:1440,height:1000}});
+const cpuRate=Number(process.env.SXS_PERF_CPU_RATE||1);
+if(!Number.isFinite(cpuRate)||cpuRate<1) throw new Error('CPU rate must be at least 1');
+const page = await browser.newPage({viewport:{width:cpuRate>1?390:1440,height:1000}});
+if(cpuRate>1){
+  const session=await page.context().newCDPSession(page);
+  await session.send('Emulation.setCPUThrottlingRate',{rate:cpuRate});
+}
+await page.addInitScript(()=>{
+  window.__perfLongTasks=[];
+  new PerformanceObserver(list=>window.__perfLongTasks.push(...list.getEntries().map(e=>e.duration))).observe({type:'longtask',buffered:true});
+});
 const errors=[];
 page.on('pageerror',e=>errors.push(String(e?.stack||e)));
 
@@ -20,7 +30,9 @@ await page.addInitScript(now=>{
   globalThis.Date=FixedDate;
 },FIXED_NOW);
 
-await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
+const loadStart=performance.now();
+await page.goto(pathToFileURL(path.resolve(process.env.SXS_PERF_ROOT||'.','index.html')).href,{waitUntil:'load'});
+const loadMs=performance.now()-loadStart;
 await page.waitForTimeout(250);
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
 // S2 defaults have zero production inputs, so seed Bed EXP + Cart rates before waiting
@@ -193,5 +205,6 @@ const times=[...results.map(x=>x.ms),burst.ms];
 const avg=times.reduce((a,b)=>a+b,0)/times.length;
 const max=Math.max(...times);
 console.log(`SUMMARY average ${avg.toFixed(1)}ms · worst ${max.toFixed(1)}ms · ${scenarios.length} scenarios + repeat + burst`);
-if(process.env.SXS_PERF_OUTPUT) writeFileSync(process.env.SXS_PERF_OUTPUT,JSON.stringify({results,burst},null,2)+'\n');
+const longTasks=await page.evaluate(()=>window.__perfLongTasks);
+if(process.env.SXS_PERF_OUTPUT) writeFileSync(process.env.SXS_PERF_OUTPUT,JSON.stringify({results,burst,averageMs:avg,worstMs:max,loadMs,cpuRate,longTasks},null,2)+'\n');
 await browser.close();

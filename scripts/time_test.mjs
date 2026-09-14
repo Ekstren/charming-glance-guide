@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {pacificLocalMs,nextPacificResetMs,countFuturePacificResets,isoAddDays} from '../src/time.mjs';
+const spring=pacificLocalMs('2026-03-07');
+assert.equal(nextPacificResetMs(spring)-spring,23*3600000,'spring reset must follow local 6am across DST');
+const fall=pacificLocalMs('2026-10-31');
+assert.equal(nextPacificResetMs(fall)-fall,25*3600000,'fall reset must follow local 6am across DST');
+const cutoff=nextPacificResetMs(spring);
+assert.equal(countFuturePacificResets(spring,cutoff),0,'cutoff reset is excluded');
+assert.equal(countFuturePacificResets(spring,cutoff+1),1,'reset before cutoff is counted');
+assert.equal(isoAddDays('2028-02-28',1),'2028-02-29');
+console.log('Reset boundary and daylight-saving tests passed.');

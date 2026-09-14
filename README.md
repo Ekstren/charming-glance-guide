@@ -5,17 +5,18 @@ Sword x Staff (SxS) "Charming Glance" season planning guide and interactive calc
 It projects your season score against a requested **Primostar target**, plans **Skill / Relic / Fantomon** upgrade slots, models **Material Realm** purchases and **Stamina** node allocation, applies the recommended **Bed EXP rollover** (34h hold + 2h final-reset boost = 36h banked for next season), and shows what happens **after** your target is reached through to season end.
 
 - **Live site:** https://Ekstren.github.io/charming-glance-guide/
-- **Stack:** plain HTML + CSS + JS (no build step). `index.html` + `assets/` is the entire site.
+- **Stack:** plain HTML + CSS + JS, with an esbuild/PostCSS source build. `index.html` + `assets/` is the entire site.
 
 ## What's in this repo
 
 | Path | Purpose |
 |------|---------|
 | `index.html` | The whole site: calculator UI, S1/S2 rules, Astral Pact, breakpoints. |
-| `assets/runtime.js` | Core calculator engine (scoring, stamina split, post-target gains, optimizer). |
-| `assets/site.css` | Shared site styling and themes. |
-| `assets/calculator-layout.css` | Scoped calculator layout and responsive overrides. |
-| `assets/site-readability.css` | Shared page widths, navigation, typography and responsive guide layouts. |
+| `src/app.mjs` | Calculator engine, state and application orchestration. |
+| `src/navigation.mjs`, `src/time.mjs`, `src/timeline-data.mjs` | Navigation, Pacific reset calculations and timeline content. |
+| `assets/runtime.js` | Generated browser bundle; edit `src/` and run `npm run build`. |
+| `src/styles/` | Readable legacy, calculator and shared layout rules, in explicit source order. |
+| `assets/site.css` | Generated combined stylesheet. |
 | `assets/builds.js` | Build recommendations (Conqueror / Guardian / Destroyer / Dominator, etc.). |
 | `assets/companions.js` | Companion guide section. |
 | `assets/build-layout-icons-v1.js` | Build-summary layout reflow (legacy filename; decorative icons intentionally removed). |
@@ -51,7 +52,7 @@ One-shot "patch" workflows from earlier development were deliberately **not** ke
 
 ## Running the site locally
 
-There's no build step. Serve the repo root:
+Generated assets are committed, so serving the repo works immediately. After editing `src/`, regenerate them with `npm ci` followed by `npm run build`. CI rejects stale generated files. Serve the repo root:
 
 ```
 python -m http.server 8000
@@ -78,10 +79,36 @@ missing-production placeholder is not counted as a successful solve.
 settings in light and dark themes at six widths from 320 to 1440 px. Set
 `SXS_LAYOUT_SCREENSHOTS` to an output directory to also capture layout screenshots.
 
-`npm run test:readability` covers all four sections and class variants at seven
+`npm run test:readability` covers all four sections and class variants at nine
 widths from 320 to 1710 px in both themes. It checks equal-width navigation,
 consistent page margins, readable body text and horizontal overflow. Set
 `SXS_READABILITY_SCREENSHOTS` to a directory to save section screenshots.
+
+## Visual and performance regression checks
+
+`npm run test:visual` renders the approved Git commit in `scripts/visual-baseline.json`
+and the working tree with the same installed Chromium. It compares 36 screenshots:
+all four sections plus populated calculator results and the season controls, at
+390, 650 and 1440 px in both themes. The clock, locale, timezone and external
+requests are fixed. Pixel differences fail the check; expected/actual/diff images
+are written to `test-results/visual/` and uploaded by CI. A full Git history is
+required so the baseline commit can be archived. Update the baseline commit only
+after an intentional appearance change has been reviewed; do not update it to
+silence an unexplained regression. This avoids platform-specific font snapshots.
+
+`npm run test:mobile-perf` runs the approved baseline and working tree three times
+each at a 390 px viewport with 4× CPU slowdown. The report records median solve,
+worst scenario and local load timings, plus the longest main-thread task. Relative
+budgets allow timing noise but fail substantial regressions. Reports are in
+`test-results/performance/` and CI artifacts. These are CPU simulations on the
+runner, not measurements from a physical phone or a mobile network.
+
+Source CSS retains cascade order and conditional rules. The build removes only
+superseded declarations for identical selectors/properties/priorities/conditions;
+it does not reorder selectors or flatten media queries. New shared styling belongs
+in `src/styles/shared.css`; calculator-specific styling belongs in
+`src/styles/calculator.css`. `scripts/minify_css.py` is deprecated: use the source
+build so generated files stay reproducible.
 
 ## Notes
 
