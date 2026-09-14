@@ -1,11 +1,12 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 // Expose private engine functions only in the test response, never in the shipped site.
-const runtime = readFileSync('assets/runtime.js', 'utf8').replace(
-  'function createPlanningContext(',
-  'window.__plannerTest = { searchPlans, searchPlansCooperative, createPlanningContext, activeCalcConfig, projectCharacter, projectedResources, createOptimizerCheckpoint }; function createPlanningContext('
+const runtime = readFileSync('assets/calculator.js', 'utf8').replace(
+  'function initialize(',
+  'window.__plannerTest = { searchPlans, searchPlansCooperative, createPlanningContext, activeCalcConfig, projectCharacter, projectedResources, createOptimizerCheckpoint }; function initialize('
 );
 const browser = await chromium.launch({ headless: true });
 try {
@@ -20,11 +21,13 @@ try {
   });
   await page.route('http://guide.test/**', async route => {
     const file = new URL(route.request().url()).pathname.slice(1);
-    const body = file === 'assets/runtime.js' ? runtime : readFileSync(file);
+    const body = file === 'assets/calculator.js' ? runtime : readFileSync(file);
     const contentType = file.endsWith('.js') ? 'text/javascript' : file.endsWith('.css') ? 'text/css' : 'text/html';
     await route.fulfill({ body, contentType });
   });
   await page.goto('http://guide.test/index.html');
+  await page.locator('[data-section="calculator"]').click();
+  await waitForCalculatorReady(page);
   const result = await page.evaluate(async () => {
     const api = window.__plannerTest;
     const fields = { charLevel:130, bedExp:280772, oreRate:1184, essenceRate:1387,

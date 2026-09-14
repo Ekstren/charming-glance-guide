@@ -74,6 +74,10 @@ jobs:
         run: npm run test:build
       - name: Pacific reset boundary regression
         run: npm run test:time
+      - name: Calculator module boundaries and lazy loading
+        run: |
+          npm run test:boundaries
+          npm run test:lazy
       - name: Optimizer cache and cancellation regression
         run: npm run test:optimizer
       - name: Calculator regression/performance

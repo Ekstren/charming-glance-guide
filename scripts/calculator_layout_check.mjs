@@ -1,3 +1,4 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { pathToFileURL } from 'node:url';
@@ -24,6 +25,7 @@ try {
     });
     await page.goto(pathToFileURL(path.resolve('index.html')).href);
     await page.locator('[data-section="calculator"]').click();
+await waitForCalculatorReady(page);
     await page.evaluate(theme=>{
       document.documentElement.dataset.theme=theme;
       const fields={targetStars:1060,historicalStars:253,charLevel:136,charExp:7156002,

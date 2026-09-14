@@ -1,3 +1,4 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import pixelmatch from 'pixelmatch';
@@ -31,6 +32,7 @@ async function capture(root,width,theme){
  for(const section of ['timeline','builds','companions','calculator']){
   await page.locator(`[data-section="${section}"]`).click();
   if(section==='calculator'){
+   await waitForCalculatorReady(page);
    await page.evaluate(()=>{
     const fields={targetStars:1060,historicalStars:253,charLevel:136,charExp:7156002,bedExp:565321,finishEarlyDays:6.5,skillLevel:140.125,relicLevel:14.4,fantomonLevel:139,gearLevel:147.2,oreRate:1184,essenceRate:1387,sandRate:850,treatRate:91,oreCurrent:240000,essenceCurrent:420000,sandCurrent:350000};
     for(const [id,value] of Object.entries(fields))document.getElementById(id).value=value;
