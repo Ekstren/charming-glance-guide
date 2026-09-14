@@ -41,7 +41,7 @@ try {
       const label=`${theme} ${width}px ${section}`;
       assert.equal(result.tabs.length,4,`${label}: four section tabs`);
       assert.ok(Math.max(...result.tabs.map(t=>t.width))-Math.min(...result.tabs.map(t=>t.width))<2,`${label}: uneven tab widths`);
-      assert.ok(result.tabs.every(t=>t.height>=44&&!t.clipped),`${label}: clipped/small navigation tab`);
+      assert.ok(result.tabs.every(t=>t.height>=44&&!t.clipped),`${label}: clipped/small navigation tab ${JSON.stringify(result.tabs)}`);
       assert.ok(result.bar.right-result.tabs.at(-1).right<=10,`${label}: unused space at end of navigation`);
       assert.ok(Math.abs(result.left-result.bar.x)<2&&Math.abs(result.right-result.bar.right)<2,`${label}: content/nav margins differ`);
       assert.ok(result.overflow<=1,`${label}: page overflow`);
