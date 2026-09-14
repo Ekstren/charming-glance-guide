@@ -270,5 +270,3 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
     letter-spacing: -.02em;
   }
 }
-
-.guideLoadStatus:not([hidden]){padding:16px;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;line-height:1.5}.guideLoadStatus button{min-height:44px;margin-left:8px;padding:8px 16px}

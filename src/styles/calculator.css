@@ -452,7 +452,7 @@
 #calculatorSection .finishEarlyCard {
   grid-template-columns: auto 60px auto minmax(48px, 1fr);
 }
-#calculatorLoadStatus:not([hidden]) {
+#calculatorLoadStatus:not([hidden]),.guideLoadStatus:not([hidden]) {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -465,7 +465,7 @@
   background: var(--ui-subpanel);
   font-size: 14px;
 }
-#calculatorLoadStatus button {
+#calculatorLoadStatus button,.guideLoadStatus button {
   min-height: 44px;
   padding: 6px 16px;
   border: 1px solid var(--line);
