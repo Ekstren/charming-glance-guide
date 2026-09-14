@@ -219,6 +219,17 @@ assert(mobileBuildCols && mobileBuildCols.ry>mobileBuildCols.ly && Math.abs(mobi
 const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
 assert(overflow<=3, `mobile page has ${overflow}px horizontal overflow`);
 
+// Calculator jumps scroll/focus without leaving fragments or extra history entries.
+await page.goto(url+'?navigation-check=1#calcResults');
+assert(await page.evaluate(()=>location.hash===''&&location.search==='?navigation-check=1'), 'stale calculator fragment was not cleaned');
+await page.locator('[data-section="calculator"]').click();
+const historyBefore=await page.evaluate(()=>history.length);
+for(const target of ['calcResults','characterDetails']){
+  await page.locator(`.calculatorJumpNav a[href="#${target}"]`).click();
+  assert(await page.evaluate(id=>document.activeElement.id===id&&location.hash==='',target), 'calculator jump changed URL or failed to move focus');
+  assert(await page.evaluate(()=>history.length)===historyBefore, 'calculator jump added browser history');
+}
+
 if(pageErrors.length){
   throw new Error('page runtime errors:\n' + pageErrors.join('\n---\n'));
 }
