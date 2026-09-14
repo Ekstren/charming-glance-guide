@@ -33,7 +33,7 @@ body .sectionSwitch {
   max-width: calc(var(--site-width) - 2 * var(--site-gutter)) !important;
   margin: 16px auto !important;
 }
-body .sectionSwitch > button {
+body nav.sectionSwitch > button[data-section] {
   width: 100% !important;
   min-width: 0 !important;
   white-space: normal !important;
@@ -44,7 +44,7 @@ body .sectionSwitch > button {
   margin: 16px auto 64px !important;
   padding-inline: var(--site-gutter) !important;
 }
-body .sectionSwitch button,
+body nav.sectionSwitch > button[data-section],
 body .classTabs button {
   min-height: 44px !important;
   font-size: 13px !important;
@@ -52,7 +52,7 @@ body .classTabs button {
   font-weight: 650 !important;
   color: var(--reading-muted);
 }
-body .sectionSwitch button.active,
+body nav.sectionSwitch > button[data-section].active,
 body .classTabs button.active,
 #buildsSection button.active,
 #companionsSection button.active,
@@ -304,7 +304,7 @@ body a:focus-visible {
 }
 @media (max-width: 620px) {
   :root { --site-gutter: 8px; }
-  body .sectionSwitch button { font-size: 12px !important; padding-inline: 3px !important; }
+  body nav.sectionSwitch > button[data-section] { font-size: 12px !important; padding-inline: 3px !important; }
   #timelineSection > .summary { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   #timelineSection .summary > div:last-child { grid-column: 1 / -1 !important; }
   #timelineSection .filters { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
@@ -325,7 +325,7 @@ body a:focus-visible {
     gap: 2px !important;
     padding: 4px !important;
   }
-  body .sectionSwitch button {
+  body nav.sectionSwitch > button[data-section] {
     padding-inline: 1px !important;
     font-size: 11px !important;
     font-weight: 600 !important;
