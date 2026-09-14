@@ -12,9 +12,12 @@ It projects your season score against a requested **Primostar target**, plans **
 | Path | Purpose |
 |------|---------|
 | `index.html` | The whole site: calculator UI, S1/S2 rules, Astral Pact, breakpoints. |
-| `src/app.mjs` | Calculator engine, state and application orchestration. |
+| `src/app.mjs` | Lightweight site shell, Timeline and Builds orchestration. |
+| `src/calculator/` | Calculator model, search engine, saved state, rendering and controller. |
+| `src/calculator-loader.mjs` | Load-on-demand lifecycle and retry handling. |
 | `src/navigation.mjs`, `src/time.mjs`, `src/timeline-data.mjs` | Navigation, Pacific reset calculations and timeline content. |
-| `assets/runtime.js` | Generated browser bundle; edit `src/` and run `npm run build`. |
+| `assets/runtime.js` | Generated lightweight site shell. |
+| `assets/calculator.js` | Generated calculator chunk, requested when its section is opened. |
 | `src/styles/` | Readable legacy, calculator and shared layout rules, in explicit source order. |
 | `assets/site.css` | Generated combined stylesheet. |
 | `assets/builds.js` | Build recommendations (Conqueror / Guardian / Destroyer / Dominator, etc.). |
@@ -84,6 +87,8 @@ widths from 320 to 1710 px in both themes. It checks equal-width navigation,
 consistent page margins, readable body text and horizontal overflow. Set
 `SXS_READABILITY_SCREENSHOTS` to a directory to save section screenshots.
 
+See [Calculator modules and loading](docs/calculator-modules.md) for module ownership, saved-state compatibility, lazy-loading tests and rollback instructions.
+
 ## Visual and performance regression checks
 
 `npm run test:visual` renders the approved Git commit in `scripts/visual-baseline.json`
@@ -97,8 +102,8 @@ after an intentional appearance change has been reviewed; do not update it to
 silence an unexplained regression. This avoids platform-specific font snapshots.
 
 `npm run test:mobile-perf` runs the approved baseline and working tree three times
-each at a 390 px viewport with 4× CPU slowdown. The report records median solve,
-worst scenario and local load timings, plus the longest main-thread task. Relative
+each at a 390 px viewport with 4Ã— CPU slowdown. The report records median solve,
+worst scenario, local load and first-calculator-use timings, plus the longest main-thread task. Relative
 budgets allow timing noise but fail substantial regressions. Reports are in
 `test-results/performance/` and CI artifacts. These are CPU simulations on the
 runner, not measurements from a physical phone or a mobile network.
