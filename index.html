@@ -6,6 +6,7 @@
 <title>Sword × Staff Guide — Charming Glance</title>
 <meta name="description" content="Charming Glance Sword × Staff timeline, builds and Primostar planner.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/calculator-layout.css">
 
 <!-- COMPANION_GUIDE_CSS_START -->
 <!-- COMPANION_CURRENT_SEASON_CSS_START -->
@@ -53,6 +54,7 @@
 <!-- COMPANION_GUIDE_SECTION_END -->
 <section id="calculatorSection" class="siteSection calculator" hidden aria-label="Primostar Calculator">
   <div class="calcSeasonNotice" id="calcSeasonNotice" hidden><div><strong id="calcSeasonNoticeTitle">Season rollover</strong><p id="calcSeasonNoticeText">—</p></div><div class="calcSeasonNoticeActions"><button id="confirmSeasonSnapshot" type="button">Use entries as new snapshot</button><button id="resetSeasonSnapshot" type="button" class="calcSeasonReset">Reset calculator</button></div></div>
+  <nav class="calculatorJumpNav" aria-label="Calculator navigation"><a href="#characterDetails">Edit inputs</a><a href="#calcResults">View results ↓</a></nav>
   <div class="calculatorLayout">
     <div class="calcInputs">
       <details id="characterDetails" class="calcPanel currentLevelsPanel characterPanel collapsibleCard" open>
@@ -186,21 +188,28 @@
           <div><span>Estimated next-season inventory</span><small id="postTargetWindow">—</small></div>
           <small>What you will have at season end after reaching the target. Bed EXP still banks the final 36h for next season.</small>
         </div>
-        <details class="postTargetOptions" open><summary>Post-target plan options</summary><div class="postTargetOptionsBody">
+
+        <div class="postTargetGainGrid">
+          <div><span>Raw Ore</span><b id="postTargetOreGain">—</b><small id="postTargetHammerGain">—</small></div>
+          <div><span>Skill Essence</span><b id="postTargetEssenceGain">—</b><small id="postTargetKnuckleGain">—</small></div>
+          <div><span>Chrono Sand</span><b id="postTargetSandGain">—</b><small id="postTargetShovelGain">—</small></div>
+          <div><span>Fantomon Treats</span><b id="postTargetTreatGain">—</b><small>Basic-equivalent total</small></div>
+        </div>
+        <details class="postTargetOptions"><summary>Post-target plan options</summary><div class="postTargetOptionsBody">
         <div class="postTargetToolPlan">
-          <div class="postTargetPlanHead"><b>Post-target tool plan</b><small>Applies only after the target is reached · does not affect score planning.</small></div>
+          <div class="postTargetPlanHead"><b>Tool purchases</b><small>Daily purchases after reaching your target.</small></div>
           <div class="postTargetPlanControls">
             <label><input type="radio" name="postTargetToolMode" value="current" checked> Use current plan</label>
             <label><input type="radio" name="postTargetToolMode" value="custom"> Custom</label>
           </div>
           <div class="postTargetCustom" id="postTargetCustom" hidden>
-            <label><span>Ore purchases/day</span><input id="postTargetOreDaily" type="number" min="0" max="20" step="1" value="0"></label>
-            <label><span>Essence purchases/day</span><input id="postTargetEssenceDaily" type="number" min="0" max="20" step="1" value="0"></label>
-            <label><span>Sand purchases/day</span><input id="postTargetSandDaily" type="number" min="0" max="20" step="1" value="0"></label>
+            <label><span>Ore / day</span><input id="postTargetOreDaily" aria-label="Ore purchases per day after target" type="number" inputmode="numeric" min="0" max="20" step="1" value="0"></label>
+            <label><span>Essence / day</span><input id="postTargetEssenceDaily" aria-label="Essence purchases per day after target" type="number" inputmode="numeric" min="0" max="20" step="1" value="0"></label>
+            <label><span>Sand / day</span><input id="postTargetSandDaily" aria-label="Sand purchases per day after target" type="number" inputmode="numeric" min="0" max="20" step="1" value="0"></label>
           </div>
         </div>
         <div class="postTargetStaminaPlan">
-          <div class="postTargetPlanHead"><b>Post-target Stamina plan</b><small>Preview only · does not affect score planning or target timing.</small></div>
+          <div class="postTargetPlanHead"><b>Stamina destination</b><small>Where to gather after reaching your target.</small></div>
           <div class="postTargetPlanControls">
             <label><input type="radio" name="postTargetStaminaMode" value="current" checked> Use current plan</label>
             <label><input type="radio" name="postTargetStaminaMode" value="ore"> Ore</label>
@@ -209,12 +218,6 @@
           </div>
         </div>
         </div></details>
-        <div class="postTargetGainGrid">
-          <div><span>Raw Ore</span><b id="postTargetOreGain">—</b><small id="postTargetHammerGain">—</small></div>
-          <div><span>Skill Essence</span><b id="postTargetEssenceGain">—</b><small id="postTargetKnuckleGain">—</small></div>
-          <div><span>Chrono Sand</span><b id="postTargetSandGain">—</b><small id="postTargetShovelGain">—</small></div>
-          <div><span>Fantomon Treats</span><b id="postTargetTreatGain">—</b><small>Basic-equivalent total</small></div>
-        </div>
       </section>
       <div class="secondaryCostNote" id="secondaryCostNote" hidden></div>
       <details class="resultDetails"><summary>Bonuses and score breakdown</summary><div><div id="astralBonusReference"><h3>Projected Astral Pact bonuses</h3><div class="rewardTotals" id="astralRewardTotals"></div><p class="rewardCount" id="astralRewardCount">Calculated from projected total Primostars.</p></div><h3>Current score now</h3><p class="breakdownExplain" id="currentBreakdownExplain">Exactly what you have entered right now, including your current EXP progress inside the Character level.</p><dl class="scoreBreakdown"><div><dt id="currentCharacterLabel">Character</dt><dd id="currentBreakCharacter">—</dd></div><div><dt id="currentGearLabel">Gear</dt><dd id="currentBreakGear">—</dd></div><div><dt id="currentSkillsLabel">Skills</dt><dd id="currentBreakSkills">—</dd></div><div><dt id="currentRelicsLabel">Relics</dt><dd id="currentBreakRelics">—</dd></div><div><dt id="currentFantomonsLabel">Fantomons</dt><dd id="currentBreakFantomons">—</dd></div></dl><div id="recommendedBreakdownSection"><h3>After recommended upgrades <span class="mutedInline">· season end</span></h3><p class="breakdownExplain" id="recommendedBreakdownExplain">Your projected season-end Character score plus every upgrade recommended above.</p><dl class="scoreBreakdown"><div><dt id="recommendedCharacterLabel">Character</dt><dd id="recommendedBreakCharacter">—</dd></div><div><dt id="recommendedGearLabel">Gear</dt><dd id="recommendedBreakGear">—</dd></div><div><dt id="recommendedSkillsLabel">Skills</dt><dd id="recommendedBreakSkills">—</dd></div><div><dt id="recommendedRelicsLabel">Relics</dt><dd id="recommendedBreakRelics">—</dd></div><div><dt id="recommendedFantomonsLabel">Fantomons</dt><dd id="recommendedBreakFantomons">—</dd></div></dl></div></div></details>
