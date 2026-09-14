@@ -390,8 +390,6 @@
     if($('hammerProjected')) $('hammerProjected').textContent=`Season-end estimate: ${fmt(totals.hammer)}`;
     if($('knucklesProjected')) $('knucklesProjected').textContent=`Season-end estimate: ${fmt(totals.knuckles)}`;
     if($('shovelProjected')) $('shovelProjected').textContent=`Season-end estimate: ${fmt(totals.shovel)}`;
-    if($('realmDailyGain')) $('realmDailyGain').textContent=`+${fmt(daily.ore*REALM_RUNS_PER_REFRESH)} Hammers · +${fmt(daily.essence*REALM_RUNS_PER_REFRESH)} Knuckles · +${fmt(daily.sand*REALM_RUNS_PER_REFRESH)} Shovels per reset`;
-    if($('realmDaysRemaining')) $('realmDaysRemaining').textContent=`${fmt(days)} future purchase day${days===1?'':'s'} · plan adds ${fmt(added.ore)} Hammers · ${fmt(added.essence)} Knuckles · ${fmt(added.sand)} Shovels`;
   }
   function suggestedRealmDailyPlan(plan,cfg=activeCalcConfig()){
     const current={ore:realmDailyValue('ore'),essence:realmDailyValue('essence'),sand:realmDailyValue('sand')};
