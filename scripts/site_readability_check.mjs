@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { mkdirSync } from 'node:fs';
 
-const widths=[320,390,620,650,960,1440,1710];
+const widths=[320,390,480,481,620,650,960,1440,1710];
 const output=process.env.SXS_READABILITY_SCREENSHOTS;
 if(output) mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
@@ -40,7 +40,7 @@ try {
       },section);
       const label=`${theme} ${width}px ${section}`;
       assert.equal(result.tabs.length,4,`${label}: four section tabs`);
-      assert.equal(new Set(result.tabs.map(t=>Math.round(t.y))).size,width<=360?2:1,`${label}: unexpected navigation rows`);
+      assert.equal(new Set(result.tabs.map(t=>Math.round(t.y))).size,width<=480?2:1,`${label}: unexpected navigation rows`);
       assert.ok(Math.max(...result.tabs.map(t=>t.width))-Math.min(...result.tabs.map(t=>t.width))<2,`${label}: uneven tab widths`);
       assert.ok(result.tabs.every(t=>t.height>=44&&!t.clipped),`${label}: clipped/small navigation tab ${JSON.stringify(result.tabs)}`);
       assert.ok(result.bar.right-result.tabs.at(-1).right<=10,`${label}: unused space at end of navigation`);

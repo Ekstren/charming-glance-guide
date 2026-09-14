@@ -31,7 +31,7 @@ for (const width of widths) {
   const nav=await page.locator('.sectionSwitch > button[data-section]').evaluateAll(btns=>btns.map(b=>{const r=b.getBoundingClientRect();return {text:b.textContent.trim(),x:r.x,y:r.y,w:r.width,h:r.height};}));
   assert(nav.length===4,`w${width}: expected four top nav buttons`);
   nav.forEach(b=>assert(b.h>=44,`w${width}: top nav ${b.text} tap target only ${b.h}px`));
-  if(width<=430) assert(base.nav<=(width<=360?106:62),`w${width}: top navigation consumes ${base.nav}px vertically`);
+  if(width<=430) assert(base.nav<=(width<=480?106:62),`w${width}: top navigation consumes ${base.nav}px vertically`);
   if(nav.length===4) assert(nav[3].x+nav[3].w<=width+1,`w${width}: top nav clips right edge`);
 
   // Timeline.
