@@ -327,6 +327,8 @@ body a:focus-visible {
   }
   body .sectionSwitch button {
     padding-inline: 1px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
     letter-spacing: -.02em;
   }
 }
