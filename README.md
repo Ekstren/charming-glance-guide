@@ -15,6 +15,7 @@ It projects your season score against a requested **Primostar target**, plans **
 | `assets/runtime.js` | Core calculator engine (scoring, stamina split, post-target gains, optimizer). |
 | `assets/site.css` | Shared site styling and themes. |
 | `assets/calculator-layout.css` | Scoped calculator layout and responsive overrides. |
+| `assets/site-readability.css` | Shared page widths, navigation, typography and responsive guide layouts. |
 | `assets/builds.js` | Build recommendations (Conqueror / Guardian / Destroyer / Dominator, etc.). |
 | `assets/companions.js` | Companion guide section. |
 | `assets/build-layout-icons-v1.js` | Build-summary layout reflow (legacy filename; decorative icons intentionally removed). |
@@ -76,6 +77,11 @@ missing-production placeholder is not counted as a successful solve.
 `npm run test:layout` checks populated calculator results and expanded custom
 settings in light and dark themes at six widths from 320 to 1440 px. Set
 `SXS_LAYOUT_SCREENSHOTS` to an output directory to also capture layout screenshots.
+
+`npm run test:readability` covers all four sections and class variants at seven
+widths from 320 to 1710 px in both themes. It checks equal-width navigation,
+consistent page margins, readable body text and horizontal overflow. Set
+`SXS_READABILITY_SCREENSHOTS` to a directory to save section screenshots.
 
 ## Notes
 

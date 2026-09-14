@@ -7,7 +7,7 @@
 #calculatorSection .calculatorLayout {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: start;
-  gap: 20px !important;
+  gap: 16px !important;
 }
 #calculatorSection .calcInputs,
 #calculatorSection .calcResults {
@@ -15,10 +15,10 @@
   min-width: 0;
 }
 #calculatorSection .calcResults {
-  padding: 20px !important;
+  padding: 18px !important;
 }
 #calculatorSection .characterPanelBody {
-  padding: 18px !important;
+  padding: 16px !important;
 }
 #calculatorSection .collapsibleCard > summary {
   display: flex !important;
@@ -26,8 +26,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 52px;
-  padding: 14px 18px !important;
+  min-height: 44px;
+  padding: 10px 16px !important;
   text-align: left;
   font-size: 14px;
 }
@@ -39,7 +39,7 @@
 #calculatorSection .currentProgressGrid,
 #calculatorSection .exactProgressGrid {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 14px 12px !important;
+  gap: 10px 12px !important;
   align-items: end;
 }
 #calculatorSection .calcGrid > label,
@@ -80,8 +80,8 @@
 }
 #calculatorSection #s2TargetPresets {
   grid-template-columns: minmax(0, 1fr) !important;
-  gap: 10px !important;
-  padding: 12px !important;
+  gap: 8px !important;
+  padding: 10px !important;
   text-align: left;
 }
 #calculatorSection #s2TargetPresets > div {
@@ -96,7 +96,7 @@
   justify-content: center;
   gap: 4px !important;
   min-width: 0;
-  min-height: 48px !important;
+  min-height: 44px !important;
   padding: 6px 2px !important;
   font-size: 13px !important;
   font-weight: 700;
@@ -186,8 +186,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 #calculatorSection .postTargetGains {
-  padding: 16px;
-  margin-top: 20px;
+  padding: 12px;
+  margin-top: 14px;
 }
 #calculatorSection .postTargetHeader {
   display: block !important;
@@ -200,14 +200,14 @@
 #calculatorSection .postTargetHeader small {
   display: block;
   max-width: none;
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 12px;
   line-height: 1.5;
   text-align: left;
 }
 #calculatorSection .postTargetOptions > summary {
   min-height: 44px;
-  padding: 14px 0;
+  padding: 11px 0;
   font-size: 12px;
 }
 #calculatorSection .calculatorJumpNav {
@@ -283,10 +283,10 @@
 }
 #calculatorSection .postTargetGainGrid {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10px;
+  gap: 8px;
 }
 #calculatorSection .postTargetGainGrid > div {
-  padding: 12px;
+  padding: 10px;
 }
 #calculatorSection .postTargetGainGrid span {
   font-size: 10px;
@@ -347,7 +347,7 @@
   #calculatorSection .calcGrid,
   #calculatorSection .currentProgressGrid,
   #calculatorSection .exactProgressGrid {
-    gap: 12px 10px !important;
+    gap: 10px !important;
   }
   #calculatorSection .postTargetGains {
     padding: 12px;
@@ -359,12 +359,50 @@
     font-size: 18px;
   }
 }
+#calculatorSection .optimizerTargets > span {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+/* Use the actual panel width, rather than viewport width: tablets can have a
+   wider single column than a desktop calculator's two-column layout. */
+@container (min-width: 540px) {
+  #calculatorSection .currentProgressGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+  #calculatorSection .seasonPlanningRow {
+    grid-template-columns: minmax(0, 1fr) 230px !important;
+  }
+  #calculatorSection .finishEarlyCard {
+    display: grid !important;
+    grid-template-columns: auto minmax(56px, 1fr) auto auto;
+    gap: 6px !important;
+    padding: 8px;
+    align-items: center;
+  }
+  #calculatorSection .finishEarlyCard input {
+    width: 100%;
+  }
+}
+@container (min-width: 500px) {
+  #calculatorSection .postTargetGainGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+  #calculatorSection .postTargetGainGrid b {
+    font-size: 18px;
+  }
+  #calculatorSection .postTargetGainGrid span {
+    min-height: 30px;
+  }
+}
 @container (max-width: 330px) {
   #calculatorSection .optimizerTargets {
     grid-template-columns: minmax(0, 1fr) !important;
   }
   #calculatorSection .optimizerTargets > span {
     display: flex;
+    flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
