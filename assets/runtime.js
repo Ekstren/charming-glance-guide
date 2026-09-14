@@ -322,7 +322,7 @@
 
   // src/calculator-loader.mjs
   var chunkUrl = new URL("calculator.js", document.currentScript.src);
-  chunkUrl.searchParams.set("v", "433e63dd6187");
+  chunkUrl.searchParams.set("v", "aa4780a3a964");
   var pending2 = null;
   var api = null;
   function status(message, retry = false) {

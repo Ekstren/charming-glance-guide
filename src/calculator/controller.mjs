@@ -1280,7 +1280,7 @@ async function updateCalculator(){
     // queued by the target control so its already-painted progress panel can be reused.
     if(activeOptimizerJob && activeOptimizerJob!==queuedGoalJob) activeOptimizerJob.cancelled=true;
     const perfStarted=performance.now();
-    $('targetMessage')?.classList.remove('danger','caution');
+    {const _tm=$('targetMessage');if(_tm){_tm.hidden=true;_tm.classList.remove('warning','danger','caution');}}
     const cfg=activeCalcConfig();
     if(queuedGoalJob){
       // REGULAR_GOAL_PROGRESS_V1: target-button handlers create the job before scheduling

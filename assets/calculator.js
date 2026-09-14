@@ -4457,7 +4457,13 @@ var SxsCalculator = (() => {
     if (queuedGoalJob === queuedGoalOptimizerJob) queuedGoalOptimizerJob = null;
     if (activeOptimizerJob && activeOptimizerJob !== queuedGoalJob) activeOptimizerJob.cancelled = true;
     const perfStarted = performance.now();
-    $("targetMessage")?.classList.remove("danger", "caution");
+    {
+      const _tm = $("targetMessage");
+      if (_tm) {
+        _tm.hidden = true;
+        _tm.classList.remove("warning", "danger", "caution");
+      }
+    }
     const cfg = activeCalcConfig();
     if (queuedGoalJob) {
       await new Promise((resolve) => setTimeout(resolve, 0));
