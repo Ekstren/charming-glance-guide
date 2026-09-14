@@ -93,5 +93,7 @@ jobs:
         run: node scripts/mobile_audit_v1.mjs
       - name: Populated calculator layout regression
         run: npm run test:layout
+      - name: Site readability and shared navigation
+        run: npm run test:readability
 
 # CI touch: validate target reach timing, projected-field geometry/tint, and mobile layout.
