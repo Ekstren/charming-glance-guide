@@ -1,3 +1,4 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import { chromium } from 'playwright';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -34,7 +35,9 @@ const loadStart=performance.now();
 await page.goto(pathToFileURL(path.resolve(process.env.SXS_PERF_ROOT||'.','index.html')).href,{waitUntil:'load'});
 const loadMs=performance.now()-loadStart;
 await page.waitForTimeout(250);
+const calculatorOpenStart=performance.now();
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
+await waitForCalculatorReady(page);
 // S2 defaults have zero production inputs, so seed Bed EXP + Cart rates before waiting
 // for the calculator to render a non-placeholder result.
 await page.evaluate(()=>{
@@ -53,6 +56,7 @@ await page.waitForTimeout(150);
 // The initial solve must be fully settled before scenario reads, otherwise the first
 // scenario can race an in-flight cooperative search and read the previous result.
 await waitCalculatorSettled(page,'initial solve',15000);
+const initialOpenMs=performance.now()-calculatorOpenStart;
 
 // S2_ABOVE_CHARACTER_UPGRADES_V1: at Character Lv.131 the planner must not cap
 // Gear, Skills, or Relic ranks to the Character level. These are the supported
@@ -206,5 +210,5 @@ const avg=times.reduce((a,b)=>a+b,0)/times.length;
 const max=Math.max(...times);
 console.log(`SUMMARY average ${avg.toFixed(1)}ms · worst ${max.toFixed(1)}ms · ${scenarios.length} scenarios + repeat + burst`);
 const longTasks=await page.evaluate(()=>window.__perfLongTasks);
-if(process.env.SXS_PERF_OUTPUT) writeFileSync(process.env.SXS_PERF_OUTPUT,JSON.stringify({results,burst,averageMs:avg,worstMs:max,loadMs,cpuRate,longTasks},null,2)+'\n');
+if(process.env.SXS_PERF_OUTPUT) writeFileSync(process.env.SXS_PERF_OUTPUT,JSON.stringify({results,burst,averageMs:avg,worstMs:max,loadMs,initialOpenMs,cpuRate,longTasks},null,2)+'\n');
 await browser.close();

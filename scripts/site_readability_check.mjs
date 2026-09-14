@@ -1,3 +1,4 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { pathToFileURL } from 'node:url';
@@ -17,6 +18,7 @@ try {
     await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);
     for(const section of ['timeline','builds','companions','calculator']){
       await page.locator(`[data-section="${section}"]`).click();
+      if(section==='calculator') await waitForCalculatorReady(page);
       await page.waitForTimeout(60);
       if(section==='builds'||section==='companions'){
         const selector=section==='builds'?'#classTabs button':'#companionClassTabs button';

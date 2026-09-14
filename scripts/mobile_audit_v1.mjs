@@ -1,3 +1,4 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import { chromium } from 'playwright';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -76,6 +77,7 @@ for (const width of widths) {
 
   // Calculator.
   await page.locator('.sectionSwitch button[data-section="calculator"]').click();
+await waitForCalculatorReady(page);
   await page.waitForTimeout(180);
   const calc=await page.evaluate(()=>{
     const rect=id=>{const r=document.getElementById(id)?.getBoundingClientRect();return r?{x:r.x,y:r.y,w:r.width,h:r.height,right:r.right}:null};

@@ -471,3 +471,25 @@
 #calculatorSection .finishEarlyCard {
   grid-template-columns: auto 60px auto minmax(48px, 1fr);
 }
+#calculatorLoadStatus:not([hidden]) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--ui-subpanel);
+  font-size: 14px;
+}
+#calculatorLoadStatus button {
+  min-height: 44px;
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--ink);
+  cursor: pointer;
+}

@@ -1,3 +1,4 @@
+import {waitForCalculatorReady} from './calculator_ready.mjs';
 import { chromium } from 'playwright';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -163,6 +164,7 @@ assert(!(await page.locator('#companionsSection').evaluate(el => el.hidden)), 'C
 
 const calcStarted = Date.now();
 await page.locator('.sectionSwitch button[data-section="calculator"]').click();
+await waitForCalculatorReady(page);
 await page.waitForTimeout(80);
 const calcYieldMs = Date.now()-calcStarted;
 assert(!(await page.locator('#calculatorSection').evaluate(el => el.hidden)), 'Calculator tab did not reveal #calculatorSection');
@@ -223,6 +225,7 @@ assert(overflow<=3, `mobile page has ${overflow}px horizontal overflow`);
 await page.goto(url+'?navigation-check=1#calcResults');
 assert(await page.evaluate(()=>location.hash===''&&location.search==='?navigation-check=1'), 'stale calculator fragment was not cleaned');
 await page.locator('[data-section="calculator"]').click();
+await waitForCalculatorReady(page);
 const historyBefore=await page.evaluate(()=>history.length);
 for(const target of ['calcResults','characterDetails']){
   await page.locator(`.calculatorJumpNav a[href="#${target}"]`).click();
