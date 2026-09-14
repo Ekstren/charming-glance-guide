@@ -4,7 +4,7 @@
   "description": "Sword x Staff (SxS) Charming Glance season planning guide and interactive calculator, hosted on GitHub Pages.",
   "private": true,
   "scripts": {
-    "test": "npm run test:build && npm run test:time && npm run test:boundaries && npm run test:lazy && node scripts/optimizer_regression.mjs && node scripts/calculator_perf_check.mjs && node scripts/build_swap_smoke.mjs && node scripts/build_visual_stability_benchmark_v2.mjs && node scripts/site_smoke_test.mjs && node scripts/mobile_audit_v1.mjs && node scripts/calculator_layout_check.mjs && node scripts/site_readability_check.mjs && npm run test:visual",
+    "test": "npm run test:build && npm run test:time && npm run test:boundaries && npm run test:lazy && npm run test:guides && node scripts/optimizer_regression.mjs && node scripts/calculator_perf_check.mjs && node scripts/build_swap_smoke.mjs && node scripts/build_visual_stability_benchmark_v2.mjs && node scripts/site_smoke_test.mjs && node scripts/mobile_audit_v1.mjs && node scripts/calculator_layout_check.mjs && node scripts/site_readability_check.mjs && npm run test:visual",
     "test:readability": "node scripts/site_readability_check.mjs",
     "test:layout": "node scripts/calculator_layout_check.mjs",
     "test:perf": "node scripts/calculator_perf_check.mjs",
@@ -16,7 +16,8 @@
     "test:mobile-perf": "node scripts/mobile_performance.mjs",
     "test:time": "node scripts/time_test.mjs",
     "test:lazy": "node scripts/lazy_calculator_test.mjs",
-    "test:boundaries": "node scripts/calculator_boundaries_test.mjs"
+    "test:boundaries": "node scripts/calculator_boundaries_test.mjs",
+    "test:guides": "node scripts/guide_loading_test.mjs"
   },
   "repository": {
     "type": "git",

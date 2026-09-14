@@ -9,8 +9,7 @@
   align-items: start;
   gap: 16px !important;
 }
-#calculatorSection .calcInputs,
-#calculatorSection .calcResults {
+#calculatorSection .calcInputs,#calculatorSection .calcResults {
   container-type: inline-size;
   min-width: 0;
 }
@@ -35,16 +34,12 @@
   margin: 0;
   flex: 0 0 auto;
 }
-#calculatorSection .calcGrid,
-#calculatorSection .currentProgressGrid,
-#calculatorSection .exactProgressGrid {
+#calculatorSection .calcGrid,#calculatorSection .currentProgressGrid,#calculatorSection .exactProgressGrid {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 10px 12px !important;
   align-items: end;
 }
-#calculatorSection .calcGrid > label,
-#calculatorSection .currentProgressGrid > label,
-#calculatorSection .exactProgressGrid > label {
+#calculatorSection .calcGrid > label,#calculatorSection .currentProgressGrid > label,#calculatorSection .exactProgressGrid > label {
   display: grid !important;
   grid-template-rows: auto 44px;
   gap: 5px;
@@ -54,23 +49,17 @@
   letter-spacing: .025em;
   line-height: 1.45;
 }
-#calculatorSection .calcGrid > label > input,
-#calculatorSection .currentProgressGrid > label > input,
-#calculatorSection .exactProgressGrid > label > input {
+#calculatorSection .calcGrid > label > input,#calculatorSection .currentProgressGrid > label > input,#calculatorSection .exactProgressGrid > label > input {
   margin-top: 0 !important;
 }
-#calculatorSection input:not([type=radio]):not([type=checkbox]),
-#calculatorSection select {
+#calculatorSection input:not([type=radio]):not([type=checkbox]),#calculatorSection select {
   min-width: 0 !important;
   min-height: 44px !important;
   font-size: 16px !important;
   font-weight: 600 !important;
   font-variant-numeric: tabular-nums;
 }
-#calculatorSection input:focus-visible,
-#calculatorSection button:focus-visible,
-#calculatorSection summary:focus-visible,
-#calculatorSection select:focus-visible {
+#calculatorSection input:focus-visible,#calculatorSection button:focus-visible,#calculatorSection summary:focus-visible,#calculatorSection select:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
@@ -150,9 +139,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 10px !important;
 }
-#calculatorSection .targetTiming small,
-#calculatorSection .optimizerTargets > span,
-#calculatorSection .suggestedGear > span {
+#calculatorSection .targetTiming small,#calculatorSection .optimizerTargets > span,#calculatorSection .suggestedGear > span {
   font-size: 10px !important;
   font-weight: 650;
   line-height: 1.45;
@@ -217,16 +204,14 @@
 #calculatorSection .calculatorJumpNav {
   display: none;
 }
-#calculatorSection #characterDetails,
-#calculatorSection #calcResults {
+#calculatorSection #characterDetails,#calculatorSection #calcResults {
   scroll-margin-top: 90px;
 }
 #calculatorSection .postTargetOptionsBody {
   grid-template-columns: minmax(0, 1fr) !important;
   gap: 12px !important;
 }
-#calculatorSection .postTargetOptions .postTargetToolPlan,
-#calculatorSection .postTargetOptions .postTargetStaminaPlan {
+#calculatorSection .postTargetOptions .postTargetToolPlan,#calculatorSection .postTargetOptions .postTargetStaminaPlan {
   padding: 12px !important;
 }
 #calculatorSection .postTargetPlanHead b {
@@ -341,16 +326,13 @@
   }
 }
 @media (max-width: 620px) {
-  #calculatorSection .characterPanelBody,
-  #calculatorSection .calcResults {
+  #calculatorSection .characterPanelBody,#calculatorSection .calcResults {
     padding: 14px !important;
   }
   #calculatorSection .calculatorLayout {
     gap: 14px !important;
   }
-  #calculatorSection .calcGrid,
-  #calculatorSection .currentProgressGrid,
-  #calculatorSection .exactProgressGrid {
+  #calculatorSection .calcGrid,#calculatorSection .currentProgressGrid,#calculatorSection .exactProgressGrid {
     gap: 10px !important;
   }
   #calculatorSection .postTargetGains {
@@ -463,8 +445,7 @@
   #calculatorSection .seasonDeadline #seasonRemaining { grid-column: 1; grid-row: 3; text-align: left; }
 }
 /* Season timing shares one background; the input is the only filled control. */
-#calculatorSection .seasonPlanningRow > .seasonDeadline,
-#calculatorSection .seasonPlanningRow > .finishEarlyCard {
+#calculatorSection .seasonPlanningRow > .seasonDeadline,#calculatorSection .seasonPlanningRow > .finishEarlyCard {
   background: transparent !important;
   border-radius: 0;
 }

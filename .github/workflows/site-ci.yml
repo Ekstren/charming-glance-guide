@@ -78,6 +78,8 @@ jobs:
         run: |
           npm run test:boundaries
           npm run test:lazy
+      - name: Guide lazy loading and startup budgets
+        run: npm run test:guides
       - name: Optimizer cache and cancellation regression
         run: npm run test:optimizer
       - name: Calculator regression/performance

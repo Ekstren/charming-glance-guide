@@ -48,6 +48,37 @@ async function capture(root,width,theme){
    shots.timing=await page.locator('.seasonPlanningRow').screenshot();
    shots.results=await page.locator('#calcResults').screenshot();
   }
+  // Full-page comparisons cover below-the-fold rules and role variants as well
+  // as the original approved viewports. Keep the intermediate width inexpensive.
+  if(width!==650){
+   if(section==='builds'){
+    await page.waitForFunction(()=>!!document.querySelector('#buildContent .buildQuickStats'));
+    for(const cls of ['Destroyer','Dominator','Conqueror','Guardian']){
+     await page.locator(`#classTabs [data-class="${cls}"]`).click();
+     const roles=cls==='Dominator'?['dps','heals']:cls==='Guardian'?['tank','dps']:[null];
+     for(const role of roles){
+      if(role)await page.locator(`[data-${cls.toLowerCase()}-mode="${role}"]`).first().click();
+      await page.waitForTimeout(120);
+      shots[`build-${cls}-${role||'default'}`]=await page.locator('#buildsSection').screenshot();
+     }
+    }
+   }
+   if(section==='companions'){
+    for(const cls of ['Destroyer','Dominator','Conqueror','Guardian']){
+     await page.locator(`#companionClassTabs [data-companion-class="${cls}"]`).click();
+     const roles=cls==='Dominator'?['dps','heals']:[null];
+     for(const role of roles){
+      if(role)await page.locator(`[data-companion-role="${role}"]`).click();
+      shots[`companion-${cls}-${role||'default'}`]=await page.locator('#companionsSection').screenshot();
+     }
+    }
+   }
+   if(section==='calculator'){
+    await page.locator('#calculatorSection details').evaluateAll(nodes=>nodes.forEach(el=>el.open=true));
+    shots['calculator-expanded']=await page.locator('#calculatorSection').screenshot();
+   }
+   if(section==='timeline')shots['timeline-full']=await page.locator('#timelineSection').screenshot();
+  }
  }
  assert.deepEqual(errors,[]);await page.close();return shots;
 }

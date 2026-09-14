@@ -410,37 +410,20 @@
     ensureMetaControls(cls);
     applyMetaVisibility(cls);
   }
-  let queued=false,suppressQueuedApply=false;
-  function queueApply(){
-    if(queued) return;
-    queued=true;
-    requestAnimationFrame(()=>{queued=false;apply();});
-  }
-  // BUILD_SWITCH_NO_FLICKER_V1: main Builds renderer calls this inside the class-click task.
-  // META controls/loadouts/Fantomons therefore exist before the next paint instead of appearing
-  // one animation frame after the raw class markup. Suppress the observer echo for that task.
-  window.__applyBuildMetaNow=()=>{
-    suppressQueuedApply=true;
-    apply();
-    setTimeout(()=>{suppressQueuedApply=false;},0);
-  };
-  document.addEventListener('DOMContentLoaded',()=>{
-    // Initial/restored Builds view gets the same one-paint treatment.
-    apply();
+  window.__applyBuildMetaNow=apply;
+  {
     const root=document.querySelector('.builds');
-    if(root) new MutationObserver(()=>{if(!suppressQueuedApply) queueApply();}).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','aria-pressed']});
     root?.addEventListener('click',e=>{
       const guardianBtn=e.target.closest?.('[data-guardian-mode]');
-      if(guardianBtn&&activeClass()==='Guardian'){metaWrite('sxs-build-guardian-mode',guardianBtn.dataset.guardianMode==='dps'?'dps':'tank');applyMetaVisibility('Guardian');queueApply();return;}
+      if(guardianBtn&&activeClass()==='Guardian'){metaWrite('sxs-build-guardian-mode',guardianBtn.dataset.guardianMode==='dps'?'dps':'tank');applyMetaVisibility('Guardian');window.__renderBuildEnhancements();return;}
       const dominatorBtn=e.target.closest?.('[data-dominator-mode]');
-      if(dominatorBtn&&activeClass()==='Dominator'){metaWrite('sxs-build-dominator-mode',dominatorBtn.dataset.dominatorMode==='heals'?'heals':'dps');applyMetaVisibility('Dominator');queueApply();return;}
+      if(dominatorBtn&&activeClass()==='Dominator'){metaWrite('sxs-build-dominator-mode',dominatorBtn.dataset.dominatorMode==='heals'?'heals':'dps');applyMetaVisibility('Dominator');window.__renderBuildEnhancements();return;}
       const modeBtn=e.target.closest?.('[data-meta-mode]');
       if(modeBtn){metaWrite('sxs-build-meta-mode',modeBtn.dataset.metaMode);applyMetaVisibility(activeClass());return;}
       const sizeBtn=e.target.closest?.('[data-tournament-size]');
       if(sizeBtn){metaWrite('sxs-build-tournament-size',sizeBtn.dataset.tournamentSize);applyMetaVisibility(activeClass());}
     });
-  });
-  window.addEventListener('load',queueApply);
+  }
 })();
 
 /* ---- build module boundary ---- */
@@ -618,12 +601,10 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
   addEventListener('resize',()=>{if(active)position()});
   document.addEventListener('scroll',()=>{if(!active||raf)return;raf=requestAnimationFrame(()=>{raf=0;position()})},true);
-  document.addEventListener('DOMContentLoaded',()=>{
-    const host=document.getElementById('buildContent');
+  window.__prepareBuildTooltipsNow=()=>{
+    if(active&&!active.isConnected)close();
     prep(document);
-    if(host)new MutationObserver(()=>{if(active&&!active.isConnected)close();prep(document)}).observe(host,{subtree:true,childList:true});
-  });
-  addEventListener('load',()=>prep(document));
+  };
 })();
 
 /* ---- build module boundary ---- */
@@ -840,19 +821,7 @@
   // BUILD_VISUAL_STABILITY_V2: class switching calls the rich-layout transformer
   // in the same click task, before the browser paints the newly mounted class.
   window.__applyBuildRichNow=apply;
-  function queue(){
-    if(queued) return;
-    queued=true;
-    requestAnimationFrame(()=>setTimeout(apply,0));
-  }
-  document.addEventListener('DOMContentLoaded',()=>{
-    const host=root();
-    if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
-    document.getElementById('classTabs')?.addEventListener('click',queue);
-    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode],[data-guardian-mode]')) setTimeout(()=>{if(host) host.dataset.richBuildSig='';queue();},0);});
-    queue();
-  });
-  window.addEventListener('load',queue);
+
 })();
 
 /* ---- build module boundary ---- */
@@ -939,13 +908,5 @@
   // BUILD_VISUAL_STABILITY_V2: Roll Guide is part of the finished class layout,
   // so make it available to the synchronous Builds render pipeline.
   window.__applyBuildRollNow=apply;
-  function queue(){if(queued)return;queued=true;requestAnimationFrame(()=>setTimeout(apply,0))}
-  document.addEventListener('DOMContentLoaded',()=>{
-    const host=document.getElementById('buildContent');
-    if(host) new MutationObserver(queue).observe(host,{subtree:true,childList:true});
-    document.getElementById('classTabs')?.addEventListener('click',queue);
-    host?.addEventListener('click',e=>{if(e.target.closest?.('[data-dominator-mode],[data-guardian-mode]'))setTimeout(queue,0)});
-    queue();
-  });
-  window.addEventListener('load',queue);
+
 })();

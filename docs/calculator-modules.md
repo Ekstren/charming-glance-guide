@@ -1,6 +1,6 @@
 # Calculator modules and loading
 
-The shell in `src/app.mjs` handles Timeline and Builds without importing calculator
+The shell in `src/app.mjs` handles Timeline and navigation without importing calculator
 modules. `src/calculator-loader.mjs` requests `assets/calculator.js` on the first
 Calculator visit. The content-derived version query avoids using an old cached
 calculator chunk with a new shell. Classic scripts preserve direct file:// use.
