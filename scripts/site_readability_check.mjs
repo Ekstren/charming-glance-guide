@@ -31,7 +31,7 @@ try {
         const nav=document.querySelector('.sectionSwitch'),bar=nav.getBoundingClientRect();
         const tabs=[...nav.children].map(el=>{
           const r=el.getBoundingClientRect();
-          return {x:r.x,right:r.right,width:r.width,height:r.height,clipped:el.scrollWidth>el.clientWidth+1};
+          return {x:r.x,y:r.y,right:r.right,width:r.width,height:r.height,clipped:el.scrollWidth>el.clientWidth+1};
         });
         const root=document.getElementById(`${section}Section`),box=root.getBoundingClientRect(),style=getComputedStyle(root);
         const readingSelectors={timeline:'.entry p',builds:'.guideSummary p,.priorityList p,.fantomonPick p',companions:'.companionPanel p,.companionLadder span,.companionBreakpointTable td',calculator:'.postTargetHeader small'};
@@ -40,6 +40,7 @@ try {
       },section);
       const label=`${theme} ${width}px ${section}`;
       assert.equal(result.tabs.length,4,`${label}: four section tabs`);
+      assert.equal(new Set(result.tabs.map(t=>Math.round(t.y))).size,width<=360?2:1,`${label}: unexpected navigation rows`);
       assert.ok(Math.max(...result.tabs.map(t=>t.width))-Math.min(...result.tabs.map(t=>t.width))<2,`${label}: uneven tab widths`);
       assert.ok(result.tabs.every(t=>t.height>=44&&!t.clipped),`${label}: clipped/small navigation tab ${JSON.stringify(result.tabs)}`);
       assert.ok(result.bar.right-result.tabs.at(-1).right<=10,`${label}: unused space at end of navigation`);

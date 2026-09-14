@@ -322,12 +322,13 @@ body a:focus-visible {
 }
 @media (max-width: 360px) {
   body .sectionSwitch {
-    gap: 2px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4px !important;
     padding: 4px !important;
   }
   body nav.sectionSwitch > button[data-section] {
     padding-inline: 1px !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
     letter-spacing: -.02em;
   }
