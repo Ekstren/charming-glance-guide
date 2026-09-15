@@ -28,12 +28,6 @@ export const timelineData = [
     // S2_EVENT_ROTATION_DAY57_64_V1
     ['2026-09-12',60,'Dungeon','Warlord’s Rest','Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M','dungeon'],
     ['2026-09-12',60,'Feature','Season Power unlock','Player Lv.130','feature'],
-    // ACME_NEXUS_DAY71_CORRECTION_SEP9_V1
-    // Official Global confirms the Global-English name Acme Nexus and its gateway role before Aethyris.
-    // Limitless Gaming's live older-server schedule places the Loong Haven seasonal map at Server Day 71.
-    // That same schedule matches Charming Glance's established S2 milestones at Days 60, 73, 78, 86, 92 and 99,
-    // so Day 71 is stronger cadence evidence than the earlier QY-derived Day 61 projection.
-    ['2026-09-23',71,'Seasonal Map','Acme Nexus','Official Global name: Acme Nexus. Current older-server cadence places the Loong Haven seasonal map on Server Day 71, mapping to Sep. 23 for Charming Glance. It is the gateway immediately before Aethyris.','seasonal-map',null,'unconfirmed'],
     ['2026-09-25',73,'Dungeon','Cloudcrest Temple','Normal 6.2M · Hard 7.7M · Nightmare 9.8M','dungeon'],
     ['2026-09-30',78,'Ancient Relic','Ethereal Oracle','Loong Haven Relic II · second Loong Haven relic gacha','ancient-relic'],
     ['2026-10-08',86,'Dungeon','Bladeshire','Normal 10M · Hard 12.5M · Nightmare 15.8M','dungeon'],

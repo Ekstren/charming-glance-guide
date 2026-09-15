@@ -32,12 +32,6 @@
     // S2_EVENT_ROTATION_DAY57_64_V1
     ["2026-09-12", 60, "Dungeon", "Warlord’s Rest", "Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M", "dungeon"],
     ["2026-09-12", 60, "Feature", "Season Power unlock", "Player Lv.130", "feature"],
-    // ACME_NEXUS_DAY71_CORRECTION_SEP9_V1
-    // Official Global confirms the Global-English name Acme Nexus and its gateway role before Aethyris.
-    // Limitless Gaming's live older-server schedule places the Loong Haven seasonal map at Server Day 71.
-    // That same schedule matches Charming Glance's established S2 milestones at Days 60, 73, 78, 86, 92 and 99,
-    // so Day 71 is stronger cadence evidence than the earlier QY-derived Day 61 projection.
-    ["2026-09-23", 71, "Seasonal Map", "Acme Nexus", "Official Global name: Acme Nexus. Current older-server cadence places the Loong Haven seasonal map on Server Day 71, mapping to Sep. 23 for Charming Glance. It is the gateway immediately before Aethyris.", "seasonal-map", null, "unconfirmed"],
     ["2026-09-25", 73, "Dungeon", "Cloudcrest Temple", "Normal 6.2M · Hard 7.7M · Nightmare 9.8M", "dungeon"],
     ["2026-09-30", 78, "Ancient Relic", "Ethereal Oracle", "Loong Haven Relic II · second Loong Haven relic gacha", "ancient-relic"],
     ["2026-10-08", 86, "Dungeon", "Bladeshire", "Normal 10M · Hard 12.5M · Nightmare 15.8M", "dungeon"],
@@ -525,7 +519,6 @@
     if (title === "Warlord’s Rest") return "Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M";
     if (title === "Server Tournament") return e[0] === "2026-09-12" ? "Registration opens Friday Sep. 11 · tournament Saturday Sep. 12." : "Registration opens the day before · tournament Saturday.";
     if (title === "Nexus Tournament · 4v4") return "4v4 Nexus Tournament · Top-4 qualification format; brackets and prediction phases are handled in game.";
-    if (title === "Acme Nexus") return "Loong Haven seasonal map · gateway to Aethyris.";
     if (title === "Aethyris opens") return "Season 3 · Aethyris · Tier 5 · Skyrend Cliff, Unbroken Camp and Harmonic Crystal · Nexus grouping expands from 4 servers to an 8-server pool.";
     if (title === "Aethyris area-unlock stockpile") return "Gateway Key ×5 · Magic Drill ×2 · Water Mine ×2 · cloud key ×2 · hammer ×5";
     if (title === "Astral Odyssey") return "Aethyris season map";
