@@ -1,4 +1,4 @@
 {
-  "commit": "925920d756697bc35e9eac849aa664434e608e06",
-  "description": "Approved main appearance before the foundations refactor. Rendered alongside the candidate in the same browser; update only for reviewed intentional visual changes."
+  "commit": "a912daf0ebca9da587599ca4e175db140d8cb0e7",
+  "description": "Approved main appearance after the AETHYRIS gift-code row was added and the Acme Nexus seasonal-map row removed (both reviewed against official Discord announcements). Rendered alongside the candidate in the same browser; update only for reviewed intentional visual changes."
 }
