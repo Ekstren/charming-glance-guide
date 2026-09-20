@@ -1,4 +1,4 @@
 {
-  "commit": "0072b6391c1fa0667ac0724518c0fdaca671e75a",
-  "description": "Remove class introduction sections from Builds while preserving role selectors and the remaining guide layout."
+  "commit": "493688666ea486ecdac82146d4c06de6869b11a3",
+  "description": "Guardian role selector matches Dominator with equal-width buttons and matching spacing."
 }
