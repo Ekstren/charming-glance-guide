@@ -1271,6 +1271,7 @@ function s2RequiredPlannerInputs(){
   }
 
 async function updateCalculator(){
+    if($('resultStamina')) $('resultStamina').hidden=true;
     // Clamp impossible manual values before any expensive solve starts.
     syncFinishEarlyInputLimit(activeCalcConfig(),true);
     const updateGeneration=++optimizerUpdateGeneration;
