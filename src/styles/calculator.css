@@ -495,3 +495,89 @@
 #calcResults .resultStaminaHeading small { font-size: 12px; color: var(--muted); }
 #calcResults #resultStaminaPlan { margin: 0; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
 #calcResults .resultStamina .staminaGain { color: var(--ink); font-weight: 600; }
+
+/* One grouped-card treatment across inputs and results. Individual fields stay flat. */
+#calculatorSection {
+  --calc-card-padding: 12px;
+  --calc-card-radius: 12px;
+}
+#calculatorSection .collapsibleCard > .currentLevelsBody,
+#calculatorSection .calcResults { padding: 16px !important; }
+#calculatorSection .collapsibleCard > .currentLevelsBody {
+  display: grid !important;
+  gap: 12px !important;
+}
+#calculatorSection :is(.calcFormCard,.resourceCard,.realmInventory,.postTargetGains,.resultStamina) {
+  min-width: 0;
+  margin: 0 !important;
+  padding: var(--calc-card-padding) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--calc-card-radius) !important;
+  background: var(--ui-subpanel) !important;
+  box-shadow: none !important;
+}
+#calculatorSection :is(.recommendedUpgradeCard,.resultStamina,.postTargetGains) { margin-block: 12px !important; }
+#calculatorSection :is(.calcGroupTitle,.resourceCardHead > strong,.realmInventoryTop > strong,.resultStaminaHeading > strong,.postTargetHeader > div > span) {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+#calculatorSection .calcGroupTitle { margin-bottom: 10px; }
+#calculatorSection :is(.resourceCardHead,.realmInventoryTop) { margin-bottom: 10px !important; gap: 4px 10px; }
+#calculatorSection :is(.resourceCardHead small,.realmInventoryTop small,.realmDailyTitle small,.realmInventoryGrid small,.realmDailyInputs small,.shopRefreshControl small,.shopEstimateNote,.treatEquivalent) {
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  font-weight: 500 !important;
+}
+#calculatorSection :is(.resourceCardFields label,.realmInventoryGrid > label,.realmDailyInputs > label,.shopRefreshControl label) {
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  font-weight: 650 !important;
+  letter-spacing: .025em;
+  gap: 5px;
+}
+#calculatorSection :is(.realmInventoryGrid > label,.realmDailyInputs > label,.shopRefreshControl,.shopGainSummary) {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#calculatorSection :is(.resourceCards,.realmInventoryGrid,.realmDailyInputs,.shopEstimateCompact) { gap: 12px !important; }
+#calculatorSection .resourceCardHead { display: grid !important; grid-template-columns: minmax(0, 1fr); }
+#calculatorSection .resourceCardHead small { text-align: left !important; width: 100%; }
+#calculatorSection .resourceCardFields { align-items: end !important; }
+#calculatorSection .resourceCardFields label { display: grid !important; grid-template-rows: auto 44px; align-self: end; }
+#calculatorSection .resourceCardFields label > span { font-size: 11px !important; line-height: 1.45 !important; }
+#calculatorSection .materialsStaminaRow { border-bottom: 1px solid var(--line) !important; }
+#calculatorSection .characterProgressCard .seasonPlanningRow,
+#calculatorSection #s2TargetPresets {
+  padding: 10px 0 0 !important;
+  margin-top: 10px !important;
+  border: 0 !important;
+  border-top: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+#calculatorSection .compactProgression .exactInputs {
+  margin-top: 10px !important;
+  border: 0 !important;
+  border-top: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+#calculatorSection .compactProgression .exactInputs > summary { padding-inline: 0 !important; }
+#calculatorSection .compactProgression .exactInputsBody { padding-inline: 0 !important; }
+#calculatorSection .recommendedUpgradeCard .optimizerTargets { margin: 0 !important; }
+#calculatorSection .recommendedUpgradeCard .suggestedGear { margin: 8px 0 0 !important; }
+#calculatorSection :is(.targetTiming > span,.optimizerTargets > span,.suggestedGear > span,.postTargetGainGrid > div) {
+  border-radius: 10px !important;
+}
+@media (max-width: 960px) {
+  #calculatorSection .collapsibleCard > .currentLevelsBody,
+  #calculatorSection .calcResults { padding: 14px !important; }
+}

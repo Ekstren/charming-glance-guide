@@ -60,10 +60,14 @@
       <details id="characterDetails" class="calcPanel currentLevelsPanel characterPanel collapsibleCard" open>
         <summary class="characterSummary"><span>Character</span></summary>
         <div class="currentLevelsBody characterPanelBody">
+        <section class="calcFormCard characterTargetCard"><h3 class="calcGroupTitle">Primostar target</h3>
         <div class="calcGrid">
           <label>Target Primostars<input id="targetStars" type="number" value="680"></label>
           <label><span id="historicalStarsLabel">Historical stars</span><input id="historicalStars" type="number" value="128"></label>
           <div class="s2TargetPresets" id="s2TargetPresets" hidden aria-label="Season 2 Primostar breakpoints"><span>S2 breakpoints</span><div><button type="button" data-s2-target="680">680 <span>EXP</span></button><button type="button" data-s2-target="740">740 <span>ASC</span></button><button type="button" data-s2-target="800">800 <span>GEM</span></button><button type="button" data-s2-target="860">860 <span>2X</span></button><button type="button" data-s2-target="920">920 <span>EXP</span></button><button type="button" data-s2-target="990">990 <span>ASC</span></button><button type="button" data-s2-target="1060">1060 <span>GEM</span></button><button type="button" data-s2-target="1130">1130 <span>2X</span></button><button type="button" data-s2-target="1200">1200 <span>EXP</span></button><button type="button" data-s2-target="1280">1280 <span>ASC</span></button></div><small>S2 breakpoint shortcuts · any total still works.</small></div>
+        </div></section>
+        <section class="calcFormCard characterProgressCard"><h3 class="calcGroupTitle">Character progress</h3>
+        <div class="calcGrid">
           <label>Current character level<input id="charLevel" type="number" value="100"></label>
           <label>Current EXP into level<input id="charExp" type="number" value="0"></label>
           <label>Bed EXP per hour<input id="bedExp" type="number" min="0" value="0"></label>
@@ -72,8 +76,10 @@
         </div>
         <div class="seasonPlanningRow"><div class="seasonDeadline"><span id="seasonDeadlineLabel">Season ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="finishEarlyCard" title="Stop counting Character score and projected resources this many days before season end"><span>Finish</span><input id="finishEarlyDays" type="number" min="0" step="0.5" value="0" inputmode="decimal" aria-label="Days before season end"><em>days early</em><button id="finishEarlyMax" class="finishEarlyMax" type="button" title="Find the maximum half-day finish-early value that still reaches the selected Primostar target">Max</button></div></div><small id="finishEarlyMaxHint" class="finishEarlyMaxHint" hidden>Max reached for current purchase plan. To finish earlier, increase Material Realm purchases per day.</small><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="s2ProgressionGates" id="s2ProgressionGates" hidden aria-label="Season 2 progression gates"><span><b>106</b>T4</span><span><b>108</b>Adult Fanto</span><span><b>116</b>Tower</span><span><b>120</b>Realm max</span><span><b>130</b>Scoring + Dungeon</span></div>
+        </section>
         <!-- COMPACT_PROGRESSION_TOP_V1 -->
-        <div class="compactProgression" aria-label="Current progression used by the optimizer">
+        <div class="compactProgression calcFormCard" aria-label="Current progression used by the optimizer">
+          <h3 class="calcGroupTitle">Current upgrades</h3>
           <div class="calcGrid currentProgressGrid">
             <label>Average Skill level<input id="skillLevel" type="number" step="0.125" value="100"></label>
             <label>Average Relic level<input id="relicLevel" min="10" type="number" step="0.05" value="10"></label>
@@ -98,7 +104,7 @@
       <details id="materialsDetails" class="calcPanel currentLevelsPanel materialPlanner collapsibleCard">
         <summary class="materialsSummary compactCardSummary"><span>Materials</span></summary>
         <div class="currentLevelsBody">
-          <div class="materialsStaminaRow">
+          <div class="materialsStaminaRow calcFormCard">
             <b>Stamina</b>
             <select id="staminaMode" title="Late-S1 Ore is verified; Essence/Sand use community-style estimates derived from the same S1 Ore-to-Realm scaling."><option value="auto" selected>Auto</option><option value="ore">Raw Ore</option><option value="essence">Skill Essence</option><option value="sand">Chrono Sand</option></select>
             <small id="staminaCurrentPlan" class="staminaCurrentPlan">Current plan: —</small>
@@ -174,9 +180,11 @@
       </section>
       <p class="targetMessage" id="targetMessage" hidden></p>
       <div class="materialRealmRecommendation" id="materialRealmRecommendation" hidden></div>
-      <h3>Recommended final upgrades</h3>
+      <section class="recommendedUpgradeCard calcFormCard">
+      <h3 class="calcGroupTitle">Recommended final upgrades</h3>
       <div class="optimizerTargets"><span>Skills<b id="targetSkills">—</b></span><span>Relics<b id="targetRelics">—</b></span><span>Fantomons<b id="targetFantomons">—</b></span></div>
       <div class="suggestedGear"><span>Weapon<b id="targetGearWeapon">—</b></span><span>Off-hand<b id="targetGearOffhand">—</b></span><span>Helmet<b id="targetGearHelmet">—</b></span><span>Armor<b id="targetGearArmor">—</b></span><span>Boots<b id="targetGearBoots">—</b></span></div>
+      </section>
       <p class="optimizerSummary" id="optimizerSummary" hidden></p>
       <div class="optimizedResult" hidden><span>After recommended growth</span><b id="optimizedScore">—</b></div>
       <div class="planCosts planCostsFour">

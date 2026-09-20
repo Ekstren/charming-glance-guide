@@ -109,6 +109,8 @@ jobs:
         run: npm run test:layout
       - name: Visible stamina projection regression
         run: npm run test:stamina
+      - name: Calculator card consistency
+        run: npm run test:cards
       - name: Site readability and shared navigation
         run: npm run test:readability
 
