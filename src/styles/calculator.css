@@ -474,3 +474,24 @@
   color: var(--ink);
   cursor: pointer;
 }
+
+/* Keep stamina's contribution visible beside the target, outside input disclosures. */
+#calcResults .resultStamina {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--ui-subpanel);
+}
+#calcResults .resultStaminaHeading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-bottom: 5px;
+}
+#calcResults .resultStaminaHeading strong { font-size: 13px; }
+#calcResults .resultStaminaHeading small { font-size: 12px; color: var(--muted); }
+#calcResults #resultStaminaPlan { margin: 0; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+#calcResults .resultStamina .staminaGain { color: var(--ink); font-weight: 600; }

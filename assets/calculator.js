@@ -2758,7 +2758,7 @@ var SxsCalculator = (() => {
       if (!carry?.valid || !r) return;
       const added = r.staminaAdded || { ore: 0, essence: 0, sand: 0, rolla: 0 };
       const allocation = r.staminaAllocation || { ore: 0, essence: 0, sand: 0, rolla: 0, unassigned: r.staminaNodes || 0 };
-      renderStaminaCurrentPlan2(allocation, added, r);
+      renderStaminaCurrentPlan2(allocation, added, r, "To target");
       const oreStam = added.ore ? ` · Stamina +${fmtCompact(added.ore)}` : "";
       const essStam = added.essence ? ` · Stamina +${fmtCompact(added.essence)}` : "";
       const sandStam = added.sand ? ` · Stamina +${fmtCompact(added.sand)}` : "";
@@ -2880,9 +2880,17 @@ var SxsCalculator = (() => {
       }
       renderPostTargetGains2(reached, plan, pEnd, cfg);
     }
-    function renderStaminaCurrentPlan2(allocation, added, resources) {
+    function renderStaminaCurrentPlan2(allocation, added, resources, horizon = "By planned finish") {
       const el = __calculatorDeps.$("staminaCurrentPlan");
-      if (!el) return;
+      const result = __calculatorDeps.$("resultStamina");
+      const write = (html) => {
+        if (el) el.innerHTML = html;
+        if (result) {
+          __calculatorDeps.$("resultStaminaPlan").innerHTML = html;
+          __calculatorDeps.$("resultStaminaHorizon").textContent = horizon;
+          result.hidden = false;
+        }
+      };
       const a = allocation || { ore: 0, essence: 0, sand: 0, rolla: 0, unassigned: 0 };
       const gain = added || { ore: 0, essence: 0, sand: 0, rolla: 0 };
       const labels = { ore: "Ore", essence: "Essence", sand: "Sand", rolla: "Rolla" };
@@ -2890,18 +2898,18 @@ var SxsCalculator = (() => {
       const mode = __calculatorDeps.staminaMode();
       if (!resources?.yields?.mapReady) {
         const bracket = activeCalcConfig().realmMaxLevel;
-        el.innerHTML = `Current plan: waiting for the Lv.${bracket} map bracket`;
+        write(`Current plan: waiting for the Lv.${bracket} map bracket`);
         return;
       }
       if (!active.length) {
         const unassigned = Math.max(0, Math.floor(Number(a.unassigned) || 0));
-        el.textContent = unassigned ? `Current plan: ${fmt(unassigned)} node${unassigned === 1 ? "" : "s"} unassigned` : "Current plan: no projected Stamina nodes";
+        write(unassigned ? `Current plan: ${fmt(unassigned)} node${unassigned === 1 ? "" : "s"} unassigned` : "Current plan: no projected Stamina nodes");
         return;
       }
       const prefix = mode === "auto" ? "Auto allocation:" : "Current allocation:";
       const allocText = active.map((k) => `${labels[k]} ${fmt(Math.floor(Number(a[k]) || 0))}`).join(" · ");
       const gainText = active.map((k) => `+${fmtCompact(Number(gain[k]) || 0)} ${labels[k]}`).join(" · ");
-      el.innerHTML = `${prefix} ${allocText}<span class="staminaGain"><br>Projected gain: ${gainText}</span>`;
+      write(`${prefix} ${allocText}<span class="staminaGain"><br>Projected gain: ${gainText}</span>`);
     }
     function hidePlanBalance2(id) {
       const el = __calculatorDeps.$(id);
@@ -3175,6 +3183,7 @@ var SxsCalculator = (() => {
       return mismatch;
     }
     function clearS2PreScoring2(cfg) {
+      if (__calculatorDeps.$("resultStamina")) __calculatorDeps.$("resultStamina").hidden = true;
       const current = __calculatorDeps.characterSnapshot(cfg), p = __calculatorDeps.projectCharacter(cfg);
       __calculatorDeps.$("seasonRemaining").textContent = formatRemaining(remainingHoursAt(Date.now(), cfg));
       __calculatorDeps.$("projectedCharacter").value = `Lv.${p.level} · ${(p.pct * 100).toFixed(1)}%`;
@@ -3197,6 +3206,7 @@ var SxsCalculator = (() => {
       renderRealmToolProjection2(cfg);
     }
     function clearS2ProjectedAtFloor2(cfg, p = __calculatorDeps.projectCharacter(cfg)) {
+      if (__calculatorDeps.$("resultStamina")) __calculatorDeps.$("resultStamina").hidden = true;
       const historical = Math.max(0, Math.floor(__calculatorDeps.n("historicalStars", 0)));
       const carried = historical + cfg.starBase;
       const seasonEndP = __calculatorDeps.projectCharacter(cfg);
@@ -3241,6 +3251,7 @@ var SxsCalculator = (() => {
       if (calcSection) calcSection.dataset.lastSolveMs = "0.0";
     }
     function clearCalcForRollover2(cfg) {
+      if (__calculatorDeps.$("resultStamina")) __calculatorDeps.$("resultStamina").hidden = true;
       __calculatorDeps.$("seasonRemaining").textContent = formatRemaining(remainingHoursAt(Date.now(), cfg));
       __calculatorDeps.$("projectedCharacter").value = "Update snapshot";
       __calculatorDeps.$("resultProjectedCharacter").textContent = "Update snapshot";
@@ -3260,6 +3271,7 @@ var SxsCalculator = (() => {
       __calculatorDeps.$("materialRealmRecommendation").hidden = true;
     }
     function clearS2ForRequiredPlannerInputs2(cfg, requirements, p = null) {
+      if (__calculatorDeps.$("resultStamina")) __calculatorDeps.$("resultStamina").hidden = true;
       const missing = [];
       if (!requirements.hasBed) missing.push("Bed EXP/hr");
       missing.push(...requirements.missingCart);
@@ -4451,6 +4463,7 @@ var SxsCalculator = (() => {
     return { bed, cartRates, missingCart, hasBed: bed > 0, hasAllCart: missingCart.length === 0 };
   }
   async function updateCalculator() {
+    if ($("resultStamina")) $("resultStamina").hidden = true;
     syncFinishEarlyInputLimit(activeCalcConfig(), true);
     const updateGeneration = ++optimizerUpdateGeneration;
     const queuedGoalJob = queuedGoalOptimizerJob;
