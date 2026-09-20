@@ -42,21 +42,7 @@ try{
       assert.ok(sizes.every(value=>value>=size),`${label}: undersized ${selector}: ${sizes}`);
     }
     await checkContrast(page,'#buildsSection .priorityList > li > b,#buildsSection .skillGroup b',`${label} priority badges`);
-    const help=await page.locator('#buildsSection .rollHelp:visible').all();
-    assert.ok(help.length,`${label}: missing roll help`);
-    for(const button of help){
-      await button.focus();
-      const tip=await button.evaluate(el=>{
-        const style=getComputedStyle(el,'::after'),row=el.closest('.rollGuideRow').getBoundingClientRect();
-        const rect=el.getBoundingClientRect();
-        return {content:style.content,font:parseFloat(style.fontSize),left:row.left+parseFloat(style.left),right:row.left+parseFloat(style.left)+parseFloat(style.width),width:rect.width,height:rect.height};
-      });
-      assert.ok(tip.content&&tip.content!=='none',`${label}: missing focused tooltip`);
-      assert.ok(tip.font>=12,`${label}: tooltip text too small`);
-      assert.ok(tip.left>=0&&tip.right<=width+1,`${label}: tooltip outside viewport ${JSON.stringify(tip)}`);
-      assert.ok(tip.width>=36&&tip.height>=36,`${label}: help target too small`);
-    }
-    await checkContrast(page,'#buildsSection .rollGuide summary > span,#buildsSection .rollHelp',`${label} help labels`);
+    await checkContrast(page,'#buildsSection .rollGuide summary > span',`${label} roll labels`);
     if(width!==390){
       let states=0;
       for(const cls of ['Conqueror','Guardian','Destroyer','Dominator']){
@@ -91,7 +77,7 @@ try{
     await page.waitForFunction(()=>document.getElementById('companionsSection').dataset.guideReady==='true');
     await checkContrast(page,'#companionsSection .companionNames span,#companionsSection .companionLadder b,#companionsSection .companionGroupHead small,#companionsSection .companionBreakpointTable th,#companionsSection .companionRule > b',`${label} companion accents`);
     assert.deepEqual(errors,[],`${label}: browser errors`);
-    console.log(`Guide design passed: ${label}, typography, contrast, focused help bounds and touch targets`);
+    console.log(`Guide design passed: ${label}, typography, contrast, layout and touch targets`);
     await page.close();
   }
 }finally{await browser.close();}

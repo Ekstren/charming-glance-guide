@@ -887,11 +887,10 @@
     const keys=Array.isArray(profile)?profile:profile?.[mode];
     return (keys||PROFILES.Conqueror).map(k=>R[k]);
   };
-  const help=tip=>`<button type="button" class="rollHelp" aria-label="Affix value details" data-tip="${esc(tip)}">i</button>`;
   const guideHtml=(cls,mode)=>{
     const rows=rowsFor(cls,mode);
     const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls==='Guardian'?`${cls} · ${mode==='dps'?'DPS':'Tank'}`:cls;
-    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Maximum rolls for the substats recommended above.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>`;
+    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Maximum rolls for the substats recommended above.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>`;
   };
   let queued=false;
   function apply(){
