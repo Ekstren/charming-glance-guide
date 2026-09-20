@@ -1,4 +1,4 @@
 {
-  "commit": "191571d5f57eb4162aa5b29395bde1b4dcc6cdcb",
-  "description": "Remove redundant info icons from existing roll rows; retain the explanatory footnote."
+  "commit": "0072b6391c1fa0667ac0724518c0fdaca671e75a",
+  "description": "Remove class introduction sections from Builds while preserving role selectors and the remaining guide layout."
 }
