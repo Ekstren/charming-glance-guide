@@ -5,6 +5,34 @@ import path from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { waitForCalculatorReady } from './calculator_ready.mjs';
 
+// Check every gradient stop as well as solid ancestor surfaces.
+async function checkContrast(page,selector,label){
+  const samples=await page.locator(selector).evaluateAll(elements=>{
+    const canvas=document.createElement('canvas');canvas.width=canvas.height=1;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    const rgba=color=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=color;ctx.fillRect(0,0,1,1);return [...ctx.getImageData(0,0,1,1).data];};
+    const blend=(fg,bg)=>fg.slice(0,3).map((v,i)=>v*fg[3]/255+bg[i]*(1-fg[3]/255));
+    const luminance=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+    return elements.filter(el=>el.getBoundingClientRect().height).map(el=>{
+      const ancestors=[];for(let node=el;node;node=node.parentElement)ancestors.unshift(node);
+      let backgrounds=[[255,255,255]];
+      for(const node of ancestors){
+        const style=getComputedStyle(node);
+        const stops=style.backgroundImage.match(/(?:rgba?\([^)]*\)|color\([^)]*\)|#[0-9a-f]{3,8})/gi)||[];
+        backgrounds=backgrounds.flatMap(bg=>(stops.length?stops:[style.backgroundColor]).map(color=>blend(rgba(color),bg)));
+      }
+      const ratios=backgrounds.map(background=>{
+        const foreground=blend(rgba(getComputedStyle(el).color),background);
+        const a=luminance(foreground),b=luminance(background);
+        return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+      });
+      return {text:el.textContent.trim(),ratio:Math.min(...ratios)};
+    });
+  });
+  assert.ok(samples.length,`${label}: missing contrast samples`);
+  for(const sample of samples)assert.ok(sample.ratio>=4.5,`${label}: ${sample.text} contrast ${sample.ratio.toFixed(2)}:1`);
+}
+
 const fields={targetStars:1060,historicalStars:253,charLevel:136,charExp:7156002,
   bedExp:565321,finishEarlyDays:6.5,skillLevel:140.125,relicLevel:14.4,
   fantomonLevel:139,gearLevel:147.2,exactSkillLevels:'1x141,7x140',
@@ -41,6 +69,14 @@ try {
     await page.waitForTimeout(100);
     await page.waitForFunction(()=>window.__sxsCalculatorSettledV1()&&!document.getElementById('postTargetGains').hidden);
     const context=`${theme} ${width}px`;
+    await checkContrast(page,'#targetMessage:visible,#targetMessage .targetMessageDetail:visible,#targetMessage button:visible,.starTotal small,.postTargetGainGrid small,.realmRecommendUp:visible,.seasonEndExcess:visible',`${context}: populated result accents`);
+    const purchaseButton=page.locator('#targetMessage button:visible');
+    assert.equal(await purchaseButton.count(),1,`${context}: populated recommendation is exercised`);
+    if(await purchaseButton.count()){
+      await purchaseButton.hover();
+      await checkContrast(page,'#targetMessage button:visible',`${context}: purchase button hover`);
+      await page.mouse.move(0,0);
+    }
     const before=await page.locator('#resultStaminaPlan').innerText();
     for(const id of ['characterDetails','materialsDetails']){
       await page.locator(`#${id} > summary`).click();
@@ -98,6 +134,20 @@ try {
     assert.ok(layout.overflow<=1,`${context}: no page overflow`);
     assert.deepEqual(layout.clipped,[],`${context}: no clipped cards`);
     assert.deepEqual(errors,[],`${context}: browser errors`);
+    // Expanded explanations must retain the same readable scale as the main cards.
+    const expandedReading=await page.evaluate(()=>{
+      const disclosures=[...document.querySelectorAll('#calculatorSection .resultDetails,#calculatorSection .methodPanel')];
+      const prior=disclosures.map(el=>el.open);
+      disclosures.forEach(el=>el.open=true);
+      const selectors=['.methodPanel p','.breakdownExplain','.rewardCount','.primostarRewardsIntro','.scoreBreakdown dt','.scoreBreakdown dd','.primostarRewardRow','.primostarRewardRow *','.methodPanel p *'];
+      const text=selectors.flatMap(selector=>[...document.querySelectorAll(`#calculatorSection ${selector}`)].filter(el=>el.getBoundingClientRect().height>0).map(el=>({selector,size:parseFloat(getComputedStyle(el).fontSize)})));
+      const overflow=document.documentElement.scrollWidth-innerWidth;
+      disclosures.forEach((el,index)=>el.open=prior[index]);
+      return {text,overflow};
+    });
+    assert.ok(expandedReading.text.length>20,`${context}: expanded reference content present`);
+    for(const item of expandedReading.text) assert.ok(item.size>=12,`${context}: readable ${item.selector}`);
+    assert.ok(expandedReading.overflow<=1,`${context}: expanded content fits viewport`);
     if(width===390||width===1440) await page.locator('#calculatorSection').screenshot({path:path.join(screenshotDir,`${theme}-${width}.png`)});
     console.log(`Calculator card layout passed: ${context}`);
     await page.close();

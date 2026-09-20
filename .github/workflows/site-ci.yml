@@ -114,6 +114,8 @@ jobs:
       - name: Site readability and shared navigation
         run: npm run test:readability
 
+      - name: Timeline and guide design consistency
+        run: npm run test:design
       - name: Screenshot regression against approved baseline
         run: npm run test:visual
       - name: Mobile CPU performance comparison
