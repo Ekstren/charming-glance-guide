@@ -943,10 +943,10 @@ function lockFinishEarlyMaxForPurchasePlan(){
     btn.dataset.maxLocked='true';
     btn.disabled=true;
     btn.textContent='Max';
-    btn.title='Current purchase plan sets this Max. Increase Material Realm purchases/day to finish earlier.';
+    btn.title='Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.';
     btn.removeAttribute('aria-busy');
     if(hint){
-      hint.textContent='Current purchase plan sets this Max. Increase Material Realm purchases/day to finish earlier.';
+      hint.textContent='Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.';
       hint.hidden=false;
     }
   }
