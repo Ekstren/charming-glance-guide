@@ -7473,8 +7473,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 #targetMessage .targetMessageDetail {
   margin-top: 4px!important;
-  font-weight: 700!important;
-  opacity: .9!important
+  font-weight: 700!important
 }
 @media(max-width:700px) {
   .planCosts>span {
@@ -7977,7 +7976,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 .builds .metaTournamentScenario.active {
   grid-template-columns: minmax(0,1fr)auto;
-  background: var(--accent-strong)
+  background: var(--selected-bg)
 }
 .builds .metaTournamentScenario.active>.metaTournamentMain {
   background: transparent;
@@ -7995,8 +7994,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .builds .metaTournamentTabs button {
   border: 0;
   border-radius: 6px;
-  background: rgba(255,255,255,.12);
-  color: #fff;
+  background: var(--ui-panel);
+  color: var(--reading-text);
   cursor: pointer;
   font-size: 9px;
   font-weight: 850;
@@ -8004,7 +8003,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   padding: 4px 7px
 }
 .builds .metaTournamentTabs button:hover {
-  background: rgba(255,255,255,.2)
+  background: var(--ui-subpanel)
 }
 .builds .metaTournamentTabs button.active {
   background: rgba(255,255,255,.3)
@@ -8434,17 +8433,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   content: attr(data-tip);
   position: absolute;
   z-index: 100;
-  left: 0;
-  bottom: calc(100% + 6px);
-  width: min(245px,72vw);
-  padding: 7px 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--surface);
-  color: var(--body-text);
-  font-size: 8.5px;
-  font-weight: 650;
-  line-height: 1.35;
   text-align: left;
   white-space: normal;
   box-shadow: 0 8px 22px #0004;
@@ -8471,10 +8461,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
   .rollGuideValue {
     font-size: 9px
-  }
-  .rollHelp:hover:after,.rollHelp:focus:after {
-    left: -6px;
-    width: min(235px,78vw)
   }
 }
 .topbar {
@@ -9589,26 +9575,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .postTargetGainGrid span {
   display: block;
   color: var(--muted);
-  font-size: 8px;
-  font-weight: 850;
   text-transform: uppercase;
   letter-spacing: .045em
 }
 .postTargetGainGrid b {
   display: block;
   color: var(--ink);
-  font-size: 16px;
-  line-height: 1.2;
-  margin-top: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis
+  margin-top: 4px
 }
 .postTargetGainGrid small {
   display: block;
   color: var(--green);
-  font-size: 8px;
-  font-weight: 800;
   margin-top: 5px
 }
 @media(max-width:760px) {
