@@ -69,6 +69,9 @@ async function capture(root,width,theme){
      const roles=cls==='Dominator'?['dps','heals']:[null];
      for(const role of roles){
       if(role)await page.locator(`[data-companion-role="${role}"]`).click();
+      // Element screenshots scroll the page; park the pointer outside the section
+      // so a tab cannot gain hover as content moves beneath the last click.
+      await page.mouse.move(0,0);
       shots[`companion-${cls}-${role||'default'}`]=await page.locator('#companionsSection').screenshot();
      }
     }
