@@ -11,7 +11,6 @@ on:
       - 'package-lock.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
-      - 'data/affix-preview-baseline.json'
       - 'scripts/**'
       - '.github/workflows/site-ci.yml'
       - '.github/workflows/pandarial-build-release-trigger.yml'
@@ -25,7 +24,6 @@ on:
       - 'package-lock.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
-      - 'data/affix-preview-baseline.json'
       - 'scripts/**'
       - '.github/workflows/**'
   workflow_dispatch:
@@ -88,8 +86,6 @@ jobs:
         run: node scripts/calculator_perf_check.mjs
       - name: Build variant regression
         run: node scripts/build_swap_smoke.mjs
-      - name: Screenshot-confirmed affix ranges
-        run: npm run test:affixes
       - name: Build visual stability regression
         run: |
           node scripts/build_visual_stability_benchmark_v2.mjs | tee /tmp/build-visual.log

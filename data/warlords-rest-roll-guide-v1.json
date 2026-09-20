@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "purpose": "Historical release estimates, superseded by the screenshot-confirmed current affix baseline. Not used by the live Builds section.",
+  "purpose": "Pre-staged reroll/refinement values for the Charming Glance Warlord's Rest unlock. This file does not change the live site by itself.",
   "release_gate": {
     "server": "Charming Glance",
     "event": "Warlord's Rest",
@@ -177,6 +177,5 @@
     "https://www.reddit.com/r/SwordxStaff_Official/comments/1vi0ytl/what_legendary_skill_the_best/",
     "https://www.prydwen.gg/sword-x-staff/guides/build-guide-conqueror",
     "https://www.prydwen.gg/sword-x-staff/guides/build-guide-guardian"
-  ],
-  "superseded_by": "affix-preview-baseline.json"
+  ]
 }

@@ -45,72 +45,72 @@ var SxsBuilds = (() => {
     "assets/builds.js"() {
       init_define_GUIDE_BUILD_IDS();
       (function() {
-        const role2 = (name, subtitle, techniques, charms, offensive, defensive, confidence = "Guide core") => ({ name, subtitle, techniques, charms, offensive, defensive, confidence });
+        const role = (name, subtitle, techniques, charms, offensive, defensive, confidence = "Guide core") => ({ name, subtitle, techniques, charms, offensive, defensive, confidence });
         const pick = (name, why) => ({ name, why });
         const ROLE_PRESETS = {
           Berserker: [
-            role2("Generic PvE", "Default S1 progression and general PvE", ["Hunter's Judgment", "Sunset Sword", "Eclipse Slash", "Lion Combo"], ["Insightful Eye", "Blade of Judgment", "Blade Siphon", "Indomitable Will"], "If survival is already solved, Indomitable Will → a damage charm.", "Low Crit: Blade Siphon → Blade of Lament.", "Guide consensus"),
-            role2("Dragon", "Long single-target / Dragon damage", ["Flame Aura", "Sunset Sword", "Eclipse Slash", "Lion Combo"], ["Insightful Eye", "Blade of Judgment", "Blazing Clash", "Crit Mastery"], "This is the dedicated damage setup for Dragon and similar long single-target fights.", "If the boss can actually kill you, replace one greed charm with Indomitable Will.", "Guide consensus"),
-            role2("Arena", "Solo PvP burst / mobility", ["Darkness Descends", "Lion Combo", "Eclipse Slash", "Sunset Sword"], ["Insightful Eye", "Blade of Judgment", "Frame of Battles", "Indomitable Will"], "Use mobility, multi-hit pressure and cheat-death to stay on the target through the opening exchange.", "Keep Indomitable Will. Into reflect/block tanks, reduce multi-hit exposure with the Flash Dash / Heavy Impact / Doom Blade / Darkness Descends anti-tank setup.", "Prydwen Arena"),
-            role2("Tournament", "Team PvP grouping / area pressure", ["Hunter's Judgment", "Flame Aura", "Eclipse Slash", "Sunset Sword"], ["Insightful Eye", "Blade of Judgment", "Frame of Battles", "Indomitable Will"], "Hunter’s Judgment groups targets for teammates while Flame Aura adds team-fight pressure; if your comp already controls targets, Hunter’s Judgment → Lion Combo.", "Keep Indomitable Will; the team build should not greed away its survival layer.", "Multi-guide team PvP")
+            role("Generic PvE", "Default S1 progression and general PvE", ["Hunter's Judgment", "Sunset Sword", "Eclipse Slash", "Lion Combo"], ["Insightful Eye", "Blade of Judgment", "Blade Siphon", "Indomitable Will"], "If survival is already solved, Indomitable Will → a damage charm.", "Low Crit: Blade Siphon → Blade of Lament.", "Guide consensus"),
+            role("Dragon", "Long single-target / Dragon damage", ["Flame Aura", "Sunset Sword", "Eclipse Slash", "Lion Combo"], ["Insightful Eye", "Blade of Judgment", "Blazing Clash", "Crit Mastery"], "This is the dedicated damage setup for Dragon and similar long single-target fights.", "If the boss can actually kill you, replace one greed charm with Indomitable Will.", "Guide consensus"),
+            role("Arena", "Solo PvP burst / mobility", ["Darkness Descends", "Lion Combo", "Eclipse Slash", "Sunset Sword"], ["Insightful Eye", "Blade of Judgment", "Frame of Battles", "Indomitable Will"], "Use mobility, multi-hit pressure and cheat-death to stay on the target through the opening exchange.", "Keep Indomitable Will. Into reflect/block tanks, reduce multi-hit exposure with the Flash Dash / Heavy Impact / Doom Blade / Darkness Descends anti-tank setup.", "Prydwen Arena"),
+            role("Tournament", "Team PvP grouping / area pressure", ["Hunter's Judgment", "Flame Aura", "Eclipse Slash", "Sunset Sword"], ["Insightful Eye", "Blade of Judgment", "Frame of Battles", "Indomitable Will"], "Hunter’s Judgment groups targets for teammates while Flame Aura adds team-fight pressure; if your comp already controls targets, Hunter’s Judgment → Lion Combo.", "Keep Indomitable Will; the team build should not greed away its survival layer.", "Multi-guide team PvP")
           ],
           Paladin: [
-            role2("Dungeon Tank", "Primary party-tank setup", ["Valor Surge", "Heart of Challenge", "Luminous Shield", "Desperate Protection"], ["Iron Fortress", "Block Mastery", "Block Awareness", "Stone Skin"], "If survival is comfortable, Luminous Shield → Lunarwater Threads for damage and pull utility.", "This is the defense-first setup for difficult dungeons and also maps well to team PvP.", "Guide consensus"),
-            role2("Water Offensive", "AoE-oriented Water / counter damage", ["Guardian Ring", "Lunarwater Threads", "Frostbite Blossom", "Heart of Challenge"], ["Ripple Impact", "Defensive Assault", "Pursuit of Victory", "Insightful Eye"], "Use when you need real damage instead of maximum party protection.", "If you die too easily, move back toward the Dungeon Tank setup or add Potential Rebirth.", "Prydwen core"),
-            role2("Boss DPS / Off-Tank", "Damage-oriented boss setup", ["Valor Surge", "Leap Attack", "Heavy Impact", "Star Shattering Slash"], ["Strength Rules", "Insightful Eye", "Pursuit of Victory", "Warrior's Essence"], "Use when another tank or your gear already handles survival and the group needs more damage.", "If survival becomes the limiter, use Dungeon Tank instead.", "Multi-guide"),
-            role2("Arena", "Solo reflect / block bruiser", ["Luminous Shield", "Leap Attack", "Star Shattering Slash", "Valor Surge"], ["Rebound", "Block Mastery", "Block Awareness", "Stone Skin"], "Arena is about surviving the burst window and letting Block/Rebound punish repeated hits before Star Shattering Slash comes online.", "If the opponent cannot pressure you, Stone Skin can flex to a damage charm; do not sacrifice Block consistency just for sheet power.", "Community Arena"),
-            role2("Tournament", "Team protection / frontline", ["Valor Surge", "Heart of Challenge", "Luminous Shield", "Desperate Protection"], ["Iron Fortress", "Block Mastery", "Block Awareness", "Stone Skin"], "Use the full tank setup in team PvP: buff, hold aggro/control space and keep allies alive instead of chasing solo damage.", "If the team is already safe, Luminous Shield can flex to Lunarwater Threads for pull pressure.", "Guide-derived team PvP")
+            role("Dungeon Tank", "Primary party-tank setup", ["Valor Surge", "Heart of Challenge", "Luminous Shield", "Desperate Protection"], ["Iron Fortress", "Block Mastery", "Block Awareness", "Stone Skin"], "If survival is comfortable, Luminous Shield → Lunarwater Threads for damage and pull utility.", "This is the defense-first setup for difficult dungeons and also maps well to team PvP.", "Guide consensus"),
+            role("Water Offensive", "AoE-oriented Water / counter damage", ["Guardian Ring", "Lunarwater Threads", "Frostbite Blossom", "Heart of Challenge"], ["Ripple Impact", "Defensive Assault", "Pursuit of Victory", "Insightful Eye"], "Use when you need real damage instead of maximum party protection.", "If you die too easily, move back toward the Dungeon Tank setup or add Potential Rebirth.", "Prydwen core"),
+            role("Boss DPS / Off-Tank", "Damage-oriented boss setup", ["Valor Surge", "Leap Attack", "Heavy Impact", "Star Shattering Slash"], ["Strength Rules", "Insightful Eye", "Pursuit of Victory", "Warrior's Essence"], "Use when another tank or your gear already handles survival and the group needs more damage.", "If survival becomes the limiter, use Dungeon Tank instead.", "Multi-guide"),
+            role("Arena", "Solo reflect / block bruiser", ["Luminous Shield", "Leap Attack", "Star Shattering Slash", "Valor Surge"], ["Rebound", "Block Mastery", "Block Awareness", "Stone Skin"], "Arena is about surviving the burst window and letting Block/Rebound punish repeated hits before Star Shattering Slash comes online.", "If the opponent cannot pressure you, Stone Skin can flex to a damage charm; do not sacrifice Block consistency just for sheet power.", "Community Arena"),
+            role("Tournament", "Team protection / frontline", ["Valor Surge", "Heart of Challenge", "Luminous Shield", "Desperate Protection"], ["Iron Fortress", "Block Mastery", "Block Awareness", "Stone Skin"], "Use the full tank setup in team PvP: buff, hold aggro/control space and keep allies alive instead of chasing solo damage.", "If the team is already safe, Luminous Shield can flex to Lunarwater Threads for pull pressure.", "Guide-derived team PvP")
           ],
           Archmage: [
-            role2("AoE", "Best general wave-clear and mixed-group setup", ["Divine Wrath", "Howling Hurricane", "Meteoric Flames", "Lightning Chain"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "Mana Surge can flex to Repelling Wind, Lightning Mystery, or Elemental Harmony if one tests better for your account.", "Keep Void Bubble unless you completely outgear the content.", "Guide consensus"),
-            role2("Single Target", "Boss / concentrated damage", ["Divine Wrath", "Howling Hurricane", "Meteoric Flames", "Wind's Delight"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "On smaller bosses, Divine Wrath → Tempest Sphere. The Tempest Sphere version is also the better PvP adaptation.", "Keep Void Bubble unless survival is irrelevant.", "Guide consensus"),
-            role2("Arena", "Fast solo burst without Divine Wrath RNG", ["Tempest Sphere", "Howling Hurricane", "Meteoric Flames", "Wind's Delight"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "The single-target setup without Divine Wrath is more reliable in PvP because Tempest Sphere hits player-sized targets more consistently.", "Keep Void Bubble; Mana Surge → Repelling Wind when melee pressure is the matchup problem.", "Prydwen Arena"),
-            role2("Tournament", "Team AoE pressure", ["Tempest Sphere", "Howling Hurricane", "Meteoric Flames", "Lightning Chain"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "Tournament rewards wider coverage more than solo Arena, so keep the reliable PvP core but trade the single-target finisher for Lightning Chain.", "Keep Void Bubble. Do not force Divine Wrath into small-player targeting just because it is strong on bosses.", "Guide-derived team PvP")
+            role("AoE", "Best general wave-clear and mixed-group setup", ["Divine Wrath", "Howling Hurricane", "Meteoric Flames", "Lightning Chain"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "Mana Surge can flex to Repelling Wind, Lightning Mystery, or Elemental Harmony if one tests better for your account.", "Keep Void Bubble unless you completely outgear the content.", "Guide consensus"),
+            role("Single Target", "Boss / concentrated damage", ["Divine Wrath", "Howling Hurricane", "Meteoric Flames", "Wind's Delight"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "On smaller bosses, Divine Wrath → Tempest Sphere. The Tempest Sphere version is also the better PvP adaptation.", "Keep Void Bubble unless survival is irrelevant.", "Guide consensus"),
+            role("Arena", "Fast solo burst without Divine Wrath RNG", ["Tempest Sphere", "Howling Hurricane", "Meteoric Flames", "Wind's Delight"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "The single-target setup without Divine Wrath is more reliable in PvP because Tempest Sphere hits player-sized targets more consistently.", "Keep Void Bubble; Mana Surge → Repelling Wind when melee pressure is the matchup problem.", "Prydwen Arena"),
+            role("Tournament", "Team AoE pressure", ["Tempest Sphere", "Howling Hurricane", "Meteoric Flames", "Lightning Chain"], ["Rapid Cast", "Void Bubble", "Mana Surge", "Radiant Sear"], "Tournament rewards wider coverage more than solo Arena, so keep the reliable PvP core but trade the single-target finisher for Lightning Chain.", "Keep Void Bubble. Do not force Divine Wrath into small-player targeting just because it is strong on bosses.", "Guide-derived team PvP")
           ],
           Arcanist: [
-            role2("AoE DPS", "Dark Erosion for groups and mixed waves", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow Impact"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "This is the standard T3 AoE Erosion package.", "Effect Hit Rate matters; fix EHR before breaking the Erosion core.", "Guide consensus"),
-            role2("Single Target DPS", "Boss-focused Dark Erosion", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Use for bosses and other concentrated targets.", "If Erosion is unreliable, the problem is usually insufficient Effect Hit Rate.", "Guide consensus"),
-            role2("Healing", "Dungeon / group healer", ["Void Blessing", "Waterling Summon", "Radiant Restoration", "Frenzy Totem"], ["Resurrection", "Healing Mastery", "Overhealing", "Gale Shield"], "Gale Shield is the practical default flex from AllClash; replace it with encounter-specific utility when needed.", "This is the dedicated healer/support setup, not a DPS variation.", "Guide consensus"),
-            role2("Arena", "Solo Dark burst / Erosion cash-out", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Solo Arena favors actually killing the target: build Erosion, cash it out with Shadow of Termination and let Shadow Vengeance buy the finishing turn.", "Do not default to the healer bar in solo PvP; PvP healing is reduced and needs real Healing Boost/SPD investment to justify it.", "Guide-derived Arena"),
-            role2("Tournament", "Hybrid team pressure / revive utility", ["Mana Blast", "Abyssal Hand", "Radiant Restoration", "Frenzy Totem"], ["Resurrection", "Shadow Vengeance", "Shadow Erosion", "Linked Misfortune"], "Tournament should not default to full healing: Mana Blast + Abyssal Hand provide Dark pressure, Erosion and Slow while Frenzy Totem buffs the team and Radiant Restoration gives one efficient group-heal slot.", "PvP healing is heavily reduced. Only move toward the dedicated Healing setup when your Healing Boost/SPD are genuinely built for it; otherwise keep Resurrection + damage/debuff utility.", "Community hybrid PvP")
+            role("AoE DPS", "Dark Erosion for groups and mixed waves", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow Impact"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "This is the standard T3 AoE Erosion package.", "Effect Hit Rate matters; fix EHR before breaking the Erosion core.", "Guide consensus"),
+            role("Single Target DPS", "Boss-focused Dark Erosion", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Use for bosses and other concentrated targets.", "If Erosion is unreliable, the problem is usually insufficient Effect Hit Rate.", "Guide consensus"),
+            role("Healing", "Dungeon / group healer", ["Void Blessing", "Waterling Summon", "Radiant Restoration", "Frenzy Totem"], ["Resurrection", "Healing Mastery", "Overhealing", "Gale Shield"], "Gale Shield is the practical default flex from AllClash; replace it with encounter-specific utility when needed.", "This is the dedicated healer/support setup, not a DPS variation.", "Guide consensus"),
+            role("Arena", "Solo Dark burst / Erosion cash-out", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Solo Arena favors actually killing the target: build Erosion, cash it out with Shadow of Termination and let Shadow Vengeance buy the finishing turn.", "Do not default to the healer bar in solo PvP; PvP healing is reduced and needs real Healing Boost/SPD investment to justify it.", "Guide-derived Arena"),
+            role("Tournament", "Hybrid team pressure / revive utility", ["Mana Blast", "Abyssal Hand", "Radiant Restoration", "Frenzy Totem"], ["Resurrection", "Shadow Vengeance", "Shadow Erosion", "Linked Misfortune"], "Tournament should not default to full healing: Mana Blast + Abyssal Hand provide Dark pressure, Erosion and Slow while Frenzy Totem buffs the team and Radiant Restoration gives one efficient group-heal slot.", "PvP healing is heavily reduced. Only move toward the dedicated Healing setup when your Healing Boost/SPD are genuinely built for it; otherwise keep Resurrection + damage/debuff utility.", "Community hybrid PvP")
           ],
           Conqueror: [
-            role2("Dungeon", "Fast-clear S2 dungeon meta", ["Flash Fire", "Flame Aura", "Flickering Blade", "Blade Storm"], ["Piercing Assault", "Tactical Adaptation", "Soul Splash", "Insightful Eye"], "Flash Fire and Flame Aura provide fast area pressure while Flickering Blade and Blade Storm clean up survivors. High Crit: Insightful Eye → Soul Breaker.", "Soul Splash is the default safety slot. Use Indomitable Will if deaths are costing clears, and Aegiswing when you need more survivability.", "Current Global meta"),
-            role2("Crucible / Conquest", "Single-target score / raid-boss meta", ["Flame Aura", "Blade Storm", "Flash Fire", "Flickering Blade"], ["Piercing Assault", "Tactical Adaptation", "Blazing Clash", "Insightful Eye"], "Flame Aura, Blade Storm, Flash Fire, and Flickering Blade maximize sustained single-target pressure. High Crit: Insightful Eye → Crit Mastery.", "Prioritize rank and ascension on the four equipped Techniques. Indomitable Will is the safety flex when the boss can kill you.", "Prydwen score core"),
-            role2("Arena", "Solo PvP / anti-Guardian pressure", ["Darkness Descends", "Doom Blade", "Flickering Blade", "Blade Storm"], ["Piercing Assault", "Tactical Adaptation", "Soul Breaker", "Indomitable Will"], "Darkness Descends supplies mobility and Dispel, while Doom Blade, Flickering Blade, and Blade Storm keep pressure high. Low Crit: Soul Breaker → Insightful Eye.", "Accuracy is especially valuable against high-Block Guardians. Indomitable Will protects against opening burst.", "Current PvP"),
-            role2("Tournament · 2v2", "Duo PvP: sustain + kill pressure", ["Darkness Descends", "Soul Piercer", "Flickering Blade", "Blade Storm"], ["Piercing Assault", "Tactical Adaptation", "Soul Breaker", "Indomitable Will"], "Soul Piercer adds sustain, Darkness Descends handles mobility and Dispel, and Flickering Blade + Blade Storm provide kill pressure. Low Crit: Soul Breaker → Insightful Eye.", "Indomitable Will is core insurance in 2v2. Doom Blade is an offensive flex when your partner already provides enough control.", "Current Global PvP"),
-            role2("Tournament · 4v4", "Team PvP: reach, Dispel and coordinated tempo", ["Flash Fire", "Darkness Descends", "Flickering Blade", "Blade Storm"], ["Insightful Eye", "Piercing Assault", "Tactical Adaptation", "Indomitable Will"], "Flash Fire gives reach, Darkness Descends removes buffs, and Flickering Blade + Blade Storm provide coordinated pressure. If your team wants Gale Dance, swap Flash Fire → Gale Dance; normally only one Conqueror should carry it, preferably the higher-rank Gale Dance user.", "Indomitable Will protects against focus fire. Insightful Eye → Soul Breaker at high Crit.", "Current Global PvP")
+            role("Dungeon", "Fast-clear S2 dungeon meta", ["Flash Fire", "Flame Aura", "Flickering Blade", "Blade Storm"], ["Piercing Assault", "Tactical Adaptation", "Soul Splash", "Insightful Eye"], "Flash Fire and Flame Aura provide fast area pressure while Flickering Blade and Blade Storm clean up survivors. High Crit: Insightful Eye → Soul Breaker.", "Soul Splash is the default safety slot. Use Indomitable Will if deaths are costing clears, and Aegiswing when you need more survivability.", "Current Global meta"),
+            role("Crucible / Conquest", "Single-target score / raid-boss meta", ["Flame Aura", "Blade Storm", "Flash Fire", "Flickering Blade"], ["Piercing Assault", "Tactical Adaptation", "Blazing Clash", "Insightful Eye"], "Flame Aura, Blade Storm, Flash Fire, and Flickering Blade maximize sustained single-target pressure. High Crit: Insightful Eye → Crit Mastery.", "Prioritize rank and ascension on the four equipped Techniques. Indomitable Will is the safety flex when the boss can kill you.", "Prydwen score core"),
+            role("Arena", "Solo PvP / anti-Guardian pressure", ["Darkness Descends", "Doom Blade", "Flickering Blade", "Blade Storm"], ["Piercing Assault", "Tactical Adaptation", "Soul Breaker", "Indomitable Will"], "Darkness Descends supplies mobility and Dispel, while Doom Blade, Flickering Blade, and Blade Storm keep pressure high. Low Crit: Soul Breaker → Insightful Eye.", "Accuracy is especially valuable against high-Block Guardians. Indomitable Will protects against opening burst.", "Current PvP"),
+            role("Tournament · 2v2", "Duo PvP: sustain + kill pressure", ["Darkness Descends", "Soul Piercer", "Flickering Blade", "Blade Storm"], ["Piercing Assault", "Tactical Adaptation", "Soul Breaker", "Indomitable Will"], "Soul Piercer adds sustain, Darkness Descends handles mobility and Dispel, and Flickering Blade + Blade Storm provide kill pressure. Low Crit: Soul Breaker → Insightful Eye.", "Indomitable Will is core insurance in 2v2. Doom Blade is an offensive flex when your partner already provides enough control.", "Current Global PvP"),
+            role("Tournament · 4v4", "Team PvP: reach, Dispel and coordinated tempo", ["Flash Fire", "Darkness Descends", "Flickering Blade", "Blade Storm"], ["Insightful Eye", "Piercing Assault", "Tactical Adaptation", "Indomitable Will"], "Flash Fire gives reach, Darkness Descends removes buffs, and Flickering Blade + Blade Storm provide coordinated pressure. If your team wants Gale Dance, swap Flash Fire → Gale Dance; normally only one Conqueror should carry it, preferably the higher-rank Gale Dance user.", "Indomitable Will protects against focus fire. Insightful Eye → Soul Breaker at high Crit.", "Current Global PvP")
           ],
           Guardian: [
-            role2("Dungeon · Tank", "Primary S2 party-tank meta", ["Valor Surge", "Heart of Challenge", "Luminous Shield", "Desperate Protection"], ["Iron Will", "Holy Aegis", "Block Awareness", "Soul Protection"], "Valor Surge buffs the party, Heart of Challenge controls aggro, and Luminous Shield + Desperate Protection stabilize heavy damage. Need more Taunt: Desperate Protection → Hamper Strike when survival is already stable.", "Iron Will, Holy Aegis, Block Awareness, and Soul Protection form the default survival package. Iron Fortress is the first flex when the whole team needs more mitigation.", "Prydwen dungeon core"),
-            role2("Crucible / Conquest · Tank", "Carry-support / boss tank meta", ["Valor Surge", "Leap Attack", "Holy Purification", "Lunarwater Threads"], ["Frigid Aura", "Frigid Glint", "Iron Fortress", "Oath of Vigil"], "Valor Surge supports the carry, Holy Purification brings Dispel, Leap Attack contributes DEF Down, and Lunarwater Threads adds Water/Cold pressure.", "Frigid Aura + Frigid Glint add boss damage while Iron Fortress + Oath of Vigil protect the party. If personal survival is a problem, Frigid Glint → Soul Protection; then Frigid Aura → Holy Aegis.", "Guide-backed"),
-            role2("Arena · Tank", "Solo block / reflect wall", ["Valor Surge", "Luminous Shield", "Star Shattering Slash", "Desperate Protection"], ["Rebound", "Holy Aegis", "Block Mastery", "Soul Protection"], "Valor Surge keeps the damage buff and cleanse online while Star Shattering Slash supplies kill pressure; Luminous Shield and Desperate Protection cover burst windows.", "Rebound, Holy Aegis, Block Mastery, and Soul Protection reward high Block and punish repeated hits. Low Block: Soul Protection → Block Awareness.", "Current PvP"),
-            role2("Tournament · 2v2 · Tank", "Duo frontline: protect one carry and still threaten", ["Valor Surge", "Hamper Strike", "Luminous Shield", "Desperate Protection"], ["Iron Will", "Rebound", "Iron Fortress", "Oath of Vigil"], "Valor Surge buffs and cleanses the duo, Hamper Strike provides repeatable Taunt, and Luminous Shield + Desperate Protection absorb focus pressure.", "Oath of Vigil protects your partner; Iron Fortress and Iron Will absorb team pressure. Rebound → Soul Protection if you are being focused too hard.", "Current PvP"),
-            role2("Tournament · 4v4 · Tank", "Full-team control tank: pull + Taunt + self-survival", ["Valor Surge", "Heart of Challenge", "Lunarwater Threads", "Luminous Shield"], ["Iron Will", "Soul Protection", "Iron Fortress", "Oath of Vigil"], "Valor Surge buffs and cleanses the team, Lunarwater Threads pulls enemies into your control zone, Heart of Challenge applies broad Taunt, and Luminous Shield helps the Guardian survive the resulting focus fire.", "This is the default organized 4v4 control bar. Desperate Protection is an ally-protection fallback when Taunt/control is unreliable; when the control package is working, keeping the Guardian alive is the higher-value fourth-slot job.", "Current Global PvP control tank"),
-            role2("Dungeon · DPS", "Water AoE / fast-clear bruiser", ["Valor Surge", "Swirling Blade", "Lunarwater Threads", "Raging Maelstrom"], ["Frigid Aura", "Defensive Assault", "Frigid Glint", "Potential Rebirth"], "Valor Surge keeps the damage buff and cleanse online while Swirling Blade, Lunarwater Threads, and Raging Maelstrom handle Water/Cold AoE pressure.", "Potential Rebirth covers risky clears. Pursuit of Victory is the damage flex once survivability is comfortable.", "Prydwen Water core"),
-            role2("Crucible / Conquest · DPS", "Single-target Guardian score build", ["Valor Surge", "Swirling Blade", "Lunarwater Threads", "Star Shattering Slash"], ["Frigid Aura", "Defensive Assault", "Frigid Glint", "Pursuit of Victory"], "Valor Surge keeps the damage buff active while Swirling Blade + Lunarwater Threads maintain Water/Cold pressure and Star Shattering Slash delivers the heavy single-target hit.", "Frigid Aura, Defensive Assault, Frigid Glint, and Pursuit of Victory maximize the Water/Cold damage package. If Star Shattering Slash is badly under-ranked, compare it with Raging Maelstrom on your account.", "Prydwen ST hybrid + Global testing"),
-            role2("Arena · DPS", "Offensive block / counter bruiser", ["Valor Surge", "Swirling Blade", "Luminous Shield", "Star Shattering Slash"], ["Rebound", "Holy Aegis", "Block Mastery", "Eye for an Eye"], "Valor Surge keeps its buff and cleanse active while Swirling Blade + Star Shattering Slash supply kill pressure and Luminous Shield preserves bruiser durability.", "Rebound, Holy Aegis, Block Mastery, and Eye for an Eye turn Block into counter pressure. Eye for an Eye → Soul Protection or Potential Rebirth if burst is too high.", "Prydwen + PvP"),
-            role2("Tournament · 2v2 · DPS", "Duo bruiser: survive focus while threatening kills", ["Valor Surge", "Swirling Blade", "Luminous Shield", "Star Shattering Slash"], ["Rebound", "Holy Aegis", "Block Mastery", "Eye for an Eye"], "Valor Surge buffs and cleanses the duo while Swirling Blade + Star Shattering Slash create kill pressure and Luminous Shield helps survive focus.", "Rebound, Holy Aegis, and Block Mastery support the bruiser core. Eye for an Eye → Soul Protection when you are the primary focus target.", "Current PvP"),
-            role2("Tournament · 4v4 · DPS", "Water AoE team-pressure build", ["Valor Surge", "Swirling Blade", "Lunarwater Threads", "Raging Maelstrom"], ["Frigid Aura", "Defensive Assault", "Frigid Glint", "Potential Rebirth"], "Valor Surge buffs and cleanses the team while Swirling Blade, Lunarwater Threads, and Raging Maelstrom spread Water/Cold pressure across the enemy team.", "Potential Rebirth is the safety slot. Pursuit of Victory is the damage flex when another frontline is reliably absorbing focus.", "Prydwen Water + PvP")
+            role("Dungeon · Tank", "Primary S2 party-tank meta", ["Valor Surge", "Heart of Challenge", "Luminous Shield", "Desperate Protection"], ["Iron Will", "Holy Aegis", "Block Awareness", "Soul Protection"], "Valor Surge buffs the party, Heart of Challenge controls aggro, and Luminous Shield + Desperate Protection stabilize heavy damage. Need more Taunt: Desperate Protection → Hamper Strike when survival is already stable.", "Iron Will, Holy Aegis, Block Awareness, and Soul Protection form the default survival package. Iron Fortress is the first flex when the whole team needs more mitigation.", "Prydwen dungeon core"),
+            role("Crucible / Conquest · Tank", "Carry-support / boss tank meta", ["Valor Surge", "Leap Attack", "Holy Purification", "Lunarwater Threads"], ["Frigid Aura", "Frigid Glint", "Iron Fortress", "Oath of Vigil"], "Valor Surge supports the carry, Holy Purification brings Dispel, Leap Attack contributes DEF Down, and Lunarwater Threads adds Water/Cold pressure.", "Frigid Aura + Frigid Glint add boss damage while Iron Fortress + Oath of Vigil protect the party. If personal survival is a problem, Frigid Glint → Soul Protection; then Frigid Aura → Holy Aegis.", "Guide-backed"),
+            role("Arena · Tank", "Solo block / reflect wall", ["Valor Surge", "Luminous Shield", "Star Shattering Slash", "Desperate Protection"], ["Rebound", "Holy Aegis", "Block Mastery", "Soul Protection"], "Valor Surge keeps the damage buff and cleanse online while Star Shattering Slash supplies kill pressure; Luminous Shield and Desperate Protection cover burst windows.", "Rebound, Holy Aegis, Block Mastery, and Soul Protection reward high Block and punish repeated hits. Low Block: Soul Protection → Block Awareness.", "Current PvP"),
+            role("Tournament · 2v2 · Tank", "Duo frontline: protect one carry and still threaten", ["Valor Surge", "Hamper Strike", "Luminous Shield", "Desperate Protection"], ["Iron Will", "Rebound", "Iron Fortress", "Oath of Vigil"], "Valor Surge buffs and cleanses the duo, Hamper Strike provides repeatable Taunt, and Luminous Shield + Desperate Protection absorb focus pressure.", "Oath of Vigil protects your partner; Iron Fortress and Iron Will absorb team pressure. Rebound → Soul Protection if you are being focused too hard.", "Current PvP"),
+            role("Tournament · 4v4 · Tank", "Full-team control tank: pull + Taunt + self-survival", ["Valor Surge", "Heart of Challenge", "Lunarwater Threads", "Luminous Shield"], ["Iron Will", "Soul Protection", "Iron Fortress", "Oath of Vigil"], "Valor Surge buffs and cleanses the team, Lunarwater Threads pulls enemies into your control zone, Heart of Challenge applies broad Taunt, and Luminous Shield helps the Guardian survive the resulting focus fire.", "This is the default organized 4v4 control bar. Desperate Protection is an ally-protection fallback when Taunt/control is unreliable; when the control package is working, keeping the Guardian alive is the higher-value fourth-slot job.", "Current Global PvP control tank"),
+            role("Dungeon · DPS", "Water AoE / fast-clear bruiser", ["Valor Surge", "Swirling Blade", "Lunarwater Threads", "Raging Maelstrom"], ["Frigid Aura", "Defensive Assault", "Frigid Glint", "Potential Rebirth"], "Valor Surge keeps the damage buff and cleanse online while Swirling Blade, Lunarwater Threads, and Raging Maelstrom handle Water/Cold AoE pressure.", "Potential Rebirth covers risky clears. Pursuit of Victory is the damage flex once survivability is comfortable.", "Prydwen Water core"),
+            role("Crucible / Conquest · DPS", "Single-target Guardian score build", ["Valor Surge", "Swirling Blade", "Lunarwater Threads", "Star Shattering Slash"], ["Frigid Aura", "Defensive Assault", "Frigid Glint", "Pursuit of Victory"], "Valor Surge keeps the damage buff active while Swirling Blade + Lunarwater Threads maintain Water/Cold pressure and Star Shattering Slash delivers the heavy single-target hit.", "Frigid Aura, Defensive Assault, Frigid Glint, and Pursuit of Victory maximize the Water/Cold damage package. If Star Shattering Slash is badly under-ranked, compare it with Raging Maelstrom on your account.", "Prydwen ST hybrid + Global testing"),
+            role("Arena · DPS", "Offensive block / counter bruiser", ["Valor Surge", "Swirling Blade", "Luminous Shield", "Star Shattering Slash"], ["Rebound", "Holy Aegis", "Block Mastery", "Eye for an Eye"], "Valor Surge keeps its buff and cleanse active while Swirling Blade + Star Shattering Slash supply kill pressure and Luminous Shield preserves bruiser durability.", "Rebound, Holy Aegis, Block Mastery, and Eye for an Eye turn Block into counter pressure. Eye for an Eye → Soul Protection or Potential Rebirth if burst is too high.", "Prydwen + PvP"),
+            role("Tournament · 2v2 · DPS", "Duo bruiser: survive focus while threatening kills", ["Valor Surge", "Swirling Blade", "Luminous Shield", "Star Shattering Slash"], ["Rebound", "Holy Aegis", "Block Mastery", "Eye for an Eye"], "Valor Surge buffs and cleanses the duo while Swirling Blade + Star Shattering Slash create kill pressure and Luminous Shield helps survive focus.", "Rebound, Holy Aegis, and Block Mastery support the bruiser core. Eye for an Eye → Soul Protection when you are the primary focus target.", "Current PvP"),
+            role("Tournament · 4v4 · DPS", "Water AoE team-pressure build", ["Valor Surge", "Swirling Blade", "Lunarwater Threads", "Raging Maelstrom"], ["Frigid Aura", "Defensive Assault", "Frigid Glint", "Potential Rebirth"], "Valor Surge buffs and cleanses the team while Swirling Blade, Lunarwater Threads, and Raging Maelstrom spread Water/Cold pressure across the enemy team.", "Potential Rebirth is the safety slot. Pursuit of Victory is the damage flex when another frontline is reliably absorbing focus.", "Prydwen Water + PvP")
           ],
           Destroyer: [
-            role2("Dungeon", "Fire AoE horde-clear meta", ["Formation Breaker", "Fiery Star Trail", "Fireball", "Meteoric Flames"], ["Rapid Cast", "Void Bubble", "Explosive Spirit", "Fiery Burst"], "Fiery Star Trail, Fireball, and Meteoric Flames repeatedly trigger Fiery Burst across dense packs, with Formation Breaker improving tempo.", "Void Bubble is the default safety slot; an offensive Charm can take its place when survivability is comfortable.", "Prydwen + Global testing"),
-            role2("Crucible / Conquest", "Single-target score meta", ["Formation Breaker", "Divine Wrath", "Wind Blade Spiral", "Thunder of Judgment"], ["Rapid Cast", "Mana Surge", "Radiant Sear", "Incarnation of Light"], "Formation Breaker accelerates the team while Divine Wrath, Wind Blade Spiral, and Thunder of Judgment concentrate boss damage. Wind's Delight or Tempest Sphere are rank-dependent flexes for Wind Blade Spiral.", "Incarnation of Light favors score; Void Bubble adds safety. Meteoric Flames can outperform Divine Wrath on smaller bosses, so test both if needed.", "Guide + score testing"),
-            role2("Arena", "Wind control / solo tempo", ["Formation Breaker", "Tempest Sphere", "Wind Blade Spiral", "Wind's Delight"], ["Cyclone Lament", "Repelling Wind", "Wind's Shadow", "Void Bubble"], "Formation Breaker accelerates actions while Tempest Sphere, Wind Blade Spiral, and Wind's Delight concentrate Wind pressure on a single target.", "Void Bubble provides the safety layer; Repelling Wind helps keep melee opponents off you.", "Prydwen + Global PvP"),
-            role2("Tournament · 2v2", "Duo control + Formation Breaker tempo", ["Formation Breaker", "Tempest Sphere", "Wind Blade Spiral", "Wind's Delight"], ["Rapid Cast", "Void Bubble", "Repelling Wind", "Cyclone Lament"], "Formation Breaker improves duo tempo while Tempest Sphere, Wind Blade Spiral, and Wind's Delight apply focused Wind pressure.", "Void Bubble provides safety, Repelling Wind controls melee pressure, and Cyclone Lament rewards repeated Wind attacks. Radiant Sear is the damage flex when your teammate already supplies control.", "Current PvP"),
-            role2("Tournament · 4v4", "Team AoE + Formation Breaker acceleration", ["Formation Breaker", "Howling Hurricane", "Meteoric Flames", "Wind Blade Spiral"], ["Rapid Cast", "Void Bubble", "Cyclone Lament", "Radiant Sear"], "Formation Breaker accelerates the team while Howling Hurricane, Meteoric Flames, and Wind Blade Spiral spread AoE and Laceration pressure.", "Void Bubble protects against coordinated focus; Cyclone Lament and Radiant Sear turn repeated hits into additional pressure.", "Prydwen team core")
+            role("Dungeon", "Fire AoE horde-clear meta", ["Formation Breaker", "Fiery Star Trail", "Fireball", "Meteoric Flames"], ["Rapid Cast", "Void Bubble", "Explosive Spirit", "Fiery Burst"], "Fiery Star Trail, Fireball, and Meteoric Flames repeatedly trigger Fiery Burst across dense packs, with Formation Breaker improving tempo.", "Void Bubble is the default safety slot; an offensive Charm can take its place when survivability is comfortable.", "Prydwen + Global testing"),
+            role("Crucible / Conquest", "Single-target score meta", ["Formation Breaker", "Divine Wrath", "Wind Blade Spiral", "Thunder of Judgment"], ["Rapid Cast", "Mana Surge", "Radiant Sear", "Incarnation of Light"], "Formation Breaker accelerates the team while Divine Wrath, Wind Blade Spiral, and Thunder of Judgment concentrate boss damage. Wind's Delight or Tempest Sphere are rank-dependent flexes for Wind Blade Spiral.", "Incarnation of Light favors score; Void Bubble adds safety. Meteoric Flames can outperform Divine Wrath on smaller bosses, so test both if needed.", "Guide + score testing"),
+            role("Arena", "Wind control / solo tempo", ["Formation Breaker", "Tempest Sphere", "Wind Blade Spiral", "Wind's Delight"], ["Cyclone Lament", "Repelling Wind", "Wind's Shadow", "Void Bubble"], "Formation Breaker accelerates actions while Tempest Sphere, Wind Blade Spiral, and Wind's Delight concentrate Wind pressure on a single target.", "Void Bubble provides the safety layer; Repelling Wind helps keep melee opponents off you.", "Prydwen + Global PvP"),
+            role("Tournament · 2v2", "Duo control + Formation Breaker tempo", ["Formation Breaker", "Tempest Sphere", "Wind Blade Spiral", "Wind's Delight"], ["Rapid Cast", "Void Bubble", "Repelling Wind", "Cyclone Lament"], "Formation Breaker improves duo tempo while Tempest Sphere, Wind Blade Spiral, and Wind's Delight apply focused Wind pressure.", "Void Bubble provides safety, Repelling Wind controls melee pressure, and Cyclone Lament rewards repeated Wind attacks. Radiant Sear is the damage flex when your teammate already supplies control.", "Current PvP"),
+            role("Tournament · 4v4", "Team AoE + Formation Breaker acceleration", ["Formation Breaker", "Howling Hurricane", "Meteoric Flames", "Wind Blade Spiral"], ["Rapid Cast", "Void Bubble", "Cyclone Lament", "Radiant Sear"], "Formation Breaker accelerates the team while Howling Hurricane, Meteoric Flames, and Wind Blade Spiral spread AoE and Laceration pressure.", "Void Bubble protects against coordinated focus; Cyclone Lament and Radiant Sear turn repeated hits into additional pressure.", "Prydwen team core")
           ],
           Dominator: [
-            role2("Dungeon · DPS", "AoE Dark / Erosion clear", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow Impact"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Mana Blast, Dark Bullet, Abyssal Hand, and Shadow Impact spread Erosion and direct damage across dungeon packs.", "Effect Hit Rate is the key consistency stat for Erosion. Nyxarchon is the default damage Fantomon.", "Prydwen AoE core"),
-            role2("Crucible / Conquest · DPS", "Single-target direct / Erosion hybrid", ["Dark Bullet", "Dark Starburst", "Chaos Rune", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Dark Starburst + Chaos Rune provide reliable direct damage while Dark Bullet + Shadow of Termination maintain and cash out Erosion. High EHR: Chaos Rune → Mana Blast.", "Shadow Vengeance, Night's Blessing, Shadow Erosion, and Linked Misfortune maximize personal boss damage. For carry-support teams, Decoy + Frenzy + Mantra is the team-amplification option.", "Prydwen ST core"),
-            role2("Arena · DPS", "Single-target Dark pressure", ["Dark Bullet", "Dark Starburst", "Chaos Rune", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Dark Bullet, Dark Starburst, Chaos Rune, and Shadow of Termination focus Dark pressure and Erosion on one opponent. High EHR: Chaos Rune → Mana Blast.", "Shadow Vengeance provides a survival window while Night's Blessing, Shadow Erosion, and Linked Misfortune scale the damage cycle. Use a direct-damage flex if Chaos Rune is badly under-ranked.", "Prydwen ST + PvP"),
-            role2("Tournament · 2v2 · DPS", "Duo kill pressure + revive", ["Dark Bullet", "Dark Starburst", "Chaos Rune", "Shadow of Termination"], ["Shadow Vengeance", "Shadow Erosion", "Linked Misfortune", "Resurrection"], "Dark Bullet, Dark Starburst, Chaos Rune, and Shadow of Termination provide focused kill pressure.", "Resurrection can swing the round after a teammate falls, while Shadow Vengeance, Shadow Erosion, and Linked Misfortune preserve damage and survivability.", "Prydwen + PvP"),
-            role2("Tournament · 4v4 · DPS", "AoE Dark pressure + revive", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow Impact"], ["Shadow Vengeance", "Shadow Erosion", "Linked Misfortune", "Resurrection"], "Mana Blast, Dark Bullet, Abyssal Hand, and Shadow Impact spread Dark/Erosion pressure across multiple targets.", "Resurrection adds high-impact team utility while Shadow Vengeance, Shadow Erosion, and Linked Misfortune keep the AoE damage engine active.", "Prydwen + PvP"),
-            role2("Dungeon · Heals", "Hard-dungeon healer", ["Waterling Summon", "Rejuvenating Rain", "Radiant Restoration", "Frenzy Totem"], ["Phantom Light", "Healing Mastery", "Overhealing", "Resurrection"], "Waterling Summon, Rejuvenating Rain, Radiant Restoration, and Frenzy Totem provide steady healing plus team offense. Need more raw healing: Frenzy Totem → Healing Touch.", "Phantom Light, Healing Mastery, Overhealing, and Resurrection form the main sustain package. If nobody is dying, Resurrection → Mantra of Blessings.", "Prydwen healer core"),
-            role2("Crucible / Conquest · Heals", "Hypercarry support / boss score", ["Radiant Restoration", "Decoy Clone", "Frenzy Totem", "Dark Bullet"], ["Phantom Light", "Healing Mastery", "Overhealing", "Mantra of Blessings"], "Radiant Restoration covers efficient healing while Decoy Clone, Frenzy Totem, and Dark Bullet support the strongest carry and maintain debuff pressure.", "Phantom Light, Healing Mastery, Overhealing, and Mantra of Blessings prioritize support throughput. Decoy positioning matters because only one effective link can attach.", "Prydwen + Global support testing"),
-            role2("Arena · Heals", "Specialist sustain hybrid", ["Rejuvenating Rain", "Radiant Restoration", "Dark Bullet", "Shadow of Termination"], ["Phantom Light", "Healing Mastery", "Shadow Vengeance", "Mantra of Blessings"], "Rejuvenating Rain and Radiant Restoration provide sustain while Dark Bullet and Shadow of Termination keep kill pressure.", "Phantom Light and Healing Mastery scale sustain; Shadow Vengeance and Mantra of Blessings preserve tempo and damage. This role works best with strong Healing Boost/SPD gear.", "PvP specialist"),
-            role2("Tournament · 2v2 · Heals", "Duo sustain / carry support", ["Rejuvenating Rain", "Radiant Restoration", "Frenzy Totem", "Dark Bullet"], ["Phantom Light", "Healing Mastery", "Resurrection", "Shadow Vengeance"], "Rejuvenating Rain and Radiant Restoration keep your partner stable while Frenzy Totem boosts output and Dark Bullet maintains pressure.", "Resurrection is the key swing utility; Phantom Light and Healing Mastery raise sustain while Shadow Vengeance protects your own damage window.", "PvP support"),
-            role2("Tournament · 4v4 · Heals", "Hybrid team support", ["Radiant Restoration", "Decoy Clone", "Frenzy Totem", "Dark Bullet"], ["Phantom Light", "Healing Mastery", "Resurrection", "Mantra of Blessings"], "Radiant Restoration, Decoy Clone, and Frenzy Totem support the team while Dark Bullet maintains debuff pressure.", "Phantom Light, Healing Mastery, Resurrection, and Mantra of Blessings balance healing, revive utility, and team damage.", "Team PvP")
+            role("Dungeon · DPS", "AoE Dark / Erosion clear", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow Impact"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Mana Blast, Dark Bullet, Abyssal Hand, and Shadow Impact spread Erosion and direct damage across dungeon packs.", "Effect Hit Rate is the key consistency stat for Erosion. Nyxarchon is the default damage Fantomon.", "Prydwen AoE core"),
+            role("Crucible / Conquest · DPS", "Single-target direct / Erosion hybrid", ["Dark Bullet", "Dark Starburst", "Chaos Rune", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Dark Starburst + Chaos Rune provide reliable direct damage while Dark Bullet + Shadow of Termination maintain and cash out Erosion. High EHR: Chaos Rune → Mana Blast.", "Shadow Vengeance, Night's Blessing, Shadow Erosion, and Linked Misfortune maximize personal boss damage. For carry-support teams, Decoy + Frenzy + Mantra is the team-amplification option.", "Prydwen ST core"),
+            role("Arena · DPS", "Single-target Dark pressure", ["Dark Bullet", "Dark Starburst", "Chaos Rune", "Shadow of Termination"], ["Shadow Vengeance", "Night's Blessing", "Shadow Erosion", "Linked Misfortune"], "Dark Bullet, Dark Starburst, Chaos Rune, and Shadow of Termination focus Dark pressure and Erosion on one opponent. High EHR: Chaos Rune → Mana Blast.", "Shadow Vengeance provides a survival window while Night's Blessing, Shadow Erosion, and Linked Misfortune scale the damage cycle. Use a direct-damage flex if Chaos Rune is badly under-ranked.", "Prydwen ST + PvP"),
+            role("Tournament · 2v2 · DPS", "Duo kill pressure + revive", ["Dark Bullet", "Dark Starburst", "Chaos Rune", "Shadow of Termination"], ["Shadow Vengeance", "Shadow Erosion", "Linked Misfortune", "Resurrection"], "Dark Bullet, Dark Starburst, Chaos Rune, and Shadow of Termination provide focused kill pressure.", "Resurrection can swing the round after a teammate falls, while Shadow Vengeance, Shadow Erosion, and Linked Misfortune preserve damage and survivability.", "Prydwen + PvP"),
+            role("Tournament · 4v4 · DPS", "AoE Dark pressure + revive", ["Mana Blast", "Dark Bullet", "Abyssal Hand", "Shadow Impact"], ["Shadow Vengeance", "Shadow Erosion", "Linked Misfortune", "Resurrection"], "Mana Blast, Dark Bullet, Abyssal Hand, and Shadow Impact spread Dark/Erosion pressure across multiple targets.", "Resurrection adds high-impact team utility while Shadow Vengeance, Shadow Erosion, and Linked Misfortune keep the AoE damage engine active.", "Prydwen + PvP"),
+            role("Dungeon · Heals", "Hard-dungeon healer", ["Waterling Summon", "Rejuvenating Rain", "Radiant Restoration", "Frenzy Totem"], ["Phantom Light", "Healing Mastery", "Overhealing", "Resurrection"], "Waterling Summon, Rejuvenating Rain, Radiant Restoration, and Frenzy Totem provide steady healing plus team offense. Need more raw healing: Frenzy Totem → Healing Touch.", "Phantom Light, Healing Mastery, Overhealing, and Resurrection form the main sustain package. If nobody is dying, Resurrection → Mantra of Blessings.", "Prydwen healer core"),
+            role("Crucible / Conquest · Heals", "Hypercarry support / boss score", ["Radiant Restoration", "Decoy Clone", "Frenzy Totem", "Dark Bullet"], ["Phantom Light", "Healing Mastery", "Overhealing", "Mantra of Blessings"], "Radiant Restoration covers efficient healing while Decoy Clone, Frenzy Totem, and Dark Bullet support the strongest carry and maintain debuff pressure.", "Phantom Light, Healing Mastery, Overhealing, and Mantra of Blessings prioritize support throughput. Decoy positioning matters because only one effective link can attach.", "Prydwen + Global support testing"),
+            role("Arena · Heals", "Specialist sustain hybrid", ["Rejuvenating Rain", "Radiant Restoration", "Dark Bullet", "Shadow of Termination"], ["Phantom Light", "Healing Mastery", "Shadow Vengeance", "Mantra of Blessings"], "Rejuvenating Rain and Radiant Restoration provide sustain while Dark Bullet and Shadow of Termination keep kill pressure.", "Phantom Light and Healing Mastery scale sustain; Shadow Vengeance and Mantra of Blessings preserve tempo and damage. This role works best with strong Healing Boost/SPD gear.", "PvP specialist"),
+            role("Tournament · 2v2 · Heals", "Duo sustain / carry support", ["Rejuvenating Rain", "Radiant Restoration", "Frenzy Totem", "Dark Bullet"], ["Phantom Light", "Healing Mastery", "Resurrection", "Shadow Vengeance"], "Rejuvenating Rain and Radiant Restoration keep your partner stable while Frenzy Totem boosts output and Dark Bullet maintains pressure.", "Resurrection is the key swing utility; Phantom Light and Healing Mastery raise sustain while Shadow Vengeance protects your own damage window.", "PvP support"),
+            role("Tournament · 4v4 · Heals", "Hybrid team support", ["Radiant Restoration", "Decoy Clone", "Frenzy Totem", "Dark Bullet"], ["Phantom Light", "Healing Mastery", "Resurrection", "Mantra of Blessings"], "Radiant Restoration, Decoy Clone, and Frenzy Totem support the team while Dark Bullet maintains debuff pressure.", "Phantom Light, Healing Mastery, Resurrection, and Mantra of Blessings balance healing, revive utility, and team damage.", "Team PvP")
           ]
         };
         const TECHNIQUE_SWAP_SCENARIOS = {
@@ -328,7 +328,7 @@ var SxsBuilds = (() => {
           if (!box) {
             box = document.createElement("div");
             box.className = "metaBuildControls";
-            box.innerHTML = '<div class="metaBuildTabs">' + META_MODES.map((m) => m === "Tournament" ? '<div class="metaTournamentScenario"><button type="button" class="metaTournamentMain" data-meta-mode="Tournament">Tournament</button><div class="metaTournamentTabs"><button type="button" data-tournament-size="2v2">2v2</button><button type="button" data-tournament-size="4v4">4v4</button></div></div>' : '<button type="button" data-meta-mode="' + esc2(m) + '">' + esc2(m) + "</button>").join("") + "</div>";
+            box.innerHTML = '<div class="metaBuildTabs">' + META_MODES.map((m) => m === "Tournament" ? '<div class="metaTournamentScenario"><button type="button" class="metaTournamentMain" data-meta-mode="Tournament">Tournament</button><div class="metaTournamentTabs"><button type="button" data-tournament-size="2v2">2v2</button><button type="button" data-tournament-size="4v4">4v4</button></div></div>' : '<button type="button" data-meta-mode="' + esc(m) + '">' + esc(m) + "</button>").join("") + "</div>";
           }
           if (box.nextElementSibling !== grid) grid.before(box);
           grid.classList.add("metaModeGrid");
@@ -359,11 +359,11 @@ var SxsBuilds = (() => {
             card.hidden = wrongActivity || wrongRole;
           });
         }
-        function activeClass2() {
+        function activeClass() {
           const b = document.querySelector(".builds .classTabs button.active");
           return b ? b.textContent.trim() : "";
         }
-        function esc2(s) {
+        function esc(s) {
           return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
         }
         function roleKey(title) {
@@ -380,11 +380,11 @@ var SxsBuilds = (() => {
         }
         function buildCardHtml(r) {
           const rm = String(r.name || "").match(/^(.*?) · (Tank|DPS|Heals)$/);
-          const displayName2 = rm ? rm[1] : r.name;
+          const displayName = rm ? rm[1] : r.name;
           const roleAttr = rm ? ' data-build-role="' + rm[2].toLowerCase() + '"' : "";
           const techniqueSwaps = TECHNIQUE_SWAP_SCENARIOS[r.name + "|" + r.techniques.join("|")] || [];
           const charmSwaps = CHARM_SWAP_SCENARIOS[r.name + "|" + r.charms.join("|")] || [];
-          return '<article class="buildCard" data-role="' + esc2(displayName2) + '"' + roleAttr + "><header><div><h3>" + esc2(displayName2) + '<span class="roleBadge">' + esc2(r.confidence) + "</span></h3><p>" + esc2(r.subtitle) + '</p></div></header><div class="buildLoadoutColumn"><div class="skillGroup"><span>Techniques</span><div>' + r.techniques.map((x) => "<b>" + esc2(x) + "</b>").join("") + '</div></div><div class="skillGroup"><span>Charms</span><div>' + r.charms.map((x) => "<b>" + esc2(x) + "</b>").join("") + "</div></div>" + (techniqueSwaps.length || charmSwaps.length ? '<div class="buildSwapRows">' + techniqueSwaps.map((s) => '<p><strong>Technique Swap:</strong><span class="swapText">' + esc2(s[0]) + ' — <span class="swapNames">' + esc2(s[1]) + " → " + esc2(s[2]) + "</span></span></p>").join("") + charmSwaps.map((s) => '<p><strong>Charm Swap:</strong><span class="swapText">' + esc2(s[0]) + ' — <span class="swapNames">' + esc2(s[1]) + " → " + esc2(s[2]) + "</span></span></p>").join("") + "</div>" : "") + "</div></article>";
+          return '<article class="buildCard" data-role="' + esc(displayName) + '"' + roleAttr + "><header><div><h3>" + esc(displayName) + '<span class="roleBadge">' + esc(r.confidence) + "</span></h3><p>" + esc(r.subtitle) + '</p></div></header><div class="buildLoadoutColumn"><div class="skillGroup"><span>Techniques</span><div>' + r.techniques.map((x) => "<b>" + esc(x) + "</b>").join("") + '</div></div><div class="skillGroup"><span>Charms</span><div>' + r.charms.map((x) => "<b>" + esc(x) + "</b>").join("") + "</div></div>" + (techniqueSwaps.length || charmSwaps.length ? '<div class="buildSwapRows">' + techniqueSwaps.map((s) => '<p><strong>Technique Swap:</strong><span class="swapText">' + esc(s[0]) + ' — <span class="swapNames">' + esc(s[1]) + " → " + esc(s[2]) + "</span></span></p>").join("") + charmSwaps.map((s) => '<p><strong>Charm Swap:</strong><span class="swapText">' + esc(s[0]) + ' — <span class="swapNames">' + esc(s[1]) + " → " + esc(s[2]) + "</span></span></p>").join("") + "</div>" : "") + "</div></article>";
         }
         function applyRoleLoadouts(cls) {
           const presets = ROLE_PRESETS[cls];
@@ -396,10 +396,10 @@ var SxsBuilds = (() => {
           grid.innerHTML = presets.map(buildCardHtml).join("");
         }
         function picksFor(cls, title) {
-          const role3 = roleKey(title);
+          const role2 = roleKey(title);
           const pools = FANTO[cls] || {};
           const guardianDps = cls === "Guardian" && typeof guardianBuildMode === "function" && guardianBuildMode() === "dps";
-          if (role3 === "Arena") {
+          if (role2 === "Arena") {
             const base2 = pools.Arena || pools.PvP || [];
             if (guardianDps) {
               const order = ["Pandarial", "Nyxarchon", "Kels", "Aegiswing", "Terragon", "Boaro"];
@@ -407,7 +407,7 @@ var SxsBuilds = (() => {
             }
             return base2;
           }
-          if (role3 === "Tournament") {
+          if (role2 === "Tournament") {
             const base2 = pools.Tournament || pools.PvP || pools.Dungeon || [];
             if (guardianDps) {
               const order = ["Pandarial", "Nyxarchon", "Kels", "Aegiswing", "Terragon", "Boaro"];
@@ -415,8 +415,8 @@ var SxsBuilds = (() => {
             }
             return base2;
           }
-          if (role3 === "Solo" && cls === "Dominator" && typeof dominatorBuildMode2 === "function" && dominatorBuildMode2() === "heals") return pools.Dungeon || pools.Solo || [];
-          const base = pools[role3] || [];
+          if (role2 === "Solo" && cls === "Dominator" && typeof dominatorBuildMode2 === "function" && dominatorBuildMode2() === "heals") return pools.Dungeon || pools.Solo || [];
+          const base = pools[role2] || [];
           if (guardianDps) {
             const order = ["Pandarial", "Nyxarchon", "Kels", "Aegiswing", "Terragon", "Boaro"];
             return [...base].sort((a, b) => {
@@ -450,11 +450,11 @@ var SxsBuilds = (() => {
             const noShop = f2pFantomon(picks, pair);
             const shown = noShop ? [...pair, noShop] : pair;
             const labels = ["Main", "Alt", "Alt"];
-            box.innerHTML = '<span>Combat Fantomons</span><div class="fantomonRankList">' + shown.map((p, i) => '<div class="fantomonPick' + (i === 0 ? " main" : "") + '"><small>' + labels[i] + "</small><b>" + esc2(p.name) + "</b><p>" + esc2(p.why) + "</p></div>").join("") + "</div>";
+            box.innerHTML = '<span>Combat Fantomons</span><div class="fantomonRankList">' + shown.map((p, i) => '<div class="fantomonPick' + (i === 0 ? " main" : "") + '"><small>' + labels[i] + "</small><b>" + esc(p.name) + "</b><p>" + esc(p.why) + "</p></div>").join("") + "</div>";
           });
         }
-        function apply2() {
-          const cls = activeClass2();
+        function apply() {
+          const cls = activeClass();
           if (!cls) return;
           document.querySelectorAll(".builds .buildRoleTabs").forEach((x) => x.remove());
           applyRoleLoadouts(cls);
@@ -462,19 +462,19 @@ var SxsBuilds = (() => {
           ensureMetaControls(cls);
           applyMetaVisibility(cls);
         }
-        window.__applyBuildMetaNow = apply2;
+        window.__applyBuildMetaNow = apply;
         {
           const root = document.querySelector(".builds");
           root?.addEventListener("click", (e) => {
             const guardianBtn = e.target.closest?.("[data-guardian-mode]");
-            if (guardianBtn && activeClass2() === "Guardian") {
+            if (guardianBtn && activeClass() === "Guardian") {
               metaWrite("sxs-build-guardian-mode", guardianBtn.dataset.guardianMode === "dps" ? "dps" : "tank");
               applyMetaVisibility("Guardian");
               window.__renderBuildEnhancements();
               return;
             }
             const dominatorBtn = e.target.closest?.("[data-dominator-mode]");
-            if (dominatorBtn && activeClass2() === "Dominator") {
+            if (dominatorBtn && activeClass() === "Dominator") {
               metaWrite("sxs-build-dominator-mode", dominatorBtn.dataset.dominatorMode === "heals" ? "heals" : "dps");
               applyMetaVisibility("Dominator");
               window.__renderBuildEnhancements();
@@ -483,13 +483,13 @@ var SxsBuilds = (() => {
             const modeBtn = e.target.closest?.("[data-meta-mode]");
             if (modeBtn) {
               metaWrite("sxs-build-meta-mode", modeBtn.dataset.metaMode);
-              applyMetaVisibility(activeClass2());
+              applyMetaVisibility(activeClass());
               return;
             }
             const sizeBtn = e.target.closest?.("[data-tournament-size]");
             if (sizeBtn) {
               metaWrite("sxs-build-tournament-size", sizeBtn.dataset.tournamentSize);
-              applyMetaVisibility(activeClass2());
+              applyMetaVisibility(activeClass());
             }
           });
         }
@@ -591,7 +591,7 @@ var SxsBuilds = (() => {
         };
         const finePointer = () => matchMedia("(hover:hover) and (pointer:fine)").matches;
         let layer = null, active = null, closeTimer = 0, raf = 0;
-        const esc2 = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+        const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
         function ensureLayer() {
           if (layer) return layer;
           layer = document.createElement("div");
@@ -624,7 +624,7 @@ var SxsBuilds = (() => {
           if (active && active !== el) active.setAttribute("aria-expanded", "false");
           active = el;
           const tags = (d.meta || "").split("·").map((x) => x.trim()).filter(Boolean);
-          tip.innerHTML = `<div class="buildSkillTipHead"><strong>${esc2(d.name)}</strong><span>${esc2(d.kind)}</span></div><div class="buildSkillTipMeta">${tags.map((x) => `<i>${esc2(x)}</i>`).join("")}</div><p class="buildSkillTipEffect">${esc2(d.effect)}</p><p class="buildSkillTipWhy"><b>Why here:</b> ${esc2(d.why)}</p>`;
+          tip.innerHTML = `<div class="buildSkillTipHead"><strong>${esc(d.name)}</strong><span>${esc(d.kind)}</span></div><div class="buildSkillTipMeta">${tags.map((x) => `<i>${esc(x)}</i>`).join("")}</div><p class="buildSkillTipEffect">${esc(d.effect)}</p><p class="buildSkillTipWhy"><b>Why here:</b> ${esc(d.why)}</p>`;
           el.setAttribute("aria-describedby", tip.id);
           el.setAttribute("aria-expanded", "true");
           tip.classList.add("open");
@@ -797,9 +797,9 @@ var SxsBuilds = (() => {
             ]]
           ]
         };
-        const esc2 = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+        const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
         const root = () => document.getElementById("buildContent");
-        const activeClass2 = () => document.querySelector("#classTabs button.active")?.dataset.class || "";
+        const activeClass = () => document.querySelector("#classTabs button.active")?.dataset.class || "";
         const roleMode = (cls) => {
           try {
             if (cls === "Guardian") return localStorage.getItem("sxs-build-guardian-mode") === "dps" ? "dps" : "tank";
@@ -824,7 +824,7 @@ var SxsBuilds = (() => {
             else guide.append(quick);
             guide.classList.add("buildSummaryCompact");
           }
-          quick.innerHTML = `<div class="quickTitle">Stat priorities</div><p class="quickRule">${esc2(profile.rule)}</p><div class="quickGearGrid">${profile.rows.map(([slot, stats]) => `<div class="quickGearRow"><b>${esc2(slot)}</b><span>${esc2(stats)}</span></div>`).join("")}</div><div class="quickSubstats"><b>Substats</b><span>${esc2(profile.substats)}</span></div>`;
+          quick.innerHTML = `<div class="quickTitle">Stat priorities</div><p class="quickRule">${esc(profile.rule)}</p><div class="quickGearGrid">${profile.rows.map(([slot, stats]) => `<div class="quickGearRow"><b>${esc(slot)}</b><span>${esc(stats)}</span></div>`).join("")}</div><div class="quickSubstats"><b>Substats</b><span>${esc(profile.substats)}</span></div>`;
           const gear = host.querySelector(":scope > .gearPanel");
           if (gear) gear.remove();
         }
@@ -832,7 +832,7 @@ var SxsBuilds = (() => {
           const [kind, title, desc, items] = data;
           const panel = document.createElement("section");
           panel.className = "priorityPanel";
-          panel.innerHTML = `<div class="priorityIntro"><span>${esc2(kind)}</span><strong>${esc2(title)}</strong><p>${esc2(desc)}</p></div><ol class="priorityList">${items.map((it, i) => `<li><b>${i + 1}</b><div><strong>${esc2(it[0])}</strong><p>${esc2(it[1])}</p></div></li>`).join("")}</ol>`;
+          panel.innerHTML = `<div class="priorityIntro"><span>${esc(kind)}</span><strong>${esc(title)}</strong><p>${esc(desc)}</p></div><ol class="priorityList">${items.map((it, i) => `<li><b>${i + 1}</b><div><strong>${esc(it[0])}</strong><p>${esc(it[1])}</p></div></li>`).join("")}</ol>`;
           return panel;
         }
         function ensurePriorityPair(host, cls, mode) {
@@ -882,7 +882,7 @@ var SxsBuilds = (() => {
           }
         }
         function applyDominatorRole(host, mode) {
-          if (activeClass2() !== "Dominator") return;
+          if (activeClass() !== "Dominator") return;
           host.querySelectorAll(":scope > .priorityPair[data-dominator-role]").forEach((el) => {
             el.hidden = el.dataset.dominatorRole !== mode;
           });
@@ -892,9 +892,9 @@ var SxsBuilds = (() => {
           return `${cls}|${mode}|${cards}`;
         }
         let queued = false;
-        function apply2() {
+        function apply() {
           queued = false;
-          const host = root(), cls = activeClass2();
+          const host = root(), cls = activeClass();
           if (!host || !cls || !BUILD_STAT_PROFILES[cls]) return;
           const mode = cls === "Dominator" || cls === "Guardian" ? roleMode(cls) : "dps";
           const sig = signature(host, cls, mode);
@@ -905,7 +905,7 @@ var SxsBuilds = (() => {
           ensurePriorityPair(host, cls, mode);
           applyDominatorRole(host, mode);
         }
-        window.__applyBuildRichNow = apply2;
+        window.__applyBuildRichNow = apply;
       })();
       (() => {
         function stripLegacyBuildSeasonNav() {
@@ -920,6 +920,76 @@ var SxsBuilds = (() => {
         if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stripLegacyBuildSeasonNav, { once: true });
         else stripLegacyBuildSeasonNav();
         window.addEventListener("load", stripLegacyBuildSeasonNav, { once: true });
+      })();
+      (() => {
+        const R = {
+          atk: ["ATK", "5.36K", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          atkpct: ["ATK%", "18.7%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          def: ["DEF", "5.36K", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          defpct: ["DEF%", "18.7%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          hp: ["HP", "26.8K", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          hppct: ["HP%", "18.7%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          spd: ["SPD", "4.28K", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          spdpct: ["SPD%", "18.7%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          crit: ["Crit Rate", "7.5%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          critdmg: ["Crit DMG", "11.2%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          block: ["Block Rate", "7.5%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          acc: ["Accuracy", "7.5%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          em: ["Elemental Mastery", "5.36K", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          ehr: ["Effect Hit Rate", "5.36K", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          dmgres: ["DMG RES", "Paired affix only", 1, "Shown only as DMG RES + Healing Boost in the in-game Affix Preview.", 0],
+          heal: ["Healing Boost", "15%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          critpair: ["Crit Rate + Crit DMG", "15.3% + 23%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          critacc: ["Crit Rate + Accuracy", "15.3% + 15.3%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          blockpair: ["Block Rate + Block Efficiency", "15.3% + 23%", 1, "Maximum shown in the in-game Affix Preview.", 0],
+          healpair: ["DMG RES + Healing Boost", "7.68% + 30.7%", 1, "Maximum shown in the in-game Affix Preview.", 0]
+        };
+        const PROFILES = {
+          Conqueror: ["crit", "critdmg", "critpair", "acc", "critacc", "em", "spd", "spdpct", "atk", "atkpct"],
+          Guardian: {
+            tank: ["block", "blockpair", "def", "spd", "hp", "defpct", "spdpct", "hppct"],
+            dps: ["block", "blockpair", "crit", "critdmg", "spd", "spdpct", "atk", "atkpct", "em"]
+          },
+          Destroyer: ["crit", "critdmg", "critpair", "atk", "atkpct", "em", "acc", "critacc", "spd", "spdpct"],
+          Dominator: {
+            dps: ["ehr", "crit", "critdmg", "critpair", "em", "atk", "atkpct", "spd", "spdpct"],
+            heals: ["heal", "healpair", "spd", "spdpct", "hp", "hppct", "dmgres"]
+          }
+        };
+        const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+        const activeClass = () => document.querySelector("#classTabs button.active")?.dataset.class || "Conqueror";
+        const role = (cls) => {
+          try {
+            if (cls === "Guardian") return localStorage.getItem("sxs-build-guardian-mode") === "dps" ? "dps" : "tank";
+            return localStorage.getItem("sxs-build-dominator-mode") === "heals" ? "heals" : "dps";
+          } catch (_) {
+            return cls === "Guardian" ? "tank" : "dps";
+          }
+        };
+        const rowsFor = (cls, mode) => {
+          const profile = PROFILES[cls];
+          const keys = Array.isArray(profile) ? profile : profile?.[mode];
+          return (keys || PROFILES.Conqueror).map((k) => R[k]);
+        };
+        const help = (tip) => `<button type="button" class="rollHelp" aria-label="Affix value details" data-tip="${esc(tip)}">i</button>`;
+        const guideHtml = (cls, mode) => {
+          const rows = rowsFor(cls, mode);
+          const label = cls === "Dominator" ? `${cls} · ${mode === "heals" ? "Heals" : "DPS"}` : cls === "Guardian" ? `${cls} · ${mode === "dps" ? "DPS" : "Tank"}` : cls;
+          return `<details class="rollGuide" data-roll-sig="${esc(cls + "|" + mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Maximum rolls for the substats recommended above.</div><div class="rollGuideGrid">${rows.map(([name, val, approx, tip, scaling]) => `<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx ? help(tip) : ""}</span><span class="rollGuideValue${scaling ? " rollScaling" : ""}">${esc(val)}</span></div>`).join("")}</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>`;
+        };
+        let queued = false;
+        function apply() {
+          queued = false;
+          const cls = activeClass(), mode = cls === "Dominator" || cls === "Guardian" ? role(cls) : "dps", sig = cls + "|" + mode;
+          document.querySelectorAll("#buildContent .buildQuickStats").forEach((quick) => {
+            const existing = quick.querySelector(":scope > .rollGuide");
+            if (existing?.dataset.rollSig === sig) return;
+            const html = guideHtml(cls, mode);
+            if (existing) existing.outerHTML = html;
+            else quick.querySelector(":scope > .quickSubstats")?.insertAdjacentHTML("afterend", html);
+          });
+        }
+        window.__applyBuildRollNow = apply;
       })();
     }
   });
@@ -982,7 +1052,7 @@ var SxsBuilds = (() => {
         function removeLegacyIcons(root) {
           root?.querySelectorAll?.(ICON_SELECTOR).forEach((el) => el.remove());
         }
-        function activeClass2() {
+        function activeClass() {
           return document.querySelector("#classTabs button.active")?.dataset.class || "";
         }
         function roleFor(cls) {
@@ -1000,7 +1070,7 @@ var SxsBuilds = (() => {
           return profile;
         }
         function applyGemPriorities(quick) {
-          const cls = activeClass2();
+          const cls = activeClass();
           const mode = cls === "Guardian" || cls === "Dominator" ? roleFor(cls) : "dps";
           const profile = gemProfileFor(cls);
           const rows = [...quick.querySelectorAll(":scope > .quickGearGrid > .quickGearRow")];
@@ -1100,17 +1170,17 @@ var SxsBuilds = (() => {
           syncRoll(quick, right);
         }
         let queued = false;
-        function apply2() {
+        function apply() {
           queued = false;
           document.querySelectorAll("#buildContent .guideSummary.buildSummaryCompact").forEach(enhanceGuide);
         }
-        window.__applyBuildHeroNow = apply2;
+        window.__applyBuildHeroNow = apply;
         function syncResponsiveRolls() {
           document.querySelectorAll("#buildContent .buildHeroRoll > .rollGuide").forEach((roll) => setRollMode(roll, { resetMobile: !DESKTOP_ROLL.matches }));
         }
         DESKTOP_ROLL.addEventListener?.("change", () => {
           syncResponsiveRolls();
-          apply2();
+          apply();
         });
       })();
     }
@@ -1124,821 +1194,6 @@ var SxsBuilds = (() => {
   init_define_GUIDE_BUILD_IDS();
   var import_builds = __toESM(require_builds(), 1);
   var import_build_layout_icons_v1 = __toESM(require_build_layout_icons_v1(), 1);
-
-  // src/build-roll-guide.mjs
-  init_define_GUIDE_BUILD_IDS();
-
-  // data/affix-preview-baseline.json
-  var affix_preview_baseline_default = {
-    schema_version: 1,
-    source: {
-      description: "User-confirmed current baseline transcribed from six in-game Affix Preview screenshots. Ranges and drop rates preserve displayed precision; overlapping rows are deduplicated. No equipment level is inferred. Repeated color-coded names within a single proc affix are transcribed once; their color meaning is not inferred. Unique labels are retained in descriptions.",
-      captured_on: "2026-09-20",
-      screenshots: [
-        {
-          file: "9182.png",
-          sha256: "b724463f1d11f260fee1ed225e3753fe2c4b12de66b606cb3bce2a5afa64795a"
-        },
-        {
-          file: "9183.png",
-          sha256: "7dc3d07a17d7d18d4ac92e0f602f64bd535da78bf8113c7eaf4a50b28fbd145c"
-        },
-        {
-          file: "9184.png",
-          sha256: "42227cf214d6bd827da2ae013be658568156ce0a12d67461d0af8f8e89c156a7"
-        },
-        {
-          file: "9185.png",
-          sha256: "818e21884abf1e32cb2ef3f1564b77f0ed8dac614ad095c5c3c594f954ec4f3d"
-        },
-        {
-          file: "9186.png",
-          sha256: "a2c36681d417893735addbd324be0d3536374b207fa99d94e4ff7371310e9f50"
-        },
-        {
-          file: "9187.png",
-          sha256: "03641c6d738f7d5c7ba9e6a94047f4499f29037cdd0f8ae12a9419b6fa7c1d61"
-        }
-      ]
-    },
-    affixes: [
-      {
-        id: "heal",
-        name: "Healing Boost",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Healing Boost",
-            range: "9.6%–15%"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "atk",
-        name: "ATK",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "ATK",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "def",
-        name: "DEF",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "DEF",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "spd",
-        name: "SPD",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "SPD",
-            range: "2.74K–4.28K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "effectres",
-        name: "Effect RES",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Effect RES",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "ehr",
-        name: "Effect Hit Rate",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Effect Hit Rate",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "em",
-        name: "Elemental Mastery",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Elemental Mastery",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "elementalres",
-        name: "Elemental RES",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Elemental RES",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "physicalmastery",
-        name: "Physical Mastery",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Physical Mastery",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "physicalres",
-        name: "Physical RES",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Physical RES",
-            range: "3.42K–5.36K"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "hppct",
-        name: "HP",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "HP",
-            range: "12%–18.7%"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "atkpct",
-        name: "ATK",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "ATK",
-            range: "12%–18.7%"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "defpct",
-        name: "DEF",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "DEF",
-            range: "12%–18.7%"
-          }
-        ],
-        source_images: [
-          "9182.png"
-        ]
-      },
-      {
-        id: "spdpct",
-        name: "SPD",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "SPD",
-            range: "12%–18.7%"
-          }
-        ],
-        source_images: [
-          "9182.png",
-          "9183.png"
-        ]
-      },
-      {
-        id: "crit",
-        name: "Crit Rate",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Crit Rate",
-            range: "4.8%–7.5%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "critres",
-        name: "Crit RES",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Crit RES",
-            range: "4.8%–7.5%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "critdmg",
-        name: "Crit DMG",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Crit DMG",
-            range: "7.2%–11.2%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "block",
-        name: "Block Rate",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Block Rate",
-            range: "4.8%–7.5%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "hp",
-        name: "HP",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "HP",
-            range: "17.1K–26.8K"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "acc",
-        name: "Accuracy",
-        kind: "normal",
-        drop_rate_percent: 4.75,
-        components: [
-          {
-            stat: "Accuracy",
-            range: "4.8%–7.5%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "pvepair",
-        name: "PvE Bonus DMG + PvE DMG RES",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "PvE Bonus DMG",
-            range: "+9.6%–+15.3%"
-          },
-          {
-            stat: "PvE DMG RES",
-            range: "+9.6%–+15.3%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "pvppair",
-        name: "PvP Bonus DMG + PvP DMG RES",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "PvP Bonus DMG",
-            range: "+9.6%–+15.3%"
-          },
-          {
-            stat: "PvP DMG RES",
-            range: "+9.6%–+15.3%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "healpair",
-        name: "DMG RES + Healing Boost",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "DMG RES",
-            range: "+4.8%–+7.68%"
-          },
-          {
-            stat: "Healing Boost",
-            range: "+19.2%–+30.7%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "critresblockpair",
-        name: "Crit RES + Block Rate",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "Crit RES",
-            range: "+9.6%–+15.3%"
-          },
-          {
-            stat: "Block Rate",
-            range: "+9.6%–+15.3%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "critacc",
-        name: "Crit Rate + Accuracy",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "Crit Rate",
-            range: "+9.6%–+15.3%"
-          },
-          {
-            stat: "Accuracy",
-            range: "+9.6%–+15.3%"
-          }
-        ],
-        source_images: [
-          "9183.png"
-        ]
-      },
-      {
-        id: "blockpair",
-        name: "Block Rate + Block Efficiency",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "Block Rate",
-            range: "+9.6%–+15.3%"
-          },
-          {
-            stat: "Block Efficiency",
-            range: "+14.4%–+23%"
-          }
-        ],
-        source_images: [
-          "9183.png",
-          "9184.png"
-        ]
-      },
-      {
-        id: "critpair",
-        name: "Crit Rate + Crit DMG",
-        kind: "paired",
-        drop_rate_percent: 0.343,
-        components: [
-          {
-            stat: "Crit Rate",
-            range: "+9.6%–+15.3%"
-          },
-          {
-            stat: "Crit DMG",
-            range: "+14.4%–+23%"
-          }
-        ],
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "shieldedtechniqueres",
-        name: "Shielded Technique DMG reduction",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "The wearer takes (14.4%–21.6%) less Technique DMG when shielded.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "effectresdef",
-        name: "Effect RES to DEF",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Gains (7.5%–11.2%) of Effect RES as DEF.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "effecthitatk",
-        name: "Effect Hit to ATK",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Gains (7.5%–11.2%) of Effect Hit as ATK.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "hpatk",
-        name: "HP to ATK",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Gains (1.5%–2.25%) of HP as ATK.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "spdatk",
-        name: "SPD to ATK",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Gains (9.6%–14.4%) of SPD as ATK.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "defatk",
-        name: "DEF to ATK",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Gains (7.5%–11.2%) of DEF as ATK.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "airbornetechnique",
-        name: "Technique DMG to airborne enemies",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "The wearer deals (15%–22.5%) more Technique DMG to airborne enemies.",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "collisiondmg",
-        name: "Collision DMG",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Increases collision DMG by (12%–18%).",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "debufftechnique",
-        name: "Technique DMG to debuffed enemies",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Technique DMG Dealt to Enemies with Debuffs +(15%–22.5%).",
-        source_images: [
-          "9184.png"
-        ]
-      },
-      {
-        id: "frozenstunnedtechnique",
-        name: "Technique DMG to frozen and stunned enemies",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "The wearer deals (15%–22.5%) more Technique DMG to frozen and stunned enemies.",
-        source_images: [
-          "9184.png",
-          "9185.png"
-        ]
-      },
-      {
-        id: "counterattackdmg",
-        name: "Counterattack DMG",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Counterattack skills deal (12.6%–18.9%) more DMG.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "summondmg",
-        name: "Summon DMG",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Summons deal (14.4%–21.6%) more DMG.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "summondmgres",
-        name: "Summon DMG reduction",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "Summons take (14.4%–21.6%) less DMG.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "enemysummondmg",
-        name: "DMG to enemy summons",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "The wearer deals (14.4%–21.6%) more DMG to enemy summons.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "shieldedtechniquedmg",
-        name: "Technique DMG to shielded enemies",
-        kind: "effect",
-        drop_rate_percent: 0.12,
-        description: "The wearer deals (14.4%–21.6%) more Technique DMG to shielded enemies.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "gnollflinger",
-        name: "Summon: Gnoll Flinger",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "Triggers <Summon: Gnoll Flinger> before battle starts.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "gnollbruiser",
-        name: "Summon: Gnoll Bruiser",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "Triggers <Summon: Gnoll Bruiser> before battle starts.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "windshield",
-        name: "Wind Shield",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "Unique: Triggers <Wind Shield> before battle starts.",
-        source_images: [
-          "9185.png"
-        ]
-      },
-      {
-        id: "thunderstrike",
-        name: "Thunder Strike",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When an enemy within 3 grids of the wearer moves, the wearer has a (23.1%–34.5%) chance to trigger <Thunder Strike>.",
-        source_images: [
-          "9185.png",
-          "9186.png"
-        ]
-      },
-      {
-        id: "meteorstrike",
-        name: "Meteor Strike",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "At the start of the wearer's turn, the wearer has a (30%–45%) chance to trigger <Meteor Strike>.",
-        source_images: [
-          "9186.png"
-        ]
-      },
-      {
-        id: "surgingblast",
-        name: "Surging Blast",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When killing an enemy, the wearer has a (30%–45%) chance to trigger <Surging Blast>.",
-        source_images: [
-          "9186.png"
-        ]
-      },
-      {
-        id: "dodgechain",
-        name: "Dodge Chain",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When dealing DMG with a single-target Technique, the wearer has a (20.1%–30%) chance to trigger <Dodge Chain>.",
-        source_images: [
-          "9186.png",
-          "9187.png"
-        ]
-      },
-      {
-        id: "dodgetakingdmg",
-        name: "Dodge when taking DMG",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "Unique: When taking DMG, the wearer has a (8.4%–12.5%) chance to dodge this attack. Can trigger up to (6–10) times per battle.",
-        source_images: [
-          "9186.png",
-          "9187.png"
-        ]
-      },
-      {
-        id: "shockblast",
-        name: "Shock Blast",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When blocking a Technique attack, the wearer has a (15%–22.5%) chance to trigger <Shock Blast>.",
-        source_images: [
-          "9186.png",
-          "9187.png"
-        ]
-      },
-      {
-        id: "electricarc",
-        name: "Electric Arc",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When taking Technique Crit DMG, the wearer has a (15%–22.5%) chance to trigger <Electric Arc>.",
-        source_images: [
-          "9186.png",
-          "9187.png"
-        ]
-      },
-      {
-        id: "firering",
-        name: "Fire Ring",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When taking Technique DMG, the wearer has a (4.95%–7.5%) chance to trigger <Fire Ring>.",
-        source_images: [
-          "9186.png",
-          "9187.png"
-        ]
-      },
-      {
-        id: "blazingburst",
-        name: "Blazing Burst",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "When dealing Crit DMG with a Technique, the wearer has a (30%–45%) chance to trigger <Blazing Burst>.",
-        source_images: [
-          "9187.png"
-        ]
-      },
-      {
-        id: "extraprotection",
-        name: "Extra Protection",
-        kind: "proc",
-        drop_rate_percent: 0.062,
-        description: "Unique: When healing an ally with a Technique, the wearer has a (30%–45%) chance to trigger <Extra Protection>.",
-        source_images: [
-          "9187.png"
-        ]
-      }
-    ]
-  };
-
-  // src/build-roll-guide.mjs
-  var R = Object.fromEntries(affix_preview_baseline_default.affixes.filter((row) => row.kind === "normal" || row.kind === "paired").map((row) => [row.id, row]));
-  var PROFILES = {
-    Conqueror: ["crit", "critdmg", "critpair", "acc", "critacc", "em", "spd", "spdpct", "atk", "atkpct"],
-    Guardian: {
-      tank: ["block", "blockpair", "def", "spd", "hp", "defpct", "spdpct", "hppct"],
-      dps: ["block", "blockpair", "crit", "critdmg", "spd", "spdpct", "atk", "atkpct", "em"]
-    },
-    Destroyer: ["crit", "critdmg", "critpair", "atk", "atkpct", "em", "acc", "critacc", "spd", "spdpct"],
-    Dominator: {
-      dps: ["ehr", "crit", "critdmg", "critpair", "em", "atk", "atkpct", "spd", "spdpct"],
-      heals: ["heal", "healpair", "spd", "spdpct", "hp", "hppct"]
-    }
-  };
-  var esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-  var activeClass = () => document.querySelector("#classTabs button.active")?.dataset.class || "Conqueror";
-  var role = (cls) => {
-    try {
-      if (cls === "Guardian") return localStorage.getItem("sxs-build-guardian-mode") === "dps" ? "dps" : "tank";
-      return localStorage.getItem("sxs-build-dominator-mode") === "heals" ? "heals" : "dps";
-    } catch (_) {
-      return cls === "Guardian" ? "tank" : "dps";
-    }
-  };
-  var rowsFor = (cls, mode) => {
-    const profile = PROFILES[cls];
-    const keys = Array.isArray(profile) ? profile : profile?.[mode];
-    return (keys || PROFILES.Conqueror).map((key) => R[key]);
-  };
-  var displayName = (row) => row.name + (row.id.endsWith("pct") ? "%" : "");
-  var help = (row) => {
-    const detail = `${row.kind === "paired" ? "Paired" : "Normal"} affix · ${row.drop_rate_percent.toFixed(3)}% drop rate. ${row.components.map((part) => `${part.stat}: ${part.range}`).join("; ")}.`;
-    return `<button type="button" class="rollHelp" aria-label="${esc(displayName(row))}: affix details" data-tip="${esc(detail)}">i</button>`;
-  };
-  var guideHtml = (cls, mode) => {
-    const rows = rowsFor(cls, mode);
-    const label = cls === "Dominator" ? `${cls} · ${mode === "heals" ? "Heals" : "DPS"}` : cls === "Guardian" ? `${cls} · ${mode === "dps" ? "DPS" : "Tank"}` : cls;
-    return `<details class="rollGuide" data-roll-sig="${esc(cls + "|" + mode)}"><summary><span>Affix ranges</span><small>${esc(label)} · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">In-game minimum–maximum ranges for the recommended affixes. Paired values follow the listed stat order.</div>${["normal", "paired"].map((kind) => `<div class="rollGuideNote">${kind === "normal" ? "Normal affixes" : "Paired affixes · both stats roll together"}</div><div class="rollGuideGrid">${rows.filter((row) => row.kind === kind).map((row) => `<div class="rollGuideRow" data-affix-id="${esc(row.id)}"><span class="rollGuideName">${esc(displayName(row))}${help(row)}</span><span class="rollGuideValue">${row.components.map((part) => esc(part.range)).join("<br>")}</span></div>`).join("")}</div>`).join("")}<div class="rollGuideSources">Confirmed in the in-game Affix Preview. Normal and paired affixes have different ranges; use the matching row. Flat values can change with gear progression.</div></div></details>`;
-  };
-  function apply() {
-    const cls = activeClass(), mode = cls === "Dominator" || cls === "Guardian" ? role(cls) : "dps", sig = cls + "|" + mode;
-    document.querySelectorAll("#buildContent .buildQuickStats").forEach((quick) => {
-      const existing = quick.querySelector(":scope > .rollGuide");
-      if (existing?.dataset.rollSig === sig) return;
-      const html = guideHtml(cls, mode);
-      if (existing) existing.outerHTML = html;
-      else quick.querySelector(":scope > .quickSubstats")?.insertAdjacentHTML("afterend", html);
-    });
-  }
-  window.__applyBuildRollNow = apply;
-
-  // src/builds.mjs
   var $ = (id) => document.getElementById(id);
   var S2_BUILD_CLASSES = ["Destroyer", "Dominator", "Conqueror", "Guardian"];
   var BUILD_CLASS_STORAGE_KEYS = { s1: "sxs-build-class-s1", s2: "sxs-build-class-s2" };

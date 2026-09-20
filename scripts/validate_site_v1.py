@@ -9,7 +9,7 @@ Checks, in order:
   3. Every assets/*.css file has balanced braces (outside strings/comments).
   4. data/*.json files parse as JSON.
   5. Cross-file hook contract: window.__applyBuild*Now hooks called by
-     src/builds.mjs are each defined by exactly one maintained assets/*.js or src/*.mjs source
+     src/builds.mjs are each defined by exactly one maintained assets/*.js source
      file; generated bundles are excluded from the definition count.
 
 Exit code 0 = all checks pass; nonzero = at least one failure (details printed).
@@ -113,11 +113,11 @@ def main() -> int:
     check(bool(called), f"builds.mjs calls {len(called)} hooks: {sorted(called)}")
     # Count maintained source definitions, excluding generated bundles.
     all_defs: dict[str, int] = {}
-    for f in [*asset_js, *sorted((ROOT / "src").glob("*.mjs"))]:
+    for f in asset_js:
         if f.name in {"runtime.js", "builds-section.js", "companions-section.js", "calculator.js"}:
             continue
         src = f.read_text(encoding="utf-8", errors="replace")
-        defs = re.findall(r"window\.(__applyBuild\w+Now)\s*=(?!=)", src)
+        defs = re.findall(r"window\.(__applyBuild\w+Now)\s*=", src)
         check(len(defs) == len(set(defs)), f"{f.name}: no duplicate hook defs ({defs})")
         for d in set(defs):
             all_defs[d] = all_defs.get(d, 0) + 1

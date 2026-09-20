@@ -842,3 +842,71 @@
 })();
 
 /* ---- build module boundary ---- */
+
+(()=>{
+  // BUILD_ROLL_GUIDE_WARLORD_V1
+  const R={
+    atk:['ATK','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    atkpct:['ATK%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    def:['DEF','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    defpct:['DEF%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    hp:['HP','26.8K',1,'Maximum shown in the in-game Affix Preview.',0],
+    hppct:['HP%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    spd:['SPD','4.28K',1,'Maximum shown in the in-game Affix Preview.',0],
+    spdpct:['SPD%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    crit:['Crit Rate','7.5%',1,'Maximum shown in the in-game Affix Preview.',0],
+    critdmg:['Crit DMG','11.2%',1,'Maximum shown in the in-game Affix Preview.',0],
+    block:['Block Rate','7.5%',1,'Maximum shown in the in-game Affix Preview.',0],
+    acc:['Accuracy','7.5%',1,'Maximum shown in the in-game Affix Preview.',0],
+    em:['Elemental Mastery','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    ehr:['Effect Hit Rate','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    dmgres:['DMG RES','Paired affix only',1,'Shown only as DMG RES + Healing Boost in the in-game Affix Preview.',0],
+    heal:['Healing Boost','15%',1,'Maximum shown in the in-game Affix Preview.',0],
+    critpair:['Crit Rate + Crit DMG','15.3% + 23%',1,'Maximum shown in the in-game Affix Preview.',0],
+    critacc:['Crit Rate + Accuracy','15.3% + 15.3%',1,'Maximum shown in the in-game Affix Preview.',0],
+    blockpair:['Block Rate + Block Efficiency','15.3% + 23%',1,'Maximum shown in the in-game Affix Preview.',0],
+    healpair:['DMG RES + Healing Boost','7.68% + 30.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+  };
+  const PROFILES={
+    Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
+    Guardian:{
+      tank:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],
+      dps:['block','blockpair','crit','critdmg','spd','spdpct','atk','atkpct','em']
+    },
+    Destroyer:['crit','critdmg','critpair','atk','atkpct','em','acc','critacc','spd','spdpct'],
+    Dominator:{
+      dps:['ehr','crit','critdmg','critpair','em','atk','atkpct','spd','spdpct'],
+      heals:['heal','healpair','spd','spdpct','hp','hppct','dmgres']
+    }
+  };
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const activeClass=()=>document.querySelector('#classTabs button.active')?.dataset.class||'Conqueror';
+  const role=cls=>{try{if(cls==='Guardian')return localStorage.getItem('sxs-build-guardian-mode')==='dps'?'dps':'tank';return localStorage.getItem('sxs-build-dominator-mode')==='heals'?'heals':'dps'}catch(_){return cls==='Guardian'?'tank':'dps'}};
+  const rowsFor=(cls,mode)=>{
+    const profile=PROFILES[cls];
+    const keys=Array.isArray(profile)?profile:profile?.[mode];
+    return (keys||PROFILES.Conqueror).map(k=>R[k]);
+  };
+  const help=tip=>`<button type="button" class="rollHelp" aria-label="Affix value details" data-tip="${esc(tip)}">i</button>`;
+  const guideHtml=(cls,mode)=>{
+    const rows=rowsFor(cls,mode);
+    const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls==='Guardian'?`${cls} · ${mode==='dps'?'DPS':'Tank'}`:cls;
+    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Maximum rolls for the substats recommended above.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>`;
+  };
+  let queued=false;
+  function apply(){
+    queued=false;
+    const cls=activeClass(),mode=(cls==='Dominator'||cls==='Guardian')?role(cls):'dps',sig=cls+'|'+mode;
+    document.querySelectorAll('#buildContent .buildQuickStats').forEach(quick=>{
+      const existing=quick.querySelector(':scope > .rollGuide');
+      if(existing?.dataset.rollSig===sig) return;
+      const html=guideHtml(cls,mode);
+      if(existing) existing.outerHTML=html;
+      else quick.querySelector(':scope > .quickSubstats')?.insertAdjacentHTML('afterend',html);
+    });
+  }
+  // BUILD_VISUAL_STABILITY_V2: Roll Guide is part of the finished class layout,
+  // so make it available to the synchronous Builds render pipeline.
+  window.__applyBuildRollNow=apply;
+
+})();
