@@ -581,3 +581,7 @@
   #calculatorSection .collapsibleCard > .currentLevelsBody,
   #calculatorSection .calcResults { padding: 14px !important; }
 }
+
+#calculatorSection :is(#targetSkills,#targetRelics,#targetFantomons) {
+  white-space: pre-line !important;
+}

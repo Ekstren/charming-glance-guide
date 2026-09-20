@@ -1,4 +1,4 @@
 {
-  "description": "Reviewed consistent calculator card groups, spacing, and headings in phone/desktop light/dark screenshots. Other site sections match the previous baseline.",
-  "commit": "4b8bf2d0bb8c4f250a97be1304021ef411dda9e4"
+  "commit": "169620f3d0ec3167bbc5ee270a50180e6f595de5",
+  "description": "Reviewed one distinct level per line in calculator upgrade cards, without dot separators, at desktop and mobile widths."
 }

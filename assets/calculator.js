@@ -4462,6 +4462,9 @@ var SxsCalculator = (() => {
     const missingCart = cartInputs.filter((_, i) => cartRates[i] <= 0).map(([, label]) => label);
     return { bed, cartRates, missingCart, hasBed: bed > 0, hasAllCart: missingCart.length === 0 };
   }
+  function formatUpgradeCard(levels, options) {
+    return formatLevelMix(levels, options).replaceAll(" · ", "\n");
+  }
   async function updateCalculator() {
     if ($("resultStamina")) $("resultStamina").hidden = true;
     syncFinishEarlyInputLimit(activeCalcConfig(), true);
@@ -4669,9 +4672,9 @@ var SxsCalculator = (() => {
       if ($("resultEyebrow")) $("resultEyebrow").textContent = "Requested target";
       $("currentStars").textContent = fmt(targetStars);
       if (recommendedSection) recommendedSection.hidden = true;
-      $("targetSkills").textContent = formatLevelMix(skillState.levels);
-      $("targetRelics").textContent = formatLevelMix(relicState.levels, { plus: true });
-      $("targetFantomons").textContent = formatLevelMix(fantoState.levels);
+      $("targetSkills").textContent = formatUpgradeCard(skillState.levels);
+      $("targetRelics").textContent = formatUpgradeCard(relicState.levels, { plus: true });
+      $("targetFantomons").textContent = formatUpgradeCard(fantoState.levels);
       GEAR_OUTPUT_IDS.forEach((id, i) => $(id).textContent = gear[i]);
       $("optimizerSummary").textContent = gearLocked ? "The requested score cannot be reached while Gear is locked under the current season caps." : "The requested score exceeds the currently supported progression caps/level gates; this is a score-cap issue, not a Material Realm shortage.";
       $("optimizedScore").textContent = `${fmt(baselineScore)} / ${fmt(desired)} score · target stays ${fmt(targetStars)} Primostars`;
@@ -4700,9 +4703,9 @@ var SxsCalculator = (() => {
       saveState();
       return;
     }
-    $("targetSkills").textContent = formatLevelMix(plan.skillLevels || levelsFromAverage(plan.skill, 8, 100, projectedCaps.skill));
-    $("targetRelics").textContent = formatLevelMix(plan.relicLevels || levelsFromAverage(plan.relic, 20, 10, projectedCaps.relic), { plus: true });
-    $("targetFantomons").textContent = formatLevelMix(plan.fantoLevels || levelsFromAverage(plan.fanto, 4, 100, projectedCaps.fanto));
+    $("targetSkills").textContent = formatUpgradeCard(plan.skillLevels || levelsFromAverage(plan.skill, 8, 100, projectedCaps.skill));
+    $("targetRelics").textContent = formatUpgradeCard(plan.relicLevels || levelsFromAverage(plan.relic, 20, 10, projectedCaps.relic), { plus: true });
+    $("targetFantomons").textContent = formatUpgradeCard(plan.fantoLevels || levelsFromAverage(plan.fanto, 4, 100, projectedCaps.fanto));
     ["targetGearWeapon", "targetGearOffhand", "targetGearHelmet", "targetGearArmor", "targetGearBoots"].forEach((id, i) => $(id).textContent = plan.gear[i]);
     if (recommendedSection) recommendedSection.hidden = false;
     const planSkillLevels = plan.skillLevels || levelsFromAverage(plan.skill, 8, 100, projectedCaps.skill);
