@@ -1,5 +1,6 @@
 import '../assets/builds.js';
 import '../assets/build-layout-icons-v1.js';
+import './build-roll-guide.mjs';
 const $=id=>document.getElementById(id);
 const S1_BUILD_CLASSES=['Berserker','Paladin','Archmage','Arcanist'];
 

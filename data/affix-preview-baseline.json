@@ -1,0 +1,757 @@
+{
+  "schema_version": 1,
+  "source": {
+    "description": "User-confirmed current baseline transcribed from six in-game Affix Preview screenshots. Ranges and drop rates preserve displayed precision; overlapping rows are deduplicated. No equipment level is inferred. Repeated color-coded names within a single proc affix are transcribed once; their color meaning is not inferred. Unique labels are retained in descriptions.",
+    "captured_on": "2026-09-20",
+    "screenshots": [
+      {
+        "file": "9182.png",
+        "sha256": "b724463f1d11f260fee1ed225e3753fe2c4b12de66b606cb3bce2a5afa64795a"
+      },
+      {
+        "file": "9183.png",
+        "sha256": "7dc3d07a17d7d18d4ac92e0f602f64bd535da78bf8113c7eaf4a50b28fbd145c"
+      },
+      {
+        "file": "9184.png",
+        "sha256": "42227cf214d6bd827da2ae013be658568156ce0a12d67461d0af8f8e89c156a7"
+      },
+      {
+        "file": "9185.png",
+        "sha256": "818e21884abf1e32cb2ef3f1564b77f0ed8dac614ad095c5c3c594f954ec4f3d"
+      },
+      {
+        "file": "9186.png",
+        "sha256": "a2c36681d417893735addbd324be0d3536374b207fa99d94e4ff7371310e9f50"
+      },
+      {
+        "file": "9187.png",
+        "sha256": "03641c6d738f7d5c7ba9e6a94047f4499f29037cdd0f8ae12a9419b6fa7c1d61"
+      }
+    ]
+  },
+  "affixes": [
+    {
+      "id": "heal",
+      "name": "Healing Boost",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Healing Boost",
+          "range": "9.6%–15%"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "atk",
+      "name": "ATK",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "ATK",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "def",
+      "name": "DEF",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "DEF",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "spd",
+      "name": "SPD",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "SPD",
+          "range": "2.74K–4.28K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "effectres",
+      "name": "Effect RES",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Effect RES",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "ehr",
+      "name": "Effect Hit Rate",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Effect Hit Rate",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "em",
+      "name": "Elemental Mastery",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Elemental Mastery",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "elementalres",
+      "name": "Elemental RES",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Elemental RES",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "physicalmastery",
+      "name": "Physical Mastery",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Physical Mastery",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "physicalres",
+      "name": "Physical RES",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Physical RES",
+          "range": "3.42K–5.36K"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "hppct",
+      "name": "HP",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "HP",
+          "range": "12%–18.7%"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "atkpct",
+      "name": "ATK",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "ATK",
+          "range": "12%–18.7%"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "defpct",
+      "name": "DEF",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "DEF",
+          "range": "12%–18.7%"
+        }
+      ],
+      "source_images": [
+        "9182.png"
+      ]
+    },
+    {
+      "id": "spdpct",
+      "name": "SPD",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "SPD",
+          "range": "12%–18.7%"
+        }
+      ],
+      "source_images": [
+        "9182.png",
+        "9183.png"
+      ]
+    },
+    {
+      "id": "crit",
+      "name": "Crit Rate",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Crit Rate",
+          "range": "4.8%–7.5%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "critres",
+      "name": "Crit RES",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Crit RES",
+          "range": "4.8%–7.5%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "critdmg",
+      "name": "Crit DMG",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Crit DMG",
+          "range": "7.2%–11.2%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "block",
+      "name": "Block Rate",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Block Rate",
+          "range": "4.8%–7.5%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "hp",
+      "name": "HP",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "HP",
+          "range": "17.1K–26.8K"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "acc",
+      "name": "Accuracy",
+      "kind": "normal",
+      "drop_rate_percent": 4.75,
+      "components": [
+        {
+          "stat": "Accuracy",
+          "range": "4.8%–7.5%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "pvepair",
+      "name": "PvE Bonus DMG + PvE DMG RES",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "PvE Bonus DMG",
+          "range": "+9.6%–+15.3%"
+        },
+        {
+          "stat": "PvE DMG RES",
+          "range": "+9.6%–+15.3%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "pvppair",
+      "name": "PvP Bonus DMG + PvP DMG RES",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "PvP Bonus DMG",
+          "range": "+9.6%–+15.3%"
+        },
+        {
+          "stat": "PvP DMG RES",
+          "range": "+9.6%–+15.3%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "healpair",
+      "name": "DMG RES + Healing Boost",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "DMG RES",
+          "range": "+4.8%–+7.68%"
+        },
+        {
+          "stat": "Healing Boost",
+          "range": "+19.2%–+30.7%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "critresblockpair",
+      "name": "Crit RES + Block Rate",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "Crit RES",
+          "range": "+9.6%–+15.3%"
+        },
+        {
+          "stat": "Block Rate",
+          "range": "+9.6%–+15.3%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "critacc",
+      "name": "Crit Rate + Accuracy",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "Crit Rate",
+          "range": "+9.6%–+15.3%"
+        },
+        {
+          "stat": "Accuracy",
+          "range": "+9.6%–+15.3%"
+        }
+      ],
+      "source_images": [
+        "9183.png"
+      ]
+    },
+    {
+      "id": "blockpair",
+      "name": "Block Rate + Block Efficiency",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "Block Rate",
+          "range": "+9.6%–+15.3%"
+        },
+        {
+          "stat": "Block Efficiency",
+          "range": "+14.4%–+23%"
+        }
+      ],
+      "source_images": [
+        "9183.png",
+        "9184.png"
+      ]
+    },
+    {
+      "id": "critpair",
+      "name": "Crit Rate + Crit DMG",
+      "kind": "paired",
+      "drop_rate_percent": 0.343,
+      "components": [
+        {
+          "stat": "Crit Rate",
+          "range": "+9.6%–+15.3%"
+        },
+        {
+          "stat": "Crit DMG",
+          "range": "+14.4%–+23%"
+        }
+      ],
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "shieldedtechniqueres",
+      "name": "Shielded Technique DMG reduction",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "The wearer takes (14.4%–21.6%) less Technique DMG when shielded.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "effectresdef",
+      "name": "Effect RES to DEF",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Gains (7.5%–11.2%) of Effect RES as DEF.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "effecthitatk",
+      "name": "Effect Hit to ATK",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Gains (7.5%–11.2%) of Effect Hit as ATK.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "hpatk",
+      "name": "HP to ATK",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Gains (1.5%–2.25%) of HP as ATK.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "spdatk",
+      "name": "SPD to ATK",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Gains (9.6%–14.4%) of SPD as ATK.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "defatk",
+      "name": "DEF to ATK",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Gains (7.5%–11.2%) of DEF as ATK.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "airbornetechnique",
+      "name": "Technique DMG to airborne enemies",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "The wearer deals (15%–22.5%) more Technique DMG to airborne enemies.",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "collisiondmg",
+      "name": "Collision DMG",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Increases collision DMG by (12%–18%).",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "debufftechnique",
+      "name": "Technique DMG to debuffed enemies",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Technique DMG Dealt to Enemies with Debuffs +(15%–22.5%).",
+      "source_images": [
+        "9184.png"
+      ]
+    },
+    {
+      "id": "frozenstunnedtechnique",
+      "name": "Technique DMG to frozen and stunned enemies",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "The wearer deals (15%–22.5%) more Technique DMG to frozen and stunned enemies.",
+      "source_images": [
+        "9184.png",
+        "9185.png"
+      ]
+    },
+    {
+      "id": "counterattackdmg",
+      "name": "Counterattack DMG",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Counterattack skills deal (12.6%–18.9%) more DMG.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "summondmg",
+      "name": "Summon DMG",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Summons deal (14.4%–21.6%) more DMG.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "summondmgres",
+      "name": "Summon DMG reduction",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "Summons take (14.4%–21.6%) less DMG.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "enemysummondmg",
+      "name": "DMG to enemy summons",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "The wearer deals (14.4%–21.6%) more DMG to enemy summons.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "shieldedtechniquedmg",
+      "name": "Technique DMG to shielded enemies",
+      "kind": "effect",
+      "drop_rate_percent": 0.12,
+      "description": "The wearer deals (14.4%–21.6%) more Technique DMG to shielded enemies.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "gnollflinger",
+      "name": "Summon: Gnoll Flinger",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "Triggers <Summon: Gnoll Flinger> before battle starts.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "gnollbruiser",
+      "name": "Summon: Gnoll Bruiser",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "Triggers <Summon: Gnoll Bruiser> before battle starts.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "windshield",
+      "name": "Wind Shield",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "Unique: Triggers <Wind Shield> before battle starts.",
+      "source_images": [
+        "9185.png"
+      ]
+    },
+    {
+      "id": "thunderstrike",
+      "name": "Thunder Strike",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When an enemy within 3 grids of the wearer moves, the wearer has a (23.1%–34.5%) chance to trigger <Thunder Strike>.",
+      "source_images": [
+        "9185.png",
+        "9186.png"
+      ]
+    },
+    {
+      "id": "meteorstrike",
+      "name": "Meteor Strike",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "At the start of the wearer's turn, the wearer has a (30%–45%) chance to trigger <Meteor Strike>.",
+      "source_images": [
+        "9186.png"
+      ]
+    },
+    {
+      "id": "surgingblast",
+      "name": "Surging Blast",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When killing an enemy, the wearer has a (30%–45%) chance to trigger <Surging Blast>.",
+      "source_images": [
+        "9186.png"
+      ]
+    },
+    {
+      "id": "dodgechain",
+      "name": "Dodge Chain",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When dealing DMG with a single-target Technique, the wearer has a (20.1%–30%) chance to trigger <Dodge Chain>.",
+      "source_images": [
+        "9186.png",
+        "9187.png"
+      ]
+    },
+    {
+      "id": "dodgetakingdmg",
+      "name": "Dodge when taking DMG",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "Unique: When taking DMG, the wearer has a (8.4%–12.5%) chance to dodge this attack. Can trigger up to (6–10) times per battle.",
+      "source_images": [
+        "9186.png",
+        "9187.png"
+      ]
+    },
+    {
+      "id": "shockblast",
+      "name": "Shock Blast",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When blocking a Technique attack, the wearer has a (15%–22.5%) chance to trigger <Shock Blast>.",
+      "source_images": [
+        "9186.png",
+        "9187.png"
+      ]
+    },
+    {
+      "id": "electricarc",
+      "name": "Electric Arc",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When taking Technique Crit DMG, the wearer has a (15%–22.5%) chance to trigger <Electric Arc>.",
+      "source_images": [
+        "9186.png",
+        "9187.png"
+      ]
+    },
+    {
+      "id": "firering",
+      "name": "Fire Ring",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When taking Technique DMG, the wearer has a (4.95%–7.5%) chance to trigger <Fire Ring>.",
+      "source_images": [
+        "9186.png",
+        "9187.png"
+      ]
+    },
+    {
+      "id": "blazingburst",
+      "name": "Blazing Burst",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "When dealing Crit DMG with a Technique, the wearer has a (30%–45%) chance to trigger <Blazing Burst>.",
+      "source_images": [
+        "9187.png"
+      ]
+    },
+    {
+      "id": "extraprotection",
+      "name": "Extra Protection",
+      "kind": "proc",
+      "drop_rate_percent": 0.062,
+      "description": "Unique: When healing an ally with a Technique, the wearer has a (30%–45%) chance to trigger <Extra Protection>.",
+      "source_images": [
+        "9187.png"
+      ]
+    }
+  ]
+}

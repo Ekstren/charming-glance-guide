@@ -85,6 +85,9 @@ def patch_text(text: str) -> str:
 
 
 def main() -> int:
+    if Path('data/affix-preview-baseline.json').exists():
+        print('Screenshot-confirmed affix baseline is active; legacy activation retired.')
+        return 0
     now = datetime.now(timezone.utc)
     if now < GATE_UTC:
         print(f"Warlord's Rest gate not reached: now={now.isoformat()} gate={GATE_UTC.isoformat()}")

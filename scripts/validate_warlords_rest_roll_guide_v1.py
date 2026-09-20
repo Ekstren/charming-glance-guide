@@ -24,6 +24,16 @@ REQUIRED = [
     "ehr:['Effect Hit Rate','Lv162 scaling',1",
 ]
 
+# The screenshot-confirmed module supersedes this historical release patch.
+if Path('data/affix-preview-baseline.json').exists():
+    import json
+    baseline = json.loads(Path('data/affix-preview-baseline.json').read_text(encoding='utf-8'))
+    assert baseline['schema_version'] == 1 and baseline['affixes']
+    assert Path('src/build-roll-guide.mjs').exists()
+    assert "import './build-roll-guide.mjs'" in Path('src/builds.mjs').read_text(encoding='utf-8')
+    print('Current screenshot-confirmed affix baseline validates; legacy activation retired.')
+    raise SystemExit(0)
+
 for path in FILES:
     source = path.read_text(encoding='utf-8')
     staged = patch_text(source)
