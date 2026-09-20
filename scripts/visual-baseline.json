@@ -1,4 +1,4 @@
 {
-  "commit": "169620f3d0ec3167bbc5ee270a50180e6f595de5",
-  "description": "Reviewed one distinct level per line in calculator upgrade cards, without dot separators, at desktop and mobile widths."
+  "commit": "874902131bee1a6909ab774a439dd17dca40f7aa",
+  "description": "Reviewed site-wide typography, contrast, independent Timeline cards, readable help, expanded calculator details, and narrow Tournament controls in both themes."
 }
