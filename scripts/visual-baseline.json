@@ -1,4 +1,4 @@
 {
-  "commit": "493688666ea486ecdac82146d4c06de6869b11a3",
-  "description": "Guardian role selector matches Dominator with equal-width buttons and matching spacing."
+  "commit": "5df72cd610e8420146e8d8c7420aa977ec5dde43",
+  "description": "Roll guide rows use content height instead of stretching every row to match a wrapped label."
 }
