@@ -1,4 +1,4 @@
 {
-  "commit": "a912daf0ebca9da587599ca4e175db140d8cb0e7",
-  "description": "Approved main appearance after the AETHYRIS gift-code row was added and the Acme Nexus seasonal-map row removed (both reviewed against official Discord announcements). Rendered alongside the candidate in the same browser; update only for reviewed intentional visual changes."
+  "commit": "e1b25a0",
+  "description": "Reviewed stamina projection card beneath target timing. Phone and desktop screenshots inspected; all pre-existing sections match the prior baseline. Render baseline and candidate in the same browser."
 }
