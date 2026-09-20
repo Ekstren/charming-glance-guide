@@ -846,26 +846,26 @@
 (()=>{
   // BUILD_ROLL_GUIDE_WARLORD_V1
   const R={
-    atk:['ATK','Lv162 scaling',1,'Flat ATK scales with receiving gear level. Global-English Warlord-era transfer evidence at Lv162 shows inherited ATK lines reaching 3577 and 4501, but those are observed values rather than a proven Affix Preview maximum.',1],
-    atkpct:['ATK%','Lv162 max unconfirmed',1,'ATK% is a separate percentage substat from flat ATK. Current Global guides confirm the affix exists, but I do not have a direct Global-English Warlord Affix Preview proving its Lv162 maximum.',0],
-    def:['DEF','Lv162 scaling',1,'Flat DEF scales with receiving gear level. Global-English Warlord-era transfer evidence at Lv162 shows an inherited DEF line reaching 3603, but that is an observed value rather than a proven Affix Preview maximum.',1],
-    defpct:['DEF%','Lv162 max unconfirmed',1,'DEF% is a separate percentage substat from flat DEF. Current Global evidence includes percentage DEF refinement lines, but I do not have a direct Warlord Affix Preview proving the Lv162 maximum.',0],
-    hp:['HP','Lv162 scaling',1,'Flat HP scales with receiving gear level. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
-    hppct:['HP%','Lv162 max unconfirmed',1,'HP% is a separate percentage substat from flat HP. Current Global guides confirm the affix exists, but I do not have a direct Global-English Warlord Affix Preview proving its Lv162 maximum.',0],
-    spd:['SPD','Lv162 scaling',1,'Flat SPD scales with receiving gear level. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
-    spdpct:['SPD%','Lv162 max unconfirmed',1,'SPD% is a separate percentage substat from flat SPD. Current Global guides confirm the affix exists, but I do not have a direct Global-English Warlord Affix Preview proving its Lv162 maximum.',0],
-    crit:['Crit Rate','≈ 7.50%',1,'Approximate Warlord/Lv162 standalone Crit Rate maximum. Older-server first-post-160 scaling reports about +50% for normal percentage affixes, and Global community evidence independently places high-end Crit rolls around 7.5%; a direct current English-client Affix Preview maximum is still needed.',0],
-    critdmg:['Crit DMG','≈ 11.25%',1,'Approximate Warlord/Lv162 standalone Crit DMG maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
-    block:['Block Rate','≈ 7.50%',1,'Approximate Warlord/Lv162 standalone Block Rate maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
-    acc:['Accuracy','≈ 7.50%',1,'Approximate Warlord/Lv162 standalone Accuracy maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
-    em:['Elemental Mastery','Lv162 scaling',1,'Elemental Mastery is a flat-number refinable affix whose inherited value scales with receiving gear level. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
-    ehr:['Effect Hit Rate','Lv162 scaling',1,'Effect Hit Rate is a flat-number refinable affix. I do not have a direct Global-English Warlord Affix Preview capture proving the maximum Lv162 roll.',1],
-    dmgres:['DMG RES','No verified standalone max',1,'The current refinement pool clearly exposes the paired DMG RES + Healing Boost affix, but I could not establish a trustworthy standalone Warlord DMG RES refinement maximum.',0],
-    heal:['Healing Boost','≈ 15.00%',1,'Approximate Warlord/Lv162 standalone Healing Boost maximum from the first-post-160 normal-affix scaling step. A direct current English-client Affix Preview maximum is still needed.',0],
-    critpair:['Crit Rate + Crit DMG','15.3% + 23%',0,'',0],
-    critacc:['Crit Rate + Accuracy','15.3% + 15.3%',1,'High-confidence post-160 special-affix maximum from the documented 3× special-affix breakpoint and older-server S2 affix table, but not retained as a direct current Global-English Affix Preview capture.',0],
-    blockpair:['Block Rate + Block Efficiency','15.3% + 23%',1,'High-confidence post-160 special-affix maximum from the documented 3× special-affix breakpoint and older-server S2 affix table, but not retained as a direct current Global-English Affix Preview capture.',0],
-    healpair:['DMG RES + Healing Boost','7.68% + 30.7%',1,'High-confidence post-160 special-affix maximum from the documented 3× special-affix breakpoint and older-server S2 affix table, but not retained as a direct current Global-English Affix Preview capture.',0],
+    atk:['ATK','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    atkpct:['ATK%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    def:['DEF','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    defpct:['DEF%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    hp:['HP','26.8K',1,'Maximum shown in the in-game Affix Preview.',0],
+    hppct:['HP%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    spd:['SPD','4.28K',1,'Maximum shown in the in-game Affix Preview.',0],
+    spdpct:['SPD%','18.7%',1,'Maximum shown in the in-game Affix Preview.',0],
+    crit:['Crit Rate','7.5%',1,'Maximum shown in the in-game Affix Preview.',0],
+    critdmg:['Crit DMG','11.2%',1,'Maximum shown in the in-game Affix Preview.',0],
+    block:['Block Rate','7.5%',1,'Maximum shown in the in-game Affix Preview.',0],
+    acc:['Accuracy','7.5%',1,'Maximum shown in the in-game Affix Preview.',0],
+    em:['Elemental Mastery','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    ehr:['Effect Hit Rate','5.36K',1,'Maximum shown in the in-game Affix Preview.',0],
+    dmgres:['DMG RES','Paired affix only',1,'Shown only as DMG RES + Healing Boost in the in-game Affix Preview.',0],
+    heal:['Healing Boost','15%',1,'Maximum shown in the in-game Affix Preview.',0],
+    critpair:['Crit Rate + Crit DMG','15.3% + 23%',1,'Maximum shown in the in-game Affix Preview.',0],
+    critacc:['Crit Rate + Accuracy','15.3% + 15.3%',1,'Maximum shown in the in-game Affix Preview.',0],
+    blockpair:['Block Rate + Block Efficiency','15.3% + 23%',1,'Maximum shown in the in-game Affix Preview.',0],
+    healpair:['DMG RES + Healing Boost','7.68% + 30.7%',1,'Maximum shown in the in-game Affix Preview.',0],
   };
   const PROFILES={
     Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
@@ -887,11 +887,11 @@
     const keys=Array.isArray(profile)?profile:profile?.[mode];
     return (keys||PROFILES.Conqueror).map(k=>R[k]);
   };
-  const help=tip=>`<button type="button" class="rollHelp" aria-label="Approximate or unconfirmed value" data-tip="${esc(tip)}">?</button>`;
+  const help=tip=>`<button type="button" class="rollHelp" aria-label="Affix value details" data-tip="${esc(tip)}">i</button>`;
   const guideHtml=(cls,mode)=>{
     const rows=rowsFor(cls,mode);
     const label=cls==='Dominator'?`${cls} · ${mode==='heals'?'Heals':'DPS'}`:cls==='Guardian'?`${cls} · ${mode==='dps'?'DPS':'Tank'}`:cls;
-    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Warlord's Rest · Lv162</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Only substats recommended above are shown. <b>?</b> = approximate, derived, or not directly confirmed on the current Global client.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Warlord's Rest / Lv162 reference. Double-Crit is directly documented; other paired values marked <b>?</b> use the documented post-160 special-affix breakpoint. Normal single-stat caps marked <b>?</b> are first-post-160 estimates; flat-number stats scale with gear level.</div></div></details>`;
+    return `<details class="rollGuide" data-roll-sig="${esc(cls+'|'+mode)}"><summary><span>Roll guide</span><small>${esc(label)} · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Maximum rolls for the substats recommended above.</div><div class="rollGuideGrid">${rows.map(([name,val,approx,tip,scaling])=>`<div class="rollGuideRow"><span class="rollGuideName">${esc(name)}${approx?help(tip):''}</span><span class="rollGuideValue${scaling?' rollScaling':''}">${esc(val)}</span></div>`).join('')}</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>`;
   };
   let queued=false;
   function apply(){
