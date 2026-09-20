@@ -173,7 +173,11 @@
       left=document.createElement('div');
       left.className='buildHeroLeft';
       guide.insertBefore(left,identity||guide.firstChild);
-      if(identity&&identity!==quick) left.append(identity);
+      if(identity&&identity!==quick){
+        const roleTabs=identity.querySelector('.guardianModeTabs,.dominatorModeTabs');
+        if(roleTabs) left.append(roleTabs);
+        identity.remove();
+      }
       left.append(quick);
     }else if(quick.parentElement!==left){
       left.append(quick);
