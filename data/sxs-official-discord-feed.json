@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1551544470489669718",
+  "last_message_id": "1551773767523377174",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -326,8 +326,8 @@
           "filename": "pv.mp4",
           "content_type": "video/quicktime",
           "size": 16088131,
-          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1547434237815165038/pv.mp4?ex=6ab29130&is=6ab13fb0&hm=f322722370a1eb8a0ece5a5ead3d6bbbc6b8c03a774cf931961bee372f63f839&",
-          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1547434237815165038/pv.mp4?ex=6ab29130&is=6ab13fb0&hm=f322722370a1eb8a0ece5a5ead3d6bbbc6b8c03a774cf931961bee372f63f839&",
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1547434237815165038/pv.mp4?ex=6ab339f0&is=6ab1e870&hm=bb8ff2cf464a169c9ca01328a3d81fefe3cbb386cc65760759050062a43c21f0&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1547434237815165038/pv.mp4?ex=6ab339f0&is=6ab1e870&hm=bb8ff2cf464a169c9ca01328a3d81fefe3cbb386cc65760759050062a43c21f0&",
           "width": 1280,
           "height": 720
         }
@@ -427,6 +427,69 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1551544470489669718"
+    },
+    {
+      "id": "1551773767523377174",
+      "timestamp": "2026-09-22T01:54:56.740000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# 🎨 Sword x Staff Fan Art Event Winners Announcement!\n\nAdventurers, the wait is over!\nThank you to everyone who joined our Fan Art Event and shared your amazing creations with the community. \n\nAfter reviewing all eligible submissions based on theme fit, creativity, completion, and overall presentation, we’re excited to announce the winners!\n\n🏆 1st Prize: BumbleButt0088, reavesuke\n🎖️ 2nd Prize: Milly N, chii azurin, Valentina Shufraken\n✨ 3rd Prize: Cosa La, Keith, portalmusician0, Ruler, Kage\n\nCongratulations to all the winners! \nPlease contact our official team within 5 days to claim your prize. When doing so, kindly provide the profile page of the account used for your submission. \n-Please contact the user \"sxs_0519\" (Naira) on Discord for getting the reward! \n\n🎁 Rewards will be delivered within 15 business days after the winner announcement.  \nPlease keep an eye on your messages and make sure your submitted contact information is valid.\n\nOnce again, thank you for bringing your creativity to Sword x Staff. We hope to see even more amazing works from you in future community events!\n\nStay tuned for more events and updates by following our official channels.",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1551772458703519784",
+          "filename": "1.jpg",
+          "content_type": "image/jpeg",
+          "size": 690270,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1551772458703519784/1.jpg?ex=6ab33038&is=6ab1deb8&hm=0778ec2a956d5eeaa424824d07cfad4286d6a9b6b7c1d9ceadf044f8a787fee1&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1551772458703519784/1.jpg?ex=6ab33038&is=6ab1deb8&hm=0778ec2a956d5eeaa424824d07cfad4286d6a9b6b7c1d9ceadf044f8a787fee1&",
+          "width": 750,
+          "height": 832
+        },
+        {
+          "id": "1551772460603547768",
+          "filename": "img_v3_0215p_db2a9585-b8aa-4a50-9329-d3f748649cag.jpg",
+          "content_type": "image/jpeg",
+          "size": 2425664,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1551772460603547768/img_v3_0215p_db2a9585-b8aa-4a50-9329-d3f748649cag.jpg?ex=6ab33039&is=6ab1deb9&hm=99327e8c909c2d5934e74a775937032c5f2aba7bb0b4bbd03377d7ca24cf050b&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1551772460603547768/img_v3_0215p_db2a9585-b8aa-4a50-9329-d3f748649cag.jpg?ex=6ab33039&is=6ab1deb9&hm=99327e8c909c2d5934e74a775937032c5f2aba7bb0b4bbd03377d7ca24cf050b&",
+          "width": 1696,
+          "height": 2468
+        },
+        {
+          "id": "1551772460993482822",
+          "filename": "3.jpg",
+          "content_type": "image/jpeg",
+          "size": 619789,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1551772460993482822/3.jpg?ex=6ab33039&is=6ab1deb9&hm=40e10ba50a4796ff75d1f63627c37ae836d5f2cec46de5e1cc0a6b522ebef2d2&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1551772460993482822/3.jpg?ex=6ab33039&is=6ab1deb9&hm=40e10ba50a4796ff75d1f63627c37ae836d5f2cec46de5e1cc0a6b522ebef2d2&",
+          "width": 750,
+          "height": 935
+        },
+        {
+          "id": "1551772461949788171",
+          "filename": "4.jpg",
+          "content_type": "image/jpeg",
+          "size": 1035077,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1551772461949788171/4.jpg?ex=6ab33039&is=6ab1deb9&hm=cdab9b7263e6fe14f9ee7d7d6759d1b80239c6c63a43bc96c52028107d9912ba&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1551772461949788171/4.jpg?ex=6ab33039&is=6ab1deb9&hm=cdab9b7263e6fe14f9ee7d7d6759d1b80239c6c63a43bc96c52028107d9912ba&",
+          "width": 750,
+          "height": 1444
+        }
+      ],
+      "message_reference": {
+        "message_id": "1551772461933002885",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1551773767523377174"
     }
   ]
 }
