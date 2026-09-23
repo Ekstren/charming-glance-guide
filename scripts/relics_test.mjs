@@ -72,6 +72,7 @@ try{
  const visible=dataset.filter(r=>r.visible===true),hidden=dataset.filter(r=>r.visible!==true);assert.ok(visible.length&&hidden.length,'catalog retains visible and future releases');
  assert.equal(new Set(dataset.map(r=>r.id)).size,dataset.length,'relic IDs are unique');
  for(const r of dataset.filter(r=>r.zone))assert.ok(r.region&&r.zone.startsWith(r.region+' '),`region/zone conflict: ${r.name}`);
+ for(const region of ['Verdantglade','Cinder Ridge','Aqualis']) assert.equal(visible.filter(r=>r.region===region).length,70);
  for(const pool of ['Loong Haven I','Loong Haven II']){const rows=visible.filter(r=>r.pool===pool);assert.equal(rows.length,80);assert.equal(rows.filter(r=>r.rarity==='Mythic').length,20);}
  const images=[...new Set(dataset.map(r=>r.image).filter(Boolean))];
  assert.ok(images.length,'catalog has icons');for(const image of images){assert.ok(!/^https?:/.test(image),`icon must be local: ${image}`);assert.ok(existsSync(image),`missing icon: ${image}`);}

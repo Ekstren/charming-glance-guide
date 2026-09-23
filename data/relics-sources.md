@@ -19,20 +19,23 @@ the browser never queries another site's database. Edit this file, then run
 
 ## Site visibility: through Loong Haven Relic II
 
-The full catalog is retained. An explicit per-entry `visible` flag limits the UI,
-collection denominator, filters and target mode to 377 entries: Verdantglade (71),
-Cinder Ridge (72), Aqualis (71), Loong Haven (161), Lucky Statue and Primal Gem.
-753 later-region or release-unverified special relics are hidden. New imports
-default to hidden; changing visibility never deletes saved ownership.
+The full catalog is retained. Explicit per-entry visibility limits the UI to 377 entries:
+Verdantglade 70, Cinder Ridge 70, Aqualis 70, Loong Haven I 80, Loong Haven II 80,
+and seven currently identified Other relics. The user's in-game regional counts take
+priority. Loong Haven II is marked upcoming based on their current game availability.
 
-The [EOG database](https://eog.gg/games/sword-x-staff/) has Dragon I and Dragon II
-rosters of 80 each and no Dragon III tier. The catalog's Loong Haven pool has 160
-set relics plus Golden Loong Token. The cutoff uses this current regional pool;
-an individual I/II classification is not claimed for every relic, and the token's
-exact release phase is not independently established. It remains included as a
-Loong Haven regional relic. This is a frozen allowlist, so future catalog additions
-cannot silently extend the cutoff. The two visible event relics have early-region
-event evidence; other special relics stay hidden pending release verification.
+EOG independently lists the first three pools as 70 each and Dragon I/II as 80 each.
+Five catalog regional extras belong to EOG's Other tier: Hero's Arbor Emblem,
+Ancient Tablet, Aquorigin Charm, Golden Loong Token, and Portable Air Temperature
+Controller I. They are grouped with the two event relics in Other. The game reports
+30 Other relics, but the current-release roster has not been established; this
+seven-entry group is incomplete. We do not select an arbitrary 30 from EOG's much
+larger Other catalog. Some elements for those five entries conflict across sources;
+the catalog values are retained pending confirmation.
+
+753 later or release-unverified records remain hidden. New imports default to hidden;
+visibility changes preserve saved ownership. Loong pool assignments carry per-record
+provenance; upcoming entries remain visible as requested.
 
 ## Sources and decisions
 

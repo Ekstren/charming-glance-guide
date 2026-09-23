@@ -1401,7 +1401,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71639",
@@ -1664,7 +1665,7 @@
     "image": "assets/relics/treasure_61925.png",
     "rarity": "Legendary",
     "element": "Fire",
-    "region": "Cinder Ridge",
+    "region": "Other",
     "zone": null,
     "destinyFruit": null,
     "sources": [],
@@ -1707,7 +1708,12 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "visibilityNote": "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+    "classificationEvidence": {
+      "url": "https://eog.gg/games/sword-x-staff/#relics",
+      "note": "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+    }
   },
   {
     "id": "treasure_74035",
@@ -2551,7 +2557,7 @@
     "image": "assets/relics/treasure_61926.png",
     "rarity": "Legendary",
     "element": "Fire",
-    "region": "Aqualis",
+    "region": "Other",
     "zone": null,
     "destinyFruit": null,
     "sources": [],
@@ -2594,7 +2600,12 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "visibilityNote": "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+    "classificationEvidence": {
+      "url": "https://eog.gg/games/sword-x-staff/#relics",
+      "note": "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+    }
   },
   {
     "id": "treasure_72614",
@@ -3693,7 +3704,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72407",
@@ -3855,7 +3867,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61511",
@@ -4332,7 +4345,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73003",
@@ -4392,7 +4406,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62712",
@@ -4503,7 +4518,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74200",
@@ -4563,7 +4579,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61701",
@@ -4938,7 +4955,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72400",
@@ -4998,7 +5016,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71831",
@@ -7170,7 +7189,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61908",
@@ -7485,7 +7505,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74406",
@@ -8252,7 +8273,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71037",
@@ -9401,7 +9423,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74000",
@@ -9461,7 +9484,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73834",
@@ -9572,7 +9596,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71604",
@@ -10100,7 +10125,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74836",
@@ -11538,7 +11564,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62002",
@@ -12006,7 +12033,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72220",
@@ -12117,7 +12145,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61609",
@@ -12917,7 +12946,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71603",
@@ -12977,7 +13007,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71224",
@@ -13598,7 +13629,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72430",
@@ -13760,7 +13792,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72212",
@@ -15589,7 +15622,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62516",
@@ -15802,7 +15836,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73419",
@@ -16441,7 +16476,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62512",
@@ -16612,7 +16648,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73811",
@@ -17098,7 +17135,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74813",
@@ -17788,7 +17826,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72807",
@@ -18460,7 +18499,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62709",
@@ -19192,7 +19232,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72423",
@@ -19303,7 +19344,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62714",
@@ -21747,7 +21789,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72816",
@@ -22818,7 +22861,7 @@
     "image": "assets/relics/treasure_61927.png",
     "rarity": "Legendary",
     "element": "Fire",
-    "region": "Loong Haven",
+    "region": "Other",
     "zone": null,
     "destinyFruit": null,
     "sources": [],
@@ -22870,6 +22913,11 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
+    },
+    "visibilityNote": "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+    "classificationEvidence": {
+      "url": "https://eog.gg/games/sword-x-staff/#relics",
+      "note": "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
     }
   },
   {
@@ -23083,7 +23131,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72002",
@@ -23143,7 +23192,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62510",
@@ -23365,7 +23415,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73027",
@@ -24496,7 +24547,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74438",
@@ -24606,7 +24658,7 @@
     "image": "assets/relics/treasure_61924.png",
     "rarity": "Legendary",
     "element": "Fire",
-    "region": "Verdantglade",
+    "region": "Other",
     "zone": null,
     "destinyFruit": null,
     "sources": [],
@@ -24649,7 +24701,12 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "visibilityNote": "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+    "classificationEvidence": {
+      "url": "https://eog.gg/games/sword-x-staff/#relics",
+      "note": "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+    }
   },
   {
     "id": "treasure_61211",
@@ -25706,7 +25763,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72615",
@@ -26261,7 +26319,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71239",
@@ -26712,7 +26771,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72020",
@@ -27837,7 +27897,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74816",
@@ -28671,7 +28732,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73005",
@@ -29296,7 +29358,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74217",
@@ -30870,7 +30933,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62503",
@@ -31627,7 +31691,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71428",
@@ -32922,7 +32987,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62901",
@@ -34106,7 +34172,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71608",
@@ -34807,7 +34874,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61502",
@@ -35182,7 +35250,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71425",
@@ -36710,7 +36779,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74413",
@@ -36923,7 +36993,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61928",
@@ -36931,7 +37002,7 @@
     "image": "assets/relics/treasure_61928.png",
     "rarity": "Epic",
     "element": "Fire",
-    "region": "Cinder Ridge",
+    "region": "Other",
     "zone": null,
     "destinyFruit": null,
     "sources": [],
@@ -36940,7 +37011,12 @@
     "visible": true,
     "effect": "+21 SPD",
     "set": null,
-    "setBonuses": []
+    "setBonuses": [],
+    "visibilityNote": "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+    "classificationEvidence": {
+      "url": "https://eog.gg/games/sword-x-staff/#relics",
+      "note": "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+    }
   },
   {
     "id": "treasure_73034",
@@ -37102,7 +37178,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74037",
@@ -37411,7 +37488,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61214",
@@ -37531,7 +37609,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62008",
@@ -37948,7 +38027,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74609",
@@ -38263,7 +38343,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61404",
@@ -39948,7 +40029,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_73634",
@@ -40629,7 +40711,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62814",
@@ -40749,7 +40832,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72218",
@@ -42547,7 +42631,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74817",
@@ -43033,7 +43118,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72227",
@@ -43603,7 +43689,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62112",
@@ -43978,7 +44065,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74225",
@@ -44872,7 +44960,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71000",
@@ -44932,7 +45021,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61204",
@@ -45936,7 +46026,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61101",
@@ -47816,7 +47907,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72819",
@@ -47927,7 +48019,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72015",
@@ -48710,7 +48803,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61401",
@@ -49528,7 +49622,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74222",
@@ -49792,7 +49887,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_61704",
@@ -50653,7 +50749,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72021",
@@ -50977,7 +51074,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62105",
@@ -51088,7 +51186,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_71236",
@@ -52597,7 +52696,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72019",
@@ -53899,7 +53999,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_62304",
@@ -56996,7 +57097,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74203",
@@ -57056,7 +57158,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_74002",
@@ -57116,7 +57219,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72016",
@@ -57695,7 +57799,8 @@
         "https://lootandwaifus.com/api/swordxstaff/treasures.json",
         "https://eog.gg/games/sword-x-staff/#relics"
       ]
-    }
+    },
+    "upcoming": true
   },
   {
     "id": "treasure_72409",

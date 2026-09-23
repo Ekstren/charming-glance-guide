@@ -1431,7 +1431,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71639",
@@ -1694,7 +1695,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61925.png",
       rarity: "Legendary",
       element: "Fire",
-      region: "Cinder Ridge",
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
@@ -1737,7 +1738,12 @@ var SxsRelics = (() => {
           label: "Awakened set bonus",
           effect: "DMG Boost"
         }
-      ]
+      ],
+      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      classificationEvidence: {
+        url: "https://eog.gg/games/sword-x-staff/#relics",
+        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+      }
     },
     {
       id: "treasure_74035",
@@ -2581,7 +2587,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61926.png",
       rarity: "Legendary",
       element: "Fire",
-      region: "Aqualis",
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
@@ -2624,7 +2630,12 @@ var SxsRelics = (() => {
           label: "Awakened set bonus",
           effect: "DMG Boost"
         }
-      ]
+      ],
+      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      classificationEvidence: {
+        url: "https://eog.gg/games/sword-x-staff/#relics",
+        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+      }
     },
     {
       id: "treasure_72614",
@@ -3723,7 +3734,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72407",
@@ -3885,7 +3897,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61511",
@@ -4362,7 +4375,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73003",
@@ -4422,7 +4436,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62712",
@@ -4533,7 +4548,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74200",
@@ -4593,7 +4609,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61701",
@@ -4968,7 +4985,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72400",
@@ -5028,7 +5046,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71831",
@@ -7200,7 +7219,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61908",
@@ -7515,7 +7535,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74406",
@@ -8282,7 +8303,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71037",
@@ -9431,7 +9453,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74000",
@@ -9491,7 +9514,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73834",
@@ -9602,7 +9626,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71604",
@@ -10130,7 +10155,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74836",
@@ -11568,7 +11594,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62002",
@@ -12036,7 +12063,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72220",
@@ -12147,7 +12175,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61609",
@@ -12947,7 +12976,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71603",
@@ -13007,7 +13037,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71224",
@@ -13628,7 +13659,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72430",
@@ -13790,7 +13822,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72212",
@@ -15619,7 +15652,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62516",
@@ -15832,7 +15866,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73419",
@@ -16471,7 +16506,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62512",
@@ -16642,7 +16678,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73811",
@@ -17128,7 +17165,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74813",
@@ -17818,7 +17856,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72807",
@@ -18490,7 +18529,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62709",
@@ -19222,7 +19262,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72423",
@@ -19333,7 +19374,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62714",
@@ -21777,7 +21819,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72816",
@@ -22848,7 +22891,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61927.png",
       rarity: "Legendary",
       element: "Fire",
-      region: "Loong Haven",
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
@@ -22900,6 +22943,11 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
+      },
+      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      classificationEvidence: {
+        url: "https://eog.gg/games/sword-x-staff/#relics",
+        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
       }
     },
     {
@@ -23113,7 +23161,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72002",
@@ -23173,7 +23222,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62510",
@@ -23395,7 +23445,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73027",
@@ -24526,7 +24577,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74438",
@@ -24636,7 +24688,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61924.png",
       rarity: "Legendary",
       element: "Fire",
-      region: "Verdantglade",
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
@@ -24679,7 +24731,12 @@ var SxsRelics = (() => {
           label: "Awakened set bonus",
           effect: "DMG Boost"
         }
-      ]
+      ],
+      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      classificationEvidence: {
+        url: "https://eog.gg/games/sword-x-staff/#relics",
+        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+      }
     },
     {
       id: "treasure_61211",
@@ -25736,7 +25793,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72615",
@@ -26291,7 +26349,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71239",
@@ -26742,7 +26801,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72020",
@@ -27867,7 +27927,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74816",
@@ -28701,7 +28762,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73005",
@@ -29326,7 +29388,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74217",
@@ -30900,7 +30963,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62503",
@@ -31657,7 +31721,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71428",
@@ -32952,7 +33017,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62901",
@@ -34136,7 +34202,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71608",
@@ -34837,7 +34904,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61502",
@@ -35212,7 +35280,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71425",
@@ -36740,7 +36809,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74413",
@@ -36953,7 +37023,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61928",
@@ -36961,7 +37032,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61928.png",
       rarity: "Epic",
       element: "Fire",
-      region: "Cinder Ridge",
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
@@ -36970,7 +37041,12 @@ var SxsRelics = (() => {
       visible: true,
       effect: "+21 SPD",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      classificationEvidence: {
+        url: "https://eog.gg/games/sword-x-staff/#relics",
+        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+      }
     },
     {
       id: "treasure_73034",
@@ -37132,7 +37208,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74037",
@@ -37441,7 +37518,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61214",
@@ -37561,7 +37639,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62008",
@@ -37978,7 +38057,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74609",
@@ -38293,7 +38373,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61404",
@@ -39978,7 +40059,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_73634",
@@ -40659,7 +40741,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62814",
@@ -40779,7 +40862,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72218",
@@ -42577,7 +42661,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74817",
@@ -43063,7 +43148,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72227",
@@ -43633,7 +43719,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62112",
@@ -44008,7 +44095,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74225",
@@ -44902,7 +44990,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71000",
@@ -44962,7 +45051,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61204",
@@ -45966,7 +46056,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61101",
@@ -47846,7 +47937,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72819",
@@ -47957,7 +48049,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72015",
@@ -48740,7 +48833,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61401",
@@ -49558,7 +49652,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74222",
@@ -49822,7 +49917,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_61704",
@@ -50683,7 +50779,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72021",
@@ -51007,7 +51104,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62105",
@@ -51118,7 +51216,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_71236",
@@ -52627,7 +52726,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72019",
@@ -53929,7 +54029,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_62304",
@@ -57026,7 +57127,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74203",
@@ -57086,7 +57188,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_74002",
@@ -57146,7 +57249,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72016",
@@ -57725,7 +57829,8 @@ var SxsRelics = (() => {
           "https://lootandwaifus.com/api/swordxstaff/treasures.json",
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
-      }
+      },
+      upcoming: true
     },
     {
       id: "treasure_72409",
@@ -58265,7 +58370,7 @@ var SxsRelics = (() => {
     const filters = { region: "Verdantglade", zone: "all", targets: false, rarity: "", element: "", search: "", status: "all", fruit: "all", sort: "zone" };
     const options = (field) => [...new Set(relics.map((r) => r[field]).filter(Boolean))].sort().map((v) => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
     host.innerHTML = `<header class="relicHeader"><div><h1>Relic Gallery</h1><p>Your collection, one region at a time.</p></div><div class="relicProgress"><strong id="relicProgressText"></strong><progress id="relicProgressBar" aria-label="Overall relic collection"></progress><small>Saved in this browser on this device</small></div></header>
- <nav class="relicRegionTabs" id="relicRegionTabs" aria-label="Relic regions">${[...regions, "other", "all"].map((region) => `<button type="button" data-relic-region="${region}" aria-pressed="${region === filters.region}">${region === "other" ? "Other" : region === "all" ? "All regions" : region}</button>`).join("")}</nav>
+ <nav class="relicRegionTabs" id="relicRegionTabs" aria-label="Relic regions">${[...regions, "other", "all"].map((region) => `<button type="button" data-relic-region="${region}" aria-pressed="${region === filters.region}">${region === "other" ? "Other" : region === "all" ? "All regions" : region === "Loong Haven II" ? "Loong Haven II · Upcoming" : region}</button>`).join("")}</nav>
  <div class="relicModes" role="group" aria-label="Relic view"><button type="button" data-relic-mode="collection" aria-pressed="true">Collection</button><button type="button" data-relic-mode="targets" aria-pressed="false">Destiny Fruit Targets</button></div>
  <div class="relicFilters"><label>Search by name<input type="search" id="relicSearch" placeholder="Find a relic…"></label><label>Rarity<select id="relicRarity"><option value="">All rarities</option>${options("rarity")}</select></label><label>Element<select id="relicElement"><option value="">All elements</option>${options("element")}</select></label><label>Collection<select id="relicStatus"><option value="all">All</option><option value="owned">Owned</option><option value="missing">Missing</option></select></label><label>Destiny Fruit<select id="relicFruit"><option value="all">All</option><option value="yes">Destiny Fruit obtainable</option><option value="no">Not Destiny Fruit obtainable</option><option value="unknown">Not yet verified</option></select></label><label>Fruit zone<select id="relicZone" aria-label="Destiny Fruit drop zone"></select></label><label id="relicSortLabel" hidden>Sort zones<select id="relicSort"><option value="zone">Normal zone order</option><option value="missing">Most missing relics</option></select></label><button type="button" id="relicReset">Reset filters</button></div>
  <p id="relicTargetNote" hidden>Missing relics with verified Destiny Fruit availability. Zone counts follow your current filters.</p><p class="relicStorageStatus" id="relicStorageStatus" role="status"></p><p id="relicResultsStatus" role="status" aria-live="polite"></p><div id="relicGroups"></div><p class="relicCoverage">Through Loong Haven Relic II · ${relics.length} relics. Numbered zones refer specifically to Destiny Fruit drops.</p><p class="relicFootnote">Select a relic for acquisition details. Missing drop-zone information does not mean a relic is unobtainable.</p>
@@ -58326,7 +58431,7 @@ var SxsRelics = (() => {
       };
       const entries = [...groups].sort(([a, aa], [b, bb]) => filters.targets ? (filters.sort === "missing" ? missing(bb) - missing(aa) : 0) || compareZones(a, b) : rarityRank(a) - rarityRank(b) || a.localeCompare(b));
       const regionLabel = filters.region === "all" ? "All regions" : filters.region === "other" ? "Other" : filters.region;
-      $("relicResultsStatus").textContent = `${regionLabel} · ${shown.length} ${filters.targets ? "missing Destiny Fruit targets" : "relics shown"}${filters.targets ? ` across ${groups.size} ${groups.size === 1 ? "zone" : "zones"}` : ""}.`;
+      $("relicResultsStatus").textContent = `${regionLabel}${filters.region === "Loong Haven II" ? " · Upcoming" : filters.region === "other" ? " · Catalog incomplete" : ""} · ${shown.length} ${filters.targets ? "missing Destiny Fruit targets" : "relics shown"}${filters.targets ? ` across ${groups.size} ${groups.size === 1 ? "zone" : "zones"}` : ""}.`;
       $("relicGroups").innerHTML = entries.length ? entries.map(([group, items]) => `<section class="${filters.targets ? "relicZone" : "relicRarityGroup"}"><header><h2>${esc(group)}</h2><span>${missing(items)} missing · ${items.length} ${filters.targets ? "targets" : "shown"}</span></header><div class="relicGrid">${items.map(card).join("")}</div></section>`).join("") : '<p class="relicEmpty">No relics match these filters.</p>';
     }
     host.addEventListener("input", (e) => {

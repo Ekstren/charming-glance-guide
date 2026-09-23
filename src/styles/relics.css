@@ -91,4 +91,4 @@ body .sectionSwitch { grid-template-columns:repeat(5,minmax(0,1fr)) !important; 
 .relicDialogHero .relicImage { flex:0 0 auto; width:150px; max-width:150px; margin:10px auto; }
 .relicSetCount { float:right; font-size:11px; font-weight:400; color:var(--reading-muted); }
 .relicAffinity { padding:9px 12px; background:var(--bg); border-radius:7px; }
-@media(max-width:350px) { body nav.sectionSwitch>button[data-section] { overflow-wrap:anywhere; } }
+@media(max-width:600px) { body nav.sectionSwitch>button[data-section] { overflow-wrap:anywhere; } }
