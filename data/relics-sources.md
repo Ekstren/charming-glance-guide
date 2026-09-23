@@ -7,9 +7,11 @@ the browser never queries another site's database. Edit this file, then run
 ## Coverage, checked 2026-09-23
 
 - 1,130 catalog entries with 1,130 local icons.
-- 30 exact Destiny Exploration locations verified in named guides or an in-game screenshot.
+- 29 exact Destiny Exploration locations verified in named guides or an in-game screenshot.
 - Six named Mythics have a guide-supported exclusion from targeted Destiny Exploration.
 - Two additional relics have verified event acquisition routes.
+- Arcane Pagoda's gacha source rows, effect, named set and numeric set bonuses
+  were checked against the user's in-game screenshot (9226.png).
 - All other source lists and Destiny Fruit availability remain unverified. An empty source
   list does not mean there is no way to acquire a relic.
 - This is the full public catalog snapshot, not a verified list of relics currently
@@ -87,3 +89,22 @@ Icons were downloaded from `https://lootandwaifus.com/treasures/swordxstaff/<ico
 into `assets/relics/`. They are game artwork, retained with original filenames;
 no ownership of the artwork is claimed. UI and collection features are implemented
 locally. Icons lazy-load; no third-party image host is contacted by this page.
+
+## Gallery and detail reference
+
+The user-provided gallery screenshots (9224.png and 9225.png) guide the compact,
+image-first, rarity-grouped cards. Region tabs and exact-zone tabs sit above the
+gallery. Destiny Fruit Targets retains exact-zone groups. The detail dialog follows
+9226.png: title/icon, effect, set members, set bonuses, then acquisition rows.
+Set membership ownership is computed from this browser's saved collection; the
+example account's stars, 35 shards, and 3/4 progress are not copied into user state.
+
+`effect`, `set`, and `setBonuses` originate in the catalog unless an explicit
+verification overrides them. Most catalog set bonuses provide stat names without
+numeric magnitudes; those numbers are not guessed. Arcane Pagoda is a documented
+conflict: the screenshot shows Crit RES 5%, whereas the export lists 6%. The visible
+value follows the supplied in-game reference, with the catalog value retained in
+`verification.catalogEffect`. Its screenshot lists Kingdom Gacha and Element Gacha;
+the absence of an exploration row alone does not establish universal unavailability.
+
+Twilight Teacup has a conflicting location (Prydwen: Cinder Ridge XIII; catalog: Verdantglade). Its exact zone and availability are null pending in-game confirmation; it is excluded from targets.

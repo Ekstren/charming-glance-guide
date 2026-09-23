@@ -6,7 +6,7 @@ import {chromium} from 'playwright';
 // A tiny controlled catalog exercises states that may be absent from today's
 // researched dataset, without changing the production JSON.
 const sample=(id,zone,destinyFruit,extra={})=>({id,visible:true,name:`Relic ${id}`,image:'',rarity:'Rare',element:'Fire',region:'Cinder Ridge',zone,destinyFruit,sources:[{type:'Relic Gacha',location:'Cinder Ridge'}],sourceUrl:'https://example.com/relics',...extra});
-const fixtures=[sample('a','Cinder Ridge II',true,{name:'Amber Crown'}),sample('b','Cinder Ridge VII',true),sample('c','Cinder Ridge VII',true),sample('d','Cinder Ridge XVIII',true),sample('e',null,false,{rarity:'Mythic',element:'Water'}),sample('f',null,null,{rarity:'Mythic',element:'Water'}),sample('g','Verdantglade I',true),sample('future','Aethyris I',true,{name:'Hidden Future Relic',visible:false,rarity:'Future rarity',element:'Future element'})];
+const fixtures=[sample('a','Cinder Ridge II',true,{name:'Amber Crown'}),sample('b','Cinder Ridge VII',true),sample('c','Cinder Ridge VII',true),sample('d','Cinder Ridge XVIII',true),sample('e',null,false,{rarity:'Mythic',element:'Water'}),sample('f',null,null,{rarity:'Mythic',element:'Water'}),sample('g','Verdantglade I',true,{region:'Verdantglade'}),sample('future','Aethyris I',true,{name:'Hidden Future Relic',visible:false,rarity:'Future rarity',element:'Future element'})];
 const fixtureBundle=await build({entryPoints:['src/relics.mjs'],bundle:true,format:'iife',globalName:'SxsRelics',write:false,plugins:[{name:'fixture-catalog',setup(b){b.onLoad({filter:/[/\\]data[/\\]relics\.json$/},()=>({contents:JSON.stringify(fixtures),loader:'json'}));}}]});
 const browser=await chromium.launch();
 const errors=[];
@@ -25,6 +25,7 @@ async function open({fixture=true,blocked=false,corrupt=false,width=1440}={}){
  await page.goto('http://relics.test/index.html');
  await page.locator('[data-section="relics"]').click();
  await page.waitForFunction(()=>document.getElementById('relicsSection').dataset.guideReady==='true');
+ await page.locator('[data-relic-region="all"]').click();
  return page;
 }
 const ids=page=>page.locator('.relicCard').evaluateAll(xs=>xs.map(x=>x.dataset.relicId));
@@ -34,18 +35,24 @@ try{
  assert.equal(await page.locator('.relicCard').count(),7);
  assert.equal(await page.locator('#relicRarity').getByText('Future rarity',{exact:true}).count(),0);
  await page.locator('#relicSearch').fill('Hidden Future Relic');assert.deepEqual(await ids(page),[]);await page.locator('#relicReset').click();
- assert.deepEqual(await zones(page),['Verdantglade I','Cinder Ridge II','Cinder Ridge VII','Cinder Ridge XVIII','Zone not verified']);
+ await page.locator('[data-relic-region="Cinder Ridge"]').click();
+ assert.deepEqual(await page.locator('[data-relic-zone]').evaluateAll(xs=>xs.map(x=>x.dataset.relicZone)),['all','Cinder Ridge II','Cinder Ridge VII','Cinder Ridge XVIII','unknown']);
+ await page.locator('[data-relic-zone="Cinder Ridge VII"]').click();assert.deepEqual(new Set(await ids(page)),new Set(['b','c']));
+ await page.locator('#relicReset').click();assert.equal((await ids(page)).length,6,'reset retains region');
+ await page.locator('[data-relic-region="all"]').click();
+ assert.deepEqual(await page.locator('.relicRarityGroup h2').allTextContents(),['Mythic','Rare']);
  await page.locator('[data-owned="a"]').check();
  assert.match(await page.locator('#relicProgressText').innerText(),/1 \/ 7 owned · 14.3%/);
  await page.reload();await page.waitForFunction(()=>document.getElementById('relicsSection').dataset.guideReady==='true');
+ await page.locator('[data-relic-region="all"]').click();
  assert.equal(await page.locator('[data-owned="a"]').isChecked(),true,'ownership survives reload');
  await page.locator('#relicStatus').selectOption('owned');assert.deepEqual(await ids(page),['a']);
  await page.locator('#relicStatus').selectOption('missing');assert.equal((await ids(page)).includes('a'),false);
  await page.locator('#relicReset').click();
  await page.locator('#relicRarity').selectOption('Mythic');await page.locator('#relicElement').selectOption('Water');await page.locator('#relicFruit').selectOption('no');assert.deepEqual(await ids(page),['e'],'unknown is not explicitly unavailable');
  await page.locator('#relicFruit').selectOption('unknown');assert.deepEqual(await ids(page),['f']);
- await page.locator('.relicCard summary').click();assert.match(await page.locator('.relicDetails').innerText(),/not yet been verified/);
- await page.locator('#relicFruit').selectOption('no');await page.locator('.relicCard summary').click();assert.match(await page.locator('.relicDetails').innerText(),/Cannot be obtained with Destiny Fruits/);
+ await page.locator('[data-relic-open]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/not yet been verified/);await page.locator('#relicDialogClose').click();
+ await page.locator('#relicFruit').selectOption('no');await page.locator('[data-relic-open]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Cannot be obtained with Destiny Fruits/);await page.keyboard.press('Escape');assert.equal(await page.locator('#relicDialog').isVisible(),false);assert.equal(await page.locator('[data-relic-open="e"]').evaluate(el=>document.activeElement===el),true);
  await page.locator('#relicReset').click();await page.locator('#relicSearch').fill('  AMBER  ');assert.deepEqual(await ids(page),['a']);
  await page.locator('#relicRarity').selectOption('Mythic');assert.deepEqual(await ids(page),[]);assert.equal(await page.locator('.relicEmpty').isVisible(),true);
  await page.locator('#relicReset').click();await page.locator('[data-relic-mode="targets"]').click();
@@ -53,8 +60,8 @@ try{
  assert.equal(await page.locator('#relicStatus').isDisabled(),true);assert.equal(await page.locator('#relicFruit').isDisabled(),true);
  await page.locator('#relicSort').selectOption('missing');assert.equal((await zones(page))[0],'Cinder Ridge VII');
  assert.match(await page.locator('.relicZone').first().locator('header>span').innerText(),/2 missing · 2 targets/);
- await page.locator('[data-relic-id="b"] summary').click();assert.match(await page.locator('[data-relic-id="b"] .relicDetails').innerText(),/Destiny Fruit zone: Cinder Ridge VII/);assert.match(await page.locator('[data-relic-id="b"] .relicDetails').innerText(),/Relic Gacha: Cinder Ridge/);
- assert.equal(await page.locator('[data-relic-id="b"] .relicSources a').getAttribute('href'),'https://example.com/relics');
+ await page.locator('[data-relic-open="b"]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Destiny Fruit zone: Cinder Ridge VII/);assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Relic Gacha: Cinder Ridge/);
+ assert.equal(await page.locator('#relicDialog .relicSources a').getAttribute('href'),'https://example.com/relics');await page.locator('#relicDialogClose').click();
  await page.locator('[data-owned="b"]').click();assert.equal((await ids(page)).includes('b'),false,'marking target owned removes it immediately');
  await page.locator('[data-relic-mode="collection"]').click();await page.locator('[data-owned="a"]').uncheck();assert.equal(await page.locator('[data-owned="a"]').isChecked(),false);
  await page.close();
@@ -64,6 +71,7 @@ try{
  const dataset=JSON.parse(readFileSync('data/relics.json','utf8'));
  const visible=dataset.filter(r=>r.visible===true),hidden=dataset.filter(r=>r.visible!==true);assert.ok(visible.length&&hidden.length,'catalog retains visible and future releases');
  assert.equal(new Set(dataset.map(r=>r.id)).size,dataset.length,'relic IDs are unique');
+ for(const r of dataset.filter(r=>r.zone))assert.ok(r.region&&r.zone.startsWith(r.region+' '),`region/zone conflict: ${r.name}`);
  const images=[...new Set(dataset.map(r=>r.image).filter(Boolean))];
  assert.ok(images.length,'catalog has icons');for(const image of images){assert.ok(!/^https?:/.test(image),`icon must be local: ${image}`);assert.ok(existsSync(image),`missing icon: ${image}`);}
  for(const theme of ['light','dark'])for(const width of [320,390,1440]){
@@ -71,10 +79,11 @@ try{
   assert.equal(await p.locator('.relicCard').count(),visible.length);
   const visibleIds=new Set(visible.map(r=>r.id));assert.ok((await ids(p)).every(id=>visibleIds.has(id)));
   await p.locator('#relicSearch').fill(hidden[0].name);assert.ok((await ids(p)).every(id=>visibleIds.has(id)),'hidden relic cannot appear through search');await p.locator('#relicReset').click();
+  await p.locator('[data-relic-region="Verdantglade"]').click();
   assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1,`${theme} ${width}: page overflow`);
   const bad=await p.locator('.relicCard').evaluateAll(xs=>xs.filter(x=>{const r=x.getBoundingClientRect();return r.x<0||r.right>innerWidth+1;}).length);assert.equal(bad,0,`${theme} ${width}: clipped card`);
-  if(theme==='dark'&&[390,1440].includes(width))await p.screenshot({path:width===390?'../relics-mobile.png':'../relics-desktop.png'});
-  await p.locator('.relicCard summary').first().click();assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1,'expanded details overflow');
+  if(theme==='dark'&&[390,1440].includes(width))await p.screenshot({path:width===390?'../../work/relics-mobile-final.png':'../../work/relics-desktop-final.png'});
+  await p.locator('[data-relic-open]').first().click();assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1,'expanded details overflow');await p.locator('#relicDialogClose').click();
   await p.locator('.relicImage img').first().scrollIntoViewIfNeeded();await p.waitForFunction(()=>{const img=document.querySelector('.relicImage img');return img.complete&&img.naturalWidth>0;});
   if(theme==='dark'&&width===1440){const failures=await p.evaluate(async paths=>(await Promise.all(paths.map(src=>new Promise(resolve=>{const image=new Image();image.onload=()=>resolve(null);image.onerror=()=>resolve(src);image.src=src;})))).filter(Boolean),images);assert.deepEqual(failures,[],'all local icons decode');}
   await p.close();
