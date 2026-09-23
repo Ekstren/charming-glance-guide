@@ -93,8 +93,8 @@ locally. Icons lazy-load; no third-party image host is contacted by this page.
 ## Gallery and detail reference
 
 The user-provided gallery screenshots (9224.png and 9225.png) guide the compact,
-image-first, rarity-grouped cards. Region tabs and exact-zone tabs sit above the
-gallery. Destiny Fruit Targets retains exact-zone groups. The detail dialog follows
+image-first, rarity-grouped cards. Region/pool tabs sit above the gallery. A Fruit zone dropdown consolidates
+the numbered locations into the filter panel. Destiny Fruit Targets retains exact-zone groups. The detail dialog follows
 9226.png: title/icon, effect, set members, set bonuses, then acquisition rows.
 Set membership ownership is computed from this browser's saved collection; the
 example account's stars, 35 shards, and 3/4 progress are not copied into user state.
@@ -108,3 +108,5 @@ value follows the supplied in-game reference, with the catalog value retained in
 the absence of an exploration row alone does not establish universal unavailability.
 
 Twilight Teacup has a conflicting location (Prydwen: Cinder Ridge XIII; catalog: Verdantglade). Its exact zone and availability are null pending in-game confirmation; it is excluded from targets.
+
+The September 23 location recheck covered Prydwen Duelist, Sorcerer, Archmage and tips, EOG Destiny Fruit guidance, and SXS Codex. No additional independently confirmed numbered zones were found; the Twilight Teacup conflict remains excluded.

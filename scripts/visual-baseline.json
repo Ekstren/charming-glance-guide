@@ -1,4 +1,4 @@
 {
-  "commit": "5df72cd610e8420146e8d8c7420aa977ec5dde43",
-  "description": "Roll guide rows use content height instead of stretching every row to match a wrapped label."
+  "commit": "ee3c307db687d1e2fdef96831e1ebfcf3b8d8ac3",
+  "description": "Approved Relics gallery adds a fifth navigation tab; existing section content is unchanged."
 }

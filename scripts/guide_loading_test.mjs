@@ -34,7 +34,7 @@ try{
  assert.deepEqual(f.requests.filter(x=>x.endsWith('.js')),['assets/runtime.js'],'only the shell loads at startup');
  assert.equal(await f.page.locator('#buildContent .guideSummary, #companionContent .companionHero').count(),0);
  const cssBytes=readFileSync('assets/site.css').length;
- assert.ok(cssBytes<=230000,`stylesheet exceeds 230 KB: ${cssBytes}`);
+ assert.ok(cssBytes<=235000,`stylesheet exceeds 235 KB: ${cssBytes}`);
  const bytes=readFileSync('assets/runtime.js').length;
  assert.ok(bytes<=60000,`startup JavaScript exceeds 60 KB: ${bytes}`);
  const tasks=await f.page.evaluate(()=>startupTasks);

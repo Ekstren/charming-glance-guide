@@ -36,8 +36,8 @@ try{
  assert.equal(await page.locator('#relicRarity').getByText('Future rarity',{exact:true}).count(),0);
  await page.locator('#relicSearch').fill('Hidden Future Relic');assert.deepEqual(await ids(page),[]);await page.locator('#relicReset').click();
  await page.locator('[data-relic-region="Cinder Ridge"]').click();
- assert.deepEqual(await page.locator('[data-relic-zone]').evaluateAll(xs=>xs.map(x=>x.dataset.relicZone)),['all','Cinder Ridge II','Cinder Ridge VII','Cinder Ridge XVIII','unknown']);
- await page.locator('[data-relic-zone="Cinder Ridge VII"]').click();assert.deepEqual(new Set(await ids(page)),new Set(['b','c']));
+ assert.deepEqual(await page.locator('#relicZone option').evaluateAll(xs=>xs.map(x=>x.value)),['all','Cinder Ridge II','Cinder Ridge VII','Cinder Ridge XVIII','unknown']);
+ await page.locator('#relicZone').selectOption('Cinder Ridge VII');assert.deepEqual(new Set(await ids(page)),new Set(['b','c']));
  await page.locator('#relicReset').click();assert.equal((await ids(page)).length,6,'reset retains region');
  await page.locator('[data-relic-region="all"]').click();
  assert.deepEqual(await page.locator('.relicRarityGroup h2').allTextContents(),['Mythic','Rare']);
@@ -72,11 +72,13 @@ try{
  const visible=dataset.filter(r=>r.visible===true),hidden=dataset.filter(r=>r.visible!==true);assert.ok(visible.length&&hidden.length,'catalog retains visible and future releases');
  assert.equal(new Set(dataset.map(r=>r.id)).size,dataset.length,'relic IDs are unique');
  for(const r of dataset.filter(r=>r.zone))assert.ok(r.region&&r.zone.startsWith(r.region+' '),`region/zone conflict: ${r.name}`);
+ for(const pool of ['Loong Haven I','Loong Haven II']){const rows=visible.filter(r=>r.pool===pool);assert.equal(rows.length,80);assert.equal(rows.filter(r=>r.rarity==='Mythic').length,20);}
  const images=[...new Set(dataset.map(r=>r.image).filter(Boolean))];
  assert.ok(images.length,'catalog has icons');for(const image of images){assert.ok(!/^https?:/.test(image),`icon must be local: ${image}`);assert.ok(existsSync(image),`missing icon: ${image}`);}
  for(const theme of ['light','dark'])for(const width of [320,390,1440]){
   const p=await open({fixture:false,width});await p.evaluate(t=>document.documentElement.dataset.theme=t,theme);
   assert.equal(await p.locator('.relicCard').count(),visible.length);
+  if(theme==='dark'&&width===1440){for(const pool of ['Loong Haven I','Loong Haven II']){await p.locator(`[data-relic-region="${pool}"]`).click();assert.equal((await ids(p)).length,80);assert.equal(await p.locator('.relicCard[data-rarity="mythic"]').count(),20);}await p.locator('[data-relic-region="all"]').click();}
   const visibleIds=new Set(visible.map(r=>r.id));assert.ok((await ids(p)).every(id=>visibleIds.has(id)));
   await p.locator('#relicSearch').fill(hidden[0].name);assert.ok((await ids(p)).every(id=>visibleIds.has(id)),'hidden relic cannot appear through search');await p.locator('#relicReset').click();
   await p.locator('[data-relic-region="Verdantglade"]').click();

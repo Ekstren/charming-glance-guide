@@ -15,9 +15,7 @@ body .sectionSwitch { grid-template-columns:repeat(5,minmax(0,1fr)) !important; 
 .relicRegionTabs { display:flex; gap:6px; padding:6px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow-x:auto; scrollbar-width:thin; }
 #relicsSection .relicRegionTabs button { flex:1 0 auto; font-size:13px; font-weight:650; background:transparent; border-color:transparent; }
 #relicsSection .relicRegionTabs button[aria-pressed=true] { background:var(--selected-bg); }
-.relicZoneTabs { display:flex; gap:5px; padding:10px 0 13px; overflow-x:auto; scrollbar-width:thin; }
-#relicsSection .relicZoneTabs button { flex:0 0 auto; font-size:12px; min-width:38px; min-height:36px; padding:6px 10px; }
-.relicModes { display:flex; gap:7px; margin-bottom:12px; }
+.relicModes { display:flex; gap:7px; margin:12px 0; }
 #relicsSection .relicModes button { min-height:38px; font-size:13px; }
 .relicFilters { display:flex; flex-wrap:wrap; align-items:end; gap:9px; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
 .relicFilters label { display:grid; gap:5px; font-size:11px; color:var(--reading-muted); flex:1 1 120px; min-width:0; }
@@ -93,3 +91,4 @@ body .sectionSwitch { grid-template-columns:repeat(5,minmax(0,1fr)) !important; 
 .relicDialogHero .relicImage { flex:0 0 auto; width:150px; max-width:150px; margin:10px auto; }
 .relicSetCount { float:right; font-size:11px; font-weight:400; color:var(--reading-muted); }
 .relicAffinity { padding:9px 12px; background:var(--bg); border-radius:7px; }
+@media(max-width:350px) { body nav.sectionSwitch>button[data-section] { overflow-wrap:anywhere; } }

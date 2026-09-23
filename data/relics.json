@@ -252,7 +252,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Immortal's Bind = EOG Immortal Binding Rope (687751); rarity SSR, element Dark, main stat HP (%) versus catalog HP +9%; catalog set 60401 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71226",
@@ -1383,7 +1392,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68601; confirmed anchors: treasure_72202",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71639",
@@ -2465,7 +2483,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 60403; confirmed anchors: treasure_61813",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73629",
@@ -2754,6 +2781,15 @@
     "verification": {
       "source": "User-provided in-game screenshot 9226.png, 2026-09-23",
       "catalogEffect": "+6% Crit RES"
+    },
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Arcane Pagoda = EOG Pagoda of Myriad Arts (687456); rarity UR, element Light, main stat CRIT Resistance (%) versus catalog Crit RES +6%; catalog set 60010 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
     }
   },
   {
@@ -2907,7 +2943,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Skymending Stone = EOG Sky-Mending Stone (687457); rarity UR, element Light, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 60015 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72836",
@@ -3579,7 +3624,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Fiend Stone = EOG Earthbane Demon Stone (687461); rarity UR, element Dark, main stat DEF (%) versus catalog DEF +15%; catalog set 60011 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73403",
@@ -3630,7 +3684,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73403 (Golden Thread Sachet) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72407",
@@ -3783,7 +3846,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74803 (Auspicious Knot) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61511",
@@ -3834,7 +3906,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Lotus Lantern = EOG Lotus Treasure Lamp (687748); rarity SSR, element Light, main stat DEF (%) versus catalog DEF +9%; catalog set 60400 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61102",
@@ -4242,7 +4323,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73201 (Backscratcher) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73003",
@@ -4293,7 +4383,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73003 (Nine Linked Rings) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62712",
@@ -4395,7 +4494,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74602 (Green Bamboo Creel) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74200",
@@ -4446,7 +4554,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74200 (Ink Bamboo Tube) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61701",
@@ -4812,7 +4929,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73200 (Bronze Door Knocker) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72400",
@@ -4863,7 +4989,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Plantain Fan = EOG Banana Leaf Fan (687777); rarity SSR, element Wind, main stat Block Rate (%) versus catalog Block Rate +3.6%; catalog set 68602 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71831",
@@ -6039,7 +6174,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62215 (Boshan Censer) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73029",
@@ -6549,7 +6693,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62715 (Gentle Breeze Fan) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74407",
@@ -7008,7 +7161,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74003 (Luban Lock) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61908",
@@ -7314,7 +7476,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74800 (Iron Caltrop) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74406",
@@ -7799,7 +7970,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Sunset Bow = EOG Sunset Carved Bow (687756); rarity SSR, element Wind, main stat ATK (%) versus catalog ATK +9%; catalog set 60402 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61811",
@@ -7952,7 +8132,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Arcane Pagoda = EOG Pagoda of Myriad Arts (687456); rarity UR, element Light, main stat CRIT Resistance (%) versus catalog Crit RES +6%; catalog set 60010 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62604",
@@ -8054,7 +8243,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73402 (Sky-Blue Glazed Plate) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71037",
@@ -9032,7 +9230,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62111 (Coiled Serpent Pine) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71020",
@@ -9185,7 +9392,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73000 (Copper Coin String) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74000",
@@ -9236,7 +9452,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74000 (Bronze Lock) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73834",
@@ -9338,7 +9563,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 71001 (Cosmic Universe Axe) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71604",
@@ -9857,7 +10091,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Crimson Dominion = EOG Wildfire Crimson Emperor (687492); rarity UR, element Fire, main stat ATK (%) versus catalog ATK +15%; catalog set 68304 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74836",
@@ -10682,7 +10925,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Seven Stars Lamp = EOG Seven Star Divine Lamp (687466); rarity UR, element Wind, main stat DEF (%) versus catalog DEF +15%; catalog set 60016 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71408",
@@ -11277,7 +11529,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73202 (Dark Wolf Fang) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62002",
@@ -11736,7 +11997,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Rootless Water Pot = EOG Rootless Water Bowl (687780); rarity SSR, element Water, main stat DEF versus catalog DEF +42; catalog set 68603 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72220",
@@ -11838,7 +12108,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Demon Crucible = EOG Jiuli Demon-Forging Pot (687482); rarity UR, element Dark, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 68301 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61609",
@@ -12042,7 +12321,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62216 (Swift March Banner) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61517",
@@ -12620,7 +12908,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68300; confirmed anchors: treasure_71001, treasure_71000",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71603",
@@ -12671,7 +12968,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Wondrous Lotus = EOG Wondrous Lotus Dharma (687490); rarity UR, element Water, main stat DEF (%) versus catalog DEF +15%; catalog set 68303 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71224",
@@ -13283,7 +13589,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74202 (Dustward) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72430",
@@ -13436,7 +13751,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Demon Crucible = EOG Jiuli Demon-Forging Pot (687482); rarity UR, element Dark, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 68301 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72212",
@@ -14320,7 +14644,16 @@
     "visible": true,
     "effect": "+3% DMG RES",
     "set": null,
-    "setBonuses": []
+    "setBonuses": [],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name",
+      "explanation": "EOG Dragon I Spirit Emperor's Tomb: {id:\"687459\",name:\"Spirit Emperor's Tomb\",rarity:\"UR\",element:\"Light\",mainStat:\"Damage Resistance (%)\",set:\"\",tier:\"Dragon I\"}; catalog Emperor's Tomb, Light, DMG RES +3%.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73618",
@@ -15247,7 +15580,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74401 (Rare Curious Stone) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62516",
@@ -15451,7 +15793,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74201 (Brow Brush) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73419",
@@ -15970,7 +16321,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Qilin Jade = EOG Qilin Jade Disc (687765); rarity SSR, element Fire, main stat DEF (%) versus catalog DEF +9%; catalog set 60404 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74428",
@@ -16072,7 +16432,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Kui Thunderpulse Drum = EOG Kui Ox Thunder Drum (687487); rarity UR, element Wind, main stat CRIT Resistance (%) versus catalog Crit RES +6%; catalog set 68302 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62512",
@@ -16123,7 +16492,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62512 (Festival Lantern) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74404",
@@ -16225,7 +16603,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74801 (March Bronze Cauldron) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73811",
@@ -16327,7 +16714,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Fiend Stone = EOG Earthbane Demon Stone (687461); rarity UR, element Dark, main stat DEF (%) versus catalog DEF +15%; catalog set 60011 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73822",
@@ -16633,7 +17029,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62416 (Beacon War Token) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73802",
@@ -16684,7 +17089,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73802 (Fire Jade Rabbit) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74813",
@@ -16837,7 +17251,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62415 (Flame Spirit Flute) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74804",
@@ -17041,7 +17464,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62914 (Firecracker) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71817",
@@ -17347,7 +17779,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Flaming Wheel = EOG True Flame Wheel (687784); rarity SSR, element Fire, main stat ATK (%) versus catalog ATK +9%; catalog set 68604 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72807",
@@ -18010,7 +18451,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Flaming Wheel = EOG True Flame Wheel (687784); rarity SSR, element Fire, main stat ATK (%) versus catalog ATK +9%; catalog set 68604 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62709",
@@ -18265,7 +18715,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62314 (Flood Taming Records) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71436",
@@ -18724,7 +19183,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73400 (Folding Screen) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72423",
@@ -18826,7 +19294,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73803 (Nameless Broken Sword) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62714",
@@ -18877,7 +19354,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62714 (Wishful Abacus) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71607",
@@ -21252,7 +21738,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73603 (Glazed Cup) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72816",
@@ -21915,7 +22410,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Seven Stars Lamp = EOG Seven Star Divine Lamp (687466); rarity UR, element Wind, main stat DEF (%) versus catalog DEF +15%; catalog set 60016 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62607",
@@ -22357,7 +22861,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": null,
+    "poolEvidence": {
+      "confidence": "unresolved-special",
+      "explanation": "Golden Loong Token is cataloged in Loong Haven but absent from EOG Dragon I/II standard pools; retain regional special without assigning a pool.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72007",
@@ -22561,7 +23074,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 687768 (Golden Peacock Hairpin) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72002",
@@ -22612,7 +23134,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 687767 (Golden Serpent Shears) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62510",
@@ -22663,7 +23194,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62510 (Golden Branch Jade Hairpin) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62612",
@@ -22816,7 +23356,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73800 (Cucurbit Flute) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73027",
@@ -23938,7 +24487,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74402 (Medicine Grinder) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74438",
@@ -25139,7 +25697,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Rootless Water Pot = EOG Rootless Water Bowl (687780); rarity SSR, element Water, main stat DEF versus catalog DEF +42; catalog set 68603 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72615",
@@ -25445,7 +26012,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Immortal's Bind = EOG Immortal Binding Rope (687751); rarity SSR, element Dark, main stat HP (%) versus catalog HP +9%; catalog set 60401 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61509",
@@ -25496,7 +26072,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Lotus Lantern = EOG Lotus Treasure Lamp (687748); rarity SSR, element Light, main stat DEF (%) versus catalog DEF +9%; catalog set 60400 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61604",
@@ -25607,7 +26192,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Lotus Lantern = EOG Lotus Treasure Lamp (687748); rarity SSR, element Light, main stat DEF (%) versus catalog DEF +9%; catalog set 60400 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71002",
@@ -25658,7 +26252,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68300; confirmed anchors: treasure_71001, treasure_71000",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71239",
@@ -26100,7 +26703,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73601 (Interlocking Chainmail) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72020",
@@ -26406,7 +27018,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62713 (Jade Bracelet) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62010",
@@ -26457,7 +27078,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62010 (Warm Jade White Bell) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62012",
@@ -26508,7 +27138,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62012 (Gold-Inlaid Jade) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61813",
@@ -26559,7 +27198,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 687759 (Jade Purity Vase) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71626",
@@ -26865,7 +27513,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62613 (Judge's Brush) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61812",
@@ -27171,7 +27828,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Kui Thunderpulse Drum = EOG Kui Ox Thunder Drum (687487); rarity UR, element Wind, main stat CRIT Resistance (%) versus catalog Crit RES +6%; catalog set 68302 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74816",
@@ -27273,7 +27939,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Land's Tapestry = EOG Map of the Realm (687469); rarity UR, element Water, main stat HP versus catalog HP For every 4 exploration(s) completed, +381; catalog set 60013 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73017",
@@ -27987,7 +28662,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73001 (Light-Patterned Drum) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73005",
@@ -28242,7 +28926,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Trinity Crucible = EOG Taixuan Samadhi Furnace (687472); rarity UR, element Fire, main stat DEF versus catalog DEF +69; catalog set 60014 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61816",
@@ -28293,7 +28986,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 60403; confirmed anchors: treasure_61813",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74018",
@@ -28395,7 +29097,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Lotus Lantern = EOG Lotus Treasure Lamp (687748); rarity SSR, element Light, main stat DEF (%) versus catalog DEF +9%; catalog set 60400 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74439",
@@ -28576,7 +29287,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73002 (Lucky Tiger Doll) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74217",
@@ -29962,7 +30682,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Immortal's Bind = EOG Immortal Binding Rope (687751); rarity SSR, element Dark, main stat HP (%) versus catalog HP +9%; catalog set 60401 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61010",
@@ -30132,7 +30861,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Demon Crucible = EOG Jiuli Demon-Forging Pot (687482); rarity UR, element Dark, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 68301 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62503",
@@ -30880,7 +31618,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73401 (Thousand Mile Journey) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71428",
@@ -31731,7 +32478,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62213 (Moon-Plucking Lute) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61815",
@@ -31782,7 +32538,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 60403; confirmed anchors: treasure_61813",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62108",
@@ -32037,7 +32802,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Qilin Jade = EOG Qilin Jade Disc (687765); rarity SSR, element Fire, main stat DEF (%) versus catalog DEF +9%; catalog set 60404 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72809",
@@ -32139,7 +32913,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 687773 (Movable Type Plate) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62901",
@@ -32445,7 +33228,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62614 (Dark Ink Stick) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62616",
@@ -32496,7 +33288,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62616 (Ink Cloud Inkstone) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73429",
@@ -32615,7 +33416,16 @@
     "visible": true,
     "effect": "+6% Accuracy",
     "set": null,
-    "setBonuses": []
+    "setBonuses": [],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name",
+      "explanation": "EOG Dragon I Taixuan Yin-Yang Mirror: {id:\"687463\",name:\"Taixuan Yin-Yang Mirror\",rarity:\"UR\",element:\"Dark\",mainStat:\"Accuracy (%)\",set:\"\",tier:\"Dragon I\"}; catalog Mystic Yin-Yang Mirror, Dark, Accuracy +6%.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72416",
@@ -33227,7 +34037,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62509 (Night Pearl) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74001",
@@ -33278,7 +34097,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74001 (Night Watch Gong) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71608",
@@ -33859,7 +34687,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Land's Tapestry = EOG Map of the Realm (687469); rarity UR, element Water, main stat HP versus catalog HP For every 4 exploration(s) completed, +381; catalog set 60013 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71807",
@@ -33961,7 +34798,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74600 (Oilpaper Bamboo Umbrella) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61502",
@@ -34327,7 +35173,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Rootless Water Pot = EOG Rootless Water Bowl (687780); rarity SSR, element Water, main stat DEF versus catalog DEF +42; catalog set 68603 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71425",
@@ -34591,7 +35446,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62414 (Ox-Drawn Lantern) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73621",
@@ -34795,7 +35659,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62716 (Paper Kite) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62502",
@@ -35433,7 +36306,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Qilin Jade = EOG Qilin Jade Disc (687765); rarity SSR, element Fire, main stat DEF (%) versus catalog DEF +9%; catalog set 60404 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73023",
@@ -35759,7 +36641,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62315 (Twin Fish Pendant) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72403",
@@ -35810,7 +36701,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Plantain Fan = EOG Banana Leaf Fan (687777); rarity SSR, element Wind, main stat Block Rate (%) versus catalog Block Rate +3.6%; catalog set 68602 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74413",
@@ -36014,7 +36914,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74403 (Porcelain Cup) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61928",
@@ -36184,7 +37093,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73600 (Treasure Waterwheel) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74037",
@@ -36484,7 +37402,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Kui Thunderpulse Drum = EOG Kui Ox Thunder Drum (687487); rarity UR, element Wind, main stat CRIT Resistance (%) versus catalog Crit RES +6%; catalog set 68302 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61214",
@@ -36535,7 +37462,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Skymending Stone = EOG Sky-Mending Stone (687457); rarity UR, element Light, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 60015 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71400",
@@ -36586,7 +37522,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Kui Thunderpulse Drum = EOG Kui Ox Thunder Drum (687487); rarity UR, element Wind, main stat CRIT Resistance (%) versus catalog Crit RES +6%; catalog set 68302 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62008",
@@ -36994,7 +37939,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68600; confirmed anchors: treasure_72003, treasure_72002",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74609",
@@ -37300,7 +38254,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Flaming Wheel = EOG True Flame Wheel (687784); rarity SSR, element Fire, main stat ATK (%) versus catalog ATK +9%; catalog set 68604 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61404",
@@ -37402,7 +38365,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Qilin Jade = EOG Qilin Jade Disc (687765); rarity SSR, element Fire, main stat DEF (%) versus catalog DEF +9%; catalog set 60404 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62401",
@@ -38286,7 +39258,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Sunset Bow = EOG Sunset Carved Bow (687756); rarity SSR, element Wind, main stat ATK (%) versus catalog ATK +9%; catalog set 60402 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73623",
@@ -38490,7 +39471,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62816 (Rattle Drum) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62602",
@@ -38949,7 +39939,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68600; confirmed anchors: treasure_72003, treasure_72002",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73634",
@@ -39561,7 +40560,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62011 (Golden Dawn Rooster) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72601",
@@ -39612,7 +40620,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Rootless Water Pot = EOG Rootless Water Bowl (687780); rarity SSR, element Water, main stat DEF versus catalog DEF +42; catalog set 68603 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62814",
@@ -39663,7 +40680,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62814 (Rouge Box) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74802",
@@ -39714,7 +40740,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74802 (Royal Chef's Iron Ladle) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72218",
@@ -40343,7 +41378,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62615 (Sandalwood Brocade Box) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61308",
@@ -40822,7 +41866,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62413 (Scorched-Tail Zither) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72804",
@@ -41485,7 +42538,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Wondrous Lotus = EOG Wondrous Lotus Dharma (687490); rarity UR, element Water, main stat DEF (%) versus catalog DEF +15%; catalog set 68303 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74817",
@@ -41587,7 +42649,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62813 (Serene Heart Pot) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72214",
@@ -41893,7 +42964,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Seven Stars Lamp = EOG Seven Star Divine Lamp (687466); rarity UR, element Wind, main stat DEF (%) versus catalog DEF +15%; catalog set 60016 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71803",
@@ -41944,7 +43024,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Crimson Dominion = EOG Wildfire Crimson Emperor (687492); rarity UR, element Fire, main stat ATK (%) versus catalog ATK +15%; catalog set 68304 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72227",
@@ -42505,7 +43594,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73203 (Nightwalker Garb) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62112",
@@ -42556,7 +43654,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62112 (Gu Immortal Vial) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74226",
@@ -42862,7 +43969,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74603 (Leather Waterskin) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74225",
@@ -43168,7 +44284,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62511 (Soft Xuan Paper) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72034",
@@ -43627,7 +44752,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Skymending Stone = EOG Sky-Mending Stone (687457); rarity UR, element Light, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 60015 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71414",
@@ -43729,7 +44863,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68601; confirmed anchors: treasure_72202",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71000",
@@ -43780,7 +44923,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 71000 (Soaring Heaven Lamp) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61204",
@@ -44664,7 +45816,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Immortal's Bind = EOG Immortal Binding Rope (687751); rarity SSR, element Dark, main stat HP (%) versus catalog HP +9%; catalog set 60401 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72420",
@@ -44766,7 +45927,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74400 (Serene Bonsai) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61101",
@@ -45633,7 +46803,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62110 (Spirit Ward Mask) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62004",
@@ -46628,7 +47807,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 68601; confirmed anchors: treasure_72202",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72819",
@@ -46730,7 +47918,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74601 (Steel Trident) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72015",
@@ -47504,7 +48701,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Wondrous Lotus = EOG Wondrous Lotus Dharma (687490); rarity UR, element Water, main stat DEF (%) versus catalog DEF +15%; catalog set 68303 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61401",
@@ -47708,7 +48914,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Sunset Bow = EOG Sunset Carved Bow (687756); rarity SSR, element Wind, main stat ATK (%) versus catalog ATK +9%; catalog set 60402 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62913",
@@ -47759,7 +48974,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62913 (Suona) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72405",
@@ -47861,7 +49085,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Skymending Stone = EOG Sky-Mending Stone (687457); rarity UR, element Light, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 60015 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73631",
@@ -48286,7 +49519,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Demon Crucible = EOG Jiuli Demon-Forging Pot (687482); rarity UR, element Dark, main stat Damage Bonus (%) versus catalog DMG Boost +3%; catalog set 68301 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74222",
@@ -48541,7 +49783,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Plantain Fan = EOG Banana Leaf Fan (687777); rarity SSR, element Wind, main stat Block Rate (%) versus catalog Block Rate +3.6%; catalog set 68602 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61704",
@@ -49120,7 +50371,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62009 (Thunderclap Drum) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74612",
@@ -49324,7 +50584,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62316 (Wave Stilling Ruler) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73801",
@@ -49375,7 +50644,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73801 (Tiger Head Cap) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72021",
@@ -49579,7 +50857,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62915 (Fire Striker) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73820",
@@ -49681,7 +50968,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Flaming Wheel = EOG True Flame Wheel (687784); rarity SSR, element Fire, main stat ATK (%) versus catalog ATK +9%; catalog set 68604 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62105",
@@ -49783,7 +51079,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Crimson Dominion = EOG Wildfire Crimson Emperor (687492); rarity UR, element Fire, main stat ATK (%) versus catalog ATK +15%; catalog set 68304 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71236",
@@ -50225,7 +51530,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Trinity Crucible = EOG Taixuan Samadhi Furnace (687472); rarity UR, element Fire, main stat DEF versus catalog DEF +69; catalog set 60014 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62815",
@@ -50276,7 +51590,16 @@
         "label": "Awakened set bonus",
         "effect": "SPD"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62815 (Tripod Goblet) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73020",
@@ -51265,7 +52588,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG Boost"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Crimson Dominion = EOG Wildfire Crimson Emperor (687492); rarity UR, element Fire, main stat ATK (%) versus catalog ATK +15%; catalog set 68304 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72019",
@@ -52285,7 +53617,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62916 (Warm Incense Burner) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62014",
@@ -52438,7 +53779,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62313 (Azure Water Gourd) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71618",
@@ -52540,7 +53890,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 73602 (Azure Water Rake) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_62304",
@@ -53484,7 +54843,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62109 (White Lotus Ocarina) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73431",
@@ -53637,7 +55005,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "set-linked",
+      "explanation": "Catalog set 60012; confirmed anchors: treasure_61208",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61201",
@@ -53739,7 +55116,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Sunset Bow = EOG Sunset Carved Bow (687756); rarity SSR, element Wind, main stat ATK (%) versus catalog ATK +9%; catalog set 60402 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71420",
@@ -53841,7 +55227,16 @@
         "label": "Awakened set bonus",
         "effect": "DEF"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 62214 (Wind-Borrowing Fan) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_73405",
@@ -55592,7 +56987,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Wondrous Lotus = EOG Wondrous Lotus Dharma (687490); rarity UR, element Water, main stat DEF (%) versus catalog DEF +15%; catalog set 68303 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74203",
@@ -55643,7 +57047,16 @@
         "label": "Awakened set bonus",
         "effect": "HP"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74203 (Wooden Fish) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_74002",
@@ -55694,7 +57107,16 @@
         "label": "Awakened set bonus",
         "effect": "ATK"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 74002 (Wooden Horse) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72016",
@@ -56102,7 +57524,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Seven Stars Lamp = EOG Seven Star Divine Lamp (687466); rarity UR, element Wind, main stat DEF (%) versus catalog DEF +15%; catalog set 60016 links members; EOG tier Dragon I.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_61103",
@@ -56255,7 +57686,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven II",
+    "poolEvidence": {
+      "confidence": "translated-name-and-set",
+      "explanation": "Translated name anchor Plantain Fan = EOG Banana Leaf Fan (687777); rarity SSR, element Wind, main stat Block Rate (%) versus catalog Block Rate +3.6%; catalog set 68602 links members; EOG tier Dragon II.",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_72409",
@@ -56621,7 +58061,16 @@
         "label": "Awakened set bonus",
         "effect": "DMG RES"
       }
-    ]
+    ],
+    "pool": "Loong Haven I",
+    "poolEvidence": {
+      "confidence": "exact-id-or-name",
+      "explanation": "EOG 61208 (Skyward Wind Vessel) matched catalog ID or exact name",
+      "sourceUrls": [
+        "https://lootandwaifus.com/api/swordxstaff/treasures.json",
+        "https://eog.gg/games/sword-x-staff/#relics"
+      ]
+    }
   },
   {
     "id": "treasure_71435",

@@ -9,6 +9,7 @@ on:
       - 'src/**'
       - 'package.json'
       - 'package-lock.json'
+      - 'data/relics.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/**'
@@ -22,6 +23,7 @@ on:
       - 'src/**'
       - 'package.json'
       - 'package-lock.json'
+      - 'data/relics.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
       - 'scripts/**'
@@ -101,6 +103,8 @@ jobs:
           assert row['maxHeightDelta']==0, row
           print(f'Build visual stability: {n}/{n} one-paint switches, 0px shift')
           PY
+      - name: Relic collection and gallery regression
+        run: npm run test:relics
       - name: Full browser smoke
         run: node scripts/site_smoke_test.mjs
       - name: Mobile layout regression

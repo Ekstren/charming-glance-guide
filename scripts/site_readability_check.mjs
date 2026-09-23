@@ -41,8 +41,8 @@ try {
         return {tabs,bar:{x:bar.x,right:bar.right},left:box.left+parseFloat(style.paddingLeft),right:box.right-parseFloat(style.paddingRight),smallText,overflow:document.documentElement.scrollWidth-innerWidth};
       },section);
       const label=`${theme} ${width}px ${section}`;
-      assert.equal(result.tabs.length,4,`${label}: four section tabs`);
-      assert.equal(new Set(result.tabs.map(t=>Math.round(t.y))).size,width<=480?2:1,`${label}: unexpected navigation rows`);
+      assert.equal(result.tabs.length,5,`${label}: five section tabs`);
+      assert.equal(new Set(result.tabs.map(t=>Math.round(t.y))).size,1,`${label}: unexpected navigation rows`);
       assert.ok(Math.max(...result.tabs.map(t=>t.width))-Math.min(...result.tabs.map(t=>t.width))<2,`${label}: uneven tab widths`);
       assert.ok(result.tabs.every(t=>t.height>=44&&!t.clipped),`${label}: clipped/small navigation tab ${JSON.stringify(result.tabs)}`);
       assert.ok(result.bar.right-result.tabs.at(-1).right<=10,`${label}: unused space at end of navigation`);
