@@ -1,6 +1,6 @@
 // Capture the shell URL while its classic script is executing (also supports file://).
 const base=document.currentScript.src;
-const definitions={builds:['Builds','SxsBuilds'],companions:['Companions','SxsCompanions']};
+const definitions={builds:['Builds','SxsBuilds'],companions:['Companions','SxsCompanions'],relics:['Relics','SxsRelics']};
 const pending=new Map(),ready=new Set();
 export async function openGuide(name){
  if(ready.has(name))return;

@@ -30,10 +30,10 @@ const timelineCount = await page.locator('#timeline .dayGroup').count();
 assert(filterCount > 0, 'timeline filters were not initialized');
 assert(timelineCount > 0, 'timeline entries were not rendered');
 
-// Top-level tabs must be four equal direct flex items. The old Builds wrapper made
+// Top-level tabs must be five equal direct flex items. The old Builds wrapper made
 // that label look off-center and gave it different sizing behavior.
 const navButtons = page.locator('.sectionSwitch > button[data-section]');
-assert(await navButtons.count() === 4, 'top nav does not contain four direct section buttons');
+assert(await navButtons.count() === 5, 'top nav does not contain five direct section buttons');
 const widths = await navButtons.evaluateAll(btns => btns.map(b => b.getBoundingClientRect().width));
 assert(Math.max(...widths)-Math.min(...widths) < 2, `top nav buttons are not equal width: ${widths.join(', ')}`);
 

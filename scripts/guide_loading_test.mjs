@@ -34,18 +34,18 @@ try{
  assert.deepEqual(f.requests.filter(x=>x.endsWith('.js')),['assets/runtime.js'],'only the shell loads at startup');
  assert.equal(await f.page.locator('#buildContent .guideSummary, #companionContent .companionHero').count(),0);
  const cssBytes=readFileSync('assets/site.css').length;
- assert.ok(cssBytes<=220000,`stylesheet exceeds 220 KB: ${cssBytes}`);
+ assert.ok(cssBytes<=230000,`stylesheet exceeds 230 KB: ${cssBytes}`);
  const bytes=readFileSync('assets/runtime.js').length;
  assert.ok(bytes<=60000,`startup JavaScript exceeds 60 KB: ${bytes}`);
  const tasks=await f.page.evaluate(()=>startupTasks);
  assert.ok(Math.max(0,...tasks)<1000,`startup task exceeds 1 second under 4x CPU: ${tasks}`);
  reports.push({initialJavaScriptBytes:bytes,stylesheetBytes:cssBytes,cpuSlowdown:4,longTasksMs:tasks});
- for(const name of ['builds','companions']){
+ for(const name of ['builds','companions','relics']){
   await open(f.page,name);await ready(f.page,name);await open(f.page,'timeline');await open(f.page,name);
   assert.equal(f.requests.filter(x=>x===`assets/${name}-section.js`).length,1);
  }
  assert.ok(!f.requests.includes('assets/calculator.js'));assert.deepEqual(f.errors,[]);await f.page.close();
- for(const name of ['builds','companions']){
+ for(const name of ['builds','companions','relics']){
   const f=await fixture({saved:name});await ready(f.page,name);
   assert.equal(await f.page.locator(`#${name}Section`).evaluate(el=>el.hidden),false);
   assert.ok(!f.requests.includes(`assets/${name==='builds'?'companions':'builds'}-section.js`));

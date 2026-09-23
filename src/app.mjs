@@ -302,7 +302,7 @@ function setupTimeline(){
   }
 
 function setSection(name){
-    const map={timeline:'timelineSection',builds:'buildsSection',companions:'companionsSection',calculator:'calculatorSection'};
+    const map={timeline:'timelineSection',builds:'buildsSection',companions:'companionsSection',relics:'relicsSection',calculator:'calculatorSection'};
     if(!map[name]) name='timeline';
     const activeSection=document.querySelector('.sectionSwitch button[data-section].active')?.dataset.section;
     if(activeSection===name && !$(map[name]).hidden) return;
@@ -311,13 +311,13 @@ function setSection(name){
     document.querySelectorAll('.sectionSwitch button[data-section]').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
     try{ localStorage.setItem(SECTION_STORAGE_KEY,name); }catch(_){}
     window.scrollTo({top:0,behavior:'smooth'});
-    if(name==='builds'||name==='companions') openGuide(name);
+    if(name==='builds'||name==='companions'||name==='relics') openGuide(name);
     if(name==='calculator') openCalculator();
   }
 function updateThemeButton(){ $('themeToggle').textContent=document.documentElement.dataset.theme==='dark'?'☀':'☾'; }
 loadTheme();
 setupNavigation({$,setSection,saveState:saveTheme,updateThemeButton});
 let initialSection='timeline';
-try{const saved=localStorage.getItem(SECTION_STORAGE_KEY);if(['timeline','builds','companions','calculator'].includes(saved))initialSection=saved;}catch(_){}
+try{const saved=localStorage.getItem(SECTION_STORAGE_KEY);if(['timeline','builds','companions','relics','calculator'].includes(saved))initialSection=saved;}catch(_){}
 setSection(initialSection);
 setupTimeline();
