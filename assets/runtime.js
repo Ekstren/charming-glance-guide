@@ -5,7 +5,7 @@
 
   // src/timeline-data.mjs
   var timelineData = [
-    ["2026-09-22", 70, "Event", "Gift code · SYLVIA", "Confirmed by the official Sword x Staff Global Discord gift-code announcement on Sep. 22. Valid until Sep. 29 at 00:00 (UTC-5); the stored expiry timestamp is displayed in your local timezone. The official notice does not list rewards.", "event", "2026-09-29", null, "2026-09-29T05:00:00Z"],
+    ["2026-09-22", 70, "Event", "Gift code · SYLVIA", "Confirmed by the official Sword x Staff Global Discord gift-code announcement on Sep. 22. Valid until Sep. 29 at 00:00 (UTC-5); the stored expiry timestamp is displayed in your local timezone. Community-reported rewards: 2,000 Rolla + 120 Dawnium (GamesRadar, updated Sep. 22). The official notice confirms the code and expiry but does not list rewards.", "event", "2026-09-29", null, "2026-09-29T05:00:00Z"],
     // ---- Season 1 · Charming Glance / Qenu anchor + QY Maple details ----
     // ---- Season 2 · Loong Haven ----
     // Official Global announcement, Sep. 21: https://discord.com/channels/1410146553573802088/1427172679521407056/1551543191650439188
