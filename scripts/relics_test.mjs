@@ -51,7 +51,7 @@ try{
  await page.locator('#relicReset').click();
  await page.locator('#relicRarity').selectOption('Mythic');await page.locator('#relicElement').selectOption('Water');await page.locator('#relicFruit').selectOption('no');assert.deepEqual(await ids(page),['e'],'unknown is not explicitly unavailable');
  await page.locator('#relicFruit').selectOption('unknown');assert.deepEqual(await ids(page),['f']);
- await page.locator('[data-relic-open]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/not yet been verified/);await page.locator('#relicDialogClose').click();
+ await page.locator('[data-relic-open]').click();assert.equal(await page.locator('#relicDialog .relicFruitInfo').count(),0);await page.locator('#relicDialogClose').click();
  await page.locator('#relicFruit').selectOption('no');await page.locator('[data-relic-open]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Cannot be obtained with Destiny Fruits/);await page.keyboard.press('Escape');assert.equal(await page.locator('#relicDialog').isVisible(),false);assert.equal(await page.locator('[data-relic-open="e"]').evaluate(el=>document.activeElement===el),true);
  await page.locator('#relicReset').click();await page.locator('#relicSearch').fill('  AMBER  ');assert.deepEqual(await ids(page),['a']);
  await page.locator('#relicRarity').selectOption('Mythic');assert.deepEqual(await ids(page),[]);assert.equal(await page.locator('.relicEmpty').isVisible(),true);
