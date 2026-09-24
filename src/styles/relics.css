@@ -1,21 +1,21 @@
 /* Relic gallery uses the existing site frame and light/dark palette. */
 body .sectionSwitch { grid-template-columns:repeat(5,minmax(0,1fr)) !important; }
 #relicsSection { width:100%; max-width:var(--site-width); margin:16px auto 64px; padding-inline:var(--site-gutter); color:var(--reading-text); }
-.relicHeader { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:18px; }
-.relicHeader h1 { font-size:25px; margin:0 0 5px; }
+.relicHeader { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:12px; padding:22px 24px; border:1px solid var(--line); border-radius:18px; background:var(--surface); }
+.relicHeader h1 { font-size:23px; font-weight:650; letter-spacing:-.03em; margin:0 0 5px; }
 .relicHeader p,.relicFootnote,.relicCoverage { color:var(--reading-muted); font-size:13px; line-height:1.5; margin:0; }
 .relicCoverage { margin:24px 0 7px; }
-.relicProgress { display:grid; gap:6px; min-width:220px; }
+.relicProgress { display:grid; gap:8px; min-width:240px; padding-left:24px; border-left:1px solid var(--line); }
 .relicProgress strong { font-size:16px; }
 .relicProgress progress { width:100%; height:8px; accent-color:var(--selected-bg); }
 .relicProgress small { color:var(--reading-muted); font-size:11px; }
 #relicsSection button,#relicsSection select,#relicsSection input[type=search] { border:1px solid var(--line); border-radius:9px; background:var(--bg); color:var(--reading-text); font:inherit; min-height:42px; padding:8px 11px; }
 #relicsSection button { cursor:pointer; }
 #relicsSection button[aria-pressed=true] { background:var(--selected-bg); color:#fff; border-color:var(--selected-bg); }
-.relicRegionTabs { display:flex; gap:6px; padding:6px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow-x:auto; scrollbar-width:thin; }
-#relicsSection .relicRegionTabs button { flex:1 0 auto; font-size:13px; font-weight:650; background:transparent; border-color:transparent; }
+.relicRegionTabs { display:flex; gap:6px; padding:5px; margin:0 0 12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow-x:auto; scrollbar-width:thin; }
+#relicsSection .relicRegionTabs button { flex:1 0 auto; min-height:44px; font-size:13px; font-weight:650; background:transparent; border-color:transparent; }
 #relicsSection .relicRegionTabs button[aria-pressed=true] { background:var(--selected-bg); }
-.relicModes { display:flex; gap:7px; margin:12px 0; }
+.relicModes { display:flex; gap:7px; margin:14px 0 0; }
 #relicsSection .relicModes button { min-height:38px; font-size:13px; }
 .relicFilters { display:flex; flex-wrap:wrap; align-items:end; gap:9px; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
 .relicFilters label { display:grid; gap:5px; font-size:11px; color:var(--reading-muted); flex:1 1 120px; min-width:0; }
@@ -81,7 +81,7 @@ body .sectionSwitch { grid-template-columns:repeat(5,minmax(0,1fr)) !important; 
 .relicSetBonuses dt { color:var(--reading-muted); }.relicSetBonuses dd { margin:0; text-align:right; }
 @media(max-width:1000px) { .relicGrid { grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; } }
 @media(max-width:750px) { .relicGrid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; } }
-@media(max-width:600px) { .relicHeader { flex-direction:column; align-items:stretch; gap:12px; }.relicHeader h1 { font-size:23px; }.relicProgress { grid-template-columns:1fr auto; min-width:0; }.relicProgress progress { grid-column:1/-1; grid-row:2; }.relicProgress small { align-self:center; font-size:9px; }.relicGrid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }.relicModes>button { flex:1; }.relicFilters { padding:9px; gap:8px; }.relicFilters label { flex-basis:calc(50% - 8px); }.relicFilters label:first-child { flex-basis:100%; }.relicFilters label:nth-child(5) { flex-basis:calc(50% - 8px); }#relicsSection .relicFilters select { padding-inline:6px; font-size:11px; }.relicName { font-size:11px; min-height:36px; }.relicCard { border-radius:15px 5px 15px 5px; padding:3px; }#relicsSection .relicCardOpen { padding:6px 3px 4px; }.relicTileMeta,.relicTileZone { font-size:9px; }.relicOwned { font-size:10px; min-height:36px; padding:8px 1px; margin-inline:3px; }.relicRegionTabs { margin-inline:0; }#relicsSection .relicRegionTabs button { font-size:12px; }.relicRarityGroup h2,.relicZone h2 { font-size:16px; }.relicDialogHero { padding:20px 15px 14px; gap:7px; }.relicDialogHero .relicImage { flex-basis:110px; }.relicDialogHero h2 { font-size:19px; }.relicMetadata { margin-inline:16px; }.relicDetails { padding-inline:16px; }body nav.sectionSwitch>button[data-section] { padding-inline:3px !important; font-size:11px !important; } }
+@media(max-width:600px) { .relicHeader { flex-direction:column; align-items:stretch; gap:16px; padding:18px; }.relicHeader h1 { font-size:23px; }.relicProgress { grid-template-columns:1fr auto; min-width:0; padding:14px 0 0; border-left:0; border-top:1px solid var(--line); }.relicProgress progress { grid-column:1/-1; grid-row:2; }.relicProgress small { align-self:center; font-size:9px; }.relicGrid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }.relicModes>button { flex:1; }.relicFilters { padding:9px; gap:8px; }.relicFilters label { flex-basis:calc(50% - 8px); }.relicFilters label:first-child { flex-basis:100%; }.relicFilters label:nth-child(5) { flex-basis:calc(50% - 8px); }#relicsSection .relicFilters select { padding-inline:6px; font-size:11px; }.relicName { font-size:11px; min-height:36px; }.relicCard { border-radius:15px 5px 15px 5px; padding:3px; }#relicsSection .relicCardOpen { padding:6px 3px 4px; }.relicTileMeta,.relicTileZone { font-size:9px; }.relicOwned { font-size:10px; min-height:36px; padding:8px 1px; margin-inline:3px; }.relicRegionTabs { margin-inline:0; }#relicsSection .relicRegionTabs button { font-size:12px; }.relicRarityGroup h2,.relicZone h2 { font-size:16px; }.relicDialogHero { padding:20px 15px 14px; gap:7px; }.relicDialogHero .relicImage { flex-basis:110px; }.relicDialogHero h2 { font-size:19px; }.relicMetadata { margin-inline:16px; }.relicDetails { padding-inline:16px; }body nav.sectionSwitch>button[data-section] { padding-inline:3px !important; font-size:11px !important; } }
 @media(max-width:350px) { .relicGrid { grid-template-columns:repeat(2,minmax(0,1fr)); }.relicProgress small { font-size:8px; } }
 @media(prefers-reduced-motion:reduce) { .relicImage img { transition:none; } }
 /* The detail sheet follows the in-game name / icon / effect / set / source order. */
