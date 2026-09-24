@@ -67,7 +67,7 @@ export function initialize(){
   const rarityRank=value=>{const i=rarityOrder.indexOf(value);return i<0?rarityOrder.length:i;};
   const entries=[...groups].sort(([a,aa],[b,bb])=>filters.targets?((filters.sort==='missing'?missing(bb)-missing(aa):0)||compareZones(a,b)):rarityRank(a)-rarityRank(b)||a.localeCompare(b));
   const regionLabel=filters.region==='all'?'All regions':filters.region==='other'?'Other':filters.region;
-  $('relicResultsStatus').textContent=`${regionLabel}${filters.region==='Loong Haven II'?' · Upcoming':filters.region==='other'?' · Catalog incomplete':''} · ${shown.length} ${filters.targets?'missing Destiny Fruit targets':'relics shown'}${filters.targets?` across ${groups.size} ${groups.size===1?'zone':'zones'}`:''}.`;
+  $('relicResultsStatus').textContent=`${regionLabel}${filters.region==='Loong Haven II'?' · Upcoming':''} · ${shown.length} ${filters.targets?'missing Destiny Fruit targets':'relics shown'}${filters.targets?` across ${groups.size} ${groups.size===1?'zone':'zones'}`:''}.`;
   $('relicGroups').innerHTML=entries.length?entries.map(([group,items])=>`<section class="${filters.targets?'relicZone':'relicRarityGroup'}"><header><h2>${esc(group)}</h2><span>${missing(items)} missing · ${items.length} ${filters.targets?'targets':'shown'}</span></header><div class="relicGrid">${items.map(card).join('')}</div></section>`).join(''):'<p class="relicEmpty">No relics match these filters.</p>';
  }
  host.addEventListener('input',e=>{if(e.target.id==='relicSearch'){filters.search=e.target.value;render();}});

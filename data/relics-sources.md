@@ -19,23 +19,23 @@ the browser never queries another site's database. Edit this file, then run
 
 ## Site visibility: through Loong Haven Relic II
 
-The full catalog is retained. Explicit per-entry visibility limits the UI to 377 entries:
-Verdantglade 70, Cinder Ridge 70, Aqualis 70, Loong Haven I 80, Loong Haven II 80,
-and seven currently identified Other relics. The user's in-game regional counts take
-priority. Loong Haven II is marked upcoming based on their current game availability.
+The full catalog is retained. Visibility covers 400 entries: Verdantglade 70,
+Cinder Ridge 70, Aqualis 70, Loong Haven I 80, Loong Haven II 80, and Other 30.
+Loong Haven II remains visible but marked upcoming per the user's current game.
+
+Six user-provided in-game Other screenshots (19/30), dated 2026-09-23, confirm
+all 30 names and rarities: 15 Mythics, 14 Legendaries, one Epic. Every entry maps
+to an existing catalog ID and local icon. Elements and acquisition locations
+are not shown and remain subject to the existing source limitations.
 
 EOG independently lists the first three pools as 70 each and Dragon I/II as 80 each.
-Five catalog regional extras belong to EOG's Other tier: Hero's Arbor Emblem,
-Ancient Tablet, Aquorigin Charm, Golden Loong Token, and Portable Air Temperature
-Controller I. They are grouped with the two event relics in Other. The game reports
-30 Other relics, but the current-release roster has not been established; this
-seven-entry group is incomplete. We do not select an arbitrary 30 from EOG's much
-larger Other catalog. Some elements for those five entries conflict across sources;
-the catalog values are retained pending confirmation.
+The screenshots confirm the five catalog regional extras belong in Other:
+Hero's Arbor Emblem, Ancient Tablet, Aquorigin Charm, Golden Loong Token, and
+Portable Air Temperature Controller I. Their catalog/EOG elemental conflicts
+remain unresolved. Ancient Tablet uses ID treasure_61925; a later relic shares its name.
 
-753 later or release-unverified records remain hidden. New imports default to hidden;
-visibility changes preserve saved ownership. Loong pool assignments carry per-record
-provenance; upcoming entries remain visible as requested.
+730 later or release-unverified records remain hidden. New imports default to hidden.
+Visibility changes preserve saved ownership. Loong assignments carry per-record evidence.
 
 ## Sources and decisions
 

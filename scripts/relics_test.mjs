@@ -74,6 +74,8 @@ try{
  for(const r of dataset.filter(r=>r.zone))assert.ok(r.region&&r.zone.startsWith(r.region+' '),`region/zone conflict: ${r.name}`);
  for(const region of ['Verdantglade','Cinder Ridge','Aqualis']) assert.equal(visible.filter(r=>r.region===region).length,70);
  for(const pool of ['Loong Haven I','Loong Haven II']){const rows=visible.filter(r=>r.pool===pool);assert.equal(rows.length,80);assert.equal(rows.filter(r=>r.rarity==='Mythic').length,20);}
+ assert.equal(visible.filter(r=>r.region==='Other').length,30);
+ for(const [rarity,count] of [['Mythic',15],['Legendary',14],['Epic',1]]) assert.equal(visible.filter(r=>r.region==='Other'&&r.rarity===rarity).length,count);
  const images=[...new Set(dataset.map(r=>r.image).filter(Boolean))];
  assert.ok(images.length,'catalog has icons');for(const image of images){assert.ok(!/^https?:/.test(image),`icon must be local: ${image}`);assert.ok(existsSync(image),`missing icon: ${image}`);}
  for(const theme of ['light','dark'])for(const width of [320,390,1440]){

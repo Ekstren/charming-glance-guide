@@ -1739,10 +1739,11 @@ var SxsRelics = (() => {
           effect: "DMG Boost"
         }
       ],
-      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
       classificationEvidence: {
-        url: "https://eog.gg/games/sword-x-staff/#relics",
-        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
       }
     },
     {
@@ -2631,10 +2632,11 @@ var SxsRelics = (() => {
           effect: "DMG Boost"
         }
       ],
-      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
       classificationEvidence: {
-        url: "https://eog.gg/games/sword-x-staff/#relics",
-        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
       }
     },
     {
@@ -2745,16 +2747,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61717.png",
       rarity: "Legendary",
       element: "Wind",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvP Bonus DMG",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61008",
@@ -7910,16 +7918,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61818.png",
       rarity: "Legendary",
       element: "Water",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvE DMG RES",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61506",
@@ -11151,16 +11165,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61618.png",
       rarity: "Legendary",
       element: "Dark",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvP DMG RES",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61617",
@@ -11168,16 +11188,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61617.png",
       rarity: "Legendary",
       element: "Dark",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvP Bonus DMG",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_62609",
@@ -12397,16 +12423,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61517.png",
       rarity: "Legendary",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvE Bonus DMG",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61817",
@@ -12414,16 +12446,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61817.png",
       rarity: "Legendary",
       element: "Water",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvE Bonus DMG",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61003",
@@ -12635,16 +12673,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61518.png",
       rarity: "Legendary",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvE DMG RES",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61718",
@@ -12652,16 +12696,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61718.png",
       rarity: "Legendary",
       element: "Wind",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvE Bonus DMG",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_71809",
@@ -22704,16 +22754,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61411.png",
       rarity: "Mythic",
       element: "Fire",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Gear Yield Rate",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_62013",
@@ -22823,16 +22879,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61011.png",
       rarity: "Mythic",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Wood Yield Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_73615",
@@ -22944,10 +23006,11 @@ var SxsRelics = (() => {
           "https://eog.gg/games/sword-x-staff/#relics"
         ]
       },
-      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
       classificationEvidence: {
-        url: "https://eog.gg/games/sword-x-staff/#relics",
-        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
       }
     },
     {
@@ -24732,10 +24795,11 @@ var SxsRelics = (() => {
           effect: "DMG Boost"
         }
       ],
-      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
       classificationEvidence: {
-        url: "https://eog.gg/games/sword-x-staff/#relics",
-        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
       }
     },
     {
@@ -24744,16 +24808,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61211.png",
       rarity: "Mythic",
       element: "Wind",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+7% EXP Gain Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_62302",
@@ -26664,16 +26734,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61110.png",
       rarity: "Mythic",
       element: "Dark",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Chrono Sand Yield Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61217",
@@ -29308,7 +29384,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61012.png",
       rarity: "Mythic",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [
@@ -29328,7 +29404,13 @@ var SxsRelics = (() => {
       visible: true,
       effect: "+1,400 Dungeon: 2× Rating Reward Rate",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_73002",
@@ -30792,16 +30874,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61010.png",
       rarity: "Mythic",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home {item_1_name} Yield Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_71621",
@@ -31227,16 +31315,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61316.png",
       rarity: "Mythic",
       element: "Water",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+3% DMG RES",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_62301",
@@ -36345,16 +36439,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61310.png",
       rarity: "Mythic",
       element: "Water",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Stone Yield Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61911",
@@ -37042,10 +37142,11 @@ var SxsRelics = (() => {
       effect: "+21 SPD",
       set: null,
       setBonuses: [],
-      visibilityNote: "EOG explicitly classifies this relic as Other, outside the 70/80 regional pools.",
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
       classificationEvidence: {
-        url: "https://eog.gg/games/sword-x-staff/#relics",
-        note: "Other tier cross-checked by relic ID/name; elemental disagreements remain unresolved."
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
       }
     },
     {
@@ -37319,16 +37420,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61410.png",
       rarity: "Mythic",
       element: "Fire",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Raw Ore Yield Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61013",
@@ -37336,7 +37443,7 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61013.png",
       rarity: "Mythic",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [
@@ -37356,7 +37463,13 @@ var SxsRelics = (() => {
       visible: true,
       effect: "+1,400 Gem Drop Rate",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_61001",
@@ -38544,16 +38657,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61111.png",
       rarity: "Mythic",
       element: "Dark",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Battle Essence Yield Boost",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_74007",
@@ -41279,16 +41398,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61210.png",
       rarity: "Mythic",
       element: "Wind",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Destiny Fruit Growth SPD",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_74622",
@@ -51327,16 +51452,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61216.png",
       rarity: "Mythic",
       element: "Wind",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+12% Basic Dispatch Rewards",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_62702",
@@ -51395,16 +51526,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61016.png",
       rarity: "Mythic",
       element: "Light",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+1,400 Vista Dispatch Default Major Success",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_71228",
@@ -53194,16 +53331,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61311.png",
       rarity: "Mythic",
       element: "Water",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+14% Home Stamina Regen SPD",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_71207",
@@ -53466,16 +53609,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61917.png",
       rarity: "Legendary",
       element: "Fire",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvP Bonus DMG",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_72217",
@@ -53687,16 +53836,22 @@ var SxsRelics = (() => {
       image: "assets/relics/treasure_61918.png",
       rarity: "Legendary",
       element: "Fire",
-      region: null,
+      region: "Other",
       zone: null,
       destinyFruit: null,
       sources: [],
       sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
       verifiedAt: "2026-09-23",
-      visible: false,
+      visible: true,
       effect: "+5.8% PvP DMG RES",
       set: null,
-      setBonuses: []
+      setBonuses: [],
+      visibilityNote: "Other roster and rarity confirmed in user-provided in-game gallery screenshots (19/30), 2026-09-23.",
+      classificationEvidence: {
+        type: "User-provided in-game screenshot",
+        date: "2026-09-23",
+        note: "Full Other roster: 15 Mythic, 14 Legendary, 1 Epic. Elements and acquisition locations not shown."
+      }
     },
     {
       id: "treasure_62916",
@@ -58431,7 +58586,7 @@ var SxsRelics = (() => {
       };
       const entries = [...groups].sort(([a, aa], [b, bb]) => filters.targets ? (filters.sort === "missing" ? missing(bb) - missing(aa) : 0) || compareZones(a, b) : rarityRank(a) - rarityRank(b) || a.localeCompare(b));
       const regionLabel = filters.region === "all" ? "All regions" : filters.region === "other" ? "Other" : filters.region;
-      $("relicResultsStatus").textContent = `${regionLabel}${filters.region === "Loong Haven II" ? " · Upcoming" : filters.region === "other" ? " · Catalog incomplete" : ""} · ${shown.length} ${filters.targets ? "missing Destiny Fruit targets" : "relics shown"}${filters.targets ? ` across ${groups.size} ${groups.size === 1 ? "zone" : "zones"}` : ""}.`;
+      $("relicResultsStatus").textContent = `${regionLabel}${filters.region === "Loong Haven II" ? " · Upcoming" : ""} · ${shown.length} ${filters.targets ? "missing Destiny Fruit targets" : "relics shown"}${filters.targets ? ` across ${groups.size} ${groups.size === 1 ? "zone" : "zones"}` : ""}.`;
       $("relicGroups").innerHTML = entries.length ? entries.map(([group, items]) => `<section class="${filters.targets ? "relicZone" : "relicRarityGroup"}"><header><h2>${esc(group)}</h2><span>${missing(items)} missing · ${items.length} ${filters.targets ? "targets" : "shown"}</span></header><div class="relicGrid">${items.map(card).join("")}</div></section>`).join("") : '<p class="relicEmpty">No relics match these filters.</p>';
     }
     host.addEventListener("input", (e) => {
