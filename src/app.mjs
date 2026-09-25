@@ -132,7 +132,7 @@ function timelineSummaryText(e){
     // but CONFIRMED / UNCONFIRMED / PROJECTED-style audit language is not shown on cards.
     if(title==='Warlord’s Rest') return 'Player Lv.130 · Power: Normal 3.55M, Hard 5M, Nightmare 6M.';
     if(title==='Server Tournament') return 'Weekly: register Friday and compete Saturday; top teams qualify for Nexus.';
-    if(title==='Nexus Tournament · 4v4') return 'Every other week, top server teams compete in cross-server 4v4. Brackets and predictions are in game.';
+    if(title==='Nexus Tournament · 4v4') return 'Qualified server teams compete in cross-server 4v4; brackets and predictions are in game.';
     if(title==='Aethyris opens') return 'Projected Season 3: Aethyris and Tier 5. The Nexus pool may grow from four servers to eight.';
     // TIMELINE_SUMMARY_PROVENANCE_CLEAN_V2: keep source/confidence wording in raw rows/comments only.
     if(title==='Aethyris area-unlock stockpile') return 'Aethyris unlock stock: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, 2 “cloud keys,” 5 hammers. QY names unverified.';

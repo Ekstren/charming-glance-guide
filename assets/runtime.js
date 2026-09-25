@@ -179,10 +179,10 @@
   // src/timeline-patches.mjs
   (() => {
     const CORRECTIONS = {
-      "2026-09-12": { to: "2026-09-13", serverDay: 61, seasonDay: 15, summary: "Starts Sunday Sep. 13 at 1:00 PM PDT · 4v4 Nexus Tournament · Top-4 qualification format." },
-      "2026-09-26": { to: "2026-09-27", serverDay: 75, seasonDay: 29, summary: "Projected 14-day Nexus cadence from the confirmed Sep. 13 slot · Sunday Sep. 27. Recheck the in-game timer as it approaches." },
-      "2026-10-10": { to: "2026-10-11", serverDay: 89, seasonDay: 43, summary: "Projected 14-day Nexus cadence from the confirmed Sep. 13 slot · Sunday Oct. 11. Recheck the in-game timer as it approaches." },
-      "2026-10-24": { to: "2026-10-25", serverDay: 103, seasonDay: 57, summary: "Projected 14-day Nexus cadence from the confirmed Sep. 13 slot · Sunday Oct. 25. Recheck the in-game timer as it approaches." }
+      "2026-09-12": { to: "2026-09-13", serverDay: 61, seasonDay: 15, summary: "Qualified server teams compete in cross-server 4v4; brackets and predictions are in game." },
+      "2026-09-26": { to: "2026-09-27", serverDay: 75, seasonDay: 29, summary: "Qualified server teams compete in cross-server 4v4; brackets and predictions are in game." },
+      "2026-10-10": { to: "2026-10-11", serverDay: 89, seasonDay: 43, summary: "Qualified server teams compete in cross-server 4v4; brackets and predictions are in game." },
+      "2026-10-24": { to: "2026-10-25", serverDay: 103, seasonDay: 57, summary: "Qualified server teams compete in cross-server 4v4; brackets and predictions are in game." }
     };
     function dateParts(iso) {
       const d = /* @__PURE__ */ new Date(`${iso}T12:00:00Z`);
@@ -530,7 +530,7 @@
     const type = String(e && e[2] || "");
     if (title === "Warlord’s Rest") return "Player Lv.130 · Power: Normal 3.55M, Hard 5M, Nightmare 6M.";
     if (title === "Server Tournament") return "Weekly: register Friday and compete Saturday; top teams qualify for Nexus.";
-    if (title === "Nexus Tournament · 4v4") return "Every other week, top server teams compete in cross-server 4v4. Brackets and predictions are in game.";
+    if (title === "Nexus Tournament · 4v4") return "Qualified server teams compete in cross-server 4v4; brackets and predictions are in game.";
     if (title === "Aethyris opens") return "Projected Season 3: Aethyris and Tier 5. The Nexus pool may grow from four servers to eight.";
     if (title === "Aethyris area-unlock stockpile") return "Aethyris unlock stock: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, 2 “cloud keys,” 5 hammers. QY names unverified.";
     if (title === "Astral Odyssey") return "Aethyris’s Season 3 map.";

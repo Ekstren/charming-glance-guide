@@ -5,10 +5,10 @@
    The following 14-day projections move with the corrected Sunday cadence. */
 (()=>{
   const CORRECTIONS={
-    '2026-09-12':{to:'2026-09-13',serverDay:61,seasonDay:15,summary:'Starts Sunday Sep. 13 at 1:00 PM PDT · 4v4 Nexus Tournament · Top-4 qualification format.'},
-    '2026-09-26':{to:'2026-09-27',serverDay:75,seasonDay:29,summary:'Projected 14-day Nexus cadence from the confirmed Sep. 13 slot · Sunday Sep. 27. Recheck the in-game timer as it approaches.'},
-    '2026-10-10':{to:'2026-10-11',serverDay:89,seasonDay:43,summary:'Projected 14-day Nexus cadence from the confirmed Sep. 13 slot · Sunday Oct. 11. Recheck the in-game timer as it approaches.'},
-    '2026-10-24':{to:'2026-10-25',serverDay:103,seasonDay:57,summary:'Projected 14-day Nexus cadence from the confirmed Sep. 13 slot · Sunday Oct. 25. Recheck the in-game timer as it approaches.'}
+    '2026-09-12':{to:'2026-09-13',serverDay:61,seasonDay:15,summary:'Qualified server teams compete in cross-server 4v4; brackets and predictions are in game.'},
+    '2026-09-26':{to:'2026-09-27',serverDay:75,seasonDay:29,summary:'Qualified server teams compete in cross-server 4v4; brackets and predictions are in game.'},
+    '2026-10-10':{to:'2026-10-11',serverDay:89,seasonDay:43,summary:'Qualified server teams compete in cross-server 4v4; brackets and predictions are in game.'},
+    '2026-10-24':{to:'2026-10-25',serverDay:103,seasonDay:57,summary:'Qualified server teams compete in cross-server 4v4; brackets and predictions are in game.'}
   };
 
   function dateParts(iso){
