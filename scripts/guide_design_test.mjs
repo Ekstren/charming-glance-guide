@@ -32,6 +32,7 @@ try{
     const label=`${theme} ${width}px`,errors=[];
     page.on('pageerror',error=>errors.push(String(error)));
     await page.goto(pathToFileURL(path.resolve('index.html')).href);
+    await page.addStyleTag({content:'*,*::before,*::after{transition:none!important;animation:none!important}'});
     await page.evaluate(value=>document.documentElement.dataset.theme=value,theme);
     await page.locator('[data-section="builds"]').click();
     await page.waitForFunction(()=>document.getElementById('buildsSection').dataset.guideReady==='true');
