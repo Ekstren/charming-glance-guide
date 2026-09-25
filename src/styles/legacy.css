@@ -2417,6 +2417,9 @@ footer a {
     top: 80px;
     left: 183px
   }
+  .dayGroup.today:after {
+    left: 196px
+  }
   .dayMarker {
     padding-top: 19px
   }
