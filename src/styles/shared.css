@@ -258,7 +258,6 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
   #buildsSection #buildContent .buildHeroLeft,#buildsSection #buildContent .buildHeroRoll { padding: 14px !important; }
   #buildsSection #buildContent .quickGearRow { grid-template-columns: 64px minmax(0, 1fr); }
   #buildsSection .metaBuildTabs button { font-size: 12px !important; }
-  #buildsSection .metaTournamentScenario.active { grid-column: 1 / -1; }
   #buildsSection #buildContent .rollGuideGrid { grid-template-columns: minmax(0, 1fr); }
   #companionsSection .companionHeroMain,#companionsSection .companionFocus,#companionsSection .companionPanel { padding: 14px; }
   #companionsSection .companionLadder { grid-template-columns: minmax(0, 1fr); }

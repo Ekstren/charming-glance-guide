@@ -44,12 +44,12 @@ async function assertVisibleBuild(label){
   }
 }
 
-const activities=['Dungeon','Crucible / Conquest','Arena'];
+const activities=['Dungeons','Crucible','Conquest','Mirage','Arena','Tournament'];
 let checked=0;
 for(const cls of ['Conqueror','Guardian','Destroyer','Dominator']){
   await waitBuild(cls);
   const modes=await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').evaluateAll(xs=>xs.map(x=>x.dataset.metaMode));
-  assert(JSON.stringify(modes)===JSON.stringify(['Dungeon','Crucible / Conquest','Arena','Tournament']),`${cls}: activity tabs wrong: ${modes.join(' | ')}`);
+  assert(JSON.stringify(modes)===JSON.stringify(activities),`${cls}: activity tabs wrong: ${modes.join(' | ')}`);
   assert(await page.locator('#buildContent .buildCard[data-role^="Fantasia Ascent"]').count()===0,`${cls}: Fantasia Ascent build data still rendered`);
   const roles=cls==='Guardian'?['tank','dps']:(cls==='Dominator'?['dps','heals']:[null]);
   for(const role of roles){
@@ -62,19 +62,13 @@ for(const cls of ['Conqueror','Guardian','Destroyer','Dominator']){
       await page.locator(`#buildContent .metaBuildTabs [data-meta-mode="${mode}"]`).click();
       await page.waitForTimeout(60);
       await assertVisibleBuild(`${cls}${role?` ${role}`:''} ${mode}`);
-      checked++;
-    }
-    await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Tournament"]').click();
-    await page.waitForTimeout(60);
-    for(const size of ['2v2','4v4']){
-      await page.locator(`#buildContent .metaTournamentScenario [data-tournament-size="${size}"]`).click();
-      await page.waitForTimeout(60);
-      await assertVisibleBuild(`${cls}${role?` ${role}`:''} Tournament ${size}`);
+      const visibleText=await page.locator('#buildContent .buildGrid .buildCard:visible').innerText();
+      assert(/\bT4\b/.test(visibleText)&&! /\bT5\b/.test(visibleText),`${cls}${role?` ${role}`:''} ${mode}: live build is not clearly T4`);
       checked++;
     }
   }
 }
-assert(checked===30,`expected 30 current S2 build variants, checked ${checked}`);
+assert(checked===36,`expected 36 current T4 activity/role variants, checked ${checked}`);
 assert(pageErrors.length===0,`runtime errors: ${pageErrors.join('\n')}`);
-console.log('build swap smoke passed: all 30 current S2 build variants use equipped swap sources and unequipped targets');
+console.log('build swap smoke passed: all 36 current T4 activity/role variants use valid equipped swaps');
 await browser.close();

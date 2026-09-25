@@ -7945,12 +7945,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 }
 .builds .metaBuildTabs {
   display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
+  grid-template-columns: repeat(6,minmax(0,1fr));
   gap: 5px;
   flex: 1;
   min-width: 0
 }
-.builds .metaBuildTabs>button,.builds .metaTournamentMain {
+.builds .metaBuildTabs>button {
   border: 0;
   border-radius: 9px;
   background: transparent;
@@ -7965,49 +7965,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .builds .metaBuildTabs>button.active {
   background: var(--accent-strong);
   color: #fff
-}
-.builds .metaTournamentScenario {
-  display: grid;
-  grid-template-columns: minmax(0,1fr);
-  align-items: center;
-  min-width: 0;
-  border-radius: 9px;
-  overflow: hidden;
-  background: transparent
-}
-.builds .metaTournamentScenario.active {
-  grid-template-columns: minmax(0,1fr)auto;
-  background: var(--selected-bg)
-}
-.builds .metaTournamentScenario.active>.metaTournamentMain {
-  background: transparent;
-  color: #fff
-}
-.builds .metaTournamentTabs {
-  display: none;
-  align-items: center;
-  gap: 2px;
-  padding-right: 4px
-}
-.builds .metaTournamentScenario.active>.metaTournamentTabs {
-  display: flex
-}
-.builds .metaTournamentTabs button {
-  border: 0;
-  border-radius: 6px;
-  background: var(--ui-panel);
-  color: var(--reading-text);
-  cursor: pointer;
-  font-size: 9px;
-  font-weight: 850;
-  min-height: 26px;
-  padding: 4px 7px
-}
-.builds .metaTournamentTabs button:hover {
-  background: var(--ui-subpanel)
-}
-.builds .metaTournamentTabs button.active {
-  background: rgba(255,255,255,.3)
 }
 .builds .buildGrid.metaModeGrid {
   grid-template-columns: 1fr!important;
@@ -8058,13 +8015,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   }
   .builds .metaBuildTabs {
     grid-template-columns: repeat(2,minmax(0,1fr))
-  }
-  .builds .metaTournamentScenario.active {
-    grid-template-columns: minmax(0,1fr)auto
-  }
-  .builds .metaTournamentTabs button {
-    min-width: 34px;
-    padding: 4px 6px
   }
 }
 #buildContent .skillGroup b[data-skill-tooltip] {
@@ -8246,8 +8196,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .priorityPair {
   display: grid;
   grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 10px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 8px;
   align-items: stretch
 }
 .priorityPair>.priorityPanel {
@@ -8256,28 +8206,44 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   height: 100%
 }
 .priorityPair .priorityIntro {
-  padding: 17px 18px;
+  padding: 9px 12px;
   border-bottom: 1px solid var(--line)
 }
 .priorityPair .priorityIntro>strong {
-  font-size: 16px
+  font-size: 13px
 }
 .priorityPair .priorityIntro p {
-  font-size: 10px
+  display: none!important
 }
 .priorityPair .priorityList {
-  grid-template-columns: 1fr
+  grid-template-columns: repeat(2,minmax(0,1fr))
 }
 .priorityPair .priorityList li {
   border-left: 0;
   border-bottom: 1px solid var(--line);
-  padding: 13px 15px
+  gap: 8px;
+  min-width: 0;
+  padding: 7px 10px;
+  align-items: center
+}
+.priorityPair .priorityList li:nth-child(odd) {
+  border-right: 1px solid var(--line)
 }
 .priorityPair .priorityList li:nth-child(n+3) {
-  border-bottom: 1px solid var(--line)
+  border-bottom: 0
 }
 .priorityPair .priorityList li:last-child {
   border-bottom: 0
+}
+.priorityPair .priorityList li>div {
+  min-width: 0
+}
+.priorityPair .priorityList p {
+  display: none!important
+}
+.priorityPair .priorityList strong {
+  font-size: 11px!important;
+  line-height: 1.35
 }
 @media(max-width:900px) {
   .priorityPair {

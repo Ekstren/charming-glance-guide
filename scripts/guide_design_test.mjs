@@ -49,28 +49,23 @@ try{
         await page.locator(`#classTabs button[data-class="${cls}"]`).click();
         for(const role of cls==='Guardian'?['tank','dps']:cls==='Dominator'?['dps','heals']:[null]){
           if(role)await page.locator(`#buildContent button[data-${cls.toLowerCase()}-mode="${role}"]`).click();
-          for(const activity of ['Dungeon','Crucible / Conquest','Arena','Tournament']){
+          for(const activity of ['Dungeons','Crucible','Conquest','Mirage','Arena','Tournament']){
             await page.locator(`#buildContent .metaBuildTabs [data-meta-mode="${activity}"]`).click();
-            for(const size of activity==='Tournament'?['2v2','4v4']:[null]){
-              if(size)await page.locator(`#buildContent [data-tournament-size="${size}"]`).click();
-              const state=`${label} ${cls} ${role||''} ${activity} ${size||''}`;
-              assert.equal(await page.locator('#buildContent .buildGrid .buildCard:visible').count(),1,`${state}: one visible build`);
-              const clipped=await page.locator('#buildContent .metaBuildTabs button:visible,#buildContent .buildCard:visible,#buildContent .buildCard:visible header,#buildContent .buildCard:visible h3,#buildContent .buildCard:visible .skillGroup').evaluateAll(elements=>elements.filter(el=>{
-                const r=el.getBoundingClientRect();
-                return r.height&&(r.left<0||r.right>innerWidth+1||el.scrollWidth>el.clientWidth+2);
-              }).map(el=>el.textContent.trim().slice(0,80)));
-              assert.deepEqual(clipped,[],`${state}: clipped activity labels or cards`);
-              await checkContrast(page,'#buildContent .metaBuildTabs button:visible',`${state} activity buttons`);
-              if(size){
-                const targets=await page.locator('#buildContent .metaTournamentTabs button:visible').evaluateAll(elements=>elements.map(el=>el.getBoundingClientRect().height));
-                assert.ok(targets.every(height=>height>=44),`${state}: undersized tournament target`);
-              }
-              states++;
-            }
+            const state=`${label} ${cls} ${role||''} ${activity}`;
+            assert.equal(await page.locator('#buildContent .buildGrid .buildCard:visible').count(),1,`${state}: one visible build`);
+            const clipped=await page.locator('#buildContent .metaBuildTabs button:visible,#buildContent .buildCard:visible,#buildContent .buildCard:visible header,#buildContent .buildCard:visible h3,#buildContent .buildCard:visible .skillGroup').evaluateAll(elements=>elements.filter(el=>{
+              const r=el.getBoundingClientRect();
+              return r.height&&(r.left<0||r.right>innerWidth+1||el.scrollWidth>el.clientWidth+2);
+            }).map(el=>el.textContent.trim().slice(0,80)));
+            assert.deepEqual(clipped,[],`${state}: clipped activity labels or cards`);
+            await checkContrast(page,'#buildContent .metaBuildTabs button:visible',`${state} activity buttons`);
+            const targets=await page.locator('#buildContent .metaBuildTabs button:visible').evaluateAll(elements=>elements.map(el=>el.getBoundingClientRect().height));
+            assert.ok(targets.every(height=>height>=40),`${state}: undersized activity target`);
+            states++;
           }
         }
       }
-      assert.equal(states,30,`${label}: all build activities and roles checked`);
+      assert.equal(states,36,`${label}: all build activities and roles checked`);
     }
 
     await page.locator('[data-section="companions"]').click();
