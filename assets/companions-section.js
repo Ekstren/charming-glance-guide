@@ -57,7 +57,7 @@ var SxsCompanions = (() => {
           Arcanist: { season: "s1", line: "Sage → Arcanist", path: "sage", focus: "DPS: Accuracy → Crit · Heals: Healing Boost at Lv100", summary: "Arcanist has two legitimate Companion paths. DPS wants consistency first; healer investment is delayed because Healing Boost does not pay out until Affinity 100." },
           Dominator: { season: "s2", line: "Sage → Arcanist → Dominator", path: "sage", focus: "DPS: Accuracy → Crit · Heals: Healing Boost at Lv100", summary: "Dominator has two real paths: Accuracy/Crit for damage, or a dedicated Lv100 Healing Boost push for support.", carry: "Do not rebuild from zero in S2. Continue the Arcanist DPS or healer path you already started." }
         };
-        const CRIT_COMMUNITY = ["Eiichi", "Karlos", "Naira", "Qin", "Wuji", "Mateo", "Mio"];
+        const CRIT_COMMUNITY = ["Eiichi", "Karlos", "Naira", "Qin", "Wuji", "Mateo", "Mio", "Ming"];
         const ACCURACY_POOL = ["Akane", "Hermes", "Jiangwang", "Kazuma", "Ophelia"];
         const ARCHMAGE_POOL = ["Akane", "Hermes", "Jiangwang", "Mateo", "Mio", "Ophelia", "Sylvia", "Chief (Santa)"];
         const BLOCK_CORE = ["Braulio", "Darkness", "Mayoi"];
@@ -73,7 +73,7 @@ var SxsCompanions = (() => {
               ["4", "Crit → 100", "Repeat the Lv50 Crit breakpoint on the best targets, then finish Accuracy 70/100."]
             ],
             groups: [
-              { rank: "First", title: "Crit breakpoint targets", names: CRIT_COMMUNITY, why: "Community players have repeatedly identified these as strong DMG Boost/Crit candidates. Prioritize any gold-outline version and confirm the Lv50 tooltip before spending heavily." },
+              { rank: "First", title: "Crit breakpoint targets", names: CRIT_COMMUNITY, why: "Community Crit candidates. Prioritize gold outlines and verify Lv50. Ming’s Loong Haven profile is SPD/Crit/DMG Boost; check her affinity stat in-game." },
               { rank: "Second", title: "Accuracy / ATK pool", names: ACCURACY_POOL, why: "Loot & Waifus and multiple class guides repeatedly recommend this pool for offensive consistency. Raise these after the important Crit breakpoints are online." },
               { rank: "Later", title: "Defensive account stats", names: ["Block / DMG Reduction companions"], why: "Useful eventually, especially for high power-gap pushing, but they should not delay your core Crit and Accuracy breakpoints on a Duelist-line main." }
             ],
@@ -110,7 +110,7 @@ var SxsCompanions = (() => {
             ],
             groups: [
               { rank: "First", title: "Sorcerer / Archmage priority pool", names: ARCHMAGE_POOL, why: "Mobi lists this group as Archmage-relevant. Within the pool, raise companions showing Crit at Lv50 first, then the Accuracy options." },
-              { rank: "Crit check", title: "Cross-class Crit candidates", names: CRIT_COMMUNITY, why: "Companion bonuses are global, so a Crit companion is useful even when its portrait class is different. These are community-identified Crit candidates worth checking on your roster." },
+              { rank: "Crit check", title: "Cross-class Crit candidates", names: CRIT_COMMUNITY, why: "These Crit bonuses are global. Ming’s Loong Haven profile is SPD/Crit/DMG Boost; verify her actual Lv50 affinity stat in-game." },
               { rank: "Event", title: "Current/event variants", names: ["Megumin", "Other gold-outline Crit/Accuracy variants"], why: "Event companions can be excellent, but variant stats can differ. Slot them into the same Crit → Accuracy priority based on their actual Lv50/Lv100 tooltip." }
             ],
             rules: [
@@ -129,7 +129,7 @@ var SxsCompanions = (() => {
             groups: [
               { rank: "First", title: "Accuracy / offensive DPS core", names: ACCURACY_POOL, why: "Loot & Waifus and Mobi repeatedly recommend this pool for DPS Sage. It is the cleanest named group to start with for Accuracy/offensive value." },
               { rank: "Second", title: "Sage-native candidates", names: SAGE_NATIVE, why: "These are commonly listed as Arcanist-relevant. Check their Lv50 tooltip and prioritize Accuracy first, then Crit for your DPS build." },
-              { rank: "Then", title: "Crit candidates", names: CRIT_COMMUNITY, why: "Once Accuracy is healthy, global Crit companions are still valuable because Companion bonuses apply regardless of portrait class." }
+              { rank: "Then", title: "Crit candidates", names: CRIT_COMMUNITY, why: "Global Crit stays useful after Accuracy. Ming’s Loong Haven profile is SPD/Crit/DMG Boost; verify her actual Lv50 affinity stat in-game." }
             ],
             rules: [
               ["ACC", "Accuracy first", "LootBar rates DPS/DoT Sage as Accuracy → Crit. This is a Companion priority, not a replacement for Effect Hit Rate on gear/builds."],
@@ -231,7 +231,7 @@ var SxsCompanions = (() => {
           <div class="companionPanel" style="margin-top:10px"><span class="companionPanelLabel">Universal reference</span><h3>Affinity breakpoints</h3>${breakpointsHtml()}</div>
         </div>
       </div>
-      <div class="companionSources">Research basis · <a href="https://www.prydwen.gg/sword-x-staff/guides/beginner-guide" target="_blank" rel="noreferrer">Prydwen Companion basics ↗</a> · <a href="https://www.lootbar.com/blog/en/companion-upgrade-guide-sword-x-staff.html" target="_blank" rel="noreferrer">LootBar breakpoint guide ↗</a> · <a href="https://lootandwaifus.com/sword-x-staff-companion-database/" target="_blank" rel="noreferrer">Loot & Waifus Companion DB ↗</a> · <a href="https://mobi.gg/en/tips/sword-x-staff-companions/" target="_blank" rel="noreferrer">Mobi class companion guide ↗</a></div>`;
+      <div class="companionSources">Research basis · <a href="https://www.prydwen.gg/sword-x-staff/guides/beginner-guide" target="_blank" rel="noreferrer">Prydwen Companion basics ↗</a> · <a href="https://www.lootbar.com/blog/en/companion-upgrade-guide-sword-x-staff.html" target="_blank" rel="noreferrer">LootBar breakpoint guide ↗</a> · <a href="https://lootandwaifus.com/sword-x-staff-companion-database/" target="_blank" rel="noreferrer">Loot & Waifus Companion DB ↗</a> · <a href="https://mobi.gg/en/tips/sword-x-staff-companions/" target="_blank" rel="noreferrer">Mobi class companion guide ↗</a> · <a href="https://0xnobodyyt.github.io/sxs-companions/" target="_blank" rel="noreferrer">Current client Companion catalog ↗</a></div>`;
           savePrefs();
         }
         function setup() {
