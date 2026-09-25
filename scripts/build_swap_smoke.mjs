@@ -1,74 +1,64 @@
-import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import {chromium} from 'playwright';
+import {pathToFileURL} from 'node:url';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 
-const browser=await chromium.launch({headless:true});
-const page=await browser.newPage({viewport:{width:1440,height:1000}});
-const pageErrors=[];
-page.on('pageerror',err=>pageErrors.push(String(err?.stack||err)));
-await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
-await page.waitForTimeout(350);
-
-const assert=(cond,msg)=>{if(!cond) throw new Error(msg)};
-const waitBuild=async cls=>{
-  await page.locator('.sectionSwitch button[data-section="builds"]').click();
-  await page.locator(`#classTabs button[data-class="${cls}"]`).click();
-  await page.waitForFunction(name=>document.querySelector('#classTabs button.active')?.dataset.class===name,cls);
-  await page.waitForTimeout(70);
+const expected={
+  Destroyer:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer',
+    builds:['AOE Build','ST Build','Fire AoE Build','Elsa Build']
+  },
+  Dominator:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-dominator',
+    builds:['Single Target','AoE','Healing Build']
+  },
+  Conqueror:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-conqueror',
+    builds:['Generic Build for all Content','Dragon Build']
+  },
+  Guardian:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-guardian',
+    builds:['Generic Dungeon Grid','Water Paladin','Support Knight','Secondary PvE build']
+  }
 };
 
-async function assertVisibleBuild(label){
-  const card=page.locator('#buildContent .buildGrid .buildCard:visible');
-  assert(await card.count()===1,`${label}: expected one visible build, found ${await card.count()}`);
-  const groups=card.locator('.skillGroup');
-  let techniques=[],charms=[];
-  for(let i=0;i<await groups.count();i++){
-    const g=groups.nth(i);
-    const heading=(await g.locator(':scope > span').innerText()).trim().toLowerCase();
-    const names=(await g.locator(':scope > div > b').allTextContents()).map(x=>x.trim());
-    if(heading.includes('technique')) techniques=names;
-    if(heading.includes('charm')) charms=names;
-  }
-  assert(techniques.length===4,`${label}: expected four Techniques, got ${techniques.join(' | ')}`);
-  assert(charms.length===4,`${label}: expected four Charms, got ${charms.join(' | ')}`);
-  const swaps=card.locator('.buildSwapRows p');
-  for(let i=0;i<await swaps.count();i++){
-    const row=swaps.nth(i);
-    const kind=(await row.locator(':scope > strong').innerText()).trim().toLowerCase();
-    const names=(await row.locator('.swapNames').innerText()).split('→').map(x=>x.trim());
-    assert(names.length===2,`${label}: malformed swap row: ${await row.innerText()}`);
-    const [from,to]=names;
-    const equipped=kind.includes('technique')?techniques:charms;
-    assert(equipped.includes(from),`${label}: ${kind} source "${from}" is not equipped; equipped: ${equipped.join(' | ')}`);
-    assert(!equipped.includes(to),`${label}: ${kind} target "${to}" is already equipped; equipped: ${equipped.join(' | ')}`);
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1280,height:900}});
+const errors=[];
+page.on('pageerror',error=>errors.push(String(error?.stack||error)));
+await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'});
+await page.locator('.sectionSwitch button[data-section="builds"]').click();
+await page.waitForFunction(()=>document.getElementById('buildsSection')?.dataset.guideReady==='true');
+
+const classNames=Object.keys(expected);
+assert(await page.locator('#classTabs button[data-class]').count()===classNames.length,'expected exactly four current T4 class tabs');
+assert((await page.locator('#buildContent .sourceBuildNote').innerText()).includes('T4'),'Builds note must identify the current T4 sources');
+assert(await page.locator('#buildContent .metaBuildTabs,#buildContent [data-meta-mode],#buildContent .buildRoleTabs').count()===0,'custom activity or role mapping controls must not render');
+
+let checked=0;
+for(const [cls,source] of Object.entries(expected)){
+  await page.locator(`#classTabs button[data-class="${cls}"]`).click();
+  await page.waitForFunction(name=>document.querySelector('#classTabs button.active')?.dataset.class===name,cls);
+  const cards=page.locator('#buildContent .sourceBuildCard');
+  const names=(await cards.locator('h3').allTextContents()).map(value=>value.trim());
+  assert(JSON.stringify(names)===JSON.stringify(source.builds),`${cls}: displayed source presets differ: ${names.join(' | ')}`);
+  assert(await page.locator('#buildContent a.buildSourceLink').getAttribute('href')===source.url,`${cls}: Prydwen guide link is wrong`);
+  assert(await page.locator('#buildContent .sourceBuildNote').count()===1,`${cls}: source-use note missing`);
+  for(let index=0;index<await cards.count();index++){
+    const groups=cards.nth(index).locator('.skillGroup');
+    assert(await groups.count()===2,`${cls} ${names[index]}: expected Techniques and Charms groups`);
+    for(let group=0;group<2;group++){
+      const current=groups.nth(group);
+      const label=(await current.locator(':scope > span').innerText()).trim();
+      const items=await current.locator(':scope > div > b').count();
+      assert(/^(techniques|charms)$/.test(label.toLowerCase()),`${cls} ${names[index]}: unexpected group label ${label}`);
+      assert(items===4,`${cls} ${names[index]} ${label}: expected four source entries, found ${items}`);
+    }
+    assert(!/\bT5\b|2\s*[xv]\s*2/i.test(await cards.nth(index).innerText()),`${cls} ${names[index]}: out-of-scope tier or nonexistent 2v2 content`);
+    checked++;
   }
 }
 
-const activities=['Dungeons','Crucible','Conquest','Mirage','Arena','Tournament'];
-let checked=0;
-for(const cls of ['Conqueror','Guardian','Destroyer','Dominator']){
-  await waitBuild(cls);
-  const modes=await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').evaluateAll(xs=>xs.map(x=>x.dataset.metaMode));
-  assert(JSON.stringify(modes)===JSON.stringify(activities),`${cls}: activity tabs wrong: ${modes.join(' | ')}`);
-  assert(await page.locator('#buildContent .buildCard[data-role^="Fantasia Ascent"]').count()===0,`${cls}: Fantasia Ascent build data still rendered`);
-  const roles=cls==='Guardian'?['tank','dps']:(cls==='Dominator'?['dps','heals']:[null]);
-  for(const role of roles){
-    if(role){
-      const attr=cls==='Guardian'?'guardian':'dominator';
-      await page.locator(`#buildContent button[data-${attr}-mode="${role}"]`).click();
-      await page.waitForTimeout(60);
-    }
-    for(const mode of activities){
-      await page.locator(`#buildContent .metaBuildTabs [data-meta-mode="${mode}"]`).click();
-      await page.waitForTimeout(60);
-      await assertVisibleBuild(`${cls}${role?` ${role}`:''} ${mode}`);
-      const visibleText=await page.locator('#buildContent .buildGrid .buildCard:visible').innerText();
-      assert(/\bT4\b/.test(visibleText)&&! /\bT5\b/.test(visibleText),`${cls}${role?` ${role}`:''} ${mode}: live build is not clearly T4`);
-      checked++;
-    }
-  }
-}
-assert(checked===36,`expected 36 current T4 activity/role variants, checked ${checked}`);
-assert(pageErrors.length===0,`runtime errors: ${pageErrors.join('\n')}`);
-console.log('build swap smoke passed: all 36 current T4 activity/role variants use valid equipped swaps');
+assert(errors.length===0,`browser errors: ${errors.join('\n')}`);
+console.log(`source-build smoke passed: ${checked} Prydwen T4 preset cards, exact source names and links, four Techniques/Charms each, no invented activity mappings`);
 await browser.close();

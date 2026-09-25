@@ -52,15 +52,12 @@ async function capture(root,width,theme){
   // as the original approved viewports. Keep the intermediate width inexpensive.
   if(width!==650){
    if(section==='builds'){
-    await page.waitForFunction(()=>!!document.querySelector('#buildContent .buildQuickStats'));
+    await page.waitForFunction(()=>!!document.querySelector('#classTabs button[data-class]'));
     for(const cls of ['Destroyer','Dominator','Conqueror','Guardian']){
      await page.locator(`#classTabs [data-class="${cls}"]`).click();
-     const roles=cls==='Dominator'?['dps','heals']:cls==='Guardian'?['tank','dps']:[null];
-     for(const role of roles){
-      if(role)await page.locator(`[data-${cls.toLowerCase()}-mode="${role}"]`).first().click();
-      await page.waitForTimeout(120);
-      shots[`build-${cls}-${role||'default'}`]=await page.locator('#buildsSection').screenshot();
-     }
+     await page.waitForFunction(name=>document.querySelector('#classTabs button.active')?.dataset.class===name,cls);
+     await page.waitForTimeout(120);
+     shots[`build-${cls}`]=await page.locator('#buildsSection').screenshot();
     }
    }
    if(section==='companions'){

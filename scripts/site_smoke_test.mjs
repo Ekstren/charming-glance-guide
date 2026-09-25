@@ -18,11 +18,11 @@ const waitBuild = async cls => {
   await page.waitForFunction(name => {
     const host=document.getElementById('buildContent');
     const active=document.querySelector('#classTabs button.active')?.dataset.class;
-    return active===name && !!host?.querySelector('.buildQuickStats') && !!host?.querySelector(':scope > .priorityPair');
+    return active===name && !!host?.querySelector('.sourceBuildCollection') && !!host?.querySelector('.sourceBuildCard');
   }, cls, {timeout:3000});
   await page.waitForTimeout(80);
 };
-const buildTitles = async () => page.locator('#buildContent .buildGrid .buildCard:visible h3').allTextContents();
+const buildTitles = async () => page.locator('#buildContent .sourceBuildCard h3').allTextContents();
 const normalize = s => String(s||'').toLowerCase().replace(/[’']/g,"'").replace(/\s+/g,' ').trim();
 
 const filterCount = await page.locator('#timelineFilters button').count();
@@ -37,115 +37,25 @@ assert(await navButtons.count() === 5, 'top nav does not contain five direct sec
 const widths = await navButtons.evaluateAll(btns => btns.map(b => b.getBoundingClientRect().width));
 assert(Math.max(...widths)-Math.min(...widths) < 2, `top nav buttons are not equal width: ${widths.join(', ')}`);
 
-// The maintained Builds presentation is deliberately rich: per-slot stat priorities,
-// full substat priority, Techniques on the LEFT, Charms on the RIGHT, activity-specific
-// loadouts, and Main+two-Alt Fantomon cards. Lock all of that in so it cannot silently
-// regress to the older stacked/generic build template again.
 await page.locator('.sectionSwitch button[data-section="builds"]').click();
 await page.waitForTimeout(60);
 assert(!(await page.locator('#buildsSection').evaluate(el => el.hidden)), 'Builds tab did not reveal #buildsSection');
-assert(await page.locator('#classTabs button[data-class]').count() === 4, 'S2 build class tabs were not rendered');
+assert(await page.locator('#classTabs button[data-class]').count() === 4, 'current T4 class tabs were not rendered');
+assert((await page.locator('#buildContent .sourceBuildNote').innerText()).includes('T4'), 'Builds page does not identify the current tier');
 
-for (const cls of ['Conqueror','Guardian','Destroyer']) {
+const buildSources = {
+  Destroyer: 'build-guide-destroyer',
+  Dominator: 'build-guide-dominator',
+  Conqueror: 'build-guide-conqueror',
+  Guardian: 'build-guide-guardian'
+};
+for (const [cls, source] of Object.entries(buildSources)) {
   await waitBuild(cls);
-  assert(await page.locator('#buildContent .quickGearRow').count() === 5, `${cls} does not show five slot-specific stat priorities`);
-  const substats=await page.locator('#buildContent .quickSubstats').innerText();
-  assert(/substats/i.test(substats) && substats.replace(/substats/i,'').trim().length>8, `${cls} substat priority is missing`);
-
-  const pair=page.locator('#buildContent > .priorityPair').first();
-  assert(await pair.locator(':scope > .priorityPanel').count()===2, `${cls} does not have a two-column Technique/Charm recommendation pair`);
-  const panelBoxes=await pair.locator(':scope > .priorityPanel').evaluateAll(xs=>xs.map(x=>{const r=x.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width};}));
-  assert(panelBoxes[0].x < panelBoxes[1].x, `${cls} desktop investment panels are not Technique-left / Charm-right`);
-  const panelKinds=await pair.locator('.priorityIntro span').allTextContents();
-  assert(/technique/i.test(panelKinds[0]||''), `${cls} left investment panel is not Techniques: ${panelKinds.join(' | ')}`);
-  assert(/charm/i.test(panelKinds[1]||''), `${cls} right investment panel is not Charms: ${panelKinds.join(' | ')}`);
-
-  const visibleCards=page.locator('#buildContent .buildGrid .buildCard:visible');
-  assert(await visibleCards.count()===1, `${cls} should show exactly one activity build at a time`);
-  assert(await visibleCards.locator('.fantomonPair').count()===1, `${cls} visible build is missing its Fantomon choices`);
-  const badFanto=await visibleCards.locator('.fantomonPair').evaluateAll(xs=>xs.filter(x=>x.querySelectorAll('.fantomonPick').length!==3).length);
-  assert(badFanto===0, `${cls} visible build does not have exactly Main + Alt + F2P Fantomons`);
-  const fantoLabels=await visibleCards.locator('.fantomonPick small').allTextContents();
-  assert(fantoLabels.length===3 && /^main$/i.test(fantoLabels[0]) && /^alt$/i.test(fantoLabels[1]) && /^alt$/i.test(fantoLabels[2]), `${cls} Fantomon labels should be Main / Alt / Alt: ${fantoLabels.join(' | ')}`);
-  const thirdAltName=await visibleCards.locator('.fantomonPick').nth(2).locator('b').innerText();
-  assert(!['Nyxarchon','Aegiswing'].includes(thirdAltName.trim()), `${cls} third Alt incorrectly uses shop Fantomon ${thirdAltName}`);
-  const cardCols=await visibleCards.evaluate(el=>{const left=el.querySelector('.buildLoadoutColumn')?.getBoundingClientRect();const right=el.querySelector('.fantomonPair')?.getBoundingClientRect();return left&&right?{lx:left.x,ly:left.y,rx:right.x,ry:right.y}:null;});
-  assert(cardCols && cardCols.rx>cardCols.lx+20 && Math.abs(cardCols.ry-cardCols.ly)<30, `${cls} desktop loadout/Fantomon columns are not side-by-side`);
-  const fantoLayout=await visibleCards.locator('.fantomonRankList').evaluate(el=>({cols:getComputedStyle(el).gridTemplateColumns,items:[...el.querySelectorAll('.fantomonPick')].map(x=>{const r=x.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width};})}));
-  assert(fantoLayout.items.length===3, `${cls} wide desktop Fantomon list lost a choice`);
-  assert(fantoLayout.cols.split(' ').length===2, `${cls} wide desktop Fantomon list is not two columns: ${fantoLayout.cols}`);
-  assert(Math.abs(fantoLayout.items[1].y-fantoLayout.items[2].y)<3 && fantoLayout.items[2].x>fantoLayout.items[1].x, `${cls} Alt/F2P Fantomons are not side-by-side`);
-  assert(fantoLayout.items[0].w>fantoLayout.items[1].w*1.8, `${cls} Main Fantomon does not span both columns`);
-
-  // Recommendations must come from Techniques/Charms equipped in at least one
-  // available loadout for the class, not from unrelated wishlist/swap-only pieces.
-  const equipped=await page.locator('#buildContent .buildGrid .buildCard').evaluateAll(cards=>{
-    const out={techniques:[],charms:[]};
-    cards.forEach(card=>card.querySelectorAll('.skillGroup').forEach(group=>{
-      const label=(group.querySelector(':scope > span')?.textContent||'').toLowerCase();
-      const vals=[...group.querySelectorAll(':scope > div > b')].map(x=>x.textContent.trim());
-      if(label.includes('technique')) out.techniques.push(...vals);
-      if(label.includes('charm')) out.charms.push(...vals);
-    }));
-    return out;
-  });
-  const priorities=await pair.locator(':scope > .priorityPanel').evaluateAll(panels=>panels.map(p=>[...p.querySelectorAll('.priorityList strong')].map(x=>x.textContent.trim())));
-  for (const [index,key] of [[0,'techniques'],[1,'charms']]) {
-    const used=new Set(equipped[key].map(normalize));
-    for (const recommendation of priorities[index]) {
-      const pieces=recommendation.split('/').map(x=>normalize(x)).filter(Boolean);
-      for (const piece of pieces) assert(used.has(piece), `${cls} ${key} recommendation "${piece}" is not actually equipped in a displayed loadout`);
-    }
-  }
+  assert(await page.locator('#buildContent .sourceBuildCard').count() > 0, cls + ' has no source build cards');
+  assert((await page.locator('#buildContent .buildSourceLink').getAttribute('href')).endsWith(source), cls + ' source link is incorrect');
+  assert(await page.locator('#buildContent .metaBuildTabs,#buildContent .dominatorModeTabs,#buildContent [data-guardian-mode]').count() === 0, cls + ' still has custom activity or role selectors');
+  assert((await buildTitles()).every(title => !/2\s*[xv]\s*2/i.test(title)), cls + ' contains a nonexistent 2v2 build');
 }
-
-// Builds expose separate tabs for each requested activity, with Tournament limited to 4v4.
-await waitBuild('Conqueror');
-const scenarioOrder=await page.locator('#buildContent .metaBuildTabs [data-meta-mode]').evaluateAll(xs=>xs.map(x=>x.dataset.metaMode));
-assert(JSON.stringify(scenarioOrder)===JSON.stringify(['Dungeons','Crucible','Conquest','Mirage','Arena','Tournament']), `activity order wrong: ${scenarioOrder.join(' | ')}`);
-assert(await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Fantasia Ascent"]').count()===0, 'Fantasia Ascent still appears in Builds');
-assert(await page.locator('#buildContent .buildCard[data-role^="Fantasia Ascent"]').count()===0, 'Fantasia Ascent build cards still render');
-
-// Tournament is a single 4v4 activity and no nonexistent 2v2 controls remain.
-await waitBuild('Conqueror');
-await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Tournament"]').click();
-await page.waitForTimeout(80);
-let tournamentTitle=(await buildTitles())[0]||'';
-assert(/^Tournament/i.test(tournamentTitle), `Tournament selector did not show the 4v4 build: ${tournamentTitle}`);
-assert(await page.locator('#buildContent .metaBuildTabs button').evaluateAll(xs=>xs.every(x=>!/(2\s*[xv]\s*2)/i.test(x.textContent))), 'a 2v2 option is still shown');
-assert(await page.locator('#buildContent .buildCard:visible').evaluate(el=>!/2\s*[xv]\s*2/i.test(el.innerText)), 'a 2v2 build is still shown');
-
-// Restore the existing Dominator smoke assumptions.
-await waitBuild('Dominator');
-await page.locator('#buildContent .metaBuildTabs [data-meta-mode="Dungeons"]').click();
-await page.locator('#buildContent button[data-dominator-mode="dps"]').click();
-await page.waitForTimeout(80);
-
-// Dominator keeps its DPS / Heals switch, role-specific slot stats, and a separate
-// Technique-left / Charm-right recommendation pair for each role. The activity tabs
-// still show one matching build at a time.
-assert(await page.locator('#buildContent .dominatorModeTabs button').count() === 2, 'Dominator DPS/Heals tabs missing');
-let titles=await buildTitles();
-assert(titles.length===1 && /^Dungeons/i.test(titles[0]||''), `Dominator DPS Dungeon build not visible: ${titles.join(' | ')}`);
-let domPair=page.locator('#buildContent > .priorityPair[data-dominator-role="dps"]:visible');
-assert(await domPair.count()===1 && await domPair.locator(':scope > .priorityPanel').count()===2, 'Dominator DPS Technique/Charm pair missing');
-let domKinds=await domPair.locator('.priorityIntro span').allTextContents();
-assert(/technique/i.test(domKinds[0]||'') && /charm/i.test(domKinds[1]||''), `Dominator DPS pair order wrong: ${domKinds.join(' | ')}`);
-const dpsStatText=await page.locator('#buildContent .buildQuickStats').innerText();
-assert(/Dark DPS|Effect Hit Rate/i.test(dpsStatText), 'Dominator DPS stat profile missing');
-
-await page.locator('#buildContent button[data-dominator-mode="heals"]').click();
-await page.waitForFunction(()=>[...document.querySelectorAll('#buildContent .buildGrid .buildCard')].filter(x=>!x.hidden&&getComputedStyle(x).display!=='none').some(x=>x.dataset.buildRole==='heals'),null,{timeout:3000});
-await page.waitForTimeout(80);
-titles=await buildTitles();
-assert(titles.length===1 && /^Dungeons/i.test(titles[0]||''), `Dominator healer Dungeon build not visible: ${titles.join(' | ')}`);
-domPair=page.locator('#buildContent > .priorityPair[data-dominator-role="heals"]:visible');
-assert(await domPair.count()===1 && await domPair.locator(':scope > .priorityPanel').count()===2, 'Dominator Heals Technique/Charm pair missing');
-domKinds=await domPair.locator('.priorityIntro span').allTextContents();
-assert(/technique/i.test(domKinds[0]||'') && /charm/i.test(domKinds[1]||''), `Dominator Heals pair order wrong: ${domKinds.join(' | ')}`);
-const healStatText=await page.locator('#buildContent .buildQuickStats').innerText();
-assert(/Healing\/support|Healing Boost/i.test(healStatText), 'Dominator Heals stat profile did not switch');
-
 // Other top-level navigation must remain usable. Record how long the calculator tab
 // takes to yield the event loop back; this catches long-season reset regressions.
 await page.locator('.sectionSwitch button[data-section="companions"]').click();
@@ -195,22 +105,20 @@ await page.locator('.sectionSwitch button[data-section="timeline"]').click({time
 await page.waitForTimeout(30);
 assert(!(await page.locator('#timelineSection').evaluate(el => el.hidden)), 'Timeline tab did not reveal #timelineSection after calculator');
 
-// Phone regression check: rich desktop data must stack rather than overflow.
 await page.setViewportSize({width:390,height:844});
 await page.locator('.sectionSwitch button[data-section="builds"]').click();
-await waitBuild('Conqueror');
-const mobilePair=page.locator('#buildContent > .priorityPair').first();
-const mobileBoxes=await mobilePair.locator(':scope > .priorityPanel').evaluateAll(xs=>xs.map(x=>{const r=x.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width};}));
-assert(mobileBoxes[1].y > mobileBoxes[0].y, 'mobile Technique/Charm panels did not stack vertically');
-assert(Math.abs(mobileBoxes[1].x-mobileBoxes[0].x)<3, 'mobile Technique/Charm panels do not align after stacking');
-const quickCols=await page.locator('#buildContent .quickGearGrid').evaluate(el=>getComputedStyle(el).gridTemplateColumns);
-assert(!quickCols.includes(' '), `mobile stat priorities did not collapse to one column: ${quickCols}`);
-const mobileBuild=page.locator('#buildContent .buildGrid .buildCard:visible').first();
-const mobileBuildCols=await mobileBuild.evaluate(el=>{const left=el.querySelector('.buildLoadoutColumn')?.getBoundingClientRect();const right=el.querySelector('.fantomonPair')?.getBoundingClientRect();return left&&right?{lx:left.x,ly:left.y,rx:right.x,ry:right.y}:null;});
-assert(mobileBuildCols && mobileBuildCols.ry>mobileBuildCols.ly && Math.abs(mobileBuildCols.rx-mobileBuildCols.lx)<5, 'mobile Fantomon column did not stack below loadout column');
+for (const cls of Object.keys(buildSources)) {
+  await waitBuild(cls);
+  const badCards = await page.locator('#buildContent .sourceBuildCard,#buildContent .sourceBuildCard h3,#buildContent .sourceBuildCard .skillGroup b').evaluateAll(elements=>elements.filter(el=>{
+    const r=el.getBoundingClientRect();
+    return r.height&&(r.left<0||r.right>innerWidth+1||el.scrollWidth>el.clientWidth+2);
+  }).map(el=>el.textContent.trim().slice(0,60)));
+  assert(badCards.length===0, 'mobile ' + cls + ' cards overflow or clip: ' + badCards.join(' | '));
+}
+const mobileNavTargets=await page.locator('#classTabs button[data-class]').evaluateAll(xs=>xs.map(x=>x.getBoundingClientRect().height));
+assert(mobileNavTargets.every(height=>height>=40), 'mobile class tabs have undersized touch targets: ' + mobileNavTargets.join(','));
 const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
-assert(overflow<=3, `mobile page has ${overflow}px horizontal overflow`);
-
+assert(overflow<=3, 'mobile page has ' + overflow + 'px horizontal overflow');
 // Calculator jumps scroll/focus without leaving fragments or extra history entries.
 await page.goto(url+'?navigation-check=1#calcResults');
 assert(await page.evaluate(()=>location.hash===''&&location.search==='?navigation-check=1'), 'stale calculator fragment was not cleaned');
@@ -227,5 +135,5 @@ if(pageErrors.length){
   throw new Error('page runtime errors:\n' + pageErrors.join('\n---\n'));
 }
 
-console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, rich S2 Builds + Fantasia Ascent + slot stats + Technique/Charm pair + Main/two-Alt Fantomons + Dominator roles/PvP refs + mobile stack, calculator yielded in ${calcYieldMs}ms`);
+console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, source-linked T4 Builds + mobile layout, calculator yielded in ${calcYieldMs}ms`);
 await browser.close();

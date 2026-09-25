@@ -302,6 +302,16 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
   color: var(--reading-link) !important;
 }
 
+/* Source loadouts keep each Technique/Charm bar easy to scan without excess card height. */
+#buildsSection .sourceBuildGrid { gap: 8px !important; }
+#buildsSection .sourceBuildCard { padding: 12px !important; }
+#buildsSection .sourceBuildCard .skillGroup { margin-top: 9px !important; }
+#buildsSection .sourceBuildCard .skillGroup > div { gap: 4px; }
+#buildsSection .sourceBuildCard .skillGroup b { font-size: 12px !important; padding: 5px 7px !important; }
+#buildsSection .sourceBuildNote { margin: 8px 0; color: var(--reading-muted); font-size: 13px; line-height: 1.5; }
+#buildsSection .sourceBuildCard h3 { overflow-wrap: anywhere; }
+#buildsSection .sourceBuildCard .skillGroup b { overflow-wrap: anywhere; }
+
 /* Keep category tints, with darker text on light surfaces. */
 #timelineSection .dateBlock > span { font-size: 11px; color: var(--reading-link); }
 :root:not([data-theme=dark]) #timelineSection :is(.category-event,.category-class-advancement,.category-feature) { color: #665079 !important; }
