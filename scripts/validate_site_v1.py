@@ -8,9 +8,9 @@ Checks, in order:
      environment — CI always has Node and this check is mandatory there).
   3. Every assets/*.css file has balanced braces (outside strings/comments).
   4. data/*.json files parse as JSON.
-  5. Cross-file hook contract: window.__applyBuild*Now hooks called by
-     src/builds.mjs are each defined by exactly one maintained assets/*.js source
-     file; generated bundles are excluded from the definition count.
+  5. T4 source-build renderer contract: src/builds.mjs exports the section
+     initializer and renders the four current classes from linked source guides;
+     its generated bundle contains no removed build augmentation hooks.
 
 Exit code 0 = all checks pass; nonzero = at least one failure (details printed).
 Run: python scripts/validate_site_v1.py
@@ -107,22 +107,19 @@ def main() -> int:
             print(f"       JSON error in {f.name}: {exc}")
         check(ok, f"JSON parses: {f.relative_to(ROOT)}")
 
-    print("== __applyBuild*Now hook contract ==")
-    runtime = (ROOT / "src/builds.mjs").read_text(encoding="utf-8", errors="replace")
-    called = set(re.findall(r"window\.(__applyBuild\w+Now)\s*===\s*['\"]function['\"]", runtime))
-    check(bool(called), f"builds.mjs calls {len(called)} hooks: {sorted(called)}")
-    # Count maintained source definitions, excluding generated bundles.
-    all_defs: dict[str, int] = {}
-    for f in asset_js:
-        if f.name in {"runtime.js", "builds-section.js", "companions-section.js", "calculator.js"}:
-            continue
-        src = f.read_text(encoding="utf-8", errors="replace")
-        defs = re.findall(r"window\.(__applyBuild\w+Now)\s*=", src)
-        check(len(defs) == len(set(defs)), f"{f.name}: no duplicate hook defs ({defs})")
-        for d in set(defs):
-            all_defs[d] = all_defs.get(d, 0) + 1
-    for hook in sorted(called):
-        check(all_defs.get(hook, 0) == 1, f"hook {hook} defined exactly once (got {all_defs.get(hook, 0)})")
+    print("== T4 source-build renderer contract ==")
+    builds_source = (ROOT / "src/builds.mjs").read_text(encoding="utf-8", errors="replace")
+    expected_classes = ["Destroyer", "Dominator", "Conqueror", "Guardian"]
+    source_classes = re.findall(r"(?m)^  (Destroyer|Dominator|Conqueror|Guardian)\s*:", builds_source)
+    check(source_classes == expected_classes, f"builds.mjs defines current T4 classes in order ({source_classes})")
+    check("export function initialize()" in builds_source, "builds.mjs exports the lazy-section initializer")
+    check("Published T4 presets from Prydwen" in builds_source, "builds.mjs labels the source-published T4 presets")
+    check("sourceBuildCard" in builds_source and "buildSourceLink" in builds_source, "builds.mjs renders linked source cards")
+    check("metaBuildTabs" not in builds_source and "data-meta-mode" not in builds_source, "builds.mjs does not invent activity selector mappings")
+    check("__applyBuild" not in builds_source, "builds.mjs does not depend on removed augmentation hooks")
+    generated_builds = (ROOT / "assets/builds-section.js").read_text(encoding="utf-8", errors="replace")
+    check("sourceBuildCard" in generated_builds and "buildSourceLink" in generated_builds, "generated Builds bundle includes linked source cards")
+    check("__applyBuild" not in generated_builds, "generated Builds bundle contains no removed augmentation hooks")
 
     print()
     if failures:
