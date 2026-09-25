@@ -529,30 +529,30 @@
     const title = String(e && e[3] || "");
     const type = String(e && e[2] || "");
     if (title === "Warlord’s Rest") return "Player Lv.130 · Power: Normal 3.55M, Hard 5M, Nightmare 6M.";
-    if (title === "Server Tournament") return e[0] === "2026-09-12" ? "Weekly within-server tournament. Registration opens Friday Sep. 11; matches take place Saturday Sep. 12. Top teams qualify for the cross-server Nexus tournament." : "Weekly within-server tournament. Registration opens Friday; matches take place Saturday. Top teams qualify for the cross-server Nexus tournament.";
-    if (title === "Nexus Tournament · 4v4") return "Every other week, qualifying server teams compete in a cross-server 4v4 bracket. Follow the matches and predict outcomes in game.";
-    if (title === "Aethyris opens") return "Projected Season 3 start: Aethyris and Tier 5 progression. The Nexus tournament pool is expected to expand from four servers to eight.";
-    if (title === "Aethyris area-unlock stockpile") return "Stockpile: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, 2 “cloud keys,” and 5 hammers. The last two names follow QY labels; Global names are unverified.";
-    if (title === "Astral Odyssey") return "Aethyris season map.";
-    if (title === "Isla + Astrid") return "New Season 3 companions for Aethyris.";
-    if (title === "Abyssal Bastion") return "Power by difficulty: Normal 20M · Hard 26M · Nightmare 30M · Purgatory 46M.";
+    if (title === "Server Tournament") return "Weekly: register Friday and compete Saturday; top teams qualify for Nexus.";
+    if (title === "Nexus Tournament · 4v4") return "Every other week, top server teams compete in cross-server 4v4. Brackets and predictions are in game.";
+    if (title === "Aethyris opens") return "Projected Season 3: Aethyris and Tier 5. The Nexus pool may grow from four servers to eight.";
+    if (title === "Aethyris area-unlock stockpile") return "Aethyris unlock stock: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, 2 “cloud keys,” 5 hammers. QY names unverified.";
+    if (title === "Astral Odyssey") return "Aethyris’s Season 3 map.";
+    if (title === "Isla + Astrid") return "Season 3 companions arriving with Aethyris: Isla and Astrid.";
+    if (title === "Abyssal Bastion") return "Power: Normal 20M · Hard 26M · Nightmare 30M · Purgatory 46M.";
     if (title === "Aethyris Relic II") return "Second relic banner in Aethyris.";
-    if (title === "Courtyard of Purification") return "Power by difficulty: Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M.";
-    if (title === "Temple of Order") return "Power by difficulty: Normal 55M · Hard 65M · Nightmare 82M · Purgatory 115M.";
+    if (title === "Courtyard of Purification") return "Power: Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M.";
+    if (title === "Temple of Order") return "Power: Normal 55M · Hard 65M · Nightmare 82M · Purgatory 115M.";
     if (title === "Aethyris Relic III") return "Third relic banner in Aethyris.";
     if (title === "Hapadi Relic II") return "Second relic banner in Hapadi; Global name is unconfirmed.";
     if (title === "Hapadi Relic III") return "Third relic banner in Hapadi; Global name is unconfirmed.";
-    if (title === "Solar Spire") return "Power by difficulty: Normal 84.5M · Hard 100M · Nightmare 120M · Purgatory 180M.";
-    if (title === "Sovereign’s Nest") return "Power by difficulty: Normal 125M · Hard 145M · Nightmare 180M · Purgatory 250M · Abyss 350M.";
+    if (title === "Solar Spire") return "Power: Normal 84.5M · Hard 100M · Nightmare 120M · Purgatory 180M.";
+    if (title === "Sovereign’s Nest") return "Power: Normal 125M · Hard 145M · Nightmare 180M · Purgatory 250M · Abyss 350M.";
     if (title === "Hapadi opens") return "Projected Season 4 start in the Hapadi region.";
-    if (title === "Ingenious Clocktower") return "Hapadi Day 1 dungeon · Hard: 27M power.";
-    if (title === "Tier 6 class advancement") return "Tier 6 requirements: Player Lv.172, Class Lv.280, Tier 5 Lv.50, and Hapadi Nine.";
-    if (title === "Hapadi area-unlock stockpile") return "Stockpile: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, and 5 season items. QY label for the final item; Global name is unverified.";
+    if (title === "Ingenious Clocktower") return "Hapadi Day 1 dungeon; Hard mode recommends 27M power.";
+    if (title === "Tier 6 class advancement") return "Player Lv.172 · Class Lv.280 · Tier 5 Lv.50 · Hapadi Nine.";
+    if (title === "Hapadi area-unlock stockpile") return "Hapadi stock: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, 5 season items. Last item’s Global name is unconfirmed.";
     if (title === "Fantomon Resonance unlock") return "Fantomon Resonance unlocks at Player Lv.180 in Hapadi.";
     if (title === "Pirate Galleon") return "Hapadi Day 14 · Power: Normal 35M · Hard 48M · Nightmare 57M · Purgatory 84M.";
-    if (title === "Grotesque Fairground") return "Hapadi Day 15 season map";
+    if (title === "Grotesque Fairground") return "Season map available on Hapadi Day 15.";
     if (title === "Leviathan Submersible") return "Hapadi Day 28 · Power: Normal 62M · Hard 72M · Nightmare 87M · Purgatory 130M.";
-    if (title === "Crystal Spiral Tree") return "Aethyris’s first dungeon, with the Sylvan gear set. Older-server data lists Hard at 9M power.";
+    if (title === "Crystal Spiral Tree") return "Aethyris’s first dungeon; Sylvan gear set. Older-server Hard target: 9M power.";
     if (title === "Gift code · CRYSTAL") {
       const t = Date.parse(String(e && e[8] || ""));
       return `Community-reported rewards: 300 Raw Ore + 1 Stellatie · reported expiry ${Number.isFinite(t) ? localShortDateTimeLabel(t) : "Sep. 15"}.`;
@@ -566,8 +566,8 @@
       return `Community-reported rewards: 2,000 Rolla + 120 Dawnium · official cutoff ${Number.isFinite(t) ? localShortDateTimeLabel(t) : "Sep. 29"}.`;
     }
     if (title === "Official Top-Up Platform events open") return "Official Top-Up Platform campaigns: Cumulative Top-Up Lottery and Daily Top-Up Sign-In.";
-    if (title === "Vegetables Fairy Collab Pt. 2") return "Part 2 rewards include daily sign-in items, Veggie Shop and Veggie Shuffle rewards, Lemon Whale purification, the Cabbage Dog Fantomon, and new Visages.";
-    if (title === "Thunderous Crusade") return "Global overview posted Sep. 23: Zeus Companion event with 62 free Wheel Tickets, a 7-day sign-in, story stages, Conquest Echoes, and daily challenges. Check in game for Charming Glance timing.";
+    if (title === "Vegetables Fairy Collab Pt. 2") return "Part 2 rewards: daily sign-in, Veggie Shop/Shuffle, Lemon Whale purification, Cabbage Dog Fantomon, and Visages.";
+    if (title === "Thunderous Crusade") return "Global preview (Sep. 23): Zeus Companion, 62 free Wheel Tickets, 7-day sign-in, story, Conquest, and daily challenges. Check local dates in game.";
     if (title.startsWith("Oceanic Festival")) return "Global Aug 18–31. Prioritize Beach Shovels; Bingo Draw 2 overlaps on Charming Glance, so Destiny Fruit spending can progress both events.";
     if (title.startsWith("Bingo Draw")) return "Complete daily missions first; about 60–80 Destiny Fruits usually clear the normal board. Save any surplus for a later Bingo run.";
     if (title.startsWith("Lucky Scratch")) return "Use Material Realm tools during Lucky Scratch to earn scratch cards. Save tools during Feneck’s Puzzle week for the next run.";
@@ -583,17 +583,17 @@
       return reward ? `Level 5 reward: ${reward.trim()}. Auroradrasil Energy carries over between phases.` : "Check the Level 5 reward before spending saved Auroradrasil Energy; unused Energy carries over between phases.";
     }
     if (title === "Season 2 final-day prep") return "Historical rollover note: the Bed EXP hold used 34 hours of natural accumulation plus the single 2-hour reset boost, filling the 36-hour Bed capacity.";
-    if (title === "Loong Haven opens") return `Season 2 began ${localShortDateTimeLabel(S1_END)} at the server reset. Tier 4 unlocks at Lv.106; Fantomon Adult materialization requires Lv.108, Numbuville, and a duplicate Mythic Fantomon; Demonbind Tower unlocks at Lv.116.`;
-    if (title === "Gear Refinement & Affix Transfer") return "Mythic or better Season 2 gear can reroll affixes and transfer them to same-type gear. Same-season transfers are free; Season 1 gear cannot transfer affixes into Season 2.";
-    if (title === "Season 2 Day 1 checklist") return "At reset, collect rollover and Astral rewards. Raise your rank before spending Stamina or Material Realm resources; activate reachable statues, then collect banked Bed EXP and use Bed boosts.";
+    if (title === "Loong Haven opens") return `Season 2 began ${localShortDateTimeLabel(S1_END)}. Tier 4: Lv.106; Adult Materialization: Lv.108, Numbuville, duplicate Mythic Fantomon; Demonbind Tower: Lv.116.`;
+    if (title === "Gear Refinement & Affix Transfer") return "Season 2 Mythic+ gear can reroll affixes or transfer them to same-type gear. Season 2 transfers are free; Season 1 affixes cannot carry over.";
+    if (title === "Season 2 Day 1 checklist") return "At reset, claim rollover/Astral rewards. Raise rank before spending Stamina or Material Realm tools; activate statues before Bed boosts.";
     if (title === "Vegetable Fairy Part Two") return "Vegetables Fairy Part 2 event and its limited-time rewards.";
-    if (title === "Demonbind Tower unlock") return "Season 2 gem-harvest tower · unlocks at Player Lv.116.";
-    if (title === "Demonseal Gorge") return "Loong Haven’s first dungeon has Normal and Hard modes. QY lists 2.35M power for Hard; the Global English name may differ.";
-    if (title === "Cloudcrest Temple") return "Power by difficulty: Normal 6.2M · Hard 7.7M · Nightmare 9.8M.";
-    if (title === "Bladeshire") return "Power by difficulty: Normal 10M · Hard 12.5M · Nightmare 15.8M.";
-    if (title === "Celestship") return "Power by difficulty: Normal 16.5M · Hard 20M · Nightmare 24.5M · Purgatory 40M. QY reports an approximately three-week run.";
+    if (title === "Demonbind Tower unlock") return "Season 2 gem-harvest tower · opens at Player Lv.116.";
+    if (title === "Demonseal Gorge") return "Loong Haven’s first dungeon has Normal and Hard modes; QY lists 2.35M power for Hard. Global name may differ.";
+    if (title === "Cloudcrest Temple") return "Power: Normal 6.2M · Hard 7.7M · Nightmare 9.8M.";
+    if (title === "Bladeshire") return "Power: Normal 10M · Hard 12.5M · Nightmare 15.8M.";
+    if (title === "Celestship") return "Power: Normal 16.5M · Hard 20M · Nightmare 24.5M · Purgatory 40M. QY estimates a three-week run.";
     if (title === "Ethereal Oracle") return "Second relic banner in Loong Haven.";
-    if (title === "Eternal Garden") return "Power by difficulty: Normal 12.5M (Player Lv.160) · Hard 15M · Nightmare 18M · Purgatory 28.5M · Lifespring Set.";
+    if (title === "Eternal Garden") return "Power: Normal 12.5M (Player Lv.160) · Hard 15M · Nightmare 18M · Purgatory 28.5M · Lifespring Set.";
     if (title === "Clockwork Fortress") return "Hapadi Day 42 · Power: Normal 91M · Hard 110M · Nightmare 135M · Purgatory 190M.";
     if (title === "Celestial Observatory") return "Hapadi Day 56 · Power: Normal 145M · Hard 175M · Nightmare 210M · Purgatory 305M.";
     if (title === "Titan Hot-Air Balloon") return "Hapadi Day 70 · Power: Normal 220M · Hard 256M · Nightmare 300M · Purgatory 460M.";
@@ -602,9 +602,9 @@
       const level = (text.match(/Player Lv\.(\d+)/) || [])[1];
       return `${text.startsWith("Hapadi Day 14") ? "Hapadi Day 14 · " : ""}Season Power unlocks at Player Lv.${level || "—"}.`;
     }
-    if (title === "Tier 4 class advancement") return "Tier 4 requirements: Player Lv.106, Class Lv.89, Tier 3 Lv.19, and Loong Haven Five.";
-    if (title === "Tier 5 class advancement") return "Tier 5 requirements: Player Lv.136, Class Lv.180, and Tier 4 Lv.40. Class paths: Conqueror → Ravager, Guardian → Templar, Destroyer → Magister, and Dominator → Prophet.";
-    if (title === "Fantomon Adult / Materialization unlock") return "At Player Lv.108, unlock Adult Materialization after reaching Numbuville and obtaining a duplicate Mythic Fantomon.";
+    if (title === "Tier 4 class advancement") return "Requires Player Lv.106 · Class Lv.89 · Tier 3 Lv.19 · Loong Haven Five.";
+    if (title === "Tier 5 class advancement") return "Player Lv.136 · Class Lv.180 · Tier 4 Lv.40. Paths: Conqueror → Ravager, Guardian → Templar, Destroyer → Magister, Dominator → Prophet.";
+    if (title === "Fantomon Adult / Materialization unlock") return "Player Lv.108 · Numbuville · duplicate Mythic Fantomon required for Adult Materialization.";
     let displayText = text;
     if (/^(?:CONFIRMED|UNCONFIRMED|PROJECTED|EXPECTED|STRONGLY SUPPORTED|OFFICIAL GLOBAL NAME)/i.test(displayText)) {
       const colon = displayText.indexOf(":");
