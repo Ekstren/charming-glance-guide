@@ -36,6 +36,13 @@ function treasureHuntReward(phase){
   }
 
 function addRecurringEvents(){
+    // Weekly Server Tournament; Nexus keeps its separate fortnightly schedule.
+    for(let serverDay=53;serverDay<=400;serverDay+=7){
+      const start=isoForServerDay(serverDay);
+      if(!timelineData.some(e=>e[0]===start && e[3]==='Server Tournament')){
+        timelineData.push([start,serverDay,'Event','Server Tournament','Registration opens Friday · tournament Saturday.','event']);
+      }
+    }
     // Grand Treasure Hunt: Phase 1 on server day 8, then weekly.
     for(let phase=1;phase<=57;phase++){
       const serverDay=8+(phase-1)*7;

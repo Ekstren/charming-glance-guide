@@ -452,6 +452,12 @@
     return `Selectable Tier ${tier} class skill shards`;
   }
   function addRecurringEvents() {
+    for (let serverDay = 53; serverDay <= 400; serverDay += 7) {
+      const start = isoForServerDay(serverDay);
+      if (!timelineData.some((e) => e[0] === start && e[3] === "Server Tournament")) {
+        timelineData.push([start, serverDay, "Event", "Server Tournament", "Registration opens Friday · tournament Saturday.", "event"]);
+      }
+    }
     for (let phase = 1; phase <= 57; phase++) {
       const serverDay = 8 + (phase - 1) * 7;
       const start = isoForServerDay(serverDay), end = isoAddDays(start, 7);
