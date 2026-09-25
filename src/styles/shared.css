@@ -303,15 +303,68 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
 }
 
 /* Source loadouts keep each Technique/Charm bar easy to scan without excess card height. */
-#buildsSection .sourceBuildGrid { gap: 8px !important; }
-#buildsSection .sourceBuildCard { padding: 12px !important; }
-#buildsSection .sourceBuildCard .skillGroup { margin-top: 9px !important; }
-#buildsSection .sourceBuildCard .skillGroup > div { gap: 4px; }
-#buildsSection .sourceBuildCard .skillGroup b { font-size: 12px !important; padding: 5px 7px !important; }
+#buildsSection .sourceBuildGrid,#buildsSection .communityBuildGrid { gap: 8px !important; }
+#buildsSection .sourceBuildGrid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+#buildsSection .sourceBuildCard,#buildsSection .communityBuildCard { padding: 12px !important; }
+#buildsSection .sourceBuildCard .skillGroup,#buildsSection .communityBuildCard .skillGroup { margin-top: 9px !important; }
+#buildsSection .sourceBuildCard .skillGroup > div,#buildsSection .communityBuildCard .skillGroup > div { gap: 4px; }
+#buildsSection .sourceBuildCard .skillGroup b,#buildsSection .communityBuildCard .skillGroup b { font-size: 12px !important; padding: 5px 7px !important; }
 #buildsSection .sourceBuildNote { margin: 8px 0; color: var(--reading-muted); font-size: 13px; line-height: 1.5; }
-#buildsSection .sourceBuildCard h3 { overflow-wrap: anywhere; }
-#buildsSection .sourceBuildCard .skillGroup b { overflow-wrap: anywhere; }
+#buildsSection .sourceBuildCard h3,#buildsSection .communityBuildCard h3 { overflow-wrap: anywhere; }
+#buildsSection .sourceBuildCard .skillGroup b,#buildsSection .communityBuildCard .skillGroup b { overflow-wrap: anywhere; }
+#buildsSection #buildContent .buildCaveat {
+  display: grid;
+  gap: 3px;
+  margin: 9px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  color: var(--reading-muted) !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+#buildsSection #buildContent .buildCaveat strong { color: var(--reading-link); font-size: 11px; line-height: 1.4; }
 
+/* Restore class gear, roll and Fantomon guidance beside sourced builds. */
+#buildContent .sourceBuildCollection { display:grid; gap:10px; }
+#buildContent :is(.publishedBuildSource,.otherBuildSource,.buildInfoPanel,.otherSourceNotes) { min-width:0; padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--surface); }
+#buildContent :is(.otherBuildSourceHeader,.buildInfoHeader) { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+#buildContent :is(.otherBuildSourceHeader h3,.buildInfoHeader h3) { margin:0; font-size:15px!important; }
+#buildContent :is(.otherBuildSourceHeader>span,.buildInfoKicker) { color:var(--reading-muted); font-size:12px; line-height:1.4; text-align:right; }
+#buildContent .buildGuideGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; gap:10px; margin-top:2px; }
+#buildContent .gearStatRule { margin:0 0 8px; color:var(--reading-text)!important; font-size:13px!important; }
+#buildContent .gearAdvicePanel .quickGearGrid { grid-template-columns:1fr; gap:5px; }
+#buildContent .gearAdvicePanel :is(.quickGearRow,.quickSubstats) { grid-template-columns:72px minmax(0,1fr); align-items:start; gap:5px 9px; padding:6px 8px; border:1px solid var(--line); border-radius:8px; background:var(--bg); }
+#buildContent .gearAdvicePanel .quickSubstats { margin-top:7px; padding:8px; }
+#buildContent .buildGuideModeTabs { display:inline-flex; flex:0 0 auto; gap:3px; padding:3px; border:1px solid var(--line); border-radius:10px; }
+#buildContent .buildGuideModeTabs button { min-width:54px; min-height:36px; padding:5px 10px; border:0; border-radius:7px; color:var(--reading-muted); background:transparent; font:inherit; font-size:12px; font-weight:650; cursor:pointer; }
+#buildContent .buildGuideModeTabs button.active { background:var(--selected-bg); color:#fff; }
+#buildContent .fantomonSuggestionList { display:grid; gap:7px; }
+#buildContent .fantomonRule { margin:0 0 8px; color:var(--reading-muted)!important; font-size:12px!important; line-height:1.45!important; }
+#buildContent .fantomonSuggestion { display:grid; grid-template-columns:minmax(84px,auto) minmax(0,1fr); gap:2px 10px; padding:8px 9px; border:1px solid var(--line); border-radius:9px; background:var(--bg); }
+#buildContent .fantomonSuggestion>span { grid-row:span 2; align-self:start; color:var(--reading-muted); font-size:11px; font-weight:650; line-height:1.4; }
+#buildContent .fantomonSuggestion>strong { color:var(--reading-text); font-size:13px; line-height:1.4; }
+#buildContent .fantomonSuggestion>p { margin:0; color:var(--reading-muted)!important; font-size:12px!important; line-height:1.45!important; }
+#buildContent :is(.buildPanelSource,.otherSourceCaveat) { margin:8px 0 0; color:var(--reading-muted)!important; font-size:12px!important; line-height:1.5!important; }
+#buildContent a { color:var(--reading-link); text-decoration:underline; text-underline-offset:2px; }
+#buildContent .otherSourceNotes>summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:36px; color:var(--reading-text); font-size:13px; font-weight:650; cursor:pointer; }
+#buildContent .otherSourceNotes>summary small { color:var(--reading-muted); font-size:11px; font-weight:450; text-align:right; }
+#buildContent .otherSourceNoteGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:8px; }
+#buildContent .otherSourceNote { min-width:0; padding:9px; border:1px solid var(--line); border-radius:9px; background:var(--bg); }
+#buildContent .otherSourceNote h4 { margin:0; font-size:13px; }
+#buildContent .otherSourceNote p { margin:5px 0; font-size:12px!important; line-height:1.45!important; }
+@media(max-width:820px) { #buildContent .buildGuideGrid { grid-template-columns:1fr; } }
+@media(max-width:560px) {
+  #buildsSection .sourceBuildGrid { grid-template-columns:1fr!important; }
+  #buildContent :is(.publishedBuildSource,.otherBuildSource,.buildInfoPanel,.otherSourceNotes) { padding:10px; }
+  #buildContent :is(.otherBuildSourceHeader,.buildInfoHeader) { align-items:flex-start; }
+  #buildContent :is(.otherBuildSourceHeader>span,.buildInfoKicker) { font-size:11px; }
+  #buildContent .gearAdvicePanel :is(.quickGearRow,.quickSubstats) { grid-template-columns:64px minmax(0,1fr); }
+  #buildContent .fantomonSuggestion { grid-template-columns:1fr; gap:2px; }
+  #buildContent .fantomonSuggestion>span { grid-row:auto; }
+  #buildContent .otherSourceNoteGrid { grid-template-columns:1fr; }
+  #buildContent .otherSourceNotes>summary { align-items:flex-start; flex-direction:column; justify-content:center; gap:2px; }
+  #buildContent .otherSourceNotes>summary small { text-align:left; }
+}
 /* Keep category tints, with darker text on light surfaces. */
 #timelineSection .dateBlock > span { font-size: 11px; color: var(--reading-link); }
 :root:not([data-theme=dark]) #timelineSection :is(.category-event,.category-class-advancement,.category-feature) { color: #665079 !important; }

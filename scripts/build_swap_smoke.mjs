@@ -39,11 +39,15 @@ let checked=0;
 for(const [cls,source] of Object.entries(expected)){
   await page.locator(`#classTabs button[data-class="${cls}"]`).click();
   await page.waitForFunction(name=>document.querySelector('#classTabs button.active')?.dataset.class===name,cls);
-  const cards=page.locator('#buildContent .sourceBuildCard');
+  const cards=page.locator('#buildContent .publishedBuildSource .sourceBuildCard');
   const names=(await cards.locator('h3').allTextContents()).map(value=>value.trim());
   assert(JSON.stringify(names)===JSON.stringify(source.builds),`${cls}: displayed source presets differ: ${names.join(' | ')}`);
-  assert(await page.locator('#buildContent a.buildSourceLink').getAttribute('href')===source.url,`${cls}: Prydwen guide link is wrong`);
+  assert(await page.locator('#buildContent .publishedBuildSource a.buildSourceLink').getAttribute('href')===source.url,`${cls}: Prydwen guide link is wrong`);
   assert(await page.locator('#buildContent .sourceBuildNote').count()===1,`${cls}: source-use note missing`);
+  assert(await page.locator('#buildContent .gearAdvicePanel .quickGearRow').count()===5,`${cls}: gear priorities missing`);
+  assert(await page.locator('#buildContent .gearAdvicePanel .quickSubstats').count()===1,`${cls}: substat ranking missing`);
+  assert(await page.locator('#buildContent .gearAdvicePanel .rollGuide').count()===1,`${cls}: roll guide missing`);
+  assert(await page.locator('#buildContent .fantomonAdvicePanel .fantomonSuggestion').count()>=2,`${cls}: Fantomon recommendations missing`);
   for(let index=0;index<await cards.count();index++){
     const groups=cards.nth(index).locator('.skillGroup');
     assert(await groups.count()===2,`${cls} ${names[index]}: expected Techniques and Charms groups`);
@@ -57,8 +61,15 @@ for(const [cls,source] of Object.entries(expected)){
     assert(!/\bT5\b|2\s*[xv]\s*2/i.test(await cards.nth(index).innerText()),`${cls} ${names[index]}: out-of-scope tier or nonexistent 2v2 content`);
     checked++;
   }
+  const communityCards=page.locator('#buildContent .communityBuildCard');
+  assert(await communityCards.count()===(cls==='Destroyer'?1:0),`${cls}: only complete community-published presets should render as builds`);
+  if(cls==='Destroyer'){
+    assert((await communityCards.first().locator('h3').innerText()).includes('Wind Tournament'),'Destroyer community 4v4 build missing');
+    assert((await communityCards.first().innerText()).includes('Wind’s Delight'),'Destroyer community build entries missing');
+  }
+  assert(await page.locator('#buildContent .otherSourceNotes').count()===1,`${cls}: additional source notes are missing`);
 }
 
 assert(errors.length===0,`browser errors: ${errors.join('\n')}`);
-console.log(`source-build smoke passed: ${checked} Prydwen T4 preset cards, exact source names and links, four Techniques/Charms each, no invented activity mappings`);
+console.log(`source-build smoke passed: ${checked} Prydwen T4 preset cards, restored gear/substats/rolls/Fantomons, sourced community additions, no invented activity mappings`);
 await browser.close();

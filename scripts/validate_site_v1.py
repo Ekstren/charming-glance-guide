@@ -110,11 +110,14 @@ def main() -> int:
     print("== T4 source-build renderer contract ==")
     builds_source = (ROOT / "src/builds.mjs").read_text(encoding="utf-8", errors="replace")
     expected_classes = ["Destroyer", "Dominator", "Conqueror", "Guardian"]
-    source_classes = re.findall(r"(?m)^  (Destroyer|Dominator|Conqueror|Guardian)\s*:", builds_source)
+    t4_source = builds_source.split("const T4_SOURCE_BUILDS={", 1)[1].split("\n};", 1)[0]
+    source_classes = re.findall(r"(?m)^  (Destroyer|Dominator|Conqueror|Guardian)\s*:", t4_source)
     check(source_classes == expected_classes, f"builds.mjs defines current T4 classes in order ({source_classes})")
     check("export function initialize()" in builds_source, "builds.mjs exports the lazy-section initializer")
-    check("Published T4 presets from Prydwen" in builds_source, "builds.mjs labels the source-published T4 presets")
+    check("Current T4 loadouts from published guides" in builds_source, "builds.mjs labels the source-published T4 presets")
     check("sourceBuildCard" in builds_source and "buildSourceLink" in builds_source, "builds.mjs renders linked source cards")
+    check("gearAdvicePanel" in builds_source and "fantomonAdvicePanel" in builds_source, "builds.mjs retains gear and Fantomon guidance")
+    check("communityBuildCard" in builds_source and "More source notes" in builds_source, "builds.mjs separates community presets from partial source notes")
     check("metaBuildTabs" not in builds_source and "data-meta-mode" not in builds_source, "builds.mjs does not invent activity selector mappings")
     check("__applyBuild" not in builds_source, "builds.mjs does not depend on removed augmentation hooks")
     generated_builds = (ROOT / "assets/builds-section.js").read_text(encoding="utf-8", errors="replace")

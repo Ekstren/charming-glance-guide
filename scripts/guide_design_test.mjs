@@ -42,16 +42,16 @@ try{
       const cards=page.locator('#buildContent .sourceBuildCard');
       await page.waitForFunction(name=>document.querySelector('#classTabs button.active')?.dataset.class===name,cls);
       assert.equal(await cards.count(),cardCounts[cls],`${label} ${cls}: source card count`);
-      assert.equal(await page.locator('#buildContent .buildSourceLink').count(),1,`${label} ${cls}: source link`);
+      assert.equal(await page.locator('#buildContent .publishedBuildSource .buildSourceLink').count(),1,`${label} ${cls}: published guide source link`);
       assert.equal(await page.locator('#buildContent .metaBuildTabs').count(),0,`${label} ${cls}: invented activity selector`);
-      const clipped=await page.locator('#buildContent .sourceBuildCard,#buildContent .sourceBuildCard h3,#buildContent .sourceBuildCard .skillGroup,#buildContent .sourceBuildCard .skillGroup b').evaluateAll(elements=>elements.filter(element=>{
+      const clipped=await page.locator('#buildContent .sourceBuildCard,#buildContent .sourceBuildCard h3,#buildContent .sourceBuildCard .skillGroup,#buildContent .sourceBuildCard .skillGroup b,#buildContent .communityBuildCard,#buildContent .buildInfoPanel,#buildContent .fantomonSuggestion').evaluateAll(elements=>elements.filter(element=>{
         const rect=element.getBoundingClientRect();
         return rect.height&&(rect.left<0||rect.right>innerWidth+1||element.scrollWidth>element.clientWidth+2);
       }).map(element=>element.textContent.trim().slice(0,70)));
       assert.deepEqual(clipped,[],`${label} ${cls}: clipped or overflowing source card content`);
       const targets=await page.locator('#classTabs button[data-class]').evaluateAll(elements=>elements.map(element=>element.getBoundingClientRect().height));
       assert.ok(targets.every(height=>height>=40),`${label} ${cls}: undersized class tab target ${targets}`);
-      await checkContrast(page,'#classTabs button[data-class],#buildContent .skillGroup b,#buildContent .sourceBuildNote,#buildContent .buildSourceLink',`${label} ${cls} Builds text`);
+      await checkContrast(page,'#classTabs button[data-class],#buildContent .skillGroup b,#buildContent .sourceBuildNote,#buildContent .buildSourceLink,#buildContent .fantomonSuggestion > span,#buildContent .fantomonSuggestion > strong',`${label} ${cls} Builds text`);
     }
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
     assert.ok(overflow<=2,`${label}: horizontal page overflow ${overflow}px`);
