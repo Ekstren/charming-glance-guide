@@ -52,7 +52,7 @@ const buildSources = {
 for (const [cls, source] of Object.entries(buildSources)) {
   await waitBuild(cls);
   assert(await page.locator('#buildContent .sourceBuildCard').count() > 0, cls + ' has no source build cards');
-  assert((await page.locator('#buildContent .buildSourceLink').getAttribute('href')).endsWith(source), cls + ' source link is incorrect');
+  assert((await page.locator('#buildContent .publishedBuildSource .buildSourceLink').getAttribute('href')).endsWith(source), cls + ' source link is incorrect');
   assert(await page.locator('#buildContent .metaBuildTabs,#buildContent .dominatorModeTabs,#buildContent [data-guardian-mode]').count() === 0, cls + ' still has custom activity or role selectors');
   assert((await buildTitles()).every(title => !/2\s*[xv]\s*2/i.test(title)), cls + ' contains a nonexistent 2v2 build');
 }
