@@ -530,7 +530,7 @@
     const type = String(e && e[2] || "");
     if (title === "Warlord’s Rest") return "Player Lv.130 · Normal 3.55M · Hard 5M · Nightmare 6M";
     if (title === "Server Tournament") return e[0] === "2026-09-12" ? "Registration opens Friday Sep. 11 · tournament Saturday Sep. 12." : "Registration opens the day before · tournament Saturday.";
-    if (title === "Nexus Tournament · 4v4") return "4v4 Nexus Tournament · Top-4 qualification format; brackets and prediction phases are handled in game.";
+    if (title === "Nexus Tournament · 4v4") return "Cross-server 4v4 PvP bracket for teams qualifying through their server tournament. Follow matches and predict outcomes in game.";
     if (title === "Aethyris opens") return "Season 3 · Aethyris · Tier 5 · Skyrend Cliff, Unbroken Camp and Harmonic Crystal · Nexus grouping expands from 4 servers to an 8-server pool.";
     if (title === "Aethyris area-unlock stockpile") return "Gateway Key ×5 · Magic Drill ×2 · Water Mine ×2 · cloud key ×2 · hammer ×5";
     if (title === "Astral Odyssey") return "Aethyris season map";
