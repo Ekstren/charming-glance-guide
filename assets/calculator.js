@@ -2825,7 +2825,7 @@ var SxsCalculator = (() => {
       const host = __calculatorDeps.$("targetTiming"), dateEl = __calculatorDeps.$("targetReachedDate"), leftEl = __calculatorDeps.$("targetSeasonLeft");
       const targetCharEl = __calculatorDeps.$("targetCharacterAtGoal"), seasonCharEl = __calculatorDeps.$("seasonEndCharacterResult");
       const excessStarsEl = __calculatorDeps.$("seasonEndExcessStars"), excessScoreEl = __calculatorDeps.$("seasonEndExcessScore"), excessNoteEl = __calculatorDeps.$("seasonEndExcessNote");
-      if (!host || !dateEl || !leftEl) return;
+      if (!host || !dateEl || !leftEl) return null;
       const reached = __calculatorDeps.estimateTargetReachMoment(plan, resourceBlocked, requestedDesired, pEnd, cfg);
       host.classList.toggle("isUnreachable", !Number.isFinite(reached));
       if (!Number.isFinite(reached)) {
@@ -2846,7 +2846,7 @@ var SxsCalculator = (() => {
           excessNoteEl.textContent = "";
         }
         __calculatorDeps.hidePostTargetGains();
-        return;
+        return { planStars: null, seasonEndStars: null };
       }
       const now = Date.now();
       const targetP = __calculatorDeps.projectCharacterTo(reached, cfg);
@@ -2879,6 +2879,7 @@ var SxsCalculator = (() => {
         excessNoteEl.hidden = !hasExcess || timeAfterTargetMs <= 0;
       }
       renderPostTargetGains2(reached, plan, pEnd, cfg);
+      return { planStars, seasonEndStars };
     }
     function renderStaminaCurrentPlan2(allocation, added, resources, horizon = "By planned finish") {
       const el = __calculatorDeps.$("staminaCurrentPlan");
@@ -3043,9 +3044,9 @@ var SxsCalculator = (() => {
     }
     let lastAstralRenderKey = "";
     let lastPrimostarRewardRenderKey = "";
-    function renderAstralPact2(totalStars) {
+    function renderAstralPact2(totalStars, projectionLabel = "projected") {
       const stars = Math.max(0, Math.floor(Number(totalStars) || 0));
-      const renderKey = String(stars);
+      const renderKey = `${stars}|${projectionLabel}`;
       if (renderKey === lastAstralRenderKey) return;
       lastAstralRenderKey = renderKey;
       const totals = Object.fromEntries(ASTRAL_ORDER.map((k) => [k, 0]));
@@ -3056,6 +3057,8 @@ var SxsCalculator = (() => {
         unlocked++;
       }
       const box = __calculatorDeps.$("astralRewardTotals");
+      const heading = __calculatorDeps.$("astralBonusReference")?.querySelector("h3");
+      if (heading) heading.textContent = projectionLabel === "season-end" ? "Astral Pact bonuses at season end" : "Projected Astral Pact bonuses";
       if (box) {
         box.innerHTML = ASTRAL_ORDER.map((key) => `<span>${ASTRAL_LABELS[key]}<b>+${fmt(totals[key] || 0)}%</b></span>`).join("");
       }
@@ -3065,19 +3068,20 @@ var SxsCalculator = (() => {
         const s1Unlocked = ASTRAL_PACT_NODES.slice(0, 40).filter(([threshold]) => threshold <= stars).length;
         const seasonText = stars <= 480 ? `${s1Unlocked} of 40 documented S1 nodes unlocked` : `${unlocked} of ${ASTRAL_PACT_NODES.length} documented S1–S2 nodes unlocked`;
         const nextText = next ? ` · next: ${fmt(next[0])} → ${ASTRAL_LABELS[next[1]]} +${next[2]}%` : " · all documented S1–S2 nodes unlocked";
-        count.textContent = `${fmt(stars)} projected total Primostars · ${seasonText}${nextText}.`;
+        const totalLabel = projectionLabel === "season-end" ? "season-end" : "projected";
+        count.textContent = `${fmt(stars)} ${totalLabel} total Primostars · ${seasonText}${nextText}.`;
       }
     }
-    function renderPrimostarRewardReference2(currentTotalStars, projectedTotalStars = currentTotalStars) {
-      const currentStars = Math.max(0, Math.floor(Number(currentTotalStars) || 0));
+    function renderPrimostarRewardReference2(collectedTotalStars, projectedTotalStars = collectedTotalStars, projectionLabel = "projected") {
+      const currentStars = Math.max(0, Math.floor(Number(collectedTotalStars) || 0));
       const projectedStars = Math.max(currentStars, Math.floor(Number(projectedTotalStars) || 0));
-      const rewardRenderKey = `${activeCalcConfig().key}|${currentStars}|${projectedStars}`;
+      const cfg = activeCalcConfig();
+      const rewardRenderKey = `${cfg.key}|${currentStars}|${projectedStars}|${projectionLabel}`;
       if (rewardRenderKey === lastPrimostarRewardRenderKey) return;
       lastPrimostarRewardRenderKey = rewardRenderKey;
       const host = __calculatorDeps.$("primostarRewardSeasons");
       const intro = __calculatorDeps.$("primostarRewardsIntro");
       if (!host) return;
-      const cfg = activeCalcConfig();
       const s1Nodes = ASTRAL_PACT_NODES.slice(0, 40);
       const visibleNodes = cfg.key === "s2" ? ASTRAL_PACT_NODES : s1Nodes;
       const nextIndex = visibleNodes.findIndex(([threshold]) => threshold > projectedStars);
@@ -4699,7 +4703,7 @@ var SxsCalculator = (() => {
       $("milestoneNote").hidden = true;
       $("milestoneNote").textContent = "";
       renderAstralPact(baselineStars);
-      renderPrimostarRewardReference(currentStarsNow, baselineStars);
+      renderPrimostarRewardReference(cfg.key === "s2" ? historical : currentStarsNow, baselineStars, "projected");
       saveState();
       return;
     }
@@ -4731,9 +4735,12 @@ var SxsCalculator = (() => {
     const lockedText = gearLocked ? " Gear is locked at the five current levels." : "";
     const previewText = cfg.key === "s2" && currentCharacter.level < S2_FULL_SEASONAL_PREVIEW_LEVEL ? ` Fantomon planning uses a conservative Lv.${optimizerPlanningLevel(p.upgradeCapLevel ?? p.level, cfg)} availability preview; Gear, Skills and Relic ranks are not Character-level capped.` : cfg.key === "s2" ? " Gear, Skills and Relic ranks are not Character-level capped; recommendations are limited by resources and the supported S2 blessing tables." : "";
     const capText = cfg.key === "s1" ? ` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel ?? p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.` : ` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120.${previewText}`;
-    const achievableRewardStars = resourceBlocked ? baselineStars : planStars;
-    renderAstralPact(achievableRewardStars);
-    renderPrimostarRewardReference(currentStarsNow, achievableRewardStars);
+    const timingProjection = renderTargetTiming(plan, resourceBlocked, requestedDesired, p, cfg);
+    const achievableRewardStars = resourceBlocked ? baselineStars : timingProjection?.seasonEndStars ?? planStars;
+    const rewardProjectionLabel = resourceBlocked ? "projected" : "season-end";
+    const collectedRewardStars = cfg.key === "s2" ? historical : currentStarsNow;
+    renderAstralPact(achievableRewardStars, rewardProjectionLabel);
+    renderPrimostarRewardReference(collectedRewardStars, achievableRewardStars, rewardProjectionLabel);
     if ($("resultEyebrow")) $("resultEyebrow").textContent = resourceBlocked ? "Target plan · resource shortfall" : "Smart Balance goal plan";
     $("currentStars").textContent = fmt(resourceBlocked ? targetStars : planStars);
     $("summaryOptimizedScore").textContent = fmt(plan.score);
@@ -4742,7 +4749,6 @@ var SxsCalculator = (() => {
       $("targetStatus").classList.toggle("notMet", resourceBlocked);
     }
     $("optimizedScore").textContent = resourceBlocked ? `${fmt(plan.score)} / ${fmt(requestedDesired)} score · ${fmt(targetStars)} Primostars target plan` : `${fmt(plan.score)} / ${fmt(requestedDesired)} score · ${fmt(planStars)} Primostars · goal ${fmt(targetStars)} ✓`;
-    renderTargetTiming(plan, resourceBlocked, requestedDesired, p, cfg);
     $("oreCost").textContent = fmt(plan.oreCost);
     $("essenceCost").textContent = fmt(plan.essenceCost);
     $("sandCost").textContent = fmt(plan.sandCost);

@@ -1490,7 +1490,7 @@ async function updateCalculator(){
       $('secondaryCostNote').hidden=true;$('secondaryCostNote').textContent='';
       $('milestoneNote').hidden=true;$('milestoneNote').textContent='';
       renderAstralPact(baselineStars);
-      renderPrimostarRewardReference(currentStarsNow,baselineStars);
+      renderPrimostarRewardReference(cfg.key==='s2'?historical:currentStarsNow,baselineStars,'projected');
       saveState();return;
     }
     $('targetSkills').textContent=formatUpgradeCard(plan.skillLevels||levelsFromAverage(plan.skill,8,100,projectedCaps.skill)); $('targetRelics').textContent=formatUpgradeCard(plan.relicLevels||levelsFromAverage(plan.relic,20,10,projectedCaps.relic),{plus:true}); $('targetFantomons').textContent=formatUpgradeCard(plan.fantoLevels||levelsFromAverage(plan.fanto,4,100,projectedCaps.fanto));
@@ -1513,15 +1513,19 @@ async function updateCalculator(){
       ? ` Fantomon planning uses a conservative Lv.${optimizerPlanningLevel(p.upgradeCapLevel??p.level,cfg)} availability preview; Gear, Skills and Relic ranks are not Character-level capped.`
       : (cfg.key==='s2'?' Gear, Skills and Relic ranks are not Character-level capped; recommendations are limited by resources and the supported S2 blessing tables.':'');
     const capText=cfg.key==='s1'?` S1 safe-upgrade cap uses projected Lv.${p.upgradeCapLevel??p.level} at season reset: Skills ${projectedCaps.skill}, Fantomons ${projectedCaps.fanto} (next 10-level band), Relics +${projectedCaps.relic}; Gear is not Character-level capped.`:` S2 score model: floor Lv.130 / Relics above +13, +45 fixed Primostars, 27 score per Primostar, weights Character 100 / Gear 18 / Skill 7 / Relic 33 / Fantomon 8. Max Realm bracket is Lv.120.${previewText}`;
-    const achievableRewardStars=resourceBlocked?baselineStars:planStars;
-    renderAstralPact(achievableRewardStars);
-    renderPrimostarRewardReference(currentStarsNow,achievableRewardStars);
+    const timingProjection=renderTargetTiming(plan,resourceBlocked,requestedDesired,p,cfg);
+    const achievableRewardStars=resourceBlocked
+      ? baselineStars
+      : (timingProjection?.seasonEndStars??planStars);
+    const rewardProjectionLabel=resourceBlocked?'projected':'season-end';
+    const collectedRewardStars=cfg.key==='s2'?historical:currentStarsNow;
+    renderAstralPact(achievableRewardStars,rewardProjectionLabel);
+    renderPrimostarRewardReference(collectedRewardStars,achievableRewardStars,rewardProjectionLabel);
     if($('resultEyebrow')) $('resultEyebrow').textContent=resourceBlocked?'Target plan · resource shortfall':'Smart Balance goal plan';
     // TARGET_PLAN_HEADER_COMPLETE_V1: reward-reference rendering must never prevent the target-plan score/status from populating.
     $('currentStars').textContent=fmt(resourceBlocked?targetStars:planStars);$('summaryOptimizedScore').textContent=fmt(plan.score);
     if($('targetStatus')){$('targetStatus').textContent=resourceBlocked?'shortfall':'✓';$('targetStatus').classList.toggle('notMet',resourceBlocked);}
     $('optimizedScore').textContent=resourceBlocked?`${fmt(plan.score)} / ${fmt(requestedDesired)} score · ${fmt(targetStars)} Primostars target plan`:`${fmt(plan.score)} / ${fmt(requestedDesired)} score · ${fmt(planStars)} Primostars · goal ${fmt(targetStars)} ✓`;
-    renderTargetTiming(plan,resourceBlocked,requestedDesired,p,cfg);
     $('oreCost').textContent=fmt(plan.oreCost);$('essenceCost').textContent=fmt(plan.essenceCost);$('sandCost').textContent=fmt(plan.sandCost);$('treatCost').textContent=fmt(plan.treatCost);
     const secondary=$('secondaryCostNote');
     const refinedShort=resources.refinedTracked?Math.max(0,(plan.refinedCost||0)-resources.refined):0;

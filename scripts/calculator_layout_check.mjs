@@ -29,7 +29,7 @@ await waitForCalculatorReady(page);
     await page.evaluate(theme=>{
       document.documentElement.dataset.theme=theme;
       const fields={targetStars:1060,historicalStars:253,charLevel:136,charExp:7156002,
-        bedExp:565321,finishEarlyDays:6.5,skillLevel:140.125,relicLevel:14.4,
+        bedExp:565321,finishEarlyDays:14,skillLevel:140.125,relicLevel:14.4,
         fantomonLevel:139,gearLevel:147.2,exactSkillLevels:'1x141,7x140',
         exactRelicLevels:'8x15,12x14',exactFantoLevels:'3x140,1x136',
         exactGearLevels:'2x150,2x145,1x146',oreRate:1184,essenceRate:1387,
@@ -41,6 +41,20 @@ await waitForCalculatorReady(page);
     },theme);
     await page.waitForTimeout(100);
     await page.waitForFunction(()=>window.__sxsCalculatorSettledV1() && !document.getElementById('postTargetGains').hidden);
+    const rewardState=await page.evaluate(()=>({
+      heading:document.querySelector('#astralBonusReference h3')?.textContent,
+      summary:document.getElementById('astralRewardCount')?.textContent.trim(),
+      intro:document.getElementById('primostarRewardsIntro')?.textContent.trim(),
+      reached:[...document.querySelectorAll('.primostarRewardRow.reached .rewardThreshold')].map(el=>el.textContent),
+      projected:[...document.querySelectorAll('.primostarRewardRow.projected .rewardThreshold')].map(el=>el.textContent),
+      next:[...document.querySelectorAll('.primostarRewardRow.next .rewardThreshold')].map(el=>el.textContent)
+    }));
+    assert.equal(rewardState.heading,'Astral Pact bonuses at season end',`${theme} ${width}px: bonus projection horizon`);
+    assert.match(rewardState.summary,/^1,110 season-end total Primostars/,`${theme} ${width}px: season-end bonuses use projected total`);
+    assert.match(rewardState.intro,/^253 current · 1,110 projected/,`${theme} ${width}px: collected carryover is separated from projected rewards`);
+    assert.ok(rewardState.reached.every(value=>Number(value.replaceAll(',',''))<=253),`${theme} ${width}px: only collected tiers are marked reached`);
+    assert.ok(rewardState.projected.includes('1,095'),`${theme} ${width}px: season-end reward is projected until collection`);
+    assert.ok(rewardState.next.includes('1,130'),`${theme} ${width}px: next tier follows season-end projection`);
     assert.equal(await page.locator('.postTargetOptions').getAttribute('open'),null,'optional settings start collapsed');
     if(width<=960){
       await page.locator('.calculatorJumpNav a[href="#calcResults"]').click();

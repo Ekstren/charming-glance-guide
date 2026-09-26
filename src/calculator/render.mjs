@@ -140,7 +140,7 @@ function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activ
     const host=__calculatorDeps.$('targetTiming'),dateEl=__calculatorDeps.$('targetReachedDate'),leftEl=__calculatorDeps.$('targetSeasonLeft');
     const targetCharEl=__calculatorDeps.$('targetCharacterAtGoal'),seasonCharEl=__calculatorDeps.$('seasonEndCharacterResult');
     const excessStarsEl=__calculatorDeps.$('seasonEndExcessStars'),excessScoreEl=__calculatorDeps.$('seasonEndExcessScore'),excessNoteEl=__calculatorDeps.$('seasonEndExcessNote');
-    if(!host||!dateEl||!leftEl) return;
+    if(!host||!dateEl||!leftEl) return null;
     const reached=__calculatorDeps.estimateTargetReachMoment(plan,resourceBlocked,requestedDesired,pEnd,cfg);
     host.classList.toggle('isUnreachable',!Number.isFinite(reached));
     if(!Number.isFinite(reached)){
@@ -152,7 +152,7 @@ function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activ
       if(excessScoreEl){excessScoreEl.hidden=true;excessScoreEl.textContent='';}
       if(excessNoteEl){excessNoteEl.hidden=true;excessNoteEl.textContent='';}
       __calculatorDeps.hidePostTargetGains();
-      return;
+      return {planStars:null,seasonEndStars:null};
     }
     const now=Date.now();
     const targetP=__calculatorDeps.projectCharacterTo(reached,cfg);
@@ -189,6 +189,7 @@ function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activ
       excessNoteEl.hidden=!hasExcess||timeAfterTargetMs<=0;
     }
     renderPostTargetGains(reached,plan,pEnd,cfg);
+    return {planStars,seasonEndStars};
   }
 
 function renderStaminaCurrentPlan(allocation,added,resources,horizon='By planned finish'){
@@ -391,9 +392,9 @@ let lastAstralRenderKey='';
 
 let lastPrimostarRewardRenderKey='';
 
-function renderAstralPact(totalStars){
+function renderAstralPact(totalStars,projectionLabel='projected'){
     const stars=Math.max(0,Math.floor(Number(totalStars)||0));
-    const renderKey=String(stars);
+    const renderKey=`${stars}|${projectionLabel}`;
     if(renderKey===lastAstralRenderKey) return;
     lastAstralRenderKey=renderKey;
     const totals=Object.fromEntries(ASTRAL_ORDER.map(k=>[k,0]));
@@ -404,6 +405,8 @@ function renderAstralPact(totalStars){
       unlocked++;
     }
     const box=__calculatorDeps.$('astralRewardTotals');
+    const heading=__calculatorDeps.$('astralBonusReference')?.querySelector('h3');
+    if(heading) heading.textContent=projectionLabel==='season-end'?'Astral Pact bonuses at season end':'Projected Astral Pact bonuses';
     if(box){
       box.innerHTML=ASTRAL_ORDER.map(key=>`<span>${ASTRAL_LABELS[key]}<b>+${fmt(totals[key]||0)}%</b></span>`).join('');
     }
@@ -413,23 +416,25 @@ function renderAstralPact(totalStars){
       const s1Unlocked=ASTRAL_PACT_NODES.slice(0,40).filter(([threshold])=>threshold<=stars).length;
       const seasonText=stars<=480?`${s1Unlocked} of 40 documented S1 nodes unlocked`:`${unlocked} of ${ASTRAL_PACT_NODES.length} documented S1–S2 nodes unlocked`;
       const nextText=next?` · next: ${fmt(next[0])} → ${ASTRAL_LABELS[next[1]]} +${next[2]}%`:' · all documented S1–S2 nodes unlocked';
-      count.textContent=`${fmt(stars)} projected total Primostars · ${seasonText}${nextText}.`;
+      const totalLabel=projectionLabel==='season-end'?'season-end':'projected';
+      count.textContent=`${fmt(stars)} ${totalLabel} total Primostars · ${seasonText}${nextText}.`;
     }
   }
 
-/* PRIMOSTAR_REWARD_REFERENCE_V2
-     Checkmarks mean actually reached now, never merely targeted/projected.
+/* PRIMOSTAR_REWARD_REFERENCE_V3
+     In S2, "current" means the S1 Primostars already collected at rollover. S2 rewards
+     remain projected until season end, even when today's score has passed their threshold.
      Season 2 rows stay hidden until the live calculator season is actually S2. */
-function renderPrimostarRewardReference(currentTotalStars,projectedTotalStars=currentTotalStars){
-    const currentStars=Math.max(0,Math.floor(Number(currentTotalStars)||0));
+function renderPrimostarRewardReference(collectedTotalStars,projectedTotalStars=collectedTotalStars,projectionLabel='projected'){
+    const currentStars=Math.max(0,Math.floor(Number(collectedTotalStars)||0));
     const projectedStars=Math.max(currentStars,Math.floor(Number(projectedTotalStars)||0));
-    const rewardRenderKey=`${activeCalcConfig().key}|${currentStars}|${projectedStars}`;
+    const cfg=activeCalcConfig();
+    const rewardRenderKey=`${cfg.key}|${currentStars}|${projectedStars}|${projectionLabel}`;
     if(rewardRenderKey===lastPrimostarRewardRenderKey) return;
     lastPrimostarRewardRenderKey=rewardRenderKey;
     const host=__calculatorDeps.$('primostarRewardSeasons');
     const intro=__calculatorDeps.$('primostarRewardsIntro');
     if(!host) return;
-    const cfg=activeCalcConfig();
     const s1Nodes=ASTRAL_PACT_NODES.slice(0,40);
     const visibleNodes=cfg.key==='s2'?ASTRAL_PACT_NODES:s1Nodes;
     // The result card is a season-end projection, so the highlighted "next" reward must
@@ -455,14 +460,14 @@ function renderPrimostarRewardReference(currentTotalStars,projectedTotalStars=cu
     };
     host.innerHTML=groups.map(group=>`<section class="primostarRewardSeason"><h4>${group.title}</h4>${rewardLists(group)}</section>`).join('');
     if(intro){
-      const projectedCount=visibleNodes.filter(([threshold])=>threshold>currentStars&&threshold<=projectedStars).length;
-      if(projectedStars>currentStars){
-        const projectionText=`${fmt(currentStars)} current · ${fmt(projectedStars)} projected`;
-        intro.textContent=nextReward
+        const projectedCount=visibleNodes.filter(([threshold])=>threshold>currentStars&&threshold<=projectedStars).length;
+        if(projectedStars>currentStars){
+          const projectionText=`${fmt(currentStars)} current · ${fmt(projectedStars)} projected`;
+          intro.textContent=nextReward
           ? `${projectionText} · ${fmt(projectedCount)} more reward${projectedCount===1?'':'s'} projected · next after projection at ${fmt(nextReward[0])}: ${ASTRAL_LABELS[nextReward[1]]} +${fmt(nextReward[2])}%.`
           : `${projectionText} · ${fmt(projectedCount)} more reward${projectedCount===1?'':'s'} projected · all currently available Astral Pact rewards covered.`;
-      }else{
-        intro.textContent=nextReward
+        }else{
+          intro.textContent=nextReward
           ? `${fmt(currentStars)} current · next reward at ${fmt(nextReward[0])}: ${ASTRAL_LABELS[nextReward[1]]} +${fmt(nextReward[2])}%.`
           : `${fmt(currentStars)} current · all currently available Astral Pact rewards reached.`;
       }
