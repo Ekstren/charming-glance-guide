@@ -395,7 +395,7 @@ body summary small { color: var(--reading-muted) !important; }
 }
 #buildsSection :is(.sourceBuildCard,.communityBuildCard,.otherBuildSource,.fantomonSuggestion,.quickGearRow,.quickSubstats),
 #companionsSection :is(.companionFocus,.companionLadder>div,.companionGroup),
-#calculatorSection :is(.calcFormCard,.upgradeTargets>span,.suggestedGear>span,.resultStamina,.postTargetGainGrid>div) {
+#calculatorSection :is(.calcFormCard,.optimizerTargets>span,.suggestedGear>span,.resultStamina,.postTargetGains,.postTargetGainGrid>div,.targetTiming>span:not(.targetCharacterCard)) {
   background: var(--ui-subpanel) !important;
 }
 #calculatorSection .calcResults { background: var(--surface) !important; }
