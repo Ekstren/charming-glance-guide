@@ -37,10 +37,21 @@ try{
   await waitForCalculatorReady(page);await page.waitForTimeout(100);await settle();
   assert.equal(await page.locator('#finishEarlyAuto').isChecked(),true,'automatic preference survives reload');
   assert.equal(await page.locator('#finishEarlyDays').inputValue(),high,'saved goal recalculates the same cutoff');
+  await page.locator('[data-s2-target="680"]').click();
+  await page.waitForTimeout(100);await settle();
+  assert.equal(await page.locator('#finishEarlyDays').inputValue(),low,'goal shortcuts also recalculate');
+  await page.locator('#targetStars').fill('1060');
+  await page.locator('#targetStars').dispatchEvent('change');
+  await page.waitForTimeout(100);await settle();
   await page.locator('#finishEarlyAuto').uncheck();
   await page.waitForTimeout(100);await settle();
   assert.equal(await page.locator('#finishEarlyDays').inputValue(),'0');
   assert.equal(await page.locator('#finishEarlyResult').textContent(),'Full season');
+  await page.locator('#finishEarlyAuto').check();
+  await page.waitForFunction(()=>document.getElementById('finishEarlyAuto').hasAttribute('aria-busy'));
+  await page.locator('#finishEarlyAuto').uncheck();
+  await page.waitForTimeout(100);await settle();
+  assert.equal(await page.locator('#finishEarlyDays').inputValue(),'0','unchecking during a search cancels the early cutoff');
   assert.deepEqual(errors,[]);
   console.log('Automatic Finish early passed: goal changes, persistence, and full-season toggle.');
 }finally{await browser.close();}
