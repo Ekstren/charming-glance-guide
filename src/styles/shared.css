@@ -12,13 +12,12 @@
   --selected-bg: #884263;
 }
 :root[data-theme=dark] {
-  --reading-text: #deccd7;
-  --reading-muted: #bda2b5;
-  --reading-link: #f2a0b9;
+  --reading-text: #ded9e9;
+  --reading-muted: #bcb2c8;
+  --reading-link: #f0a9c4;
   --muted: var(--reading-muted);
   --secondary-text: var(--reading-text);
-  --selected-bg: #8c405b;
-  --reading-heading: #edb3c6;
+  --selected-bg: #884263;
 }
 body .topbar {
   width: 100%;
