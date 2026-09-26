@@ -637,3 +637,12 @@
   padding-left: 28px;
   font-size: 12px;
 }
+#calculatorSection #finishEarlyAuto:focus {
+  box-shadow: none !important;
+}
+#calculatorSection #finishEarlyAuto:focus:not(:focus-visible) {
+  outline: none !important;
+}
+#calculatorSection #finishEarlyAuto:focus-visible {
+  outline: 2px solid var(--blue) !important;
+}
