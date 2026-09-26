@@ -101,7 +101,7 @@ export const S2_SCORING_START_DEFAULTS=Object.freeze({
     refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
   });
 
-export const S2_SCORING_START_CHECKS=Object.freeze({finishEarlyAuto:false,finishEarlyWaitLevels:false});
+export const S2_SCORING_START_CHECKS=Object.freeze({finishEarlyAuto:false,finishEarlyWaitLevels:true});
 
 /* S2_ZERO_SCORE_DEFAULTS_V1
      The assumed scoring-start profile sits exactly on every S2 scoring floor. It is a

@@ -346,16 +346,7 @@
   #calculatorSection .currentProgressGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
-  #calculatorSection .seasonPlanningRow {
-    grid-template-columns: minmax(0, 1fr) 230px !important;
-  }
-  #calculatorSection .finishEarlyCard {
-    display: grid !important;
-    grid-template-columns: auto minmax(56px, 1fr) auto auto;
-    gap: 6px !important;
-    padding: 8px;
-    align-items: center;
-  }
+
 }
 @container (min-width: 500px) {
   #calculatorSection .postTargetGainGrid {
@@ -416,14 +407,6 @@
   min-height: 44px !important;
   gap: 8px !important;
   text-align: left;
-}
-@container (min-width: 500px) {
-  #calculatorSection .seasonPlanningRow {
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    align-items: center;
-  }
-  #calculatorSection .seasonDeadline { grid-template-columns: minmax(0, 1fr); }
-  #calculatorSection .seasonDeadline #seasonRemaining { grid-column: 1; grid-row: 3; text-align: left; }
 }
 /* Season timing shares one background; the input is the only filled control. */
 #calculatorSection .seasonPlanningRow > .seasonDeadline,#calculatorSection .seasonPlanningRow > .finishEarlyCard {
@@ -589,8 +572,11 @@
 
 /* Automatic finish timing stays readable beside the season deadline. */
 #calculatorSection .finishEarlyCard {
-  grid-template-columns: auto auto !important;
-  gap: 0 12px !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  gap: 4px 12px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  padding: 8px 10px !important;
   min-height: 0 !important;
   align-items: center;
 }
@@ -612,7 +598,8 @@
   accent-color: var(--accent);
 }
 #calculatorSection #finishEarlyResult {
-  grid-column: 1 / -1;
+  grid-column: 2;
+  grid-row: 1;
   padding-left: 0;
   text-align: right;
   font-size: 12px;
@@ -633,3 +620,8 @@
 #targetTiming.waitForLevels #resultStamina { grid-column: 1 / -1; }
 
 #calculatorSection .finishEarlyToggle:has(input:disabled) { opacity: .45; cursor: default; }
+
+#planTimingTitle { font-size: 12px; }
+#calculatorSection .finishEarlyToggle { grid-row: 2; align-items: flex-start; }
+#calculatorSection .finishEarlyToggle span { display: grid; gap: 3px; white-space: normal; }
+#calculatorSection .finishEarlyToggle small { font-size: 11px; font-weight: 400; line-height: 1.4; }

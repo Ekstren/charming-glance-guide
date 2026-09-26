@@ -185,7 +185,7 @@ var SxsCalculator = (() => {
     exactRelicLevels: "",
     exactFantoLevels: ""
   });
-  var S2_SCORING_START_CHECKS = Object.freeze({ finishEarlyAuto: false, finishEarlyWaitLevels: false });
+  var S2_SCORING_START_CHECKS = Object.freeze({ finishEarlyAuto: false, finishEarlyWaitLevels: true });
   function validateS2ScoringStartDefaults() {
     const d = S2_SCORING_START_DEFAULTS, c = CALC_SEASONS.s2, w = c.weights;
     const gear = Array(5).fill(Number(d.gearLevel) || 0);

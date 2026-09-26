@@ -23,6 +23,13 @@ try{
     document.getElementById('targetStars').dispatchEvent(new Event('change',{bubbles:true}));
   });
   await page.waitForTimeout(100);await settle();
+  assert.equal(await page.locator('#finishEarlyWaitLevels').isChecked(),true,'future levels default on');
+  await page.locator('#finishEarlyAuto').check();
+  await page.waitForTimeout(100);await settle();
+  assert.equal(await page.locator('#finishEarlyWaitLevels').isEnabled(),true);
+  await page.locator('#finishEarlyWaitLevels').uncheck();
+  await page.locator('#finishEarlyAuto').uncheck();
+  await page.waitForTimeout(100);await settle();
   assert.equal(await page.locator('#finishEarlyWaitLevels').isDisabled(),true,'level option requires Finish early');
   assert.ok(Number(await page.locator('#finishEarlyWaitLevels').evaluate(el=>getComputedStyle(el.closest('label')).opacity))<1,'disabled option is visibly dimmed');
   await page.locator('#finishEarlyAuto').check();
@@ -44,6 +51,9 @@ try{
   assert.ok(Number(waitingCutoff)>Number(low),'reserved season-end level score allows upgrades to finish earlier');
   assert.ok(Number((await page.locator('#summaryOptimizedScore').innerText()).replace(/[^0-9]/g,''))>=Number((await page.locator('#desiredScore').innerText()).replace(/[^0-9]/g,'')),'goal remains funded with natural levels');
   await page.locator('.seasonPlanningRow').screenshot({path:'test-results/compact-season-planning.png'});
+  await page.setViewportSize({width:1440,height:1000});
+  await page.locator('.seasonPlanningRow').screenshot({path:'test-results/plan-timing-desktop.png'});
+  await page.setViewportSize({width:390,height:1000});
   await page.locator('#calcResults').screenshot({path:'test-results/wait-levels-results.png'});
   assert.equal(await page.locator('#upgradeFinishTiming').isVisible(),true,'separate upgrade finish date is shown');
   assert.equal(await page.locator('#resultStamina').isVisible(),true,'Stamina occupies the summary card');
@@ -74,6 +84,11 @@ try{
   await page.locator('#finishEarlyAuto').uncheck();
   await page.waitForTimeout(100);await settle();
   assert.equal(await page.locator('#finishEarlyDays').inputValue(),'0','unchecking during a search cancels the early cutoff');
+  await page.locator('#resetCalc').click();
+  await page.waitForTimeout(100);await settle();
+  assert.equal(await page.locator('#finishEarlyWaitLevels').isChecked(),true,'reset restores future levels default');
+  assert.equal(await page.locator('#finishEarlyAuto').isChecked(),false);
+  assert.equal(await page.locator('#finishEarlyWaitLevels').isDisabled(),true);
   assert.deepEqual(errors,[]);
   console.log('Automatic Finish early passed: goal changes, persistence, and full-season toggle.');
 }finally{await browser.close();}
