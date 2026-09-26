@@ -185,7 +185,7 @@ var SxsCalculator = (() => {
     exactRelicLevels: "",
     exactFantoLevels: ""
   });
-  var S2_SCORING_START_CHECKS = Object.freeze({ finishEarlyAuto: false });
+  var S2_SCORING_START_CHECKS = Object.freeze({ finishEarlyAuto: false, finishEarlyWaitLevels: false });
   function validateS2ScoringStartDefaults() {
     const d = S2_SCORING_START_DEFAULTS, c = CALC_SEASONS.s2, w = c.weights;
     const gear = Array(5).fill(Number(d.gearLevel) || 0);
@@ -329,7 +329,7 @@ var SxsCalculator = (() => {
     "exactFantoLevels",
     "exactGearLevels"
   ];
-  var CHECK_IDS = ["finishEarlyAuto"];
+  var CHECK_IDS = ["finishEarlyAuto", "finishEarlyWaitLevels"];
   var defaults = /* @__PURE__ */ Object.create(null);
   var COMPACT_NUMBER_INPUT_IDS = /* @__PURE__ */ new Set([
     "charExp",
@@ -2759,7 +2759,7 @@ var SxsCalculator = (() => {
       if (!carry?.valid || !r) return;
       const added = r.staminaAdded || { ore: 0, essence: 0, sand: 0, rolla: 0 };
       const allocation = r.staminaAllocation || { ore: 0, essence: 0, sand: 0, rolla: 0, unassigned: r.staminaNodes || 0 };
-      renderStaminaCurrentPlan2(allocation, added, r, "To target");
+      renderStaminaCurrentPlan2(allocation, added, r, __calculatorDeps.waitForLevelsEnabled() ? "By upgrade finish" : "To target");
       const oreStam = added.ore ? ` · Stamina +${fmtCompact(added.ore)}` : "";
       const essStam = added.essence ? ` · Stamina +${fmtCompact(added.essence)}` : "";
       const sandStam = added.sand ? ` · Stamina +${fmtCompact(added.sand)}` : "";
@@ -2813,7 +2813,7 @@ var SxsCalculator = (() => {
         sand: carry.sand + gains.sand,
         treat: carry.treat + gains.treat
       };
-      if (__calculatorDeps.$("postTargetWindow")) __calculatorDeps.$("postTargetWindow").textContent = `${compactDurationMs(Math.max(0, end - reached))} of post-target gathering · season-end carry`;
+      if (__calculatorDeps.$("postTargetWindow")) __calculatorDeps.$("postTargetWindow").textContent = `${compactDurationMs(Math.max(0, end - reached))} of ${__calculatorDeps.waitForLevelsEnabled() ? "gathering after upgrades" : "post-target gathering"} · season-end carry`;
       if (__calculatorDeps.$("postTargetOreGain")) __calculatorDeps.$("postTargetOreGain").textContent = fmt(Math.floor(totals.ore));
       if (__calculatorDeps.$("postTargetEssenceGain")) __calculatorDeps.$("postTargetEssenceGain").textContent = fmt(Math.floor(totals.essence));
       if (__calculatorDeps.$("postTargetSandGain")) __calculatorDeps.$("postTargetSandGain").textContent = fmt(Math.floor(totals.sand));
@@ -2827,6 +2827,11 @@ var SxsCalculator = (() => {
       const targetCharEl = __calculatorDeps.$("targetCharacterAtGoal"), seasonCharEl = __calculatorDeps.$("seasonEndCharacterResult");
       const excessStarsEl = __calculatorDeps.$("seasonEndExcessStars"), excessScoreEl = __calculatorDeps.$("seasonEndExcessScore"), excessNoteEl = __calculatorDeps.$("seasonEndExcessNote");
       if (!host || !dateEl || !leftEl) return null;
+      const waiting = __calculatorDeps.waitForLevelsEnabled();
+      const finishCard = __calculatorDeps.$("upgradeFinishTiming");
+      host.classList.toggle("waitForLevels", waiting);
+      if (finishCard) finishCard.hidden = !waiting;
+      if (waiting) __calculatorDeps.$("upgradeFinishDate").textContent = targetMomentLabel(__calculatorDeps.upgradeFinishCutoffMs(cfg));
       const reached = __calculatorDeps.estimateTargetReachMoment(plan, resourceBlocked, requestedDesired, pEnd, cfg);
       host.classList.toggle("isUnreachable", !Number.isFinite(reached));
       if (!Number.isFinite(reached)) {
@@ -2879,7 +2884,7 @@ var SxsCalculator = (() => {
         excessNoteEl.textContent = `( ) = projected extra gained after reaching the target ${timeAfterTarget} before season end`;
         excessNoteEl.hidden = !hasExcess || timeAfterTargetMs <= 0;
       }
-      renderPostTargetGains2(reached, plan, pEnd, cfg);
+      renderPostTargetGains2(waiting ? __calculatorDeps.upgradeFinishCutoffMs(cfg) : reached, plan, pEnd, cfg);
       return { planStars, seasonEndStars };
     }
     function renderStaminaCurrentPlan2(allocation, added, resources, horizon = "By planned finish") {
@@ -4199,6 +4204,7 @@ var SxsCalculator = (() => {
     }
   }
   function renderFinishEarlyResult() {
+    if ($("finishEarlyWaitLevels")) $("finishEarlyWaitLevels").disabled = !$("finishEarlyAuto")?.checked;
     const result = $("finishEarlyResult");
     if (result) result.textContent = $("finishEarlyAuto")?.checked ? finishEarlyDaysValue() > 0 ? `${finishEarlyDaysValue()} days early` : "Full season needed" : "Full season";
   }
@@ -4301,6 +4307,16 @@ var SxsCalculator = (() => {
       }
     }, 0);
   }
+  function waitForLevelsEnabled() {
+    return !!$("finishEarlyAuto")?.checked && !!$("finishEarlyWaitLevels")?.checked;
+  }
+  function planningCharacterProjection(cfg) {
+    const upgradeP = projectCharacterTo(upgradeFinishCutoffMs(cfg), cfg);
+    const p = waitForLevelsEnabled() ? projectCharacter(cfg) : upgradeP;
+    p.upgradeCapLevel = upgradeP.level;
+    p.upgradeCapPct = upgradeP.pct;
+    return p;
+  }
   function finishEarlyNoExtraPossible() {
     const cfg = activeCalcConfig();
     if (snapshotSeason !== cfg.key) return false;
@@ -4308,10 +4324,8 @@ var SxsCalculator = (() => {
       const required = s2RequiredPlannerInputs();
       if (!required.hasBed || !required.hasAllCart) return false;
     }
-    const p = projectCharacterTo(upgradeFinishCutoffMs(cfg), cfg);
+    const p = planningCharacterProjection(cfg);
     if (cfg.key === "s2" && p.level <= cfg.scoreFloor) return false;
-    p.upgradeCapLevel = p.level;
-    p.upgradeCapPct = p.pct;
     const currentCharacter = p.current || characterSnapshot(cfg);
     const currentCaps = categoryInputCapsForCharacter(currentCharacter.level, cfg);
     const gearState = gearStateFromUser(cfg, currentCaps.gear, cfg.key === "s2" ? 130 : 143);
@@ -4509,14 +4523,11 @@ var SxsCalculator = (() => {
     }
     if (!p) p = projectCharacter(cfg);
     const seasonEndP = p;
-    p = projectCharacterTo(upgradeFinishCutoffMs(cfg), cfg);
+    p = planningCharacterProjection(cfg);
     if (cfg.key === "s2" && p.level <= cfg.scoreFloor) {
       clearS2ProjectedAtFloor(cfg, p);
       return;
     }
-    const upgradeP = p;
-    p.upgradeCapLevel = upgradeP.level;
-    p.upgradeCapPct = upgradeP.pct;
     const currentCharacter = p.current || characterSnapshot(cfg);
     const projectedResourceTotals = projectedResources(p.hours, cfg);
     renderRealmToolProjection(cfg);
@@ -5004,7 +5015,7 @@ var SxsCalculator = (() => {
   }
   function setupCalculator() {
     document.getElementById("calculatorSection")?.addEventListener("focusin", (e) => {
-      if (e.target?.matches?.("input") && e.target.id !== "targetStars" && e.target.id !== "finishEarlyDays" && e.target.id !== "finishEarlyAuto") {
+      if (e.target?.matches?.("input") && e.target.id !== "targetStars" && e.target.id !== "finishEarlyDays" && e.target.id !== "finishEarlyAuto" && e.target.id !== "finishEarlyWaitLevels") {
         rollSnapshotForward(Date.now(), true);
       }
     });
@@ -5043,7 +5054,7 @@ var SxsCalculator = (() => {
     });
     CHECK_IDS.forEach((id) => $(id)?.addEventListener("change", () => {
       resetMaxAchievableUi();
-      if (id === "finishEarlyAuto") {
+      if (id === "finishEarlyAuto" || id === "finishEarlyWaitLevels") {
         $("finishEarlyDays").value = "0";
         renderFinishEarlyResult();
         queueRegularGoalOptimizerProgress();
@@ -5240,6 +5251,12 @@ var SxsCalculator = (() => {
     },
     get postTargetRawGains() {
       return postTargetRawGains;
+    },
+    get waitForLevelsEnabled() {
+      return waitForLevelsEnabled;
+    },
+    get upgradeFinishCutoffMs() {
+      return upgradeFinishCutoffMs;
     },
     get estimateTargetReachMoment() {
       return estimateTargetReachMoment;

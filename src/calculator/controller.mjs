@@ -937,6 +937,7 @@ function showFinishEarlyPurchaseHint(){
   }
 
 function renderFinishEarlyResult(){
+    if($('finishEarlyWaitLevels')) $('finishEarlyWaitLevels').disabled=!$('finishEarlyAuto')?.checked;
     const result=$('finishEarlyResult');
     if(result) result.textContent=$('finishEarlyAuto')?.checked
       ? (finishEarlyDaysValue()>0 ? `${finishEarlyDaysValue()} days early` : 'Full season needed')
@@ -1038,6 +1039,13 @@ function findMaxAchievableStars(){
      Gear / Skills / Relics / Fantomons across the calculator's legal Stamina strategies.
      After binary search finds the final half-day value, the full optimizer runs ONCE to
      render the normal result card. */
+function waitForLevelsEnabled(){return !!$('finishEarlyAuto')?.checked && !!$('finishEarlyWaitLevels')?.checked;}
+function planningCharacterProjection(cfg){
+    const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
+    const p=waitForLevelsEnabled()?projectCharacter(cfg):upgradeP;
+    p.upgradeCapLevel=upgradeP.level;p.upgradeCapPct=upgradeP.pct;
+    return p;
+}
 function finishEarlyNoExtraPossible(){
     const cfg=activeCalcConfig();
     if(snapshotSeason!==cfg.key) return false;
@@ -1045,10 +1053,8 @@ function finishEarlyNoExtraPossible(){
       const required=s2RequiredPlannerInputs();
       if(!required.hasBed||!required.hasAllCart) return false;
     }
-    const p=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
+    const p=planningCharacterProjection(cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor) return false;
-    p.upgradeCapLevel=p.level;
-    p.upgradeCapPct=p.pct;
     const currentCharacter=p.current||characterSnapshot(cfg);
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
     const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143);
@@ -1302,12 +1308,8 @@ async function updateCalculator(){
     }
     if(!p) p=projectCharacter(cfg);
     const seasonEndP=p;
-    p=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
+    p=planningCharacterProjection(cfg);
     if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
-    const upgradeP=p;
-    // Upgrade availability and score projection stop at the optional finish-early cutoff.
-    p.upgradeCapLevel=upgradeP.level;
-    p.upgradeCapPct=upgradeP.pct;
     const currentCharacter=p.current||characterSnapshot(cfg);
     const projectedResourceTotals=projectedResources(p.hours,cfg);
     renderRealmToolProjection(cfg);
@@ -1772,7 +1774,7 @@ function scheduleCalculatorUpdate(delay=120){
 
 function setupCalculator(){
     document.getElementById('calculatorSection')?.addEventListener('focusin',e=>{
-      if(e.target?.matches?.('input') && e.target.id!=='targetStars' && e.target.id!=='finishEarlyDays' && e.target.id!=='finishEarlyAuto'){
+      if(e.target?.matches?.('input') && e.target.id!=='targetStars' && e.target.id!=='finishEarlyDays' && e.target.id!=='finishEarlyAuto' && e.target.id!=='finishEarlyWaitLevels'){
         // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
         // expensive optimizer just for tabbing/clicking between account-state fields.
         // Target Primostars is only a goal selector and must not mutate the snapshot clock.
@@ -1817,7 +1819,7 @@ function setupCalculator(){
        accidentally replaced this block, preventing navigation/timeline initialization. */
     CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{
       resetMaxAchievableUi();
-      if(id==='finishEarlyAuto'){
+      if(id==='finishEarlyAuto'||id==='finishEarlyWaitLevels'){
         $('finishEarlyDays').value='0';
         renderFinishEarlyResult();
         queueRegularGoalOptimizerProgress();
@@ -1894,6 +1896,8 @@ get postTargetLastPlan(){return postTargetLastPlan;},set postTargetLastPlan(valu
 get postTargetLastPEnd(){return postTargetLastPEnd;},set postTargetLastPEnd(value){postTargetLastPEnd=value;},
 get selectedPostTargetToolState(){return selectedPostTargetToolState;},
 get postTargetRawGains(){return postTargetRawGains;},
+get waitForLevelsEnabled(){return waitForLevelsEnabled;},
+get upgradeFinishCutoffMs(){return upgradeFinishCutoffMs;},
 get estimateTargetReachMoment(){return estimateTargetReachMoment;},
 get projectCharacterTo(){return projectCharacterTo;},
 get projectCharacter(){return projectCharacter;},

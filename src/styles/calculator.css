@@ -455,23 +455,6 @@
 }
 
 /* Keep stamina's contribution visible beside the target, outside input disclosures. */
-#calcResults .resultStamina {
-  margin: 12px 0;
-  padding: 12px 14px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--ui-subpanel);
-}
-#calcResults .resultStaminaHeading {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 4px 12px;
-  margin-bottom: 5px;
-}
-#calcResults .resultStaminaHeading strong { font-size: 13px; }
-#calcResults .resultStaminaHeading small { font-size: 12px; color: var(--muted); }
 #calcResults #resultStaminaPlan { margin: 0; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
 #calcResults .resultStamina .staminaGain { color: var(--ink); font-weight: 600; }
 
@@ -628,15 +611,17 @@
   padding-left: 28px;
   font-size: 12px;
 }
-#calculatorSection #finishEarlyAuto:focus {
+#calculatorSection :is(#finishEarlyAuto,#finishEarlyWaitLevels):focus {
   box-shadow: none !important;
 }
-#calculatorSection #finishEarlyAuto:focus:not(:focus-visible) {
+#calculatorSection :is(#finishEarlyAuto,#finishEarlyWaitLevels):focus:not(:focus-visible) {
   outline: none !important;
 }
-#calculatorSection #finishEarlyAuto:focus-visible {
+#calculatorSection :is(#finishEarlyAuto,#finishEarlyWaitLevels):focus-visible {
   outline: 2px solid var(--blue) !important;
 }
 
 #calculatorSection .finishEarlyToggle span { font-size: 12px !important; text-transform: none; letter-spacing: 0; }
 #calculatorSection #finishEarlyResult { font-weight: 600; text-transform: none; }
+
+#targetTiming.waitForLevels #resultStamina { grid-column: 1 / -1; }

@@ -78,7 +78,7 @@
           <!-- COMPACT_PROJECTION_BED_ROW_V1 -->
           <label class="projectionField">Projected season-end level<input id="projectedCharacter" type="text" value="—" readonly aria-readonly="true"><small id="projectionNote" hidden></small></label>
         </div>
-        <div class="seasonPlanningRow"><div class="seasonDeadline"><span id="seasonDeadlineLabel">Season ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="finishEarlyCard"><label class="finishEarlyToggle"><input id="finishEarlyAuto" type="checkbox"> <span>Finish early</span></label><output id="finishEarlyResult" aria-live="polite">Full season</output><input id="finishEarlyDays" type="hidden" value="0"></div></div><small id="finishEarlyMaxHint" class="finishEarlyMaxHint" hidden>Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.</small><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
+        <div class="seasonPlanningRow"><div class="seasonDeadline"><span id="seasonDeadlineLabel">Season ends</span><b id="seasonDeadlineDate">—</b><small id="seasonRemaining">—</small></div><div class="finishEarlyCard"><label class="finishEarlyToggle"><input id="finishEarlyAuto" type="checkbox"> <span>Finish early</span></label><label class="finishEarlyToggle" title="Reserve the remaining score for level gains through season end." aria-label="Wait for levels: reserve the remaining score for level gains through season end"><input id="finishEarlyWaitLevels" type="checkbox" disabled> <span>Wait for levels</span></label><output id="finishEarlyResult" aria-live="polite">Full season</output><input id="finishEarlyDays" type="hidden" value="0"></div></div><small id="finishEarlyMaxHint" class="finishEarlyMaxHint" hidden>Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.</small><div class="seasonRulesHint" id="seasonRulesHint" hidden></div>
         <div class="s2ProgressionGates" id="s2ProgressionGates" hidden aria-label="Season 2 progression gates"><span><b>106</b>T4</span><span><b>108</b>Adult Fanto</span><span><b>116</b>Tower</span><span><b>120</b>Realm max</span><span><b>130</b>Scoring + Dungeon</span></div>
         </section>
         <!-- COMPACT_PROGRESSION_TOP_V1 -->
@@ -173,15 +173,12 @@
         <small id="seasonEndExcessNote" class="seasonEndExcessNote" hidden>Parentheses show projected gains after reaching the target.</small>
       </div>
       <div class="targetTiming" id="targetTiming" title="Estimate based on current production inputs and the recommended target route.">
-        <span><small>Projected target</small><b id="targetReachedDate">—</b></span>
+        <span id="upgradeFinishTiming" hidden><small>Upgrades finished</small><b id="upgradeFinishDate">�</b></span><span><small>Projected target</small><b id="targetReachedDate">—</b></span>
         <span><small>Season left after target</small><b id="targetSeasonLeft">—</b></span>
         <span class="targetCharacterCard"><small>Character used for target</small><b id="targetCharacterAtGoal">—</b><em>Used in score calculation</em></span>
-        <span><small>Season-end character</small><b id="seasonEndCharacterResult">—</b><em>Projected final season level</em></span>
+        <span id="resultStamina" hidden><small>Stamina</small><b id="resultStaminaPlan"></b><em id="resultStaminaHorizon"></em></span>
       </div>
-      <section class="resultStamina" id="resultStamina" aria-label="Stamina projection" hidden>
-        <div class="resultStaminaHeading"><strong>Stamina projection</strong><small id="resultStaminaHorizon"></small></div>
-        <p id="resultStaminaPlan"></p>
-      </section>
+
       <p class="targetMessage" id="targetMessage" hidden></p>
       <div class="materialRealmRecommendation" id="materialRealmRecommendation" hidden></div>
       <section class="recommendedUpgradeCard calcFormCard">
@@ -201,7 +198,7 @@
       <section class="postTargetGains" id="postTargetGains" hidden>
         <div class="postTargetHeader">
           <div><span>Estimated next-season inventory</span><small id="postTargetWindow">—</small></div>
-          <small>What you will have at season end after reaching the target. Bed EXP still banks the final 36h for next season.</small>
+          <small>What you will have at season end after completing the plan. Bed EXP still banks the final 36h for next season.</small>
         </div>
 
         <div class="postTargetGainGrid">

@@ -68,7 +68,7 @@ function renderTargetResourceSnapshot(reached,plan,pEnd,cfg=activeCalcConfig()){
     if(!carry?.valid || !r) return;
     const added=r.staminaAdded||{ore:0,essence:0,sand:0,rolla:0};
     const allocation=r.staminaAllocation||{ore:0,essence:0,sand:0,rolla:0,unassigned:r.staminaNodes||0};
-    renderStaminaCurrentPlan(allocation,added,r,'To target');
+    renderStaminaCurrentPlan(allocation,added,r,__calculatorDeps.waitForLevelsEnabled()?'By upgrade finish':'To target');
     const oreStam=added.ore?` · Stamina +${fmtCompact(added.ore)}`:'';
     const essStam=added.essence?` · Stamina +${fmtCompact(added.essence)}`:'';
     const sandStam=added.sand?` · Stamina +${fmtCompact(added.sand)}`:'';
@@ -126,7 +126,7 @@ function renderPostTargetGains(reached,plan,pEnd,cfg=activeCalcConfig()){
       sand:carry.sand+gains.sand,
       treat:carry.treat+gains.treat
     };
-    if(__calculatorDeps.$('postTargetWindow')) __calculatorDeps.$('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} of post-target gathering · season-end carry`;
+    if(__calculatorDeps.$('postTargetWindow')) __calculatorDeps.$('postTargetWindow').textContent=`${compactDurationMs(Math.max(0,end-reached))} of ${__calculatorDeps.waitForLevelsEnabled()?'gathering after upgrades':'post-target gathering'} · season-end carry`;
     if(__calculatorDeps.$('postTargetOreGain')) __calculatorDeps.$('postTargetOreGain').textContent=fmt(Math.floor(totals.ore));
     if(__calculatorDeps.$('postTargetEssenceGain')) __calculatorDeps.$('postTargetEssenceGain').textContent=fmt(Math.floor(totals.essence));
     if(__calculatorDeps.$('postTargetSandGain')) __calculatorDeps.$('postTargetSandGain').textContent=fmt(Math.floor(totals.sand));
@@ -141,6 +141,11 @@ function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activ
     const targetCharEl=__calculatorDeps.$('targetCharacterAtGoal'),seasonCharEl=__calculatorDeps.$('seasonEndCharacterResult');
     const excessStarsEl=__calculatorDeps.$('seasonEndExcessStars'),excessScoreEl=__calculatorDeps.$('seasonEndExcessScore'),excessNoteEl=__calculatorDeps.$('seasonEndExcessNote');
     if(!host||!dateEl||!leftEl) return null;
+    const waiting=__calculatorDeps.waitForLevelsEnabled();
+    const finishCard=__calculatorDeps.$('upgradeFinishTiming');
+    host.classList.toggle('waitForLevels',waiting);
+    if(finishCard) finishCard.hidden=!waiting;
+    if(waiting) __calculatorDeps.$('upgradeFinishDate').textContent=targetMomentLabel(__calculatorDeps.upgradeFinishCutoffMs(cfg));
     const reached=__calculatorDeps.estimateTargetReachMoment(plan,resourceBlocked,requestedDesired,pEnd,cfg);
     host.classList.toggle('isUnreachable',!Number.isFinite(reached));
     if(!Number.isFinite(reached)){
@@ -188,7 +193,7 @@ function renderTargetTiming(plan,resourceBlocked,requestedDesired,pEnd,cfg=activ
       excessNoteEl.textContent=`( ) = projected extra gained after reaching the target ${timeAfterTarget} before season end`;
       excessNoteEl.hidden=!hasExcess||timeAfterTargetMs<=0;
     }
-    renderPostTargetGains(reached,plan,pEnd,cfg);
+    renderPostTargetGains(waiting?__calculatorDeps.upgradeFinishCutoffMs(cfg):reached,plan,pEnd,cfg);
     return {planStars,seasonEndStars};
   }
 
