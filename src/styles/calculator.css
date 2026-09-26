@@ -625,3 +625,5 @@
 #calculatorSection #finishEarlyResult { font-weight: 600; text-transform: none; }
 
 #targetTiming.waitForLevels #resultStamina { grid-column: 1 / -1; }
+
+#calculatorSection .finishEarlyToggle:has(input:disabled) { opacity: .45; cursor: default; }

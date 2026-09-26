@@ -23,6 +23,8 @@ try{
     document.getElementById('targetStars').dispatchEvent(new Event('change',{bubbles:true}));
   });
   await page.waitForTimeout(100);await settle();
+  assert.equal(await page.locator('#finishEarlyWaitLevels').isDisabled(),true,'level option requires Finish early');
+  assert.ok(Number(await page.locator('#finishEarlyWaitLevels').evaluate(el=>getComputedStyle(el.closest('label')).opacity))<1,'disabled option is visibly dimmed');
   await page.locator('#finishEarlyAuto').check();
   await page.waitForTimeout(100);await settle();
   const low=await page.locator('#finishEarlyDays').inputValue();
