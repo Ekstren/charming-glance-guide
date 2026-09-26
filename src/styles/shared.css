@@ -6,12 +6,17 @@
   --reading-text: #4d485d;
   --reading-muted: #696174;
   --reading-link: #854363;
+  --reading-heading: var(--ink);
+  --muted: var(--reading-muted);
+  --secondary-text: var(--reading-text);
   --selected-bg: #884263;
 }
 :root[data-theme=dark] {
   --reading-text: #ded9e9;
   --reading-muted: #bcb2c8;
   --reading-link: #f0a9c4;
+  --muted: var(--reading-muted);
+  --secondary-text: var(--reading-text);
   --selected-bg: #884263;
 }
 body .topbar {
@@ -378,3 +383,19 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
 
 #buildContent .otherSourceNotes>summary>span::before { content: "▸ "; color:var(--reading-muted); }
 #buildContent .otherSourceNotes[open]>summary>span::before { content: "▾ "; }
+
+/* Shared text roles and card depth across every section. */
+body :is(h1,h2,h3,h4,summary),body .logoButton strong,
+.relicName,.timelineNowCard strong,.timelineNowHead b,.entry>div>p:first-child>b,.fantomonSuggestion>strong {
+  color: var(--reading-heading) !important;
+}
+body summary small { color: var(--reading-muted) !important; }
+#companionsSection :is(.companionHeroMain>span,.companionPanelLabel) {
+  color: var(--reading-link) !important;
+}
+#buildsSection :is(.sourceBuildCard,.communityBuildCard,.otherBuildSource,.fantomonSuggestion,.quickGearRow,.quickSubstats),
+#companionsSection :is(.companionFocus,.companionLadder>div,.companionGroup),
+#calculatorSection :is(.calcFormCard,.upgradeTargets>span,.suggestedGear>span,.resultStamina,.postTargetGainGrid>div) {
+  background: var(--ui-subpanel) !important;
+}
+#calculatorSection .calcResults { background: var(--surface) !important; }
