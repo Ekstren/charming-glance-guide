@@ -29,7 +29,6 @@ async function open({fixture=true,blocked=false,corrupt=false,width=1440}={}){
  return page;
 }
 const ids=page=>page.locator('.relicCard').evaluateAll(xs=>xs.map(x=>x.dataset.relicId));
-const zones=page=>page.locator('.relicZone h2').allTextContents();
 try{
  const page=await open();
  assert.equal(await page.locator('.relicCard').count(),7);
@@ -55,15 +54,13 @@ try{
  await page.locator('#relicFruit').selectOption('no');await page.locator('[data-relic-open]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Cannot be obtained with Destiny Fruits/);await page.keyboard.press('Escape');assert.equal(await page.locator('#relicDialog').isVisible(),false);assert.equal(await page.locator('[data-relic-open="e"]').evaluate(el=>document.activeElement===el),true);
  await page.locator('#relicReset').click();await page.locator('#relicSearch').fill('  AMBER  ');assert.deepEqual(await ids(page),['a']);
  await page.locator('#relicRarity').selectOption('Mythic');assert.deepEqual(await ids(page),[]);assert.equal(await page.locator('.relicEmpty').isVisible(),true);
- await page.locator('#relicReset').click();await page.locator('[data-relic-mode="targets"]').click();
+ await page.locator('#relicReset').click();assert.equal(await page.locator('[data-relic-mode]').count(),0,'gallery has no redundant view tabs');await page.locator('#relicStatus').selectOption('missing');await page.locator('#relicFruit').selectOption('yes');
  assert.deepEqual(new Set(await ids(page)),new Set(['b','c','d','g']),'targets contain only missing verified fruit relics');
- assert.equal(await page.locator('#relicStatus').isDisabled(),true);assert.equal(await page.locator('#relicFruit').isDisabled(),true);
- await page.locator('#relicSort').selectOption('missing');assert.equal((await zones(page))[0],'Cinder Ridge VII');
- assert.match(await page.locator('.relicZone').first().locator('header>span').innerText(),/2 missing · 2 targets/);
+ assert.equal(await page.locator('#relicStatus').isDisabled(),false);assert.equal(await page.locator('#relicFruit').isDisabled(),false);
  await page.locator('[data-relic-open="b"]').click();assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Destiny Fruit zone: Cinder Ridge VII/);assert.match(await page.locator('#relicDialog .relicDetails').innerText(),/Relic Gacha: Cinder Ridge/);
  assert.equal(await page.locator('#relicDialog .relicSources a').getAttribute('href'),'https://example.com/relics');await page.locator('#relicDialogClose').click();
  await page.locator('[data-owned="b"]').click();assert.equal((await ids(page)).includes('b'),false,'marking target owned removes it immediately');
- await page.locator('[data-relic-mode="collection"]').click();await page.locator('[data-owned="a"]').uncheck();assert.equal(await page.locator('[data-owned="a"]').isChecked(),false);
+ await page.locator('#relicReset').click();await page.locator('[data-owned="a"]').uncheck();assert.equal(await page.locator('[data-owned="a"]').isChecked(),false);
  await page.close();
  for(const options of [{blocked:true},{corrupt:true}]){
   const p=await open(options);assert.equal(await p.locator('.relicCard').count(),7);assert.equal(await p.locator('#relicStorageStatus').isVisible(),true);await p.locator('[data-owned="a"]').check();assert.equal(await p.locator('[data-owned="a"]').isChecked(),true);if(options.blocked)assert.match(await p.locator('#relicStorageStatus').innerText(),/could not save/);await p.close();
