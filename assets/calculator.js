@@ -2818,9 +2818,9 @@ var SxsCalculator = (() => {
       if (__calculatorDeps.$("postTargetEssenceGain")) __calculatorDeps.$("postTargetEssenceGain").textContent = fmt(Math.floor(totals.essence));
       if (__calculatorDeps.$("postTargetSandGain")) __calculatorDeps.$("postTargetSandGain").textContent = fmt(Math.floor(totals.sand));
       if (__calculatorDeps.$("postTargetTreatGain")) __calculatorDeps.$("postTargetTreatGain").textContent = fmt(Math.floor(totals.treat));
-      if (__calculatorDeps.$("postTargetHammerGain")) __calculatorDeps.$("postTargetHammerGain").textContent = `${fmt(tools.ore)} Hammers total`;
-      if (__calculatorDeps.$("postTargetKnuckleGain")) __calculatorDeps.$("postTargetKnuckleGain").textContent = `${fmt(tools.essence)} Knuckles total`;
-      if (__calculatorDeps.$("postTargetShovelGain")) __calculatorDeps.$("postTargetShovelGain").textContent = `${fmt(tools.sand)} Shovels total`;
+      if (__calculatorDeps.$("postTargetHammerGain")) __calculatorDeps.$("postTargetHammerGain").textContent = `${fmt(tools.ore)} Hammers`;
+      if (__calculatorDeps.$("postTargetKnuckleGain")) __calculatorDeps.$("postTargetKnuckleGain").textContent = `${fmt(tools.essence)} Knuckles`;
+      if (__calculatorDeps.$("postTargetShovelGain")) __calculatorDeps.$("postTargetShovelGain").textContent = `${fmt(tools.sand)} Shovels`;
     }
     function renderTargetTiming2(plan, resourceBlocked, requestedDesired, pEnd, cfg = activeCalcConfig()) {
       const host = __calculatorDeps.$("targetTiming"), dateEl = __calculatorDeps.$("targetReachedDate"), leftEl = __calculatorDeps.$("targetSeasonLeft");
