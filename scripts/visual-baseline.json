@@ -1,4 +1,4 @@
 {
-  "commit": "93fbeec77e37d1c28cb3af42b07faf6a4588205a",
-  "description": "Reviewed automatic Finish early checkbox and calculated timing in desktop/mobile, dark/light layouts."
+  "commit": "1fb5ca5df4e2823285170efd1b3b4cf70316a3ac",
+  "description": "Reviewed calculator checkbox alignment, source-note disclosure indicators, and Relic Gallery touch controls in both themes on phone and desktop."
 }
