@@ -594,12 +594,17 @@
   font-size: 12px !important;
   line-height: 1.5 !important;
 }
+#calculatorSection :is(.resultDetails > summary,.methodPanel > summary,.primostarRewardSeason h4,.rewardTotals span,.optimizerExplainEmbeddedHead small,.exactInputs > summary small,#exactProgressStatus,.calcActions span,.seasonDeadline span,.seasonDeadline small,.finishEarlyCard > span,.finishEarlyCard > em,.materialsStaminaRow > span,.staminaCurrentPlan) {
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+}
 #calculatorSection .calcActions button {
   min-height: 44px !important;
   font-size: 12px !important;
   background: var(--selected-bg) !important;
   color: #fff !important;
 }
+:root[data-theme=light] #calculatorSection :is(#seasonRemaining,#staminaCurrentPlan,#oreProjected,#essenceProjected,#sandProjected,#treatProjected,#targetMessage,.applyRealmRecommendation,.starTotal small,.postTargetGainGrid small,.realmRecommendUp),
 :root[data-theme=light] #calculatorSection #s2TargetPresets button.active > span {
   color: var(--reading-link) !important;
 }
