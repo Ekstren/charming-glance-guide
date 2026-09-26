@@ -1,4 +1,4 @@
 {
-  "commit": "d13f7aae50be2a4becc1ba13018423e12fc48bc2",
-  "description": "Reviewed calculator rewards: collected S1 carryover, projected S2 tiers, and season-end Astral Pact bonuses."
+  "commit": "93fbeec77e37d1c28cb3af42b07faf6a4588205a",
+  "description": "Reviewed automatic Finish early checkbox and calculated timing in desktop/mobile, dark/light layouts."
 }
