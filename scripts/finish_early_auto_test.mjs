@@ -43,6 +43,7 @@ try{
   const waitingCutoff=await page.locator('#finishEarlyDays').inputValue();
   assert.ok(Number(waitingCutoff)>Number(low),'reserved season-end level score allows upgrades to finish earlier');
   assert.ok(Number((await page.locator('#summaryOptimizedScore').innerText()).replace(/[^0-9]/g,''))>=Number((await page.locator('#desiredScore').innerText()).replace(/[^0-9]/g,'')),'goal remains funded with natural levels');
+  await page.locator('.seasonPlanningRow').screenshot({path:'test-results/compact-season-planning.png'});
   await page.locator('#calcResults').screenshot({path:'test-results/wait-levels-results.png'});
   assert.equal(await page.locator('#upgradeFinishTiming').isVisible(),true,'separate upgrade finish date is shown');
   assert.equal(await page.locator('#resultStamina').isVisible(),true,'Stamina occupies the summary card');

@@ -109,6 +109,8 @@
   padding: 0 !important;
   border: 0;
   min-height: 0 !important;
+  height: auto !important;
+  align-content: center;
 }
 #calculatorSection .finishEarlyCard {
   display: flex;
@@ -417,7 +419,7 @@
 }
 @container (min-width: 500px) {
   #calculatorSection .seasonPlanningRow {
-    grid-template-columns: minmax(0, 1fr) 210px !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
     align-items: center;
   }
   #calculatorSection .seasonDeadline { grid-template-columns: minmax(0, 1fr); }
@@ -429,7 +431,7 @@
   border-radius: 0;
 }
 #calculatorSection .finishEarlyCard {
-  grid-template-columns: auto 60px auto minmax(48px, 1fr);
+  grid-template-columns: auto auto;
 }
 #calculatorLoadStatus:not([hidden]),.guideLoadStatus:not([hidden]) {
   display: flex;
@@ -587,8 +589,10 @@
 
 /* Automatic finish timing stays readable beside the season deadline. */
 #calculatorSection .finishEarlyCard {
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 2px !important;
+  grid-template-columns: auto auto !important;
+  gap: 0 12px !important;
+  min-height: 0 !important;
+  align-items: center;
 }
 #calculatorSection .finishEarlyToggle {
   display: flex;
@@ -608,7 +612,9 @@
   accent-color: var(--accent);
 }
 #calculatorSection #finishEarlyResult {
-  padding-left: 28px;
+  grid-column: 1 / -1;
+  padding-left: 0;
+  text-align: right;
   font-size: 12px;
 }
 #calculatorSection :is(#finishEarlyAuto,#finishEarlyWaitLevels):focus {
