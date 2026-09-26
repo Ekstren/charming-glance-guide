@@ -25,6 +25,13 @@ try{
    return{
     cards:[...document.querySelectorAll('#timelineSummary > div')].map(el=>{const s=getComputedStyle(el);return{borders:[s.borderTopWidth,s.borderRightWidth,s.borderBottomWidth,s.borderLeftWidth],corners:[s.borderTopLeftRadius,s.borderTopRightRadius,s.borderBottomRightRadius,s.borderBottomLeftRadius]}}),
     labels:[...document.querySelectorAll('#timeline .category,#timeline .dateBlock > span')].map(el=>({text:el.textContent,contrast:contrast(el)})),
+    connectors:[...document.querySelectorAll('#timeline .dayGroup')].map(group=>{
+     const date=group.querySelector('.dateBlock'),style=getComputedStyle(group,'::after'),rect=group.getBoundingClientRect(),dateRect=date.getBoundingClientRect();
+     if(style.display==='none')return null;
+     const border=parseFloat(getComputedStyle(group).borderLeftWidth)||0;
+     const delta=rect.left+border+parseFloat(style.left)+parseFloat(style.width)/2-(dateRect.left+dateRect.width/2);
+     return{delta,height:parseFloat(style.height)};
+    }).filter(Boolean),
     currentHeight:document.getElementById('todayButton').getBoundingClientRect().height
    };
   });
@@ -33,6 +40,8 @@ try{
   for(const card of result.cards){assert.ok(card.borders.every(v=>parseFloat(v)>0),`${label}: card border missing`);assert.ok(card.corners.every(v=>parseFloat(v)>=10),`${label}: detached card has square corners`);}
   assert.ok(result.labels.length>0);
   assert.deepEqual(result.labels.filter(x=>x.contrast<4.5),[],`${label}: low-contrast timeline labels`);
+  assert.ok(result.connectors.length>0,`${label}: timeline connectors present`);
+  assert.deepEqual(result.connectors.filter(x=>Math.abs(x.delta)>0.75||x.height<=0),[],`${label}: timeline connector centered below date tile`);
   assert.ok(result.currentHeight>=44,`${label}: current button touch size`);
   await page.locator('#themeToggle').click();await page.reload();
   assert.equal(await page.locator('html').getAttribute('data-theme'),theme==='dark'?'light':'dark',`${label}: theme persists`);

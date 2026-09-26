@@ -1487,6 +1487,8 @@ button,input {
   padding: 0 20px 90px
 }
 .dayGroup {
+  --timeline-date-center: 154px;
+  --timeline-inline-padding: 0px;
   grid-template-columns: 110px 88px 1fr;
   min-height: 126px;
   padding-bottom: 28px;
@@ -1500,7 +1502,7 @@ button,input {
   position: absolute;
   top: 70px;
   bottom: 0;
-  left: 153px
+  left: calc(var(--timeline-date-center) - 1px + var(--timeline-inline-padding))
 }
 .dayGroup:last-child:after {
   display: none
@@ -1674,8 +1676,10 @@ button,input {
   box-shadow: 0 14px 38px #30715b1a
 }
 .dayGroup.today:after {
-  bottom: -29px;
-  left: 165px
+  bottom: -29px
+}
+.dayGroup.today {
+  --timeline-inline-padding: 12px;
 }
 .dayGroup.today .dateBlock {
   color: #fff;
@@ -1858,12 +1862,12 @@ footer a {
     align-items: flex-start
   }
   .dayGroup {
+    --timeline-date-center: 29px;
     grid-template-columns: 58px 1fr;
     gap: 12px
   }
   .dayGroup:after {
     top: 70px;
-    left: 32px
   }
   .dayMarker {
     text-align: left;
@@ -1889,12 +1893,12 @@ footer a {
     padding: 14px
   }
   .dayGroup.today {
+    --timeline-inline-padding: 8px;
     margin: 0 -8px 24px;
     padding: 10px 8px 18px
   }
   .dayGroup.today:after {
-    bottom: -25px;
-    left: 40px
+    bottom: -25px
   }
   footer {
     flex-direction: column
@@ -2409,16 +2413,13 @@ footer a {
     padding-bottom: 110px
   }
   .dayGroup {
+    --timeline-date-center: 184px;
     grid-template-columns: 135px 98px 1fr;
     min-height: 145px;
     padding-bottom: 32px
   }
   .dayGroup:after {
-    top: 80px;
-    left: 183px
-  }
-  .dayGroup.today:after {
-    left: 196px
+    top: 80px
   }
   .dayMarker {
     padding-top: 19px
@@ -3821,6 +3822,7 @@ footer a {
     grid-template-columns: 1fr 1fr!important
   }
   .dayGroup {
+    --timeline-date-center: 24px;
     grid-template-columns: 48px 1fr;
     gap: 10px
   }
@@ -3828,10 +3830,7 @@ footer a {
     width: 48px
   }
   .dayGroup:after {
-    left: 26px
-  }
-  .dayGroup.today:after {
-    left: 34px
+    left: calc(var(--timeline-date-center) - 1px + var(--timeline-inline-padding))
   }
 }
 @media(max-width:380px) {
