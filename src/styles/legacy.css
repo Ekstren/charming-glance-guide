@@ -3196,34 +3196,34 @@ footer a {
 }
 :root[data-theme=dark] {
   --bg: #232136;
-  --surface: #2a273f;
-  --surface-glass: #2a273fee;
+  --surface: #2c253a;
+  --surface-glass: #2c253aee;
   --topbar: #232136f2;
-  --ink: #e0def4;
-  --body-text: #e0def4;
-  --line: #44415a;
+  --ink: #ebd6df;
+  --body-text: #ebd6df;
+  --line: #564052;
   --green: #eb6f92;
   --green-soft: #3a2f45;
   --blue: #9ccfd8;
   --gold: #f6c177;
   --red: #eb6f92;
   --purple: #c4a7e7;
-  --filter-bg: #393552;
-  --filter-text: #e0def4;
-  --today-bg: #342d46;
-  --today-border: #6b526f;
+  --filter-bg: #3c2c42;
+  --filter-text: #ebd6df;
+  --today-bg: #38283d;
+  --today-border: #76526a;
   --footer: #1f1d2e;
-  --accent-strong: #b4638d;
-  --accent-deep: #8f4f75;
-  --input-bg: #393552;
+  --accent-strong: #ae5878;
+  --accent-deep: #87415f;
+  --input-bg: #3c2c42;
   --soft-shadow: #00000035;
-  --calc-accent-strong: #b4638d;
-  --calc-accent-soft: #342d46;
-  --calc-accent-border: #6b526f;
-  --ui-accent: #b4638d;
-  --ui-accent-soft: #342d46;
-  --ui-accent-border: #6b526f;
-  --ui-hover: #3b3150
+  --calc-accent-strong: #ae5878;
+  --calc-accent-soft: #38283d;
+  --calc-accent-border: #76526a;
+  --ui-accent: #ae5878;
+  --ui-accent-soft: #38283d;
+  --ui-accent-border: #76526a;
+  --ui-hover: #402c43
 }
 .logo {
   background: var(--accent-deep)!important
