@@ -1,4 +1,4 @@
 {
-  "commit": "3621cc57d0282e0bc0d7b5872f0655f0f3a69ae1",
-  "description": "Reviewed restored dark palette with compact season controls, Wait for levels and Stamina summary."
+  "commit": "dc7321d57d54fd68abc84ee5bf0165990da5d0c0",
+  "description": "Reviewed compact Plan timing box with descriptive options and future levels enabled by default."
 }
