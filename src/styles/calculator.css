@@ -116,11 +116,6 @@
   padding: 0 !important;
   border: 0;
 }
-#calculatorSection .finishEarlyCard input {
-  flex: 1 1 60px !important;
-  width: 70px;
-  max-width: 100px;
-}
 #calculatorSection .resultHeadline {
   display: flex;
   flex-wrap: wrap;
@@ -359,9 +354,6 @@
     padding: 8px;
     align-items: center;
   }
-  #calculatorSection .finishEarlyCard input {
-    width: 100%;
-  }
 }
 @container (min-width: 500px) {
   #calculatorSection .postTargetGainGrid {
@@ -422,10 +414,6 @@
   min-height: 44px !important;
   gap: 8px !important;
   text-align: left;
-}
-#calculatorSection .finishEarlyCard input {
-  min-width: 0 !important;
-  width: 60px !important;
 }
 @container (min-width: 500px) {
   #calculatorSection .seasonPlanningRow {
@@ -627,6 +615,9 @@
   cursor: pointer;
 }
 #calculatorSection .finishEarlyToggle input {
+  flex: 0 0 20px !important;
+  min-width: 20px !important;
+  max-width: 20px !important;
   width: 20px !important;
   height: 20px !important;
   min-height: 20px !important;
@@ -646,3 +637,6 @@
 #calculatorSection #finishEarlyAuto:focus-visible {
   outline: 2px solid var(--blue) !important;
 }
+
+#calculatorSection .finishEarlyToggle span { font-size: 12px !important; text-transform: none; letter-spacing: 0; }
+#calculatorSection #finishEarlyResult { font-weight: 600; text-transform: none; }

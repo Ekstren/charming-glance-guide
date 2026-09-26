@@ -8973,30 +8973,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   letter-spacing: inherit;
   text-transform: inherit
 }
-.finishEarlyCard input {
-  flex: 0 0 34px!important;
-  padding: 3px 4px!important;
-  margin: 0!important;
-  border: 1px solid var(--line)!important;
-  border-radius: 7px!important;
-  background: var(--input-bg)!important;
-  color: var(--ink)!important;
-  text-align: center!important;
-  font-weight: 850!important;
-  line-height: 1!important;
-  outline: 0!important
-}
-.finishEarlyCard input:focus {
-  border-color: var(--green)!important;
-  box-shadow: 0 0 0 2px color-mix(in srgb,var(--green)15%,transparent)!important
-}
-.finishEarlyCard em {
-  color: var(--muted);
-  font-style: normal;
-  font-size: 8px;
-  font-weight: 850;
-  text-transform: none
-}
 @media(max-width:700px) {
   .seasonPlanningRow {
     grid-template-columns: 1fr
@@ -9254,9 +9230,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .finishEarlyCard {
   font-size: 9px!important
 }
-.finishEarlyCard em {
-  font-size: 9px!important
-}
 .finishEarlyCard {
   gap: 8px!important
 }
@@ -9269,30 +9242,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
   min-height: 50px!important;
   padding: 9px 12px!important
 }
-.finishEarlyCard input {
-  width: 58px!important;
-  min-width: 58px!important;
-  max-width: 58px!important;
-  flex-basis: 58px!important;
-  height: 40px!important;
-  min-height: 40px!important;
-  padding-left: 7px!important;
-  padding-right: 7px!important;
-  font-size: 12px!important
-}
 @media(max-width:760px) {
   .finishEarlyCard {
     min-height: 52px!important;
     padding: 10px 13px!important
-  }
-  .finishEarlyCard input {
-    width: 60px!important;
-    min-width: 60px!important;
-    max-width: 60px!important;
-    flex-basis: 60px!important;
-    height: 42px!important;
-    min-height: 42px!important;
-    font-size: 12px!important
   }
 }
 .optimizerProgressPanel {
@@ -9922,10 +9875,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     justify-content: flex-start!important;
     gap: 7px!important;
     flex-wrap: wrap!important
-  }
-  .finishEarlyCard input {
-    min-width: 72px!important;
-    flex: 1 1 90px!important
   }
   .s2ProgressionGates {
     grid-template-columns: repeat(2,minmax(0,1fr))!important

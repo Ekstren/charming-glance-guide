@@ -346,7 +346,7 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
 #buildContent .fantomonSuggestion>p { margin:0; color:var(--reading-muted)!important; font-size:12px!important; line-height:1.45!important; }
 #buildContent :is(.buildPanelSource,.otherSourceCaveat) { margin:8px 0 0; color:var(--reading-muted)!important; font-size:12px!important; line-height:1.5!important; }
 #buildContent a { color:var(--reading-link); text-decoration:underline; text-underline-offset:2px; }
-#buildContent .otherSourceNotes>summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:36px; color:var(--reading-text); font-size:13px; font-weight:650; cursor:pointer; }
+#buildContent .otherSourceNotes>summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; color:var(--reading-text); font-size:13px; font-weight:650; cursor:pointer; }
 #buildContent .otherSourceNotes>summary small { color:var(--reading-muted); font-size:11px; font-weight:450; text-align:right; }
 #buildContent .otherSourceNoteGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:8px; }
 #buildContent .otherSourceNote { min-width:0; padding:9px; border:1px solid var(--line); border-radius:9px; background:var(--bg); }
@@ -375,3 +375,6 @@ body button:focus-visible,body summary:focus-visible,body a:focus-visible {
 #timelineSection .todayButton { min-height: 44px !important; background: var(--selected-bg) !important; color: #fff !important; }
 
 :root[data-theme=dark] #timelineSection .category-dungeon { color: #f0a9c4 !important; }
+
+#buildContent .otherSourceNotes>summary>span::before { content: "▸ "; color:var(--reading-muted); }
+#buildContent .otherSourceNotes[open]>summary>span::before { content: "▾ "; }
