@@ -122,6 +122,8 @@ function loadState(){
           if(state.exactGearLevels===undefined && new Set(legacy).size>1) state.exactGearLevels=legacy.join(', ');
         }
       }
+      // Preserve existing early-finish plans as the new automatic preference.
+      if(state.finishEarlyAuto===undefined) state.finishEarlyAuto=Number(state.finishEarlyDays)>0;
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && __calculatorDeps.$(id)) __calculatorDeps.$(id).value = state[id]; });
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && __calculatorDeps.$(id)) __calculatorDeps.$(id).checked = !!state[id]; });
       if(!hadState && activeCalcConfig().key==='s2') __calculatorDeps.applyS2ScoringStartDefaults();

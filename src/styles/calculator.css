@@ -619,3 +619,27 @@
 :root[data-theme=light] #targetMessage .applyRealmRecommendation:hover { background: var(--ui-subpanel); }
 
 #calculatorSection .seasonEndExcess { color: var(--reading-link) !important; }
+
+/* Automatic finish timing stays readable beside the season deadline. */
+#calculatorSection .finishEarlyCard {
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 2px !important;
+}
+#calculatorSection .finishEarlyToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+#calculatorSection .finishEarlyToggle input {
+  width: 20px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  margin: 0;
+  accent-color: var(--accent);
+}
+#calculatorSection #finishEarlyResult {
+  padding-left: 28px;
+  font-size: 12px;
+}

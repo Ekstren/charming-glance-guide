@@ -16,7 +16,7 @@
     "test:mobile-perf": "node scripts/mobile_performance.mjs",
     "test:time": "node scripts/time_test.mjs",
     "test:lazy": "node scripts/lazy_calculator_test.mjs",
-    "test:boundaries": "node scripts/calculator_boundaries_test.mjs",
+    "test:boundaries": "node scripts/calculator_boundaries_test.mjs && node scripts/finish_early_auto_test.mjs",
     "test:relics": "node scripts/relics_test.mjs",
     "test:guides": "node scripts/guide_loading_test.mjs",
     "test:stamina": "node scripts/stamina_projection_test.mjs",

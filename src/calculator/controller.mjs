@@ -248,11 +248,7 @@ function finishEarlyDaysValue(cfg=activeCalcConfig()){
     return Number.isFinite(raw)?Math.min(max,Math.max(0,Math.round(raw*2)/2)):0;
   }
 
-/* GOAL_CHANGE_FINISH_EARLY_RESET_V1
-     Finish Early is target-specific. If the user changes the Primostar goal after Max
-     found (for example) 38 days early for a lower goal, do not let that stale cutoff make
-     the new goal look impossible. New goals always solve from the full remaining season;
-     Max can then be run again for the new target. */
+// Clear the previous goal's cutoff before automatically solving the new goal.
 function resetFinishEarlyForGoalChange(){
     const input=$('finishEarlyDays');
     if(!input || finishEarlyDaysValue()<=0) return false;
@@ -759,9 +755,9 @@ let calculatorRunsSettled=0;
 
 if(typeof window!=='undefined') window.__sxsCalculatorSettledV1=()=>calculatorRunsScheduled===calculatorRunsSettled;
 
-function runCalculatorUpdateSettled(){
+function runCalculatorUpdateSettled(skipFinishEarly=false){
     calculatorRunsScheduled++;
-    return Promise.resolve(updateCalculator())
+    return Promise.resolve(!skipFinishEarly && $('finishEarlyAuto')?.checked ? findMaxFinishEarly() : updateCalculator())
       .catch(err=>{ if(!(err instanceof OptimizerCancelledError)) console.error('CALC_SETTLE_PROBE_V1: update failed',err); })
       .finally(()=>{ calculatorRunsSettled++; });
   }
@@ -928,27 +924,23 @@ function resetMaxAchievableUi(){
     const btn=$('findMaxStars'),status=$('maxAchievableStatus');
     if(btn){btn.disabled=false;btn.textContent='Find max achievable';}
     if(status) status.textContent='Shows the maximum with your selected daily Realm plan and the hard maximum using all remaining Realm capacity.';
-    const finishBtn=$('finishEarlyMax'),finishHint=$('finishEarlyMaxHint');
-    if(finishBtn?.dataset.maxLocked==='true'){
-      delete finishBtn.dataset.maxLocked;
-      finishBtn.disabled=false;
-      finishBtn.title='Find the maximum half-day finish-early value that still reaches the selected Primostar target';
-    }
+    const finishHint=$('finishEarlyMaxHint');
     if(finishHint) finishHint.hidden=true;
   }
 
-function lockFinishEarlyMaxForPurchasePlan(){
-    const btn=$('finishEarlyMax'),hint=$('finishEarlyMaxHint');
-    if(!btn) return;
-    btn.dataset.maxLocked='true';
-    btn.disabled=true;
-    btn.textContent='Max';
-    btn.title='Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.';
-    btn.removeAttribute('aria-busy');
+function showFinishEarlyPurchaseHint(){
+    const hint=$('finishEarlyMaxHint');
     if(hint){
-      hint.textContent='Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.';
+      hint.textContent='This goal needs the full season or additional Material Realm purchases.';
       hint.hidden=false;
     }
+  }
+
+function renderFinishEarlyResult(){
+    const result=$('finishEarlyResult');
+    if(result) result.textContent=$('finishEarlyAuto')?.checked
+      ? (finishEarlyDaysValue()>0 ? `${finishEarlyDaysValue()} days early` : 'Full season needed')
+      : 'Full season';
   }
 
 function buildMaxAchievableSnapshot(){
@@ -1110,16 +1102,17 @@ function finishEarlyNoExtraPossible(){
   }
 
 async function findMaxFinishEarly(){
-    const btn=$('finishEarlyMax'),input=$('finishEarlyDays');
-    if(!btn||!input||btn.disabled) return;
+    const btn=$('finishEarlyAuto'),input=$('finishEarlyDays');
+    if(!btn?.checked||!input) return;
     const cfg=activeCalcConfig();
-    const original=String(input.value||'0');
+    const original='0';
+    queuedGoalOptimizerJob=null;
+    ++optimizerUpdateGeneration;
     const halfDayMs=12*60*60*1000;
     const maxHalfSteps=Math.max(0,Math.floor((cfg.end.getTime()-Date.now())/halfDayMs));
     const targetStars=Math.max(0,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
-    btn.disabled=true;
-    btn.textContent='…';
     btn.setAttribute('aria-busy','true');
+    if($('finishEarlyResult')) $('finishEarlyResult').textContent='Calculating…';
     clearTimeout(calculatorUpdateTimer);
     calculatorUpdateTimer=null;
     // COOPERATIVE_FINISH_EARLY_MAX_V4: Max participates in the same visible,
@@ -1141,8 +1134,8 @@ async function findMaxFinishEarly(){
       if(!fullSeasonPossible){
         input.value=original;
         finishOptimizerJob(optimizerJob,'done');
-        await runCalculatorUpdateSettled();
-        lockFinishEarlyMaxForPurchasePlan();
+        await runCalculatorUpdateSettled(true);
+        showFinishEarlyPurchaseHint();
         return;
       }
       let lo=0,hi=maxHalfSteps,probe=0;
@@ -1170,12 +1163,12 @@ async function findMaxFinishEarly(){
       await checkpoint(true);
       finishOptimizerJob(optimizerJob,'done');
       // One full cooperative solve only, after the cheap binary search finds the cutoff.
-      await runCalculatorUpdateSettled();
+      await runCalculatorUpdateSettled(true);
       btn.title=lo>0
         ? `Maximum no-extra-purchase finish-early value: ${lo/2} days. Uses your configured Realm/Shop routine but no additional recommended Realm purchases.`
         : 'The current target needs the full remaining season without extra Realm purchases.';
     }catch(err){
-      input.value=original;
+      if(activeOptimizerJob===optimizerJob) input.value=original;
       if(err instanceof OptimizerCancelledError || optimizerJob.cancelled){
         finishOptimizerJob(optimizerJob,'cancelled');
         // Keep the previously completed result. Do not immediately launch another heavy solve.
@@ -1186,9 +1179,8 @@ async function findMaxFinishEarly(){
         btn.title='Could not calculate the no-extra-purchase maximum from the current inputs.';
       }
     }finally{
-      if(btn.dataset.maxLocked!=='true') btn.disabled=false;
-      btn.textContent='Max';
       btn.removeAttribute('aria-busy');
+      renderFinishEarlyResult();
     }
   }
 
@@ -1276,6 +1268,7 @@ function formatUpgradeCard(levels,options){
 }
 
 async function updateCalculator(){
+    renderFinishEarlyResult();
     if($('resultStamina')) $('resultStamina').hidden=true;
     // Clamp impossible manual values before any expensive solve starts.
     syncFinishEarlyInputLimit(activeCalcConfig(),true);
@@ -1771,7 +1764,7 @@ function scheduleCalculatorUpdate(delay=120){
     calculatorRunsScheduled++;
     calculatorUpdateTimer=setTimeout(async()=>{
       calculatorUpdateTimer=null;
-      try{ await updateCalculator(); }
+      try{ await runCalculatorUpdateSettled(); }
       catch(err){ if(!(err instanceof OptimizerCancelledError)) console.error('CALC_SETTLE_PROBE_V1: update failed',err); }
       finally{ calculatorRunsSettled++; }
     },delay);
@@ -1779,7 +1772,7 @@ function scheduleCalculatorUpdate(delay=120){
 
 function setupCalculator(){
     document.getElementById('calculatorSection')?.addEventListener('focusin',e=>{
-      if(e.target?.matches?.('input') && e.target.id!=='targetStars' && e.target.id!=='finishEarlyDays'){
+      if(e.target?.matches?.('input') && e.target.id!=='targetStars' && e.target.id!=='finishEarlyDays' && e.target.id!=='finishEarlyAuto'){
         // PERFORMANCE_STABILIZATION_V1: age under the pre-edit rates, but do not run the
         // expensive optimizer just for tabbing/clicking between account-state fields.
         // Target Primostars is only a goal selector and must not mutate the snapshot clock.
@@ -1792,38 +1785,7 @@ function setupCalculator(){
     INPUT_IDS.forEach(id=>{
       const el=$(id);
       if(!el) return;
-      if(id==='finishEarlyDays'){
-        /* FINISH_EARLY_COMMIT_ON_BLUR_V1
-           Finish Early can trigger an expensive optimizer solve, so never recalculate while
-           the user is still typing or clicking the number spinner. Commit only when editing
-           is explicitly finished: Enter blurs the field; Tab and clicking/tapping elsewhere
-           naturally fire blur. This is a planning preference and never moves snapshot time. */
-        const commitFinishEarly=()=>{
-          // FINISH_EARLY_CANCEL_CLAMP_V1: normalize visibly before starting any heavy solve.
-          syncFinishEarlyInputLimit(activeCalcConfig(),true);
-          const value=finishEarlyDaysValue();
-          el.value=String(value);
-          resetMaxAchievableUi();
-          saveState();
-          // FINISH_EARLY_PROGRESS_V1: Finish Early launches the same heavy optimizer as a goal change,
-          // so show the cancellable calculating panel instead of making the UI appear frozen.
-          queueRegularGoalOptimizerProgress();
-          requestAnimationFrame(()=>scheduleCalculatorUpdate(0));
-        };
-        // Do not let a manually typed value sit above the physical season-time ceiling.
-        el.addEventListener('input',()=>{
-          const raw=Number(el.value),max=maxFinishEarlyDays(activeCalcConfig());
-          if(Number.isFinite(raw)&&raw>max) el.value=String(max);
-        });
-        el.addEventListener('blur',commitFinishEarly);
-        el.addEventListener('keydown',ev=>{
-          if(ev.key==='Enter'){
-            ev.preventDefault();
-            el.blur();
-          }
-        });
-        return;
-      }
+      if(id==='finishEarlyDays') return; // Computed cutoff, stored for projection and persistence.
       if(id==='staminaMode'){
         el.addEventListener('change',()=>{resetMaxAchievableUi();markManualSnapshot(id);scheduleCalculatorUpdate(0);});
         return;
@@ -1831,8 +1793,7 @@ function setupCalculator(){
       el.addEventListener('change',()=>{
         normalizeCompactNumberInput(id);
         if(id==='targetStars'){
-          // GOAL_CHANGE_FINISH_EARLY_RESET_V1: always evaluate a newly entered goal with
-          // the full remaining season. A previous Max cutoff is only valid for its old goal.
+          // Automatic early finish always starts from the full season for the new goal.
           if(resetFinishEarlyForGoalChange()) resetMaxAchievableUi();
           saveState();
           if($('optimizerSummary')) $('optimizerSummary').textContent='Updating goal…';
@@ -1856,7 +1817,11 @@ function setupCalculator(){
        accidentally replaced this block, preventing navigation/timeline initialization. */
     CHECK_IDS.forEach(id=>$(id)?.addEventListener('change',()=>{
       resetMaxAchievableUi();
-      markManualSnapshot(id);
+      if(id==='finishEarlyAuto'){
+        $('finishEarlyDays').value='0';
+        renderFinishEarlyResult();
+        queueRegularGoalOptimizerProgress();
+      }else markManualSnapshot(id);
       saveState();
       if(calculatorInitialized) scheduleCalculatorUpdate(0);
       else initializeCalculatorIfNeeded();
@@ -1878,7 +1843,6 @@ function setupCalculator(){
     $('confirmSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();confirmCurrentSeasonSnapshot();});
     $('resetSeasonSnapshot')?.addEventListener('click',()=>{resetMaxAchievableUi();resetCalculator();});
     $('findMaxStars')?.addEventListener('click',findMaxAchievableStars);
-    $('finishEarlyMax')?.addEventListener('click',findMaxFinishEarly);
     $('targetMessage')?.addEventListener('click',e=>{
       const btn=e.target.closest?.('.applyRealmRecommendation');
       if(btn) applyRecommendedRealmRefreshes(btn);

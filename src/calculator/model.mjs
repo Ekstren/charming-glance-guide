@@ -101,7 +101,7 @@ export const S2_SCORING_START_DEFAULTS=Object.freeze({
     refinedOreCurrent:'',exactSkillLevels:'',exactRelicLevels:'',exactFantoLevels:''
   });
 
-export const S2_SCORING_START_CHECKS=Object.freeze({});
+export const S2_SCORING_START_CHECKS=Object.freeze({finishEarlyAuto:false});
 
 /* S2_ZERO_SCORE_DEFAULTS_V1
      The assumed scoring-start profile sits exactly on every S2 scoring floor. It is a
@@ -172,7 +172,7 @@ export const INPUT_IDS = [
     'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels','exactGearLevels'
   ];
 
-export const CHECK_IDS = [];
+export const CHECK_IDS = ['finishEarlyAuto'];
 
 export const defaults = Object.create(null);
 

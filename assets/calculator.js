@@ -185,7 +185,7 @@ var SxsCalculator = (() => {
     exactRelicLevels: "",
     exactFantoLevels: ""
   });
-  var S2_SCORING_START_CHECKS = Object.freeze({});
+  var S2_SCORING_START_CHECKS = Object.freeze({ finishEarlyAuto: false });
   function validateS2ScoringStartDefaults() {
     const d = S2_SCORING_START_DEFAULTS, c = CALC_SEASONS.s2, w = c.weights;
     const gear = Array(5).fill(Number(d.gearLevel) || 0);
@@ -329,7 +329,7 @@ var SxsCalculator = (() => {
     "exactFantoLevels",
     "exactGearLevels"
   ];
-  var CHECK_IDS = [];
+  var CHECK_IDS = ["finishEarlyAuto"];
   var defaults = /* @__PURE__ */ Object.create(null);
   var COMPACT_NUMBER_INPUT_IDS = /* @__PURE__ */ new Set([
     "charExp",
@@ -2627,6 +2627,7 @@ var SxsCalculator = (() => {
             if (state.exactGearLevels === void 0 && new Set(legacy).size > 1) state.exactGearLevels = legacy.join(", ");
           }
         }
+        if (state.finishEarlyAuto === void 0) state.finishEarlyAuto = Number(state.finishEarlyDays) > 0;
         INPUT_IDS.forEach((id) => {
           if (state[id] !== void 0 && __calculatorDeps.$(id)) __calculatorDeps.$(id).value = state[id];
         });
@@ -4015,9 +4016,9 @@ var SxsCalculator = (() => {
   var calculatorRunsScheduled = 0;
   var calculatorRunsSettled = 0;
   if (typeof window !== "undefined") window.__sxsCalculatorSettledV1 = () => calculatorRunsScheduled === calculatorRunsSettled;
-  function runCalculatorUpdateSettled() {
+  function runCalculatorUpdateSettled(skipFinishEarly = false) {
     calculatorRunsScheduled++;
-    return Promise.resolve(updateCalculator()).catch((err) => {
+    return Promise.resolve(!skipFinishEarly && $("finishEarlyAuto")?.checked ? findMaxFinishEarly() : updateCalculator()).catch((err) => {
       if (!(err instanceof OptimizerCancelledError)) console.error("CALC_SETTLE_PROBE_V1: update failed", err);
     }).finally(() => {
       calculatorRunsSettled++;
@@ -4187,26 +4188,19 @@ var SxsCalculator = (() => {
       btn.textContent = "Find max achievable";
     }
     if (status) status.textContent = "Shows the maximum with your selected daily Realm plan and the hard maximum using all remaining Realm capacity.";
-    const finishBtn = $("finishEarlyMax"), finishHint = $("finishEarlyMaxHint");
-    if (finishBtn?.dataset.maxLocked === "true") {
-      delete finishBtn.dataset.maxLocked;
-      finishBtn.disabled = false;
-      finishBtn.title = "Find the maximum half-day finish-early value that still reaches the selected Primostar target";
-    }
+    const finishHint = $("finishEarlyMaxHint");
     if (finishHint) finishHint.hidden = true;
   }
-  function lockFinishEarlyMaxForPurchasePlan() {
-    const btn = $("finishEarlyMax"), hint = $("finishEarlyMaxHint");
-    if (!btn) return;
-    btn.dataset.maxLocked = "true";
-    btn.disabled = true;
-    btn.textContent = "Max";
-    btn.title = "Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.";
-    btn.removeAttribute("aria-busy");
+  function showFinishEarlyPurchaseHint() {
+    const hint = $("finishEarlyMaxHint");
     if (hint) {
-      hint.textContent = "Earliest finish with your current plan. Increase daily Material Realm purchases to finish sooner.";
+      hint.textContent = "This goal needs the full season or additional Material Realm purchases.";
       hint.hidden = false;
     }
+  }
+  function renderFinishEarlyResult() {
+    const result = $("finishEarlyResult");
+    if (result) result.textContent = $("finishEarlyAuto")?.checked ? finishEarlyDaysValue() > 0 ? `${finishEarlyDaysValue()} days early` : "Full season needed" : "Full season";
   }
   function buildMaxAchievableSnapshot() {
     const cfg = activeCalcConfig();
@@ -4370,16 +4364,17 @@ var SxsCalculator = (() => {
     return false;
   }
   async function findMaxFinishEarly() {
-    const btn = $("finishEarlyMax"), input = $("finishEarlyDays");
-    if (!btn || !input || btn.disabled) return;
+    const btn = $("finishEarlyAuto"), input = $("finishEarlyDays");
+    if (!btn?.checked || !input) return;
     const cfg = activeCalcConfig();
-    const original = String(input.value || "0");
+    const original = "0";
+    queuedGoalOptimizerJob = null;
+    ++optimizerUpdateGeneration;
     const halfDayMs = 12 * 60 * 60 * 1e3;
     const maxHalfSteps = Math.max(0, Math.floor((cfg.end.getTime() - Date.now()) / halfDayMs));
     const targetStars = Math.max(0, Math.floor(n("targetStars", cfg.key === "s2" ? 680 : 200)));
-    btn.disabled = true;
-    btn.textContent = "…";
     btn.setAttribute("aria-busy", "true");
+    if ($("finishEarlyResult")) $("finishEarlyResult").textContent = "Calculating…";
     clearTimeout(calculatorUpdateTimer);
     calculatorUpdateTimer = null;
     const optimizerJob = beginOptimizerJob(targetStars);
@@ -4396,8 +4391,8 @@ var SxsCalculator = (() => {
       if (!fullSeasonPossible) {
         input.value = original;
         finishOptimizerJob(optimizerJob, "done");
-        await runCalculatorUpdateSettled();
-        lockFinishEarlyMaxForPurchasePlan();
+        await runCalculatorUpdateSettled(true);
+        showFinishEarlyPurchaseHint();
         return;
       }
       let lo = 0, hi = maxHalfSteps, probe = 0;
@@ -4422,10 +4417,10 @@ var SxsCalculator = (() => {
       if (detail) detail.textContent = `Max found: ${lo / 2} days early · running final plan`;
       await checkpoint(true);
       finishOptimizerJob(optimizerJob, "done");
-      await runCalculatorUpdateSettled();
+      await runCalculatorUpdateSettled(true);
       btn.title = lo > 0 ? `Maximum no-extra-purchase finish-early value: ${lo / 2} days. Uses your configured Realm/Shop routine but no additional recommended Realm purchases.` : "The current target needs the full remaining season without extra Realm purchases.";
     } catch (err) {
-      input.value = original;
+      if (activeOptimizerJob === optimizerJob) input.value = original;
       if (err instanceof OptimizerCancelledError || optimizerJob.cancelled) {
         finishOptimizerJob(optimizerJob, "cancelled");
         saveState();
@@ -4435,9 +4430,8 @@ var SxsCalculator = (() => {
         btn.title = "Could not calculate the no-extra-purchase maximum from the current inputs.";
       }
     } finally {
-      if (btn.dataset.maxLocked !== "true") btn.disabled = false;
-      btn.textContent = "Max";
       btn.removeAttribute("aria-busy");
+      renderFinishEarlyResult();
     }
   }
   var lastRequestedTargetStars = null;
@@ -4470,6 +4464,7 @@ var SxsCalculator = (() => {
     return formatLevelMix(levels, options).replaceAll(" · ", "\n");
   }
   async function updateCalculator() {
+    renderFinishEarlyResult();
     if ($("resultStamina")) $("resultStamina").hidden = true;
     syncFinishEarlyInputLimit(activeCalcConfig(), true);
     const updateGeneration = ++optimizerUpdateGeneration;
@@ -4999,7 +4994,7 @@ var SxsCalculator = (() => {
     calculatorUpdateTimer = setTimeout(async () => {
       calculatorUpdateTimer = null;
       try {
-        await updateCalculator();
+        await runCalculatorUpdateSettled();
       } catch (err) {
         if (!(err instanceof OptimizerCancelledError)) console.error("CALC_SETTLE_PROBE_V1: update failed", err);
       } finally {
@@ -5009,36 +5004,14 @@ var SxsCalculator = (() => {
   }
   function setupCalculator() {
     document.getElementById("calculatorSection")?.addEventListener("focusin", (e) => {
-      if (e.target?.matches?.("input") && e.target.id !== "targetStars" && e.target.id !== "finishEarlyDays") {
+      if (e.target?.matches?.("input") && e.target.id !== "targetStars" && e.target.id !== "finishEarlyDays" && e.target.id !== "finishEarlyAuto") {
         rollSnapshotForward(Date.now(), true);
       }
     });
     INPUT_IDS.forEach((id) => {
       const el = $(id);
       if (!el) return;
-      if (id === "finishEarlyDays") {
-        const commitFinishEarly = () => {
-          syncFinishEarlyInputLimit(activeCalcConfig(), true);
-          const value = finishEarlyDaysValue();
-          el.value = String(value);
-          resetMaxAchievableUi();
-          saveState();
-          queueRegularGoalOptimizerProgress();
-          requestAnimationFrame(() => scheduleCalculatorUpdate(0));
-        };
-        el.addEventListener("input", () => {
-          const raw = Number(el.value), max = maxFinishEarlyDays(activeCalcConfig());
-          if (Number.isFinite(raw) && raw > max) el.value = String(max);
-        });
-        el.addEventListener("blur", commitFinishEarly);
-        el.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter") {
-            ev.preventDefault();
-            el.blur();
-          }
-        });
-        return;
-      }
+      if (id === "finishEarlyDays") return;
       if (id === "staminaMode") {
         el.addEventListener("change", () => {
           resetMaxAchievableUi();
@@ -5070,7 +5043,11 @@ var SxsCalculator = (() => {
     });
     CHECK_IDS.forEach((id) => $(id)?.addEventListener("change", () => {
       resetMaxAchievableUi();
-      markManualSnapshot(id);
+      if (id === "finishEarlyAuto") {
+        $("finishEarlyDays").value = "0";
+        renderFinishEarlyResult();
+        queueRegularGoalOptimizerProgress();
+      } else markManualSnapshot(id);
       saveState();
       if (calculatorInitialized) scheduleCalculatorUpdate(0);
       else initializeCalculatorIfNeeded();
@@ -5097,7 +5074,6 @@ var SxsCalculator = (() => {
       resetCalculator();
     });
     $("findMaxStars")?.addEventListener("click", findMaxAchievableStars);
-    $("finishEarlyMax")?.addEventListener("click", findMaxFinishEarly);
     $("targetMessage")?.addEventListener("click", (e) => {
       const btn = e.target.closest?.(".applyRealmRecommendation");
       if (btn) applyRecommendedRealmRefreshes(btn);
