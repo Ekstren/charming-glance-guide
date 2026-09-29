@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1552498993458577522",
+  "last_message_id": "1554447267342192763",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -293,8 +293,8 @@
           "filename": "space_api_box_stream_download_preview_WXjbbZp2MoWeDhxRbtCcJBs5n6b_.png",
           "content_type": "image/png",
           "size": 3224575,
-          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1546472804759642122/space_api_box_stream_download_preview_WXjbbZp2MoWeDhxRbtCcJBs5n6b_.png?ex=6abc40c8&is=6abaef48&hm=d316b3126ed40e76424fdc05092d8d372d474250bd1eeaf883230c475c8ea169&",
-          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1546472804759642122/space_api_box_stream_download_preview_WXjbbZp2MoWeDhxRbtCcJBs5n6b_.png?ex=6abc40c8&is=6abaef48&hm=d316b3126ed40e76424fdc05092d8d372d474250bd1eeaf883230c475c8ea169&",
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1546472804759642122/space_api_box_stream_download_preview_WXjbbZp2MoWeDhxRbtCcJBs5n6b_.png?ex=6abce988&is=6abb9808&hm=743b2ee890b20546349ef118109489427344a7e56d5aae8b6e43fb03eb3b6228&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1546472804759642122/space_api_box_stream_download_preview_WXjbbZp2MoWeDhxRbtCcJBs5n6b_.png?ex=6abce988&is=6abb9808&hm=743b2ee890b20546349ef118109489427344a7e56d5aae8b6e43fb03eb3b6228&",
           "width": 2208,
           "height": 1242
         }
@@ -693,6 +693,28 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1552498993458577522"
+    },
+    {
+      "id": "1554447267342192763",
+      "timestamp": "2026-09-29T10:58:28.768000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# Gift Code Rewards @Gift Codes \nDear Adventurers,\n\nWe have prepared a special gift code for all players! Claim your rewards before the expiration time.\n\nGift Code:  VIGARD\nValid Period: Until October 6, 00:00 (UTC-5)\n iOS users redeem codes [click here](https://webcp01.boltray.com/zjcs/act/202607/exch/)",
+      "author": {
+        "id": "1544367459052556423",
+        "username": "Sword x Staff #🎁｜gift-code",
+        "bot": true
+      },
+      "webhook_id": "1544367459052556423",
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "message_id": "1554443936532267039",
+        "channel_id": "1427172717718929458",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1554447267342192763"
     }
   ]
 }
