@@ -159,7 +159,7 @@ function timelineSummaryText(e){
     if(title==='Gift code · CRYSTAL'){const t=Date.parse(String((e&&e[8])||''));return `Community-reported rewards: 300 Raw Ore + 1 Stellatie · reported expiry ${Number.isFinite(t)?localShortDateTimeLabel(t):'Sep. 15'}.`;}
     if(title==='Gift code · AETHYRIS'){const t=Date.parse(String((e&&e[8])||''));return `Community-reported rewards: 250 Chrono Sand + 1 Bond Trinket · expired ${Number.isFinite(t)?localShortDateTimeLabel(t):'Sep. 22'}.`;}
     if(title==='Gift code · SYLVIA'){const t=Date.parse(String((e&&e[8])||''));return `Community-reported rewards: 2,000 Rolla + 120 Dawnium · official cutoff ${Number.isFinite(t)?localShortDateTimeLabel(t):'Sep. 29'}.`;}
-    if(title==='Gift code · VIGARD'){const t=Date.parse(String((e&&e[8])||''));return `Official Global code · expires ${Number.isFinite(t)?localShortDateTimeLabel(t):'Oct. 6'} · rewards not listed.`;}
+    if(title==='Gift code · VIGARD'){const t=Date.parse(String((e&&e[8])||''));return `Community-reported reward: 160 Dawnium · official cutoff ${Number.isFinite(t)?localShortDateTimeLabel(t):'Oct. 6'}.`;}
     if(title==='Official Top-Up Platform events open') return 'Official Top-Up Platform campaigns: Cumulative Top-Up Lottery and Daily Top-Up Sign-In.';
     if(title==='Vegetables Fairy Collab Pt. 2') return 'Part 2 rewards: daily sign-in, Veggie Shop/Shuffle, Lemon Whale purification, Cabbage Dog Fantomon, and Visages.';
     if(title==='Thunderous Crusade') return 'Global preview (Sep. 23): Zeus Companion, 62 free Wheel Tickets, 7-day sign-in, story, Conquest, and daily challenges. Check local dates in game.';
