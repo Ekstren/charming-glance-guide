@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1556970171006980108",
+  "last_message_id": "1558406642935136309",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -737,6 +737,28 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1556970171006980108"
+    },
+    {
+      "id": "1558406642935136309",
+      "timestamp": "2026-10-10T09:11:37.471000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# Reporting Bots to Staff  @everyone\nWe've received numerous player reports of a large number of bots on our servers. \nTo address this issue, we've launched a bot reporting channel. <#1507275240005435504>\n\n-Please remember to tag your report with the **\"bot-report\"** label.\n-Please include screenshots and a reason for your report (the more detailed your information, the easier it will be for us to review the bot report)  <:akane_thanks:1509381725510176900> \n\nOur team will be reviewing and processing your reports weekly. If you have any further questions, please feel free to contact us!\n\n**Eliminating these annoying bots/hackers from the community is crucial, not only for community security but also for the peace of mind of our members. Thank you for your support!**",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "message_id": "1558405291001782273",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1558406642935136309"
     }
   ]
 }
