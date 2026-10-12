@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1559023572490518621",
+  "last_message_id": "1559160815561613314",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -812,6 +812,64 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1559023572490518621"
+    },
+    {
+      "id": "1559160815561613314",
+      "timestamp": "2026-10-12T11:08:26.237000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# ✨ Join the Sword × Staff Creator Partnership Program and Earn Exclusive Rewards! ✨\nDear Adventurers and Creators,\nLove playing Sword × Staff and creating content along the way? Turn that passion into rewards, exclusive perks, and opportunities to be featured by the official team!\nThe Sword × Staff Creator Partnership Program is now live! Whether you're a streamer, guide creator, fan artist, or tool developer, we'd love to have you join us and help bring the world of Kanstein to life in new ways.\n\n🎯 Who We're Looking For\nWe're looking for creators who are passionate about Sword × Staff and create original content in the following areas:\n🎬 Videos & Livestreams: Gameplay, guides, commentary, fan-made videos, livestreams, and more.\n🎨 Fan Art: Character and environment art, chibi illustrations, comics, and other fan creations.\n📝 Visual & Written Guides: Class guides, gameplay tutorials, tips, fun facts, and other informative content.\n🛠️ Tools: Wikis, event calendars, seasonal timelines, and other useful tools.\n💡 Note: Your account must already have at least 1 piece of Sword × Staff content when you apply.\n\n🎁 What Creators Get\n💰 Creator Rewards: Earn rewards based on both the number of pieces you create and their performance, with incentive programs tailored to different content types and platforms.\n👑 Exclusive Creator Recognition: Unlock the Official Creator role on our Discord server and get featured as a Recommended Creators in the in-game community.\n🚀 Official Promotion: Outstanding content may be featured across our official channels, including social media reposts and event preview posts. Featured works will be selected based on performance, relevance, and overall quality.\n\n📝 How to Apply\nThe Creator Partnership Program is open on an ongoing basis!\n1. For details on creator categories, requirements, and rewards, see the [Creator Partnership Guidelines](https://docs.google.com/document/d/1E_xGRURaHzx0Bqyvc3Jfl-iFl8B9lb4Xh9Orth9GtNY/edit?tab=t.0).\n2. Submit your application through the [Application Form](https://forms.gle/ZMLqxkauQdnVZcs59)\nApplication Review: Applications are reviewed twice a month.\nOfficial Contact: If your application is approved, our team will contact you within 7 business days after the review to discuss long-term collaboration and the Creator Partnership Agreement. Please make sure your contact information is accurate and up to date.\n\nThank you to every adventurer and creator for your passion and support. We can't wait to see what you create and build an even more vibrant Sword × Staff community together!\n\nSword × Staff Operations Team",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1E_xGRURaHzx0Bqyvc3Jfl-iFl8B9lb4Xh9Orth9GtNY/edit?tab=t.0",
+          "title": "Creator Partnership Program",
+          "description": "Dear Creator, We sincerely invite you to join our Creator Partnership Program and contribute to a thriving content community for Sword x Staff! Please make sure to review all terms and conditions of this program. By joining this program, you acknowledge that you have read, understood, and agreed...",
+          "thumbnail": {
+            "url": "https://lh7-us.googleusercontent.com/docs/AHkbwyKUsx6yESOUF52RSqRuY6kWo-hStMqlSyiD_haYm86yKQqozlYgiZmIKQag0I1sA6kidWnV-Bum13TJRuryvjiYMDjYh-XEkbjPufPb_9CdHyjY0b3J=w1200-h630-p",
+            "proxy_url": "https://images-ext-1.discordapp.net/external/r2CbjVoWsIMH9KDnhly8elNtmo3G7YvRnqxsBT7Ajyk/https/lh7-us.googleusercontent.com/docs/AHkbwyKUsx6yESOUF52RSqRuY6kWo-hStMqlSyiD_haYm86yKQqozlYgiZmIKQag0I1sA6kidWnV-Bum13TJRuryvjiYMDjYh-XEkbjPufPb_9CdHyjY0b3J%3Dw1200-h630-p",
+            "width": 1200,
+            "height": 630
+          }
+        },
+        {
+          "type": "link",
+          "url": "https://forms.gle/ZMLqxkauQdnVZcs59",
+          "title": "Sword × Staff Creator Partnership Program",
+          "description": "Thank you for your support and encouragement for Sword & Staff! \nWe are recruiting creators who love games and are willing to share exciting content in the community to join us\n\nHere are the details for creator collaboration: \nhttps://docs.google.com/document/d/1E_xGRURaHzx0Bqyvc3Jfl-iFl8B9lb4Xh9Orth9GtNY/edit?tab=t.0\n!! [ Interested creators ca...",
+          "thumbnail": {
+            "url": "https://lh4.googleusercontent.com/7b8KnuK0BALLml6pA0nHYD6wpIo6AABGfT_sh6YTmQTodKp08McZfSRKYtWPpIMWt88K6xyZJXE3TOU=w1200-h630-p",
+            "proxy_url": "https://images-ext-1.discordapp.net/external/8rBzngBU9DN9hDZEnGCeRW_jHeZcIuWUVrKeRdjfCCM/https/lh4.googleusercontent.com/7b8KnuK0BALLml6pA0nHYD6wpIo6AABGfT_sh6YTmQTodKp08McZfSRKYtWPpIMWt88K6xyZJXE3TOU%3Dw1200-h630-p",
+            "width": 200,
+            "height": 200
+          }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "1559159601021321318",
+          "filename": "d7c63c1f-47a1-4830-be95-6f91c0e89e79.png",
+          "content_type": "image/png",
+          "size": 1132385,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1559159601021321318/d7c63c1f-47a1-4830-be95-6f91c0e89e79.png?ex=6ace1008&is=6accbe88&hm=64265b18126ac50e55563ee9e0b373a76dab962b38a00fc6a5d1a845675372b9&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1559159601021321318/d7c63c1f-47a1-4830-be95-6f91c0e89e79.png?ex=6ace1008&is=6accbe88&hm=64265b18126ac50e55563ee9e0b373a76dab962b38a00fc6a5d1a845675372b9&",
+          "width": 1280,
+          "height": 720
+        }
+      ],
+      "message_reference": {
+        "message_id": "1559159601717313566",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1559160815561613314"
     }
   ]
 }
