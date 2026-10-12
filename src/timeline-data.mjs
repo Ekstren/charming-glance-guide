@@ -6,6 +6,8 @@ export const timelineData = [
     // ---- Season 1 · Charming Glance / Qenu anchor + QY Maple details ----
 
     // ---- Season 2 · Loong Haven ----
+    // Official overview: https://discord.com/channels/1410146553573802088/1427172679521407056/1559021680519811125
+    ['2026-10-12',90,'Event','Wonder Flavors · Hotpot Festival','Sign in for seven days to claim the Wonder Meatballs and Wonder Konjac weapon Visage for free. The festival features the Flavor Shop, hotpot ingredients, limited-time Yum Packs, and the Stellar Plume Visage with a falling-petal effect. Official Global announcement posted Oct. 12 (UTC); this entry marks the announcement date. Exact event dates and Charming Glance availability need in-game confirmation.','event'],
     // Official Sep. 23 overview: https://discord.com/channels/1410146553573802088/1427172679521407056/1552496993010458745
     // Earlier Global announcement, Sep. 21: https://discord.com/channels/1410146553573802088/1427172679521407056/1551543191650439188
     ['2026-09-23',71,'Event','Thunderous Crusade','Official Global overview posted Sep. 23 says now live, conflicting with the earlier Sep. 25 launch notice. This date marks the announcement; Charming Glance availability and exact start/end times need in-game confirmation. Zeus Companion event: 62 free Wheel Tickets total, including 20 from Thunderous Adventure story stages and 27 from Conquest Echoes. Divine Devotions offers 7-day sign-in rewards with the Pantheon Grace Visage free on Day 1. Apotheosis Crucible has daily challenges and Hype milestones; Thunderous Vault and a Zeus Home Statue are also featured. Golden Age Visage was separately previewed as coming soon.','event'],
