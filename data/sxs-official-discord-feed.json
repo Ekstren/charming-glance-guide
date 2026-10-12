@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1558406642935136309",
+  "last_message_id": "1559023572490518621",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -759,6 +759,59 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1558406642935136309"
+    },
+    {
+      "id": "1559023572490518621",
+      "timestamp": "2026-10-12T02:03:04.939000+00:00",
+      "edited_timestamp": "2026-10-12T02:03:21.824000+00:00",
+      "type": 0,
+      "content": "# Hotpot Festival Arrived!\nHello, Adventurers! Naira here!\nGet ready to dig into Wonder Flavors!\n**📅 Sign-In Bonus**\nSign in for 7 days to claim the weapon Visage, Wonder Meatballs & Wonder Konjac, for free!\n**💕 New Visage**\nThe brand-new Stellar Plume will be available. Stand out with its unique falling-petal effect and have everyone looking your way!\n**🧁 Flavor Shop**\nEverything you need for a hotpot is here. Stock up on ingredients and cook up a piping-hot hotpot together!\n**🎁 Yum Packs**\nLimited-time packs are about to arrive. Grab hotpot ingredients and enjoy a hotpot feast together!\nA hotpot packed with endless flavors awaits! Naira will be waiting for you in Kanstein!",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1559021678858731550",
+          "filename": "EN_01.jpg",
+          "content_type": "image/jpeg",
+          "size": 699223,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1559021678858731550/EN_01.jpg?ex=6acd8f95&is=6acc3e15&hm=e37ace59c589a84d8cf62c0122303a032cb868cd7db14a9d70aeae3e7d0f39dc&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1559021678858731550/EN_01.jpg?ex=6acd8f95&is=6acc3e15&hm=e37ace59c589a84d8cf62c0122303a032cb868cd7db14a9d70aeae3e7d0f39dc&",
+          "width": 750,
+          "height": 967
+        },
+        {
+          "id": "1559021679324303561",
+          "filename": "EN_02.jpg",
+          "content_type": "image/jpeg",
+          "size": 856182,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1559021679324303561/EN_02.jpg?ex=6acd8f95&is=6acc3e15&hm=8198fc87d29a66b7589b774ccfa22036b4b4e367124825a52edb78a5d508b716&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1559021679324303561/EN_02.jpg?ex=6acd8f95&is=6acc3e15&hm=8198fc87d29a66b7589b774ccfa22036b4b4e367124825a52edb78a5d508b716&",
+          "width": 750,
+          "height": 1215
+        },
+        {
+          "id": "1559021680213499905",
+          "filename": "EN_03.jpg",
+          "content_type": "image/jpeg",
+          "size": 827761,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1559021680213499905/EN_03.jpg?ex=6acd8f95&is=6acc3e15&hm=119012397f33bfb142403f77226ae10eb812f2b609fe5348e8498339c5a2b7eb&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1559021680213499905/EN_03.jpg?ex=6acd8f95&is=6acc3e15&hm=119012397f33bfb142403f77226ae10eb812f2b609fe5348e8498339c5a2b7eb&",
+          "width": 750,
+          "height": 1328
+        }
+      ],
+      "message_reference": {
+        "message_id": "1559021680519811125",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1559023572490518621"
     }
   ]
 }
