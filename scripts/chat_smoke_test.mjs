@@ -84,6 +84,33 @@ try {
     await page.mouse.move(box.x+80,box.y+50,{steps:5});
     await page.mouse.up();
     await page.waitForFunction(() => window.__chatTestData.board.some(item => item.kind==='stroke'));
+    const strokePixel=await canvas.evaluate(el=>Array.from(el.getContext('2d').getImageData(Math.round(30/el.clientWidth*1000),Math.round(30/el.clientHeight*600),1,1).data));
+    assert.notDeepEqual(strokePixel,[255,253,251,255],'brush draws colored pixels');
+    await page.getByRole('button',{name:'Eraser',exact:true}).click();
+    assert.equal(await page.getByRole('button',{name:'Eraser',exact:true}).getAttribute('aria-pressed'),'true');
+    await page.mouse.move(box.x+30,box.y+30);
+    await page.mouse.down();
+    await page.mouse.move(box.x+80,box.y+50,{steps:5});
+    await page.mouse.up();
+    await page.waitForFunction(()=>window.__chatTestData.board.some(item=>item.color==='#f7f3ff'));
+    const erasedPixel=await canvas.evaluate(el=>Array.from(el.getContext('2d').getImageData(Math.round(30/el.clientWidth*1000),Math.round(30/el.clientHeight*600),1,1).data));
+    assert.deepEqual(erasedPixel,[255,253,251,255],'eraser restores the board background');
+    await page.getByRole('button',{name:'Draw with #f767ad',exact:true}).click();
+    assert.equal(await page.getByRole('button',{name:'Eraser',exact:true}).getAttribute('aria-pressed'),'false','choosing a color returns to drawing');
+    const beforeLongStroke=await page.evaluate(()=>window.__chatTestData.board.length);
+    await page.mouse.move(box.x+box.width*.1,box.y+box.height*.6);
+    await page.mouse.down();
+    await canvas.evaluate(el=>{
+      const box=el.getBoundingClientRect();
+      const pointerId=1;
+      for(let i=1;i<=320;i++)el.dispatchEvent(new PointerEvent('pointermove',{pointerId,clientX:box.x+box.width*(i%2?.8:.1),clientY:box.y+box.height*.6}));
+
+    });
+    await page.mouse.up();
+    await page.waitForFunction(before=>window.__chatTestData.board.length>=before+3,beforeLongStroke);
+    const chunks=await page.evaluate(before=>window.__chatTestData.board.slice(before),beforeLongStroke);
+    assert.equal(chunks.reduce((total,item)=>total+item.points.split(';').length,0),323,'long strokes retain every point and connecting endpoints');
+    assert.ok(chunks.every(item=>item.points.length<=1800),'stroke chunks fit the backend limit');
     if(screenshots)await page.screenshot({path:path.join(screenshots,`expanded-${width}.png`)});
     const drawing=await canvas.evaluate(el=>el.toDataURL());
     await page.keyboard.press('Escape');
