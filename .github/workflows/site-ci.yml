@@ -9,6 +9,9 @@ on:
       - 'src/**'
       - 'package.json'
       - 'package-lock.json'
+      - 'chat-config.json'
+      - 'firestore.rules'
+      - 'firebase.json'
       - 'data/relics.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
@@ -23,6 +26,9 @@ on:
       - 'src/**'
       - 'package.json'
       - 'package-lock.json'
+      - 'chat-config.json'
+      - 'firestore.rules'
+      - 'firebase.json'
       - 'data/relics.json'
       - 'data/pandarial-build-prep-v1.json'
       - 'data/warlords-rest-roll-guide-v1.json'
@@ -53,6 +59,7 @@ jobs:
         run: |
           python3 scripts/check_timeline_duplicates.py index.html
           node --check assets/runtime.js
+          node --check assets/chat.js
           node --check assets/companions.js
           node --check assets/builds.js
           node --check assets/build-layout-icons-v1.js
@@ -74,6 +81,8 @@ jobs:
           npx playwright install --with-deps chromium >/dev/null
       - name: Generated assets match source
         run: npm run test:build
+      - name: Chat and shared canvas browser smoke
+        run: npm run test:chat
       - name: Pacific reset boundary regression
         run: npm run test:time
       - name: Calculator module boundaries and lazy loading

@@ -1,11 +1,11 @@
 # Charming Glance Guide
 
-Sword x Staff (SxS) "Charming Glance" season planning guide and interactive calculator — a single-file static site hosted on GitHub Pages.
+Sword x Staff (SxS) "Charming Glance" season planning guide and interactive calculator, hosted on GitHub Pages.
 
 It projects your season score against a requested **Primostar target**, plans **Skill / Relic / Fantomon** upgrade slots, models **Material Realm** purchases and **Stamina** node allocation, applies the recommended **Bed EXP rollover** (34h hold + 2h final-reset boost = 36h banked for next season), and shows what happens **after** your target is reached through to season end.
 
 - **Live site:** https://Ekstren.github.io/charming-glance-guide/
-- **Stack:** plain HTML + CSS + JS, with an esbuild/PostCSS source build. `index.html` + `assets/` is the entire site.
+- **Stack:** plain HTML + CSS + JS, with an esbuild/PostCSS source build. Chat uses Firebase Anonymous Authentication and Cloud Firestore; see [chat setup](docs/chat-setup.md) before enabling it on the live site.
 
 ## What's in this repo
 
@@ -15,6 +15,7 @@ It projects your season score against a requested **Primostar target**, plans **
 | `src/app.mjs` | Lightweight site shell, Timeline and section loading. |
 | `src/calculator/` | Calculator model, search engine, saved state, rendering and controller. |
 | `src/calculator-loader.mjs` | Load-on-demand lifecycle and retry handling. |
+| `src/chat.mjs`, `src/chat-backend.mjs`, `firestore.rules` | On-demand lobby, participant-only DMs, and shared drawing board. |
 | `src/navigation.mjs`, `src/time.mjs`, `src/timeline-data.mjs` | Navigation, Pacific reset calculations and timeline content. |
 | `assets/runtime.js` | Generated lightweight site shell. |
 | `assets/calculator.js` | Generated calculator chunk, requested when its section is opened. |
