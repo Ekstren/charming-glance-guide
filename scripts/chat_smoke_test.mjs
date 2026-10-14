@@ -75,6 +75,7 @@ try {
     await page.getByRole('button',{name:'Expand drawing board'}).click();
     assert.equal(await page.getByRole('dialog',{name:'Expanded shared canvas'}).isVisible(),true);
     assert.ok(await page.getByRole('dialog',{name:'Expanded shared canvas'}).evaluate(el=>el.scrollWidth<=el.clientWidth+1),'expanded drawing controls overflow');
+    if(width>620)assert.ok(await page.getByRole('dialog',{name:'Expanded shared canvas'}).evaluate(el=>{const r=el.getBoundingClientRect();return Math.abs(r.x-(document.documentElement.clientWidth-r.width)/2)<2;}),'desktop drawing board is not centered');
     const box = await canvas.boundingBox();
     assert.ok(box && box.width>100, `${width}px canvas is too narrow`);
     assert.ok(box.width>originalBox.width+5,`${width}px expanded board did not grow`);
