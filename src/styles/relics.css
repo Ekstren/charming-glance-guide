@@ -1,5 +1,6 @@
 /* Relic gallery uses the existing site frame and light/dark palette. */
-body .sectionSwitch { grid-template-columns:repeat(5,minmax(0,1fr)) !important; }
+body .sectionSwitch { grid-template-columns:repeat(6,minmax(0,1fr)) !important; }
+@media (max-width: 800px) { body .sectionSwitch { grid-template-columns:repeat(3,minmax(0,1fr)) !important; } }
 #relicsSection { width:100%; max-width:var(--site-width); margin:16px auto 64px; padding-inline:var(--site-gutter); color:var(--reading-text); }
 .relicHeader { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:12px; padding:16px 20px; border:1px solid var(--line); border-radius:18px; background:var(--surface); }
 .relicHeader h1 { font-size:23px; font-weight:650; letter-spacing:-.03em; margin:0 0 5px; }

@@ -6,6 +6,7 @@ import { localShortDateTimeLabel,nextResetLocalLabel } from './display-time.mjs'
 import './timeline-patches.mjs';
 import {openGuide} from './guide-loader.mjs';
 import {openCalculator} from './calculator-loader.mjs';
+import {openChat, closeChat} from './chat-loader.mjs';
 import {loadTheme,saveTheme} from './preferences.mjs';
 const $=id=>document.getElementById(id);
 const SECTION_STORAGE_KEY='sxs-active-section';
@@ -333,10 +334,11 @@ function setupTimeline(){
   }
 
 function setSection(name){
-    const map={timeline:'timelineSection',builds:'buildsSection',companions:'companionsSection',relics:'relicsSection',calculator:'calculatorSection'};
+    const map={timeline:'timelineSection',builds:'buildsSection',companions:'companionsSection',relics:'relicsSection',calculator:'calculatorSection',chat:'chatSection'};
     if(!map[name]) name='timeline';
     const activeSection=document.querySelector('.sectionSwitch button[data-section].active')?.dataset.section;
     if(activeSection===name && !$(map[name]).hidden) return;
+    if(activeSection==='chat' && name!=='chat') closeChat();
     document.querySelectorAll('.siteSection').forEach(s=>s.hidden=true);
     $(map[name]).hidden=false;
     document.querySelectorAll('.sectionSwitch button[data-section]').forEach(b=>{const active=b.dataset.section===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
@@ -344,11 +346,12 @@ function setSection(name){
     window.scrollTo({top:0,behavior:'smooth'});
     if(name==='builds'||name==='companions'||name==='relics') openGuide(name);
     if(name==='calculator') openCalculator();
+    if(name==='chat') openChat();
   }
 function updateThemeButton(){ $('themeToggle').textContent=document.documentElement.dataset.theme==='dark'?'☀':'☾'; }
 loadTheme();
 setupNavigation({$,setSection,saveState:saveTheme,updateThemeButton});
 let initialSection='timeline';
-try{const saved=localStorage.getItem(SECTION_STORAGE_KEY);if(['timeline','builds','companions','relics','calculator'].includes(saved))initialSection=saved;}catch(_){}
+try{const saved=localStorage.getItem(SECTION_STORAGE_KEY);if(['timeline','builds','companions','relics','calculator','chat'].includes(saved))initialSection=saved;}catch(_){}
 setSection(initialSection);
 setupTimeline();
