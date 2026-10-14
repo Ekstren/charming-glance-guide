@@ -51,6 +51,25 @@
 #chatSection .chatSize[aria-pressed=true]{border-color:var(--selected-bg);background:var(--selected-bg);color:#fff}
 #chatSection .chatCanvasFrame{width:100%;aspect-ratio:5/3;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fffdfb}
 #chatSection .chatCanvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+#chatSection .chatComposerInput{flex:1;min-width:0}
+#chatSection .chatComposerActions{display:flex;gap:6px;align-items:end}
+#chatSection .chatEmojiToggle{font-size:20px;min-height:40px;padding:6px 9px}
+#chatSection .chatEmojiPicker{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:6px;padding:5px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+#chatSection .chatEmojiPicker[hidden]{display:none}
+#chatSection .chatEmoji{border:0;border-radius:7px;background:transparent;font-size:22px;padding:5px;min-height:40px}
+#chatSection .chatEmoji:hover{background:var(--bg)}
+#chatSection .chatConversationTab{display:flex;align-items:center;flex:0 0 auto;border:1px solid var(--line);border-radius:9px}
+#chatSection .chatConversationTab .chatTab{border:0}
+#chatSection .chatConversationTab:has(.chatTab[aria-selected=true]){background:var(--selected-bg);border-color:var(--selected-bg)}
+#chatSection .chatCloseTab{border:0;border-radius:8px;background:transparent;color:var(--reading-muted);font-size:20px;padding:3px 8px;min-width:32px;min-height:38px}
+#chatSection .chatConversationTab:has(.chatTab[aria-selected=true]) .chatCloseTab{color:#fff}
+#chatSection .chatCloseTab:hover{background:var(--bg)}
+#chatSection .chatBoardActions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex:0 0 auto}
+#chatSection .chatBoardDialog{width:min(1200px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);overflow:auto}
+#chatSection .chatBoardDialog::backdrop{background:rgba(0,0,0,.7)}
+#chatSection .chatBoardDialog .chatBoard{border:0}
+#chatSection .chatBoardDialog .chatCanvasFrame{width:min(100%,calc((100dvh - 180px)*5/3));margin-inline:auto}
+@media(max-width:620px){#chatSection .chatComposerActions{flex-direction:column}#chatSection .chatBoardHeading{flex-wrap:wrap}#chatSection .chatBoardActions{width:100%;justify-content:flex-start}#chatSection .chatBoardDialog{inset:0;width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0}#chatSection .chatBoardDialog .chatBoard{padding:12px 8px}}
 @media(max-width:900px){#chatSection .chatLayout{grid-template-columns:minmax(0,1fr)}#chatSection .chatAside{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}#chatSection .chatPanel{grid-template-rows:auto auto minmax(300px,45vh) auto}}
 @media(max-width:620px){#chatSection .chatAside{grid-template-columns:minmax(0,1fr)}#chatSection .chatPeopleList{max-height:80px}#chatSection .chatBoardHeading{align-items:center}#chatSection .chatPanel{grid-template-rows:auto auto minmax(280px,43vh) auto}}
 @media(max-width:380px){#chatSection .chatJoinForm{grid-template-columns:minmax(0,1fr)}#chatSection .chatJoinForm .chatPrimary{width:100%}#chatSection .chatComposer{gap:5px;padding:8px}#chatSection .chatComposer .chatPrimary{padding-inline:10px}#chatSection .chatSwatch{width:29px;height:29px;min-width:29px}}
