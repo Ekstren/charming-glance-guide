@@ -1,5 +1,7 @@
 # Connect the community chat
 
+The live project is `charming-glance-chat` on the no-cost Spark plan. Anonymous sign-in, the `ekstren.github.io` domain, the default Firestore database in `nam5`, and these rules were configured on October 13, 2026. Run `npm run test:chat:live` manually to check real lobby delivery, DMs, browser identity persistence, shared drawing, and denied outsider reads. This check creates two setup profiles and a few test messages; it is deliberately excluded from normal CI.
+
 The Chat tab needs Firebase because GitHub Pages cannot host a realtime database. The web app config in `chat-config.json` identifies the Firebase project; it is public configuration, not a secret. Access is controlled by Firebase Authentication and `firestore.rules`.
 
 1. In the [Firebase console](https://console.firebase.google.com/), create a project for this site. Disable Google Analytics unless you want it.

@@ -50,7 +50,11 @@ service cloud.firestore {
     }
 
     match /dms/{dmId} {
-      allow get: if signedIn() && request.auth.uid in resource.data.members;
+      // A transaction must be able to check a new conversation before creating it.
+      // Existing conversations remain readable only by their members.
+      allow get: if signedIn() && (
+        !exists(/databases/$(database)/documents/dms/$(dmId))
+        || request.auth.uid in resource.data.members);
       allow list: if signedIn() && request.query.limit <= 30
         && request.auth.uid in resource.data.members;
       allow create: if signedIn()
