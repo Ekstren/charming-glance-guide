@@ -9,6 +9,7 @@ function emit(file,text){
 }
 let calculatorVersion='';
 let chatVersion='';
+let shellVersion='';
 const chatStyles=readFileSync('src/styles/chat.css','utf8');
 const chatStyleVersion=createHash('sha256').update(chatStyles).digest('hex').slice(0,12);
 emit('assets/chat.css',chatStyles);
@@ -20,6 +21,7 @@ for(const [entry,out,globalName] of [['src/builds.mjs','assets/builds-section.js
  if(['SxsBuilds','SxsCompanions','SxsRelics'].includes(globalName))guideVersions[globalName==='SxsBuilds'?'builds':globalName==='SxsRelics'?'relics':'companions']=createHash('sha256').update(bundle.outputFiles[0].text).digest('hex').slice(0,12);
  if(globalName==='SxsCalculator')calculatorVersion=createHash('sha256').update(bundle.outputFiles[0].text).digest('hex').slice(0,12);
  if(globalName==='SxsChat')chatVersion=createHash('sha256').update(bundle.outputFiles[0].text).digest('hex').slice(0,12);
+ if(entry==='src/app.mjs')shellVersion=createHash('sha256').update(bundle.outputFiles[0].text).digest('hex').slice(0,12);
 }
 const root=postcss.root();
 for(const file of ['legacy','calculator','shared','relics'])root.append(postcss.parse(readFileSync(`src/styles/${file}.css`,'utf8'),{from:`src/styles/${file}.css`}).nodes);
@@ -45,5 +47,11 @@ root.walkComments(c=>c.remove());
 // Whitespace-only serialization; values and selector whitespace stay intact.
 root.walk(node=>{node.raws.before='';node.raws.between=node.type==='decl'?':':'';node.raws.after='';if(node.type==='decl')node.raws.important=node.important?'!important':undefined;});
 root.raws.after='';
-emit('assets/site.css',root.toString()+'\n');
+const siteStyles=root.toString()+'\n';
+emit('assets/site.css',siteStyles);
+const siteStyleVersion=createHash('sha256').update(siteStyles).digest('hex').slice(0,12);
+const html=readFileSync('index.html','utf8')
+ .replace(/(src="assets\/runtime\.js)(?:\?v=[a-f0-9]{12})?("\s*><\/script>)/,`$1?v=${shellVersion}$2`)
+ .replace(/(href="assets\/site\.css)(?:\?v=[a-f0-9]{12})?(")/,`$1?v=${siteStyleVersion}$2`);
+emit('index.html',html);
 console.log(`Assets ${check?'verified':'built'}; ${removed} superseded CSS declarations removed.`);

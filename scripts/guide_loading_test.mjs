@@ -16,6 +16,7 @@ async function fixture({saved,fail,delayed,storageBlocked=false}={}){
  page.on('pageerror',e=>errors.push(String(e)));
  await page.route('http://guide.test/**',async route=>{
   const url=new URL(route.request().url()),file=url.pathname.slice(1);requests.push(file);
+  if(file==='assets/runtime.js'||file==='assets/site.css')assert.match(url.searchParams.get('v'),/^[a-f0-9]{12}$/,'shell assets need content versions');
   if(file.endsWith('-section.js')){
    assert.match(url.searchParams.get('v'),/^[a-f0-9]{12}$/);
    if(file===fail&&requests.filter(x=>x===file).length===1)return route.abort();
