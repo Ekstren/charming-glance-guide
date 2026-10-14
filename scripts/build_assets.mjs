@@ -10,7 +10,7 @@ function emit(file,text){
 let calculatorVersion='';
 let chatVersion='';
 let shellVersion='';
-const chatStyles=readFileSync('src/styles/chat.css','utf8');
+const chatStyles=readFileSync('src/styles/chat.css','utf8').replaceAll('\r\n','\n');
 const chatStyleVersion=createHash('sha256').update(chatStyles).digest('hex').slice(0,12);
 emit('assets/chat.css',chatStyles);
 const guideVersions={};
