@@ -82,3 +82,6 @@
 #chatSection .chatOwnerActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 #chatSection .chatOwnerId{overflow-wrap:anywhere;font-size:12px}
 #chatSection .chatOwnerPanel>.chatSubtle{margin-top:8px}
+
+#chatSection .chatOwnerConfirm{width:min(420px,calc(100% - 32px));margin:auto;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink)}
+#chatSection .chatOwnerConfirm::backdrop{background:rgb(0 0 0 / .6)}

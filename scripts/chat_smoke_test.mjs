@@ -191,6 +191,10 @@ try {
     const originalLobbyCount=await page.locator('.chatMessage').count();
     assert.ok(originalLobbyCount>0,'lobby fixture has history to clear');
     await page.getByRole('button',{name:'Clear lobby for everyone',exact:true}).click();
+    await page.getByRole('button',{name:'Cancel',exact:true}).click();
+    assert.equal(await page.locator('.chatMessage').count(),originalLobbyCount,'canceling cleanup preserves lobby history');
+    await page.getByRole('button',{name:'Clear lobby for everyone',exact:true}).click();
+    await page.getByRole('button',{name:'Clear lobby',exact:true}).click();
     await page.waitForFunction(()=>document.querySelectorAll('.chatMessage').length===0);
     await input.fill('After cleanup');
     await input.press('Enter');

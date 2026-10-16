@@ -34,6 +34,11 @@ function shell(){
  const status=el('p','chatStatus');status.setAttribute('role','status');status.hidden=true;
  host.append(intro,el('div','chatOwnerArea'),status,el('div','chatBody'));
 }
+function confirmLobbyCleanup(){
+ const dialog=el('dialog','chatOwnerConfirm');dialog.setAttribute('aria-labelledby','chatCleanupTitle');dialog.append(el('h2','','Clear lobby for everyone?'));dialog.firstChild.id='chatCleanupTitle';dialog.append(el('p','chatHelp','Current lobby messages will be hidden for everyone. You can undo this cleanup.'));
+ const actions=el('div','chatOwnerActions');const cancel=button('Cancel','chatSubtle',()=>dialog.close());const clear=button('Clear lobby','chatPrimary',()=>dialog.close('clear'));actions.append(cancel,clear);dialog.append(actions);host.append(dialog);
+ return new Promise(resolve=>{dialog.addEventListener('close',()=>{const confirmed=dialog.returnValue==='clear';dialog.remove();resolve(confirmed);},{once:true});dialog.showModal();cancel.focus();});
+}
 function renderOwnerControls(){
  const area=host.querySelector('.chatOwnerArea');if(!area||!ready)return;area.replaceChildren();
  const panel=el('details','chatOwnerPanel');panel.append(el('summary','','Owner controls'));
@@ -48,7 +53,7 @@ function renderOwnerControls(){
   panel.append(el('p','chatHelp','This Google account has not been registered as the site owner.'),el('p','chatOwnerId',`Account ID: ${backend.uid}`));
  }else{
   const actions=el('div','chatOwnerActions');
-  const action=async(method,message)=>{if(ownerBusy)return;if(message&&!window.confirm(message))return;ownerBusy=true;renderOwnerControls();try{await backend[method]();showStatus(method==='clearLobby'?'Lobby cleared for everyone. You can undo this cleanup.':'Previous lobby history restored.');}catch(error){showStatus(errorText(error),true);}finally{ownerBusy=false;renderOwnerControls();}};
+  const action=async(method,message)=>{if(ownerBusy)return;ownerBusy=true;try{if(message&&!await confirmLobbyCleanup())return;renderOwnerControls();await backend[method]();showStatus(method==='clearLobby'?'Lobby cleared for everyone. You can undo this cleanup.':'Previous lobby history restored.');}catch(error){showStatus(errorText(error),true);}finally{ownerBusy=false;renderOwnerControls();}};
   const clear=button('Clear lobby for everyone','chatSubtle',()=>action('clearLobby','Clear the lobby for everyone? You can undo this cleanup. Private messages and the drawing board are unaffected.'));
   const undo=button('Undo last cleanup','chatSubtle',()=>action('undoClearLobby'));clear.disabled=ownerBusy;undo.disabled=ownerBusy||!ownerMeta.canUndo;actions.append(clear,undo);
   panel.append(el('p','chatHelp','Clears the visible lobby history for everyone. Archived messages are retained so the cleanup can be undone.'),actions);
@@ -128,4 +133,4 @@ async function shareStroke(points){const item={kind:'stroke',color:drawColor,wid
 async function pointerUp(event){if(!drawing||!canvas.hasPointerCapture(event.pointerId))return;drawing=false;try{canvas.releasePointerCapture(event.pointerId);}catch{}const points=drawPoints;drawPoints=[];await shareStroke(points);}
 export function initialize(){if(host)return;shell();document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPresence();else startPresence();});}
 export async function activate(){initialize();active=true;if(ready){subscribeAll();await refreshOwner();return;}if(starting)return starting;showStatus('Connecting to chat…');starting=(async()=>{try{if(window.__SXS_CHAT_TEST_BACKEND){backend=window.__SXS_CHAT_TEST_BACKEND;}else{const config=await readChatConfig();if(!active)return;backend=await createChatBackend(config);}ready=true;loadClosedChats();showStatus('');renderJoin();await refreshOwner();}catch(error){showStatus(`Chat needs setup: ${errorText(error)}`,true);const body=host.querySelector('.chatBody');body.replaceChildren(el('p','chatSetup','Chat is not connected yet. The site owner needs to finish the Firebase setup.'));throw error;}finally{starting=null;}})();return starting;}
-export function deactivate(){active=false;expandedBoardDialog?.close();unsubscribe();}
+export function deactivate(){active=false;expandedBoardDialog?.close();host?.querySelector('.chatOwnerConfirm')?.close();unsubscribe();}
