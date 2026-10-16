@@ -23,7 +23,7 @@ try {
       const subscribe = key => callback => {listeners[key].add(callback);callback(messages(key));return () => listeners[key].delete(callback);};
       window.__SXS_CHAT_TEST_BACKEND = {
         uid:'self12345678901234567',
-        get isGoogleSignedIn(){return !!window.__chatOwner;},
+        get isGoogleSignedIn(){return !!window.__chatGoogleSignedIn;},
         async isOwner(){return !!window.__chatOwner;},
         async signInOwner(){return {changedIdentity:false};},
         subscribeLobbyMeta(callback){listeners.meta.add(callback);callback({canUndo});return ()=>listeners.meta.delete(callback);},

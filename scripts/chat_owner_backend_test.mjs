@@ -10,7 +10,7 @@ const source = (await readFile(new URL('../src/chat-backend.mjs', import.meta.ur
 async function fixture() {
   const state = { listeners: [], writes: [], document: null, owner: false,
     reads: [], readError: null, linkError: null, provider: 'google.com', credentialCalls: 0,
-    credentialUid: 'existing-google-id', tokenLinkError: null, tokenLinks: 0, credentials: [] };
+    credentialUid: 'existing-google-id', tokenLinkError: null, tokenLinks: 0, credentials: [], role: {} };
   function makeUser(uid, anonymous = false) {
     return { uid, isAnonymous: anonymous,
       providerData: anonymous ? [] : [{ providerId: 'google.com' }],
@@ -56,7 +56,7 @@ async function fixture() {
     getDoc: async ref => {
       state.reads.push(ref);
       if (state.readError) throw state.readError;
-      return { exists: () => state.owner };
+      return { exists: () => state.owner, data: () => state.role };
     },
     onSnapshot: (ref, next, error) => {
       const listener = { ref, next, error, stopped: false };
@@ -133,7 +133,7 @@ async function fixture() {
   const { state, backend } = await fixture();
   state.owner = true;
   assert.equal(await backend.isOwner(), false, 'Anonymous users cannot gain owner UI access from a role record alone');
-  assert.equal(state.reads.length, 0);
+  assert.equal(state.reads.at(-1), 'chatOwners/original-browser-id');
   assert.deepEqual(await backend.signInOwner(), { uid: 'original-browser-id', changedIdentity: false });
   assert.equal(backend.isGoogleSignedIn, true);
   state.provider = 'anonymous';
@@ -148,6 +148,28 @@ async function fixture() {
   assert.equal(await backend.isOwner(), false);
   state.readError = Object.assign(new Error('Offline'), { code: 'unavailable' });
   await assert.rejects(backend.isOwner(), { code: 'unavailable' });
+}
+
+{
+  const { state, auth, backend } = await fixture();
+  state.provider = 'anonymous';
+  state.role = { requireGoogle: false, enabled: true };
+  assert.equal(await backend.isOwner(), false, 'Unregistered browser cannot enable itself by changing local state');
+  state.owner = true;
+  assert.equal(await backend.isOwner(), true, 'An explicitly registered browser role can authorize an anonymous account');
+  assert.equal(state.reads.at(-1), `chatOwners/${auth.currentUser.uid}`);
+  state.role = {};
+  assert.equal(await backend.isOwner(), false, 'Missing requireGoogle defaults to requiring Google');
+  state.role = { requireGoogle: true };
+  assert.equal(await backend.isOwner(), false);
+  state.role = { requireGoogle: 'false' };
+  assert.equal(await backend.isOwner(), false, 'Only literal boolean false permits browser-only authorization');
+  await backend.signInOwner();
+  state.role = { requireGoogle: true };
+  assert.equal(await backend.isOwner(), true);
+  state.owner = false;
+  state.role = { requireGoogle: false };
+  assert.equal(await backend.isOwner(), false, 'Even a Google account still needs a registered owner document');
 }
 
 {

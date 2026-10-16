@@ -119,11 +119,14 @@ export async function createChatBackend(config) {
     },
     async isOwner() {
       const current = auth.currentUser;
-      if (!current || current.isAnonymous) return false;
-      const token = await current.getIdTokenResult();
-      if (token.claims.firebase?.sign_in_provider !== 'google.com') return false;
+      if (!current) return false;
       try {
-        return (await getDoc(doc(db, 'chatOwners', current.uid))).exists();
+        const role = await getDoc(doc(db, 'chatOwners', current.uid));
+        if (!role.exists()) return false;
+        if (role.data().requireGoogle === false) return true;
+        if (current.isAnonymous) return false;
+        const token = await current.getIdTokenResult();
+        return token.claims.firebase?.sign_in_provider === 'google.com';
       } catch (error) {
         if (error.code === 'permission-denied') return false;
         throw error;
