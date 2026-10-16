@@ -2,6 +2,22 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
+    function chatOwner() {
+      return signedIn()
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && exists(/databases/$(database)/documents/chatOwners/$(request.auth.uid));
+    }
+    function validLobbyMeta() {
+      return request.resource.data.keys().hasAll([
+          'clearedAt', 'previousClearedAt', 'clearedBy', 'canUndo', 'updatedAt'])
+        && request.resource.data.keys().hasOnly([
+          'clearedAt', 'previousClearedAt', 'clearedBy', 'canUndo', 'updatedAt'])
+        && (request.resource.data.clearedAt == null || request.resource.data.clearedAt is timestamp)
+        && (request.resource.data.previousClearedAt == null || request.resource.data.previousClearedAt is timestamp)
+        && request.resource.data.clearedBy == request.auth.uid
+        && request.resource.data.canUndo is bool
+        && request.resource.data.updatedAt == request.time;
+    }
     function myProfile() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid));
     }
@@ -40,6 +56,30 @@ service cloud.firestore {
         && validName(request.resource.data.name)
         && request.resource.data.lastActive == request.time;
       allow delete: if false;
+    }
+
+    // Role records are registered through the Firebase console, never by chat clients.
+    match /chatOwners/{userId} {
+      allow get: if signedIn() && userId == request.auth.uid;
+      allow list, create, update, delete: if false;
+    }
+
+    // Cleanup changes the visible cutoff, retaining messages for a reversible undo.
+    match /rooms/lobby {
+      allow get: if signedIn();
+      allow create: if chatOwner() && validLobbyMeta()
+        && request.resource.data.clearedAt == request.time
+        && request.resource.data.previousClearedAt == null
+        && request.resource.data.canUndo == true;
+      allow update: if chatOwner() && validLobbyMeta() && (
+        (request.resource.data.clearedAt == request.time
+          && request.resource.data.previousClearedAt == resource.data.clearedAt
+          && request.resource.data.canUndo == true)
+        || (resource.data.canUndo == true
+          && request.resource.data.clearedAt == resource.data.previousClearedAt
+          && request.resource.data.previousClearedAt == null
+          && request.resource.data.canUndo == false));
+      allow list, delete: if false;
     }
 
     match /rooms/lobby/messages/{messageId} {

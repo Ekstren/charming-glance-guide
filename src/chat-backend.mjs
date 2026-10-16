@@ -1,5 +1,8 @@
 import { getApps, initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import {
+  getAuth, signInAnonymously, GoogleAuthProvider, linkWithPopup,
+  signInWithPopup, signInWithCredential
+} from 'firebase/auth';
 import {
   getFirestore, collection, doc, getDoc, onSnapshot, orderBy, query, limit,
   where, serverTimestamp, setDoc, updateDoc, addDoc, runTransaction
@@ -49,6 +52,7 @@ export async function createChatBackend(config) {
   const db = getFirestore(app);
   const users = collection(db, 'users');
   const lobby = collection(db, 'rooms', 'lobby', 'messages');
+  const lobbyMeta = doc(db, 'rooms', 'lobby');
   const dms = collection(db, 'dms');
   const board = collection(db, 'boards', 'main', 'strokes');
   const subscriptions = new Set();
@@ -66,6 +70,46 @@ export async function createChatBackend(config) {
 
   return {
     uid,
+    get isGoogleSignedIn() {
+      return !!auth.currentUser && !auth.currentUser.isAnonymous
+        && auth.currentUser.providerData.some(provider => provider.providerId === 'google.com');
+    },
+    async signInOwner() {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      let result;
+      try {
+        result = auth.currentUser?.isAnonymous
+          ? await linkWithPopup(auth.currentUser, provider)
+          : await signInWithPopup(auth, provider);
+      } catch (error) {
+        if (error.code !== 'auth/credential-already-in-use') throw error;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        if (!credential) throw error;
+        result = await signInWithCredential(auth, credential);
+      }
+      // Linking a provider is distinct from signing in with it. Owner rules check
+      // the token's sign-in provider, so upgrade a lingering anonymous session.
+      const token = await result.user.getIdTokenResult();
+      if (token.claims.firebase?.sign_in_provider !== 'google.com') {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if (!credential) throw new Error('Google sign-in could not be completed. Please try again.');
+        result = await signInWithCredential(auth, credential);
+      }
+      return { uid: result.user.uid, changedIdentity: result.user.uid !== uid };
+    },
+    async isOwner() {
+      const current = auth.currentUser;
+      if (!current || current.isAnonymous) return false;
+      const token = await current.getIdTokenResult();
+      if (token.claims.firebase?.sign_in_provider !== 'google.com') return false;
+      try {
+        return (await getDoc(doc(db, 'chatOwners', current.uid))).exists();
+      } catch (error) {
+        if (error.code === 'permission-denied') return false;
+        throw error;
+      }
+    },
     async join(rawName) {
       const name = cleanName(rawName);
       const profile = doc(users, uid);
@@ -83,9 +127,61 @@ export async function createChatBackend(config) {
         (items, error) => callback(items.map(item => ({ uid: item.id, name: item.name, lastActive: item.lastActive })), error)));
     },
     subscribeLobby(callback) {
-      return track(listen(query(lobby, orderBy('createdAt', 'desc'), limit(80)),
-        data => ({ senderId: data.senderId, senderName: data.senderName, text: data.text, createdAt: data.createdAt }),
-        (items, error) => callback(items.reverse(), error)));
+      let stopMessages = () => {};
+      let currentCutoff;
+      let generation = 0;
+      const stopMeta = onSnapshot(lobbyMeta, snapshot => {
+        // Wait for the server's cutoff rather than briefly filtering by a local estimate.
+        if (snapshot.metadata.hasPendingWrites) return;
+        const cutoff = snapshot.data()?.clearedAt || null;
+        const cutoffKey = cutoff ? `${cutoff.seconds}:${cutoff.nanoseconds}` : null;
+        if (currentCutoff === cutoffKey) return;
+        currentCutoff = cutoffKey;
+        const activeGeneration = ++generation;
+        stopMessages();
+        callback([]);
+        const constraints = cutoff ? [where('createdAt', '>', cutoff)] : [];
+        stopMessages = listen(query(lobby, ...constraints, orderBy('createdAt', 'desc'), limit(80)),
+          data => ({ senderId: data.senderId, senderName: data.senderName, text: data.text, createdAt: data.createdAt }),
+          (items, error) => {
+            if (activeGeneration === generation) callback(items.reverse(), error);
+          });
+      }, error => {
+        ++generation;
+        stopMessages();
+        callback([], error);
+      });
+      return track(() => { ++generation; stopMeta(); stopMessages(); });
+    },
+    subscribeLobbyMeta(callback) {
+      return track(onSnapshot(lobbyMeta,
+        snapshot => callback(snapshot.data() || { clearedAt: null, canUndo: false }),
+        error => callback(null, error)));
+    },
+    async clearLobby() {
+      await runTransaction(db, async transaction => {
+        const existing = await transaction.get(lobbyMeta);
+        transaction.set(lobbyMeta, {
+          clearedAt: serverTimestamp(),
+          previousClearedAt: existing.data()?.clearedAt || null,
+          clearedBy: auth.currentUser.uid,
+          canUndo: true,
+          updatedAt: serverTimestamp()
+        });
+      });
+    },
+    async undoClearLobby() {
+      await runTransaction(db, async transaction => {
+        const existing = await transaction.get(lobbyMeta);
+        if (!existing.exists() || !existing.data().canUndo) throw new Error('There is no lobby cleanup to undo.');
+        transaction.set(lobbyMeta, {
+          clearedAt: existing.data().previousClearedAt || null,
+          previousClearedAt: null,
+          clearedBy: auth.currentUser.uid,
+          canUndo: false,
+          updatedAt: serverTimestamp()
+        });
+      });
     },
     async sendLobby(value) {
       const text = cleanMessage(value);

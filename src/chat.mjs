@@ -11,6 +11,7 @@ const NAME_KEY='sxs-chat-name';
 let closedConversations=new Set(),expandedBoardDialog;
 let host,backend,ready=false,joined=false,active=false,starting=null;
 let people=[],conversations=[],strokes=[],selected='lobby',selectedName='Lobby';
+let owner=false,ownerMeta={canUndo:false},ownerBusy=false,stopOwnerMeta=()=>{};
 let stopPeople=()=>{},stopConversations=()=>{},stopMessages=()=>{},stopBoard=()=>{};
 let pendingStrokes=[],strokeWrites=Promise.resolve();
 let canvas,ctx,drawPoints=[],drawing=false,drawColor=COLORS[0],drawWidth=3;
@@ -23,15 +24,34 @@ function rememberName(name){try{localStorage.setItem(NAME_KEY,name);}catch{}}
 function loadClosedChats(){try{const ids=JSON.parse(localStorage.getItem(`sxs-chat-closed:${backend.uid}`)||'[]');closedConversations=new Set(Array.isArray(ids)?ids.filter(id=>typeof id==='string').slice(-200):[]);}catch{closedConversations=new Set();}}
 function saveClosedChats(){try{localStorage.setItem(`sxs-chat-closed:${backend.uid}`,JSON.stringify([...closedConversations].slice(-200)));}catch{}}
 function showStatus(message,isError=false){const node=host?.querySelector('.chatStatus');if(!node)return;node.textContent=message;node.hidden=!message;node.classList.toggle('isError',isError);}
-function unsubscribe(){stopPresence();stopPeople();stopConversations();stopMessages();stopBoard();stopPeople=stopConversations=stopMessages=stopBoard=()=>{};}
+function unsubscribe(){stopPresence();stopOwnerMeta();stopOwnerMeta=()=>{};stopPeople();stopConversations();stopMessages();stopBoard();stopPeople=stopConversations=stopMessages=stopBoard=()=>{};}
 function callback(render){return (items,error)=>{if(error){showStatus(errorText(error),true);return;}render(Array.isArray(items)?items:[]);};}
 function shell(){
  host=document.getElementById('chatSection');if(!host)throw new Error('Chat section is missing');
  host.innerHTML='';
  const intro=el('div','chatIntro');intro.append(el('div','chatEyebrow','COMMUNITY'),el('h1','','Chat & Draw'),el('p','','Say hello in the lobby, message someone privately, or add to the shared canvas.'));
  const status=el('p','chatStatus');status.setAttribute('role','status');status.hidden=true;
- host.append(intro,status,el('div','chatBody'));
+ host.append(intro,el('div','chatOwnerArea'),status,el('div','chatBody'));
 }
+function renderOwnerControls(){
+ const area=host.querySelector('.chatOwnerArea');if(!area||!ready)return;area.replaceChildren();
+ const panel=el('details','chatOwnerPanel');panel.append(el('summary','','Owner controls'));
+ if(!backend.isGoogleSignedIn){
+  const signIn=button('Sign in with Google','chatSubtle',async()=>{signIn.disabled=true;try{await backend.signInOwner();location.reload();}catch(error){showStatus(errorText(error),true);signIn.disabled=false;}});
+  panel.append(el('p','chatHelp','Sign in to access owner-only lobby cleanup.'),signIn);
+ }else if(!owner){
+  panel.append(el('p','chatHelp','This Google account has not been registered as the site owner.'),el('p','chatOwnerId',`Account ID: ${backend.uid}`));
+ }else{
+  const actions=el('div','chatOwnerActions');
+  const action=async(method,message)=>{if(ownerBusy)return;if(message&&!window.confirm(message))return;ownerBusy=true;renderOwnerControls();try{await backend[method]();showStatus(method==='clearLobby'?'Lobby cleared for everyone. You can undo this cleanup.':'Previous lobby history restored.');}catch(error){showStatus(errorText(error),true);}finally{ownerBusy=false;renderOwnerControls();}};
+  const clear=button('Clear lobby for everyone','chatSubtle',()=>action('clearLobby','Clear the lobby for everyone? You can undo this cleanup. Private messages and the drawing board are unaffected.'));
+  const undo=button('Undo last cleanup','chatSubtle',()=>action('undoClearLobby'));clear.disabled=ownerBusy;undo.disabled=ownerBusy||!ownerMeta.canUndo;actions.append(clear,undo);
+  panel.append(el('p','chatHelp','Clears the visible lobby history for everyone. Archived messages are retained so the cleanup can be undone.'),actions);
+ }
+ const wasOpen=area.dataset.open==='true';panel.open=wasOpen;panel.addEventListener('toggle',()=>{area.dataset.open=String(panel.open);});area.append(panel);
+}
+function subscribeOwnerMeta(){stopOwnerMeta();stopOwnerMeta=()=>{};if(owner&&active)stopOwnerMeta=backend.subscribeLobbyMeta((meta,error)=>{if(error){showStatus(errorText(error),true);return;}ownerMeta=meta||{canUndo:false};renderOwnerControls();});}
+async function refreshOwner(){try{owner=await backend.isOwner();renderOwnerControls();subscribeOwnerMeta();}catch(error){showStatus(errorText(error),true);}}
 function renderJoin(){
  const body=host.querySelector('.chatBody');body.replaceChildren();
  const card=el('section','chatJoin card');card.append(el('h2','','Pick a name'),el('p','','Your name appears beside your messages. You can start chatting without creating an account.'));
@@ -92,7 +112,7 @@ function renderPeople(){const list=host.querySelector('.chatPeopleList');if(!lis
 function openConversation(id,label){if(id!=='lobby'&&closedConversations.delete(id))saveClosedChats();if(selected===id)return;selected=id;selectedName=label;renderTabs();const title=host.querySelector('.chatConversationTitle');if(title)title.textContent=label;const hint=host.querySelector('.chatConversationHint');if(hint)hint.textContent=id==='lobby'?'Everyone can read this room.':'Only participants can read this conversation.';const messages=host.querySelector('.chatMessages');if(messages)messages.replaceChildren(el('li','chatEmpty','Loading messages…'));subscribeMessages();}
 function renderMessages(items){const list=host.querySelector('.chatMessages');if(!list)return;const nearBottom=list.scrollHeight-list.scrollTop-list.clientHeight<90;list.replaceChildren();if(!items.length){list.append(el('li','chatEmpty',selected==='lobby'?'No messages yet. Say hello!':'No messages yet. Start the conversation.'));return;}for(const message of items){const item=el('li','chatMessage');if(message.senderId===backend.uid)item.classList.add('mine');const author=el('strong','chatAuthor',String(message.senderName||'Guest').slice(0,24));const text=el('p','chatMessageText',String(message.text||''));item.append(author,text);list.append(item);}if(nearBottom)list.scrollTop=list.scrollHeight;}
 function subscribeMessages(){stopMessages();stopMessages=()=>{};if(!active||!ready)return;const list=host.querySelector('.chatMessages');if(list)list.replaceChildren(el('li','chatEmpty','Loading messages…'));try{stopMessages=selected==='lobby'?backend.subscribeLobby(callback(renderMessages)):backend.subscribeDm(selected,callback(renderMessages));}catch(error){showStatus(errorText(error),true);}}
-function subscribeAll(){unsubscribe();if(!active||!ready||!joined)return;try{stopPeople=backend.subscribePeople(callback(items=>{people=items;renderPeople();renderTabs();}));stopConversations=backend.subscribeConversations(callback(items=>{conversations=items;renderTabs();}));stopBoard=backend.subscribeBoard(callback(items=>{strokes=items;renderCanvas();}));subscribeMessages();startPresence();}catch(error){showStatus(errorText(error),true);}}
+function subscribeAll(){unsubscribe();if(!active||!ready||!joined)return;try{stopPeople=backend.subscribePeople(callback(items=>{people=items;renderPeople();renderTabs();}));stopConversations=backend.subscribeConversations(callback(items=>{conversations=items;renderTabs();}));stopBoard=backend.subscribeBoard(callback(items=>{strokes=items;renderCanvas();}));subscribeMessages();startPresence();subscribeOwnerMeta();}catch(error){showStatus(errorText(error),true);}}
 function point(event){const bounds=canvas.getBoundingClientRect();return [Math.max(0,Math.min(1000,Math.round((event.clientX-bounds.left)/bounds.width*1000))),Math.max(0,Math.min(1000,Math.round((event.clientY-bounds.top)/bounds.height*1000)))];}
 function parsePoints(value){if(typeof value!=='string')return [];return value.split(';').slice(0,400).map(pair=>pair.split(',').map(Number)).filter(pair=>pair.length===2&&pair.every(n=>Number.isFinite(n)&&n>=0&&n<=1000));}
 function strokePath(points,color,width){if(!points.length)return;const erasing=color===ERASER_COLOR;ctx.strokeStyle=erasing?BOARD_BACKGROUND:color;ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=width*(erasing?4:1)*canvas.width/1000;ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();ctx.moveTo(points[0][0]*canvas.width/1000,points[0][1]*canvas.height/1000);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0]*canvas.width/1000,points[i][1]*canvas.height/1000);if(points.length===1){ctx.arc(points[0][0]*canvas.width/1000,points[0][1]*canvas.height/1000,ctx.lineWidth/2,0,Math.PI*2);ctx.fill();}else ctx.stroke();}
@@ -102,5 +122,5 @@ function pointerMove(event){if(!drawing||!canvas.hasPointerCapture(event.pointer
 async function shareStroke(points){const item={kind:'stroke',color:drawColor,width:drawWidth,points:points.map(pair=>pair.join(',')).join(';')};pendingStrokes.push(item);try{await (strokeWrites=strokeWrites.catch(()=>{}).then(()=>backend.addStroke({color:item.color,width:item.width,points:item.points})));}catch(error){showStatus(errorText(error),true);}finally{pendingStrokes=pendingStrokes.filter(stroke=>stroke!==item);renderCanvas();}}
 async function pointerUp(event){if(!drawing||!canvas.hasPointerCapture(event.pointerId))return;drawing=false;try{canvas.releasePointerCapture(event.pointerId);}catch{}const points=drawPoints;drawPoints=[];await shareStroke(points);}
 export function initialize(){if(host)return;shell();document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPresence();else startPresence();});}
-export async function activate(){initialize();active=true;if(ready){subscribeAll();return;}if(starting)return starting;showStatus('Connecting to chat…');starting=(async()=>{try{if(window.__SXS_CHAT_TEST_BACKEND){backend=window.__SXS_CHAT_TEST_BACKEND;}else{const config=await readChatConfig();if(!active)return;backend=await createChatBackend(config);}ready=true;loadClosedChats();showStatus('');renderJoin();}catch(error){showStatus(`Chat needs setup: ${errorText(error)}`,true);const body=host.querySelector('.chatBody');body.replaceChildren(el('p','chatSetup','Chat is not connected yet. The site owner needs to finish the Firebase setup.'));throw error;}finally{starting=null;}})();return starting;}
+export async function activate(){initialize();active=true;if(ready){subscribeAll();await refreshOwner();return;}if(starting)return starting;showStatus('Connecting to chat…');starting=(async()=>{try{if(window.__SXS_CHAT_TEST_BACKEND){backend=window.__SXS_CHAT_TEST_BACKEND;}else{const config=await readChatConfig();if(!active)return;backend=await createChatBackend(config);}ready=true;loadClosedChats();showStatus('');renderJoin();await refreshOwner();}catch(error){showStatus(`Chat needs setup: ${errorText(error)}`,true);const body=host.querySelector('.chatBody');body.replaceChildren(el('p','chatSetup','Chat is not connected yet. The site owner needs to finish the Firebase setup.'));throw error;}finally{starting=null;}})();return starting;}
 export function deactivate(){active=false;expandedBoardDialog?.close();unsubscribe();}

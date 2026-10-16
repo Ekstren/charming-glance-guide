@@ -14,13 +14,21 @@ try {
     const errors = [];
     page.on('pageerror', error => errors.push(String(error)));
     await page.addInitScript(() => {
-      const listeners = {people:new Set(), lobby:new Set(), conversations:new Set(), dm:new Set(), board:new Set()};
+      const listeners = {people:new Set(), lobby:new Set(), conversations:new Set(), dm:new Set(), board:new Set(),meta:new Set()};
       const data = {people:[{uid:'self12345678901234567',name:'Tester',lastActive:Date.now()},{uid:'other1234567890123456',name:'Friend',lastActive:Date.now()}],lobby:[],conversations:[],dm:[],board:[]};
       data.conversations=[{id:['self12345678901234567','other1234567890123456'].sort().join('_'),members:data.people.map(person=>person.uid),names:{other1234567890123456:'Friend'}}];
-      const emit = key => listeners[key].forEach(callback => callback([...data[key]]));
-      const subscribe = key => callback => {listeners[key].add(callback);callback([...data[key]]);return () => listeners[key].delete(callback);};
+      let clearedIds=new Set(),previousClearedIds=new Set(),canUndo=false;
+      const messages=key=>key==='lobby'?data.lobby.filter(item=>!clearedIds.has(item.id)):[...data[key]];
+      const emit = key => listeners[key].forEach(callback => callback(messages(key)));
+      const subscribe = key => callback => {listeners[key].add(callback);callback(messages(key));return () => listeners[key].delete(callback);};
       window.__SXS_CHAT_TEST_BACKEND = {
         uid:'self12345678901234567',
+        get isGoogleSignedIn(){return !!window.__chatOwner;},
+        async isOwner(){return !!window.__chatOwner;},
+        async signInOwner(){return {changedIdentity:false};},
+        subscribeLobbyMeta(callback){listeners.meta.add(callback);callback({canUndo});return ()=>listeners.meta.delete(callback);},
+        async clearLobby(){if(!window.__chatOwner)throw new Error('Permission denied');previousClearedIds=new Set(clearedIds);clearedIds=new Set(data.lobby.map(item=>item.id));canUndo=true;emit('lobby');listeners.meta.forEach(callback=>callback({canUndo}));},
+        async undoClearLobby(){if(!window.__chatOwner)throw new Error('Permission denied');clearedIds=previousClearedIds;canUndo=false;emit('lobby');listeners.meta.forEach(callback=>callback({canUndo}));},
         async updateActivity() {data.people[0].lastActive=Date.now();window.__chatPings=(window.__chatPings||0)+1;emit('people');},
         async join(name) {data.people[0].name=name;emit('people');return {uid:this.uid,name};},
         subscribePeople:subscribe('people'),subscribeLobby:subscribe('lobby'),
@@ -174,6 +182,25 @@ try {
     assert.match(metrics.board.find(item=>item.kind==='stroke').points,/^\d+,\d+(;\d+,\d+)*$/);
     assert.deepEqual(errors,[],`${width}px browser errors`);
     if (screenshots) await page.screenshot({path:path.join(screenshots,`chat-${width}.png`),fullPage:true});
+    assert.equal(await page.getByRole('button',{name:'Clear lobby for everyone',exact:true}).count(),0,'normal visitors have no cleanup control');
+    await page.evaluate(()=>{window.__chatOwner=true;});
+    await page.locator('[data-section="timeline"]').click();
+    await page.locator('[data-section="chat"]').click();
+    await page.getByRole('tab',{name:'Lobby',exact:true}).click();
+    await page.getByText('Owner controls',{exact:true}).click();
+    const originalLobbyCount=await page.locator('.chatMessage').count();
+    assert.ok(originalLobbyCount>0,'lobby fixture has history to clear');
+    await page.getByRole('button',{name:'Clear lobby for everyone',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelectorAll('.chatMessage').length===0);
+    await input.fill('After cleanup');
+    await input.press('Enter');
+    await page.getByText('After cleanup',{exact:true}).waitFor();
+    assert.equal(await page.locator('.chatMessage').count(),1,'new messages still appear after cleanup');
+    await page.getByRole('button',{name:'Undo last cleanup',exact:true}).click();
+    await page.waitForFunction(before=>document.querySelectorAll('.chatMessage').length===before+1,originalLobbyCount);
+    assert.equal(await page.getByRole('button',{name:'Undo last cleanup',exact:true}).isDisabled(),true,'cleanup cannot be undone twice');
+    await page.getByRole('tab',{name:'Friend',exact:true}).click();
+    await page.getByText('Hello privately',{exact:true}).waitFor();
     await page.getByRole('button',{name:'Close chat with Friend'}).click();
     await page.reload();
     await page.locator('#chatName').fill('Tester');

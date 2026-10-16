@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "npm run test:build && npm run test:chat && npm run test:time && npm run test:boundaries && npm run test:lazy && npm run test:guides && npm run test:relics && node scripts/optimizer_regression.mjs && node scripts/calculator_perf_check.mjs && node scripts/build_swap_smoke.mjs && node scripts/build_visual_stability_benchmark_v2.mjs && node scripts/site_smoke_test.mjs && node scripts/mobile_audit_v1.mjs && node scripts/calculator_layout_check.mjs && npm run test:stamina && npm run test:cards && node scripts/site_readability_check.mjs && npm run test:design && npm run test:visual",
-    "test:chat": "node scripts/chat_smoke_test.mjs",
+    "test:chat": "node scripts/chat_smoke_test.mjs && node scripts/chat_owner_backend_test.mjs",
     "test:chat:live": "node scripts/chat_live_test.mjs",
     "test:readability": "node scripts/site_readability_check.mjs",
     "test:layout": "node scripts/calculator_layout_check.mjs",
