@@ -183,6 +183,14 @@ try {
     assert.deepEqual(errors,[],`${width}px browser errors`);
     if (screenshots) await page.screenshot({path:path.join(screenshots,`chat-${width}.png`),fullPage:true});
     assert.equal(await page.getByRole('button',{name:'Clear lobby for everyone',exact:true}).count(),0,'normal visitors have no cleanup control');
+    assert.equal(await page.getByText('Owner controls',{exact:true}).count(),0,'normal visitors have no owner section, including collapsed controls');
+    assert.equal(await page.getByRole('button',{name:'Sign in with Google',exact:true}).count(),0,'normal visitors have no owner login prompt');
+    assert.equal(await page.locator('.chatOwnerId').count(),0,'normal visitors have no owner account ID label');
+    await page.evaluate(()=>{window.__chatGoogleSignedIn=true;});
+    await page.locator('[data-section="timeline"]').click();
+    await page.locator('[data-section="chat"]').click();
+    assert.equal(await page.getByText('Owner controls',{exact:true}).count(),0,'Google sign-in alone does not reveal owner controls');
+    await page.evaluate(()=>{window.__chatGoogleSignedIn=false;});
     await page.evaluate(()=>{window.__chatOwner=true;});
     await page.locator('[data-section="timeline"]').click();
     await page.locator('[data-section="chat"]').click();
@@ -205,6 +213,10 @@ try {
     assert.equal(await page.getByRole('button',{name:'Undo last cleanup',exact:true}).isDisabled(),true,'cleanup cannot be undone twice');
     await page.getByRole('tab',{name:'Friend',exact:true}).click();
     await page.getByText('Hello privately',{exact:true}).waitFor();
+    await page.evaluate(()=>{window.__chatOwner=false;});
+    await page.locator('[data-section="timeline"]').click();
+    await page.locator('[data-section="chat"]').click();
+    assert.equal(await page.getByText('Owner controls',{exact:true}).count(),0,'revoked ownership removes the owner section');
     await page.getByRole('button',{name:'Close chat with Friend'}).click();
     await page.reload();
     await page.locator('#chatName').fill('Tester');

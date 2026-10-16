@@ -1,4 +1,3 @@
-import {prepareGoogleOwnerSignIn} from './chat-google-signin.mjs';
 import {createChatBackend,readChatConfig} from './chat-backend.mjs';
 
 const COLORS=['#f767ad','#ffd166','#6dd5ed','#a2e875','#ae91ff','#f7f3ff'];
@@ -40,28 +39,17 @@ function confirmLobbyCleanup(){
  return new Promise(resolve=>{dialog.addEventListener('close',()=>{const confirmed=dialog.returnValue==='clear';dialog.remove();resolve(confirmed);},{once:true});dialog.showModal();cancel.focus();});
 }
 function renderOwnerControls(){
- const area=host.querySelector('.chatOwnerArea');if(!area||!ready)return;area.replaceChildren();
+ const area=host.querySelector('.chatOwnerArea');if(!area||!ready)return;area.replaceChildren();area.hidden=!owner;if(!owner)return;
  const panel=el('details','chatOwnerPanel');panel.append(el('summary','','Owner controls'));
- if(!owner&&!backend.isGoogleSignedIn){
-  let requestGoogleToken,preparing=false;
-  const signIn=button('Sign in with Google','chatSubtle',async()=>{if(!requestGoogleToken)return;signIn.disabled=true;try{const token=await requestGoogleToken();await backend.signInOwnerWithGoogleToken(token);location.reload();}catch(error){showStatus(errorText(error),true);signIn.disabled=false;}});signIn.disabled=true;
-  const prepare=async()=>{if(preparing||requestGoogleToken)return;preparing=true;signIn.textContent='Loading Google sign-in…';try{requestGoogleToken=await prepareGoogleOwnerSignIn(backend.googleClientId);signIn.disabled=false;}catch(error){showStatus(errorText(error),true);}finally{preparing=false;signIn.textContent='Sign in with Google';}};
-  panel.addEventListener('toggle',()=>{if(panel.open)void prepare();});
-  panel.append(el('p','chatHelp','Sign in to access owner-only lobby cleanup.'),signIn,el('p','chatOwnerId',`Browser account ID: ${backend.uid}`));
-  if(area.dataset.open==='true')void prepare();
- }else if(!owner){
-  panel.append(el('p','chatHelp','This Google account has not been registered as the site owner.'),el('p','chatOwnerId',`Account ID: ${backend.uid}`));
- }else{
   const actions=el('div','chatOwnerActions');
   const action=async(method,message)=>{if(ownerBusy)return;ownerBusy=true;try{if(message&&!await confirmLobbyCleanup())return;renderOwnerControls();await backend[method]();showStatus(method==='clearLobby'?'Lobby cleared for everyone. You can undo this cleanup.':'Previous lobby history restored.');}catch(error){showStatus(errorText(error),true);}finally{ownerBusy=false;renderOwnerControls();}};
   const clear=button('Clear lobby for everyone','chatSubtle',()=>action('clearLobby','Clear the lobby for everyone? You can undo this cleanup. Private messages and the drawing board are unaffected.'));
   const undo=button('Undo last cleanup','chatSubtle',()=>action('undoClearLobby'));clear.disabled=ownerBusy;undo.disabled=ownerBusy||!ownerMeta.canUndo;actions.append(clear,undo);
   panel.append(el('p','chatHelp','Clears the visible lobby history for everyone. Archived messages are retained so the cleanup can be undone.'),actions);
- }
  const wasOpen=area.dataset.open==='true';panel.open=wasOpen;panel.addEventListener('toggle',()=>{area.dataset.open=String(panel.open);});area.append(panel);
 }
 function subscribeOwnerMeta(){stopOwnerMeta();stopOwnerMeta=()=>{};if(owner&&active)stopOwnerMeta=backend.subscribeLobbyMeta((meta,error)=>{if(error){showStatus(errorText(error),true);return;}ownerMeta=meta||{canUndo:false};renderOwnerControls();});}
-async function refreshOwner(){try{owner=await backend.isOwner();renderOwnerControls();subscribeOwnerMeta();}catch(error){showStatus(errorText(error),true);}}
+async function refreshOwner(){owner=false;renderOwnerControls();try{owner=await backend.isOwner();renderOwnerControls();subscribeOwnerMeta();}catch(error){showStatus(errorText(error),true);}}
 function renderJoin(){
  const body=host.querySelector('.chatBody');body.replaceChildren();
  const card=el('section','chatJoin card');card.append(el('h2','','Pick a name'),el('p','','Your name appears beside your messages. You can start chatting without creating an account.'));
