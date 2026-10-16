@@ -32,6 +32,15 @@ try {
         async clearBoard() {data.board.push({id:'c'+data.board.length,kind:'clear'});emit('board');},
         close() {}
       };
+      for(const method of ['sendLobby','sendDm']){
+        const send=window.__SXS_CHAT_TEST_BACKEND[method];
+        window.__SXS_CHAT_TEST_BACKEND[method]=async function(...args){
+          window.__chatSendAttempts=(window.__chatSendAttempts||0)+1;
+          if(window.__chatHoldSend)await new Promise(resolve=>{(window.__chatReleaseSends||=[]).push(resolve);});
+          if(window.__chatFailSend)throw new Error('Test send failed');
+          return send.apply(this,args);
+        };
+      }
       window.__chatTestData = data;
       window.confirm = () => true;
     });
@@ -40,6 +49,27 @@ try {
     await page.locator('#chatName').fill('Tester');
     await page.getByRole('button',{name:'Join chat'}).click();
     const input=page.locator('.chatComposer textarea');
+    async function checkRapidSend(room,text){
+      await page.evaluate(()=>{window.__chatHoldSend=true;window.__chatSendAttempts=0;window.__chatReleaseSends=[];});
+      await input.fill(text);
+      await input.press('Enter');
+      await input.press('Enter');
+      await input.press('Enter');
+      await page.locator('.chatComposer').evaluate(form=>form.requestSubmit());
+      assert.equal(await page.evaluate(()=>window.__chatSendAttempts),1,`${room}: repeated Enter and submit must share one in-flight send`);
+      await page.evaluate(()=>{window.__chatHoldSend=false;window.__chatReleaseSends.forEach(resolve=>resolve());});
+      await page.waitForFunction(()=>!document.querySelector('.chatComposer button[type=submit]').disabled);
+      assert.equal(await page.evaluate(({room,text})=>window.__chatTestData[room].filter(message=>message.text===text).length,{room,text}),1,`${room}: one message is delivered`);
+    }
+    await checkRapidSend('lobby','Rapid lobby message');
+    await page.evaluate(()=>{window.__chatFailSend=true;});
+    await input.fill('Retry this message');
+    await input.press('Enter');
+    await page.getByText('Test send failed',{exact:true}).waitFor();
+    assert.equal(await input.inputValue(),'Retry this message','failed sends keep the message');
+    await page.evaluate(()=>{window.__chatFailSend=false;});
+    await input.press('Enter');
+    await page.getByText('Retry this message',{exact:true}).waitFor();
     await input.fill('Hello there');
     await input.evaluate(el=>el.setSelectionRange(5,5));
     await page.getByRole('button',{name:'Choose emoji'}).click();
@@ -61,6 +91,7 @@ try {
     await page.getByRole('button',{name:'Send'}).click();
     assert.equal(await page.locator('.chatMessages img').count(),0,'message text became HTML');
     await page.getByRole('button',{name:/Friend.*other/}).click();
+    await checkRapidSend('dm','Rapid private message');
     await page.locator('.chatComposer textarea').fill('Hello privately');
     await page.getByRole('button',{name:'Send'}).click();
     await assert.doesNotReject(page.getByText('Hello privately').waitFor());
