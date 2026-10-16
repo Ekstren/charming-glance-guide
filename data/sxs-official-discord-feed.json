@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1559547587609108560",
+  "last_message_id": "1560525601192935466",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -892,6 +892,59 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1559547587609108560"
+    },
+    {
+      "id": "1560525601192935466",
+      "timestamp": "2026-10-16T05:31:36.488000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# DungeonPreview | A Sacred Spring, a Glimmer of Hope!\nHey, Adventurers! Naira here!\nThe Court of Purification is opening soon! Adventurers among the first to reach Aethyris can take on this new dungeon starting tomorrow!\n\nRumor has it that some of the monsters lurking within were once Aethyrine soldiers, twisted by corruption. What happened to them? And what secrets does this place hold?\nWe've added a new [Backstory] section to this Dungeon Preview! Tap the image to uncover the story!\n#DungeonPreview | A Sacred Spring, a Glimmer of Hope!\nHey, Adventurers! Naira here!\nThe Court of Purification is opening soon! Adventurers among the first to reach Aethyris can take on this new dungeon starting tomorrow!\n\nRumor has it that some of the monsters lurking within were once Aethyrine soldiers, twisted by corruption. What happened to them? And what secrets does this place hold?\nWe've added a new [Backstory] section to this Dungeon Preview! Tap the image to uncover the story!\n✦－－－－－－－－－－－－－－－－－－－－－－－✦\n🛒 5% Top-Up Bonus on the Official Top-Up Platform: https://gamepay.boltray.com/addCredit?cur_game=8039&media=A803903",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [
+        {
+          "id": "1560523967930826772",
+          "filename": "01.jpg",
+          "content_type": "image/jpeg",
+          "size": 9158222,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1560523967930826772/01.jpg?ex=6ad306b3&is=6ad1b533&hm=75065fc5aae47d49773d5fad2d5cda4a455a8b7b6b2c96b9b1d4dbf7275e9474&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1560523967930826772/01.jpg?ex=6ad306b3&is=6ad1b533&hm=75065fc5aae47d49773d5fad2d5cda4a455a8b7b6b2c96b9b1d4dbf7275e9474&",
+          "width": 1080,
+          "height": 1479
+        },
+        {
+          "id": "1560523968983728188",
+          "filename": "02.jpg",
+          "content_type": "image/jpeg",
+          "size": 8476328,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1560523968983728188/02.jpg?ex=6ad306b3&is=6ad1b533&hm=4b94bfd41d2398402c1d9f03e7c931bf2717160e264c9bffb9638a0bc7a42239&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1560523968983728188/02.jpg?ex=6ad306b3&is=6ad1b533&hm=4b94bfd41d2398402c1d9f03e7c931bf2717160e264c9bffb9638a0bc7a42239&",
+          "width": 1080,
+          "height": 1180
+        },
+        {
+          "id": "1560523970430640218",
+          "filename": "03.jpg",
+          "content_type": "image/jpeg",
+          "size": 8622024,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1560523970430640218/03.jpg?ex=6ad306b3&is=6ad1b533&hm=fcaa703792d558f867f56084a0808c508d7fe50595876741ef1428aebff03fbd&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1560523970430640218/03.jpg?ex=6ad306b3&is=6ad1b533&hm=fcaa703792d558f867f56084a0808c508d7fe50595876741ef1428aebff03fbd&",
+          "width": 1080,
+          "height": 888
+        }
+      ],
+      "message_reference": {
+        "message_id": "1560523971177218138",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1560525601192935466"
     }
   ]
 }
