@@ -10,7 +10,7 @@ const source = (await readFile(new URL('../src/chat-backend.mjs', import.meta.ur
 async function fixture() {
   const state = { listeners: [], writes: [], document: null, owner: false,
     reads: [], readError: null, linkError: null, provider: 'google.com', credentialCalls: 0,
-    credentialUid: 'existing-google-id' };
+    credentialUid: 'existing-google-id', tokenLinkError: null, tokenLinks: 0, credentials: [] };
   function makeUser(uid, anonymous = false) {
     return { uid, isAnonymous: anonymous,
       providerData: anonymous ? [] : [{ providerId: 'google.com' }],
@@ -25,6 +25,11 @@ async function fixture() {
       setCustomParameters() {}
       static credentialFromError(error) { return error.credential; }
       static credentialFromResult(result) { return result.credential; }
+      static credential(idToken, accessToken) {
+        const credential = { providerId: 'google.com', idToken, accessToken };
+        state.credentials.push(credential);
+        return credential;
+      }
     },
     linkWithPopup: async () => {
       if (state.linkError) throw state.linkError;
@@ -33,6 +38,13 @@ async function fixture() {
       return { user, credential: { providerId: 'google.com' } };
     },
     signInWithPopup: async () => ({ user: auth.currentUser }),
+    linkWithCredential: async (_user, credential) => {
+      state.tokenLinks++;
+      if (state.tokenLinkError) throw state.tokenLinkError;
+      user.isAnonymous = false;
+      user.providerData = [{ providerId: 'google.com' }];
+      return { user, credential };
+    },
     signInWithCredential: async () => {
       state.credentialCalls++;
       state.provider = 'google.com';
@@ -61,6 +73,49 @@ async function fixture() {
   };
   const create = new Function(...Object.keys(mock), `${source}; return createChatBackend;`)(...Object.values(mock));
   return { state, auth, backend: await create({ projectId: 'mock-project' }) };
+}
+
+{
+  const { state, backend } = await fixture();
+  await assert.rejects(backend.signInOwnerWithGoogleToken(''), /did not return an access token/);
+  assert.equal(state.tokenLinks, 0);
+  assert.deepEqual(await backend.signInOwnerWithGoogleToken('mock-google-access-token'), {
+    uid: 'original-browser-id', changedIdentity: false
+  });
+  assert.deepEqual(state.credentials.at(-1), {
+    providerId: 'google.com', idToken: null, accessToken: 'mock-google-access-token'
+  });
+  assert.equal(state.tokenLinks, 1);
+  assert.equal(state.credentialCalls, 0, 'Linking an anonymous account preserves its existing chats');
+  assert.equal(await backend.isOwner(), false, 'Independent Google token does not grant an owner role');
+  state.owner = true;
+  assert.equal(await backend.isOwner(), true);
+}
+
+{
+  const { state, backend } = await fixture();
+  state.provider = 'anonymous';
+  state.credentialUid = backend.uid;
+  assert.deepEqual(await backend.signInOwnerWithGoogleToken('mock-token'), { uid: backend.uid, changedIdentity: false });
+  assert.equal(state.credentialCalls, 1, 'Credential-linked accounts still upgrade an anonymous token to Google');
+  assert.equal(state.provider, 'google.com');
+}
+
+{
+  const { state, backend } = await fixture();
+  state.tokenLinkError = Object.assign(new Error('Credential exists'), { code: 'auth/credential-already-in-use' });
+  assert.deepEqual(await backend.signInOwnerWithGoogleToken('mock-token'), {
+    uid: 'existing-google-id', changedIdentity: true
+  });
+  assert.equal(state.tokenLinks, 1);
+  assert.equal(state.credentialCalls, 1);
+  await backend.signInOwnerWithGoogleToken('another-mock-token');
+  assert.equal(state.tokenLinks, 1, 'Returning Google users sign in without trying to link again');
+  assert.equal(state.credentialCalls, 2);
+  const failed = await fixture();
+  failed.state.tokenLinkError = Object.assign(new Error('Invalid token'), { code: 'auth/invalid-credential' });
+  await assert.rejects(failed.backend.signInOwnerWithGoogleToken('invalid-mock-token'), { code: 'auth/invalid-credential' });
+  assert.equal(failed.state.credentialCalls, 0, 'Unrelated credential failures are not swallowed');
 }
 
 {

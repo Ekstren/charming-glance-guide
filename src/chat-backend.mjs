@@ -1,7 +1,7 @@
 import { getApps, initializeApp } from 'firebase/app';
 import {
   getAuth, signInAnonymously, GoogleAuthProvider, linkWithPopup,
-  signInWithPopup, signInWithCredential
+  signInWithPopup, signInWithCredential, linkWithCredential
 } from 'firebase/auth';
 import {
   getFirestore, collection, doc, getDoc, onSnapshot, orderBy, query, limit,
@@ -70,6 +70,7 @@ export async function createChatBackend(config) {
 
   return {
     uid,
+    googleClientId: config.googleClientId || '',
     get isGoogleSignedIn() {
       return !!auth.currentUser && !auth.currentUser.isAnonymous
         && auth.currentUser.providerData.some(provider => provider.providerId === 'google.com');
@@ -96,6 +97,24 @@ export async function createChatBackend(config) {
         if (!credential) throw new Error('Google sign-in could not be completed. Please try again.');
         result = await signInWithCredential(auth, credential);
       }
+      return { uid: result.user.uid, changedIdentity: result.user.uid !== uid };
+    },
+    async signInOwnerWithGoogleToken(accessToken) {
+      if (typeof accessToken !== 'string' || !accessToken.trim())
+        throw new Error('Google sign-in did not return an access token. Please try again.');
+      const credential = GoogleAuthProvider.credential(null, accessToken);
+      let result;
+      try {
+        result = auth.currentUser?.isAnonymous
+          ? await linkWithCredential(auth.currentUser, credential)
+          : await signInWithCredential(auth, credential);
+      } catch (error) {
+        if (error.code !== 'auth/credential-already-in-use') throw error;
+        result = await signInWithCredential(auth, credential);
+      }
+      const token = await result.user.getIdTokenResult();
+      if (token.claims.firebase?.sign_in_provider !== 'google.com')
+        result = await signInWithCredential(auth, credential);
       return { uid: result.user.uid, changedIdentity: result.user.uid !== uid };
     },
     async isOwner() {

@@ -1,3 +1,4 @@
+import {prepareGoogleOwnerSignIn} from './chat-google-signin.mjs';
 import {createChatBackend,readChatConfig} from './chat-backend.mjs';
 
 const COLORS=['#f767ad','#ffd166','#6dd5ed','#a2e875','#ae91ff','#f7f3ff'];
@@ -18,7 +19,7 @@ let canvas,ctx,drawPoints=[],drawing=false,drawColor=COLORS[0],drawWidth=3;
 
 function el(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node;}
 function button(label,className,onClick){const node=el('button',className,label);node.type='button';node.addEventListener('click',onClick);return node;}
-function errorText(error){return error?.message||'Something went wrong. Please try again.';}
+function errorText(error){if(['auth/popup-closed-by-user','auth/popup-blocked'].includes(error?.code))return 'Google sign-in did not finish. Try Sign in in this tab instead.';return error?.message||'Something went wrong. Please try again.';}
 function rememberedName(){try{return localStorage.getItem(NAME_KEY)||'';}catch{return '';}}
 function rememberName(name){try{localStorage.setItem(NAME_KEY,name);}catch{}}
 function loadClosedChats(){try{const ids=JSON.parse(localStorage.getItem(`sxs-chat-closed:${backend.uid}`)||'[]');closedConversations=new Set(Array.isArray(ids)?ids.filter(id=>typeof id==='string').slice(-200):[]);}catch{closedConversations=new Set();}}
@@ -37,8 +38,12 @@ function renderOwnerControls(){
  const area=host.querySelector('.chatOwnerArea');if(!area||!ready)return;area.replaceChildren();
  const panel=el('details','chatOwnerPanel');panel.append(el('summary','','Owner controls'));
  if(!backend.isGoogleSignedIn){
-  const signIn=button('Sign in with Google','chatSubtle',async()=>{signIn.disabled=true;try{await backend.signInOwner();location.reload();}catch(error){showStatus(errorText(error),true);signIn.disabled=false;}});
+  let requestGoogleToken,preparing=false;
+  const signIn=button('Sign in with Google','chatSubtle',async()=>{if(!requestGoogleToken)return;signIn.disabled=true;try{const token=await requestGoogleToken();await backend.signInOwnerWithGoogleToken(token);location.reload();}catch(error){showStatus(errorText(error),true);signIn.disabled=false;}});signIn.disabled=true;
+  const prepare=async()=>{if(preparing||requestGoogleToken)return;preparing=true;signIn.textContent='Loading Google sign-in…';try{requestGoogleToken=await prepareGoogleOwnerSignIn(backend.googleClientId);signIn.disabled=false;}catch(error){showStatus(errorText(error),true);}finally{preparing=false;signIn.textContent='Sign in with Google';}};
+  panel.addEventListener('toggle',()=>{if(panel.open)void prepare();});
   panel.append(el('p','chatHelp','Sign in to access owner-only lobby cleanup.'),signIn);
+  if(area.dataset.open==='true')void prepare();
  }else if(!owner){
   panel.append(el('p','chatHelp','This Google account has not been registered as the site owner.'),el('p','chatOwnerId',`Account ID: ${backend.uid}`));
  }else{
