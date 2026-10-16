@@ -15,12 +15,13 @@ try {
     page.on('pageerror', error => errors.push(String(error)));
     await page.addInitScript(() => {
       const listeners = {people:new Set(), lobby:new Set(), conversations:new Set(), dm:new Set(), board:new Set()};
-      const data = {people:[{uid:'self12345678901234567',name:'Tester'},{uid:'other1234567890123456',name:'Friend'}],lobby:[],conversations:[],dm:[],board:[]};
+      const data = {people:[{uid:'self12345678901234567',name:'Tester',lastActive:Date.now()},{uid:'other1234567890123456',name:'Friend',lastActive:Date.now()}],lobby:[],conversations:[],dm:[],board:[]};
       data.conversations=[{id:['self12345678901234567','other1234567890123456'].sort().join('_'),members:data.people.map(person=>person.uid),names:{other1234567890123456:'Friend'}}];
       const emit = key => listeners[key].forEach(callback => callback([...data[key]]));
       const subscribe = key => callback => {listeners[key].add(callback);callback([...data[key]]);return () => listeners[key].delete(callback);};
       window.__SXS_CHAT_TEST_BACKEND = {
         uid:'self12345678901234567',
+        async updateActivity() {data.people[0].lastActive=Date.now();window.__chatPings=(window.__chatPings||0)+1;emit('people');},
         async join(name) {data.people[0].name=name;emit('people');return {uid:this.uid,name};},
         subscribePeople:subscribe('people'),subscribeLobby:subscribe('lobby'),
         subscribeConversations:subscribe('conversations'),subscribeDm:(_id,callback)=>subscribe('dm')(callback),
@@ -41,9 +42,11 @@ try {
           return send.apply(this,args);
         };
       }
+      window.__chatRefreshPeople=()=>emit('people');
       window.__chatTestData = data;
       window.confirm = () => true;
     });
+    await page.clock.install();
     await page.goto(pathToFileURL(path.resolve('index.html')).href);
     await page.locator('[data-section="chat"]').click();
     await page.locator('#chatName').fill('Tester');
@@ -101,6 +104,20 @@ try {
     assert.equal(await page.getByRole('button',{name:'Close chat with Lobby'}).count(),0,'lobby cannot be closed');
     await page.getByRole('button',{name:/Friend.*other/}).click();
     await page.getByText('Hello privately').waitFor();
+    await page.getByRole('heading',{name:'Active now',exact:true}).waitFor();
+    assert.ok(await page.evaluate(()=>window.__chatPings>=1),'joining starts the presence heartbeat');
+    await page.clock.fastForward(125000);
+    await page.getByText('No one else is active right now.',{exact:true}).waitFor();
+    assert.ok(await page.evaluate(()=>window.__chatPings>=2),'presence heartbeat repeats while chat is open');
+    assert.equal(await page.getByRole('tab',{name:'Friend',exact:true}).count(),1,'inactive people keep their existing private chats');
+    await page.evaluate(()=>{window.__chatTestData.people[1].lastActive=Date.now();window.__chatRefreshPeople();});
+    await page.getByRole('button',{name:/Friend.*other/}).waitFor();
+    await page.locator('[data-section="timeline"]').click();
+    const pingsWhileAway=await page.evaluate(()=>window.__chatPings);
+    await page.clock.fastForward(65000);
+    assert.equal(await page.evaluate(()=>window.__chatPings),pingsWhileAway,'leaving chat stops heartbeats');
+    await page.locator('[data-section="chat"]').click();
+    await page.waitForFunction(before=>window.__chatPings>before,pingsWhileAway);
     const canvas = page.locator('.chatCanvas');
     const originalBox=await canvas.boundingBox();
     await page.getByRole('button',{name:'Expand drawing board'}).click();

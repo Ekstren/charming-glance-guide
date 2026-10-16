@@ -73,3 +73,5 @@
 @media(max-width:900px){#chatSection .chatLayout{grid-template-columns:minmax(0,1fr)}#chatSection .chatAside{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}#chatSection .chatPanel{grid-template-rows:auto auto minmax(300px,45vh) auto}}
 @media(max-width:620px){#chatSection .chatAside{grid-template-columns:minmax(0,1fr)}#chatSection .chatPeopleList{max-height:80px}#chatSection .chatBoardHeading{align-items:center}#chatSection .chatPanel{grid-template-rows:auto auto minmax(280px,43vh) auto}}
 @media(max-width:380px){#chatSection .chatJoinForm{grid-template-columns:minmax(0,1fr)}#chatSection .chatJoinForm .chatPrimary{width:100%}#chatSection .chatComposer{gap:5px;padding:8px}#chatSection .chatComposer .chatPrimary{padding-inline:10px}#chatSection .chatSwatch{width:29px;height:29px;min-width:29px}}
+
+#chatSection .chatPerson::before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:#64b88a}

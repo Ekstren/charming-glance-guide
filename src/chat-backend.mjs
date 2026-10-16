@@ -74,10 +74,13 @@ export async function createChatBackend(config) {
       else await setDoc(profile, { name, createdAt: serverTimestamp(), lastActive: serverTimestamp() });
       return { uid, name };
     },
+    async updateActivity() {
+      await updateDoc(doc(users, uid), { lastActive: serverTimestamp() });
+    },
     subscribePeople(callback) {
       return track(listen(query(users, orderBy('lastActive', 'desc'), limit(50)),
-        data => ({ uid: data.uid, name: data.name }),
-        (items, error) => callback(items.map(item => ({ uid: item.id, name: item.name })), error)));
+        data => ({ name: data.name, lastActive: data.lastActive?.toMillis() || 0 }),
+        (items, error) => callback(items.map(item => ({ uid: item.id, name: item.name, lastActive: item.lastActive })), error)));
     },
     subscribeLobby(callback) {
       return track(listen(query(lobby, orderBy('createdAt', 'desc'), limit(80)),
