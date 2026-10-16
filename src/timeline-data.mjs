@@ -75,7 +75,8 @@ export const timelineData = [
     ['2026-11-19',128,'Seasonal Map','Astral Odyssey','Aethyris season map · pre-release English/data name','seasonal-map'],
     ['2026-12-02',141,'Dungeon','Abyssal Bastion','Normal 20M · Hard 26M · Nightmare 30M · Purgatory 46M · pre-release English/data name','dungeon'],
     ['2026-12-05',144,'Ancient Relic','Aethyris Relic II','Second Aethyris relic gacha · final Global banner title not yet verified','ancient-relic'],
-    ['2026-12-16',155,'Dungeon','Courtyard of Purification','Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M · pre-release English/data name','dungeon'],
+    // Official dungeon preview: https://discord.com/channels/1410146553573802088/1427172679521407056/1560523971177218138
+    ['2026-12-16',155,'Dungeon','Court of Purification','Soulbinder Set dungeon in Aethyris, guarded by the Lord of Decay and corrupted Aethyrine soldiers. Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M (community power estimates). Official Oct. 16 preview confirms the dungeon name and set; its launch notice applies to the earliest Aethyris servers. This Charming Glance date remains projected from Server Day 155.','dungeon'],
     ['2026-12-20',159,'Fantomon','Prismora','Aethyris Fantomon · S3 Day 46','fantomon',null,'unconfirmed'],
     ['2026-12-30',169,'Dungeon','Temple of Order','Normal 55M · Hard 65M · Nightmare 82M · Purgatory 115M · pre-release English/data name','dungeon'],
     ['2027-01-04',174,'Ancient Relic','Aethyris Relic III','Third Aethyris relic gacha · final Global banner title not yet verified','ancient-relic'],
