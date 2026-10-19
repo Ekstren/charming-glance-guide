@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1560525601192935466",
+  "last_message_id": "1561581950920298517",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -945,6 +945,87 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1560525601192935466"
+    },
+    {
+      "id": "1561581950920298517",
+      "timestamp": "2026-10-19T03:29:09.889000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# New Visage | Trick or Treat? Why Not Both!\nHey, Adventurer! Naira here with the latest scoop from Kanstein!\nLately, Kanstein has been getting some rather...\nsuspicious visitors.\nGhosts in witch hats, pumpkins wrapped in cloaks...\nWait... could they be planning the Haunted Carnival?!\n\nSo, Adventurer, what should we dress up as?\nHow about... a pumpkin?!\n\nI've already stitched the hat! A little crooked? Even better! That's how the pumpkin monsters like it!\nLet's give the tips of our hair a warm pumpkin-orange glow, too!\nRibbons tied, cloak on. Time to make a grand entrance on October 25!\nCome see this pumpkin look in action!\n\nWhat do you think of this pumpkin Visage, Adventurers?\nLet me know in the comments! And since we're all heading to the carnival, I'll pick 1 lucky Adventurers from the comments to **win a free Whimsy Parade set**!\n\nParticipation Entry Point：\nhttps://x.com/SwordxStaff/status/2112020297780273490?s=20\nhttps://www.facebook.com/share/v/1CCXgy9rcW/",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [
+        {
+          "type": "rich",
+          "url": "https://twitter.com/SwordxStaff/status/2112020297780273490?s=20",
+          "description": "\\#NewVisage \\| Trick or Treat? Why Not Both\\!\nHey, Adventurer\\! Naira here with the latest scoop from Kanstein\\!\nLately, Kanstein has been getting some rather\\.\\.\\.\nsuspicious visitors\\.\nGhosts in witch hats, pumpkins wrapped in cloaks\\.\\.\\.\nWait\\.\\.\\. could they be planning the Haunted Carnival?\\!\nSo, Adventurer,…",
+          "timestamp": "2026-10-19T03:17:33.087000+00:00",
+          "color": 1942002,
+          "author": {
+            "name": "Sword x Staff (@SwordxStaff)",
+            "url": "https://x.com/SwordxStaff"
+          },
+          "footer": {
+            "text": "X",
+            "icon_url": "https://abs.twimg.com/responsive-web/client-web/icon-default.522d363a.png"
+          },
+          "image": {
+            "url": "https://jf.x.com/images/media-preview/2112020297780273490",
+            "proxy_url": "https://images-ext-1.discordapp.net/external/kmm_MVCjQfZ9gQ-Lk6_5KPzgDbLOgt2tFOeeCzN67Uw/https/jf.x.com/images/media-preview/2112020297780273490",
+            "width": 1029,
+            "height": 1200
+          }
+        },
+        {
+          "type": "link",
+          "url": "https://www.facebook.com/share/v/1CCXgy9rcW/",
+          "title": "Log in or sign up to view",
+          "description": "See posts, photos and more on Facebook."
+        }
+      ],
+      "attachments": [
+        {
+          "id": "1561579609848287292",
+          "filename": "--.jpg",
+          "content_type": "image/jpeg",
+          "size": 284120,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1561579609848287292/--.jpg?ex=6ad6ddd7&is=6ad58c57&hm=3a084b3f0b2bbe2aefdd72780448b3b7a82fff5a9611c9e503199e7ed46b7352&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1561579609848287292/--.jpg?ex=6ad6ddd7&is=6ad58c57&hm=3a084b3f0b2bbe2aefdd72780448b3b7a82fff5a9611c9e503199e7ed46b7352&",
+          "width": 720,
+          "height": 405
+        },
+        {
+          "id": "1561579610418974760",
+          "filename": "---.gif",
+          "content_type": "image/gif",
+          "size": 4730914,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1561579610418974760/---.gif?ex=6ad6ddd7&is=6ad58c57&hm=be26ffda991cc86d93ebafbee1d5a1482fd9524d0f8ae4367b8273d62fc6e9ab&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1561579610418974760/---.gif?ex=6ad6ddd7&is=6ad58c57&hm=be26ffda991cc86d93ebafbee1d5a1482fd9524d0f8ae4367b8273d62fc6e9ab&",
+          "width": 600,
+          "height": 700
+        },
+        {
+          "id": "1561579610980745236",
+          "filename": "---.gif",
+          "content_type": "image/gif",
+          "size": 4271091,
+          "url": "https://cdn.discordapp.com/attachments/1427172679521407056/1561579610980745236/---.gif?ex=6ad6ddd8&is=6ad58c58&hm=8f93edacf83250771f2ad716199aa8db28673ee4124f914f6b06a0a3b5f41455&",
+          "proxy_url": "https://media.discordapp.net/attachments/1427172679521407056/1561579610980745236/---.gif?ex=6ad6ddd8&is=6ad58c58&hm=8f93edacf83250771f2ad716199aa8db28673ee4124f914f6b06a0a3b5f41455&",
+          "width": 600,
+          "height": 700
+        }
+      ],
+      "message_reference": {
+        "message_id": "1561579611362689098",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1561581950920298517"
     }
   ]
 }
