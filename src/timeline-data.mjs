@@ -1,4 +1,6 @@
 export const timelineData = [
+    // Official Visage preview: https://discord.com/channels/1544197238031515710/1544367391994024079/1561581950920298517
+    ['2026-10-25',103,'Event','Whimsy Parade · Haunted Carnival Visage','Pumpkin-themed Whimsy Parade Visage with a witch hat, cloak, ribbons, and pumpkin-orange hair accents. The official Global preview announces an Oct. 25 debut for Haunted Carnival. Exact release time, event duration, and Charming Glance availability need in-game confirmation.','event'],
     // Official code notice: https://discord.com/channels/1544197238031515710/1544367391994024079/1559547587609108560
     ['2026-10-13',91,'Event','Gift code · HOTPOT','Redeem HOTPOT before Oct. 20 at 00:00 (UTC-5). Confirmed by the official Sword x Staff Global Discord gift-code announcement on Oct. 13; the expiry is displayed in your local timezone. Community-reported rewards: 300 Raw Ore + 1 Stellatie (GamesRadar, updated Oct. 13). The official notice confirms the code and expiry but does not list rewards.','event','2026-10-20',null,'2026-10-20T05:00:00Z'],
     // Official code notice: https://discord.com/channels/1544197238031515710/1544367391994024079/1556970171006980108
