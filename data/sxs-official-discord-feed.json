@@ -6,7 +6,7 @@
     "guild_id": "1544197238031515710",
     "purpose": null
   },
-  "last_message_id": "1562100608335483023",
+  "last_message_id": "1563415995974951004",
   "messages": [
     {
       "id": "1544367433169764372",
@@ -1109,6 +1109,50 @@
         "type": 0
       },
       "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1562100608335483023"
+    },
+    {
+      "id": "1563415948633964626",
+      "timestamp": "2026-10-24T04:56:49.018000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "# Notice Regarding Recent Server Issues\nDear Adventurers,\n\nFrom **October 23, 2026, 19:58 to 22:11 (UTC-5)**, a server configuration issue caused some Adventurers to be incorrectly connected to a non-official game environment. As a result, some players found that their existing characters or game progress were not displayed correctly, while others discovered that characters created and progress made during the affected period were no longer available after logging back in.\n\n**The issue has now been resolved, and normal server access has been restored.** We are currently reviewing the affected accounts and game records and working on a compensation plan.\n\n## I. What Should Affected Players Do?\n### 1. If You Already Had a Character Before the Issue\nIf you logged in during the affected period and found that your character or game progress was missing, please log in again and return to your original character on the official server.\n\n**Your existing character and progress on the official server have not been affected.** Once the compensation plan is finalized, compensation will be sent to your affected character on the official server.\n\n### 2. If You Started Playing and Created a Character During the Affected Period\nUnfortunately, since you were connected to a non-official game environment, the character you created and any progress made during that time cannot be retained.\n\nPlease log in again **using the same login account as before** and create a new character on an official server to continue your adventure.\n\n**Make sure to use the same login account** so we can verify your previous game records. Once the compensation plan is finalized, compensation will be sent to your newly created character on the official server.",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "message_id": "1563414684705628231",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1563415948633964626"
+    },
+    {
+      "id": "1563415995974951004",
+      "timestamp": "2026-10-24T04:57:00.305000+00:00",
+      "edited_timestamp": null,
+      "type": 0,
+      "content": "## II. How Can I Confirm I'm on an Official Server?\nYou can check by following these steps:\n1. Go to the game's login screen.\n2. Tap **Server List** in the top-right corner.\n3. Check the server name. **If the server name is not made up entirely of numbers, you're connected to an official game server.**\n\n## III. Purchases Made During the Affected Period\nWe will review and handle all purchases made during the affected period on a case-by-case basis to ensure that the corresponding paid items and benefits are properly accounted for.\n\nIf you have any other questions or are still experiencing issues with your character, game progress, or purchases, please contact us through the in-game Customer Support. We'll be happy to help investigate and resolve your issue.\n\nWe sincerely apologize for the confusion and inconvenience this has caused. Thank you for your patience and understanding.\n\n**The Sword × Staff Team**",
+      "author": {
+        "id": "1544367432183840778",
+        "username": "Sword x Staff #🔔｜announcements",
+        "bot": true
+      },
+      "webhook_id": "1544367432183840778",
+      "embeds": [],
+      "attachments": [],
+      "message_reference": {
+        "message_id": "1563414825239969824",
+        "channel_id": "1427172679521407056",
+        "guild_id": "1410146553573802088",
+        "type": 0
+      },
+      "jump_url": "https://discord.com/channels/1544197238031515710/1544367391994024079/1563415995974951004"
     }
   ]
 }
