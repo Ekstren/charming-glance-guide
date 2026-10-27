@@ -1,4 +1,7 @@
 export const timelineData = [
+    // Community code report: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ (updated Oct. 27, 2026)
+    ['2026-10-27',105,'Event','Gift code · HALLOWEEN (community-reported)','Community-reported code HALLOWEEN rewards 2,000 Rolla + 120 Dawnium; reported expiry November 3 (GamesRadar, updated October 27). Valkyrie also lists the code. Exact expiration time and timezone are unconfirmed; no precise countdown is available. Official confirmation and in-game redemption have not been verified.','event','2026-11-03','unconfirmed'],
+
     // Official code notice: https://discord.com/channels/1544197238031515710/1544367391994024079/1562075878576492567
     ['2026-10-20',98,'Event','Gift code · KONJAC','Redeem KONJAC before Oct. 27 at 00:00 (UTC-5). Confirmed by the official Sword x Staff Global Discord gift-code announcement on Oct. 20; the expiry is displayed in your local timezone. Community-reported rewards: 250 Chrono Sand + 1 Bond Trinket (GamesRadar, updated Oct. 20). The official notice confirms the code and expiry but does not list rewards.','event','2026-10-27',null,'2026-10-27T05:00:00Z'],
     // App Store event: https://apps.apple.com/us/app/sword-x-staff/id6751270546 (checked Oct. 25, 2026)
