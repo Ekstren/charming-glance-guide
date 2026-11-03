@@ -1,4 +1,7 @@
 export const timelineData = [
+    // Community reports: https://gachafeed.moe/swordstaff/codes/ and https://www.mrguider.org/codes/sword-x-staff-codes/ (checked Nov. 3, 2026)
+    ['2026-11-03',112,'Event','Gift code · CARNIVAL (community-reported)','Community-reported gift code CARNIVAL; rewards have not been verified. Gachafeed lists the code, and MrGuider reports expiration at November 10, 00:00 (UTC-5); this community-reported timestamp is displayed in your local timezone. Official confirmation and in-game redemption have not been verified.','event','2026-11-10','unconfirmed','2026-11-10T05:00:00Z'],
+
     // Reported expiry: https://www.mrguider.org/codes/sword-x-staff-codes/ (updated Oct. 27, 2026)
     // Community code report: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ (updated Oct. 27, 2026)
     ['2026-10-27',105,'Event','Gift code · HALLOWEEN (community-reported)','Community-reported code HALLOWEEN rewards 2,000 Rolla + 120 Dawnium; reported expiry November 3 (GamesRadar, updated October 27). Valkyrie also lists the code. MrGuider reports expiration at November 3, 00:00 (UTC-5); this community-reported timestamp is displayed in your local timezone. Official confirmation and in-game redemption have not been verified.','event','2026-11-03','unconfirmed','2026-11-03T05:00:00Z'],
