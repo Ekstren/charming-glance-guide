@@ -51,7 +51,7 @@ async function enter(page,fields){
 }
 async function state(page){return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),STORAGE_KEY);}
 async function assertFresh(page){
-  for(const [id,value]of Object.entries({charLevel:'160',gearLevel:'160',skillLevel:'160',fantomonLevel:'160',relicLevel:'16',historicalStars:'',bedExp:'0',oreRate:'0',essenceRate:'0',sandRate:'0',treatRate:'0',staminaOreYield:'0',staminaEssenceYield:'0',staminaSandYield:'0'}))assert.equal(await page.locator(`#${id}`).inputValue(),value,`fresh S3 ${id}`);
+  for(const [id,value]of Object.entries({charLevel:'160',gearLevel:'160',skillLevel:'160',fantomonLevel:'160',relicLevel:'16',historicalStars:'',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0',bedExp:'0',oreRate:'0',essenceRate:'0',sandRate:'0',treatRate:'0',staminaOreYield:'0',staminaEssenceYield:'0',staminaSandYield:'0'}))assert.equal(await page.locator(`#${id}`).inputValue(),value,`fresh S3 ${id}`);
   assert.equal(await page.locator('#calcSeasonNotice').isVisible(),false);
   assert.equal(await page.locator('#summaryOptimizedScore').textContent(),'—');
   assert.match(await page.locator('#targetMessage').textContent(),/carried|Primostars/i);

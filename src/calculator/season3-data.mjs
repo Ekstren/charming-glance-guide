@@ -88,7 +88,7 @@ export const S3_SCORING_START_DEFAULTS=Object.freeze({
   sandCurrent:0,sandBlueCurrent:0,sandEpicCurrent:0,sandRate:0,
   treatCurrent:0,treatPremiumCurrent:0,treatDeluxeCurrent:0,treatRate:0,
   shopRefreshesDaily:0,hammerCurrent:0,knucklesCurrent:0,shovelCurrent:0,
-  staminaMode:'auto',realmDailyOre:2,realmDailyEssence:2,realmDailySand:2,refinedOreCurrent:'',
+  staminaMode:'auto',realmDailyOre:0,realmDailyEssence:0,realmDailySand:0,refinedOreCurrent:'',
   staminaOreYield:0,staminaEssenceYield:0,staminaSandYield:0,seasonEndDate:'2027-02-25'
 });
 export const S3_SCORING_START_CHECKS=Object.freeze({finishEarlyAuto:false,finishEarlyWaitLevels:true});
