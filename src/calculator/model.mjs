@@ -1,6 +1,8 @@
 // Scoring, progression tables and resource-cost calculations. No DOM or storage.
 import { countFuturePacificResets } from '../time.mjs';
-import { S1_END, S2_END, seasonKeyAt } from '../season-clock.mjs';
+import { S1_END, S2_END, S3_END, seasonKeyAt } from '../season-clock.mjs';
+import {S3_PLANNER_START_LEVEL,S3_EXACT_UPGRADE_RULES,S3_EXACT_CHARACTER_EXP_FROM_160,S3_EXACT_FANTOMON_EXP_FROM_160,S3_REALM_YIELDS,S3_REALM_META,S3_PROGRESSION_GATES,S3_ASTRAL_THRESHOLDS,S3_PRIMO_META,S3_SCORING_START_DEFAULTS,S3_SCORING_START_CHECKS} from './season3-data.mjs';
+export {S3_PLANNER_START_LEVEL,S3_EXACT_UPGRADE_RULES,S3_EXACT_CHARACTER_EXP_FROM_160,S3_EXACT_FANTOMON_EXP_FROM_160,S3_REALM_YIELDS,S3_REALM_META,S3_PROGRESSION_GATES,S3_ASTRAL_THRESHOLDS,S3_PRIMO_META,S3_SCORING_START_DEFAULTS,S3_SCORING_START_CHECKS};
 
 export const STORAGE_KEY = 'charmingGlanceCloneV1';
 
@@ -26,7 +28,9 @@ export const CALC_SEASONS = {
     // S2 scoring constants are well-established. Live Global evidence confirms Gear, Skills and Relic ranks can advance above Character level.
     // The optimizer therefore treats those three systems as resource/table-limited rather than Character-level gated.
     // Fantomon growth uses a resonance-style 10-level soft gate: the next decade opens only after all four scoring Fantomons reach the current decade boundary.
-    s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1888.455092195316,essence:2645.717313492359,sand:1797.432822048046,rolla:19169.242644394664},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true}
+    s2:{key:'s2',name:'Season 2',nextName:'Season 3',end:S2_END,deadline:'device-local',scoreFloor:130,relicFloor:13,starBase:45,scorePerStar:27,weights:{character:100,gear:18,skill:7,relic:33,fanto:8},skillCap:null,relicCap:null,fantoCap:null,gearCap:null,realmMaxLevel:120,realm:{ore:1888.455092195316,essence:2645.717313492359,sand:1797.432822048046,rolla:19169.242644394664},map:{ore:1400,essence:1770,sand:1180,rolla:14000,bigRate:0.0932},optimizeRelic:true,optimizeFanto:true},
+    // S3 uses independent scoring/cost/EXP tables. Unknown map and shop income stay zero.
+    s3:{key:'s3',name:'Season 3',title:'Finale of Chaos',nextName:'Season 4',end:S3_END,endEstimate:true,deadline:'device-local',scoreFloor:160,relicFloor:17,starBase:65,scorePerStar:13,weights:{...S3_PRIMO_META.weights},skillCap:340,relicCap:34,fantoCap:340,gearCap:460,plannerStartLevel:S3_PLANNER_START_LEVEL,realmMaxLevel:150,realm:{...S3_REALM_YIELDS},map:{ore:0,essence:0,sand:0,rolla:0,bigRate:0},optimizeRelic:true,optimizeFanto:true}
   };
 
 /* S2_SCORING_SOURCE_CONFIRM_V1
@@ -169,7 +173,7 @@ export const GEAR_OUTPUT_IDS = ['targetGearWeapon','targetGearOffhand','targetGe
 export const INPUT_IDS = [
     'targetStars','historicalStars','charLevel','charExp','bedExp','finishEarlyDays','skillLevel','relicLevel','fantomonLevel','gearLevel',
     'oreCurrent','oreRate','essenceCurrent','essenceRate','sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate','treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate','shopRefreshesDaily',
-    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels','exactGearLevels'
+    'hammerCurrent','knucklesCurrent','shovelCurrent','staminaMode','realmDailyOre','realmDailyEssence','realmDailySand','refinedOreCurrent','exactSkillLevels','exactRelicLevels','exactFantoLevels','exactGearLevels','staminaOreYield','staminaEssenceYield','staminaSandYield','seasonEndDate'
   ];
 
 export const CHECK_IDS = ['finishEarlyAuto','finishEarlyWaitLevels'];
@@ -184,7 +188,7 @@ export const COMPACT_NUMBER_INPUT_IDS = new Set([
     'oreCurrent','oreRate','essenceCurrent','essenceRate',
     'sandCurrent','sandBlueCurrent','sandEpicCurrent','sandRate',
     'treatCurrent','treatPremiumCurrent','treatDeluxeCurrent','treatRate',
-    'hammerCurrent','knucklesCurrent','shovelCurrent','refinedOreCurrent'
+    'hammerCurrent','knucklesCurrent','shovelCurrent','refinedOreCurrent','staminaOreYield','staminaEssenceYield','staminaSandYield'
   ]);
 
 export function parseCompactNumber(raw,fallback=0){
@@ -262,6 +266,8 @@ export const DAILY_SHOP_CORE_BUNDLE_FACTOR=2/3;
 export const DAILY_SHOP_TREAT_EQ_PER_REFRESH=35;
 
 export function dailyShopMatsPerRefresh(cfg=activeCalcConfig()){
+    // No Season 3 shop sample has been measured; never reuse S2 observed pages or a Treat guess.
+    if(cfg?.key==='s3') return {ore:0,essence:0,sand:0,treat:0,sandRegular:0,sandRare:0};
     if(cfg?.key==='s2' && S2_SHOP_OBSERVED_PAGES.length){
       const a=s2ShopObservedAverage();
       return {
@@ -395,6 +401,10 @@ export function isEstimatedS1ExpLevel(level){
 
 export function expRequiredForLevel(level,cfg=activeCalcConfig()){
     const l=Math.max(1,Math.floor(Number(level)||1));
+    if(cfg.key==='s3'){
+      const exact=S3_EXACT_CHARACTER_EXP_FROM_160[l-S3_EXACT_UPGRADE_RULES.floor];
+      return Number.isFinite(exact)&&exact>0 ? exact : Infinity;
+    }
     if(cfg.key==='s2'){
       if(l>=S2_EXACT_UPGRADE_RULES.floor){
         const exact=S2_EXACT_CHARACTER_EXP_FROM_130[l-S2_EXACT_UPGRADE_RULES.floor];
@@ -540,17 +550,26 @@ export function buildCategoryOptions(baseAvg,count,cap,minLevel,floor,weight,ste
     return out;
   }
 
+export function s3PlanningCapsForCharacter(characterLevel){
+    const seasonLevel=Math.max(0,Math.floor(Number(characterLevel)||0)-S3_EXACT_UPGRADE_RULES.floor);
+    let gate=S3_PROGRESSION_GATES[0];
+    for(const candidate of S3_PROGRESSION_GATES) if(seasonLevel>=candidate.characterSeasonLevel) gate=candidate;
+    return {gear:160+gate.gear,skill:160+gate.skill,relic:16+gate.relic,fanto:160+gate.fanto};
+  }
+
 export function relicCapForCharacter(characterLevel,cfg=activeCalcConfig()){
     const lvl=Math.max(1,Math.floor(Number(characterLevel)||1));
     // S2_ABOVE_CHARACTER_UPGRADES_V1: live Global evidence at Character Lv.131 includes
     // 18 Relics at +14 with enough material to push two slots to +15. Relic rank is not
     // Character-level capped; use the extracted S2 blessing table as the planning ceiling.
+    if(cfg.key==='s3') return s3PlanningCapsForCharacter(lvl).relic;
     if(cfg.key==='s2') return S2_EXACT_UPGRADE_RULES.relicBase + S2_EXACT_UPGRADE_RULES.relicBlessingLimit;
     return lvl<100 ? 10 : Math.max(10,Math.floor(lvl/10)+1);
   }
 
 export function categoryCapsForCharacter(characterLevel,cfg=activeCalcConfig()){
     const lvl=Math.max(1,Math.floor(Number(characterLevel)||1));
+    if(cfg.key==='s3') return s3PlanningCapsForCharacter(lvl);
     if(cfg.key==='s1'){
       return {
         skill:Math.max(100,lvl),
@@ -573,7 +592,7 @@ export function categoryCapsForCharacter(characterLevel,cfg=activeCalcConfig()){
 
 export function categoryInputCapsForCharacter(characterLevel,cfg=activeCalcConfig()){
     const caps=categoryCapsForCharacter(characterLevel,cfg);
-    if(cfg.key!=='s2') return caps;
+    if(cfg.key!=='s2'&&cfg.key!=='s3') return caps;
     // Accept actual S2 values without Character-level clamping. The optimizer also allows new Gear/Skill/Relic
     // upgrades above Character level, bounded only by the supported seasonal cost tables; Fantomon remains conservative.
     return {...caps,skill:Infinity,relic:Infinity,fanto:Infinity,gear:Infinity};
@@ -581,6 +600,11 @@ export function categoryInputCapsForCharacter(characterLevel,cfg=activeCalcConfi
 
 export function gearStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
+    if(cfg.key==='s3'){
+      const r=S3_EXACT_UPGRADE_RULES,blessing=l+1-r.floor;
+      if(blessing<1||blessing>r.gearBlessingLimit) return Infinity;
+      return Math.round((r.gearBase+(Math.min(blessing,r.gearScaleCap)-1)*r.gearRate)/5)*5;
+    }
     if(cfg.key==='s1') return 90*l + 310;
     // Pre-floor catch-up costs stay on the existing Global curve. The extracted S2 blessing
     // table begins at target Lv.131 (first level above the Lv.130 Season-Power floor).
@@ -596,6 +620,11 @@ export function gearStepCost(level,cfg=activeCalcConfig()){
 
 export function gearStepRefined(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
+    if(cfg.key==='s3'){
+      const r=S3_EXACT_UPGRADE_RULES,blessing=l+1-r.floor;
+      if(blessing<1||blessing>r.gearBlessingLimit) return Infinity;
+      return blessing%5===0?r.refinedOreEvery5:0;
+    }
     if(cfg.key==='s2' && l>=S2_EXACT_UPGRADE_RULES.floor){
       const blessing=(l+1)-S2_EXACT_UPGRADE_RULES.floor;
       return blessing>=1 && blessing<=S2_EXACT_UPGRADE_RULES.gearBlessingLimit && blessing%5===0
@@ -605,9 +634,9 @@ export function gearStepRefined(level,cfg=activeCalcConfig()){
     return ((l+1)%5===0) ? l+381 : 0;
   }
 
-export function gearRefinedCost(fromLevels,toLevels){
+export function gearRefinedCost(fromLevels,toLevels,cfg=activeCalcConfig()){
     let total=0;
-    for(let i=0;i<5;i++) for(let l=fromLevels[i];l<toLevels[i];l++) total+=gearStepRefined(l);
+    for(let i=0;i<5;i++) for(let l=fromLevels[i];l<toLevels[i];l++) total+=gearStepRefined(l,cfg);
     return total;
   }
 
@@ -619,6 +648,11 @@ export function gearCost(fromLevels,toLevels,cfg=activeCalcConfig()){
 
 export function skillStepCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
+    if(cfg.key==='s3'){
+      const r=S3_EXACT_UPGRADE_RULES,blessing=l+1-r.floor;
+      if(blessing<1||blessing>r.skillBlessingLimit) return Infinity;
+      return Math.round((r.skillBase+(blessing-1)*r.skillRate)/5)*5;
+    }
     if(cfg.key==='s1') return l<=109 ? 60*l+25 : 60*l+30;
     // Keep the pre-floor catch-up curve; exact seasonal blessing costs begin above Lv.130.
     if(l===100) return 6025;
@@ -640,6 +674,14 @@ export function skillCost(from,to,cfg=activeCalcConfig()){
 
 export function relicStepSand(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
+    if(cfg.key==='s3'){
+      const r=S3_EXACT_UPGRADE_RULES;
+      // Verified normal-rank catch-up costs are Purple Sand, converted to Basic-equivalent.
+      if(l<r.relicBase) return ({13:1800,14:2000,15:2300}[l]??Infinity)*SAND_EPIC_EQ;
+      const blessing=l+1-r.relicBase;
+      if(blessing<1||blessing>r.relicBlessingLimit) return Infinity;
+      return (r.relicPurpleBase+(blessing-1)*r.relicPurpleRate)*SAND_EPIC_EQ;
+    }
     if(cfg.key==='s1'){
       const table={10:16000,11:17600,12:19200,13:33750};
       return table[l] ?? Infinity;
@@ -663,6 +705,10 @@ export function relicCost(from,to,cfg=activeCalcConfig()){
 
 export function fantoStepTreatCost(level,cfg=activeCalcConfig()){
     const l=Math.floor(level);
+    if(cfg.key==='s3'){
+      const exp=S3_EXACT_FANTOMON_EXP_FROM_160[l-S3_EXACT_UPGRADE_RULES.floor];
+      return Number.isFinite(exp)&&exp>0?exp/TREAT_BASIC_EXP:Infinity;
+    }
     if(cfg.key==='s1'){
       if(l>=100 && l<=114) return 526 + 10*(l-100);
       if(l>=115 && l<=119) return 678 + 10*(l-115);
@@ -704,7 +750,8 @@ export function balancedGearTarget(base, increments){
   // S1 open-map Ore is verified at 900 per 5 Stamina. Essence/Sand use a community-style late-S1 estimate derived from the same Ore:Realm scaling: ~1,475 Essence / ~838 Sand per 5 Stamina.
 export function automaticResourceYields(characterLevel,cfg=activeCalcConfig()){
     const level=Math.max(1,Math.floor(Number(characterLevel)||1));
-    const mapReady=cfg.key!=='s2' || level>=cfg.realmMaxLevel;
+    const realmMaxReady=cfg.key==='s3'?level>=cfg.realmMaxLevel:(cfg.key!=='s2'||level>=cfg.realmMaxLevel);
+    const mapReady=cfg.key==='s3'?realmMaxReady&&['ore','essence','sand'].some(key=>Number.isFinite(Number(cfg.map?.[key]))&&Number(cfg.map[key])>0):realmMaxReady;
     const map=mapReady ? {
       ore:Number(cfg.map.ore)||0,
       essence:Number(cfg.map.essence)||0,
@@ -712,8 +759,8 @@ export function automaticResourceYields(characterLevel,cfg=activeCalcConfig()){
       rolla:Number(cfg.map.rolla)||0
     } : {ore:0,essence:0,sand:0,rolla:0};
     return {
-      level,mapReady,realmMaxReady:mapReady,realmMaxLevel:cfg.realmMaxLevel,map,
-      orePerHammer:cfg.realm.ore,essencePerKnuckles:cfg.realm.essence,sandPerShovel:cfg.realm.sand,rollaPerAttempt:cfg.realm.rolla,
+      level,mapReady,realmMaxReady,realmMaxLevel:cfg.realmMaxLevel,map,
+      orePerHammer:cfg.key==='s3'&&!realmMaxReady?0:cfg.realm.ore,essencePerKnuckles:cfg.key==='s3'&&!realmMaxReady?0:cfg.realm.essence,sandPerShovel:cfg.key==='s3'&&!realmMaxReady?0:cfg.realm.sand,rollaPerAttempt:cfg.key==='s3'&&!realmMaxReady?0:cfg.realm.rolla,
       treatExp:50,staminaPerNode:5
     };
   }

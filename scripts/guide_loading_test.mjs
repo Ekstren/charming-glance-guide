@@ -33,7 +33,7 @@ const ready=(page,name)=>page.waitForFunction(name=>document.getElementById(`${n
 try{
  const f=await fixture();await f.page.waitForTimeout(350);
  assert.deepEqual(f.requests.filter(x=>x.endsWith('.js')),['assets/runtime.js'],'only the shell loads at startup');
- assert.equal(await f.page.locator('#buildContent .guideSummary, #companionContent .companionHero').count(),0);
+ assert.equal(await f.page.locator('#buildContent .sourceBuildNote, #companionContent .companionHero').count(),0);
  const cssBytes=readFileSync('assets/site.css').length;
  assert.ok(cssBytes<=235000,`stylesheet exceeds 235 KB: ${cssBytes}`);
  const bytes=readFileSync('assets/runtime.js').length;
@@ -44,6 +44,13 @@ try{
  for(const name of ['builds','companions','relics']){
   await open(f.page,name);await ready(f.page,name);await open(f.page,'timeline');await open(f.page,name);
   assert.equal(f.requests.filter(x=>x===`assets/${name}-section.js`).length,1);
+  if(name==='builds'||name==='companions'){
+   const selector=name==='builds'?'#classTabs [data-class]':'#companionClassTabs [data-companion-class]';
+   assert.deepEqual(await f.page.locator(selector).allTextContents(),['Magister','Prophet','Ravager','Templar'],`${name}: lazy module provides current T5 classes`);
+  }else{
+   assert.equal(await f.page.locator('[data-relic-region="Aethyris I"]').getAttribute('aria-pressed'),'true','Relics defaults to the current Aethyris pool');
+   assert.equal(await f.page.locator('.relicCard').count(),80,'the current pool has all 80 relics');
+  }
  }
  assert.ok(!f.requests.includes('assets/calculator.js'));assert.deepEqual(f.errors,[]);await f.page.close();
  for(const name of ['builds','companions','relics']){

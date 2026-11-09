@@ -96,7 +96,7 @@ function realmTopupFor(key,resourceCost,projectedBudget,resources,cfg=activeCalc
     let perRun=realmYieldFor(resources,key);
     // S2 tools can be bought/banked before Lv.120 and spent once the max bracket is reached.
     // If the projection never reaches Lv.120, do not invent a lower-bracket yield.
-    if(cfg.key==='s2' && Math.floor((p?.decimal??p?.level??__calculatorDeps.n('charLevel',100)))<cfg.realmMaxLevel) perRun=0;
+    if(cfg.key!=='s1' && Math.floor((p?.decimal??p?.level??__calculatorDeps.n('charLevel',100)))<cfg.realmMaxLevel) perRun=0;
     return realmTopup(resourceCost,projectedBudget,perRun,Number.isFinite(resources?.realmDays)?resources.realmDays:materialRealmDaysAvailable(cfg),inv.banked,inv.baselineRefreshes);
   }
 
@@ -116,7 +116,7 @@ function buildGearOptions(baseGear,cfg,scoreTarget=0,hardCap=cfg.gearCap){
       for(let i=1;i<t.length;i++) if(t[i]<t[idx]) idx=i;
       if(Number.isFinite(effectiveCap) && t[idx]>=effectiveCap) break;
       oreCost+=gearStepCost(t[idx],cfg);
-      refinedCost+=gearStepRefined(t[idx]);
+      refinedCost+=gearStepRefined(t[idx],cfg);
       t[idx]++; adds++;
       out.push({adds,target:t.slice(),score:gearScore(t,cfg),oreCost,refinedCost});
     }
@@ -124,9 +124,9 @@ function buildGearOptions(baseGear,cfg,scoreTarget=0,hardCap=cfg.gearCap){
   }
 
 function planningCategoryState(cfg,currentCaps,projectedCaps){
-    const skill=__calculatorDeps.categoryStateFromUser('skillLevel','exactSkillLevels',8,100,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?100:122);
-    const relic=__calculatorDeps.categoryStateFromUser('relicLevel','exactRelicLevels',20,10,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?10:13);
-    const fanto=__calculatorDeps.categoryStateFromUser('fantomonLevel','exactFantoLevels',4,100,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?100:130);
+    const skill=__calculatorDeps.categoryStateFromUser('skillLevel','exactSkillLevels',8,100,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s3'?160:cfg.key!=='s1'?100:122);
+    const relic=__calculatorDeps.categoryStateFromUser('relicLevel','exactRelicLevels',20,10,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s3'?16:cfg.key!=='s1'?10:13);
+    const fanto=__calculatorDeps.categoryStateFromUser('fantomonLevel','exactFantoLevels',4,100,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s3'?160:cfg.key!=='s1'?100:130);
     return {
       skill,relic,fanto,
       skillOptions:buildCategoryOptionsFromLevels(skill.levels,Math.max(Math.ceil(skill.avg),projectedCaps.skill),cfg.scoreFloor,cfg.weights.skill,l=>skillStepCost(l,cfg)),
@@ -141,7 +141,7 @@ function createPlanningContext(baseScore,desired,p,cfg=activeCalcConfig()){
     const current=__calculatorDeps.characterSnapshot(cfg);
     const currentCaps=categoryInputCapsForCharacter(current.level,cfg);
     const projectedCaps=__calculatorDeps.optimizerCategoryCaps(p,cfg);
-    const baseGear=__calculatorDeps.gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143).levels.slice();
+    const baseGear=__calculatorDeps.gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s3'?160:cfg.key!=='s1'?130:143).levels.slice();
     const cats=planningCategoryState(cfg,currentCaps,projectedCaps);
     const gearOptions=buildGearOptions(baseGear,cfg,desired,projectedCaps.gear);
     const lastOptionCost=options=>{

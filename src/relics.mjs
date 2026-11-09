@@ -1,14 +1,18 @@
 import catalog from '../data/relics.json';
+import {S2_END} from './season-clock.mjs';
+import {pacificIsoAt,pacificLocalMs,isoAddDays} from './time.mjs';
 const relics=catalog.filter(relic=>relic.visible===true);
 const STORAGE_KEY='sxs-relics-owned-v1';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const regions=['Verdantglade','Cinder Ridge','Aqualis','Loong Haven I','Loong Haven II'];
+const regions=['Verdantglade','Cinder Ridge','Aqualis','Loong Haven I','Loong Haven II','Aethyris I','Aethyris II','Aethyris III'];
+const poolDays={'Aethyris I':1,'Aethyris II':31,'Aethyris III':61};
+export function poolLabel(region,now=Date.now()){const day=poolDays[region];return day&&day>1&&now<pacificLocalMs(isoAddDays(pacificIsoAt(S2_END.getTime()),day-1))?`${region} · S3 Day ${day}`:region;}
 const rarityOrder=['Mythic','Legendary','Epic','Rare','Uncommon','Common'];
-const regionOf=relic=>relic.region==='Loong Haven'?(relic.pool||'other'):regions.find(region=>relic.region===region)||'other';
+const regionOf=relic=>['Loong Haven','Aethyris'].includes(relic.region)?(relic.pool||'other'):regions.find(region=>relic.region===region)||'other';
 export function romanNumber(text){let total=0,previous=0;for(const c of [...text].reverse()){const n={I:1,V:5,X:10,L:50,C:100,D:500,M:1000}[c]||0;total+=n<previous?-n:n;previous=n;}return total;}
 export function compareZones(a,b){
  if(a==='Zone not verified')return b===a?0:1;if(b==='Zone not verified')return -1;
- const rank=value=>{const order=['Verdantglade','Cinder Ridge','Aqualis','Loong Haven'];const i=order.findIndex(r=>value.startsWith(r));return i<0?order.length:i;};
+ const rank=value=>{const order=['Verdantglade','Cinder Ridge','Aqualis','Loong Haven','Aethyris'];const i=order.findIndex(r=>value.startsWith(r));return i<0?order.length:i;};
  const ap=a.match(/^(.*?)\s+([IVXLCDM]+|\d+)$/),bp=b.match(/^(.*?)\s+([IVXLCDM]+|\d+)$/);
  return rank(a)-rank(b)||(ap&&bp&&ap[1]===bp[1]?(Number(ap[2])||romanNumber(ap[2]))-(Number(bp[2])||romanNumber(bp[2])):a.localeCompare(b,undefined,{numeric:true}));
 }
@@ -24,12 +28,12 @@ export function initialize(){
  const host=document.getElementById('relicsContent');
  let owned=new Set(),storageProblem='',dialogTrigger=null;
  try{owned=readOwned();}catch{storageProblem='Saved collection could not be read. Changes will try to save again on this device.';}
- const filters={region:'Verdantglade',zone:'all',rarity:'',element:'',search:'',status:'all',fruit:'all'};
+ const filters={region:relics.some(relic=>relic.pool==='Aethyris I')?'Aethyris I':'Verdantglade',zone:'all',rarity:'',element:'',search:'',status:'all',fruit:'all'};
  const options=field=>[...new Set(relics.map(r=>r[field]).filter(Boolean))].sort().map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
- host.innerHTML=`<nav class="relicRegionTabs" id="relicRegionTabs" aria-label="Relic regions">${[...regions,'other','all'].map(region=>`<button type="button" data-relic-region="${region}" aria-pressed="${region===filters.region}">${region==='other'?'Other':region==='all'?'All regions':region==='Loong Haven II'?'Loong Haven II · Upcoming':region}</button>`).join('')}</nav>
+ host.innerHTML=`<nav class="relicRegionTabs" id="relicRegionTabs" aria-label="Relic regions">${[...regions,'other','all'].map(region=>`<button type="button" data-relic-region="${region}" aria-pressed="${region===filters.region}">${region==='other'?'Other':region==='all'?'All regions':poolLabel(region)}</button>`).join('')}</nav>
  <header class="relicHeader"><div><h1>Relic Gallery</h1><p>Your collection, one region at a time.</p></div><div class="relicProgress"><strong id="relicProgressText"></strong><progress id="relicProgressBar" aria-label="Overall relic collection"></progress><small>Saved in this browser on this device</small></div></header>
  <div class="relicFilters"><label>Search by name<input type="search" id="relicSearch" placeholder="Find a relic…"></label><label>Rarity<select id="relicRarity"><option value="">All rarities</option>${options('rarity')}</select></label><label>Element<select id="relicElement"><option value="">All elements</option>${options('element')}</select></label><label>Collection<select id="relicStatus"><option value="all">All</option><option value="owned">Owned</option><option value="missing">Missing</option></select></label><label>Destiny Fruit<select id="relicFruit"><option value="all">All</option><option value="yes">Destiny Fruit obtainable</option><option value="no">Not Destiny Fruit obtainable</option><option value="unknown">Not yet verified</option></select></label><label>Fruit zone<select id="relicZone" aria-label="Destiny Fruit drop zone"></select></label><button type="button" id="relicReset">Reset filters</button></div>
- <p class="relicStorageStatus" id="relicStorageStatus" role="status"></p><p id="relicResultsStatus" role="status" aria-live="polite"></p><div id="relicGroups"></div><p class="relicCoverage">Through Loong Haven Relic II · ${relics.length} relics. Numbered zones refer specifically to Destiny Fruit drops.</p><p class="relicFootnote">Select a relic for acquisition details. Missing drop-zone information does not mean a relic is unobtainable.</p>
+ <p class="relicStorageStatus" id="relicStorageStatus" role="status"></p><p id="relicResultsStatus" role="status" aria-live="polite"></p><div id="relicGroups"></div><p class="relicCoverage">Through Aethyris Relic III · ${relics.length} relics. Later Aethyris pools open on S3 Days 31 and 61. Numbered fruit zones are exploration areas, not relic pools.</p><p class="relicFootnote">Select a relic for acquisition details. Missing drop-zone information does not mean a relic is unobtainable.</p>
  <dialog id="relicDialog" aria-labelledby="relicDialogTitle"><button type="button" id="relicDialogClose" aria-label="Close relic details" autofocus>✕</button><div id="relicDialogContent"></div></dialog>`;
  host.querySelector('.relicHeader').after(host.querySelector('.relicRegionTabs'));
  const $=id=>host.querySelector(`#${id}`);
@@ -41,7 +45,7 @@ export function initialize(){
   const r=relics.find(item=>item.id===id);if(!r)return;
   const fruit=r.destinyFruit===true?`Destiny Fruit zone: ${r.zone||'exact zone not yet verified'}`:r.destinyFruit===false?'Cannot be obtained with Destiny Fruits through targeted exploration, according to the linked guide.':'';
   const sourceLinks=[...new Set([r.sourceUrl,...(r.sources||[]).map(s=>s.url)].filter(Boolean))].map(url=>{const href=safeLink(url);return href?`<a href="${href}" target="_blank" rel="noreferrer">${esc(new URL(url).hostname)} ↗</a>`:'';}).join(' · ');
-  $('relicDialogContent').innerHTML=`<div class="relicDialogHero" data-rarity="${esc((r.rarity||'').toLowerCase())}"><span class="relicImage">${r.image?`<img src="${esc(r.image)}" alt="${esc(r.name)}" width="120" height="120">`:'◇'}</span><div><span class="relicDialogRarity">${esc(r.rarity||'Rarity not verified')}</span><h2 id="relicDialogTitle">${esc(r.name)}</h2></div></div><dl class="relicMetadata"><div><dt>Element</dt><dd>${esc(r.element||'Not verified')}</dd></div><div><dt>Region</dt><dd>${esc(r.region||'Not verified')}</dd></div>${r.pool?`<div><dt>Relic pool</dt><dd>${esc(r.pool)}</dd></div>`:''}${r.zone?`<div><dt>Destiny Fruit zone</dt><dd>${esc(r.zone)}</dd></div>`:''}<div><dt>Collection</dt><dd>${owned.has(r.id)?'Owned':'Missing'}</dd></div></dl><div class="relicDetails">${r.affinity?`<p class="relicAffinity">${esc(r.affinity)}</p>`:""}${r.effect?`<h3>Effect</h3><p class="relicEffect">${esc(r.effect)}</p>`:""}${r.set?.members?.length?`<h3>${esc(r.set.name||"Relic set")} <span class="relicSetCount">${r.set.members.filter(member=>owned.has(member.id)).length} / ${r.set.members.length} owned</span></h3><div class="relicSetMembers">${r.set.members.map(member=>`<span class="${owned.has(member.id)?"isOwned":""}">${esc(member.name)}${owned.has(member.id)?" ✓":""}</span>`).join("")}</div>`:""}${r.setBonuses?.length?`<h3>Set stats</h3><dl class="relicSetBonuses">${r.setBonuses.map(bonus=>`<div><dt>${esc(bonus.label)}</dt><dd>${esc(bonus.effect)}</dd></div>`).join("")}</dl>`:""}<h3>Acquisition</h3>${fruit?`<p class="relicFruitInfo">${esc(fruit)}</p>`:''}<ul>${(r.sources||[]).map(s=>`<li><strong>${esc(s.type)}</strong>${s.location?`: ${esc(s.location)}`:''}${s.notes?` — ${esc(s.notes)}`:''}</li>`).join('')||'<li>Additional acquisition details are not listed yet.</li>'}</ul>${r.notes?`<p>${esc(r.notes)}</p>`:''}${sourceLinks?`<p class="relicSources">Sources: ${sourceLinks}</p>`:''}</div>`;
+  $('relicDialogContent').innerHTML=`<div class="relicDialogHero" data-rarity="${esc((r.rarity||'').toLowerCase())}"><span class="relicImage">${r.image?`<img src="${esc(r.image)}" alt="${esc(r.name)}" width="120" height="120">`:'◇'}</span><div><span class="relicDialogRarity">${esc(r.rarity||'Rarity not verified')}</span><h2 id="relicDialogTitle">${esc(r.name)}</h2></div></div><dl class="relicMetadata"><div><dt>Element</dt><dd>${esc(r.element||'Not verified')}</dd></div><div><dt>Region</dt><dd>${esc(r.region||'Not verified')}</dd></div>${r.pool?`<div><dt>Relic pool</dt><dd>${esc(r.pool)}</dd></div>`:''}${r.zone?`<div><dt>Destiny Fruit zone</dt><dd>${esc(r.zone)}</dd></div>`:''}<div><dt>Collection</dt><dd>${owned.has(r.id)?'Owned':'Missing'}</dd></div></dl><div class="relicDetails">${r.effectReference?`<p class="relicFootnote">${esc(r.effectReference)}</p>`:''}${r.affinity?`<p class="relicAffinity">${esc(r.affinity)}</p>`:""}${r.effect?`<h3>Effect</h3><p class="relicEffect">${esc(r.effect)}</p>`:""}${r.set?.members?.length?`<h3>${esc(r.set.name||"Relic set")} <span class="relicSetCount">${r.set.members.filter(member=>owned.has(member.id)).length} / ${r.set.members.length} owned</span></h3><div class="relicSetMembers">${r.set.members.map(member=>`<span class="${owned.has(member.id)?"isOwned":""}">${esc(member.name)}${owned.has(member.id)?" ✓":""}</span>`).join("")}</div>`:""}${r.setBonuses?.length?`<h3>Set stats</h3><dl class="relicSetBonuses">${r.setBonuses.map(bonus=>`<div><dt>${esc(bonus.label)}</dt><dd>${esc(bonus.effect)}</dd></div>`).join("")}</dl>`:""}<h3>Acquisition</h3>${fruit?`<p class="relicFruitInfo">${esc(fruit)}</p>`:''}<ul>${(r.sources||[]).map(s=>`<li><strong>${esc(s.type)}</strong>${s.location?`: ${esc(s.location)}`:''}${s.notes?` — ${esc(s.notes)}`:''}</li>`).join('')||'<li>Additional acquisition details are not listed yet.</li>'}</ul>${r.notes?`<p>${esc(r.notes)}</p>`:''}${sourceLinks?`<p class="relicSources">Sources: ${sourceLinks}</p>`:''}</div>`;
   dialogTrigger=trigger;$('relicDialog').showModal();
  }
  function renderZones(){
@@ -63,7 +67,7 @@ export function initialize(){
   const rarityRank=value=>{const i=rarityOrder.indexOf(value);return i<0?rarityOrder.length:i;};
   const entries=[...groups].sort(([a],[b])=>rarityRank(a)-rarityRank(b)||a.localeCompare(b));
   const regionLabel=filters.region==='all'?'All regions':filters.region==='other'?'Other':filters.region;
-  $('relicResultsStatus').textContent=`${regionLabel}${filters.region==='Loong Haven II'?' · Upcoming':''} · ${shown.length} relics shown.`;
+  $('relicResultsStatus').textContent=`${poolLabel(regionLabel)} · ${shown.length} relics shown.`;
   $('relicGroups').innerHTML=entries.length?entries.map(([group,items])=>`<section class="relicRarityGroup"><header><h2>${esc(group)}</h2><span>${missing(items)} missing · ${items.length} shown</span></header><div class="relicGrid">${items.map(card).join('')}</div></section>`).join(''):'<p class="relicEmpty">No relics match these filters.</p>';
  }
  host.addEventListener('input',e=>{if(e.target.id==='relicSearch'){filters.search=e.target.value;render();}});
@@ -76,11 +80,11 @@ export function initialize(){
   const region=e.target.closest('[data-relic-region]');if(region){filters.region=region.dataset.relicRegion;filters.zone='all';renderZones();render();}
   const tile=e.target.closest('[data-relic-open]');if(tile)openDetails(tile.dataset.relicOpen,tile);
   if(e.target.id==='relicDialogClose')$('relicDialog').close();
-  if(e.target.id==='relicReset'){Object.assign(filters,{zone:'all',rarity:'',element:'',search:'',status:'all',fruit:'all'});['relicSearch','relicRarity','relicElement'].forEach(id=>$(id).value='');render();}
+  if(e.target.id==='relicReset'){Object.assign(filters,{zone:'all',rarity:'',element:'',search:'',status:'all',fruit:'all'});['relicSearch','relicRarity','relicElement'].forEach(id=>$(id).value='');['relicStatus','relicFruit'].forEach(id=>$(id).value='all');render();}
  });
  $('relicDialog').addEventListener('close',()=>{if(dialogTrigger?.isConnected)dialogTrigger.focus({preventScroll:true});else $('relicResultsStatus').focus({preventScroll:true});});
  $('relicDialog').addEventListener('click',e=>{if(e.target===$('relicDialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
  window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY||e.key===null){try{owned=readOwned();storageProblem='';render();}catch{storageProblem='Collection changes in another tab could not be read.';render();}}});
  $('relicResultsStatus').tabIndex=-1;
- renderZones();render();initialized=true;
+ renderZones();render();const selectedRegion=host.querySelector('[data-relic-region][aria-pressed="true"]'),regionTabs=host.querySelector('.relicRegionTabs');if(selectedRegion)regionTabs.scrollLeft=Math.max(0,selectedRegion.offsetLeft-regionTabs.offsetLeft-6);initialized=true;
 }

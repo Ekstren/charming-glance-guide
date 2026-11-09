@@ -10,7 +10,7 @@ import {openChat, closeChat} from './chat-loader.mjs';
 import {loadTheme,saveTheme} from './preferences.mjs';
 const $=id=>document.getElementById(id);
 const SECTION_STORAGE_KEY='sxs-active-section';
-function renderLocalTimeLabels(){const reset=nextResetLocalLabel();if($('headerResetLocal'))$('headerResetLocal').textContent=`Reset: ${reset}`;if($('timelineResetLocal'))$('timelineResetLocal').textContent=reset;}
+function renderLocalTimeLabels(){const reset=nextResetLocalLabel();if($('headerResetLocal'))$('headerResetLocal').textContent=`Reset: ${reset}`;if($('timelineResetLocal'))$('timelineResetLocal').textContent=reset;const subtitle=document.querySelector('.logoButton small');if(subtitle)subtitle.textContent=`Charming Glance · ${timelineSeasonScope().current.label}`;}
 function isoForServerDay(serverDay){ return isoAddDays('2026-07-15',serverDay-1); }
 
 function treasureHuntReward(phase){
@@ -43,6 +43,14 @@ function addRecurringEvents(){
       if(!timelineData.some(e=>e[0]===start && e[3]==='Server Tournament')){
         timelineData.push([start,serverDay,'Event','Server Tournament','Registration opens Friday · tournament Saturday.','event']);
       }
+    }
+    // Continue the observed Charming Glance 4v4 Sunday cadence beyond Oct. 25.
+    // Future dates are projections, not newly confirmed tournament notices.
+    // Older Saturday rows are corrected by timeline-patches.mjs; start after
+    // those rows to avoid a second Sunday copy of each historical event.
+    for(let serverDay=117;serverDay<=400;serverDay+=14){
+      const start=isoForServerDay(serverDay);
+      if(!timelineData.some(e=>e[0]===start&&e[3]==='Nexus Tournament · 4v4'))timelineData.push([start,serverDay,'Event','Nexus Tournament · 4v4','Projected continuation of the observed fortnightly Sunday 4v4 cadence. Qualification, bracket and the actual start time are shown in game.','event',null,'unconfirmed']);
     }
     // Grand Treasure Hunt: Phase 1 on server day 8, then weekly.
     for(let phase=1;phase<=57;phase++){
@@ -134,14 +142,16 @@ function timelineSummaryText(e){
     if(title==='Warlord’s Rest') return 'Player Lv.130 · Power: Normal 3.55M, Hard 5M, Nightmare 6M.';
     if(title==='Server Tournament') return 'Weekly server tournament: registration opens Friday, matches run Saturday, and top teams advance to Nexus.';
     if(title==='Nexus Tournament · 4v4') return 'A cross-server 4v4 tournament for teams that qualify through the weekly Server Tournament.';
-    if(title==='Aethyris opens') return 'Projected Season 3: Aethyris and Tier 5. The Nexus pool may grow from four servers to eight.';
+    if(title==='Aethyris opens') return 'Season 3 · Aethyris. Explore Skyrend Cliff, Unbroken Camp and Harmonic Crystal; advance to Tier 5 as your level requirements are met.';
     // TIMELINE_SUMMARY_PROVENANCE_CLEAN_V2: keep source/confidence wording in raw rows/comments only.
-    if(title==='Aethyris area-unlock stockpile') return 'Aethyris unlock stock: 5 Gateway Keys, 2 Magic Drills, 2 Water Mines, 2 “cloud keys,” 5 hammers. QY names unverified.';
-    if(title==='Astral Odyssey') return 'Aethyris’s Season 3 map.';
-    if(title==='Isla + Astrid') return 'Season 3 companions arriving with Aethyris: Isla and Astrid.';
+    if(title==='Aethyris area-unlock stockpile') return 'Aethyris map tools: 5 Gateway Keys · 2 Magic Drills · 2 Water Mines · 2 Cloud Jades · 5 Purifying Hammers.';
+    if(title==='Cosmic Voyage'||title==='Astral Odyssey') return 'Aethyris’s Season 3 seasonal map: Cosmic Voyage. Explore it for seasonal objectives and rewards.';
+    if(title==='Aethyris companions'||title==='Isla + Astrid') return 'Aethyris roster: Freya, Sylvia, Ophelia, Vigard, Gerald, Astrid and Isla. Affinity progression remains permanent.';
+    if(title==='Bond Odyssey + Stone Symphony') return 'Advance Vista Dispatch challenges, match companion-role requirements and collect expedition resources and souvenirs.';
+    if(title==='Season 3 launch checklist') return 'Claim season and Astral Pact rewards, review your Tier 5 loadout, push Aethyris progression and check the new Companion gift options.';
     if(title==='Abyssal Bastion') return 'Power: Normal 20M · Hard 26M · Nightmare 30M · Purgatory 46M.';
     if(title==='Aethyris Relic II') return 'Second relic banner in Aethyris.';
-    if(title==='Courtyard of Purification') return 'Power: Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M.';
+    if(title==='Court of Purification'||title==='Courtyard of Purification') return 'Soulbinder Set dungeon · Power: Normal 32.5M · Hard 43M · Nightmare 50.5M · Purgatory 75M.';
     if(title==='Temple of Order') return 'Power: Normal 55M · Hard 65M · Nightmare 82M · Purgatory 115M.';
     if(title==='Aethyris Relic III') return 'Third relic banner in Aethyris.';
     if(title==='Hapadi Relic II') return 'Second relic banner in Hapadi; Global name is unconfirmed.';
@@ -179,7 +189,7 @@ function timelineSummaryText(e){
     if(title==='Season 2 final-day prep') return 'Historical rollover note: the Bed EXP hold used 34 hours of natural accumulation plus the single 2-hour reset boost, filling the 36-hour Bed capacity.';
     if(title==='Loong Haven opens') return `Season 2 began ${localShortDateTimeLabel(S1_END)}. Tier 4: Lv.106; Adult Materialization: Lv.108, Numbuville, duplicate Mythic Fantomon; Demonbind Tower: Lv.116.`;
     if(title==='Gear Refinement & Affix Transfer') return 'Season 2 Mythic+ gear can reroll affixes or transfer them to same-type gear. Season 2 transfers are free; Season 1 affixes cannot carry over.';
-    if(title==='Season 2 Day 1 checklist') return 'At reset, claim rollover/Astral rewards. Raise rank before spending Stamina or Material Realm tools; activate statues before Bed boosts.';
+    if(title==='Season 2 Day 1 checklist') return 'Historical Season 2 launch checklist: claim rollover/Astral rewards, raise rank before spending Stamina or Realm tools, then activate statues before Bed boosts.';
     if(title==='Vegetable Fairy Part Two') return 'Vegetables Fairy Part 2 event and its limited-time rewards.';
     if(title==='Demonbind Tower unlock') return 'Season 2 gem-harvest tower · opens at Player Lv.116.';
     if(title==='Demonseal Gorge') return 'Loong Haven’s first dungeon has Normal and Hard modes; QY lists 2.35M power for Hard. Global name may differ.';

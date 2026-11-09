@@ -4,24 +4,29 @@
 the browser never queries another site's database. Edit this file, then run
 `npm run build` and `npm run test:relics`.
 
-## Coverage, checked 2026-09-23
+## Coverage, checked 2026-11-08
 
-- 1,130 catalog entries with 1,130 local icons.
-- 29 exact Destiny Exploration locations verified in named guides or an in-game screenshot.
-- Six named Mythics have a guide-supported exclusion from targeted Destiny Exploration.
-- Two additional relics have verified event acquisition routes.
-- Arcane Pagoda's gacha source rows, effect, named set and numeric set bonuses
-  were checked against the user's in-game screenshot (9226.png).
-- All other source lists and Destiny Fruit availability remain unverified. An empty source
-  list does not mean there is no way to acquire a relic.
-- This is the full public catalog snapshot, not a verified list of relics currently
-  released on every Global server. Unknown catalog regions/elements remain null.
+- 1,130 retained catalog entries and local icons; saved ownership IDs are unchanged.
+- 640 entries visible through Aethyris Relic III: the previous 400 plus all 240
+  Aethyris relics, divided into three pools of 80 (20 of each rarity per pool).
+- 83 relics have positive targeted Destiny Exploration evidence, including 54
+  Aethyris I relics across 18 numbered Aethyris areas.
+- All 60 Aethyris sets now have game-data English names and numeric bonuses.
+- Aethyris effects and elemental stats use the current game-config baseline:
+  relic +1, zero stars, before the equipped-slot bonus. That reference is shown
+  in the detail dialog. Earlier-region effects and all in-game verification
+  overrides are retained unchanged.
+- An empty acquisition list or missing numbered exploration area remains unknown,
+  rather than becoming a claim that the relic is unobtainable.
 
-## Site visibility: through Loong Haven Relic II
+## Site visibility: through Aethyris Relic III
 
-The full catalog is retained. Visibility covers 400 entries: Verdantglade 70,
-Cinder Ridge 70, Aqualis 70, Loong Haven I 80, Loong Haven II 80, and Other 30.
-Loong Haven II remains visible but marked upcoming per the user's current game.
+Visibility covers Verdantglade 70, Cinder Ridge 70, Aqualis 70, Loong Haven I 80,
+Loong Haven II 80, Aethyris I/II/III 80 each, and Other 30. The initial filter is
+Aethyris I for the current Season 3 guide. Loong Haven II no longer says upcoming.
+Aethyris II/III are catalog previews until their Season 3 Day 31/61 unlocks;
+the tab markers disappear after those reset dates, using the maintained
+`S2_END` rollover anchor rather than permanent upcoming labels.
 
 Six user-provided in-game Other screenshots (19/30), dated 2026-09-23, confirm
 all 30 names and rarities: 15 Mythics, 14 Legendaries, one Epic. Every entry maps
@@ -34,7 +39,7 @@ Hero's Arbor Emblem, Ancient Tablet, Aquorigin Charm, Golden Loong Token, and
 Portable Air Temperature Controller I. Their catalog/EOG elemental conflicts
 remain unresolved. Ancient Tablet uses ID treasure_61925; a later relic shares its name.
 
-730 later or release-unverified records remain hidden. New imports default to hidden.
+490 later or release-unverified records remain hidden. New imports default to hidden.
 Visibility changes preserve saved ownership. Loong assignments carry per-record evidence.
 
 ## Sources and decisions
@@ -65,6 +70,19 @@ Knight guide. They are not extrapolated to all Mythics. `destinyFruit` describes
 targeted Destiny Exploration; it does not promise exhaustive coverage of indirect
 merchant/event rewards triggered while spending fruits. Hero's Guide in EOG has
 not been conclusively matched to Hero's Handbook in the catalog and was not merged.
+
+5. [Relic Inspector](https://kakotheris.neocities.org/relics) and its public
+   [extracted relic tables](https://kakotheris.neocities.org/relic_data.js), checked
+   2026-11-08, game package `130_156581`, supply the Aethyris pool membership,
+   exact exploration areas, base stats, English set names, and numeric set bonuses.
+   All 240 IDs, names, rarities, and elements match the retained catalog. Only
+   selected underlying game facts were normalized into this repository's existing
+   schema; the Inspector's AGPL tool code and extraction schema were not copied.
+   [Valkyrie's Season 3 relic catalog](https://www.valkyrie.tips/database/relics?season=s3)
+   independently corroborates three 80-relic pools. Its
+   [Season 3 roadmap](https://www.valkyrie.tips/seasons/s3) supplies the +30/+60-day
+   later-pool cadence; its absolute dates are for that site's server, not Charming
+   Glance. The game data alone does not establish a player's pool-unlock date.
 
 ## Schema and corrections
 
@@ -102,8 +120,8 @@ the numbered locations into the filter panel. Destiny Fruit Targets retains exac
 Set membership ownership is computed from this browser's saved collection; the
 example account's stars, 35 shards, and 3/4 progress are not copied into user state.
 
-`effect`, `set`, and `setBonuses` originate in the catalog unless an explicit
-verification overrides them. Most catalog set bonuses provide stat names without
+`effect`, `set`, and `setBonuses` originate in the retained catalog unless an explicit
+verification overrides them; Aethyris uses the November 8 game-data refresh above. Most catalog set bonuses provide stat names without
 numeric magnitudes; those numbers are not guessed. Arcane Pagoda is a documented
 conflict: the screenshot shows Crit RES 5%, whereas the export lists 6%. The visible
 value follows the supplied in-game reference, with the catalog value retained in

@@ -629,3 +629,12 @@
 .optimizerProgressPanel #optimizerCancelButton { pointer-events: auto; }
 #calculatorSection .finishEarlyToggle span { display: grid; gap: 3px; white-space: normal; }
 #calculatorSection .finishEarlyToggle small { font-size: 11px; font-weight: 400; line-height: 1.4; }
+
+/* Season 3 uses entered Stamina rewards and an editable projected deadline. */
+#calculatorSection #seasonEndDateField:not([hidden]){grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#calculatorSection #seasonEndDateField input{width:170px;max-width:100%}
+#calculatorSection #seasonEndDateField small,#calculatorSection .season3StaminaInputs>small,#calculatorSection .primostarS3Note{font-size:12px;line-height:1.45;color:var(--reading-muted)}
+#calculatorSection .season3StaminaInputs .realmInventoryGrid{margin:8px 0}
+#calculatorSection .primostarThresholdGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+#calculatorSection .primostarThresholdGrid .primostarRewardRow{display:block;min-width:0;text-align:center;padding:7px 3px;border-radius:6px;font-size:12px}
+@media(max-width:380px){#calculatorSection .primostarThresholdGrid{grid-template-columns:repeat(4,minmax(0,1fr))}}

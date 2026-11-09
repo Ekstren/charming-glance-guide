@@ -24,6 +24,7 @@ var SxsRelics = (() => {
     compareZones: () => compareZones,
     initialize: () => initialize,
     matchesFilters: () => matchesFilters,
+    poolLabel: () => poolLabel,
     romanNumber: () => romanNumber
   });
 
@@ -191,14 +192,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68308",
-        name: null,
+        name: "Abyssal Lord",
         members: [
           {
             id: "treasure_71606",
@@ -221,17 +235,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +200"
     },
     {
       id: "treasure_61616",
@@ -608,14 +635,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68317",
-        name: null,
+        name: "Halt of the Gale",
         members: [
           {
             id: "treasure_71415",
@@ -638,17 +678,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +200"
     },
     {
       id: "treasure_71412",
@@ -659,14 +712,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68317",
-        name: null,
+        name: "Halt of the Gale",
         members: [
           {
             id: "treasure_71415",
@@ -689,17 +755,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +200"
     },
     {
       id: "treasure_71406",
@@ -710,14 +789,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68307",
-        name: null,
+        name: "Hushed Tempest",
         members: [
           {
             id: "treasure_71406",
@@ -740,17 +832,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +200"
     },
     {
       id: "treasure_71410",
@@ -761,14 +866,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68312",
-        name: null,
+        name: "Skywind Hunt",
         members: [
           {
             id: "treasure_71410",
@@ -791,17 +909,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +200"
     },
     {
       id: "treasure_73410",
@@ -812,14 +943,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68912",
-        name: null,
+        name: "Ballad of the Wind",
         members: [
           {
             id: "treasure_73410",
@@ -842,17 +986,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +80"
     },
     {
       id: "treasure_74416",
@@ -965,14 +1122,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68917",
-        name: null,
+        name: "Breezy Lullaby",
         members: [
           {
             id: "treasure_73412",
@@ -995,17 +1165,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +80"
     },
     {
       id: "treasure_71610",
@@ -1016,14 +1199,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3% DMG Boost",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG Boost +2.5%",
       set: {
         id: "68313",
-        name: null,
+        name: "Ocean's Origin",
         members: [
           {
             id: "treasure_71610",
@@ -1046,17 +1242,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +200"
     },
     {
       id: "treasure_71632",
@@ -1118,14 +1327,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68314",
-        name: null,
+        name: "Wrath of the Sky",
         members: [
           {
             id: "treasure_71808",
@@ -1148,17 +1370,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +200"
     },
     {
       id: "treasure_74427",
@@ -1218,16 +1453,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      zone: "Aethyris XIV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XIV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69206",
-        name: null,
+        name: "Shadow's Wake",
         members: [
           {
             id: "treasure_74206",
@@ -1250,17 +1504,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +40"
     },
     {
       id: "treasure_73207",
@@ -1269,16 +1539,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      zone: "Aethyris XI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68906",
-        name: null,
+        name: "Dance in Shadows",
         members: [
           {
             id: "treasure_73207",
@@ -1301,17 +1590,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +80"
     },
     {
       id: "treasure_61804",
@@ -1545,14 +1850,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68914",
-        name: null,
+        name: "Turmoil's Blaze",
         members: [
           {
             id: "treasure_73808",
@@ -1575,17 +1893,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +80"
     },
     {
       id: "treasure_74006",
@@ -1594,16 +1925,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      zone: "Aethyris XII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69205",
-        name: null,
+        name: "Gleam's Caress",
         members: [
           {
             id: "treasure_74006",
@@ -1626,17 +1976,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +40"
     },
     {
       id: "treasure_74234",
@@ -1857,14 +2223,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68617",
-        name: null,
+        name: "Windbreaker's Dance",
         members: [
           {
             id: "treasure_72414",
@@ -1887,17 +2266,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +120"
     },
     {
       id: "treasure_74818",
@@ -1959,14 +2351,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68319",
-        name: null,
+        name: "Pantheon's Twilight",
         members: [
           {
             id: "treasure_71812",
@@ -1989,17 +2394,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +200"
     },
     {
       id: "treasure_73216",
@@ -2325,16 +2743,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      zone: "Aethyris III",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69208",
-        name: null,
+        name: "Hymn of Horizons",
         members: [
           {
             id: "treasure_74604",
@@ -2357,17 +2794,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +40"
     },
     {
       id: "treasure_73635",
@@ -2648,14 +3101,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68618",
-        name: null,
+        name: "Azure Wrath",
         members: [
           {
             id: "treasure_72614",
@@ -2678,17 +3144,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +120"
     },
     {
       id: "treasure_62103",
@@ -2850,14 +3329,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68307",
-        name: null,
+        name: "Hushed Tempest",
         members: [
           {
             id: "treasure_71406",
@@ -2880,17 +3372,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +200"
     },
     {
       id: "treasure_62208",
@@ -3114,14 +3619,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68319",
-        name: null,
+        name: "Pantheon's Twilight",
         members: [
           {
             id: "treasure_71812",
@@ -3144,17 +3662,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +200"
     },
     {
       id: "treasure_71806",
@@ -3165,14 +3696,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Crit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit Rate +5%",
       set: {
         id: "68309",
-        name: null,
+        name: "Skyfire Baptism",
         members: [
           {
             id: "treasure_71806",
@@ -3195,17 +3739,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +200"
     },
     {
       id: "treasure_74814",
@@ -3216,14 +3773,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69219",
-        name: null,
+        name: "Ashen Fire",
         members: [
           {
             id: "treasure_74814",
@@ -3246,17 +3816,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +40"
     },
     {
       id: "treasure_74631",
@@ -3582,14 +4165,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68306",
-        name: null,
+        name: "Wail of the Deep",
         members: [
           {
             id: "treasure_71206",
@@ -3612,17 +4208,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +200"
     },
     {
       id: "treasure_61105",
@@ -3752,16 +4361,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Effect RES",
+      zone: "Aethyris V",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris V",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect RES +28",
       set: {
         id: "68607",
-        name: null,
+        name: "Grieving Gale",
         members: [
           {
             id: "treasure_72407",
@@ -3784,17 +4412,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +120"
     },
     {
       id: "treasure_71204",
@@ -3805,14 +4449,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68306",
-        name: null,
+        name: "Wail of the Deep",
         members: [
           {
             id: "treasure_71206",
@@ -3835,17 +4492,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +200"
     },
     {
       id: "treasure_74803",
@@ -4028,14 +4698,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68617",
-        name: null,
+        name: "Windbreaker's Dance",
         members: [
           {
             id: "treasure_72414",
@@ -4058,17 +4741,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +120"
     },
     {
       id: "treasure_62212",
@@ -4130,14 +4826,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Physical Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Physical Mastery +28",
       set: {
         id: "68618",
-        name: null,
+        name: "Azure Wrath",
         members: [
           {
             id: "treasure_72614",
@@ -4160,17 +4869,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +120"
     },
     {
       id: "treasure_73608",
@@ -4181,14 +4903,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68913",
-        name: null,
+        name: "Ocean's Favor",
         members: [
           {
             id: "treasure_73608",
@@ -4211,17 +4946,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +80"
     },
     {
       id: "treasure_71421",
@@ -5166,16 +5914,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      zone: "Aethyris VIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68606",
-        name: null,
+        name: "Drown in Shadows",
         members: [
           {
             id: "treasure_72205",
@@ -5198,17 +5965,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +120"
     },
     {
       id: "treasure_62404",
@@ -5290,14 +6073,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68619",
-        name: null,
+        name: "Warfire Dance",
         members: [
           {
             id: "treasure_72812",
@@ -5320,17 +6116,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +120"
     },
     {
       id: "treasure_61417",
@@ -5834,14 +6643,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68919",
-        name: null,
+        name: "Crimson Art",
         members: [
           {
             id: "treasure_73815",
@@ -5864,17 +6686,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +80"
     },
     {
       id: "treasure_74411",
@@ -5885,14 +6720,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69212",
-        name: null,
+        name: "Breeze's Blessing",
         members: [
           {
             id: "treasure_74411",
@@ -5915,17 +6763,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +40"
     },
     {
       id: "treasure_72232",
@@ -6038,14 +6899,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68613",
-        name: null,
+        name: "Glacial Legacy",
         members: [
           {
             id: "treasure_72608",
@@ -6068,17 +6942,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +120"
     },
     {
       id: "treasure_71825",
@@ -6768,16 +7655,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      zone: "Aethyris XVI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69207",
-        name: null,
+        name: "Windward Angel",
         members: [
           {
             id: "treasure_74407",
@@ -6800,17 +7706,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +40"
     },
     {
       id: "treasure_72410",
@@ -6821,14 +7743,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68612",
-        name: null,
+        name: "Wind Tamer",
         members: [
           {
             id: "treasure_72410",
@@ -6851,17 +7786,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +120"
     },
     {
       id: "treasure_74410",
@@ -6872,14 +7820,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69212",
-        name: null,
+        name: "Breeze's Blessing",
         members: [
           {
             id: "treasure_74411",
@@ -6902,17 +7863,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +40"
     },
     {
       id: "treasure_74626",
@@ -7390,16 +8364,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      zone: "Aethyris XVI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68906",
-        name: null,
+        name: "Dance in Shadows",
         members: [
           {
             id: "treasure_73207",
@@ -7422,17 +8415,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +80"
     },
     {
       id: "treasure_71234",
@@ -7553,16 +8562,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      zone: "Aethyris VI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69207",
-        name: null,
+        name: "Windward Angel",
         members: [
           {
             id: "treasure_74407",
@@ -7585,17 +8613,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +40"
     },
     {
       id: "treasure_61915",
@@ -8104,16 +9148,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+1.2% DMG Boost",
+      zone: "Aethyris XIV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XIV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG Boost +1%",
       set: {
         id: "68905",
-        name: null,
+        name: "Blooming Light",
         members: [
           {
             id: "treasure_73007",
@@ -8136,17 +9199,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +80"
     },
     {
       id: "treasure_61006",
@@ -8644,14 +9723,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68318",
-        name: null,
+        name: "Moon in Water",
         members: [
           {
             id: "treasure_71613",
@@ -8674,17 +9766,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +200"
     },
     {
       id: "treasure_73426",
@@ -9050,16 +10155,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      zone: "Aethyris XVIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69208",
-        name: null,
+        name: "Hymn of Horizons",
         members: [
           {
             id: "treasure_74604",
@@ -9082,17 +10206,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +40"
     },
     {
       id: "treasure_71826",
@@ -9652,14 +10792,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+9% Crit DMG",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit DMG +7.5%",
       set: {
         id: "68308",
-        name: null,
+        name: "Abyssal Lord",
         members: [
           {
             id: "treasure_71606",
@@ -9682,17 +10835,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +200"
     },
     {
       id: "treasure_71404",
@@ -9703,14 +10869,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Accuracy",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Accuracy +5%",
       set: {
         id: "68307",
-        name: null,
+        name: "Hushed Tempest",
         members: [
           {
             id: "treasure_71406",
@@ -9733,17 +10912,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +200"
     },
     {
       id: "treasure_74839",
@@ -10283,14 +11475,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68919",
-        name: null,
+        name: "Crimson Art",
         members: [
           {
             id: "treasure_73815",
@@ -10313,17 +11518,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +80"
     },
     {
       id: "treasure_62116",
@@ -10445,14 +11663,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+1.8% DMG Boost",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG Boost +1.5%",
       set: {
         id: "68613",
-        name: null,
+        name: "Glacial Legacy",
         members: [
           {
             id: "treasure_72608",
@@ -10475,17 +11706,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +120"
     },
     {
       id: "treasure_62812",
@@ -10596,16 +11840,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      zone: "Aethyris V",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris V",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68908",
-        name: null,
+        name: "Rolling Waves",
         members: [
           {
             id: "treasure_73604",
@@ -10628,17 +11891,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +80"
     },
     {
       id: "treasure_73812",
@@ -10649,14 +11928,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68919",
-        name: null,
+        name: "Crimson Art",
         members: [
           {
             id: "treasure_73815",
@@ -10679,17 +11971,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +80"
     },
     {
       id: "treasure_62803",
@@ -10802,14 +12107,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69213",
-        name: null,
+        name: "Everpure Stream",
         members: [
           {
             id: "treasure_74608",
@@ -10832,17 +12150,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +40"
     },
     {
       id: "treasure_71237",
@@ -11015,14 +12346,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Crit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit Rate +5%",
       set: {
         id: "68312",
-        name: null,
+        name: "Skywind Hunt",
         members: [
           {
             id: "treasure_71410",
@@ -11045,17 +12389,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +200"
     },
     {
       id: "treasure_61702",
@@ -11418,14 +12775,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68916",
-        name: null,
+        name: "Midnight Silence",
         members: [
           {
             id: "treasure_73212",
@@ -11448,17 +12818,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +80"
     },
     {
       id: "treasure_72204",
@@ -11467,16 +12850,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3.6% Crit RES",
+      zone: "Aethyris III",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit RES +3%",
       set: {
         id: "68606",
-        name: null,
+        name: "Drown in Shadows",
         members: [
           {
             id: "treasure_72205",
@@ -11499,17 +12901,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +120"
     },
     {
       id: "treasure_71208",
@@ -11520,14 +12938,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68311",
-        name: null,
+        name: "Evernight Cry",
         members: [
           {
             id: "treasure_71208",
@@ -11550,17 +12981,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +200"
     },
     {
       id: "treasure_73202",
@@ -11938,14 +13382,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68912",
-        name: null,
+        name: "Ballad of the Wind",
         members: [
           {
             id: "treasure_73410",
@@ -11968,17 +13425,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +80"
     },
     {
       id: "treasure_72014",
@@ -11989,14 +13459,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3.6% Block Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Block Rate +3%",
       set: {
         id: "68615",
-        name: null,
+        name: "Gate of Starlight",
         members: [
           {
             id: "treasure_72014",
@@ -12019,17 +13502,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +120"
     },
     {
       id: "treasure_72602",
@@ -12315,14 +13811,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69213",
-        name: null,
+        name: "Everpure Stream",
         members: [
           {
             id: "treasure_74608",
@@ -12345,17 +13854,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +40"
     },
     {
       id: "treasure_62216",
@@ -12574,14 +14096,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Crit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit Rate +5%",
       set: {
         id: "68305",
-        name: null,
+        name: "Sacred Dawnlight",
         members: [
           {
             id: "treasure_71007",
@@ -12604,17 +14139,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +200"
     },
     {
       id: "treasure_72029",
@@ -12722,14 +14270,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3% DMG Boost",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG Boost +2.5%",
       set: {
         id: "68314",
-        name: null,
+        name: "Wrath of the Sky",
         members: [
           {
             id: "treasure_71808",
@@ -12752,17 +14313,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +200"
     },
     {
       id: "treasure_71424",
@@ -13150,14 +14724,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68314",
-        name: null,
+        name: "Wrath of the Sky",
         members: [
           {
             id: "treasure_71808",
@@ -13180,17 +14767,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +200"
     },
     {
       id: "treasure_61403",
@@ -13252,14 +14852,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68908",
-        name: null,
+        name: "Rolling Waves",
         members: [
           {
             id: "treasure_73604",
@@ -13282,17 +14895,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +80"
     },
     {
       id: "treasure_71223",
@@ -13507,14 +15133,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3% DMG RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG RES +2.5%",
       set: {
         id: "68318",
-        name: null,
+        name: "Moon in Water",
         members: [
           {
             id: "treasure_71613",
@@ -13537,17 +15176,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +200"
     },
     {
       id: "treasure_74624",
@@ -13884,14 +15536,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68616",
-        name: null,
+        name: "Roar of the Night",
         members: [
           {
             id: "treasure_72212",
@@ -13914,17 +15579,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +120"
     },
     {
       id: "treasure_74021",
@@ -13986,14 +15664,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69211",
-        name: null,
+        name: "Ode to the Night",
         members: [
           {
             id: "treasure_74209",
@@ -14016,17 +15707,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +40"
     },
     {
       id: "treasure_61608",
@@ -14086,16 +15790,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 Effect RES",
+      zone: "Aethyris XV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect RES +18",
       set: {
         id: "68908",
-        name: null,
+        name: "Rolling Waves",
         members: [
           {
             id: "treasure_73604",
@@ -14118,17 +15841,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +80"
     },
     {
       id: "treasure_74233",
@@ -14394,14 +16133,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68309",
-        name: null,
+        name: "Skyfire Baptism",
         members: [
           {
             id: "treasure_71806",
@@ -14424,17 +16176,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +200"
     },
     {
       id: "treasure_72833",
@@ -14547,14 +16312,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Effect RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect RES +28",
       set: {
         id: "68619",
-        name: null,
+        name: "Warfire Dance",
         members: [
           {
             id: "treasure_72812",
@@ -14577,17 +16355,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +120"
     },
     {
       id: "treasure_73828",
@@ -15083,14 +16874,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Crit RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit RES +5%",
       set: {
         id: "68305",
-        name: null,
+        name: "Sacred Dawnlight",
         members: [
           {
             id: "treasure_71007",
@@ -15113,17 +16917,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +200"
     },
     {
       id: "treasure_71616",
@@ -15287,14 +17104,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68619",
-        name: null,
+        name: "Warfire Dance",
         members: [
           {
             id: "treasure_72812",
@@ -15317,17 +17147,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +120"
     },
     {
       id: "treasure_71635",
@@ -16081,14 +17924,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68305",
-        name: null,
+        name: "Sacred Dawnlight",
         members: [
           {
             id: "treasure_71007",
@@ -16111,17 +17967,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +200"
     },
     {
       id: "treasure_71038",
@@ -16232,16 +18101,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3.6% Crit RES",
+      zone: "Aethyris XI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit RES +3%",
       set: {
         id: "68605",
-        name: null,
+        name: "Radiant Singularity",
         members: [
           {
             id: "treasure_72006",
@@ -16264,17 +18152,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +120"
     },
     {
       id: "treasure_71023",
@@ -16626,16 +18530,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      zone: "Aethyris I",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69207",
-        name: null,
+        name: "Windward Angel",
         members: [
           {
             id: "treasure_74407",
@@ -16658,17 +18581,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +40"
     },
     {
       id: "treasure_74801",
@@ -16740,14 +18679,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68914",
-        name: null,
+        name: "Turmoil's Blaze",
         members: [
           {
             id: "treasure_73808",
@@ -16770,17 +18722,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +80"
     },
     {
       id: "treasure_61106",
@@ -16951,16 +18916,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+1.8% DMG Boost",
+      zone: "Aethyris IV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris IV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG Boost +1.5%",
       set: {
         id: "68609",
-        name: null,
+        name: "Crowned in Flames",
         members: [
           {
             id: "treasure_72805",
@@ -16983,17 +18967,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +120"
     },
     {
       id: "treasure_72817",
@@ -17227,14 +19227,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69219",
-        name: null,
+        name: "Ashen Fire",
         members: [
           {
             id: "treasure_74814",
@@ -17257,17 +19270,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +40"
     },
     {
       id: "treasure_62406",
@@ -17387,16 +19413,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      zone: "Aethyris XV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69209",
-        name: null,
+        name: "Dance in Flames",
         members: [
           {
             id: "treasure_74804",
@@ -17419,17 +19464,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +40"
     },
     {
       id: "treasure_74808",
@@ -17440,14 +19501,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69214",
-        name: null,
+        name: "Heartsearing Flame",
         members: [
           {
             id: "treasure_74808",
@@ -17470,17 +19544,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +40"
     },
     {
       id: "treasure_62903",
@@ -17704,14 +19791,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68309",
-        name: null,
+        name: "Skyfire Baptism",
         members: [
           {
             id: "treasure_71806",
@@ -17734,17 +19834,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +200"
     },
     {
       id: "treasure_62910",
@@ -17918,14 +20031,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68609",
-        name: null,
+        name: "Crowned in Flames",
         members: [
           {
             id: "treasure_72805",
@@ -17948,17 +20074,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +120"
     },
     {
       id: "treasure_73622",
@@ -18069,16 +20208,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Physical RES",
+      zone: "Aethyris IX",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris IX",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Physical RES +28",
       set: {
         id: "68609",
-        name: null,
+        name: "Crowned in Flames",
         members: [
           {
             id: "treasure_72805",
@@ -18101,17 +20259,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +120"
     },
     {
       id: "treasure_62411",
@@ -18224,14 +20398,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Elemental RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental RES +28",
       set: {
         id: "68614",
-        name: null,
+        name: "Firethief's Retribution",
         members: [
           {
             id: "treasure_72808",
@@ -18254,17 +20441,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +120"
     },
     {
       id: "treasure_61903",
@@ -18326,14 +20526,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69214",
-        name: null,
+        name: "Heartsearing Flame",
         members: [
           {
             id: "treasure_74808",
@@ -18356,17 +20569,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +40"
     },
     {
       id: "treasure_73809",
@@ -18377,14 +20603,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68914",
-        name: null,
+        name: "Turmoil's Blaze",
         members: [
           {
             id: "treasure_73808",
@@ -18407,17 +20646,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +80"
     },
     {
       id: "treasure_62409",
@@ -18479,14 +20731,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 Elemental RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental RES +18",
       set: {
         id: "68914",
-        name: null,
+        name: "Turmoil's Blaze",
         members: [
           {
             id: "treasure_73808",
@@ -18509,17 +20774,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +80"
     },
     {
       id: "treasure_72800",
@@ -19059,14 +21337,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68918",
-        name: null,
+        name: "Rushing Tide",
         members: [
           {
             id: "treasure_73612",
@@ -19089,17 +21380,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +80"
     },
     {
       id: "treasure_74011",
@@ -19110,14 +21414,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69210",
-        name: null,
+        name: "Light's Wake",
         members: [
           {
             id: "treasure_74011",
@@ -19140,17 +21457,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +40"
     },
     {
       id: "treasure_74414",
@@ -19161,14 +21491,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69217",
-        name: null,
+        name: "Zephyr Echo",
         members: [
           {
             id: "treasure_74414",
@@ -19191,17 +21534,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +40"
     },
     {
       id: "treasure_71819",
@@ -19496,14 +21852,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68308",
-        name: null,
+        name: "Abyssal Lord",
         members: [
           {
             id: "treasure_71606",
@@ -19526,17 +21895,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +200"
     },
     {
       id: "treasure_62201",
@@ -19647,16 +22029,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Effect Hit Rate",
+      zone: "Aethyris XII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect Hit Rate +28",
       set: {
         id: "68608",
-        name: null,
+        name: "Oceanic Hymn",
         members: [
           {
             id: "treasure_72605",
@@ -19679,17 +22080,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +120"
     },
     {
       id: "treasure_61808",
@@ -19758,16 +22175,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      zone: "Aethyris XIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69208",
-        name: null,
+        name: "Hymn of Horizons",
         members: [
           {
             id: "treasure_74604",
@@ -19790,17 +22226,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +40"
     },
     {
       id: "treasure_73610",
@@ -19811,14 +22263,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 Elemental Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental Mastery +18",
       set: {
         id: "68913",
-        name: null,
+        name: "Ocean's Favor",
         members: [
           {
             id: "treasure_73608",
@@ -19841,17 +22306,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +80"
     },
     {
       id: "treasure_74615",
@@ -19862,14 +22340,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69218",
-        name: null,
+        name: "Glacial Undertow",
         members: [
           {
             id: "treasure_74615",
@@ -19892,17 +22383,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +40"
     },
     {
       id: "treasure_71634",
@@ -19962,16 +22466,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      zone: "Aethyris XVII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68608",
-        name: null,
+        name: "Oceanic Hymn",
         members: [
           {
             id: "treasure_72605",
@@ -19994,17 +22517,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +120"
     },
     {
       id: "treasure_61707",
@@ -20727,16 +23266,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      zone: "Aethyris XVIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68907",
-        name: null,
+        name: "Windborne Epic",
         members: [
           {
             id: "treasure_73407",
@@ -20759,17 +23317,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +80"
     },
     {
       id: "treasure_71432",
@@ -20933,14 +23507,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69216",
-        name: null,
+        name: "Shadow of the Dark",
         members: [
           {
             id: "treasure_74212",
@@ -20963,17 +23550,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +40"
     },
     {
       id: "treasure_61304",
@@ -21106,14 +23706,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69216",
-        name: null,
+        name: "Shadow of the Dark",
         members: [
           {
             id: "treasure_74212",
@@ -21136,17 +23749,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +40"
     },
     {
       id: "treasure_62410",
@@ -21412,14 +24038,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68913",
-        name: null,
+        name: "Ocean's Favor",
         members: [
           {
             id: "treasure_73608",
@@ -21442,17 +24081,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +80"
     },
     {
       id: "treasure_71630",
@@ -21667,14 +24319,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68318",
-        name: null,
+        name: "Moon in Water",
         members: [
           {
             id: "treasure_71613",
@@ -21697,17 +24362,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +200"
     },
     {
       id: "treasure_73613",
@@ -21718,14 +24396,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68918",
-        name: null,
+        name: "Rushing Tide",
         members: [
           {
             id: "treasure_73612",
@@ -21748,17 +24439,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +80"
     },
     {
       id: "treasure_72222",
@@ -21930,16 +24634,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      zone: "Aethyris IX",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris IX",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68905",
-        name: null,
+        name: "Blooming Light",
         members: [
           {
             id: "treasure_73007",
@@ -21962,17 +24685,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +80"
     },
     {
       id: "treasure_72031",
@@ -22034,14 +24773,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68616",
-        name: null,
+        name: "Roar of the Night",
         members: [
           {
             id: "treasure_72212",
@@ -22064,17 +24816,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +120"
     },
     {
       id: "treasure_73210",
@@ -22085,14 +24850,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68911",
-        name: null,
+        name: "Art of Shadows",
         members: [
           {
             id: "treasure_73210",
@@ -22115,17 +24893,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +80"
     },
     {
       id: "treasure_73206",
@@ -22134,16 +24925,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      zone: "Aethyris I",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68906",
-        name: null,
+        name: "Dance in Shadows",
         members: [
           {
             id: "treasure_73207",
@@ -22166,17 +24976,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +80"
     },
     {
       id: "treasure_73232",
@@ -22238,14 +25064,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Elemental RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental RES +28",
       set: {
         id: "68610",
-        name: null,
+        name: "Regal Glory",
         members: [
           {
             id: "treasure_72011",
@@ -22268,17 +25107,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +120"
     },
     {
       id: "treasure_72036",
@@ -22340,14 +25192,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69210",
-        name: null,
+        name: "Light's Wake",
         members: [
           {
             id: "treasure_74011",
@@ -22370,17 +25235,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +40"
     },
     {
       id: "treasure_74014",
@@ -22391,14 +25269,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69215",
-        name: null,
+        name: "Genesis Gleam",
         members: [
           {
             id: "treasure_74014",
@@ -22421,17 +25312,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +40"
     },
     {
       id: "treasure_62006",
@@ -22831,14 +25735,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69215",
-        name: null,
+        name: "Genesis Gleam",
         members: [
           {
             id: "treasure_74014",
@@ -22861,17 +25778,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +40"
     },
     {
       id: "treasure_61011",
@@ -22905,14 +25835,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68918",
-        name: null,
+        name: "Rushing Tide",
         members: [
           {
             id: "treasure_73612",
@@ -22935,17 +25878,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +80"
     },
     {
       id: "treasure_61927",
@@ -23020,16 +25976,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      zone: "Aethyris XVI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68605",
-        name: null,
+        name: "Radiant Singularity",
         members: [
           {
             id: "treasure_72006",
@@ -23052,17 +26027,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +120"
     },
     {
       id: "treasure_61514",
@@ -23673,14 +26664,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Elemental Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental Mastery +28",
       set: {
         id: "68610",
-        name: null,
+        name: "Regal Glory",
         members: [
           {
             id: "treasure_72011",
@@ -23703,17 +26707,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +120"
     },
     {
       id: "treasure_71018",
@@ -23773,16 +26790,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      zone: "Aethyris VI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68605",
-        name: null,
+        name: "Radiant Singularity",
         members: [
           {
             id: "treasure_72006",
@@ -23805,17 +26841,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +120"
     },
     {
       id: "treasure_72622",
@@ -23877,14 +26929,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69218",
-        name: null,
+        name: "Glacial Undertow",
         members: [
           {
             id: "treasure_74615",
@@ -23907,17 +26972,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +40"
     },
     {
       id: "treasure_71212",
@@ -23928,14 +27006,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Accuracy",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Accuracy +5%",
       set: {
         id: "68316",
-        name: null,
+        name: "Night's Lament",
         members: [
           {
             id: "treasure_71212",
@@ -23958,17 +27049,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +200"
     },
     {
       id: "treasure_74837",
@@ -24183,14 +27287,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68917",
-        name: null,
+        name: "Breezy Lullaby",
         members: [
           {
             id: "treasure_73412",
@@ -24213,17 +27330,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +80"
     },
     {
       id: "treasure_74812",
@@ -24234,14 +27364,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69219",
-        name: null,
+        name: "Ashen Fire",
         members: [
           {
             id: "treasure_74814",
@@ -24264,17 +27407,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +40"
     },
     {
       id: "treasure_61708",
@@ -24934,16 +28090,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      zone: "Aethyris I",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68605",
-        name: null,
+        name: "Radiant Singularity",
         members: [
           {
             id: "treasure_72006",
@@ -24966,17 +28141,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +120"
     },
     {
       id: "treasure_73038",
@@ -25038,14 +28229,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68310",
-        name: null,
+        name: "Infinite Radiance",
         members: [
           {
             id: "treasure_71011",
@@ -25068,17 +28272,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +200"
     },
     {
       id: "treasure_71235",
@@ -25140,14 +28357,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68613",
-        name: null,
+        name: "Glacial Legacy",
         members: [
           {
             id: "treasure_72608",
@@ -25170,17 +28400,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +120"
     },
     {
       id: "treasure_74210",
@@ -25191,14 +28434,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69211",
-        name: null,
+        name: "Ode to the Night",
         members: [
           {
             id: "treasure_74209",
@@ -25221,17 +28477,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +40"
     },
     {
       id: "treasure_73411",
@@ -25242,14 +28511,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68912",
-        name: null,
+        name: "Ballad of the Wind",
         members: [
           {
             id: "treasure_73410",
@@ -25272,17 +28554,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +80"
     },
     {
       id: "treasure_61005",
@@ -25763,14 +29058,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69218",
-        name: null,
+        name: "Glacial Undertow",
         members: [
           {
             id: "treasure_74615",
@@ -25793,17 +29101,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +40"
     },
     {
       id: "treasure_72603",
@@ -25875,14 +29196,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68618",
-        name: null,
+        name: "Azure Wrath",
         members: [
           {
             id: "treasure_72614",
@@ -25905,17 +29239,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +120"
     },
     {
       id: "treasure_73611",
@@ -25926,14 +29273,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68913",
-        name: null,
+        name: "Ocean's Favor",
         members: [
           {
             id: "treasure_73608",
@@ -25956,17 +29316,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +80"
     },
     {
       id: "treasure_62403",
@@ -26480,16 +29853,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      zone: "Aethyris II",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68909",
-        name: null,
+        name: "Inferno of Heaven",
         members: [
           {
             id: "treasure_73806",
@@ -26512,17 +29904,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +80"
     },
     {
       id: "treasure_71233",
@@ -26584,14 +29992,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69214",
-        name: null,
+        name: "Heartsearing Flame",
         members: [
           {
             id: "treasure_74808",
@@ -26614,17 +30035,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +40"
     },
     {
       id: "treasure_73227",
@@ -28177,14 +31611,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69209",
-        name: null,
+        name: "Dance in Flames",
         members: [
           {
             id: "treasure_74804",
@@ -28207,17 +31654,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +40"
     },
     {
       id: "treasure_72811",
@@ -28228,14 +31688,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Elemental Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental Mastery +28",
       set: {
         id: "68614",
-        name: null,
+        name: "Firethief's Retribution",
         members: [
           {
             id: "treasure_72808",
@@ -28258,17 +31731,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +120"
     },
     {
       id: "treasure_73807",
@@ -28277,16 +31763,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      zone: "Aethyris XII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68909",
-        name: null,
+        name: "Inferno of Heaven",
         members: [
           {
             id: "treasure_73806",
@@ -28309,17 +31814,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +80"
     },
     {
       id: "treasure_72814",
@@ -28330,14 +31851,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+1.8% DMG RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG RES +1.5%",
       set: {
         id: "68619",
-        name: null,
+        name: "Warfire Dance",
         members: [
           {
             id: "treasure_72812",
@@ -28360,17 +31894,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +120"
     },
     {
       id: "treasure_73813",
@@ -28381,14 +31928,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68919",
-        name: null,
+        name: "Crimson Art",
         members: [
           {
             id: "treasure_73815",
@@ -28411,17 +31971,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +80"
     },
     {
       id: "treasure_71816",
@@ -28534,14 +32107,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68308",
-        name: null,
+        name: "Abyssal Lord",
         members: [
           {
             id: "treasure_71606",
@@ -28564,17 +32150,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +200"
     },
     {
       id: "treasure_72431",
@@ -28848,16 +32447,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      zone: "Aethyris IV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris IV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68905",
-        name: null,
+        name: "Blooming Light",
         members: [
           {
             id: "treasure_73007",
@@ -28880,17 +32498,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +80"
     },
     {
       id: "treasure_73026",
@@ -29584,14 +33218,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68910",
-        name: null,
+        name: "Creator's Light",
         members: [
           {
             id: "treasure_73011",
@@ -29614,17 +33261,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +80"
     },
     {
       id: "treasure_73014",
@@ -29635,14 +33295,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68915",
-        name: null,
+        name: "Shining Flow",
         members: [
           {
             id: "treasure_73014",
@@ -29665,17 +33338,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +80"
     },
     {
       id: "treasure_74412",
@@ -29686,14 +33372,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69217",
-        name: null,
+        name: "Zephyr Echo",
         members: [
           {
             id: "treasure_74414",
@@ -29716,17 +33415,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +40"
     },
     {
       id: "treasure_62016",
@@ -30001,14 +33713,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68916",
-        name: null,
+        name: "Midnight Silence",
         members: [
           {
             id: "treasure_73212",
@@ -30031,17 +33756,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +80"
     },
     {
       id: "treasure_62505",
@@ -30460,14 +34198,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68310",
-        name: null,
+        name: "Infinite Radiance",
         members: [
           {
             id: "treasure_71011",
@@ -30490,17 +34241,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +200"
     },
     {
       id: "treasure_74221",
@@ -31267,14 +35031,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68912",
-        name: null,
+        name: "Ballad of the Wind",
         members: [
           {
             id: "treasure_73410",
@@ -31297,17 +35074,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +80"
     },
     {
       id: "treasure_61316",
@@ -31562,14 +35352,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68306",
-        name: null,
+        name: "Wail of the Deep",
         members: [
           {
             id: "treasure_71206",
@@ -31592,17 +35395,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +200"
     },
     {
       id: "treasure_74204",
@@ -31613,14 +35429,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69206",
-        name: null,
+        name: "Shadow's Wake",
         members: [
           {
             id: "treasure_74206",
@@ -31643,17 +35472,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +40"
     },
     {
       id: "treasure_71225",
@@ -33011,14 +36853,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68614",
-        name: null,
+        name: "Firethief's Retribution",
         members: [
           {
             id: "treasure_72808",
@@ -33041,17 +36896,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +120"
     },
     {
       id: "treasure_72202",
@@ -33174,14 +37042,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3.6% Crit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit Rate +3%",
       set: {
         id: "68615",
-        name: null,
+        name: "Gate of Starlight",
         members: [
           {
             id: "treasure_72014",
@@ -33204,17 +37085,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +120"
     },
     {
       id: "treasure_72238",
@@ -33779,14 +37673,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68316",
-        name: null,
+        name: "Night's Lament",
         members: [
           {
             id: "treasure_71212",
@@ -33809,17 +37716,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +200"
     },
     {
       id: "treasure_72213",
@@ -33830,14 +37750,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Effect Hit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect Hit Rate +28",
       set: {
         id: "68616",
-        name: null,
+        name: "Roar of the Night",
         members: [
           {
             id: "treasure_72212",
@@ -33860,17 +37793,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +120"
     },
     {
       id: "treasure_73619",
@@ -34034,14 +37980,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68311",
-        name: null,
+        name: "Evernight Cry",
         members: [
           {
             id: "treasure_71208",
@@ -34064,17 +38023,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +200"
     },
     {
       id: "treasure_71210",
@@ -34085,14 +38057,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+9% Crit DMG",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit DMG +7.5%",
       set: {
         id: "68311",
-        name: null,
+        name: "Evernight Cry",
         members: [
           {
             id: "treasure_71208",
@@ -34115,17 +38100,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +200"
     },
     {
       id: "treasure_73214",
@@ -34136,14 +38134,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 Physical RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Physical RES +18",
       set: {
         id: "68916",
-        name: null,
+        name: "Midnight Silence",
         members: [
           {
             id: "treasure_73212",
@@ -34166,17 +38177,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +80"
     },
     {
       id: "treasure_62509",
@@ -34308,14 +38332,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68313",
-        name: null,
+        name: "Ocean's Origin",
         members: [
           {
             id: "treasure_71610",
@@ -34338,17 +38375,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +200"
     },
     {
       id: "treasure_73824",
@@ -34410,14 +38460,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69211",
-        name: null,
+        name: "Ode to the Night",
         members: [
           {
             id: "treasure_74209",
@@ -34440,17 +38503,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +40"
     },
     {
       id: "treasure_73204",
@@ -34459,16 +38535,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      zone: "Aethyris VI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68906",
-        name: null,
+        name: "Dance in Shadows",
         members: [
           {
             id: "treasure_73207",
@@ -34491,17 +38586,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +80"
     },
     {
       id: "treasure_62601",
@@ -34676,14 +38787,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3% DMG Boost",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG Boost +2.5%",
       set: {
         id: "68316",
-        name: null,
+        name: "Night's Lament",
         members: [
           {
             id: "treasure_71212",
@@ -34706,17 +38830,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +200"
     },
     {
       id: "treasure_61601",
@@ -34898,14 +39035,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+9% Crit DMG",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit DMG +7.5%",
       set: {
         id: "68309",
-        name: null,
+        name: "Skyfire Baptism",
         members: [
           {
             id: "treasure_71806",
@@ -34928,17 +39078,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +200"
     },
     {
       id: "treasure_74600",
@@ -35172,14 +39335,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68315",
-        name: null,
+        name: "Fate's Radiance",
         members: [
           {
             id: "treasure_71014",
@@ -35202,17 +39378,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +200"
     },
     {
       id: "treasure_72028",
@@ -35497,14 +39686,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68911",
-        name: null,
+        name: "Art of Shadows",
         members: [
           {
             id: "treasure_73210",
@@ -35527,17 +39729,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +80"
     },
     {
       id: "treasure_73213",
@@ -35548,14 +39763,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68916",
-        name: null,
+        name: "Midnight Silence",
         members: [
           {
             id: "treasure_73212",
@@ -35578,17 +39806,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +80"
     },
     {
       id: "treasure_62414",
@@ -36921,14 +41162,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69217",
-        name: null,
+        name: "Zephyr Echo",
         members: [
           {
             id: "treasure_74414",
@@ -36951,17 +41205,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +40"
     },
     {
       id: "treasure_73217",
@@ -37917,14 +42184,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69215",
-        name: null,
+        name: "Genesis Gleam",
         members: [
           {
             id: "treasure_74014",
@@ -37947,17 +42227,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +40"
     },
     {
       id: "treasure_74422",
@@ -38182,14 +42475,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69213",
-        name: null,
+        name: "Everpure Stream",
         members: [
           {
             id: "treasure_74608",
@@ -38212,17 +42518,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +40"
     },
     {
       id: "treasure_73829",
@@ -38284,14 +42603,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Effect RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect RES +28",
       set: {
         id: "68613",
-        name: null,
+        name: "Glacial Legacy",
         members: [
           {
             id: "treasure_72608",
@@ -38314,17 +42646,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +120"
     },
     {
       id: "treasure_62402",
@@ -38384,16 +42729,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      zone: "Aethyris X",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris X",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69209",
-        name: null,
+        name: "Dance in Flames",
         members: [
           {
             id: "treasure_74804",
@@ -38416,17 +42780,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +40"
     },
     {
       id: "treasure_72802",
@@ -38681,16 +43061,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      zone: "Aethyris VII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69205",
-        name: null,
+        name: "Gleam's Caress",
         members: [
           {
             id: "treasure_74006",
@@ -38713,17 +43112,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +40"
     },
     {
       id: "treasure_72013",
@@ -38734,14 +43149,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68615",
-        name: null,
+        name: "Gate of Starlight",
         members: [
           {
             id: "treasure_72014",
@@ -38764,17 +43192,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +120"
     },
     {
       id: "treasure_73032",
@@ -38836,14 +43277,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 Physical Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Physical Mastery +18",
       set: {
         id: "68915",
-        name: null,
+        name: "Shining Flow",
         members: [
           {
             id: "treasure_73014",
@@ -38866,17 +43320,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +80"
     },
     {
       id: "treasure_72837",
@@ -38938,14 +43405,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68315",
-        name: null,
+        name: "Fate's Radiance",
         members: [
           {
             id: "treasure_71014",
@@ -38968,17 +43448,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +200"
     },
     {
       id: "treasure_72030",
@@ -39142,14 +43635,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68315",
-        name: null,
+        name: "Fate's Radiance",
         members: [
           {
             id: "treasure_71014",
@@ -39172,17 +43678,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +200"
     },
     {
       id: "treasure_73008",
@@ -39193,14 +43712,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68910",
-        name: null,
+        name: "Creator's Light",
         members: [
           {
             id: "treasure_73011",
@@ -39223,17 +43755,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +80"
     },
     {
       id: "treasure_71033",
@@ -39293,16 +43838,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      zone: "Aethyris II",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68608",
-        name: null,
+        name: "Oceanic Hymn",
         members: [
           {
             id: "treasure_72605",
@@ -39325,17 +43889,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +120"
     },
     {
       id: "treasure_71815",
@@ -39346,14 +43926,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3% DMG RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG RES +2.5%",
       set: {
         id: "68319",
-        name: null,
+        name: "Pantheon's Twilight",
         members: [
           {
             id: "treasure_71812",
@@ -39376,17 +43969,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +200"
     },
     {
       id: "treasure_74619",
@@ -41473,16 +46079,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      zone: "Aethyris IX",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris IX",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69206",
-        name: null,
+        name: "Shadow's Wake",
         members: [
           {
             id: "treasure_74206",
@@ -41505,17 +46130,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +40"
     },
     {
       id: "treasure_62306",
@@ -42123,16 +46764,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      zone: "Aethyris XIV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XIV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68609",
-        name: null,
+        name: "Crowned in Flames",
         members: [
           {
             id: "treasure_72805",
@@ -42155,17 +46815,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +120"
     },
     {
       id: "treasure_61902",
@@ -42378,16 +47054,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      zone: "Aethyris X",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris X",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68908",
-        name: null,
+        name: "Rolling Waves",
         members: [
           {
             id: "treasure_73604",
@@ -42410,17 +47105,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +80"
     },
     {
       id: "treasure_73614",
@@ -42431,14 +47142,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68918",
-        name: null,
+        name: "Rushing Tide",
         members: [
           {
             id: "treasure_73612",
@@ -42461,17 +47185,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +80"
     },
     {
       id: "treasure_74809",
@@ -42482,14 +47219,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69214",
-        name: null,
+        name: "Heartsearing Flame",
         members: [
           {
             id: "treasure_74808",
@@ -42512,17 +47262,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +40"
     },
     {
       id: "treasure_74216",
@@ -42582,16 +47345,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      zone: "Aethyris VII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68909",
-        name: null,
+        name: "Inferno of Heaven",
         members: [
           {
             id: "treasure_73806",
@@ -42614,17 +47396,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +80"
     },
     {
       id: "treasure_62905",
@@ -42909,14 +47707,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68616",
-        name: null,
+        name: "Roar of the Night",
         members: [
           {
             id: "treasure_72212",
@@ -42939,17 +47750,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +120"
     },
     {
       id: "treasure_72210",
@@ -42960,14 +47784,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3.6% Crit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit Rate +3%",
       set: {
         id: "68611",
-        name: null,
+        name: "Hell's Howl",
         members: [
           {
             id: "treasure_72210",
@@ -42990,17 +47827,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +120"
     },
     {
       id: "treasure_72612",
@@ -43011,14 +47861,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+1.8% DMG RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG RES +1.5%",
       set: {
         id: "68618",
-        name: null,
+        name: "Azure Wrath",
         members: [
           {
             id: "treasure_72614",
@@ -43041,17 +47904,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +120"
     },
     {
       id: "treasure_72236",
@@ -43113,14 +47989,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68313",
-        name: null,
+        name: "Ocean's Origin",
         members: [
           {
             id: "treasure_71610",
@@ -43143,17 +48032,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +200"
     },
     {
       id: "treasure_61215",
@@ -43385,16 +48287,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Elemental RES",
+      zone: "Aethyris XIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental RES +28",
       set: {
         id: "68606",
-        name: null,
+        name: "Drown in Shadows",
         members: [
           {
             id: "treasure_72205",
@@ -43417,17 +48338,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +120"
     },
     {
       id: "treasure_72209",
@@ -43438,14 +48375,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68611",
-        name: null,
+        name: "Hell's Howl",
         members: [
           {
             id: "treasure_72210",
@@ -43468,17 +48418,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +120"
     },
     {
       id: "treasure_61612",
@@ -43540,14 +48503,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69211",
-        name: null,
+        name: "Ode to the Night",
         members: [
           {
             id: "treasure_74209",
@@ -43570,17 +48546,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +40"
     },
     {
       id: "treasure_73208",
@@ -43591,14 +48580,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+1.2% DMG RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG RES +1%",
       set: {
         id: "68911",
-        name: null,
+        name: "Art of Shadows",
         members: [
           {
             id: "treasure_73210",
@@ -43621,17 +48623,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +80"
     },
     {
       id: "treasure_73211",
@@ -43642,14 +48657,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68911",
-        name: null,
+        name: "Art of Shadows",
         members: [
           {
             id: "treasure_73210",
@@ -43672,17 +48700,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +80"
     },
     {
       id: "treasure_72235",
@@ -43744,14 +48785,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68611",
-        name: null,
+        name: "Hell's Howl",
         members: [
           {
             id: "treasure_72210",
@@ -43774,17 +48828,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +120"
     },
     {
       id: "treasure_73203",
@@ -44649,14 +49716,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+55 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +46",
       set: {
         id: "68319",
-        name: null,
+        name: "Pantheon's Twilight",
         members: [
           {
             id: "treasure_71812",
@@ -44679,17 +49759,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +200"
     },
     {
       id: "treasure_73231",
@@ -44802,14 +49895,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68312",
-        name: null,
+        name: "Skywind Hunt",
         members: [
           {
             id: "treasure_71410",
@@ -44832,17 +49938,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +200"
     },
     {
       id: "treasure_71413",
@@ -44853,14 +49972,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3% DMG RES",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DMG RES +2.5%",
       set: {
         id: "68317",
-        name: null,
+        name: "Halt of the Gale",
         members: [
           {
             id: "treasure_71415",
@@ -44883,17 +50015,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +200"
     },
     {
       id: "treasure_61703",
@@ -45015,14 +50160,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68317",
-        name: null,
+        name: "Halt of the Gale",
         members: [
           {
             id: "treasure_71415",
@@ -45045,17 +50203,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +200"
     },
     {
       id: "treasure_72201",
@@ -45390,16 +50561,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      zone: "Aethyris XVIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68606",
-        name: null,
+        name: "Drown in Shadows",
         members: [
           {
             id: "treasure_72205",
@@ -45422,17 +50612,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +120"
     },
     {
       id: "treasure_74835",
@@ -45766,14 +50972,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68310",
-        name: null,
+        name: "Infinite Radiance",
         members: [
           {
             id: "treasure_71011",
@@ -45796,17 +51015,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +200"
     },
     {
       id: "treasure_73010",
@@ -45817,14 +51049,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68910",
-        name: null,
+        name: "Creator's Light",
         members: [
           {
             id: "treasure_73011",
@@ -45847,17 +51092,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +80"
     },
     {
       id: "treasure_72010",
@@ -45868,14 +51126,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+3.6% Accuracy",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Accuracy +3%",
       set: {
         id: "68610",
-        name: null,
+        name: "Regal Glory",
         members: [
           {
             id: "treasure_72011",
@@ -45898,17 +51169,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +120"
     },
     {
       id: "treasure_71811",
@@ -45919,14 +51203,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68314",
-        name: null,
+        name: "Wrath of the Sky",
         members: [
           {
             id: "treasure_71808",
@@ -45949,17 +51246,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +200"
     },
     {
       id: "treasure_73015",
@@ -45970,14 +51280,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68915",
-        name: null,
+        name: "Shining Flow",
         members: [
           {
             id: "treasure_73014",
@@ -46000,17 +51323,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +80"
     },
     {
       id: "treasure_61615",
@@ -46244,14 +51580,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69216",
-        name: null,
+        name: "Shadow of the Dark",
         members: [
           {
             id: "treasure_74212",
@@ -46274,17 +51623,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +40"
     },
     {
       id: "treasure_62106",
@@ -46446,16 +51808,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      zone: "Aethyris V",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris V",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69209",
-        name: null,
+        name: "Dance in Flames",
         members: [
           {
             id: "treasure_74804",
@@ -46478,17 +51859,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +40"
     },
     {
       id: "treasure_74425",
@@ -46854,16 +52251,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      zone: "Aethyris XVII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69205",
-        name: null,
+        name: "Gleam's Caress",
         members: [
           {
             id: "treasure_74006",
@@ -46886,17 +52302,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +40"
     },
     {
       id: "treasure_74009",
@@ -46907,14 +52339,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69210",
-        name: null,
+        name: "Light's Wake",
         members: [
           {
             id: "treasure_74011",
@@ -46937,17 +52382,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +40"
     },
     {
       id: "treasure_74238",
@@ -47222,14 +52680,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68316",
-        name: null,
+        name: "Night's Lament",
         members: [
           {
             id: "treasure_71212",
@@ -47252,17 +52723,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +200"
     },
     {
       id: "treasure_74618",
@@ -47424,16 +52908,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      zone: "Aethyris VIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69208",
-        name: null,
+        name: "Hymn of Horizons",
         members: [
           {
             id: "treasure_74604",
@@ -47456,17 +52959,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +40"
     },
     {
       id: "treasure_74020",
@@ -47639,14 +53158,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68910",
-        name: null,
+        name: "Creator's Light",
         members: [
           {
             id: "treasure_73011",
@@ -47669,17 +53201,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +80"
     },
     {
       id: "treasure_74008",
@@ -47690,14 +53235,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69210",
-        name: null,
+        name: "Light's Wake",
         members: [
           {
             id: "treasure_74011",
@@ -47720,17 +53278,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +40"
     },
     {
       id: "treasure_62507",
@@ -47790,16 +53361,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Dark",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      zone: "Aethyris IV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris IV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69206",
-        name: null,
+        name: "Shadow's Wake",
         members: [
           {
             id: "treasure_74206",
@@ -47822,17 +53412,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +40"
     },
     {
       id: "treasure_72009",
@@ -47843,14 +53449,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68610",
-        name: null,
+        name: "Regal Glory",
         members: [
           {
             id: "treasure_72011",
@@ -47873,17 +53492,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Healing Boost"
+          effect: "Healing Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +120"
     },
     {
       id: "treasure_73004",
@@ -47894,14 +53526,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68905",
-        name: null,
+        name: "Blooming Light",
         members: [
           {
             id: "treasure_73007",
@@ -47924,17 +53569,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +80"
     },
     {
       id: "treasure_74012",
@@ -47945,14 +53603,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69215",
-        name: null,
+        name: "Genesis Gleam",
         members: [
           {
             id: "treasure_74014",
@@ -47975,17 +53646,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +40"
     },
     {
       id: "treasure_61017",
@@ -48186,14 +53870,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68615",
-        name: null,
+        name: "Gate of Starlight",
         members: [
           {
             id: "treasure_72014",
@@ -48216,17 +53913,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +120"
     },
     {
       id: "treasure_61801",
@@ -48348,14 +54058,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68612",
-        name: null,
+        name: "Wind Tamer",
         members: [
           {
             id: "treasure_72410",
@@ -48378,17 +54101,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +120"
     },
     {
       id: "treasure_62701",
@@ -48501,14 +54237,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68307",
-        name: null,
+        name: "Hushed Tempest",
         members: [
           {
             id: "treasure_71406",
@@ -48531,17 +54280,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +200"
     },
     {
       id: "treasure_61205",
@@ -48705,14 +54467,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Block Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Block Rate +5%",
       set: {
         id: "68312",
-        name: null,
+        name: "Skywind Hunt",
         members: [
           {
             id: "treasure_71410",
@@ -48735,17 +54510,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Accuracy"
+          effect: "Accuracy +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +200"
     },
     {
       id: "treasure_74611",
@@ -48756,14 +54544,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69213",
-        name: null,
+        name: "Everpure Stream",
         members: [
           {
             id: "treasure_74608",
@@ -48786,17 +54587,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +40"
     },
     {
       id: "treasure_74214",
@@ -48807,14 +54621,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69216",
-        name: null,
+        name: "Shadow of the Dark",
         members: [
           {
             id: "treasure_74212",
@@ -48837,17 +54664,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +40"
     },
     {
       id: "treasure_72626",
@@ -49241,16 +55081,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Physical RES",
+      zone: "Aethyris XV",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XV",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Physical RES +28",
       set: {
         id: "68607",
-        name: null,
+        name: "Grieving Gale",
         members: [
           {
             id: "treasure_72407",
@@ -49273,17 +55132,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +120"
     },
     {
       id: "treasure_61414",
@@ -49940,16 +55815,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      zone: "Aethyris X",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris X",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68607",
-        name: null,
+        name: "Grieving Gale",
         members: [
           {
             id: "treasure_72407",
@@ -49972,17 +55866,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +120"
     },
     {
       id: "treasure_72402",
@@ -50103,16 +56013,35 @@ var SxsRelics = (() => {
       rarity: "Legendary",
       element: "Water",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 DEF",
+      zone: "Aethyris VII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +35",
       set: {
         id: "68608",
-        name: null,
+        name: "Oceanic Hymn",
         members: [
           {
             id: "treasure_72605",
@@ -50135,17 +56064,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +120"
     },
     {
       id: "treasure_71611",
@@ -50156,14 +56101,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +58",
       set: {
         id: "68313",
-        name: null,
+        name: "Ocean's Origin",
         members: [
           {
             id: "treasure_71610",
@@ -50186,17 +56144,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +200"
     },
     {
       id: "treasure_73225",
@@ -50318,14 +56289,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +58",
       set: {
         id: "68305",
-        name: null,
+        name: "Sacred Dawnlight",
         members: [
           {
             id: "treasure_71007",
@@ -50348,17 +56332,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +200"
     },
     {
       id: "treasure_61516",
@@ -50642,14 +56639,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69218",
-        name: null,
+        name: "Glacial Undertow",
         members: [
           {
             id: "treasure_74615",
@@ -50672,17 +56682,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Affinity +40"
     },
     {
       id: "treasure_71615",
@@ -50693,14 +56716,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Crit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Water",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Crit Rate +5%",
       set: {
         id: "68318",
-        name: null,
+        name: "Moon in Water",
         members: [
           {
             id: "treasure_71613",
@@ -50723,17 +56759,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Water Aegis +200"
     },
     {
       id: "treasure_72633",
@@ -52304,14 +58353,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68611",
-        name: null,
+        name: "Hell's Howl",
         members: [
           {
             id: "treasure_72210",
@@ -52334,17 +58396,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Block Rate"
+          effect: "Block Rate +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +120"
     },
     {
       id: "treasure_73228",
@@ -52710,16 +58785,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Fire",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      zone: "Aethyris XVII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XVII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68909",
-        name: null,
+        name: "Inferno of Heaven",
         members: [
           {
             id: "treasure_73806",
@@ -52742,17 +58836,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +80"
     },
     {
       id: "treasure_74815",
@@ -52763,14 +58873,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+69 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +58",
       set: {
         id: "69219",
-        name: null,
+        name: "Ashen Fire",
         members: [
           {
             id: "treasure_74814",
@@ -52793,17 +58916,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Aegis +40"
     },
     {
       id: "treasure_71801",
@@ -53026,16 +59162,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      zone: "Aethyris XI",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XI",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69207",
-        name: null,
+        name: "Windward Angel",
         members: [
           {
             id: "treasure_74407",
@@ -53058,17 +59213,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "HP"
+          effect: "HP +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +40"
     },
     {
       id: "treasure_74435",
@@ -53130,14 +59301,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+42 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Fire",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +35",
       set: {
         id: "68614",
-        name: null,
+        name: "Firethief's Retribution",
         members: [
           {
             id: "treasure_72808",
@@ -53160,17 +59344,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Fire Affinity +120"
     },
     {
       id: "treasure_72429",
@@ -53357,14 +59554,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Block Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Block Rate +5%",
       set: {
         id: "68306",
-        name: null,
+        name: "Wail of the Deep",
         members: [
           {
             id: "treasure_71206",
@@ -53387,17 +59597,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Affinity +200"
     },
     {
       id: "treasure_71211",
@@ -53408,14 +59631,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+346 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Dark",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +289",
       set: {
         id: "68311",
-        name: null,
+        name: "Evernight Cry",
         members: [
           {
             id: "treasure_71208",
@@ -53438,17 +59674,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Dark Aegis +200"
     },
     {
       id: "treasure_71030",
@@ -54562,14 +60811,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69217",
-        name: null,
+        name: "Zephyr Echo",
         members: [
           {
             id: "treasure_74414",
@@ -54592,17 +60854,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "ATK"
+          effect: "ATK +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +40"
     },
     {
       id: "treasure_74436",
@@ -54715,14 +60990,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68915",
-        name: null,
+        name: "Shining Flow",
         members: [
           {
             id: "treasure_73014",
@@ -54745,17 +61033,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +80"
     },
     {
       id: "treasure_71010",
@@ -54766,14 +61067,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Block Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Block Rate +5%",
       set: {
         id: "68310",
-        name: null,
+        name: "Infinite Radiance",
         members: [
           {
             id: "treasure_71011",
@@ -54796,17 +61110,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +200"
     },
     {
       id: "treasure_62808",
@@ -54987,14 +61314,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+10 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +9",
       set: {
         id: "69212",
-        name: null,
+        name: "Breeze's Blessing",
         members: [
           {
             id: "treasure_74411",
@@ -55017,17 +61357,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +40"
     },
     {
       id: "treasure_73406",
@@ -55036,16 +61389,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+138 HP",
+      zone: "Aethyris III",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +115",
       set: {
         id: "68907",
-        name: null,
+        name: "Windborne Epic",
         members: [
           {
             id: "treasure_73407",
@@ -55068,17 +61440,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +80"
     },
     {
       id: "treasure_62109",
@@ -55531,16 +61919,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 SPD",
+      zone: "Aethyris VIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris VIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +18",
       set: {
         id: "68907",
-        name: null,
+        name: "Windborne Epic",
         members: [
           {
             id: "treasure_73407",
@@ -55563,17 +61970,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +80"
     },
     {
       id: "treasure_72422",
@@ -55635,14 +62058,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Elemental Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Elemental Mastery +28",
       set: {
         id: "68617",
-        name: null,
+        name: "Windbreaker's Dance",
         members: [
           {
             id: "treasure_72414",
@@ -55665,17 +62101,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +120"
     },
     {
       id: "treasure_72406",
@@ -55686,14 +62135,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 SPD",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "SPD +28",
       set: {
         id: "68607",
-        name: null,
+        name: "Grieving Gale",
         members: [
           {
             id: "treasure_72407",
@@ -55716,17 +62178,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +120"
     },
     {
       id: "treasure_71429",
@@ -55941,14 +62416,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +23",
       set: {
         id: "68917",
-        name: null,
+        name: "Breezy Lullaby",
         members: [
           {
             id: "treasure_73412",
@@ -55971,17 +62459,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +80"
     },
     {
       id: "treasure_62703",
@@ -56094,14 +62595,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Physical Mastery",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Physical Mastery +28",
       set: {
         id: "68612",
-        name: null,
+        name: "Wind Tamer",
         members: [
           {
             id: "treasure_72410",
@@ -56124,17 +62638,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +120"
     },
     {
       id: "treasure_62209",
@@ -56245,16 +62772,35 @@ var SxsRelics = (() => {
       rarity: "Epic",
       element: "Wind",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+27 DEF",
+      zone: "Aethyris XIII",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris XIII",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +23",
       set: {
         id: "68907",
-        name: null,
+        name: "Windborne Epic",
         members: [
           {
             id: "treasure_73407",
@@ -56277,17 +62823,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DEF"
+          effect: "DEF +2%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +80"
     },
     {
       id: "treasure_74430",
@@ -56451,14 +63013,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 ATK",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "ATK +12",
       set: {
         id: "69212",
-        name: null,
+        name: "Breeze's Blessing",
         members: [
           {
             id: "treasure_74411",
@@ -56481,17 +63056,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "SPD"
+          effect: "SPD +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Affinity +40"
     },
     {
       id: "treasure_62207",
@@ -56604,14 +63192,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+21 Effect Hit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect Hit Rate +18",
       set: {
         id: "68917",
-        name: null,
+        name: "Breezy Lullaby",
         members: [
           {
             id: "treasure_73412",
@@ -56634,17 +63235,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "HP"
+          effect: "HP +1.5%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.3%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +80"
     },
     {
       id: "treasure_73428",
@@ -56755,16 +63369,35 @@ var SxsRelics = (() => {
       rarity: "Rare",
       element: "Light",
       region: "Aethyris",
-      zone: null,
-      destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+14 DEF",
+      zone: "Aethyris II",
+      destinyFruit: true,
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris I",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Destiny Exploration",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Activate the area’s Goddess Statue before targeting its relic drops."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "DEF +12",
       set: {
         id: "69205",
-        name: null,
+        name: "Gleam's Caress",
         members: [
           {
             id: "treasure_74006",
@@ -56787,17 +63420,33 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "DEF"
+          effect: "DEF +1%"
         },
         {
           label: "3-Star set bonus",
-          effect: "SPD"
+          effect: "SPD +1%"
         },
         {
           label: "Awakened set bonus",
-          effect: "ATK"
+          effect: "ATK +1.5%"
         }
-      ]
+      ],
+      pool: "Aethyris I",
+      poolSeasonDay: 1,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      evidenceUrls: [
+        "https://kakotheris.neocities.org/relic_data.js"
+      ],
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Aegis +40"
     },
     {
       id: "treasure_73434",
@@ -57569,14 +64218,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+6% Accuracy",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Light",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Accuracy +5%",
       set: {
         id: "68315",
-        name: null,
+        name: "Fate's Radiance",
         members: [
           {
             id: "treasure_71014",
@@ -57599,17 +64261,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "Crit Rate"
+          effect: "Crit Rate +1.2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.7%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.8%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Light Affinity +200"
     },
     {
       id: "treasure_73436",
@@ -57996,14 +64671,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+207 HP",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris II",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "HP +173",
       set: {
         id: "68612",
-        name: null,
+        name: "Wind Tamer",
         members: [
           {
             id: "treasure_72410",
@@ -58026,17 +64714,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "SPD"
+          effect: "SPD +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "DMG Boost"
+          effect: "DMG Boost +0.4%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris II",
+      poolSeasonDay: 31,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +120"
     },
     {
       id: "treasure_61715",
@@ -58260,14 +64961,27 @@ var SxsRelics = (() => {
       region: "Aethyris",
       zone: null,
       destinyFruit: null,
-      sources: [],
-      sourceUrl: "https://lootandwaifus.com/sword-x-staff-relics-database/",
-      verifiedAt: "2026-09-23",
-      visible: false,
-      effect: "+33 Effect Hit Rate",
+      sources: [
+        {
+          type: "Kingdom Gacha",
+          location: "Aethyris III",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        },
+        {
+          type: "Element Gacha",
+          location: "Wind",
+          url: "https://kakotheris.neocities.org/relics",
+          notes: "Available after this relic pool opens."
+        }
+      ],
+      sourceUrl: "https://kakotheris.neocities.org/relics",
+      verifiedAt: "2026-11-08",
+      visible: true,
+      effect: "Effect Hit Rate +28",
       set: {
         id: "68617",
-        name: null,
+        name: "Windbreaker's Dance",
         members: [
           {
             id: "treasure_72414",
@@ -58290,17 +65004,30 @@ var SxsRelics = (() => {
       setBonuses: [
         {
           label: "Complete set bonus",
-          effect: "ATK"
+          effect: "ATK +2%"
         },
         {
           label: "3-Star set bonus",
-          effect: "Crit RES"
+          effect: "Crit RES +0.8%"
         },
         {
           label: "Awakened set bonus",
-          effect: "DMG RES"
+          effect: "DMG RES +0.5%"
         }
-      ]
+      ],
+      pool: "Aethyris III",
+      poolSeasonDay: 61,
+      poolEvidence: {
+        confidence: "extracted-game-config",
+        sourceUrls: [
+          "https://kakotheris.neocities.org/relics",
+          "https://kakotheris.neocities.org/relic_data.js",
+          "https://www.valkyrie.tips/database/relics?season=s3"
+        ],
+        package: "130_156581"
+      },
+      effectReference: "Relic +1 · 0 stars · before equipped bonus",
+      affinity: "Wind Aegis +120"
     },
     {
       id: "treasure_61208",
@@ -58466,13 +65193,48 @@ var SxsRelics = (() => {
     }
   ];
 
+  // src/season-clock.mjs
+  var S2_END = /* @__PURE__ */ new Date("2026-11-05T06:00:00-08:00");
+
+  // src/time.mjs
+  var PACIFIC_DATE_TIME_DTF = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" });
+  var PACIFIC_DATE_DTF = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" });
+  function pacificLocalMs(iso, hour = 6, minute = 0) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const desiredAsUtc = Date.UTC(y, m - 1, d, hour, minute, 0);
+    let guess = desiredAsUtc;
+    for (let i = 0; i < 4; i++) {
+      const parts = Object.fromEntries(PACIFIC_DATE_TIME_DTF.formatToParts(new Date(guess)).filter((x) => x.type !== "literal").map((x) => [x.type, x.value]));
+      const shownAsUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour), Number(parts.minute), Number(parts.second));
+      const delta = desiredAsUtc - shownAsUtc;
+      guess += delta;
+      if (Math.abs(delta) < 1e3) break;
+    }
+    return guess;
+  }
+  function pacificIsoAt(ms) {
+    const parts = Object.fromEntries(PACIFIC_DATE_DTF.formatToParts(new Date(ms)).filter((x) => x.type !== "literal").map((x) => [x.type, x.value]));
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  }
+  function isoAddDays(iso, days) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    dt.setUTCDate(dt.getUTCDate() + days);
+    return dt.toISOString().slice(0, 10);
+  }
+
   // src/relics.mjs
   var relics = relics_default.filter((relic) => relic.visible === true);
   var STORAGE_KEY = "sxs-relics-owned-v1";
   var esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-  var regions = ["Verdantglade", "Cinder Ridge", "Aqualis", "Loong Haven I", "Loong Haven II"];
+  var regions = ["Verdantglade", "Cinder Ridge", "Aqualis", "Loong Haven I", "Loong Haven II", "Aethyris I", "Aethyris II", "Aethyris III"];
+  var poolDays = { "Aethyris I": 1, "Aethyris II": 31, "Aethyris III": 61 };
+  function poolLabel(region, now = Date.now()) {
+    const day = poolDays[region];
+    return day && day > 1 && now < pacificLocalMs(isoAddDays(pacificIsoAt(S2_END.getTime()), day - 1)) ? `${region} · S3 Day ${day}` : region;
+  }
   var rarityOrder = ["Mythic", "Legendary", "Epic", "Rare", "Uncommon", "Common"];
-  var regionOf = (relic) => relic.region === "Loong Haven" ? relic.pool || "other" : regions.find((region) => relic.region === region) || "other";
+  var regionOf = (relic) => ["Loong Haven", "Aethyris"].includes(relic.region) ? relic.pool || "other" : regions.find((region) => relic.region === region) || "other";
   function romanNumber(text) {
     let total = 0, previous = 0;
     for (const c of [...text].reverse()) {
@@ -58486,7 +65248,7 @@ var SxsRelics = (() => {
     if (a === "Zone not verified") return b === a ? 0 : 1;
     if (b === "Zone not verified") return -1;
     const rank = (value) => {
-      const order = ["Verdantglade", "Cinder Ridge", "Aqualis", "Loong Haven"];
+      const order = ["Verdantglade", "Cinder Ridge", "Aqualis", "Loong Haven", "Aethyris"];
       const i = order.findIndex((r) => value.startsWith(r));
       return i < 0 ? order.length : i;
     };
@@ -58522,12 +65284,12 @@ var SxsRelics = (() => {
     } catch {
       storageProblem = "Saved collection could not be read. Changes will try to save again on this device.";
     }
-    const filters = { region: "Verdantglade", zone: "all", rarity: "", element: "", search: "", status: "all", fruit: "all" };
+    const filters = { region: relics.some((relic) => relic.pool === "Aethyris I") ? "Aethyris I" : "Verdantglade", zone: "all", rarity: "", element: "", search: "", status: "all", fruit: "all" };
     const options = (field) => [...new Set(relics.map((r) => r[field]).filter(Boolean))].sort().map((v) => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
-    host.innerHTML = `<nav class="relicRegionTabs" id="relicRegionTabs" aria-label="Relic regions">${[...regions, "other", "all"].map((region) => `<button type="button" data-relic-region="${region}" aria-pressed="${region === filters.region}">${region === "other" ? "Other" : region === "all" ? "All regions" : region === "Loong Haven II" ? "Loong Haven II · Upcoming" : region}</button>`).join("")}</nav>
+    host.innerHTML = `<nav class="relicRegionTabs" id="relicRegionTabs" aria-label="Relic regions">${[...regions, "other", "all"].map((region) => `<button type="button" data-relic-region="${region}" aria-pressed="${region === filters.region}">${region === "other" ? "Other" : region === "all" ? "All regions" : poolLabel(region)}</button>`).join("")}</nav>
  <header class="relicHeader"><div><h1>Relic Gallery</h1><p>Your collection, one region at a time.</p></div><div class="relicProgress"><strong id="relicProgressText"></strong><progress id="relicProgressBar" aria-label="Overall relic collection"></progress><small>Saved in this browser on this device</small></div></header>
  <div class="relicFilters"><label>Search by name<input type="search" id="relicSearch" placeholder="Find a relic…"></label><label>Rarity<select id="relicRarity"><option value="">All rarities</option>${options("rarity")}</select></label><label>Element<select id="relicElement"><option value="">All elements</option>${options("element")}</select></label><label>Collection<select id="relicStatus"><option value="all">All</option><option value="owned">Owned</option><option value="missing">Missing</option></select></label><label>Destiny Fruit<select id="relicFruit"><option value="all">All</option><option value="yes">Destiny Fruit obtainable</option><option value="no">Not Destiny Fruit obtainable</option><option value="unknown">Not yet verified</option></select></label><label>Fruit zone<select id="relicZone" aria-label="Destiny Fruit drop zone"></select></label><button type="button" id="relicReset">Reset filters</button></div>
- <p class="relicStorageStatus" id="relicStorageStatus" role="status"></p><p id="relicResultsStatus" role="status" aria-live="polite"></p><div id="relicGroups"></div><p class="relicCoverage">Through Loong Haven Relic II · ${relics.length} relics. Numbered zones refer specifically to Destiny Fruit drops.</p><p class="relicFootnote">Select a relic for acquisition details. Missing drop-zone information does not mean a relic is unobtainable.</p>
+ <p class="relicStorageStatus" id="relicStorageStatus" role="status"></p><p id="relicResultsStatus" role="status" aria-live="polite"></p><div id="relicGroups"></div><p class="relicCoverage">Through Aethyris Relic III · ${relics.length} relics. Later Aethyris pools open on S3 Days 31 and 61. Numbered fruit zones are exploration areas, not relic pools.</p><p class="relicFootnote">Select a relic for acquisition details. Missing drop-zone information does not mean a relic is unobtainable.</p>
  <dialog id="relicDialog" aria-labelledby="relicDialogTitle"><button type="button" id="relicDialogClose" aria-label="Close relic details" autofocus>✕</button><div id="relicDialogContent"></div></dialog>`;
     host.querySelector(".relicHeader").after(host.querySelector(".relicRegionTabs"));
     const $ = (id) => host.querySelector(`#${id}`);
@@ -58543,7 +65305,7 @@ var SxsRelics = (() => {
         const href = safeLink(url);
         return href ? `<a href="${href}" target="_blank" rel="noreferrer">${esc(new URL(url).hostname)} ↗</a>` : "";
       }).join(" · ");
-      $("relicDialogContent").innerHTML = `<div class="relicDialogHero" data-rarity="${esc((r.rarity || "").toLowerCase())}"><span class="relicImage">${r.image ? `<img src="${esc(r.image)}" alt="${esc(r.name)}" width="120" height="120">` : "◇"}</span><div><span class="relicDialogRarity">${esc(r.rarity || "Rarity not verified")}</span><h2 id="relicDialogTitle">${esc(r.name)}</h2></div></div><dl class="relicMetadata"><div><dt>Element</dt><dd>${esc(r.element || "Not verified")}</dd></div><div><dt>Region</dt><dd>${esc(r.region || "Not verified")}</dd></div>${r.pool ? `<div><dt>Relic pool</dt><dd>${esc(r.pool)}</dd></div>` : ""}${r.zone ? `<div><dt>Destiny Fruit zone</dt><dd>${esc(r.zone)}</dd></div>` : ""}<div><dt>Collection</dt><dd>${owned.has(r.id) ? "Owned" : "Missing"}</dd></div></dl><div class="relicDetails">${r.affinity ? `<p class="relicAffinity">${esc(r.affinity)}</p>` : ""}${r.effect ? `<h3>Effect</h3><p class="relicEffect">${esc(r.effect)}</p>` : ""}${r.set?.members?.length ? `<h3>${esc(r.set.name || "Relic set")} <span class="relicSetCount">${r.set.members.filter((member) => owned.has(member.id)).length} / ${r.set.members.length} owned</span></h3><div class="relicSetMembers">${r.set.members.map((member) => `<span class="${owned.has(member.id) ? "isOwned" : ""}">${esc(member.name)}${owned.has(member.id) ? " ✓" : ""}</span>`).join("")}</div>` : ""}${r.setBonuses?.length ? `<h3>Set stats</h3><dl class="relicSetBonuses">${r.setBonuses.map((bonus) => `<div><dt>${esc(bonus.label)}</dt><dd>${esc(bonus.effect)}</dd></div>`).join("")}</dl>` : ""}<h3>Acquisition</h3>${fruit ? `<p class="relicFruitInfo">${esc(fruit)}</p>` : ""}<ul>${(r.sources || []).map((s) => `<li><strong>${esc(s.type)}</strong>${s.location ? `: ${esc(s.location)}` : ""}${s.notes ? ` — ${esc(s.notes)}` : ""}</li>`).join("") || "<li>Additional acquisition details are not listed yet.</li>"}</ul>${r.notes ? `<p>${esc(r.notes)}</p>` : ""}${sourceLinks ? `<p class="relicSources">Sources: ${sourceLinks}</p>` : ""}</div>`;
+      $("relicDialogContent").innerHTML = `<div class="relicDialogHero" data-rarity="${esc((r.rarity || "").toLowerCase())}"><span class="relicImage">${r.image ? `<img src="${esc(r.image)}" alt="${esc(r.name)}" width="120" height="120">` : "◇"}</span><div><span class="relicDialogRarity">${esc(r.rarity || "Rarity not verified")}</span><h2 id="relicDialogTitle">${esc(r.name)}</h2></div></div><dl class="relicMetadata"><div><dt>Element</dt><dd>${esc(r.element || "Not verified")}</dd></div><div><dt>Region</dt><dd>${esc(r.region || "Not verified")}</dd></div>${r.pool ? `<div><dt>Relic pool</dt><dd>${esc(r.pool)}</dd></div>` : ""}${r.zone ? `<div><dt>Destiny Fruit zone</dt><dd>${esc(r.zone)}</dd></div>` : ""}<div><dt>Collection</dt><dd>${owned.has(r.id) ? "Owned" : "Missing"}</dd></div></dl><div class="relicDetails">${r.effectReference ? `<p class="relicFootnote">${esc(r.effectReference)}</p>` : ""}${r.affinity ? `<p class="relicAffinity">${esc(r.affinity)}</p>` : ""}${r.effect ? `<h3>Effect</h3><p class="relicEffect">${esc(r.effect)}</p>` : ""}${r.set?.members?.length ? `<h3>${esc(r.set.name || "Relic set")} <span class="relicSetCount">${r.set.members.filter((member) => owned.has(member.id)).length} / ${r.set.members.length} owned</span></h3><div class="relicSetMembers">${r.set.members.map((member) => `<span class="${owned.has(member.id) ? "isOwned" : ""}">${esc(member.name)}${owned.has(member.id) ? " ✓" : ""}</span>`).join("")}</div>` : ""}${r.setBonuses?.length ? `<h3>Set stats</h3><dl class="relicSetBonuses">${r.setBonuses.map((bonus) => `<div><dt>${esc(bonus.label)}</dt><dd>${esc(bonus.effect)}</dd></div>`).join("")}</dl>` : ""}<h3>Acquisition</h3>${fruit ? `<p class="relicFruitInfo">${esc(fruit)}</p>` : ""}<ul>${(r.sources || []).map((s) => `<li><strong>${esc(s.type)}</strong>${s.location ? `: ${esc(s.location)}` : ""}${s.notes ? ` — ${esc(s.notes)}` : ""}</li>`).join("") || "<li>Additional acquisition details are not listed yet.</li>"}</ul>${r.notes ? `<p>${esc(r.notes)}</p>` : ""}${sourceLinks ? `<p class="relicSources">Sources: ${sourceLinks}</p>` : ""}</div>`;
       dialogTrigger = trigger;
       $("relicDialog").showModal();
     }
@@ -58579,7 +65341,7 @@ var SxsRelics = (() => {
       };
       const entries = [...groups].sort(([a], [b]) => rarityRank(a) - rarityRank(b) || a.localeCompare(b));
       const regionLabel = filters.region === "all" ? "All regions" : filters.region === "other" ? "Other" : filters.region;
-      $("relicResultsStatus").textContent = `${regionLabel}${filters.region === "Loong Haven II" ? " · Upcoming" : ""} · ${shown.length} relics shown.`;
+      $("relicResultsStatus").textContent = `${poolLabel(regionLabel)} · ${shown.length} relics shown.`;
       $("relicGroups").innerHTML = entries.length ? entries.map(([group, items]) => `<section class="relicRarityGroup"><header><h2>${esc(group)}</h2><span>${missing(items)} missing · ${items.length} shown</span></header><div class="relicGrid">${items.map(card).join("")}</div></section>`).join("") : '<p class="relicEmpty">No relics match these filters.</p>';
     }
     host.addEventListener("input", (e) => {
@@ -58623,6 +65385,7 @@ var SxsRelics = (() => {
       if (e.target.id === "relicReset") {
         Object.assign(filters, { zone: "all", rarity: "", element: "", search: "", status: "all", fruit: "all" });
         ["relicSearch", "relicRarity", "relicElement"].forEach((id) => $(id).value = "");
+        ["relicStatus", "relicFruit"].forEach((id) => $(id).value = "all");
         render();
       }
     });
@@ -58651,6 +65414,8 @@ var SxsRelics = (() => {
     $("relicResultsStatus").tabIndex = -1;
     renderZones();
     render();
+    const selectedRegion = host.querySelector('[data-relic-region][aria-pressed="true"]'), regionTabs = host.querySelector(".relicRegionTabs");
+    if (selectedRegion) regionTabs.scrollLeft = Math.max(0, selectedRegion.offsetLeft - regionTabs.offsetLeft - 6);
     initialized = true;
   }
   return __toCommonJS(relics_exports);

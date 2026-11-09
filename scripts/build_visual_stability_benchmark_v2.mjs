@@ -10,7 +10,7 @@ await page.goto(pathToFileURL(path.resolve('index.html')).href,{waitUntil:'load'
 await page.locator('.sectionSwitch button[data-section="builds"]').click();
 await page.waitForFunction(()=>document.getElementById('buildsSection')?.dataset.guideReady==='true');
 
-const counts={Guardian:4,Conqueror:2,Destroyer:4,Dominator:3};
+const counts={Templar:4,Ravager:3,Magister:4,Prophet:4};
 const sequence=Array.from({length:16},(_,index)=>Object.keys(counts)[index%4]);
 let immediateFullyReady=0,firstFrameStable=0,zeroTabTransition=0,maxHeightDelta=0;
 const samples=[];

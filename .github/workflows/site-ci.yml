@@ -89,6 +89,7 @@ jobs:
       - name: Calculator module boundaries and lazy loading
         run: |
           npm run test:boundaries
+          npm run test:season3
           npm run test:lazy
       - name: Guide lazy loading and startup budgets
         run: npm run test:guides

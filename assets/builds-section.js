@@ -26,42 +26,168 @@ var SxsBuilds = (() => {
 
   // src/build-guidance.mjs
   var BUILD_STAT_PROFILES = {
-    Conqueror: {
-      rule: "Current T4 evidence supports ATK ≥ Elemental Mastery on main secondaries. Crit Rate/Crit DMG are the premium reroll stats; Accuracy matters more in PvP and high-Block fights.",
-      rows: [["Sword", "ATK ≥ Elemental Mastery > SPD"], ["Gauntlets", "ATK ≥ Elemental Mastery > SPD"], ["Helmet", "DEF ≥ Physical RES = Elemental RES > HP"], ["Chest", "DEF ≥ Physical RES = Elemental RES > HP"], ["Boots", "ATK ≥ Elemental Mastery > SPD"]],
-      substats: "Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD / SPD% > ATK / ATK%"
+    "Ravager": {
+      "rule": "The T5 source prioritizes Elemental Mastery on offensive secondaries. Crit remains the premium reroll target; special conversion or debuff-damage affixes depend on the rest of your gear.",
+      "rows": [
+        [
+          "Sword",
+          "Elemental Mastery > ATK > SPD"
+        ],
+        [
+          "Gauntlets",
+          "Elemental Mastery > ATK > SPD"
+        ],
+        [
+          "Helmet",
+          "DEF ≥ Physical RES = Elemental RES > HP"
+        ],
+        [
+          "Chest",
+          "DEF ≥ Physical RES = Elemental RES > HP"
+        ],
+        [
+          "Boots",
+          "Elemental Mastery > ATK > SPD"
+        ]
+      ],
+      "substats": "Crit Rate / Crit DMG > Elemental Mastery / Accuracy > HP or SPD → ATK conversion / SPD / debuff-target Technique DMG > ATK / ATK%"
     },
-    Destroyer: {
-      rule: "S2 Destroyer is balance-sensitive, not permanently EM-first. Keep a healthy Elemental Mastery floor, then flat ATK can match or beat more EM on developed accounts. Crit remains premium; dummy-test close swaps.",
-      rows: [["Staff", "ATK ≈ Elemental Mastery > Crit > SPD"], ["Codex", "ATK ≈ Elemental Mastery > Crit > SPD"], ["Helmet", "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"], ["Chest", "DEF ≥ Physical RES = Elemental RES > HP"], ["Boots", "ATK ≈ Elemental Mastery > SPD"]],
-      substats: "Crit Rate / Crit DMG > ATK / ATK% ≈ Elemental Mastery > Accuracy > SPD / SPD%"
+    "Magister": {
+      "rule": "T5 prioritizes Elemental Mastery on Staff, Codex and Boots. The source values S3 Wind Shield, damage-evasion and paired Crit affixes; defensive power and gear-score gates can outweigh a close offensive comparison.",
+      "rows": [
+        [
+          "Staff",
+          "Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate"
+        ],
+        [
+          "Codex",
+          "Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate"
+        ],
+        [
+          "Helmet",
+          "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+        ],
+        [
+          "Chest",
+          "DEF ≥ Physical RES = Elemental RES > HP"
+        ],
+        [
+          "Boots",
+          "Elemental Mastery > SPD > ATK"
+        ]
+      ],
+      "substats": "Wind Shield / damage evasion / Lightning-on-movement / paired Crit + Accuracy or Crit DMG > Elemental Mastery / Crit Rate / Accuracy / Crit DMG; PvP damage/resistance for PvP"
     },
-    Guardian: {
-      tank: {
-        label: "Tank",
-        rule: "Tank Guardian is built around Block first. After that, DEF/DMG RES drive survival while SPD keeps Taunt, shields and buffs cycling before the enemy can act.",
-        rows: [["Sword", "SPD > ATK > Physical Mastery > Elemental Mastery"], ["Shield", "DEF > HP > Physical RES = Elemental RES"], ["Helmet", "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"], ["Chest", "DEF ≥ Physical RES = Elemental RES > HP"], ["Boots", "SPD > ATK > Elemental Mastery = Physical Mastery"]],
-        substats: "Block Rate > DEF > SPD > HP > DEF% > SPD% > HP%"
+    "Templar": {
+      "tank": {
+        "label": "Tank",
+        "rule": "Prioritize paired Block Rate + Block Efficiency and the Season 3 weapon Auto-protect affix. SPD drives buff and Taunt timing; choose enough Block for the opponent’s Accuracy rather than a fixed universal target.",
+        "rows": [
+          [
+            "Sword",
+            "SPD > ATK > Elemental Mastery > Physical Mastery"
+          ],
+          [
+            "Shield",
+            "Block > DEF > HP > Physical RES = Elemental RES"
+          ],
+          [
+            "Helmet",
+            "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+          ],
+          [
+            "Chest",
+            "DEF ≥ Physical RES = Elemental RES > HP"
+          ],
+          [
+            "Boots",
+            "SPD > ATK = Elemental Mastery > Physical Mastery / Effect Hit Rate"
+          ]
+        ],
+        "substats": "Block Rate + Block Efficiency / weapon Auto-protect > Block Rate / paired Block + Crit RES > paired Crit / PvP damage and resistance; defensive stats as needed"
       },
-      dps: {
-        label: "DPS",
-        rule: "DPS Guardian uses the offensive Water/counter shell, but Block still matters because the class gains damage by staying active. After a healthy Block floor, Crit Rate, SPD and ATK/Mastery are the damage-quality rolls.",
-        rows: [["Sword", "SPD > ATK > Elemental Mastery > Physical Mastery"], ["Shield", "DEF > HP > Physical RES = Elemental RES"], ["Helmet", "DEF ≥ Physical RES = Elemental RES > HP"], ["Chest", "DEF ≥ Physical RES = Elemental RES > HP"], ["Boots", "SPD > ATK > Elemental Mastery = Physical Mastery"]],
-        substats: "Block Rate > Crit Rate > SPD / SPD% > ATK / ATK% > Elemental Mastery > Crit DMG"
+      "dps": {
+        "label": "DPS",
+        "rule": "The offensive T5 bars still use the source’s SPD-first gear priorities. Keep Block for the matchup, then compare paired Crit and offensive affixes against the defensive utility you would lose.",
+        "rows": [
+          [
+            "Sword",
+            "SPD > ATK > Elemental Mastery > Physical Mastery"
+          ],
+          [
+            "Shield",
+            "Block > DEF > HP > Physical RES = Elemental RES"
+          ],
+          [
+            "Helmet",
+            "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+          ],
+          [
+            "Chest",
+            "DEF ≥ Physical RES = Elemental RES > HP"
+          ],
+          [
+            "Boots",
+            "SPD > ATK = Elemental Mastery > Physical Mastery / Effect Hit Rate"
+          ]
+        ],
+        "substats": "Block Rate + Block Efficiency / weapon Auto-protect > paired Crit Rate + Crit DMG or Accuracy > matchup Block / PvP damage and resistance > flat stats / Mastery"
       }
     },
-    Dominator: {
-      dps: {
-        label: "DPS",
-        rule: "Effect Hit Rate is a threshold stat: get enough to land Erosion reliably, then favor damage-quality affixes instead of blindly stacking more EHR. If Erosion is unreliable, hybrid/direct damage is safer.",
-        rows: [["Staff", "Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD"], ["Orb", "Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD"], ["Helmet", "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"], ["Chest", "DEF ≥ Physical RES = Elemental RES > HP"], ["Boots", "Elemental Mastery > ATK > SPD"]],
-        substats: "Effect Hit Rate > Crit Rate / Crit DMG > Elemental Mastery > ATK / ATK% > SPD / SPD%"
+    "Prophet": {
+      "dps": {
+        "label": "DPS",
+        "rule": "T5 direct damage still needs reliable debuffs. Get enough Effect Hit Rate for the encounter, then favor paired Crit or damage against debuffed targets; do not treat Effect Hit Rate as an unlimited stacking goal.",
+        "rows": [
+          [
+            "Staff",
+            "Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD"
+          ],
+          [
+            "Orb",
+            "Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD"
+          ],
+          [
+            "Helmet",
+            "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+          ],
+          [
+            "Chest",
+            "DEF ≥ Physical RES = Elemental RES > HP"
+          ],
+          [
+            "Boots",
+            "Elemental Mastery > ATK > SPD"
+          ]
+        ],
+        "substats": "Paired Crit + Accuracy / Crit DMG and debuffed-target damage > Effect Hit Rate as needed / stat-to-ATK conversion / Crit / Elemental Mastery; PvP or monster bonuses by content"
       },
-      heals: {
-        label: "Heals",
-        rule: "Healer Dominator is SPD-first on Staff/Orb/Boots and HP-first on Helmet/Chest. Effect Hit Rate is the second main-secondary target on Staff/Orb, but only an average healer affix when rerolling substats.",
-        rows: [["Staff", "SPD > Effect Hit Rate > Elemental Mastery > ATK"], ["Orb", "SPD > Effect Hit Rate > Elemental Mastery > ATK"], ["Helmet", "HP > DEF ≥ Physical RES = Elemental RES > Effect RES"], ["Chest", "HP > DEF ≥ Physical RES = Elemental RES"], ["Boots", "SPD > Elemental Mastery > ATK"]],
-        substats: "Healing Boost > SPD / SPD% > HP / HP% > DMG RES"
+      "heals": {
+        "label": "Heals",
+        "rule": "Healer Prophet retains SPD-first offensive slots and HP-first armor. Healing Boost and paired Block are premium survival/support rolls; the source favors broadly useful DPS rolls when a setup also plays damage.",
+        "rows": [
+          [
+            "Staff",
+            "SPD > Effect Hit Rate > Elemental Mastery > ATK"
+          ],
+          [
+            "Orb",
+            "SPD > Effect Hit Rate > Elemental Mastery > ATK"
+          ],
+          [
+            "Helmet",
+            "HP > DEF ≥ Physical RES = Elemental RES > Effect RES"
+          ],
+          [
+            "Chest",
+            "HP > DEF ≥ Physical RES = Elemental RES"
+          ],
+          [
+            "Boots",
+            "SPD > Elemental Mastery > ATK"
+          ]
+        ],
+        "substats": "Block Rate + Block Efficiency / Healing Boost > damage evasion / paired Block + Crit RES / SPD / SPD% / HP / HP% / paired DMG RES + Healing Boost"
       }
     }
   };
@@ -88,40 +214,165 @@ var SxsBuilds = (() => {
     healpair: ["DMG RES + Healing Boost", "7.68% + 30.7%"]
   };
   var ROLL_PROFILES = {
-    Conqueror: ["crit", "critdmg", "critpair", "acc", "critacc", "em", "spd", "spdpct", "atk", "atkpct"],
-    Destroyer: ["crit", "critdmg", "critpair", "atk", "atkpct", "em", "acc", "critacc", "spd", "spdpct"],
-    Guardian: { tank: ["block", "blockpair", "def", "spd", "hp", "defpct", "spdpct", "hppct"], dps: ["block", "blockpair", "crit", "critdmg", "spd", "spdpct", "atk", "atkpct", "em"] },
-    Dominator: { dps: ["ehr", "crit", "critdmg", "critpair", "em", "atk", "atkpct", "spd", "spdpct"], heals: ["heal", "healpair", "spd", "spdpct", "hp", "hppct", "dmgres"] }
+    "Ravager": [
+      "crit",
+      "critdmg",
+      "critpair",
+      "acc",
+      "critacc",
+      "em",
+      "spd",
+      "spdpct",
+      "atk",
+      "atkpct"
+    ],
+    "Magister": [
+      "crit",
+      "critdmg",
+      "critpair",
+      "critacc",
+      "em",
+      "acc",
+      "spd",
+      "atk"
+    ],
+    "Templar": {
+      "tank": [
+        "block",
+        "blockpair",
+        "def",
+        "spd",
+        "hp",
+        "defpct",
+        "spdpct",
+        "hppct"
+      ],
+      "dps": [
+        "block",
+        "blockpair",
+        "crit",
+        "critdmg",
+        "critpair",
+        "critacc",
+        "spd",
+        "atk",
+        "em"
+      ]
+    },
+    "Prophet": {
+      "dps": [
+        "ehr",
+        "crit",
+        "critdmg",
+        "critpair",
+        "critacc",
+        "em",
+        "atk",
+        "atkpct",
+        "spd",
+        "spdpct"
+      ],
+      "heals": [
+        "heal",
+        "healpair",
+        "block",
+        "blockpair",
+        "spd",
+        "spdpct",
+        "hp",
+        "hppct",
+        "dmgres"
+      ]
+    }
   };
   var FANTOMON_GUIDANCE = {
-    Destroyer: [
-      ["Damage lead", "Nyxarchon", "Its damage and DEF reduction make it the guide’s main Mythic pick for this glass-cannon class."],
-      ["Before Nyx", "Sylvaerie · Zeioletus", "Permanent ATK + SPD or recurring burst; compare them in test mode with your stats."],
-      ["Survival option", "Armopi", "DEF and a personal shield can buy the extra turn you need."]
+    "Ravager": [
+      [
+        "Damage lead",
+        "Nyxarchon",
+        "The T5 guide favors its damage and DEF reduction, especially in longer fights."
+      ],
+      [
+        "Opening tempo",
+        "Pandarial",
+        "Opening cooldown reduction supports burst; compare it with Nyx for the fight’s length."
+      ],
+      [
+        "PvP / alternatives",
+        "Aegiswing · Sylvaerie · Zeioletus",
+        "Aegiswing supplies survival. Compare the non-Mythic damage options with your own stats."
+      ]
     ],
-    Conqueror: [
-      ["All-content lead", "Nyxarchon", "Damage and DEF reduction make it the class guide’s broad pick, especially in longer fights."],
-      ["Later S2 option", "Pandarial", "Opening cooldown reduction front-loads damage; Nyxarchon can still win longer fights. It releases later in the season."],
-      ["PvP / alternatives", "Aegiswing · Sylvaerie · Zeioletus", "Aegiswing is the PvP choice; Sylvaerie and Zeioletus are damage options to compare on your stats."]
+    "Magister": [
+      [
+        "General lead",
+        "Pandarial",
+        "The T5 source’s usual pick: opening cooldown reduction lets the published bars omit Rapid Cast, with healing utility."
+      ],
+      [
+        "Damage alternative",
+        "Nyxarchon",
+        "DEF reduction and personal damage remain useful when longer-fight output wins over opening tempo."
+      ],
+      [
+        "PvP / later S3",
+        "Aegiswing · Prismora",
+        "Aegiswing is a defensive option. Prismora is a later-season healing option, but the source gives it low Mage priority."
+      ]
     ],
-    Guardian: [
-      ["Priority Mythic", "Aegiswing", "The class guide’s top Guardian investment for extra Taunt, debuffs, and less damage from taunted enemies."],
-      ["Dispel / damage", "Kels · Nyxarchon", "Kels adds Dispel and DEF Down when manifested; Nyxarchon amplifies team damage with debuffs."],
-      ["Team mitigation", "Terragon · Chomusuke", "Prydwen suggests Terragon when a Guild Boss team needs more damage reduction; Chomusuke remains a workable option."]
+    "Templar": [
+      [
+        "Tank lead",
+        "Aegiswing",
+        "Taunt, debuffs and survival remain the source’s priority tank investment."
+      ],
+      [
+        "Published dungeon bar",
+        "Pandarial",
+        "The Generic Dungeon/4vs4 preset assumes its opening cooldown reduction; it also supports offensive bars."
+      ],
+      [
+        "Team support",
+        "Kels · Nyxarchon",
+        "Kels supplies Dispel and potential DEF reduction; Nyx adds damage and debuffs."
+      ],
+      [
+        "Later S3 PvP",
+        "Prismora",
+        "A later Aethyris unlock offering Purity and a revive. Its one-debuff cleanse is not a blanket answer to double Taunt."
+      ]
     ],
-    Dominator: [
-      ["DPS lead", "Nyxarchon", "The class guide’s best-in-slot for Dark damage and its supporting effect."],
-      ["F2P damage options", "Zeioletus · Sylvaerie", "Zeioletus is a damage stopgap; Sylvaerie buffs ATK and SPD and can win on some stat spreads."],
-      ["Healing / support", "Mandragora · Terragon", "Mandragora adds healing to ally-targeted Techniques; Terragon can reduce enemy ATK."],
-      ["Later S2 support", "Pandarial", "Its opening cooldown reduction supports early healing. It releases later in the season, so check availability first."]
+    "Prophet": [
+      [
+        "Damage / healing lead",
+        "Pandarial",
+        "The T5 guide favors opening cooldown reduction and Fragility for burst damage and early healing."
+      ],
+      [
+        "Damage / PvP alternatives",
+        "Nyxarchon · Aegiswing",
+        "Nyx adds damage and DEF reduction; Aegiswing is the high-end PvP survival option."
+      ],
+      [
+        "Before a Mythic",
+        "Zeioletus · Sylvaerie · Mandragora",
+        "Compare Zeioletus and Sylvaerie for damage; Mandragora is the healing-focused alternative."
+      ],
+      [
+        "Later S3 support",
+        "Prismora",
+        "A later Aethyris unlock for dedicated healing, immunity and revival; it gives up Pandarial’s opening cooldown reduction."
+      ]
     ]
   };
 
   // src/builds.mjs
   var $ = (id) => document.getElementById(id);
-  var LIVE_BUILD_CLASSES = ["Destroyer", "Dominator", "Conqueror", "Guardian"];
-  var BUILD_CLASS_STORAGE_KEY = "sxs-build-class-s2";
-  var MODE_STORAGE_KEYS = { Guardian: "sxs-build-guardian-mode", Dominator: "sxs-build-dominator-mode" };
+  var LIVE_BUILD_CLASSES = ["Magister", "Prophet", "Ravager", "Templar"];
+  var PREVIOUS_CLASS = { Magister: "Destroyer", Prophet: "Dominator", Ravager: "Conqueror", Templar: "Guardian" };
+  var PROMOTED_CLASS = Object.fromEntries(Object.entries(PREVIOUS_CLASS).map(([current, previous]) => [previous, current]));
+  var BUILD_CLASS_STORAGE_KEY = "sxs-build-class-s3";
+  var MODE_STORAGE_KEYS = { Templar: "sxs-build-guardian-mode", Prophet: "sxs-build-dominator-mode" };
   var T4_SOURCE_BUILDS = {
     Destroyer: {
       url: "https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer",
@@ -161,6 +412,272 @@ var SxsBuilds = (() => {
       ]
     }
   };
+  var T5_SOURCE_BUILDS = {
+    "Magister": {
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-magister",
+      "updated": "Sep 1, 2026",
+      "builds": [
+        {
+          "name": "Wind AOE Build",
+          "techniques": [
+            "Formation Breaker",
+            "Wind Blade Spiral",
+            "Storm Rhapsody",
+            "Howling Hurricane"
+          ],
+          "charms": [
+            "Radiant Warp",
+            "Thunder Judgment",
+            "Cyclone Lament",
+            "Radiant Sear"
+          ],
+          "note": "Keep Formation Breaker against high-DEF enemies. If survival is limiting, replace Thunder Judgment with Overload Protection or Vital Rhythm."
+        },
+        {
+          "name": "ST Build",
+          "techniques": [
+            "Formation Breaker",
+            "Divine Wrath",
+            "Twin Gale",
+            "Thunder of Judgment"
+          ],
+          "charms": [
+            "Radiant Warp",
+            "Thunderbolt Mark",
+            "Mana Surge",
+            "Radiant Sear"
+          ],
+          "note": "The source suggests Meteoric Flames against stationary or Wind-resistant bosses. Fire Blast can replace Twin Gale when one rarity higher; Cyclone Lament is a Wind-heavy Charm alternative."
+        },
+        {
+          "name": "Fire AoE Build",
+          "techniques": [
+            "Formation Breaker",
+            "Fiery Star Trail",
+            "Crimson Whirl",
+            "Meteoric Flames"
+          ],
+          "charms": [
+            "Radiant Warp",
+            "Ember Flare",
+            "Explosive Spirit",
+            "Fiery Burst"
+          ],
+          "note": "With enough Crit from gear, the source lists Raging Wildfire over Explosive Spirit and Blast Spirit over Meteoric Flames. Keep defensive tools when pushing harder content."
+        },
+        {
+          "name": "PVP Build",
+          "techniques": [
+            "Formation Breaker",
+            "Wind Blade Spiral",
+            "Twin Gale",
+            "Thunder of Judgment"
+          ],
+          "charms": [
+            "Radiant Warp",
+            "Thunder Judgment",
+            "Vital Rhythm",
+            "Cyclone Lament"
+          ],
+          "note": "The published setup combines kiting and single-target pressure. Radiant Warp and Vital Rhythm provide survival; Pandarial supports its opening tempo and healing."
+        }
+      ]
+    },
+    "Prophet": {
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-prophet",
+      "updated": "Sep 4, 2026",
+      "builds": [
+        {
+          "name": "Direct Single Target",
+          "techniques": [
+            "Thalasson Summon",
+            "Desperate Shadow",
+            "Hexed Blast",
+            "Soul Reap"
+          ],
+          "charms": [
+            "Shadowy Current",
+            "Shadow Vengeance",
+            "Mana Surge",
+            "Soul Pact Resonance"
+          ],
+          "note": "Keep Soul Reap last. Frenzy Totem is the source’s sturdier summon alternative and PvP default. Ring of Omen can replace a survival or damage Charm when appropriate."
+        },
+        {
+          "name": "Pure Erosion Remastered Edition",
+          "techniques": [
+            "Desperate Shadow",
+            "Dark Starburst",
+            "Hexed Blast",
+            "Shadow of Termination"
+          ],
+          "charms": [
+            "Ring of Omen",
+            "Mana Surge",
+            "Linked Misfortune",
+            "Shadow Erosion"
+          ],
+          "note": "Published for longer fights such as Hieromon and Chaos Boss. Keep Ring of Omen, Linked Misfortune and Shadow Erosion; Mana Surge is the flexible Charm slot."
+        },
+        {
+          "name": "Direct AoE",
+          "techniques": [
+            "Thalasson Summon",
+            "Abyssal Hand",
+            "Desperate Shadow",
+            "Hexed Blast"
+          ],
+          "charms": [
+            "Soul Pact Resonance",
+            "Night's Blessing",
+            "Shadowy Current",
+            "Mana Surge"
+          ],
+          "note": "Use a different summon when its utility is needed. Shadow Vengeance can replace Night’s Blessing or Mana Surge if the damage setup cannot survive."
+        },
+        {
+          "name": "Healing Build",
+          "techniques": [
+            "Rejuvenating Rain",
+            "Radiant Rhythm",
+            "Radiant Restoration",
+            "Waterling Summon"
+          ],
+          "charms": [
+            "Phantom Light",
+            "Healing Mastery",
+            "Overhealing",
+            "FLEX"
+          ],
+          "note": "The last Charm is Shadow Vengeance for personal survival, Resurrection for allies, or Mantra of Blessings for offense. High-HP builds can put Void Blessing first."
+        }
+      ]
+    },
+    "Ravager": {
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-ravager",
+      "updated": "Sep 4, 2026",
+      "builds": [
+        {
+          "name": "Stages and Dungeons Build",
+          "techniques": [
+            "Night Curse",
+            "Solaris Storm",
+            "Soul Piercer",
+            "Flickering Blade"
+          ],
+          "charms": [
+            "Piercing Assault",
+            "Tactical Adaptation",
+            "Blade of Lament",
+            "Indomitable Will"
+          ],
+          "note": "If survival is comfortable, the source allows Soulfire Protection instead of Indomitable Will, or Insightful Eye when more Crit Rate is needed."
+        },
+        {
+          "name": "Dragon Build",
+          "techniques": [
+            "Flame Aura",
+            "Solaris Storm",
+            "Eclipse Slash",
+            "Flickering Blade"
+          ],
+          "charms": [
+            "Piercing Assault",
+            "Tactical Adaptation",
+            "Blade of Judgment",
+            "Insightful Eye"
+          ],
+          "note": "With enough Crit Rate elsewhere, use Crit Mastery instead of Insightful Eye. Compare Flame Aura with Sunset Sword by rarity; if using Sunset Sword, put it last."
+        },
+        {
+          "name": "PVP Build",
+          "techniques": [
+            "Shattering Dance",
+            "Sunset Sword",
+            "Flickering Blade",
+            "Blade Storm"
+          ],
+          "charms": [
+            "Piercing Assault",
+            "Tactical Adaptation",
+            "Soulfire Protection",
+            "Indomitable Will"
+          ],
+          "note": "This is the source’s PvP bar. Shattering Dance supplies anti-Block utility, while the defensive Charms support its damage window."
+        }
+      ]
+    },
+    "Templar": {
+      "url": "https://www.prydwen.gg/sword-x-staff/guides/build-guide-templar",
+      "updated": "Sep 10, 2026",
+      "builds": [
+        {
+          "name": "Generic Dungeon/4vs4 Build",
+          "techniques": [
+            "Valor Surge",
+            "Heart of Challenge",
+            "Lunarwater Threads",
+            "Hamper Strike"
+          ],
+          "charms": [
+            "Iron Will",
+            "Block Mastery",
+            "Block Awareness",
+            "Soul Protection"
+          ],
+          "note": "The published bar assumes Pandarial. With sufficient Block versus enemy Accuracy, Block Awareness can become Rebound for damage or Oath of Vigil for protection."
+        },
+        {
+          "name": "Water Templar",
+          "techniques": [
+            "Swirling Blade",
+            "Lunarwater Threads",
+            "Seismic Tide",
+            "Raging Maelstrom"
+          ],
+          "charms": [
+            "Frigid Aura",
+            "Defensive Assault",
+            "Frigid Glint",
+            "Sacred Rhythm"
+          ],
+          "note": "The source highlights Chaos Invasion and solo content. Frostbite Blossom is its Chaos swap for Lunarwater Threads; Blade of Lament or Pursuit of Victory are AoE Charm options."
+        },
+        {
+          "name": "PvP Templar",
+          "techniques": [
+            "Valor Surge",
+            "Swirling Blade",
+            "Star Shattering Slash",
+            "Iron Slashes"
+          ],
+          "charms": [
+            "Defensive Assault",
+            "Block Mastery",
+            "Block Awareness",
+            "Soul Protection"
+          ],
+          "note": "With enough Crit, Boiling Bloodlust can replace Valor Surge. Light Sword Array is the source’s alternative to a weak Iron Slashes; check Block against the enemy’s Accuracy."
+        },
+        {
+          "name": "Light Templar",
+          "techniques": [
+            "Light Sword Array",
+            "Phantom Blade",
+            "Dawnburst",
+            "Sacred Shine"
+          ],
+          "charms": [
+            "Soul Protection",
+            "Defensive Assault",
+            "Holy Restoration",
+            "Healing Shift"
+          ],
+          "note": "An AoE option with less sustain than Water. The source suggests Hamper Strike plus Iron Will when Taunt and damage reduction are more useful."
+        }
+      ]
+    }
+  };
   var SECONDARY_SOURCE_DATA = {
     Destroyer: {
       community: { name: "Community-posted Wind 4v4", author: "Reddit · player build", url: "https://www.reddit.com/r/SwordxStaff_Official/comments/1w7mldt/looking_for_t4_destroyer_tournament_build/", builds: [
@@ -180,20 +697,21 @@ var SxsBuilds = (() => {
       reference: { name: "Kanstein Codex · Guardian class notes", url: "https://swordxstaff.online/guides/paladin-guardian-build/", note: "Independent tank and stat notes; the page says Guardian’s exact T4 skill kit is not published there." }
     }
   };
-  var currentClass = "Conqueror";
+  var currentClass = "Ravager";
   try {
-    const saved = localStorage.getItem(BUILD_CLASS_STORAGE_KEY) || localStorage.getItem("sxs-build-class");
-    if (LIVE_BUILD_CLASSES.includes(saved)) currentClass = saved;
+    const saved = localStorage.getItem(BUILD_CLASS_STORAGE_KEY) || localStorage.getItem("sxs-build-class-s2") || localStorage.getItem("sxs-build-class");
+    const promoted = PROMOTED_CLASS[saved] || saved;
+    if (LIVE_BUILD_CLASSES.includes(promoted)) currentClass = promoted;
   } catch (_) {
   }
   var escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   var modeFor = (cls) => {
-    const allowed = cls === "Guardian" ? ["tank", "dps"] : cls === "Dominator" ? ["dps", "heals"] : [];
+    const allowed = cls === "Templar" ? ["tank", "dps"] : cls === "Prophet" ? ["dps", "heals"] : [];
     try {
       const saved = localStorage.getItem(MODE_STORAGE_KEYS[cls]);
-      return allowed.includes(saved) ? saved : cls === "Guardian" ? "tank" : "dps";
+      return allowed.includes(saved) ? saved : cls === "Templar" ? "tank" : "dps";
     } catch (_) {
-      return cls === "Guardian" ? "tank" : "dps";
+      return cls === "Templar" ? "tank" : "dps";
     }
   };
   function renderBuildGroup(label, items) {
@@ -204,24 +722,24 @@ var SxsBuilds = (() => {
   }
   function renderModeTabs(cls, mode) {
     if (!MODE_STORAGE_KEYS[cls]) return "";
-    const options = cls === "Guardian" ? [["tank", "Tank"], ["dps", "DPS"]] : [["dps", "DPS"], ["heals", "Heals"]];
+    const options = cls === "Templar" ? [["tank", "Tank"], ["dps", "DPS"]] : [["dps", "DPS"], ["heals", "Heals"]];
     return '<div class="buildGuideModeTabs" role="group" aria-label="Gear profile">' + options.map(([key, label]) => '<button type="button" data-build-mode="' + key + '" class="' + (key === mode ? "active" : "") + '" aria-pressed="' + (key === mode) + '">' + label + "</button>").join("") + "</div>";
   }
   function renderRollGuide(cls, mode) {
     const profile = ROLL_PROFILES[cls];
     const keys = Array.isArray(profile) ? profile : profile?.[mode];
-    const rows = (keys || ROLL_PROFILES.Conqueror).map((key) => ROLL_VALUES[key]);
-    const label = cls === "Dominator" ? cls + " · " + (mode === "heals" ? "Heals" : "DPS") : cls === "Guardian" ? cls + " · " + (mode === "dps" ? "DPS" : "Tank") : cls;
-    return '<details class="rollGuide" data-roll-sig="' + escapeHtml(cls + "|" + mode) + '"><summary><span>Roll guide</span><small>' + escapeHtml(label) + ' · Current baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Maximum rolls for the substats recommended above.</div><div class="rollGuideGrid">' + rows.map(([name, value]) => '<div class="rollGuideRow"><span class="rollGuideName">' + escapeHtml(name) + '</span><span class="rollGuideValue">' + escapeHtml(value) + "</span></div>").join("") + '</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>';
+    const rows = (keys || ROLL_PROFILES.Ravager).map((key) => ROLL_VALUES[key]);
+    const label = cls === "Prophet" ? cls + " · " + (mode === "heals" ? "Heals" : "DPS") : cls === "Templar" ? cls + " · " + (mode === "dps" ? "DPS" : "Tank") : cls;
+    return '<details class="rollGuide" data-roll-sig="' + escapeHtml(cls + "|" + mode) + '"><summary><span>Roll guide</span><small>' + escapeHtml(label) + ' · Recorded baseline</small></summary><div class="rollGuideBody"><div class="rollGuideNote">Recorded Affix Preview maxima. Season 3 special-affix values are not inferred here.</div><div class="rollGuideGrid">' + rows.map(([name, value]) => '<div class="rollGuideRow"><span class="rollGuideName">' + escapeHtml(name) + '</span><span class="rollGuideValue">' + escapeHtml(value) + "</span></div>").join("") + '</div><div class="rollGuideSources">Values confirmed in the in-game Affix Preview. Paired values follow the listed stat order.</div></div></details>';
   }
   function renderGearPanel(cls, mode) {
     const all = BUILD_STAT_PROFILES[cls];
     const profile = all?.[mode] || all;
-    return '<section class="buildInfoPanel gearAdvicePanel"><div class="buildInfoHeader"><h3>Gear &amp; stat priorities</h3>' + renderModeTabs(cls, mode) + '</div><p class="gearStatRule">' + escapeHtml(profile.rule) + '</p><div class="quickGearGrid">' + profile.rows.map(([slot, stats]) => '<div class="quickGearRow"><b>' + escapeHtml(slot) + "</b><span>" + escapeHtml(stats) + "</span></div>").join("") + '</div><div class="quickSubstats"><b>Substats</b><span>' + escapeHtml(profile.substats) + "</span></div>" + renderRollGuide(cls, mode) + '<p class="buildPanelSource">Related T4 class guide: <a href="' + T4_SOURCE_BUILDS[cls].url + '" rel="noreferrer" target="_blank">Prydwen · ' + escapeHtml(cls) + " ↗</a></p></section>";
+    return '<section class="buildInfoPanel gearAdvicePanel"><div class="buildInfoHeader"><h3>Gear &amp; stat priorities</h3>' + renderModeTabs(cls, mode) + '</div><p class="gearStatRule">' + escapeHtml(profile.rule) + '</p><div class="quickGearGrid">' + profile.rows.map(([slot, stats]) => '<div class="quickGearRow"><b>' + escapeHtml(slot) + "</b><span>" + escapeHtml(stats) + "</span></div>").join("") + '</div><div class="quickSubstats"><b>Substats</b><span>' + escapeHtml(profile.substats) + "</span></div>" + renderRollGuide(cls, mode) + '<p class="buildPanelSource">Related T5 class guide: <a href="' + T5_SOURCE_BUILDS[cls].url + '" rel="noreferrer" target="_blank">Prydwen · ' + escapeHtml(cls) + " ↗</a></p></section>";
   }
   function renderFantomonPanel(cls) {
     const picks = FANTOMON_GUIDANCE[cls];
-    return '<section class="buildInfoPanel fantomonAdvicePanel"><div class="buildInfoHeader"><h3>Fantomon suggestions</h3><span class="buildInfoKicker">Lead Fantomon options</span></div><p class="fantomonRule">Only the lead Fantomon uses its ability; the others contribute passive stats.</p><div class="fantomonSuggestionList">' + picks.map(([label, name, why]) => '<div class="fantomonSuggestion"><span>' + escapeHtml(label) + "</span><strong>" + escapeHtml(name) + "</strong><p>" + escapeHtml(why) + "</p></div>").join("") + '</div><p class="buildPanelSource">Class recommendations: <a href="' + T4_SOURCE_BUILDS[cls].url + '" rel="noreferrer" target="_blank">Prydwen ↗</a> · <a href="https://swordxstaff.online/guides/fantomon-guide/" rel="noreferrer" target="_blank">independent Fantomon guide ↗</a></p></section>';
+    return '<section class="buildInfoPanel fantomonAdvicePanel"><div class="buildInfoHeader"><h3>Fantomon suggestions</h3><span class="buildInfoKicker">Lead Fantomon options</span></div><p class="fantomonRule">Only the lead Fantomon uses its ability; the others contribute passive stats.</p><div class="fantomonSuggestionList">' + picks.map(([label, name, why]) => '<div class="fantomonSuggestion"><span>' + escapeHtml(label) + "</span><strong>" + escapeHtml(name) + "</strong><p>" + escapeHtml(why) + "</p></div>").join("") + '</div><p class="buildPanelSource">Class recommendations: <a href="' + T5_SOURCE_BUILDS[cls].url + '" rel="noreferrer" target="_blank">Prydwen ↗</a> · <a href="https://swordxstaff.online/guides/fantomon-guide/" rel="noreferrer" target="_blank">independent Fantomon guide ↗</a></p></section>';
   }
   function renderSecondarySources(cls) {
     const data = SECONDARY_SOURCE_DATA[cls];
@@ -235,12 +753,22 @@ var SxsBuilds = (() => {
     }
     return html;
   }
+  var T5_PLAYER_SOURCES = {
+    Magister: "Crucible: Max Dps by Rezaj · Split Mirage: Takin’ out the Trash (Mobs) by Darkstorm.",
+    Prophet: "Dungeon DPS by Rezaj · Arena, AOE Mob clear, Exploring and Boss fight by JustinPantheon · Support by Torrent · Heal Overload by Keshi.",
+    Ravager: "Map build by SchlorKor.",
+    Templar: "Dungeon: Double Taunt Dungeon Panda by Rezaj and Generic Dungeon by Useless · Split Mirage: Split Endless by Torrent · Arena: Balanced Offense and Reflect by Torrent."
+  };
+  function renderPlayerSources(cls) {
+    const directory = "https://www.sxscompanion.com/builds/t5/" + cls.toLowerCase();
+    return '<details class="otherSourceNotes"><summary><span>More Season 3 player builds</span><small>Published activity-specific alternatives</small></summary><div class="otherSourceNoteGrid"><article class="otherSourceNote"><h4>SxS Companion · ' + escapeHtml(cls) + "</h4><p>" + escapeHtml(T5_PLAYER_SOURCES[cls]) + '</p><a href="' + directory + '" rel="noreferrer" target="_blank">Open creator loadouts ↗</a></article><article class="otherSourceNote"><h4>Purrwikimania · Community loadouts</h4><p>Choose Tier 5 and your class to browse player-posted Techniques, Charms and their authors’ notes.</p><a href="https://www.purrwikimania.com/loadouts" rel="noreferrer" target="_blank">Browse player loadouts ↗</a></article></div></details>';
+  }
   function buildHtml(cls) {
-    const source = T4_SOURCE_BUILDS[cls];
+    const source = T5_SOURCE_BUILDS[cls];
     if (!source) return "";
-    const mode = modeFor(cls);
+    const mode = modeFor(cls), previous = PREVIOUS_CLASS[cls], legacy = T4_SOURCE_BUILDS[previous];
     const cards = source.builds.map((build) => renderCard(build, "sourceBuildCard")).join("");
-    return '<div class="sourceBuildCollection"><p class="sourceBuildNote">Current T4 loadouts from published guides, shown under their original names. Technique and Charm caveats stay with each source preset.</p><section class="publishedBuildSource"><div class="otherBuildSourceHeader"><h3>Published T4 builds</h3><span>Guide updated ' + escapeHtml(source.updated) + '</span></div><div class="buildGrid sourceBuildGrid">' + cards + '</div><p class="buildSource">Source: <a class="buildSourceLink" href="' + source.url + '" rel="noreferrer" target="_blank">Prydwen · ' + escapeHtml(cls) + " T4 build guide ↗</a> · checked Sep 25, 2026.</p></section>" + renderSecondarySources(cls) + '<div class="buildGuideGrid">' + renderGearPanel(cls, mode) + renderFantomonPanel(cls) + "</div></div>";
+    return '<div class="sourceBuildCollection"><p class="sourceBuildNote">Season 3 · Current T5 loadouts from published guides, shown under their original names. Technique and Charm caveats stay with each preset.</p><section class="publishedBuildSource"><div class="otherBuildSourceHeader"><h3>Published T5 builds</h3><span>Guide updated ' + escapeHtml(source.updated) + '</span></div><div class="buildGrid sourceBuildGrid">' + cards + '</div><p class="buildSource">Source: <a class="buildSourceLink" href="' + source.url + '" rel="noreferrer" target="_blank">Prydwen · ' + escapeHtml(cls) + " T5 build guide ↗</a> · checked Nov 8, 2026.</p></section>" + renderPlayerSources(cls) + '<div class="buildGuideGrid">' + renderGearPanel(cls, mode) + renderFantomonPanel(cls) + '</div><details class="otherSourceNotes legacyBuildArchive"><summary><span>Season 2 · ' + escapeHtml(previous) + ' reference builds</span><small>Previous-tier archive</small></summary><p class="otherSourceCaveat">Historical T4 loadouts and player notes are retained here; they are not Season 3 recommendations.</p><div class="buildGrid">' + legacy.builds.map((build) => renderCard(build, "legacyBuildCard")).join("") + '</div><p class="buildSource">Source: <a href="' + legacy.url + '" rel="noreferrer" target="_blank">Prydwen · ' + escapeHtml(previous) + " T4 guide ↗</a></p>" + renderSecondarySources(previous) + "</details></div>";
   }
   function renderClassTabs() {
     const tabs = $("classTabs");

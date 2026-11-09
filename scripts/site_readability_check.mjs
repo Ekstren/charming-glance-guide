@@ -22,6 +22,7 @@ try {
       await page.waitForTimeout(60);
       if(section==='builds'||section==='companions'){
         const selector=section==='builds'?'#classTabs button':'#companionClassTabs button';
+        assert.deepEqual(await page.locator(selector).allTextContents(),['Magister','Prophet','Ravager','Templar'],`${section}: current T5 class tabs`);
         for(const button of await page.locator(selector).all()){
           // Companion tabs are re-rendered on selection; use their stable text.
           const label=await button.innerText();
@@ -36,8 +37,8 @@ try {
           return {x:r.x,y:r.y,right:r.right,width:r.width,height:r.height,clipped:el.scrollWidth>el.clientWidth+1};
         });
         const root=document.getElementById(`${section}Section`),box=root.getBoundingClientRect(),style=getComputedStyle(root);
-        const readingSelectors={timeline:'.entry p',builds:'.guideSummary p,.priorityList p,.fantomonPick p',companions:'.companionPanel p,.companionLadder span,.companionBreakpointTable td',calculator:'.postTargetHeader small'};
-        const smallText=[...root.querySelectorAll(readingSelectors[section])].filter(el=>el.getBoundingClientRect().height>0&&parseFloat(getComputedStyle(el).fontSize)<(section==='calculator'?12:13)).map(el=>el.textContent.slice(0,50));
+        const readingSelectors={timeline:'.entry p',builds:'.sourceBuildNote,.buildCaveat,.gearStatRule,.fantomonRule,.fantomonSuggestion p',companions:'.companionPanel p,.companionLadder span,.companionBreakpointTable td',calculator:'.postTargetHeader small'};
+        const smallText=[...root.querySelectorAll(readingSelectors[section])].filter(el=>el.checkVisibility()&&el.getBoundingClientRect().height>0&&parseFloat(getComputedStyle(el).fontSize)<(section==='calculator'?12:13)).map(el=>el.textContent.slice(0,50));
         return {tabs,bar:{x:bar.x,right:bar.right},left:box.left+parseFloat(style.paddingLeft),right:box.right-parseFloat(style.paddingRight),smallText,overflow:document.documentElement.scrollWidth-innerWidth};
       },section);
       const label=`${theme} ${width}px ${section}`;

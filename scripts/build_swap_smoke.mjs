@@ -4,21 +4,21 @@ import {pathToFileURL} from 'node:url';
 import path from 'node:path';
 
 const expected={
-  Destroyer:{
-    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-destroyer',
-    builds:['AOE Build','ST Build','Fire AoE Build','Elsa Build']
+  Magister:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-magister',
+    builds:['Wind AOE Build','ST Build','Fire AoE Build','PVP Build'],previous:'Destroyer',legacyCount:4
   },
-  Dominator:{
-    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-dominator',
-    builds:['Single Target','AoE','Healing Build']
+  Prophet:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-prophet',
+    builds:['Direct Single Target','Pure Erosion Remastered Edition','Direct AoE','Healing Build'],previous:'Dominator',legacyCount:3
   },
-  Conqueror:{
-    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-conqueror',
-    builds:['Generic Build for all Content','Dragon Build']
+  Ravager:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-ravager',
+    builds:['Stages and Dungeons Build','Dragon Build','PVP Build'],previous:'Conqueror',legacyCount:2
   },
-  Guardian:{
-    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-guardian',
-    builds:['Generic Dungeon Grid','Water Paladin','Support Knight','Secondary PvE build']
+  Templar:{
+    url:'https://www.prydwen.gg/sword-x-staff/guides/build-guide-templar',
+    builds:['Generic Dungeon/4vs4 Build','Water Templar','PvP Templar','Light Templar'],previous:'Guardian',legacyCount:4
   }
 };
 
@@ -31,8 +31,8 @@ await page.locator('.sectionSwitch button[data-section="builds"]').click();
 await page.waitForFunction(()=>document.getElementById('buildsSection')?.dataset.guideReady==='true');
 
 const classNames=Object.keys(expected);
-assert(await page.locator('#classTabs button[data-class]').count()===classNames.length,'expected exactly four current T4 class tabs');
-assert((await page.locator('#buildContent .sourceBuildNote').innerText()).includes('T4'),'Builds note must identify the current T4 sources');
+assert(await page.locator('#classTabs button[data-class]').count()===classNames.length,'expected exactly four current T5 class tabs');
+assert((await page.locator('#buildContent .sourceBuildNote').innerText()).includes('T5'),'Builds note must identify the current T5 sources');
 assert(await page.locator('#buildContent .metaBuildTabs,#buildContent [data-meta-mode],#buildContent .buildRoleTabs').count()===0,'custom activity or role mapping controls must not render');
 
 let checked=0;
@@ -58,18 +58,36 @@ for(const [cls,source] of Object.entries(expected)){
       assert(/^(techniques|charms)$/.test(label.toLowerCase()),`${cls} ${names[index]}: unexpected group label ${label}`);
       assert(items===4,`${cls} ${names[index]} ${label}: expected four source entries, found ${items}`);
     }
-    assert(!/\bT5\b|2\s*[xv]\s*2/i.test(await cards.nth(index).innerText()),`${cls} ${names[index]}: out-of-scope tier or nonexistent 2v2 content`);
+    assert(!/\bT4\b|2\s*[xv]\s*2/i.test(await cards.nth(index).innerText()),`${cls} ${names[index]}: previous-tier or nonexistent 2v2 content`);
     checked++;
   }
-  const communityCards=page.locator('#buildContent .communityBuildCard');
-  assert(await communityCards.count()===(cls==='Destroyer'?1:0),`${cls}: only complete community-published presets should render as builds`);
-  if(cls==='Destroyer'){
-    assert((await communityCards.first().locator('h3').innerText()).includes('Wind Tournament'),'Destroyer community 4v4 build missing');
-    assert((await communityCards.first().innerText()).includes('Wind’s Delight'),'Destroyer community build entries missing');
+  const archive=page.locator('#buildContent .legacyBuildArchive');
+  assert.equal(await archive.count(),1,`${cls}: previous-tier archive is missing`);
+  assert.match(await archive.locator(':scope > summary').innerText(),new RegExp(`Season 2.*${source.previous}`));
+  assert.equal(await archive.getAttribute('open'),null,`${cls}: previous-tier builds must start collapsed`);
+  assert.equal(await archive.locator('.legacyBuildCard').count(),source.legacyCount,`${cls}: historical T4 presets were lost`);
+  const communityCards=archive.locator('.communityBuildCard');
+  assert.equal(await communityCards.count(),cls==='Magister'?1:0,`${cls}: historical community preset count`);
+  if(cls==='Magister'){
+    assert.match(await communityCards.first().locator('h3').textContent(),/Wind Tournament/);
+    assert.ok((await communityCards.first().textContent()).includes('Wind’s Delight'),'historical community build entries missing');
   }
-  assert(await page.locator('#buildContent .otherSourceNotes').count()===1,`${cls}: additional source notes are missing`);
+  assert.equal(await archive.locator('.otherSourceNotes').count(),1,`${cls}: historical source notes are missing`);
+  const playerSources=page.locator('#buildContent .sourceBuildCollection > .otherSourceNotes:not(.legacyBuildArchive)');
+  assert.equal(await playerSources.count(),1,`${cls}: current player-source directory missing`);
+  assert.equal(await playerSources.locator(`a[href="https://www.sxscompanion.com/builds/t5/${cls.toLowerCase()}"]`).count(),1,`${cls}: current player loadout source`);
+  assert.equal(await cards.locator('.buildCaveat').count(),source.builds.length,`${cls}: every current preset needs its published caveat`);
+  if(['Prophet','Templar'].includes(cls)){
+    const modes=cls==='Prophet'?['heals','dps']:['dps','tank'];
+    for(const mode of modes){
+      await page.locator(`#buildContent [data-build-mode="${mode}"]`).click();
+      assert.equal(await page.locator('#buildContent .rollGuide').getAttribute('data-roll-sig'),`${cls}|${mode}`,`${cls}: roll guide follows selected gear profile`);
+      assert.equal(await page.locator('#buildContent .quickGearRow').count(),5,`${cls}: all gear slots survive profile switching`);
+      assert.equal(await page.locator('#buildContent .sourceBuildCard').count(),source.builds.length,`${cls}: gear profiles must not replace published presets`);
+    }
+  }
 }
 
 assert(errors.length===0,`browser errors: ${errors.join('\n')}`);
-console.log(`source-build smoke passed: ${checked} Prydwen T4 preset cards, restored gear/substats/rolls/Fantomons, sourced community additions, no invented activity mappings`);
+console.log(`source-build smoke passed: ${checked} Prydwen T5 preset cards, preserved gear/substats/rolls/Fantomons and historical T4 archive, no invented activity mappings`);
 await browser.close();

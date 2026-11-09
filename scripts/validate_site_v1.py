@@ -8,7 +8,7 @@ Checks, in order:
      environment — CI always has Node and this check is mandatory there).
   3. Every assets/*.css file has balanced braces (outside strings/comments).
   4. data/*.json files parse as JSON.
-  5. T4 source-build renderer contract: src/builds.mjs exports the section
+  5. T5 source-build renderer contract: src/builds.mjs exports the section
      initializer and renders the four current classes from linked source guides;
      its generated bundle contains no removed build augmentation hooks.
 
@@ -107,17 +107,29 @@ def main() -> int:
             print(f"       JSON error in {f.name}: {exc}")
         check(ok, f"JSON parses: {f.relative_to(ROOT)}")
 
-    print("== T4 source-build renderer contract ==")
+    print("== Season 3 / T5 source-build renderer contract ==")
     builds_source = (ROOT / "src/builds.mjs").read_text(encoding="utf-8", errors="replace")
-    expected_classes = ["Destroyer", "Dominator", "Conqueror", "Guardian"]
-    t4_source = builds_source.split("const T4_SOURCE_BUILDS={", 1)[1].split("\n};", 1)[0]
-    source_classes = re.findall(r"(?m)^  (Destroyer|Dominator|Conqueror|Guardian)\s*:", t4_source)
-    check(source_classes == expected_classes, f"builds.mjs defines current T4 classes in order ({source_classes})")
+    expected_classes = ["Magister", "Prophet", "Ravager", "Templar"]
+    source_match = re.search(r"const T5_SOURCE_BUILDS=(\{[\s\S]*?\n\});", builds_source)
+    current_builds = {}
+    if source_match:
+        try:
+            current_builds = json.loads(source_match.group(1))
+        except json.JSONDecodeError as exc:
+            print(f"       T5 source data is not valid JSON: {exc}")
+    source_classes = list(current_builds)
+    check(source_classes == expected_classes, f"builds.mjs defines current T5 classes in order ({source_classes})")
+    expected_counts = {"Magister": 4, "Prophet": 4, "Ravager": 3, "Templar": 4}
+    for cls, count in expected_counts.items():
+        entry = current_builds.get(cls, {})
+        check(len(entry.get("builds", [])) == count, f"{cls}: {count} published presets")
+        check(entry.get("url") == f"https://www.prydwen.gg/sword-x-staff/guides/build-guide-{cls.lower()}", f"{cls}: current author-published source")
     check("export function initialize()" in builds_source, "builds.mjs exports the lazy-section initializer")
-    check("Current T4 loadouts from published guides" in builds_source, "builds.mjs labels the source-published T4 presets")
+    check("Current T5 loadouts from published guides" in builds_source, "builds.mjs labels the source-published T5 presets")
     check("sourceBuildCard" in builds_source and "buildSourceLink" in builds_source, "builds.mjs renders linked source cards")
     check("gearAdvicePanel" in builds_source and "fantomonAdvicePanel" in builds_source, "builds.mjs retains gear and Fantomon guidance")
     check("communityBuildCard" in builds_source and "More source notes" in builds_source, "builds.mjs separates community presets from partial source notes")
+    check("legacyBuildArchive" in builds_source and "legacyBuildCard" in builds_source and "T4_SOURCE_BUILDS" in builds_source, "builds.mjs preserves previous-tier presets in a labeled archive")
     check("metaBuildTabs" not in builds_source and "data-meta-mode" not in builds_source, "builds.mjs does not invent activity selector mappings")
     check("__applyBuild" not in builds_source, "builds.mjs does not depend on removed augmentation hooks")
     generated_builds = (ROOT / "assets/builds-section.js").read_text(encoding="utf-8", errors="replace")

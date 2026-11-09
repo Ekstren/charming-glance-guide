@@ -4,7 +4,7 @@ import {pathToFileURL} from 'node:url';
 import path from 'node:path';
 
 const browser=await chromium.launch();
-const cardCounts={Destroyer:4,Dominator:3,Conqueror:2,Guardian:4};
+const cardCounts={Magister:4,Prophet:4,Ravager:3,Templar:4};
 
 async function checkContrast(page,selector,label){
   const samples=await page.locator(selector).evaluateAll(elements=>{
@@ -58,6 +58,7 @@ try{
 
     await page.locator('[data-section="companions"]').click();
     await page.waitForFunction(()=>document.getElementById('companionsSection').dataset.guideReady==='true');
+    assert.deepEqual(await page.locator('#companionClassTabs [data-companion-class]').evaluateAll(tabs=>tabs.map(tab=>tab.dataset.companionClass)),Object.keys(cardCounts),`${label}: current T5 companion classes`);
     await checkContrast(page,'#companionsSection .companionNames span,#companionsSection .companionLadder b,#companionsSection .companionGroupHead small,#companionsSection .companionBreakpointTable th,#companionsSection .companionRule > b',`${label} companion accents`);
     assert.deepEqual(errors,[],`${label}: browser errors`);
     console.log(`Guide design passed: ${label}, source build cards, contrast, overflow, touch targets and companions`);

@@ -1,0 +1,347 @@
+{
+  "checkedAt": "2026-11-08",
+  "source": "https://0xnobodyyt.github.io/sxs-companions/data.js",
+  "sourceSha256": "871ec9d94e1bbd911653eb025e7340511531ec53b3a551cd254529036577bc81",
+  "crossCheck": "https://www.purrwikimania.com/npcs",
+  "aethyris": [
+    {
+      "name": "Freya",
+      "region": "Aethyris",
+      "nativeClass": "Duelist",
+      "premium": true,
+      "gift": "Practical gifts",
+      "journals": 3,
+      "breakpoints": {
+        "20": {
+          "DMG Boost": 1
+        },
+        "50": {
+          "DMG Boost": 1,
+          "Crit Rate": 1
+        },
+        "70": {
+          "DMG Boost": 2,
+          "Crit Rate": 1
+        },
+        "100": {
+          "DMG Boost": 2,
+          "Crit Rate": 2
+        }
+      },
+      "level100Stat": {
+        "SPD %": 21
+      }
+    },
+    {
+      "name": "Sylvia",
+      "region": "Aethyris",
+      "nativeClass": "Sorcerer",
+      "premium": true,
+      "gift": "Precious gifts",
+      "journals": 3,
+      "breakpoints": {
+        "20": {
+          "DMG Boost": 1
+        },
+        "50": {
+          "DMG Boost": 1,
+          "Crit Rate": 1
+        },
+        "70": {
+          "DMG Boost": 2,
+          "Crit Rate": 1
+        },
+        "100": {
+          "DMG Boost": 2,
+          "Crit Rate": 2
+        }
+      },
+      "level100Stat": {
+        "SPD %": 21
+      }
+    },
+    {
+      "name": "Ophelia",
+      "region": "Aethyris",
+      "nativeClass": "Sorcerer",
+      "premium": false,
+      "gift": "Books",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG Boost": 1
+        },
+        "50": {
+          "DMG Boost": 1,
+          "Accuracy": 1
+        },
+        "70": {
+          "DMG Boost": 2,
+          "Accuracy": 1
+        },
+        "100": {
+          "DMG Boost": 2,
+          "Accuracy": 2
+        }
+      },
+      "level100Stat": {
+        "ATK %": 19
+      }
+    },
+    {
+      "name": "Vigard",
+      "region": "Aethyris",
+      "nativeClass": "Knight",
+      "premium": true,
+      "gift": "Books",
+      "journals": 3,
+      "breakpoints": {
+        "20": {
+          "DMG RES": 1
+        },
+        "50": {
+          "DMG RES": 1,
+          "Block Rate": 1
+        },
+        "70": {
+          "DMG RES": 2,
+          "Block Rate": 1
+        },
+        "100": {
+          "DMG RES": 2,
+          "Block Rate": 2
+        }
+      },
+      "level100Stat": {
+        "DEF %": 21
+      }
+    },
+    {
+      "name": "Gerald",
+      "region": "Aethyris",
+      "nativeClass": "Knight",
+      "premium": false,
+      "gift": "Practical gifts",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG RES": 1
+        },
+        "50": {
+          "DMG RES": 1,
+          "Block Rate": 1
+        },
+        "70": {
+          "DMG RES": 2,
+          "Block Rate": 1
+        },
+        "100": {
+          "DMG RES": 2,
+          "Block Rate": 2
+        }
+      },
+      "level100Stat": {
+        "DEF %": 19
+      }
+    },
+    {
+      "name": "Astrid",
+      "region": "Aethyris",
+      "nativeClass": "Sage",
+      "premium": false,
+      "gift": "Flowers",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG RES": 1
+        },
+        "50": {
+          "DMG RES": 1,
+          "Crit RES": 1
+        },
+        "70": {
+          "DMG RES": 2,
+          "Crit RES": 1
+        },
+        "100": {
+          "DMG RES": 2,
+          "Crit RES": 2
+        }
+      },
+      "level100Stat": {
+        "HP %": 19
+      }
+    },
+    {
+      "name": "Isla",
+      "region": "Aethyris",
+      "nativeClass": "Sage",
+      "premium": false,
+      "gift": "Flowers",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG RES": 1
+        },
+        "50": {
+          "DMG RES": 1,
+          "Crit RES": 1
+        },
+        "70": {
+          "DMG RES": 2,
+          "Crit RES": 1
+        },
+        "100": {
+          "DMG RES": 2,
+          "Crit RES": 2
+        }
+      },
+      "level100Stat": {
+        "HP %": 19
+      }
+    }
+  ],
+  "loongHaven": [
+    {
+      "name": "Ming",
+      "region": "Loong Haven",
+      "nativeClass": "Duelist",
+      "premium": true,
+      "gift": "Flowers",
+      "journals": 3,
+      "breakpoints": {
+        "20": {
+          "DMG Boost": 1
+        },
+        "50": {
+          "DMG Boost": 1,
+          "Crit Rate": 1
+        },
+        "70": {
+          "DMG Boost": 2,
+          "Crit Rate": 1
+        },
+        "100": {
+          "DMG Boost": 2,
+          "Crit Rate": 2
+        }
+      },
+      "level100Stat": {
+        "SPD %": 21
+      }
+    },
+    {
+      "name": "Suimo",
+      "region": "Loong Haven",
+      "nativeClass": "Sage",
+      "premium": true,
+      "gift": "Books",
+      "journals": 3,
+      "breakpoints": {
+        "20": {
+          "DMG RES": 1
+        },
+        "50": {
+          "DMG RES": 1,
+          "Crit RES": 1
+        },
+        "70": {
+          "DMG RES": 2,
+          "Crit RES": 1
+        },
+        "100": {
+          "DMG RES": 2,
+          "Crit RES": 1,
+          "Healing Boost": 1
+        }
+      },
+      "level100Stat": {
+        "HP %": 21
+      }
+    },
+    {
+      "name": "Wuji",
+      "region": "Loong Haven",
+      "nativeClass": "Duelist",
+      "premium": false,
+      "gift": "Books",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG Boost": 1
+        },
+        "50": {
+          "DMG Boost": 1,
+          "Crit Rate": 1
+        },
+        "70": {
+          "DMG Boost": 2,
+          "Crit Rate": 1
+        },
+        "100": {
+          "DMG Boost": 2,
+          "Crit Rate": 2
+        }
+      },
+      "level100Stat": {
+        "SPD %": 19
+      }
+    },
+    {
+      "name": "Hui",
+      "region": "Loong Haven",
+      "nativeClass": "Knight",
+      "premium": false,
+      "gift": "Practical gifts",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG RES": 1
+        },
+        "50": {
+          "DMG RES": 1,
+          "Block Rate": 1
+        },
+        "70": {
+          "DMG RES": 2,
+          "Block Rate": 1
+        },
+        "100": {
+          "DMG RES": 2,
+          "Block Rate": 2
+        }
+      },
+      "level100Stat": {
+        "DEF %": 19
+      }
+    },
+    {
+      "name": "Jiangwang",
+      "region": "Loong Haven",
+      "nativeClass": "Sorcerer",
+      "premium": false,
+      "gift": "Practical gifts",
+      "journals": 1,
+      "breakpoints": {
+        "20": {
+          "DMG Boost": 1
+        },
+        "50": {
+          "DMG Boost": 1,
+          "Accuracy": 1
+        },
+        "70": {
+          "DMG Boost": 2,
+          "Accuracy": 1
+        },
+        "100": {
+          "DMG Boost": 2,
+          "Accuracy": 2
+        }
+      },
+      "level100Stat": {
+        "ATK %": 19
+      }
+    }
+  ]
+}

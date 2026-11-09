@@ -1,7 +1,9 @@
 import { nextPacificResetMs, countFuturePacificResets } from '../time.mjs';
+import { pacificLocalMs } from '../time.mjs';
+import { S2_END, S3_END } from '../season-clock.mjs';
 import { seasonKeyAt } from '../season-clock.mjs';
 import { nextResetLocalLabel } from '../display-time.mjs';
-import { PANEL_OPEN_IDS, CALC_SEASONS, S2_PLANNER_START_LEVEL, S2_FULL_SEASONAL_PREVIEW_LEVEL, S2_SCORING_START_DEFAULTS, S2_SCORING_START_CHECKS, validateS2ScoringStartDefaults, validateS2PrimoModel, GEAR_OUTPUT_IDS, INPUT_IDS, CHECK_IDS, defaults, COMPACT_NUMBER_INPUT_IDS, parseCompactNumber, SAND_BLUE_EQ, SAND_EPIC_EQ, TREAT_BASIC_EXP, TREAT_PREMIUM_EQ, TREAT_DELUXE_EQ, S2_SHOP_OBSERVED_PAGES, dailyShopMatsPerRefresh, fmt, fmtCompact, clamp, activeCalcConfig, PRESEASON_BED_HOLD_WALL_HOURS, PRESEASON_BED_FINAL_RESET_BOOST_HOURS, characterExpCollectionCutoffMs, formatRemaining, S2_EXACT_CHARACTER_EXP_FROM_130, S2_EXACT_FANTOMON_EXP_FROM_130, S2_EXACT_UPGRADE_RULES, expRequiredForLevel, s1ProjectionUsesEstimatedExp, maxFinishEarlyDays, gearScore, characterScore, levelsFromAverage, averageLevels, categoryScoreFromLevels, formatAverage, formatLevelMix, EXACT_LEVEL_AVERAGE_BINDINGS, categoryStateFromAverage, buildCategoryOptionsFromLevels, categoryCapsForCharacter, categoryInputCapsForCharacter, gearStepCost, gearStepRefined, skillStepCost, relicStepSand, fantoStepTreatCost, automaticResourceYields, applyStaminaAllocation, staminaPlanCost, MAX_REALM_REFRESHES_PER_DAY, REALM_RUNS_PER_REFRESH, realmYieldFor, realmTopup, formatRealmSchedule, candidateRealmStage, OptimizerCancelledError, smartBalanceHighestAffordable } from './model.mjs';
+import { PANEL_OPEN_IDS, CALC_SEASONS, S2_PLANNER_START_LEVEL, S2_FULL_SEASONAL_PREVIEW_LEVEL, S2_SCORING_START_DEFAULTS, S3_SCORING_START_DEFAULTS, S2_SCORING_START_CHECKS, validateS2ScoringStartDefaults, validateS2PrimoModel, GEAR_OUTPUT_IDS, INPUT_IDS, CHECK_IDS, defaults, COMPACT_NUMBER_INPUT_IDS, parseCompactNumber, SAND_BLUE_EQ, SAND_EPIC_EQ, TREAT_BASIC_EXP, TREAT_PREMIUM_EQ, TREAT_DELUXE_EQ, S2_SHOP_OBSERVED_PAGES, dailyShopMatsPerRefresh, fmt, fmtCompact, clamp, activeCalcConfig, PRESEASON_BED_HOLD_WALL_HOURS, PRESEASON_BED_FINAL_RESET_BOOST_HOURS, characterExpCollectionCutoffMs, formatRemaining, S2_EXACT_CHARACTER_EXP_FROM_130, S2_EXACT_FANTOMON_EXP_FROM_130, S2_EXACT_UPGRADE_RULES, expRequiredForLevel, s1ProjectionUsesEstimatedExp, maxFinishEarlyDays, gearScore, characterScore, levelsFromAverage, averageLevels, categoryScoreFromLevels, formatAverage, formatLevelMix, EXACT_LEVEL_AVERAGE_BINDINGS, categoryStateFromAverage, buildCategoryOptionsFromLevels, categoryCapsForCharacter, categoryInputCapsForCharacter, gearStepCost, gearStepRefined, skillStepCost, relicStepSand, fantoStepTreatCost, automaticResourceYields, applyStaminaAllocation, staminaPlanCost, MAX_REALM_REFRESHES_PER_DAY, REALM_RUNS_PER_REFRESH, realmYieldFor, realmTopup, formatRealmSchedule, candidateRealmStage, OptimizerCancelledError, smartBalanceHighestAffordable } from './model.mjs';
 import { createPlannerEngine } from './engine.mjs';
 import { createSavedState } from './state.mjs';
 import { createCalculatorRenderer } from './render.mjs';
@@ -84,8 +86,18 @@ function dailyShopMaterialEstimate(cfg=activeCalcConfig(),daysOverride=null){
   }
 
 function applyS2ScoringStartDefaults(){
-    Object.entries(S2_SCORING_START_DEFAULTS).forEach(([id,value])=>{ if($(id)) $(id).value=String(value); });
+    const startDefaults=activeCalcConfig().key==='s3'?S3_SCORING_START_DEFAULTS:S2_SCORING_START_DEFAULTS;
+    Object.entries(startDefaults).forEach(([id,value])=>{ if($(id)) $(id).value=String(value); });
     Object.entries(S2_SCORING_START_CHECKS).forEach(([id,value])=>{ if($(id)) $(id).checked=!!value; });
+  }
+
+function syncSeason3PlanningInputs(){
+    if(seasonKeyAt(Date.now())!=='s3')return;
+    const cfg=CALC_SEASONS.s3,date=$('seasonEndDate')?.value||'2027-02-25';
+    const deadline=/^\d{4}-\d{2}-\d{2}$/.test(date)?pacificLocalMs(date,6,0):NaN;
+    cfg.end=Number.isFinite(deadline)&&deadline>S2_END.getTime()?new Date(deadline):S3_END;
+    cfg.deadlineEstimated=date==='2027-02-25'||!Number.isFinite(deadline);
+    for(const [key,id] of [['ore','staminaOreYield'],['essence','staminaEssenceYield'],['sand','staminaSandYield']])cfg.map[key]=Math.max(0,parseCompactNumber($(id)?.value,0));
   }
 
 function realmDailyValue(key){
@@ -180,7 +192,7 @@ function projectionResourceHoursAt(ms,cfg=activeCalcConfig()){
   }
 
 function characterSnapshot(cfg=activeCalcConfig()){
-    let lvl=Math.max(1,Math.floor(n('charLevel',cfg.key==='s2'?100:122)));
+    let lvl=Math.max(1,Math.floor(n('charLevel',cfg.key==='s3'?160:cfg.key==='s2'?100:122)));
     let exp=Math.max(0,n('charExp',0));
     let safety=0;
     while(safety++<400){
@@ -427,7 +439,7 @@ function projectedResourcesTo(targetMs,cfg=activeCalcConfig()){
     const boostResets=countFuturePacificResets(now,cutoff);
     const futureDays=futureRealmPurchaseDaysUntil(cutoff,cfg);
     const staminaStart=0;
-    const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
+    const yields=automaticResourceYields(n('charLevel',cfg.key==='s3'?160:cfg.key==='s2'?100:122),cfg);
     // Stamina regenerates from real wall-clock time only; idle/2h speed-ups do not create Stamina.
     const staminaGenerated=Math.max(0,Math.floor(wallResourceHours*5));
     const staminaSpendable=staminaStart+staminaGenerated;
@@ -542,7 +554,7 @@ function realmTopupForMoment(key,cost,resources,targetMs,pAt,cfg=activeCalcConfi
     const manual=Math.max(0,Math.floor(n(ids[key],0)));
     const planned=futureDays*baseline*REALM_RUNS_PER_REFRESH;
     let perRun=realmYieldFor(resources,key);
-    if(cfg.key==='s2' && Math.floor((pAt?.decimal??pAt?.level??n('charLevel',100)))<cfg.realmMaxLevel) perRun=0;
+    if(cfg.key!=='s1' && Math.floor((pAt?.decimal??pAt?.level??n('charLevel',100)))<cfg.realmMaxLevel) perRun=0;
     return realmTopup(Math.max(0,Number(cost)||0),Math.max(0,Number(resources?.[key])||0),perRun,1+futureDays,manual+planned,baseline);
   }
 
@@ -709,7 +721,7 @@ function postTargetRawGains(reached,cfg,state=selectedPostTargetToolState(),stam
       resets,resourceHours
     };
     // Keep post-target Stamina behavior consistent with the live planner. Auto banks surplus in Ore.
-    const yields=automaticResourceYields(n('charLevel',cfg.key==='s2'?100:122),cfg);
+    const yields=automaticResourceYields(n('charLevel',cfg.key==='s3'?160:cfg.key==='s2'?100:122),cfg);
     // Stamina regenerates from real elapsed time; daily 2h idle boosts do not create Stamina.
     const staminaPerNode=Math.max(1,Number(yields.staminaPerNode)||5);
     const regenPerHour=5;
@@ -765,7 +777,7 @@ function runCalculatorUpdateSettled(skipFinishEarly=false){
 function queueRegularGoalOptimizerProgress(){
     const cfg=activeCalcConfig();
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
-    const target=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
+    const target=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s3'?2360:cfg.key==='s2'?680:200)));
     const job=beginOptimizerJob(target);
     queuedGoalOptimizerJob=job;
     const detail=$('optimizerProgressDetail');
@@ -951,17 +963,17 @@ function buildMaxAchievableSnapshot(){
     const upgradeP=projectCharacterTo(upgradeFinishCutoffMs(cfg),cfg);
     p.upgradeCapLevel=upgradeP.level;p.upgradeCapPct=upgradeP.pct;
     const currentCharacter=p.current||characterSnapshot(cfg);
-    if(cfg.key==='s2' && currentCharacter.level<S2_PLANNER_START_LEVEL) return null;
+    if(cfg.key!=='s1' && currentCharacter.level<(cfg.plannerStartLevel??S2_PLANNER_START_LEVEL)) return null;
     const projectedResourceTotals=projectedResources(p.hours,cfg);
     const baseResources=projectedResourceTotals;
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
     const normalInputFloor=100;
     const relicInputFloor=10;
-    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143);
+    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s3'?160:cfg.key==='s2'?130:143);
     const gear=gearState.levels;
-    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
-    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
+    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s3'?160:cfg.key==='s2'?130:122);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s3'?16:13);
+    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s3'?160:130);
     const baselineScore=characterScore(p,cfg)+gearScore(gear,cfg)+skillState.score+relicState.score+fantoState.score;
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
     return {cfg,p,baseResources,baselineScore,historical,baselineStars:historical+cfg.starBase+Math.floor(baselineScore/cfg.scorePerStar)};
@@ -1049,21 +1061,21 @@ function planningCharacterProjection(cfg){
 function finishEarlyNoExtraPossible(){
     const cfg=activeCalcConfig();
     if(snapshotSeason!==cfg.key) return false;
-    if(cfg.key==='s2'){
+    if(cfg.key!=='s1'){
       const required=s2RequiredPlannerInputs();
-      if(!required.hasBed||!required.hasAllCart) return false;
+      if(!required.hasBed||!required.hasAllCart||!required.hasHistorical) return false;
     }
     const p=planningCharacterProjection(cfg);
-    if(cfg.key==='s2' && p.level<=cfg.scoreFloor) return false;
+    if(cfg.key!=='s1' && p.level<=cfg.scoreFloor) return false;
     const currentCharacter=p.current||characterSnapshot(cfg);
     const currentCaps=categoryInputCapsForCharacter(currentCharacter.level,cfg);
-    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143);
-    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,100,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,10,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
-    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,100,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
+    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s3'?160:cfg.key==='s2'?130:143);
+    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,100,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s3'?160:cfg.key==='s2'?130:122);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,10,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s3'?16:13);
+    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,100,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s3'?160:130);
     const baselineScore=characterScore(p,cfg)+gearScore(gearState.levels,cfg)+skillState.score+relicState.score+fantoState.score;
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
-    const targetStars=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
+    const targetStars=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s3'?2360:cfg.key==='s2'?680:200)));
     const desired=Math.max(0,(targetStars-historical-cfg.starBase)*cfg.scorePerStar);
     if(baselineScore>=desired-1e-9) return true;
     const ctx=createPlanningContext(baselineScore,desired,p,cfg);
@@ -1116,7 +1128,7 @@ async function findMaxFinishEarly(){
     ++optimizerUpdateGeneration;
     const halfDayMs=12*60*60*1000;
     const maxHalfSteps=Math.max(0,Math.floor((cfg.end.getTime()-Date.now())/halfDayMs));
-    const targetStars=Math.max(0,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
+    const targetStars=Math.max(0,Math.floor(n('targetStars',cfg.key==='s3'?2360:cfg.key==='s2'?680:200)));
     btn.setAttribute('aria-busy','true');
     if($('finishEarlyResult')) $('finishEarlyResult').textContent='Calculating…';
     clearTimeout(calculatorUpdateTimer);
@@ -1265,7 +1277,7 @@ function s2RequiredPlannerInputs(){
     const cartInputs=[['oreRate','Raw Ore Cart/hr'],['essenceRate','Skill Essence Cart/hr'],['sandRate','Chrono Sand Cart/hr'],['treatRate','Fantomon Treats Cart/hr']];
     const cartRates=cartInputs.map(([id])=>Math.max(0,parseCompactNumber($(id)?.value,0)));
     const missingCart=cartInputs.filter((_,i)=>cartRates[i]<=0).map(([,label])=>label);
-    return {bed,cartRates,missingCart,hasBed:bed>0,hasAllCart:missingCart.length===0};
+    return {bed,cartRates,missingCart,hasBed:bed>0,hasAllCart:missingCart.length===0,hasHistorical:activeCalcConfig().key!=='s3'||String($('historicalStars')?.value??'').trim()!==''};
   }
 
 // Keep each distinct upgrade level on its own line in the summary cards.
@@ -1277,6 +1289,7 @@ async function updateCalculator(){
     renderFinishEarlyResult();
     if($('resultStamina')) $('resultStamina').hidden=true;
     // Clamp impossible manual values before any expensive solve starts.
+    syncSeason3PlanningInputs();
     syncFinishEarlyInputLimit(activeCalcConfig(),true);
     const updateGeneration=++optimizerUpdateGeneration;
     const queuedGoalJob=queuedGoalOptimizerJob;
@@ -1298,18 +1311,19 @@ async function updateCalculator(){
       clearCalcForRollover(cfg); return;
     }
     let p=null;
-    if(cfg.key==='s2'){
+    if(cfg.key!=='s1'){
       const required=s2RequiredPlannerInputs();
       // Bed EXP is the only production input required for Character level projection.
-      if(!required.hasBed){ if(queuedGoalJob) finishOptimizerJob(queuedGoalJob,'done'); clearS2ForRequiredPlannerInputs(cfg,required); return; }
+      if(!required.hasBed||!required.hasHistorical){ if(queuedGoalJob) finishOptimizerJob(queuedGoalJob,'done'); clearS2ForRequiredPlannerInputs(cfg,required); return; }
       p=projectCharacter(cfg);
       // Do not run the full Primostar/material optimizer until every Cart rate exists.
       if(!required.hasAllCart){ if(queuedGoalJob) finishOptimizerJob(queuedGoalJob,'done'); clearS2ForRequiredPlannerInputs(cfg,required,p); return; }
     }
     if(!p) p=projectCharacter(cfg);
+    if(cfg.key==='s3' && characterSnapshot(cfg).level<cfg.plannerStartLevel){if(queuedGoalJob)finishOptimizerJob(queuedGoalJob,'done');clearS2PreScoring(cfg);return;}
     const seasonEndP=p;
     p=planningCharacterProjection(cfg);
-    if(cfg.key==='s2' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
+    if(cfg.key!=='s1' && p.level<=cfg.scoreFloor){ clearS2ProjectedAtFloor(cfg,p); return; }
     const currentCharacter=p.current||characterSnapshot(cfg);
     const projectedResourceTotals=projectedResources(p.hours,cfg);
     renderRealmToolProjection(cfg);
@@ -1322,11 +1336,11 @@ async function updateCalculator(){
     const projectedCaps=optimizerCategoryCaps(p,cfg);
     const normalInputFloor=100;
     const relicInputFloor=10;
-    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s2'?130:143);
+    const gearState=gearStateFromUser(cfg,currentCaps.gear,cfg.key==='s3'?160:cfg.key==='s2'?130:143);
     const gear=gearState.levels;
-    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s2'?130:122);
-    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s2'?13:13);
-    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s2'?130:130);
+    const skillState=categoryStateFromUser('skillLevel','exactSkillLevels',8,normalInputFloor,currentCaps.skill,cfg.scoreFloor,cfg.weights.skill,cfg.key==='s3'?160:cfg.key==='s2'?130:122);
+    const relicState=categoryStateFromUser('relicLevel','exactRelicLevels',20,relicInputFloor,currentCaps.relic,cfg.relicFloor,cfg.weights.relic,cfg.key==='s3'?16:13);
+    const fantoState=categoryStateFromUser('fantomonLevel','exactFantoLevels',4,normalInputFloor,currentCaps.fanto,cfg.scoreFloor,cfg.weights.fanto,cfg.key==='s3'?160:130);
     const skill=skillState.avg,relic=relicState.avg,fanto=fantoState.avg;
     const exactChecks=[
       ['exactSkillLevels',8,normalInputFloor,currentCaps.skill,'Skills'],
@@ -1346,10 +1360,19 @@ async function updateCalculator(){
     const currentScoreNow=Object.values(currentParts).reduce((a,b)=>a+b,0);
     const baselineScore=Object.values(projectedParts).reduce((a,b)=>a+b,0);
     const historical=Math.max(0,Math.floor(n('historicalStars',0)));
-    const targetStars=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s2'?680:200)));
+    const targetStars=Math.max(cfg.starBase+historical,Math.floor(n('targetStars',cfg.key==='s3'?2360:cfg.key==='s2'?680:200)));
     const currentStarsNow=historical+cfg.starBase+Math.floor(currentScoreNow/cfg.scorePerStar);
     const baselineStars=historical+cfg.starBase+Math.floor(baselineScore/cfg.scorePerStar);
     const requestedDesired=Math.max(0,(targetStars-historical-cfg.starBase)*cfg.scorePerStar);
+    const unknownCatchup=cfg.key==='s3'?[['Gear',gear],['Skills',skillState.levels],['Fantomons',fantoState.levels]].filter(([,levels])=>levels.some(level=>level<cfg.scoreFloor)).map(([label])=>label):[];
+    if(unknownCatchup.length&&baselineScore<requestedDesired){
+      if(queuedGoalJob)finishOptimizerJob(queuedGoalJob,'done');
+      clearS2ForRequiredPlannerInputs(cfg,{hasBed:true,hasHistorical:true,missingCart:[]},p);
+      $('targetMessage').textContent=`Season 3 catch-up prices below Lv.160 are not verified for ${unknownCatchup.join(', ')}. Your entries are preserved; update those levels after normal progression, then run the seasonal upgrade plan.`;
+      $('optimizerSummary').textContent='No Season 2 catch-up prices are reused for Season 3.';
+      return;
+    }
+
     // SMART_BALANCE_GOAL_STOP_V2: calculate raw-only upside for INFORMATION only.
     // The recommendation itself stops at the entered goal instead of spending surplus raw
     // materials merely because a higher raw-only ceiling exists.
@@ -1485,7 +1508,7 @@ async function updateCalculator(){
       $('secondaryCostNote').hidden=true;$('secondaryCostNote').textContent='';
       $('milestoneNote').hidden=true;$('milestoneNote').textContent='';
       renderAstralPact(baselineStars);
-      renderPrimostarRewardReference(cfg.key==='s2'?historical:currentStarsNow,baselineStars,'projected');
+      renderPrimostarRewardReference(cfg.key!=='s1'?historical:currentStarsNow,baselineStars,'projected');
       saveState();return;
     }
     $('targetSkills').textContent=formatUpgradeCard(plan.skillLevels||levelsFromAverage(plan.skill,8,100,projectedCaps.skill)); $('targetRelics').textContent=formatUpgradeCard(plan.relicLevels||levelsFromAverage(plan.relic,20,10,projectedCaps.relic),{plus:true}); $('targetFantomons').textContent=formatUpgradeCard(plan.fantoLevels||levelsFromAverage(plan.fanto,4,100,projectedCaps.fanto));
@@ -1513,7 +1536,7 @@ async function updateCalculator(){
       ? baselineStars
       : (timingProjection?.seasonEndStars??planStars);
     const rewardProjectionLabel=resourceBlocked?'projected':'season-end';
-    const collectedRewardStars=cfg.key==='s2'?historical:currentStarsNow;
+    const collectedRewardStars=cfg.key!=='s1'?historical:currentStarsNow;
     renderAstralPact(achievableRewardStars,rewardProjectionLabel);
     renderPrimostarRewardReference(collectedRewardStars,achievableRewardStars,rewardProjectionLabel);
     if($('resultEyebrow')) $('resultEyebrow').textContent=resourceBlocked?'Target plan · resource shortfall':'Smart Balance goal plan';
@@ -1794,6 +1817,7 @@ function setupCalculator(){
       }
       el.addEventListener('change',()=>{
         normalizeCompactNumberInput(id);
+        if(['seasonEndDate','staminaOreYield','staminaEssenceYield','staminaSandYield'].includes(id))syncSeason3PlanningInputs();
         if(id==='targetStars'){
           // Automatic early finish always starts from the full season for the new goal.
           if(resetFinishEarlyForGoalChange()) resetMaxAchievableUi();
@@ -1831,7 +1855,7 @@ function setupCalculator(){
     PANEL_OPEN_IDS.forEach(id=>$(id)?.addEventListener('toggle',saveState));
     $('s2TargetPresets')?.addEventListener('click',e=>{
       const btn=e.target.closest?.('[data-s2-target]');
-      if(!btn || activeCalcConfig().key!=='s2') return;
+      if(!btn || activeCalcConfig().key==='s1') return;
       $('targetStars').value=btn.dataset.s2Target;
       resetFinishEarlyForGoalChange();
       resetMaxAchievableUi();
@@ -1870,7 +1894,7 @@ get characterSnapshot(){return characterSnapshot;},
 get optimizerCategoryCaps(){return optimizerCategoryCaps;},
 get gearStateFromUser(){return gearStateFromUser;},
 get createOptimizerCheckpoint(){return createOptimizerCheckpoint;}});
-const {postTargetToolState,savePostTargetToolState,clearSavedState,advanceCharacterSnapshot, rollSnapshotForward, markManualSnapshot, saveState, loadState}=createSavedState({get snapshotSeason(){return snapshotSeason;},set snapshotSeason(value){snapshotSeason=value;},
+const {postTargetToolState,savePostTargetToolState,clearSavedState,advanceCharacterSnapshot, rollSnapshotForward, markManualSnapshot, saveState, loadState}=createSavedState({get syncSeason3PlanningInputs(){return syncSeason3PlanningInputs;},get snapshotSeason(){return snapshotSeason;},set snapshotSeason(value){snapshotSeason=value;},
 get n(){return n;},
 get $(){return $;},
 get snapshotStateLoaded(){return snapshotStateLoaded;},set snapshotStateLoaded(value){snapshotStateLoaded=value;},

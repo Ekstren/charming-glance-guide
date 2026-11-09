@@ -40,14 +40,14 @@ assert(Math.max(...widths)-Math.min(...widths) < 2, `top nav buttons are not equ
 await page.locator('.sectionSwitch button[data-section="builds"]').click();
 await page.waitForTimeout(60);
 assert(!(await page.locator('#buildsSection').evaluate(el => el.hidden)), 'Builds tab did not reveal #buildsSection');
-assert(await page.locator('#classTabs button[data-class]').count() === 4, 'current T4 class tabs were not rendered');
-assert((await page.locator('#buildContent .sourceBuildNote').innerText()).includes('T4'), 'Builds page does not identify the current tier');
+assert(await page.locator('#classTabs button[data-class]').count() === 4, 'current T5 class tabs were not rendered');
+assert((await page.locator('#buildContent .sourceBuildNote').innerText()).includes('T5'), 'Builds page does not identify the current tier');
 
 const buildSources = {
-  Destroyer: 'build-guide-destroyer',
-  Dominator: 'build-guide-dominator',
-  Conqueror: 'build-guide-conqueror',
-  Guardian: 'build-guide-guardian'
+  Magister: 'build-guide-magister',
+  Prophet: 'build-guide-prophet',
+  Ravager: 'build-guide-ravager',
+  Templar: 'build-guide-templar'
 };
 for (const [cls, source] of Object.entries(buildSources)) {
   await waitBuild(cls);
@@ -135,5 +135,5 @@ if(pageErrors.length){
   throw new Error('page runtime errors:\n' + pageErrors.join('\n---\n'));
 }
 
-console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, source-linked T4 Builds + mobile layout, calculator yielded in ${calcYieldMs}ms`);
+console.log(`runtime smoke passed: ${filterCount} filters, ${timelineCount} timeline groups, equal nav ${widths.map(x=>x.toFixed(1)).join('/')}, source-linked T5 Builds + mobile layout, calculator yielded in ${calcYieldMs}ms`);
 await browser.close();

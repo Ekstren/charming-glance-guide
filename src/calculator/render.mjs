@@ -1,6 +1,6 @@
 
 import { localDeadlineLabel, nextResetLocalLabel } from '../display-time.mjs';
-import { CALC_SEASONS, S2_PLANNER_START_LEVEL, ASTRAL_PACT_NODES, ASTRAL_LABELS, ASTRAL_ORDER, GEAR_OUTPUT_IDS, fmt, fmtCompact, activeCalcConfig, remainingHoursAt, formatRemaining, characterScore, categoryInputCapsForCharacter, automaticResourceYields, targetMomentLabel, compactDurationMs, REALM_RUNS_PER_REFRESH } from './model.mjs';
+import { CALC_SEASONS, S2_PLANNER_START_LEVEL, S3_ASTRAL_THRESHOLDS, ASTRAL_PACT_NODES, ASTRAL_LABELS, ASTRAL_ORDER, GEAR_OUTPUT_IDS, fmt, fmtCompact, activeCalcConfig, remainingHoursAt, formatRemaining, characterScore, categoryInputCapsForCharacter, automaticResourceYields, targetMomentLabel, compactDurationMs, REALM_RUNS_PER_REFRESH } from './model.mjs';
 export function createCalculatorRenderer(__calculatorDeps){
 function renderRealmToolProjection(cfg=activeCalcConfig()){
     const days=Math.max(0,Math.floor(__calculatorDeps.futureRealmPurchaseDays(cfg)||0));
@@ -17,7 +17,7 @@ function renderRealmToolProjection(cfg=activeCalcConfig()){
       shovel:Math.max(0,Math.floor(__calculatorDeps.n('shovelCurrent',0)))
     };
     const realmYield=cfg.realm||{};
-    const currentLevel=Math.max(1,Math.floor(__calculatorDeps.n('charLevel',cfg.key==='s2'?100:122)));
+    const currentLevel=Math.max(1,Math.floor(__calculatorDeps.n('charLevel',cfg.key==='s3'?160:cfg.key==='s2'?100:122)));
     const worthLabel=currentLevel<cfg.realmMaxLevel?`Worth at Lv.${cfg.realmMaxLevel} max`:'Worth now';
     if(__calculatorDeps.$('hammerMaterialValue')) __calculatorDeps.$('hammerMaterialValue').textContent=`${worthLabel}: ~${fmtCompact(onHand.hammer*(Number(realmYield.ore)||0))} Raw Ore`;
     if(__calculatorDeps.$('knucklesMaterialValue')) __calculatorDeps.$('knucklesMaterialValue').textContent=`${worthLabel}: ~${fmtCompact(onHand.knuckles*(Number(realmYield.essence)||0))} Skill Essence`;
@@ -82,7 +82,7 @@ function renderTargetResourceSnapshot(reached,plan,pEnd,cfg=activeCalcConfig()){
     setRawRemaining('essenceBalance',0,carry.essence);
     setRawRemaining('sandBalance',0,carry.sand);
     setRawRemaining('treatBalance',0,carry.treat,'basic-eq.');
-    const yields=r.yields||automaticResourceYields(__calculatorDeps.n('charLevel',cfg.key==='s2'?100:122),cfg);
+    const yields=r.yields||automaticResourceYields(__calculatorDeps.n('charLevel',cfg.key==='s3'?160:cfg.key==='s2'?100:122),cfg);
     const oreYield=Math.max(0,Number(yields.orePerHammer)||0);
     const essenceYield=Math.max(0,Number(yields.essencePerKnuckles)||0);
     const sandYield=Math.max(0,Number(yields.sandPerShovel)||0);
@@ -215,7 +215,7 @@ function renderStaminaCurrentPlan(allocation,added,resources,horizon='By planned
     const mode=__calculatorDeps.staminaMode();
     if(!resources?.yields?.mapReady){
       const bracket=activeCalcConfig().realmMaxLevel;
-      write(`Current plan: waiting for the Lv.${bracket} map bracket`);
+      write(activeCalcConfig().key==='s3'&&resources?.yields?.realmMaxReady?'Enter a Stamina node reward in Materials to include gathering.':`Current plan: waiting for the Lv.${bracket} map bracket`);
       return;
     }
     if(!active.length){
@@ -399,7 +399,7 @@ let lastPrimostarRewardRenderKey='';
 
 function renderAstralPact(totalStars,projectionLabel='projected'){
     const stars=Math.max(0,Math.floor(Number(totalStars)||0));
-    const renderKey=`${stars}|${projectionLabel}`;
+    const renderKey=`${activeCalcConfig().key}|${stars}|${projectionLabel}`;
     if(renderKey===lastAstralRenderKey) return;
     lastAstralRenderKey=renderKey;
     const totals=Object.fromEntries(ASTRAL_ORDER.map(k=>[k,0]));
@@ -411,7 +411,7 @@ function renderAstralPact(totalStars,projectionLabel='projected'){
     }
     const box=__calculatorDeps.$('astralRewardTotals');
     const heading=__calculatorDeps.$('astralBonusReference')?.querySelector('h3');
-    if(heading) heading.textContent=projectionLabel==='season-end'?'Astral Pact bonuses at season end':'Projected Astral Pact bonuses';
+    if(heading) heading.textContent=activeCalcConfig().key==='s3'?'Verified Astral Pact bonuses (S1–S2)':projectionLabel==='season-end'?'Astral Pact bonuses at season end':'Projected Astral Pact bonuses';
     if(box){
       box.innerHTML=ASTRAL_ORDER.map(key=>`<span>${ASTRAL_LABELS[key]}<b>+${fmt(totals[key]||0)}%</b></span>`).join('');
     }
@@ -422,7 +422,7 @@ function renderAstralPact(totalStars,projectionLabel='projected'){
       const seasonText=stars<=480?`${s1Unlocked} of 40 documented S1 nodes unlocked`:`${unlocked} of ${ASTRAL_PACT_NODES.length} documented S1–S2 nodes unlocked`;
       const nextText=next?` · next: ${fmt(next[0])} → ${ASTRAL_LABELS[next[1]]} +${next[2]}%`:' · all documented S1–S2 nodes unlocked';
       const totalLabel=projectionLabel==='season-end'?'season-end':'projected';
-      count.textContent=`${fmt(stars)} ${totalLabel} total Primostars · ${seasonText}${nextText}.`;
+      count.textContent=`${fmt(stars)} ${totalLabel} total Primostars · ${seasonText}${nextText}.${activeCalcConfig().key==='s3'?' Season 3 bonus effects are not verified and are not added to these totals.':''}`;
     }
   }
 
@@ -441,14 +441,15 @@ function renderPrimostarRewardReference(collectedTotalStars,projectedTotalStars=
     const intro=__calculatorDeps.$('primostarRewardsIntro');
     if(!host) return;
     const s1Nodes=ASTRAL_PACT_NODES.slice(0,40);
-    const visibleNodes=cfg.key==='s2'?ASTRAL_PACT_NODES:s1Nodes;
+    const visibleNodes=cfg.key==='s1'?s1Nodes:cfg.key==='s3'?[...ASTRAL_PACT_NODES,...S3_ASTRAL_THRESHOLDS.map(threshold=>[threshold,null,0])]:ASTRAL_PACT_NODES;
     // The result card is a season-end projection, so the highlighted "next" reward must
     // be the first threshold AFTER the projected total, not merely the next reward after
     // today's current total. Otherwise a 920 projection could misleadingly say "next 305".
     const nextIndex=visibleNodes.findIndex(([threshold])=>threshold>projectedStars);
     const nextReward=visibleNodes.find(([threshold])=>threshold>projectedStars);
     const groups=[{title:'Witching Hours',nodes:s1Nodes,offset:0}];
-    if(cfg.key==='s2') groups.push({title:'Crossed Paths',nodes:ASTRAL_PACT_NODES.slice(40),offset:40});
+    if(cfg.key!=='s1') groups.push({title:'Crossed Paths',nodes:ASTRAL_PACT_NODES.slice(40),offset:40});
+    if(cfg.key==='s3')groups.push({title:'Finale of Chaos · Season 3',nodes:S3_ASTRAL_THRESHOLDS.map(threshold=>[threshold,null,0]),offset:80,thresholdsOnly:true});
     const row=(node,index)=>{
       const [threshold,key,value]=node;
       const projected=threshold>currentStars&&threshold<=projectedStars;
@@ -457,6 +458,7 @@ function renderPrimostarRewardReference(collectedTotalStars,projectedTotalStars=
     };
     // RESOURCE_TOOLS_REWARD_LAYOUT_V1: long reward tables use two vertical columns on desktop.
     const rewardLists=(group)=>{
+      if(group.thresholdsOnly)return `<p class="primostarS3Note">Verified unlock thresholds. Bonus types are not yet verified; no effects are guessed.</p><div class="primostarThresholdGrid">${group.nodes.map(([threshold],i)=>`<span class="primostarRewardRow ${threshold<=currentStars?'reached':threshold<=projectedStars?'projected':group.offset+i===nextIndex?'next':'future'}">${fmt(threshold)}</span>`).join('')}</div>`;
       if(group.nodes.length<=20) return `<div class="primostarRewardList">${group.nodes.map((node,i)=>row(node,group.offset+i)).join('')}</div>`;
       const split=Math.ceil(group.nodes.length/2);
       const left=group.nodes.slice(0,split);
@@ -469,11 +471,11 @@ function renderPrimostarRewardReference(collectedTotalStars,projectedTotalStars=
         if(projectedStars>currentStars){
           const projectionText=`${fmt(currentStars)} current · ${fmt(projectedStars)} projected`;
           intro.textContent=nextReward
-          ? `${projectionText} · ${fmt(projectedCount)} more reward${projectedCount===1?'':'s'} projected · next after projection at ${fmt(nextReward[0])}: ${ASTRAL_LABELS[nextReward[1]]} +${fmt(nextReward[2])}%.`
+          ? `${projectionText} · ${fmt(projectedCount)} more reward${projectedCount===1?'':'s'} projected · next after projection at ${fmt(nextReward[0])}: ${nextReward[1]?`${ASTRAL_LABELS[nextReward[1]]} +${fmt(nextReward[2])}%`:'Season 3 threshold' }.`
           : `${projectionText} · ${fmt(projectedCount)} more reward${projectedCount===1?'':'s'} projected · all currently available Astral Pact rewards covered.`;
         }else{
           intro.textContent=nextReward
-          ? `${fmt(currentStars)} current · next reward at ${fmt(nextReward[0])}: ${ASTRAL_LABELS[nextReward[1]]} +${fmt(nextReward[2])}%.`
+          ? `${fmt(currentStars)} current · next reward at ${fmt(nextReward[0])}: ${nextReward[1]?`${ASTRAL_LABELS[nextReward[1]]} +${fmt(nextReward[2])}%`:'Season 3 threshold' }.`
           : `${fmt(currentStars)} current · all currently available Astral Pact rewards reached.`;
       }
     }
@@ -482,20 +484,32 @@ function renderPrimostarRewardReference(collectedTotalStars,projectedTotalStars=
 function renderCalculatorSeasonChrome(cfg){
     renderLocalTimeLabels();
     __calculatorDeps.$('seasonDeadlineLabel').textContent=`${cfg.name} ends`;
-    __calculatorDeps.$('seasonDeadlineDate').textContent=localDeadlineLabel(cfg.end,cfg.key==='s2');
-    __calculatorDeps.$('historicalStarsLabel').textContent='Season 1 Primostars';
+    __calculatorDeps.$('seasonDeadlineDate').textContent=localDeadlineLabel(cfg.end,cfg.key==='s2'||(cfg.key==='s3'&&cfg.deadlineEstimated!==false));
+    const s3=cfg.key==='s3';
+    document.querySelectorAll('[data-historical-season-reference]').forEach(el=>el.hidden=s3);
+    for(const id of ['seasonEndDateField','season3StaminaInputs','season3FormulaReference'])if(__calculatorDeps.$(id))__calculatorDeps.$(id).hidden=!s3;
+    if(__calculatorDeps.$('seasonEndDate')&&!__calculatorDeps.$('seasonEndDate').value)__calculatorDeps.$('seasonEndDate').value='2027-02-25';
+    __calculatorDeps.$('historicalStarsLabel').textContent=cfg.key==='s3'?'Carried Primostars · S1 + S2':'Season 1 Primostars';
     __calculatorDeps.$('projectionNote').textContent=`Uses exact server resets (${nextResetLocalLabel()} on this device); future free 2-hour reset boosts are included automatically.`;
     if(__calculatorDeps.$('astralBonusReference')) __calculatorDeps.$('astralBonusReference').hidden=false;
     const s2Presets=__calculatorDeps.$('s2TargetPresets'),s2Gates=__calculatorDeps.$('s2ProgressionGates'),seasonHint=__calculatorDeps.$('seasonRulesHint');
-    if(s2Presets) s2Presets.hidden=cfg.key!=='s2';
+    if(s2Presets) s2Presets.hidden=cfg.key==='s1';
     if(s2Gates) s2Gates.hidden=cfg.key!=='s2';
-    if(seasonHint) seasonHint.hidden=cfg.key!=='s2';
+    if(seasonHint) seasonHint.hidden=cfg.key==='s1';
     if(s2Presets){
-      const currentTarget=Math.floor(__calculatorDeps.n('targetStars',cfg.key==='s2'?680:200));
+      if(s2Presets.dataset.seasonKey!==cfg.key){
+        if(s3){const targets=[2000,2120,2240,2360,2620,2880,3160,3440];s2Presets.innerHTML=`<span>S3 thresholds</span><div>${targets.map(target=>`<button type="button" data-s2-target="${target}">${fmt(target)}</button>`).join('')}</div><small>Verified Astral Pact thresholds · any target still works.</small>`;s2Presets.setAttribute('aria-label','Season 3 Primostar thresholds');}
+        s2Presets.dataset.seasonKey=cfg.key;
+      }
+      const currentTarget=Math.floor(__calculatorDeps.n('targetStars',cfg.key==='s3'?2360:cfg.key==='s2'?680:200));
       s2Presets.querySelectorAll('[data-s2-target]').forEach(btn=>btn.classList.toggle('active',Number(btn.dataset.s2Target)===currentTarget));
     }
     const setInputMax=(id,max)=>{const el=__calculatorDeps.$(id);if(!el)return;if(Number.isFinite(max))el.max=String(max);else el.removeAttribute('max');};
-    if(cfg.key==='s2'){
+    if(s3){
+      __calculatorDeps.$('seasonRulesHint').innerHTML='<b>Season 3 · Finale of Chaos:</b> scoring opens at Lv.160 · +65 fixed · 13 score / Primostar. Enter all Primostars already collected from S1 + S2. Old seasonal progression must be refreshed after rollover. Stamina income is included only after its S3 node rewards are entered.';
+      const caps=categoryInputCapsForCharacter(__calculatorDeps.characterSnapshot(cfg).level,cfg);
+      for(const [id,key,min,step] of [['skillLevel','skill',130,.125],['relicLevel','relic',13,.05],['fantomonLevel','fanto',130,.25],['gearLevel','gear',130,.2]]){const input=__calculatorDeps.$(id);if(input){input.min=String(min);input.step=String(step);setInputMax(id,caps[key]);}}
+    }else if(cfg.key==='s2'){
       __calculatorDeps.$('seasonRulesHint').innerHTML='<b>S2 scoring still starts at Lv.130:</b> +45 fixed · 27 score / Primostar · normal floor Lv.130 / Relics above +13 · weights Character 100, Gear 18, Skill 7, Relic 33, Fantomon 8. <b>Lv.120+</b> can use the planner now; while you are Lv.120–130 it runs a clearly labeled <b>Lv.131 unlock preview</b> for upgrade availability so stockpiled resources can be evaluated before full seasonal progression opens. No pre-130 Character score is awarded. Starter floor: Gear 130 · Skills 130 · Fantomons 130 · Relics +13.';
       const currentCaps=categoryInputCapsForCharacter(__calculatorDeps.characterSnapshot(cfg).level,cfg);
       /* S2_SCORING_INPUT_FLOOR_V2: Character Lv.130 unlocks the planner; actual category
@@ -543,9 +557,9 @@ function clearS2PreScoring(cfg){
     __calculatorDeps.$('resultProjectedCharacter').textContent=`Lv.${p.level} (${(p.pct*100).toFixed(1)}%)`;
     __calculatorDeps.$('currentStars').textContent='—'; __calculatorDeps.$('currentScoreNow').textContent='—'; __calculatorDeps.$('summaryOptimizedScore').textContent='—'; __calculatorDeps.$('desiredScore').textContent='—';
     __calculatorDeps.$('targetMessage').hidden=false; __calculatorDeps.$('targetMessage').classList.remove('danger'); __calculatorDeps.$('targetMessage').classList.add('warning','caution');
-    __calculatorDeps.$('targetMessage').textContent=`Season Power scoring still uses the Lv.${cfg.scoreFloor} baseline, but forward planning becomes available at Lv.${S2_PLANNER_START_LEVEL}. Current Lv.${current.level} is below that planning threshold, so the calculator stays paused until Lv.${S2_PLANNER_START_LEVEL}.`;
+    __calculatorDeps.$('targetMessage').textContent=`Season Power scoring still uses the Lv.${cfg.scoreFloor} baseline, but forward planning becomes available at Lv.${cfg.plannerStartLevel??S2_PLANNER_START_LEVEL}. Current Lv.${current.level} is below that planning threshold, so the calculator stays paused until Lv.${cfg.plannerStartLevel??S2_PLANNER_START_LEVEL}.`;
     if(__calculatorDeps.$('targetStatus')){__calculatorDeps.$('targetStatus').textContent='locked';__calculatorDeps.$('targetStatus').classList.remove('notMet');}
-    __calculatorDeps.$('optimizerSummary').textContent=`Return at Lv.${S2_PLANNER_START_LEVEL} and enter your actual state. From there the calculator projects EXP and resources through the Lv.${cfg.scoreFloor} Season Power baseline and season end.`;
+    __calculatorDeps.$('optimizerSummary').textContent=`Return at Lv.${cfg.plannerStartLevel??S2_PLANNER_START_LEVEL} and enter your actual state. From there the calculator projects EXP and resources through the Lv.${cfg.scoreFloor} Season Power baseline and season end.`;
     __calculatorDeps.$('optimizedScore').textContent='—';
     __calculatorDeps.$('materialRealmRecommendation').hidden=true;
     renderRealmToolProjection(cfg);
@@ -567,9 +581,9 @@ function clearS2ProjectedAtFloor(cfg,p=__calculatorDeps.projectCharacter(cfg)){
     __calculatorDeps.$('targetMessage').hidden=false;
     __calculatorDeps.$('targetMessage').classList.remove('danger');
     __calculatorDeps.$('targetMessage').classList.add('warning','caution');
-    __calculatorDeps.$('targetMessage').textContent=`Projected season-end Character is Lv.${p.level}. The S2 optimizer stays paused until the projection reaches Lv.131, so a Lv.130-or-lower projection never runs the heavy upgrade search.`;
-    if(__calculatorDeps.$('targetStatus')){__calculatorDeps.$('targetStatus').textContent='waiting for Lv.131';__calculatorDeps.$('targetStatus').classList.remove('notMet');}
-    __calculatorDeps.$('optimizerSummary').textContent='No Gear / Skill / Relic / Fantomon optimization runs while projected season-end Character remains Lv.130 or lower.';
+    __calculatorDeps.$('targetMessage').textContent=`Projected season-end Character is Lv.${p.level}. The ${cfg.name} optimizer stays paused until the projection reaches Lv.${cfg.scoreFloor+1}, so a Lv.${cfg.scoreFloor}-or-lower projection never runs the heavy upgrade search.`;
+    if(__calculatorDeps.$('targetStatus')){__calculatorDeps.$('targetStatus').textContent=`waiting for Lv.${cfg.scoreFloor+1}`;__calculatorDeps.$('targetStatus').classList.remove('notMet');}
+    __calculatorDeps.$('optimizerSummary').textContent=`No Gear / Skill / Relic / Fantomon optimization runs while projected season-end Character remains Lv.${cfg.scoreFloor} or lower.`;
     __calculatorDeps.$('optimizedScore').textContent='—';
     ['targetSkills','targetRelics','targetFantomons'].forEach(id=>{if(__calculatorDeps.$(id))__calculatorDeps.$(id).textContent='—';});
     GEAR_OUTPUT_IDS.forEach(id=>{if(__calculatorDeps.$(id))__calculatorDeps.$(id).textContent='—';});
@@ -603,6 +617,7 @@ function clearS2ForRequiredPlannerInputs(cfg,requirements,p=null){
     if(__calculatorDeps.$('resultStamina')) __calculatorDeps.$('resultStamina').hidden=true;
     const missing=[];
     if(!requirements.hasBed) missing.push('Bed EXP/hr');
+    if(requirements.hasHistorical===false)missing.push('carried Primostars from earlier seasons');
     missing.push(...requirements.missingCart);
     // Character projection is lightweight and only needs Bed EXP; keep it available while
     // the material-production guard continues to block the expensive Primostar optimizer.
@@ -623,7 +638,7 @@ function clearS2ForRequiredPlannerInputs(cfg,requirements,p=null){
       __calculatorDeps.$('targetMessage').hidden=false;
       __calculatorDeps.$('targetMessage').classList.remove('danger');
       __calculatorDeps.$('targetMessage').classList.add('warning','caution');
-      __calculatorDeps.$('targetMessage').textContent=`Enter ${missing.join(' and ')} to run the S2 optimizer. Saved materials and Material Realm purchases can stay at 0.`;
+      __calculatorDeps.$('targetMessage').textContent=`Enter ${missing.join(' and ')} to run the ${cfg.name} optimizer. Saved materials and Material Realm purchases can stay at 0.`;
     }
     if(__calculatorDeps.$('optimizerSummary')){
       __calculatorDeps.$('optimizerSummary').hidden=false;
@@ -639,6 +654,7 @@ function clearS2ForRequiredPlannerInputs(cfg,requirements,p=null){
     if(__calculatorDeps.$('milestoneNote')){__calculatorDeps.$('milestoneNote').hidden=true;__calculatorDeps.$('milestoneNote').textContent='';}
     const calcSection=__calculatorDeps.$('calculatorSection');
     if(calcSection) calcSection.dataset.lastSolveMs='0.0';
+    const carried=Math.max(0,Math.floor(__calculatorDeps.n('historicalStars',0)));renderAstralPact(carried);renderPrimostarRewardReference(carried,carried);
     __calculatorDeps.saveState();
   }
 return {renderRealmToolProjection, renderRealmDailyRecommendations, renderLocalTimeLabels, renderTargetResourceSnapshot, renderPostTargetGains, renderTargetTiming, renderStaminaCurrentPlan, hidePlanBalance, setRawRemaining, setSandBalance, setTreatBalance, setBalance, setToolBalance, appendStaminaProjection, setRealmShortfallBreakdown, renderAstralPact, renderPrimostarRewardReference, renderCalculatorSeasonChrome, clearS2PreScoring, clearS2ProjectedAtFloor, clearCalcForRollover, clearS2ForRequiredPlannerInputs};

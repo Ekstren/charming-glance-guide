@@ -70,6 +70,9 @@ export const timelineData = [
 
 
     // ---- Season 3 · Aethyris ----
+    // Current content profile as of Nov. 8, 2026. The maintained Nov. 5 / Day-114
+    // anchor and later Charming Glance dates remain projections: current Global
+    // content names do not confirm this server's exact unlock calendar.
     // S3_SUMMARY_ONLY_CLEANUP_SEP9_V1: visible S3 cards were stripped of confidence/source-audit prose; provenance remains in comments and maintained research notes.
     // S3_AETHYRIS_SEP9_RESEARCH_V1: LDShop's Sep. 9 Season 3 guide independently names the Aethyris subzones Skyrend Cliff, Unbroken Camp, and Harmonic Crystal. Keep these names as current secondary-source localization until Global in-game text or an official announcement supersedes them.
     // S3_DUNGEON_LOCALIZATION_SEP9_V1: the same current Sep. 9 guide names Crystal Spiral Tree's Sylvan Set and the second Aethyris dungeon Eternal Garden with the Lifespring Set. This supersedes the older pre-release label Eternal Blossom Courtyard while preserving the existing Day-127 cadence placement.
@@ -78,13 +81,19 @@ export const timelineData = [
     // S3_T5_GUIDE_STATUS_SEP20_V1: Prydwen publishes all four T5 guides, including Templar (updated Sep. 10): https://www.prydwen.gg/sword-x-staff/guides/build-guide-templar
     ['2026-11-05',114,'Class Advancement','Tier 5 class advancement','Player Lv.136 · Class Lv.180 · Tier 4 class Lv.40 · Conqueror → Ravager · Guardian → Templar · Destroyer → Magister · Dominator → Prophet','class-advancement'],
     // S3_BOND_ODYSSEY_STONE_SYMPHONY_SEP9_V1: LDShop's Sep. 9 Season 3 guide identifies Bond Odyssey/Vista Dispatch and Stone Symphony as Aethyris systems, with timed companion expeditions and souvenir rewards. The visible row stays summary-only; the Nov. 5 placement follows the maintained S3 Day-114 rollover model.
-    ['2026-11-05',114,'Feature','Bond Odyssey + Stone Symphony','Season 3 passive progression · Vista Dispatch milestones · timed companion expeditions · souvenir rewards','feature'],
-    // S3_COMPANIONS_SEP9_V1: LDShop's Sep. 9 Season 3 guide names Isla and Astrid as new Aethyris companions.
-    ['2026-11-05',114,'Companions','Isla + Astrid','New Season 3 companions joining in Aethyris','companions'],
-    ['2026-11-05',114,'Feature','Aethyris area-unlock stockpile','Gateway Key ×5 · Magic Drill ×2 · Water Mine ×2 · “cloud key” ×2 · hammer ×5 (last two use QY labels; exact future Global item names unverified)','feature'],
+    ['2026-11-05',114,'Feature','Bond Odyssey + Stone Symphony','Season 3 passive progression · Vista Dispatch milestones · timed companion expeditions · souvenir rewards','feature',null,'unconfirmed'],
+    // S3_COMPANIONS_NOV8_V2: current authored companion data plus Purrwiki's NPC
+    // catalog identify all seven Aethyris companions. See season3-companions-research.md.
+    ['2026-11-05',114,'Companions','Aethyris companions','Freya · Sylvia · Ophelia · Vigard · Gerald · Astrid · Isla · permanent affinity progression','companions',null,'unconfirmed'],
+    ['2026-11-05',114,'Feature','Season 3 launch checklist','Claim season and Astral Pact rewards · review Tier 5 loadouts · push reachable Aethyris progression · check new companion gifts. Date is the projected season reference, not an official Charming Glance notice.','feature',null,'unconfirmed'],
+    // Current authored area-unlock data: https://www.purrwikimania.com/area-unlocks
+    // Checked Nov. 8: 16 item-gated blockers; other level/rank/power gates still apply.
+    ['2026-11-05',114,'Feature','Aethyris area-unlock stockpile','Gateway Key ×5 · Magic Drill ×2 · Water Mine ×2 · Cloud Jade ×2 · Purifying Hammer ×5','feature',null,'unconfirmed'],
     ['2026-11-18',127,'Dungeon','Eternal Garden','Normal 12.5M + Player Lv.160 · Hard 15M · Nightmare 18M · Purgatory 28.5M · Lifespring Set','dungeon'],
     ['2026-11-18',127,'Feature','Season Power unlock','Player Lv.160','feature'],
-    ['2026-11-19',128,'Seasonal Map','Astral Odyssey','Aethyris season map · pre-release English/data name','seasonal-map'],
+    // Current Global name: Cosmic Voyage (formerly listed as Astral Odyssey).
+    // https://www.valkyrie.tips/changelog?c=fix and Purrwiki's Haven Among Stars title.
+    ['2026-11-19',128,'Seasonal Map','Cosmic Voyage','Aethyris seasonal exploration map · date follows the maintained Day-128 projection','seasonal-map',null,'unconfirmed'],
     ['2026-12-02',141,'Dungeon','Abyssal Bastion','Normal 20M · Hard 26M · Nightmare 30M · Purgatory 46M · pre-release English/data name','dungeon'],
     ['2026-12-05',144,'Ancient Relic','Aethyris Relic II','Second Aethyris relic gacha · final Global banner title not yet verified','ancient-relic'],
     // Official dungeon preview: https://discord.com/channels/1410146553573802088/1427172679521407056/1560523971177218138

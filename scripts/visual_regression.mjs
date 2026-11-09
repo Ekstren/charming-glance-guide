@@ -22,7 +22,7 @@ async function capture(root,width,theme){
  const errors=[];page.on('pageerror',e=>errors.push(String(e)));
  await page.route(/^https?:/,route=>route.abort());
  await page.addInitScript(()=>{
-  const NativeDate=Date,now=Date.parse('2026-09-13T20:00:00Z');
+  const NativeDate=Date,now=Date.parse('2026-11-08T20:00:00Z');
   globalThis.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}};
  });
  await page.goto(pathToFileURL(path.join(root,'index.html')).href);
@@ -34,12 +34,12 @@ async function capture(root,width,theme){
   if(section==='calculator'){
    await waitForCalculatorReady(page);
    await page.evaluate(()=>{
-    const fields={targetStars:1060,historicalStars:253,charLevel:136,charExp:7156002,bedExp:565321,finishEarlyDays:6.5,skillLevel:140.125,relicLevel:14.4,fantomonLevel:139,gearLevel:147.2,oreRate:1184,essenceRate:1387,sandRate:850,treatRate:91,oreCurrent:240000,essenceCurrent:420000,sandCurrent:350000};
+    const fields={targetStars:2360,historicalStars:1060,charLevel:161,charExp:0,bedExp:3000000,finishEarlyDays:0,skillLevel:161,relicLevel:18,fantomonLevel:161,gearLevel:161,oreRate:3000,essenceRate:3500,sandRate:2300,treatRate:250,oreCurrent:240000,essenceCurrent:420000,sandCurrent:350000};
     for(const [id,value] of Object.entries(fields))document.getElementById(id).value=value;
     document.getElementById('targetStars').dispatchEvent(new Event('change',{bubbles:true}));
    });
    await page.waitForFunction(()=>/Lv\./.test(document.getElementById('projectedCharacter').value||document.getElementById('projectedCharacter').textContent));
-   await page.waitForTimeout(700);
+   await page.waitForFunction(()=>window.__sxsCalculatorSettledV1?.(),null,{timeout:60000});
   }
   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
   await page.waitForTimeout(150);
@@ -53,23 +53,23 @@ async function capture(root,width,theme){
   if(width!==650){
    if(section==='builds'){
     await page.waitForFunction(()=>!!document.querySelector('#classTabs button[data-class]'));
-    for(const cls of ['Destroyer','Dominator','Conqueror','Guardian']){
+    for(const cls of await page.locator('#classTabs [data-class]').evaluateAll(nodes=>nodes.map(n=>n.dataset.class))){
      await page.locator(`#classTabs [data-class="${cls}"]`).click();
      await page.waitForFunction(name=>document.querySelector('#classTabs button.active')?.dataset.class===name,cls);
      await page.waitForTimeout(120);
-     shots[`build-${cls}`]=await page.locator('#buildsSection').screenshot();
+     shots[`build-${({Magister:'Destroyer',Prophet:'Dominator',Ravager:'Conqueror',Templar:'Guardian'})[cls]||cls}`]=await page.locator('#buildsSection').screenshot();
     }
    }
    if(section==='companions'){
-    for(const cls of ['Destroyer','Dominator','Conqueror','Guardian']){
+    for(const cls of await page.locator('#companionClassTabs [data-companion-class]').evaluateAll(nodes=>nodes.map(n=>n.dataset.companionClass))){
      await page.locator(`#companionClassTabs [data-companion-class="${cls}"]`).click();
-     const roles=cls==='Dominator'?['dps','heals']:[null];
+     const roles=['Prophet','Dominator'].includes(cls)?['dps','heals']:[null];
      for(const role of roles){
       if(role)await page.locator(`[data-companion-role="${role}"]`).click();
       // Element screenshots scroll the page; park the pointer outside the section
       // so a tab cannot gain hover as content moves beneath the last click.
       await page.mouse.move(0,0);
-      shots[`companion-${cls}-${role||'default'}`]=await page.locator('#companionsSection').screenshot();
+      shots[`companion-${({Magister:'Destroyer',Prophet:'Dominator',Ravager:'Conqueror',Templar:'Guardian'})[cls]||cls}-${role||'default'}`]=await page.locator('#companionsSection').screenshot();
      }
     }
    }

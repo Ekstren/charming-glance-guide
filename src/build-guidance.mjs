@@ -1,42 +1,168 @@
-// Gear and Fantomon guidance retained from the existing guide and cross-checked
-// against the current class pages. Published skill bars live separately in builds.mjs.
+// Season 3 / T5 priorities from the linked author-published class guides.
+// Affix Preview numeric maxima below are retained verbatim from the user-confirmed baseline.
 export const BUILD_STAT_PROFILES={
-  Conqueror:{
-    rule:'Current T4 evidence supports ATK ≥ Elemental Mastery on main secondaries. Crit Rate/Crit DMG are the premium reroll stats; Accuracy matters more in PvP and high-Block fights.',
-    rows:[['Sword','ATK ≥ Elemental Mastery > SPD'],['Gauntlets','ATK ≥ Elemental Mastery > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','ATK ≥ Elemental Mastery > SPD']],
-    substats:'Crit Rate / Crit DMG > Accuracy > Elemental Mastery > SPD / SPD% > ATK / ATK%'
+  "Ravager": {
+    "rule": "The T5 source prioritizes Elemental Mastery on offensive secondaries. Crit remains the premium reroll target; special conversion or debuff-damage affixes depend on the rest of your gear.",
+    "rows": [
+      [
+        "Sword",
+        "Elemental Mastery > ATK > SPD"
+      ],
+      [
+        "Gauntlets",
+        "Elemental Mastery > ATK > SPD"
+      ],
+      [
+        "Helmet",
+        "DEF ≥ Physical RES = Elemental RES > HP"
+      ],
+      [
+        "Chest",
+        "DEF ≥ Physical RES = Elemental RES > HP"
+      ],
+      [
+        "Boots",
+        "Elemental Mastery > ATK > SPD"
+      ]
+    ],
+    "substats": "Crit Rate / Crit DMG > Elemental Mastery / Accuracy > HP or SPD → ATK conversion / SPD / debuff-target Technique DMG > ATK / ATK%"
   },
-  Destroyer:{
-    rule:'S2 Destroyer is balance-sensitive, not permanently EM-first. Keep a healthy Elemental Mastery floor, then flat ATK can match or beat more EM on developed accounts. Crit remains premium; dummy-test close swaps.',
-    rows:[['Staff','ATK ≈ Elemental Mastery > Crit > SPD'],['Codex','ATK ≈ Elemental Mastery > Crit > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','ATK ≈ Elemental Mastery > SPD']],
-    substats:'Crit Rate / Crit DMG > ATK / ATK% ≈ Elemental Mastery > Accuracy > SPD / SPD%'
+  "Magister": {
+    "rule": "T5 prioritizes Elemental Mastery on Staff, Codex and Boots. The source values S3 Wind Shield, damage-evasion and paired Crit affixes; defensive power and gear-score gates can outweigh a close offensive comparison.",
+    "rows": [
+      [
+        "Staff",
+        "Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate"
+      ],
+      [
+        "Codex",
+        "Elemental Mastery > Crit > ATK > SPD > Effect Hit Rate"
+      ],
+      [
+        "Helmet",
+        "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+      ],
+      [
+        "Chest",
+        "DEF ≥ Physical RES = Elemental RES > HP"
+      ],
+      [
+        "Boots",
+        "Elemental Mastery > SPD > ATK"
+      ]
+    ],
+    "substats": "Wind Shield / damage evasion / Lightning-on-movement / paired Crit + Accuracy or Crit DMG > Elemental Mastery / Crit Rate / Accuracy / Crit DMG; PvP damage/resistance for PvP"
   },
-  Guardian:{
-    tank:{
-      label:'Tank',
-      rule:'Tank Guardian is built around Block first. After that, DEF/DMG RES drive survival while SPD keeps Taunt, shields and buffs cycling before the enemy can act.',
-      rows:[['Sword','SPD > ATK > Physical Mastery > Elemental Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
-      substats:'Block Rate > DEF > SPD > HP > DEF% > SPD% > HP%'
+  "Templar": {
+    "tank": {
+      "label": "Tank",
+      "rule": "Prioritize paired Block Rate + Block Efficiency and the Season 3 weapon Auto-protect affix. SPD drives buff and Taunt timing; choose enough Block for the opponent’s Accuracy rather than a fixed universal target.",
+      "rows": [
+        [
+          "Sword",
+          "SPD > ATK > Elemental Mastery > Physical Mastery"
+        ],
+        [
+          "Shield",
+          "Block > DEF > HP > Physical RES = Elemental RES"
+        ],
+        [
+          "Helmet",
+          "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+        ],
+        [
+          "Chest",
+          "DEF ≥ Physical RES = Elemental RES > HP"
+        ],
+        [
+          "Boots",
+          "SPD > ATK = Elemental Mastery > Physical Mastery / Effect Hit Rate"
+        ]
+      ],
+      "substats": "Block Rate + Block Efficiency / weapon Auto-protect > Block Rate / paired Block + Crit RES > paired Crit / PvP damage and resistance; defensive stats as needed"
     },
-    dps:{
-      label:'DPS',
-      rule:'DPS Guardian uses the offensive Water/counter shell, but Block still matters because the class gains damage by staying active. After a healthy Block floor, Crit Rate, SPD and ATK/Mastery are the damage-quality rolls.',
-      rows:[['Sword','SPD > ATK > Elemental Mastery > Physical Mastery'],['Shield','DEF > HP > Physical RES = Elemental RES'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','SPD > ATK > Elemental Mastery = Physical Mastery']],
-      substats:'Block Rate > Crit Rate > SPD / SPD% > ATK / ATK% > Elemental Mastery > Crit DMG'
+    "dps": {
+      "label": "DPS",
+      "rule": "The offensive T5 bars still use the source’s SPD-first gear priorities. Keep Block for the matchup, then compare paired Crit and offensive affixes against the defensive utility you would lose.",
+      "rows": [
+        [
+          "Sword",
+          "SPD > ATK > Elemental Mastery > Physical Mastery"
+        ],
+        [
+          "Shield",
+          "Block > DEF > HP > Physical RES = Elemental RES"
+        ],
+        [
+          "Helmet",
+          "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+        ],
+        [
+          "Chest",
+          "DEF ≥ Physical RES = Elemental RES > HP"
+        ],
+        [
+          "Boots",
+          "SPD > ATK = Elemental Mastery > Physical Mastery / Effect Hit Rate"
+        ]
+      ],
+      "substats": "Block Rate + Block Efficiency / weapon Auto-protect > paired Crit Rate + Crit DMG or Accuracy > matchup Block / PvP damage and resistance > flat stats / Mastery"
     }
   },
-  Dominator:{
-    dps:{
-      label:'DPS',
-      rule:'Effect Hit Rate is a threshold stat: get enough to land Erosion reliably, then favor damage-quality affixes instead of blindly stacking more EHR. If Erosion is unreliable, hybrid/direct damage is safer.',
-      rows:[['Staff','Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD'],['Orb','Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD'],['Helmet','DEF ≥ Physical RES = Elemental RES > HP > Effect RES'],['Chest','DEF ≥ Physical RES = Elemental RES > HP'],['Boots','Elemental Mastery > ATK > SPD']],
-      substats:'Effect Hit Rate > Crit Rate / Crit DMG > Elemental Mastery > ATK / ATK% > SPD / SPD%'
+  "Prophet": {
+    "dps": {
+      "label": "DPS",
+      "rule": "T5 direct damage still needs reliable debuffs. Get enough Effect Hit Rate for the encounter, then favor paired Crit or damage against debuffed targets; do not treat Effect Hit Rate as an unlimited stacking goal.",
+      "rows": [
+        [
+          "Staff",
+          "Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD"
+        ],
+        [
+          "Orb",
+          "Effect Hit Rate ≥ Elemental Mastery ≥ ATK > SPD"
+        ],
+        [
+          "Helmet",
+          "DEF ≥ Physical RES = Elemental RES > HP > Effect RES"
+        ],
+        [
+          "Chest",
+          "DEF ≥ Physical RES = Elemental RES > HP"
+        ],
+        [
+          "Boots",
+          "Elemental Mastery > ATK > SPD"
+        ]
+      ],
+      "substats": "Paired Crit + Accuracy / Crit DMG and debuffed-target damage > Effect Hit Rate as needed / stat-to-ATK conversion / Crit / Elemental Mastery; PvP or monster bonuses by content"
     },
-    heals:{
-      label:'Heals',
-      rule:'Healer Dominator is SPD-first on Staff/Orb/Boots and HP-first on Helmet/Chest. Effect Hit Rate is the second main-secondary target on Staff/Orb, but only an average healer affix when rerolling substats.',
-      rows:[['Staff','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Orb','SPD > Effect Hit Rate > Elemental Mastery > ATK'],['Helmet','HP > DEF ≥ Physical RES = Elemental RES > Effect RES'],['Chest','HP > DEF ≥ Physical RES = Elemental RES'],['Boots','SPD > Elemental Mastery > ATK']],
-      substats:'Healing Boost > SPD / SPD% > HP / HP% > DMG RES'
+    "heals": {
+      "label": "Heals",
+      "rule": "Healer Prophet retains SPD-first offensive slots and HP-first armor. Healing Boost and paired Block are premium survival/support rolls; the source favors broadly useful DPS rolls when a setup also plays damage.",
+      "rows": [
+        [
+          "Staff",
+          "SPD > Effect Hit Rate > Elemental Mastery > ATK"
+        ],
+        [
+          "Orb",
+          "SPD > Effect Hit Rate > Elemental Mastery > ATK"
+        ],
+        [
+          "Helmet",
+          "HP > DEF ≥ Physical RES = Elemental RES > Effect RES"
+        ],
+        [
+          "Chest",
+          "HP > DEF ≥ Physical RES = Elemental RES"
+        ],
+        [
+          "Boots",
+          "SPD > Elemental Mastery > ATK"
+        ]
+      ],
+      "substats": "Block Rate + Block Efficiency / Healing Boost > damage evasion / paired Block + Crit RES / SPD / SPD% / HP / HP% / paired DMG RES + Healing Boost"
     }
   }
 };
@@ -52,32 +178,155 @@ export const ROLL_VALUES={
 };
 
 export const ROLL_PROFILES={
-  Conqueror:['crit','critdmg','critpair','acc','critacc','em','spd','spdpct','atk','atkpct'],
-  Destroyer:['crit','critdmg','critpair','atk','atkpct','em','acc','critacc','spd','spdpct'],
-  Guardian:{tank:['block','blockpair','def','spd','hp','defpct','spdpct','hppct'],dps:['block','blockpair','crit','critdmg','spd','spdpct','atk','atkpct','em']},
-  Dominator:{dps:['ehr','crit','critdmg','critpair','em','atk','atkpct','spd','spdpct'],heals:['heal','healpair','spd','spdpct','hp','hppct','dmgres']}
+  "Ravager": [
+    "crit",
+    "critdmg",
+    "critpair",
+    "acc",
+    "critacc",
+    "em",
+    "spd",
+    "spdpct",
+    "atk",
+    "atkpct"
+  ],
+  "Magister": [
+    "crit",
+    "critdmg",
+    "critpair",
+    "critacc",
+    "em",
+    "acc",
+    "spd",
+    "atk"
+  ],
+  "Templar": {
+    "tank": [
+      "block",
+      "blockpair",
+      "def",
+      "spd",
+      "hp",
+      "defpct",
+      "spdpct",
+      "hppct"
+    ],
+    "dps": [
+      "block",
+      "blockpair",
+      "crit",
+      "critdmg",
+      "critpair",
+      "critacc",
+      "spd",
+      "atk",
+      "em"
+    ]
+  },
+  "Prophet": {
+    "dps": [
+      "ehr",
+      "crit",
+      "critdmg",
+      "critpair",
+      "critacc",
+      "em",
+      "atk",
+      "atkpct",
+      "spd",
+      "spdpct"
+    ],
+    "heals": [
+      "heal",
+      "healpair",
+      "block",
+      "blockpair",
+      "spd",
+      "spdpct",
+      "hp",
+      "hppct",
+      "dmgres"
+    ]
+  }
 };
 
 export const FANTOMON_GUIDANCE={
-  Destroyer:[
-    ['Damage lead','Nyxarchon','Its damage and DEF reduction make it the guide’s main Mythic pick for this glass-cannon class.'],
-    ['Before Nyx','Sylvaerie · Zeioletus','Permanent ATK + SPD or recurring burst; compare them in test mode with your stats.'],
-    ['Survival option','Armopi','DEF and a personal shield can buy the extra turn you need.']
+  "Ravager": [
+    [
+      "Damage lead",
+      "Nyxarchon",
+      "The T5 guide favors its damage and DEF reduction, especially in longer fights."
+    ],
+    [
+      "Opening tempo",
+      "Pandarial",
+      "Opening cooldown reduction supports burst; compare it with Nyx for the fight’s length."
+    ],
+    [
+      "PvP / alternatives",
+      "Aegiswing · Sylvaerie · Zeioletus",
+      "Aegiswing supplies survival. Compare the non-Mythic damage options with your own stats."
+    ]
   ],
-  Conqueror:[
-    ['All-content lead','Nyxarchon','Damage and DEF reduction make it the class guide’s broad pick, especially in longer fights.'],
-    ['Later S2 option','Pandarial','Opening cooldown reduction front-loads damage; Nyxarchon can still win longer fights. It releases later in the season.'],
-    ['PvP / alternatives','Aegiswing · Sylvaerie · Zeioletus','Aegiswing is the PvP choice; Sylvaerie and Zeioletus are damage options to compare on your stats.']
+  "Magister": [
+    [
+      "General lead",
+      "Pandarial",
+      "The T5 source’s usual pick: opening cooldown reduction lets the published bars omit Rapid Cast, with healing utility."
+    ],
+    [
+      "Damage alternative",
+      "Nyxarchon",
+      "DEF reduction and personal damage remain useful when longer-fight output wins over opening tempo."
+    ],
+    [
+      "PvP / later S3",
+      "Aegiswing · Prismora",
+      "Aegiswing is a defensive option. Prismora is a later-season healing option, but the source gives it low Mage priority."
+    ]
   ],
-  Guardian:[
-    ['Priority Mythic','Aegiswing','The class guide’s top Guardian investment for extra Taunt, debuffs, and less damage from taunted enemies.'],
-    ['Dispel / damage','Kels · Nyxarchon','Kels adds Dispel and DEF Down when manifested; Nyxarchon amplifies team damage with debuffs.'],
-    ['Team mitigation','Terragon · Chomusuke','Prydwen suggests Terragon when a Guild Boss team needs more damage reduction; Chomusuke remains a workable option.']
+  "Templar": [
+    [
+      "Tank lead",
+      "Aegiswing",
+      "Taunt, debuffs and survival remain the source’s priority tank investment."
+    ],
+    [
+      "Published dungeon bar",
+      "Pandarial",
+      "The Generic Dungeon/4vs4 preset assumes its opening cooldown reduction; it also supports offensive bars."
+    ],
+    [
+      "Team support",
+      "Kels · Nyxarchon",
+      "Kels supplies Dispel and potential DEF reduction; Nyx adds damage and debuffs."
+    ],
+    [
+      "Later S3 PvP",
+      "Prismora",
+      "A later Aethyris unlock offering Purity and a revive. Its one-debuff cleanse is not a blanket answer to double Taunt."
+    ]
   ],
-  Dominator:[
-    ['DPS lead','Nyxarchon','The class guide’s best-in-slot for Dark damage and its supporting effect.'],
-    ['F2P damage options','Zeioletus · Sylvaerie','Zeioletus is a damage stopgap; Sylvaerie buffs ATK and SPD and can win on some stat spreads.'],
-    ['Healing / support','Mandragora · Terragon','Mandragora adds healing to ally-targeted Techniques; Terragon can reduce enemy ATK.'],
-    ['Later S2 support','Pandarial','Its opening cooldown reduction supports early healing. It releases later in the season, so check availability first.']
+  "Prophet": [
+    [
+      "Damage / healing lead",
+      "Pandarial",
+      "The T5 guide favors opening cooldown reduction and Fragility for burst damage and early healing."
+    ],
+    [
+      "Damage / PvP alternatives",
+      "Nyxarchon · Aegiswing",
+      "Nyx adds damage and DEF reduction; Aegiswing is the high-end PvP survival option."
+    ],
+    [
+      "Before a Mythic",
+      "Zeioletus · Sylvaerie · Mandragora",
+      "Compare Zeioletus and Sylvaerie for damage; Mandragora is the healing-focused alternative."
+    ],
+    [
+      "Later S3 support",
+      "Prismora",
+      "A later Aethyris unlock for dedicated healing, immunity and revival; it gives up Pandarial’s opening cooldown reduction."
+    ]
   ]
 };

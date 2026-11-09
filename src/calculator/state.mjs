@@ -3,7 +3,7 @@ import { seasonKeyAt } from '../season-clock.mjs';
 import { STORAGE_KEY, PANEL_OPEN_IDS, CALC_SEASONS, LEGACY_GEAR_IDS, INPUT_IDS, CHECK_IDS, clamp, activeCalcConfig, projectionBedClaimableHoursAt, expRequiredForLevel, POST_TARGET_TOOL_STORAGE_KEY, REALM_RUNS_PER_REFRESH } from './model.mjs';
 export function createSavedState(__calculatorDeps){
 function advanceCharacterSnapshot(deltaExp,cfg=CALC_SEASONS[__calculatorDeps.snapshotSeason] || activeCalcConfig()){
-    let lvl = Math.max(1, Math.floor(__calculatorDeps.n('charLevel',cfg.key==='s2'?100:122)));
+    let lvl = Math.max(1, Math.floor(__calculatorDeps.n('charLevel',cfg.key==='s3'?160:cfg.key==='s2'?100:122)));
     let exp = Math.max(0,__calculatorDeps.n('charExp',0)) + Math.max(0,deltaExp);
     let safety=0;
     while(safety++ < 400){
@@ -87,7 +87,7 @@ function saveState(){
     const state = {
       gearLocked: __calculatorDeps.gearLocked,
       theme: document.documentElement.dataset.theme || 'dark',
-      snapshotSchema: 8,
+      snapshotSchema: 9,
       snapshotAt: __calculatorDeps.snapshotAtMs,
       snapshotSeason: __calculatorDeps.snapshotSeason,
       snapshotCarry: {...__calculatorDeps.snapshotCarry},
@@ -125,8 +125,9 @@ function loadState(){
       // Preserve existing early-finish plans as the new automatic preference.
       if(state.finishEarlyAuto===undefined) state.finishEarlyAuto=Number(state.finishEarlyDays)>0;
       INPUT_IDS.forEach(id => { if (state[id] !== undefined && __calculatorDeps.$(id)) __calculatorDeps.$(id).value = state[id]; });
+      __calculatorDeps.syncSeason3PlanningInputs?.();
       CHECK_IDS.forEach(id => { if (state[id] !== undefined && __calculatorDeps.$(id)) __calculatorDeps.$(id).checked = !!state[id]; });
-      if(!hadState && activeCalcConfig().key==='s2') __calculatorDeps.applyS2ScoringStartDefaults();
+      if(!hadState && activeCalcConfig().key!=='s1') __calculatorDeps.applyS2ScoringStartDefaults();
       __calculatorDeps.gearLocked = false; // gear lock UI removed; optimizer always considers Gear
       // Main calculator editors default closed, then remember the user's last open/collapsed state.
       PANEL_OPEN_IDS.forEach(id => {
@@ -154,6 +155,7 @@ function loadState(){
       __calculatorDeps.snapshotSeason=seasonKeyAt(__calculatorDeps.snapshotAtMs);
       __calculatorDeps.snapshotCarry={ore:0, essence:0, sand:0, treat:0, exp:0};
     }
+    __calculatorDeps.syncSeason3PlanningInputs?.();
     __calculatorDeps.snapshotStateLoaded=true;
     if(hadState) rollSnapshotForward(Date.now(),false);
     __calculatorDeps.updateGearLockUI();
