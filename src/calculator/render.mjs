@@ -486,7 +486,7 @@ function renderCalculatorSeasonChrome(cfg){
     __calculatorDeps.$('seasonDeadlineLabel').textContent=`${cfg.name} ends`;
     __calculatorDeps.$('seasonDeadlineDate').textContent=localDeadlineLabel(cfg.end,cfg.key==='s2'||(cfg.key==='s3'&&cfg.deadlineEstimated!==false));
     const s3=cfg.key==='s3';
-    document.querySelectorAll('[data-historical-season-reference]').forEach(el=>el.hidden=s3);
+    document.querySelectorAll('[data-historical-season-reference],.shopEstimatePanel').forEach(el=>el.hidden=s3);
     for(const id of ['seasonEndDateField','season3StaminaInputs','season3FormulaReference'])if(__calculatorDeps.$(id))__calculatorDeps.$(id).hidden=!s3;
     if(__calculatorDeps.$('seasonEndDate')&&!__calculatorDeps.$('seasonEndDate').value)__calculatorDeps.$('seasonEndDate').value='2027-02-25';
     __calculatorDeps.$('historicalStarsLabel').textContent=cfg.key==='s3'?'Carried Primostars · S1 + S2':'Season 1 Primostars';

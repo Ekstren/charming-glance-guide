@@ -56,6 +56,7 @@ async function assertFresh(page){
   await settle(page);
   for(const [id,value]of Object.entries({charLevel:'160',gearLevel:'160',skillLevel:'160',fantomonLevel:'160',relicLevel:'16',historicalStars:'',realmDailyOre:'0',realmDailyEssence:'0',realmDailySand:'0',bedExp:'0',oreRate:'0',essenceRate:'0',sandRate:'0',treatRate:'0',staminaOreYield:'0',staminaEssenceYield:'0',staminaSandYield:'0'}))assert.equal(await page.locator(`#${id}`).inputValue(),value,`fresh S3 ${id}`);
   assert.equal(await page.locator('#calcSeasonNotice').isVisible(),false);
+  assert.equal(await page.locator('.shopEstimatePanel').evaluate(el=>el.hidden),true,'Unverified S3 shop sample must not expose an active projection control');
   assert.equal(await page.locator('#summaryOptimizedScore').textContent(),'—');
   assert.match(await page.locator('#targetMessage').textContent(),/carried|Primostars/i);
 }
@@ -134,6 +135,7 @@ try{
       assert.equal(await page.locator('#calcSeasonNotice').isVisible(),true);
       await page.locator('#confirmSeasonSnapshot').click();await settle(page);
       assert.equal(await page.locator('#calcSeasonNotice').isVisible(),false);
+  assert.equal(await page.locator('.shopEstimatePanel').evaluate(el=>el.hidden),true,'Unverified S3 shop sample must not expose an active projection control');
       assert.ok(numeric(await page.locator('#summaryOptimizedScore').textContent())>0);
       assert.equal(await page.locator('#historicalStars').inputValue(),'1060');
     }
