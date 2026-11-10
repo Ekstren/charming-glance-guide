@@ -1,4 +1,7 @@
 export const timelineData = [
+    // Community reports: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ and https://valkyrie.tips/ (checked Nov. 10, 2026)
+    ['2026-11-10',119,'Event','Gift code · MUMPKIN (community-reported)','Community-reported code MUMPKIN rewards 10 Rare Auroral Badges + 80 Dawnium (GamesRadar, updated November 10); Valkyrie also lists the code. Reported expiry November 17, 2026; the exact expiration time and timezone have not been verified. Official confirmation and in-game redemption have not been verified.','event','2026-11-17','unconfirmed'],
+
     // Community reports: https://gachafeed.moe/swordstaff/codes/ and https://www.mrguider.org/codes/sword-x-staff-codes/ (checked Nov. 3, 2026)
     ['2026-11-03',112,'Event','Gift code · CARNIVAL (community-reported)','Community-reported gift code CARNIVAL; rewards have not been verified. Gachafeed lists the code, and MrGuider reports expiration at November 10, 00:00 (UTC-5); this community-reported timestamp is displayed in your local timezone. Official confirmation and in-game redemption have not been verified.','event','2026-11-10','unconfirmed','2026-11-10T05:00:00Z'],
 
