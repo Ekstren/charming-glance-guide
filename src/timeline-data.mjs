@@ -1,4 +1,10 @@
 export const timelineData = [
+    // Community reports: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ https://gachafeed.moe/swordstaff/codes/ and https://www.memuplay.com/blog/sword-x-staff-codes.html (checked Nov. 17, 2026)
+    ['2026-11-17',126,'Event','Gift code · SUNSPIRE (community-reported)','Community-reported code SUNSPIRE rewards 300 Raw Ore + 1 Stellatie (GamesRadar, updated November 17). MEmuPlay reports expiration at November 24, 00:00 (UTC-5); this community-reported timestamp is displayed in your local timezone. GachaFeed lists the code as working. Official confirmation and in-game redemption on Charming Glance have not been verified.','event','2026-11-24','unconfirmed','2026-11-24T05:00:00Z'],
+
+    // Official global date: https://x.com/SwordxStaff/status/2119037159911096511 (confirmed Nov. 7); details and local reset timing remain unannounced.
+    ['2026-12-01',140,'Collab','That Time I Got Reincarnated as a Slime collaboration','The official Sword x Staff account announced a December 1, 2026 global start date on Nov. 7. Exact start time, end date, and Charming Glance reset alignment have not been announced.','event'],
+
     // Community reports: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ https://valkyrie.tips/ and https://www.mrguider.org/codes/sword-x-staff-codes/ (checked Nov. 10, 2026)
     ['2026-11-10',119,'Event','Gift code · MUMPKIN (community-reported)','Community-reported code MUMPKIN rewards 10 Rare Auroral Badges + 80 Dawnium (GamesRadar, updated November 10); Valkyrie also lists the code. MrGuider reports expiration at November 17, 00:00 (UTC-5); this community-reported timestamp is displayed in your local timezone. Official confirmation and in-game redemption have not been verified.','event','2026-11-17','unconfirmed','2026-11-17T05:00:00Z'],
 
