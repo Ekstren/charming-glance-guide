@@ -1,4 +1,7 @@
 export const timelineData = [
+    // Community report: https://www.mrguider.org/codes/sword-x-staff-codes/ (checked Nov. 24, 2026)
+    ['2026-11-24',133,'Event','Gift code · ASTRID (community-reported)','Community-reported gift code ASTRID; rewards have not been verified. MrGuider reports addition Nov. 24 and expiration Dec. 1, 00:00 (UTC-5); this community-reported timestamp is displayed in your local timezone. Official confirmation and in-game redemption have not been verified.','event','2026-12-01','unconfirmed','2026-12-01T05:00:00Z'],
+
     // Community reports: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ https://gachafeed.moe/swordstaff/codes/ and https://www.memuplay.com/blog/sword-x-staff-codes.html (checked Nov. 17, 2026)
     ['2026-11-17',126,'Event','SUNSPIRE · community','300 Raw Ore + 1 Stellatie; expires Nov. 24, 00:00 UTC-5. CG redemption unverified.','event','2026-11-24','unconfirmed','2026-11-24T05:00:00Z'],
 
