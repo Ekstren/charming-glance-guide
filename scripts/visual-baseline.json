@@ -1,4 +1,4 @@
 {
-  "commit": "d0f0e03d34478fa1f62c33271424ade52f4f1666",
-  "description": "Reviewed SUNSPIRE and Tensura timeline entries in light and dark mobile and desktop layouts; no layout or style changes."
+  "commit": "415e7e73c677e92f8282ddcd5e25aa55fc3c41e1",
+  "description": "Reviewed community-reported gift-code timeline entries, including ASTRID, in light and dark mobile and desktop layouts; labels and cards render correctly with no layout or style changes."
 }
