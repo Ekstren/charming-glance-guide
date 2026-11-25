@@ -1,13 +1,15 @@
 export const timelineData = [
+    // Community code trackers: https://waifutiers.com/sword-x-staff/codes/ (seen working Nov. 25, 2026) and https://www.pocketgamer.com/sword-x-staff/codes/ (updated Nov. 22).
+    ['2026-11-25',134,'Event','Gift code · ADOR','Community-tracker sighting Nov. 25; release, expiry, and CG redemption unverified.','event',null,'unconfirmed'],
     // Community report: https://www.mrguider.org/codes/sword-x-staff-codes/ (checked Nov. 24, 2026)
-    ['2026-11-24',133,'Event','Gift code · ASTRID (community-reported)','MrGuider reports ASTRID added Nov. 24; expires Dec. 1, 00:00 UTC-5 (05:00Z). Community-only report; rewards, official confirmation, and CG redemption unverified.','event','2026-12-01','unconfirmed','2026-12-01T05:00:00Z'],
+    ['2026-11-24',133,'Event','Gift code · ASTRID (community)','MrGuider: Nov24; expires Dec1 00:00 UTC-5 (05:00Z). Rewards, official status, CG redemption unverified.','event','2026-12-01','unconfirmed','2026-12-01T05:00:00Z'],
 
     // Community reports: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ https://gachafeed.moe/swordstaff/codes/ and https://www.memuplay.com/blog/sword-x-staff-codes.html (checked Nov. 17, 2026)
     ['2026-11-17',126,'Event','SUNSPIRE · community','300 Raw Ore + 1 Stellatie; expires Nov. 24, 00:00 UTC-5. CG redemption unverified.','event','2026-11-24','unconfirmed','2026-11-24T05:00:00Z'],
 
     // Official global date: https://x.com/SwordxStaff/status/2119037159911096511 (confirmed Nov. 7); details and local reset timing remain unannounced.
     // Community data reading: https://www.purrwikimania.com/blog/update-150 (checked Nov. 25, 2026); not CG-specific.
-    ['2026-12-01',140,'Collab','Tensura collab','Official Global start: Dec. 1. Purrwikimania reports Global event dates Dec. 1–12 from 13:00 UTC (community reading); CG timing/availability unconfirmed.','event'],
+    ['2026-12-01',140,'Collab','Tensura collab','Official Global start: Dec. 1. Community data reports dates Dec. 1–12, 13:00 UTC; CG timing/availability unconfirmed.','event'],
 
     // Community reports: https://www.gamesradar.com/games/rpg/sword-x-staff-codes/ https://valkyrie.tips/ and https://www.mrguider.org/codes/sword-x-staff-codes/ (checked Nov. 10, 2026)
     ['2026-11-10',119,'Event','Gift code · MUMPKIN (community-reported)','Community-reported rewards: 10 Rare Auroral Badges + 80 Dawnium (GamesRadar); Valkyrie also lists MUMPKIN. MrGuider reports expiry Nov. 17, 00:00 UTC-5 (05:00Z). Official confirmation and CG redemption unverified.','event','2026-11-17','unconfirmed','2026-11-17T05:00:00Z'],
